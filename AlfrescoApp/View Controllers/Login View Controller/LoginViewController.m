@@ -1,0 +1,271 @@
+//
+//  LoginViewController.m
+//  AlfrescoApp
+//
+//  Created by Tauseef Mughal on 29/07/2013
+//  Copyright (c) 2013 Alfresco. All rights reserved.
+//
+
+#import "LoginViewController.h"
+#import "MBProgressHUD.h"
+
+@interface LoginViewController ()
+
+@property (nonatomic, strong) NSArray *cells;
+@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) UITextField *usernameTextField;
+@property (nonatomic, weak) UITextField *passwordTextField;
+@property (nonatomic, weak) UILabel *serverAddressTextLabel;
+@property (nonatomic, strong) NSString *serverAddress;
+@property (nonatomic, strong) NSString *serverDisplayName;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, weak) id<LoginViewControllerDelegate>delegate;
+@property (nonatomic, weak) UIBarButtonItem *loginButton;
+@property (nonatomic, strong) UIView *sectionHeaderContainerView;
+
+@end
+
+@implementation LoginViewController
+
+- (id)initWithServer:(NSString *)serverURLString serverDisplayName:(NSString *)serverDisplayName username:(NSString *)username delegate:(id<LoginViewControllerDelegate>)delegate
+{
+    self = [super init];
+    if (self)
+    {
+        self.serverAddress = serverURLString;
+        self.username = username;
+        self.delegate = delegate;
+        [self validateAndSetDisplayNameWithName:serverDisplayName];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(alfrescoApplicationPolicyUpdated:)
+                                                     name:kAlfrescoApplicationPolicyUpdatedNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textFieldDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification
+                                                   object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)loadView
+{
+    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    // table view
+    UITableView *tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStyleGrouped];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.autoresizesSubviews = YES;
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth  | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin
+    | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [view addSubview:tableView];
+    self.tableView = tableView;
+    
+    // section header
+    CGFloat sectionHeaderHeight = 40.0f;
+    CGFloat serverLabelPadding = 10.0f;
+    
+    UIView *serverSectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, sectionHeaderHeight)];
+    serverSectionHeaderView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    serverSectionHeaderView.autoresizesSubviews = YES;
+    serverSectionHeaderView.backgroundColor = [UIColor clearColor];
+    
+    UILabel *serverLabel = [[UILabel alloc] initWithFrame:CGRectMake(serverLabelPadding,
+                                                                     serverLabelPadding,
+                                                                     tableView.frame.size.width - (serverLabelPadding * 2),
+                                                                     sectionHeaderHeight - (serverLabelPadding * 2))];
+    serverLabel.backgroundColor = [UIColor clearColor];
+    serverLabel.text = [self serverDisplayString];
+    serverLabel.textAlignment = NSTextAlignmentCenter;
+    serverLabel.textColor = [UIColor darkGrayColor];
+    serverLabel.font = [UIFont systemFontOfSize:14.0f];
+    serverLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    self.serverAddressTextLabel = serverLabel;
+    [serverSectionHeaderView addSubview:serverLabel];
+    self.sectionHeaderContainerView = serverSectionHeaderView;
+    
+    // cells
+    CGFloat xPosition = 100.0f;
+    CGFloat topBottomPadding = 10.0f;
+    
+    UITableViewCell *usernameCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
+    usernameCell.textLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
+    UITextField *usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
+                                                                                  topBottomPadding,
+                                                                                  usernameCell.frame.size.width - xPosition,
+                                                                                  usernameCell.frame.size.height - (topBottomPadding * 2))];
+    usernameTextField.placeholder = NSLocalizedString(@"login.username.textfield.placeholder", @"Username Placeholder Text");
+    usernameTextField.text = (self.username) ? self.username : nil;
+    usernameTextField.textAlignment = NSTextAlignmentRight;
+    usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    usernameTextField.returnKeyType = UIReturnKeyNext;
+    usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    usernameTextField.delegate = self;
+    self.usernameTextField = usernameTextField;
+    [usernameCell.contentView addSubview:usernameTextField];
+    
+    UITableViewCell *passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
+    passwordCell.textLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
+    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
+                                                                                   topBottomPadding,
+                                                                                   passwordCell.frame.size.width - xPosition,
+                                                                                   passwordCell.frame.size.height - (topBottomPadding * 2))];
+    passwordTextField.placeholder = NSLocalizedString(@"login.password.textfield.placeholder", @"Password Placeholder Text");
+    passwordTextField.textAlignment = NSTextAlignmentRight;
+    passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    passwordTextField.returnKeyType = UIReturnKeyDone;
+    passwordTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    passwordTextField.secureTextEntry = YES;
+    passwordTextField.delegate = self;
+    self.passwordTextField = passwordTextField;
+    [passwordCell.contentView addSubview:passwordTextField];
+    
+    self.cells = @[usernameCell, passwordCell];
+    
+    view.autoresizesSubviews = YES;
+    view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.view = view;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"login.title", @"Login Title");
+	
+    UIBarButtonItem *loginBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Bar Button Title")
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(login:)];
+    loginBarButton.enabled = NO;
+    [self.navigationItem setRightBarButtonItem:loginBarButton];
+    self.loginButton = loginBarButton;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.usernameTextField.text.length > 0)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else
+    {
+        [self.usernameTextField becomeFirstResponder];
+    }
+}
+
+#pragma mark - Public Functions
+
+- (void)updateUIForFailedLogin
+{
+    [self.passwordTextField becomeFirstResponder];
+}
+
+#pragma mark - Private Functions
+
+- (void)login:(id)sender
+{
+    // inform the delegate
+    [self.delegate loginViewController:self didPressRequestLoginToServer:self.serverAddress username:self.usernameTextField.text password:self.passwordTextField.text];
+}
+
+- (void)alfrescoApplicationPolicyUpdated:(NSNotification *)notification
+{
+    // update the server address
+    NSDictionary *policySettings = (NSDictionary *)[notification object];
+    NSString *serverAddress = [[policySettings objectForKey:kApplicationPolicySettings] objectForKey:kApplicationPolicyServer];
+    NSString *serverDisplayName = [[policySettings objectForKey:kApplicationPolicySettings] objectForKey:kApplicationPolicyServerDisplayName];
+    self.serverAddress = serverAddress;
+    [self validateAndSetDisplayNameWithName:serverDisplayName];
+    self.serverAddressTextLabel.text = [self serverDisplayString];
+}
+
+- (void)validateAndSetDisplayNameWithName:(NSString *)proposedDisplayName
+{
+    if (proposedDisplayName && ![proposedDisplayName isEqualToString:@""])
+    {
+        self.serverDisplayName = proposedDisplayName;
+    }
+    else
+    {
+        self.serverDisplayName = self.serverAddress;
+    }
+}
+
+- (NSString *)serverDisplayString
+{
+    return [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"login.server.cell.label", @"Server Label"), self.serverDisplayName];
+}
+
+#pragma mark - UITableViewDelegate Functions
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return self.sectionHeaderContainerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return self.sectionHeaderContainerView.frame.size.height;
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.cells.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.cells objectAtIndex:indexPath.row];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+}
+
+#pragma mark - UITextFieldDelegate Functions
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.usernameTextField)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if (textField == self.passwordTextField)
+    {
+        [self.passwordTextField resignFirstResponder];
+        
+        if (self.loginButton.enabled)
+        {
+            [self login:self.loginButton];
+        }
+    }
+    return YES;
+}
+
+- (void)textFieldDidChange:(NSNotification *)note
+{
+    if (self.usernameTextField.text.length > 0 && self.passwordTextField.text.length > 0)
+    {
+        self.loginButton.enabled = YES;
+    }
+    else
+    {
+        self.loginButton.enabled = NO;
+    }    
+}
+
+@end
