@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<array>
+		<string>cmis:name</string>
+		<string>cm:title</string>
+		<string>cmis:createdBy</string>
+		<string>cmis:creationDate</string>
+		<string>cmis:lastModifiedBy</string>
+		<string>cmis:lastModificationDate</string>
+		<string>cm:author</string>
+		<string>cmis:versionLabel</string>
+	</array>
+	<array>
+		<string>cm:longitude</string>
+		<string>cm:latitude</string>
+		<string>exif:dateTimeOriginal</string>
+		<string>exif:exposureTime</string>
+		<string>exif:flash</string>
+		<string>exif:fNumber</string>
+		<string>exif:focalLength</string>
+		<string>exif:isoSpeedRatings</string>
+		<string>exif:orientation</string>
+		<string>exif:pixelXDimension</string>
+		<string>exif:pixelYDimension</string>
+		<string>exif:resolutionUnit</string>
+		<string>exif:xResolution</string>
+		<string>exif:yResolution</string>
+		<string>exif:manufacturer</string>
+		<string>exif:model</string>
+		<string>exif:software</string>
+	</array>
+</array>
+</plist>

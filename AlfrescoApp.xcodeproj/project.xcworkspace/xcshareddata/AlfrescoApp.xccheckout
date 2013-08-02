@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>20CE4182-849C-444B-A591-D447FA1F3541</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AlfrescoApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>19248E9E-FD51-49AF-8AE5-D3B3AE341428</key>
+		<string>https://github.com/Alfresco/alfresco-ios-app.git</string>
+		<key>71D5862A-00B9-4F51-9D25-5CDA7D019A52</key>
+		<string>https://github.com/Alfresco/alfresco-ios-sdk</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AlfrescoApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>19248E9E-FD51-49AF-8AE5-D3B3AE341428</key>
+		<string>../..</string>
+		<key>71D5862A-00B9-4F51-9D25-5CDA7D019A52</key>
+		<string>../../AlfrescoSDK</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Alfresco/alfresco-ios-app.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>19248E9E-FD51-49AF-8AE5-D3B3AE341428</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>71D5862A-00B9-4F51-9D25-5CDA7D019A52</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AlfrescoSDK</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>19248E9E-FD51-49AF-8AE5-D3B3AE341428</string>
+			<key>IDESourceControlWCCName</key>
+			<string>alfresco-ios-app</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,329 @@
+/* 
+  Localizable.strings
+  AlfrescoApp
+
+  Created by Tauseef Mughal on 29/07/2013.
+  Copyright (c) 2013 Alfresco. All rights reserved.
+*/
+
+/**
+ * App Wide
+ */
+"splitviewcontroller.showmasterbutton" = "Alfresco";
+// button labels
+"Yes" = "Yes";
+"No" = "No";
+"Cancel" = "Cancel";
+"Add" = "Add";
+"Done" = "Done";
+"Retry" = "Retry";
+"Upload" = "Upload";
+
+/**
+ * Relative Dates
+ */
+"relative.date.just-now" = "just now";
+"relative.date.less-than-a-minute-ago" = "less than a minute ago";
+"relative.date.one-minute-ago" = "1 minute ago";
+"relative.date.n-minutes-ago" = "%d minutes ago";
+"relative.date.one-hour-ago" = "1 hour ago";
+"relative.date.n-hours-ago" = "%d hours ago";
+"relative.date.one-day-ago" = "1 day ago";
+"relative.date.n-days-ago" = "%d days ago";
+
+/**
+ * File Sizes
+ */
+"file.size.bytes" = "Bytes";
+"file.size.kilobytes" = "KB";
+"file.size.megabytes" = "MB";
+"file.size.gigabytes" = "GB";
+
+/**
+ * Errors
+ */
+"error.filefolder.rootfolder.notfound" = "Root folder could not be loaded. Error: %@.";
+"error.filefolder.permission.notfound" = "Permission for the node was not found. Error: %@.";
+"error.filefolder.content.failedtodownload" = "Document failed to download. Error: %@.";
+"error.filefolder.search.searchfailed" = "The search failed. Error: %@.";
+"error.filefolder.createfolder.createfolder" = "The folder was not created. Error: %@.";
+"error.filefolder.content.failedtoretrieve" = "Retrieval of content failed. Error: %@.";
+"error.filefolder.unable.to.delete" = "Unable to delete. Error: %@";
+"error.sites.documentlibrary.failed" = "Unable to get Document Library. Error: %@.";
+"error.sites.retrieval.failed" = "Unable to retrieve Sites. Error: %@.";
+"error.sites.folder.failed" = "Unable to retrieve Sites folder. Error: %@.";
+"error.sites.search.failed" = "Unable to search across Sites. Error: %@.";
+"error.upload.failed" = "Uploading of the document failed. Error: %@.";
+"error.upload.addtags.failed" = "Adding tags to the document failed. Error: %@.";
+"error.tags.retrieve.failed" = "Failed to retrieve tags. Error: %@.";
+"error.login.failed" = "Login failed, please ensure your username and password are correct.";
+"error.comments.retrieve.failed" = "Unable to retrieve comments. Error: %@";
+"error.add.comment.failed" = "Unable to add comment. Error: %@";
+"error.sites.unable.to.favorite" = "Unable to favorite %@";
+"error.sites.unable.to.unfavorite" = "Unable to unfavorite %@";
+"error.sites.unable.to.join" = "Unable to join %@";
+"error.sites.unable.to.cancel.request" = "Unable to cancel join request to %@";
+"error.sites.unable.to.leave" = "Unable to leave %@";
+"error.version.history.unable.to.retrieve" = "Unable to retrieve version history. Error: %@";
+"error.version.history.no.latest.version" = "Latest version of the document could not be found.";
+"error.alfresco.node.notfound" = "Document not found";
+// internet connection error
+"error.no.internet.access.title" = "A connection couldn't be made";
+"error.no.internet.access.message" = "Please check that you're connected to the internet and try again. You can still access your downloaded documents without having a connection.";
+"error.access.permissions.message" = "Please ensure that you have access rights for this operation";
+"error.retrieving.metadata" = "Metadata for %@ could not be retrieved.";
+
+/**
+ * Custom error descriptions
+ */
+"error.description.kAFGErrorFileSuffixMaxAttempts" = "Couldn't generate a unique filename";
+
+/**
+ * Sites View Controller
+ */
+"sites.title" = "Sites";
+"sites.segmentControl.mysites" = "My Sites";
+"sites.segmentControl.favoritesites" = "Favorite Sites";
+"sites.segmentControl.allsites" = "All Sites";
+"sites.site.favorited.banner" = "You have favorited %@";
+"sites.site.unfavorited.banner" = "You have unfavorited %@";
+"sites.site.requested.to.join.banner" = "A request to join %@ has been sent";
+"sites.site.joined.banner" = "You have joined %@";
+"sites.site.request.cancelled.banner" = "Request cancelled for %@";
+"sites.site.left.banner" = "You have left %@";
+
+// Site Cell Buttons
+"sites.siteCell.favorite" = "Favorite";
+"sites.siteCell.unfavorite" = "Unfavorite";
+"sites.siteCell.leave" = "Leave";
+"sites.siteCell.cancel.request" = "Cancel Request";
+"sites.siteCell.request.to.join" = "Request to Join";
+"sites.siteCell.join" = "Join";
+
+/**
+ * Company Home View Controller
+ */
+"companyHome.title" = "Repository";
+
+/**
+ * Folder/Document View Controller
+ */
+"browser.actionsheet.addfolder" = "Create Folder";
+"browser.actionsheet.upload" = "Upload";
+"browser.actionsheet.upload.existingPhotos" = "Choose Photos";
+"browser.actionsheet.upload.existingPhotosOrVideos" = "Choose Photos or Videos";
+"browser.actionsheet.upload.documents" = "Choose Document";
+"browser.actionsheet.takephoto" = "Take Photo";
+"browser.actionsheet.takephotovideo" = "Take Photo or Video";
+
+"browser.alertview.addfolder.title" = "Create Folder";
+"browser.alertview.addfolder.message" = "Create folder with the name:";
+"browser.alertview.addfolder.create" = "Create";
+
+"browser.actionsheet.record.audio" = "Record Audio";
+
+/**
+ * MultiSelect
+ */
+"multiselect.button.delete" = "Delete";
+"multiselect.button.delete.counter" = "Delete (%u)";
+"multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 item from the server?";
+"multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d items from the server?";
+"multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 item from downloads?";
+"multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d items from downloads?";
+
+/**
+ * About View Controller
+ */
+"about.title" = "About";
+"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco for Good was designed and developed by Alfresco Software Ltd. and is built on the Good Dynamics™ mobile app security platform. It provides a secure connection to Alfresco Enterprise and your corporate documents on the go.";
+"about.libraries.used" = "Libraries used:";
+"about.version.number" = "Version: %@ (%@)";
+"about.build.date.time" = "Build Date: %s %s";
+
+/**
+ * Activities View Controller
+ */
+"activities.title" = "Activities";
+"activities.empty" = "No Activities";
+"activities.section.today" = "Today";
+"activities.section.yesterday" = "Yesterday";
+"activities.section.older" = "Older";
+
+/**
+ * Upload Form Controller
+ */
+"upload.photo.title" = "Upload Image";
+"upload.document.title" = "Upload Document";
+"upload.video.title" = "Upload Video";
+"upload.audio.title" = "Upload Audio";
+"upload.photo.namecell.title" = "Name";
+"upload.photo.namecell.textfield.placeholder.text" = "File Name";
+"upload.photo.tagcell.textlabel.placeholder.text" = "No Tags";
+"upload.photo.photocell.title" = "Photo";
+"upload.photo.qualitycell.title" = "Quality";
+"upload.photo.tagscell.title" = "Tags";
+"upload.documentTitleCell.label" = "Document";
+"upload.videoTitleCell.label" = "Video";
+"upload.default.video.name" = "Video %@";
+// audio
+"upload.audio.cell.label" = "Audio";
+"upload.audio.cell.button.record" = "Record";
+"upload.audio.cell.button.play" = "Play";
+"upload.audio.cell.button.stop" = "Stop";
+// confirmation
+"upload.confirm.dismissal.title" = "Unsaved Content";
+"upload.confirm.dismissal.message" = "Do you want to upload this content? Your content will be lost if you don't upload now.";
+"upload.confirm.dismissal.cancel" = "Don't Upload";
+"upload.success-as.message" = "Document uploaded as %@";
+
+/**
+ * Tag Selection Controller
+ */
+"tagselection.title" = "Tags";
+"tagselection.newTag.buttonTitle" = "Add New Tag";
+"tagselection.newTag.alertTitle" = "Add New Tag";
+"tagselection.newTag.error.invalidtag.title" = "Invalid Tag";
+"tagselection.newTag.error.invalidtag.message" = "Tags must contain text";
+
+/**
+ * Document Preview Controller
+ */
+"document.video.not.supported" = "Playback is not available";
+"document.open-in.not.supported.title" = "Open in is not available";
+"document.open-in.not.supported.message" = "The Open in option is not available with this application.";
+
+/**
+ * Login View Controller
+ */
+"login.title" = "Login";
+"login.server.cell.label" = "Server";
+"login.username.cell.label" = "Username";
+"login.username.textfield.placeholder" = "Username";
+"login.password.cell.label" = "Password";
+"login.password.textfield.placeholder" = "Password";
+"login.hud.label" = "Connecting...";
+
+/**
+ * Download View Controller
+ */
+"downloads.title" = "Downloads";
+"downloadview.footer.one-document" = "1 Document";
+"downloadview.footer.multiple-documents" = "%d Documents";
+"downloadview.footer.no-documents" = "No Downloaded Documents";
+
+/**
+ * DownloadManager
+ */
+"download.overwrite.prompt.title" = "";
+"download.overwrite.prompt.message" = "There is already a downloaded document with the same name. Do you want to overwrite the existing document?";
+"download.success.message" = "Document Saved";
+"download.success-as.message" = "Document Saved as %@";
+"download.failure.message" = "Failed to save the document";
+
+/**
+ * More View Controller
+ */
+"more.view.title" = "More";
+
+/**
+ * Comments View Controller
+ */
+"comments.title" = "Comments";
+"comments.footer.one.comment" = "1 Comment";
+"comments.footer.multiple.comments" = "%i Comments";
+
+/**
+ * Add Comments View Controller
+ */
+"add.comments.title" = "Add Comment";
+"add.comments.post.button" = "Post";
+
+/**
+ * Help
+ */
+"help.view.title" = "Help";
+
+/**
+ * Metadata View Controller
+ */
+"metadata.cmis:name" = "Name";
+"metadata.cm:title" = "Title";
+"metadata.cmis:createdBy" = "Created By";
+"metadata.cmis:creationDate" = "Creation Date";
+"metadata.cmis:lastModifiedBy" = "Last Modified By";
+"metadata.cmis:lastModificationDate" = "Last Modified Date";
+"metadata.cm:author" = "Author";
+"metadata.cmis:versionLabel" = "Version";
+
+"metadata.cm:longitude" = "Longitude";
+"metadata.cm:latitude" = "Latitude";
+"metadata.exif:dateTimeOriginal" = "Date Time Original";
+"metadata.exif:exposureTime" = "Exposure Time";
+"metadata.exif:flash" = "Flash";
+"metadata.exif:fNumber" = "fNumber";
+"metadata.exif:focalLength" = "Focal Length";
+"metadata.exif:isoSpeedRatings" = "ISO Speed Ratings";
+"metadata.exif:manufacturer" = "Manufacturer";
+"metadata.exif:model" = "Model";
+"metadata.exif:orientation" = "Orientation";
+"metadata.exif:pixelXDimension" = "Pixel X Dimension";
+"metadata.exif:pixelYDimension" = "Pixel Y Dimension";
+"metadata.exif:resolutionUnit" = "Resolution Unit";
+"metadata.exif:xResolution" = "X Resolution";
+"metadata.exif:yResolution" = "Y Resolution";
+"metadata.exif:software" = "Software";
+"metadata.exif.orientation.landscape.left" = "Landscape Left";
+"metadata.exif.orientation.landscape.right" = "Landscape Right";
+"metadata.exif.orientation.portrait" = "Portrait";
+"metadata.exif.orientation.portrait.upsidedown" = "Portrait Up-side Down";
+"metadata.exif.orientation.undefined" = "Undefined";
+
+"metadata.nodeTags" = "Tags";
+"metadata.version.history.cell" = "View Version History";
+
+"metadata.general.section.header.title" = "General";
+"metadata.image.information.section.header.title" = "Image Information";
+"metadata.version.history.section.header.title" = "Version History";
+
+/**
+ * Version History View Controller
+ */
+"version.history.title" = "Version History";
+"version.history.version.cell.text" = "Version: %@";
+"version.history.last.modified.cell.text" = "Last Modified: %@";
+"version.history.last.modified.by.cell.text" = "Last Modified By: %@";
+"version.history.comment.cell.text" = "Comment: %@";
+"version.history.current.version.cell.text" = "Current Version: %@";
+"version.history.download.latest.text" = "Download Latest Version";
+
+/**
+ * Saveback
+ */
+"saveback.hud.message" = "Saving...";
+"saveback.saved.successfully.message" = "The document %@ was successfully saved.";
+"saveback.failed.title" = "Saveback Failed";
+"saveback.failed.message" = "The attempt to saveback %@ failed. Would you like to retry?";
+
+/**
+ * Policy Updated
+ */
+"policy.updated.title" = "Policy Update";
+"policy.updated.message" = "Your app configuration policy has been updated by your administrator";
+
+/**
+ * Location Manager
+ */
+"location.manager.purpose" = "Your location will be used to geotag photos taken with this device.";
+
+/**
+ * THIRD PARTY LIBRARIES LOCALIZATIONS
+ */
+
+/**
+ * EGOTableViewPullRefresh
+ */
+"Release to refresh..." = "Release to refresh...";
+"Pull down to refresh..." = "Pull down to refresh...";
+"Loading..." = "Loading...";
+"Last Updated: %@" = "Last Updated: %@";

@@ -1,0 +1,72 @@
+/* 
+  Activities.strings
+  AlfrescoApp
+
+  Created by Tauseef Mughal on 29/07/2013.
+  Copyright (c) 2013 Alfresco. All rights reserved.
+*/
+
+
+/**
+ * Messages
+ */
+"title.generic" = "New Activity";
+"label.no-activities" = "No recent activities";
+
+/**
+ * Optional Site link
+ */
+"in.site" = "{0} in site {1}";
+
+/**
+ * 0 = Item title / page link, 1 = User profile link, 2 = custom0, 3 = custom1, 4 = Site link
+ */
+"org.alfresco.blog.post-created" = "{0} blog post created by {1}";
+"org.alfresco.blog.post-updated" = "{0} blog post updated by {1}";
+"org.alfresco.blog.post-deleted" = "{0} blog post deleted by {1}";
+"org.alfresco.comments.comment-created" = "{1} commented on {0}";
+"org.alfresco.comments.comment-updated" = "{1} updated comment on {0}";
+"org.alfresco.comments.comment-deleted" = "{1} deleted a comment from {0}";
+"org.alfresco.discussions.post-created" = "{0} discussion started by {1}";
+"org.alfresco.discussions.post-updated" = "{0} discussion updated by {1}";
+"org.alfresco.discussions.post-deleted" = "{0} discussion deleted by {1}";
+"org.alfresco.discussions.reply-created" = "{1} replied to the discussion {0}";
+"org.alfresco.discussions.reply-updated" = "{1} updated a reply to {0}";
+"org.alfresco.calendar.event-created" = "{0} calendar event created by {1}";
+"org.alfresco.calendar.event-updated" = "{0} calendar event updated by {1}";
+"org.alfresco.calendar.event-deleted" = "{0} calendar event deleted by {1}";
+"org.alfresco.documentlibrary.file-added" = "{0} document added by {1}";
+"org.alfresco.documentlibrary.files-added" = "{0} documents added by {1}";
+"org.alfresco.documentlibrary.file-created" = "{0} document created by {1}";
+"org.alfresco.documentlibrary.file-deleted" = "{0} was deleted by {1}";
+"org.alfresco.documentlibrary.files-deleted" = "{0} documents deleted by {1}";
+"org.alfresco.documentlibrary.file-updated" = "{0} document updated by {1}";
+"org.alfresco.documentlibrary.files-updated" = "{0} documents updated by {1}";
+"org.alfresco.documentlibrary.folder-added" = "{1} added folder {0}";
+"org.alfresco.documentlibrary.folder-deleted" = "{1} deleted folder {0}";
+"org.alfresco.documentlibrary.folders-added" = "{1} added {0} folders";
+"org.alfresco.documentlibrary.folders-deleted" = "{1} deleted {0} folders";
+"org.alfresco.documentlibrary.google-docs-checkout" = "{0} document checked out to Google Docs by {1}";
+"org.alfresco.documentlibrary.google-docs-checkin" = "{0} document checked in from Google Docs by {1}";
+"org.alfresco.documentlibrary.inline-edit" = "{0} document edited by {1}";
+"org.alfresco.documentlibrary.file-liked" = "{1} liked document {0}";
+"org.alfresco.documentlibrary.folder-liked" = "{1} liked folder {0}";
+"org.alfresco.wiki.page-created" = "{0} wiki page created by {1}";
+"org.alfresco.wiki.page-edited" = "{0} wiki page updated by {1}";
+"org.alfresco.wiki.page-renamed" = "{2} wiki page renamed to {0} by {1}";
+"org.alfresco.wiki.page-deleted" = "{0} wiki page deleted by {1}";
+"org.alfresco.site.group-added" = "{1} group added to site {4} with role {2}";
+"org.alfresco.site.group-removed" = "{1} group removed from site {4}";
+"org.alfresco.site.group-role-changed" = "{1} group role changed to {2}";
+"org.alfresco.site.user-joined" = "{1} joined site {4} with role {2}";
+"org.alfresco.site.user-left" = "{1} left site {4}";
+"org.alfresco.site.user-role-changed" = "{1} role changed to {2}";
+"org.alfresco.links.link-created" = "{0} link created by {1}";
+"org.alfresco.links.link-updated" = "{0} link updated by {1}";
+"org.alfresco.links.link-deleted" = "{0} link deleted by {1}";
+"org.alfresco.datalists.list-created" = "{0} data list created by {1}";
+"org.alfresco.datalists.list-updated" = "{0} data list details updated by {1}";
+"org.alfresco.datalists.list-deleted" = "{0} data list deleted by {1}";
+"org.alfresco.subscriptions.followed" = "{1} is now following {5}";
+"org.alfresco.subscriptions.subscribed" = "{1} has subscribed to {2}";
+"org.alfresco.profile.status-changed" = "{1}: {6}";

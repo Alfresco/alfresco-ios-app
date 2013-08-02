@@ -1,0 +1,13 @@
+# files created by Xcode 4
+xcuserdata/
+# build products
+*.build/
+build/
+DerivedData/
+
+# Misc
+.svn
+.DS_Store
+
+# files created by AppCode
+.idea/
