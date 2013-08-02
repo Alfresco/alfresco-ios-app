@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>folder</key>
+	<string>folder.png</string>
+	<key>generic</key>
+	<string>generic.png</string>
+	<key>doc</key>
+	<string>mime_doc.png</string>
+	<key>docx</key>
+	<string>mime_doc.png</string>
+	<key>pdf</key>
+	<string>mime_pdf.png</string>
+	<key>jpg</key>
+	<string>mime_img.png</string>
+	<key>jpeg</key>
+	<string>mime_img.png</string>
+	<key>tiff</key>
+	<string>mime_img.png</string>
+	<key>bmp</key>
+	<string>mime_img.png</string>
+	<key>png</key>
+	<string>mime_img.png</string>
+	<key>ppt</key>
+	<string>mime_ppt.png</string>
+	<key>pptx</key>
+	<string>mime_ppt.png</string>
+	<key>txt</key>
+	<string>mime_txt.png</string>
+    <key>mp3</key>
+	<string>mime_mp3.png</string>
+    <key>m4a</key>
+	<string>mime_audio.png</string>
+    <key>wav</key>
+	<string>mime_audio.png</string>
+    <key>aiff</key>
+	<string>mime_audio.png</string>
+	<key>mp4</key>
+	<string>mime_video.png</string>
+	<key>mov</key>
+	<string>mime_video.png</string>
+	<key>m4v</key>
+	<string>mime_video.png</string>
+	<key>xls</key>
+	<string>mime_xls.png</string>
+	<key>xlsx</key>
+	<string>mime_xls.png</string>
+	<key>xml</key>
+	<string>mime_xml.png</string>
+	<key>zip</key>
+	<string>mime_zip.png</string>
+	<key>site</key>
+	<string>site.png</string>
+	<key>repository</key>
+	<string>repository.png</string>
+</dict>
+</plist>

@@ -1,0 +1,3 @@
+[submodule "AlfrescoSDK"]
+	path = AlfrescoSDK
+	url = https://github.com/Alfresco/alfresco-ios-sdk
