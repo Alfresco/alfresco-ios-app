@@ -7,10 +7,7 @@
 //
 
 #import "ActivitiesViewController.h"
-#import "AlfrescoActivityStreamService.h"
-#import "AlfrescoDocumentFolderService.h"
 #import "ActivitiesTableViewCellController.h"
-#import "AlfrescoFileManager.h"
 #import "PreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"

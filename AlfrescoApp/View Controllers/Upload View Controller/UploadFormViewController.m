@@ -8,14 +8,9 @@
 
 #import "UploadFormViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "AlfrescoDocumentFolderService.h"
-#import "AlfrescoFileManager.h"
-#import "AlfrescoFolder.h"
-#import "AlfrescoTaggingService.h"
 #import "TagPickerViewController.h"
 #import "UniversalDevice.h"
 #import "Utility.h"
-#import "AlfrescoErrors.h"
 #import "UIAlertView+ALF.h"
 #import <ImageIO/ImageIO.h>
 #import "LocationManager.h"

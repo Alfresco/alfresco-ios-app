@@ -7,7 +7,6 @@
 //
 
 #import "ErrorDescriptions.h"
-#import "AlfrescoErrors.h"
 
 static NSString * const kErrorDescriptionNetworkNotAvailable = @"error.no.internet.access.message";
 static NSString * const kErrorDescriptionAccessPermissions = @"error.access.permissions.message";

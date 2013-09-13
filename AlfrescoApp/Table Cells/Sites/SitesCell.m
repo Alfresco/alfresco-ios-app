@@ -7,7 +7,6 @@
 //
 
 #import "SitesCell.h"
-#import "AlfrescoSite.h"
 
 const CGFloat SitesCellDefaultHeight = 46.0f;
 const CGFloat SitesCellExpandedHeight = 86.0f;

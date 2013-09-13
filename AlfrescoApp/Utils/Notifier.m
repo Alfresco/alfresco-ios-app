@@ -7,7 +7,6 @@
 //
 
 #import "Notifier.h"
-#import "AlfrescoErrors.h"
 
 @implementation Notifier
 

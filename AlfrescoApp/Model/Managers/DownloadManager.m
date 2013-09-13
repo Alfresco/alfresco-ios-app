@@ -7,9 +7,6 @@
 //
 
 #import "DownloadManager.h"
-#import "AlfrescoDocument.h"
-#import "AlfrescoFileManager.h"
-#import "AlfrescoDocumentFolderService.h"
 #import "Utility.h"
 #import "UIAlertView+ALF.h"
 
