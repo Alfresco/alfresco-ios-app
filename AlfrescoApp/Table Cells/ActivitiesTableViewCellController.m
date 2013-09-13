@@ -7,11 +7,7 @@
 //
 
 #import "ActivitiesTableViewCellController.h"
-#import "AlfrescoDocumentFolderService.h"
-#import "AlfrescoPersonService.h"
 #import "ActivityTableViewCell.h"
-#import "AlfrescoActivityEntry.h"
-#import "AlfrescoFileManager.h"
 #import "Utility.h"
 
 NSString * const kActivityCellIdentifier = @"ActivityCell";
