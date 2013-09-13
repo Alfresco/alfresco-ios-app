@@ -7,12 +7,10 @@
 //
 
 #import "DownloadsViewController.h"
-#import "AlfrescoFileManager.h"
 #import "PreviewViewController.h"
 #import "UniversalDevice.h"
 #import "DownloadManager.h"
 #import "Utility.h"
-#import "AlfrescoConstants.h"
 #import "MetaDataViewController.h"
 #import "AlfrescoDocument+ALF.h"
 #import "FileFolderCell.h"

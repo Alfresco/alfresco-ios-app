@@ -7,11 +7,6 @@
 //
 
 #import "MetaDataViewController.h"
-#import "AlfrescoTaggingService.h"
-#import "AlfrescoTag.h"
-#import "AlfrescoFolder.h"
-#import "AlfrescoDocument.h"
-#import "AlfrescoProperty.h"
 #import "MetadataCell.h"
 #import "VersionHistoryViewController.h"
 #import "ConnectivityManager.h"

@@ -9,10 +9,7 @@
 #import "Utility.h"
 #import "AppDelegate.h"
 #import "NavigationViewController.h"
-#import "AlfrescoFileManager.h"
-#import "AlfrescoConstants.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "AlfrescoNode.h"
 
 static NSDictionary *iconMappings;
 static NSDateFormatter *dateFormatter;

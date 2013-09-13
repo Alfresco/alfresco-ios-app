@@ -7,8 +7,6 @@
 //
 
 #import "ParentListViewController.h"
-#import "AlfrescoPagingResult.h"
-#import "AlfrescoNode.h"
 
 @interface ParentListViewController ()
 

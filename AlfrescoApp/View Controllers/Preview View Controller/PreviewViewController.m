@@ -9,11 +9,7 @@
 #import "PreviewViewController.h"
 #import "DownloadManager.h"
 #import "AlfrescoDocument+ALF.h"
-#import "AlfrescoFileManager.h"
-#import "AlfrescoConstants.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "AlfrescoSession.h"
-#import "AlfrescoPermissions.h"
 #import "CommentViewController.h"
 #import "Utility.h"
 #import <MediaPlayer/MediaPlayer.h>

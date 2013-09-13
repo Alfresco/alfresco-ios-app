@@ -36,7 +36,7 @@ static inline CTTextAlignment CTTextAlignmentFromUITextAlignment(NSTextAlignment
 	}
 }
 
-static inline CTLineBreakMode CTLineBreakModeFromUILineBreakMode(UILineBreakMode lineBreakMode) {
+static inline CTLineBreakMode CTLineBreakModeFromUILineBreakMode(NSLineBreakMode lineBreakMode) {
 	switch (lineBreakMode) {
 		case NSLineBreakByWordWrapping: return kCTLineBreakByWordWrapping;
 		case NSLineBreakByCharWrapping: return kCTLineBreakByCharWrapping;

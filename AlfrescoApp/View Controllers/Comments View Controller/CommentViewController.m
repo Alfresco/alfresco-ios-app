@@ -7,9 +7,6 @@
 //
 
 #import "CommentViewController.h"
-#import "AlfrescoNode.h"
-#import "AlfrescoPermissions.h"
-#import "AlfrescoCommentService.h"
 #import "Utility.h"
 #import "CommentCell.h"
 

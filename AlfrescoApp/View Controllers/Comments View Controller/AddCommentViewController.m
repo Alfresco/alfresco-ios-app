@@ -7,9 +7,6 @@
 //
 
 #import "AddCommentViewController.h"
-#import "AlfrescoSession.h"
-#import "AlfrescoCommentService.h"
-#import "AlfrescoNode.h"
 #import "Utility.h"
 #import "MBProgressHUD.h"
 #import "ErrorDescriptions.h"
