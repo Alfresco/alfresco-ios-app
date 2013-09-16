@@ -17,6 +17,7 @@
 NSString * const kActivityTableSectionToday = @"activities.section.today";
 NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
 NSString * const kActivityTableSectionOlder = @"activities.section.older";
+static NSString * const kActivitiesInterface = @"ActivityViewController";
 
 @interface ActivitiesViewController ()
 
@@ -30,7 +31,7 @@ NSString * const kActivityTableSectionOlder = @"activities.section.older";
 
 - (id)initWithSession:(id<AlfrescoSession>)session
 {
-    self = [super initWithSession:session];
+    self = [super initWithNibName:kActivitiesInterface andSession:session];
     
     if (self)
     {

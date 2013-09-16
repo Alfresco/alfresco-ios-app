@@ -17,7 +17,7 @@
 
 @interface ParentListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EGORefreshTableHeaderDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *tableViewData;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
 @property (nonatomic, assign) BOOL moreItemsAvailable;
@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSDate *lastUpdated;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
+- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
 - (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
 - (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 - (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
