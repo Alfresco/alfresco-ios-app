@@ -19,6 +19,23 @@
 
 @implementation ParentListViewController
 
+- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
+{
+    self = [super initWithNibName:nibName bundle:nil];
+    if (self)
+    {
+        self.session = session;
+        self.tableViewData = [NSMutableArray array];
+        self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
+        self.moreItemsAvailable = NO;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(sessionReceived:)
+                                                     name:kAlfrescoSessionReceivedNotification
+                                                   object:nil];
+    }
+    return self;
+}
+
 - (id)initWithSession:(id<AlfrescoSession>)session
 {
     self = [super init];
@@ -41,24 +58,18 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)loadView
-{
-    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    // create and configure the table view
-    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [view addSubview:self.tableView];
-    
-    view.autoresizesSubviews = YES;
-    self.view = view;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.view.autoresizesSubviews = YES;
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     // Pull to Refresh
     [self enablePullToRefresh];

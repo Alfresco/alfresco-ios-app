@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
+		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
@@ -263,6 +265,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
+		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1710,6 +1714,7 @@
 			children = (
 				73B95AC917A68DF20099FB84 /* DownloadsViewController.h */,
 				73B95ACA17A68DF20099FB84 /* DownloadsViewController.m */,
+				0871D26617E369CB00F744D0 /* DownloadsViewController.xib */,
 			);
 			path = "Downloads View Controller";
 			sourceTree = "<group>";
@@ -1790,6 +1795,7 @@
 			children = (
 				73B95AE417A68DF20099FB84 /* ActivitiesViewController.h */,
 				73B95AE517A68DF20099FB84 /* ActivitiesViewController.m */,
+				0871D26417E3660D00F744D0 /* ActivityViewController.xib */,
 			);
 			path = "Activities View Controller";
 			sourceTree = "<group>";
@@ -1930,6 +1936,7 @@
 				73B95A7C17A68B7E0099FB84 /* mime_video@2x.png in Resources */,
 				73B95A7D17A68B7E0099FB84 /* mime_xls.png in Resources */,
 				73B95A7E17A68B7E0099FB84 /* mime_xls@2x.png in Resources */,
+				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				73B95A7F17A68B7E0099FB84 /* mime_xml.png in Resources */,
 				73B95A8017A68B7E0099FB84 /* mime_xml@2x.png in Resources */,
 				73B95A8117A68B7E0099FB84 /* mime_zip.png in Resources */,
@@ -1944,6 +1951,7 @@
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
+				0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */,
 				73B95A8D17A68B7E0099FB84 /* Default@2x.png in Resources */,
 				73B95A8E17A68B7E0099FB84 /* alfresco.png in Resources */,
 				73B95A8F17A68B7E0099FB84 /* alfresco@2x.png in Resources */,
