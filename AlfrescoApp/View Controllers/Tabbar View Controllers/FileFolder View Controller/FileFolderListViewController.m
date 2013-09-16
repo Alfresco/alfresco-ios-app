@@ -7,13 +7,8 @@
 //
 
 #import "FileFolderListViewController.h"
-#import "AlfrescoDocumentFolderService.h"
-#import "AlfrescoListingContext.h"
-#import "AlfrescoFolder.h"
-#import "AlfrescoSearchService.h"
 #import "UniversalDevice.h"
 #import "PreviewViewController.h"
-#import "AlfrescoFileManager.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
 #import "Utility.h"

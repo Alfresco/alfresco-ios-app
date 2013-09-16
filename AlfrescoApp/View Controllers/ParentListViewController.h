@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AlfrescoListingContext.h"
 #import "MBProgressHUD.h"
 #import "CustomEGORefreshTableHeaderView.h"
 #import "ErrorDescriptions.h"

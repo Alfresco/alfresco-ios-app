@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
+#import "MultiSelectActionItem.h"
+
 static NSInteger const kMinCounterValue = 0;
 static NSInteger const kMaxCounterValue = 100;
 
@@ -13,8 +15,6 @@ static CGFloat const kDestructiveButtonHueValue = 0.0f;
 static CGFloat const kDestructiveButtonSaturationValue = 0.80f;
 static CGFloat const kDestructiveButtonBrightnessValue = 0.71f;
 static CGFloat const kDestructiveButtonAlphaValue = 0.0f;
-
-#import "MultiSelectActionItem.h"
 
 @interface MultiSelectActionItem ()
 

@@ -7,8 +7,6 @@
 //
 
 #import "VersionHistoryViewController.h"
-#import "AlfrescoDocument.h"
-#import "AlfrescoVersionService.h"
 #import "Utility.h"
 #import "VersionHistoryCell.h"
 #import "MetaDataViewController.h"

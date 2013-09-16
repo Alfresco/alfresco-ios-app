@@ -7,9 +7,7 @@
 //
 
 #import "ThumbnailDownloader.h"
-#import "AlfrescoDocumentFolderService.h"
 #import "Utility.h"
-#import "AlfrescoFileManager.h"
 
 @interface ThumbnailDownloader ()
 

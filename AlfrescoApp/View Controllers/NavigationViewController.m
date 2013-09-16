@@ -32,7 +32,10 @@
 {
     [super viewDidLoad];
     
-    self.navigationBar.barStyle = UIBarStyleBlack;
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
+    {
+        self.navigationBar.barStyle = UIBarStyleBlack;
+    }
     
     self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"expand.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
 }

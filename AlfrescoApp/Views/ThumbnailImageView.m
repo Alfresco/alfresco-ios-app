@@ -7,7 +7,6 @@
 //
 
 #import "ThumbnailImageView.h"
-#import "AlfrescoFileManager.h"
 
 @implementation ThumbnailImageView
 

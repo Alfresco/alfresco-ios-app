@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import "AlfrescoRepositorySession.h"
 #import "AppDelegate.h"
 #import "UniversalDevice.h"
 #import "LoginManager.h"

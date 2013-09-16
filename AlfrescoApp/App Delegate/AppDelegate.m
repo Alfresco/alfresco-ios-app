@@ -7,10 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "AlfrescoRepositorySession.h"
 #import "SitesListViewController.h"
 #import "FileFolderListViewController.h"
-#import "AlfrescoInternalConstants.h"
 #import "PlaceholderViewController.h"
 #import "ActivitiesViewController.h"
 #import "DownloadsViewController.h"
