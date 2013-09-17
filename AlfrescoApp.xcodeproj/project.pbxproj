@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
+		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
+		08E89C9B17E7593B006936DF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89C9A17E7593B006936DF /* XCTest.framework */; };
+		08E89C9C17E7593B006936DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
+		08E89C9D17E7593B006936DF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
+		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
+		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
@@ -285,9 +292,30 @@
 		73F634DA17E34A990065590E /* AlfrescoWorkflowUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6341717E34A990065590E /* AlfrescoWorkflowUtils.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		08E89CA717E7593C006936DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7373B4ED17A66E9400869949 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7373B4F417A66E9400869949;
+			remoteInfo = AlfrescoApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
+		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
+		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
+		08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AlfrescoApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08E89C9A17E7593B006936DF /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		08E89CA017E7593B006936DF /* AlfrescoApp Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AlfrescoApp Tests-Info.plist"; sourceTree = "<group>"; };
+		08E89CA217E7593B006936DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		08E89CA617E7593B006936DF /* AlfrescoApp Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp Tests-Prefix.pch"; sourceTree = "<group>"; };
+		08E89CAF17E75BA6006936DF /* SyncTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncTest.h; sourceTree = "<group>"; };
+		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
+		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
+		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -817,6 +845,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		08E89C9617E7593B006936DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08E89C9B17E7593B006936DF /* XCTest.framework in Frameworks */,
+				08E89C9D17E7593B006936DF /* UIKit.framework in Frameworks */,
+				08E89C9C17E7593B006936DF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7373B4F217A66E9400869949 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -838,10 +876,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08E89C9E17E7593B006936DF /* AlfrescoApp Tests */ = {
+			isa = PBXGroup;
+			children = (
+				08E89CB217E76012006936DF /* AlfrescoBaseTest.h */,
+				08E89CB317E76012006936DF /* AlfrescoBaseTest.m */,
+				08E89CAF17E75BA6006936DF /* SyncTest.h */,
+				08E89CB017E75BA6006936DF /* SyncTest.m */,
+				08E89C9F17E7593B006936DF /* Supporting Files */,
+			);
+			path = "AlfrescoApp Tests";
+			sourceTree = "<group>";
+		};
+		08E89C9F17E7593B006936DF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				08E89CA017E7593B006936DF /* AlfrescoApp Tests-Info.plist */,
+				08E89CA117E7593B006936DF /* InfoPlist.strings */,
+				08E89CA617E7593B006936DF /* AlfrescoApp Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
 				7373B4FE17A66E9400869949 /* AlfrescoApp */,
+				08E89C9E17E7593B006936DF /* AlfrescoApp Tests */,
 				7373B4F717A66E9400869949 /* Frameworks */,
 				7373B4F617A66E9400869949 /* Products */,
 			);
@@ -851,6 +912,7 @@
 			isa = PBXGroup;
 			children = (
 				7373B4F517A66E9400869949 /* AlfrescoApp.app */,
+				08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -869,6 +931,7 @@
 				7373B4F817A66E9400869949 /* UIKit.framework */,
 				7373B4FA17A66E9400869949 /* Foundation.framework */,
 				7373B4FC17A66E9400869949 /* CoreGraphics.framework */,
+				08E89C9A17E7593B006936DF /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -951,6 +1014,8 @@
 				73B957D817A6750E0099FB84 /* LoginManager.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */,
+				08E89C9217E7488C006936DF /* SyncManager.h */,
+				08E89C9317E7488C006936DF /* SyncManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1976,6 +2041,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		08E89C9817E7593B006936DF /* AlfrescoApp Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08E89CA917E7593C006936DF /* Build configuration list for PBXNativeTarget "AlfrescoApp Tests" */;
+			buildPhases = (
+				08E89C9517E7593B006936DF /* Sources */,
+				08E89C9617E7593B006936DF /* Frameworks */,
+				08E89C9717E7593B006936DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08E89CA817E7593C006936DF /* PBXTargetDependency */,
+			);
+			name = "AlfrescoApp Tests";
+			productName = "AlfrescoApp Tests";
+			productReference = 08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		7373B4F417A66E9400869949 /* AlfrescoApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7373B51217A66E9400869949 /* Build configuration list for PBXNativeTarget "AlfrescoApp" */;
@@ -2002,6 +2085,11 @@
 				CLASSPREFIX = ALF;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Alfresco;
+				TargetAttributes = {
+					08E89C9817E7593B006936DF = {
+						TestTargetID = 7373B4F417A66E9400869949;
+					};
+				};
 			};
 			buildConfigurationList = 7373B4F017A66E9400869949 /* Build configuration list for PBXProject "AlfrescoApp" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -2017,11 +2105,20 @@
 			projectRoot = "";
 			targets = (
 				7373B4F417A66E9400869949 /* AlfrescoApp */,
+				08E89C9817E7593B006936DF /* AlfrescoApp Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		08E89C9717E7593B006936DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7373B4F317A66E9400869949 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2146,6 +2243,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		08E89C9517E7593B006936DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */,
+				08E89CB117E75BA6006936DF /* SyncTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7373B4F117A66E9400869949 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2182,6 +2288,7 @@
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */,
 				73F634C517E34A990065590E /* AlfrescoBasicAuthenticationProvider.m in Sources */,
+				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
 				73F6349817E34A990065590E /* AlfrescoWorkflowProcessDefinition.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */,
@@ -2306,7 +2413,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		08E89CA817E7593C006936DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7373B4F417A66E9400869949 /* AlfrescoApp */;
+			targetProxy = 08E89CA717E7593C006936DF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		08E89CA117E7593B006936DF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				08E89CA217E7593B006936DF /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		73B95B0717A68E770099FB84 /* UserGuide.pdf */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2338,6 +2461,67 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		08E89CAA17E7593C006936DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AlfrescoApp.app/AlfrescoApp";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AlfrescoApp Tests/AlfrescoApp Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "AlfrescoApp Tests/AlfrescoApp Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		08E89CAB17E7593C006936DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AlfrescoApp.app/AlfrescoApp";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AlfrescoApp Tests/AlfrescoApp Tests-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "AlfrescoApp Tests/AlfrescoApp Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		7373B51017A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */;
@@ -2445,6 +2629,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		08E89CA917E7593C006936DF /* Build configuration list for PBXNativeTarget "AlfrescoApp Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08E89CAA17E7593C006936DF /* Debug */,
+				08E89CAB17E7593C006936DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		7373B4F017A66E9400869949 /* Build configuration list for PBXProject "AlfrescoApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
