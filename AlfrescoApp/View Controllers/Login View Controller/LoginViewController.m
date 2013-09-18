@@ -8,6 +8,8 @@
 
 #import "LoginViewController.h"
 #import "MBProgressHUD.h"
+#import "Account.h"
+#import "Utility.h"
 
 @interface LoginViewController ()
 
@@ -23,10 +25,22 @@
 @property (nonatomic, weak) id<LoginViewControllerDelegate>delegate;
 @property (nonatomic, weak) UIBarButtonItem *loginButton;
 @property (nonatomic, strong) UIView *sectionHeaderContainerView;
+@property (nonatomic, strong) Account *loginToAccount;
 
 @end
 
 @implementation LoginViewController
+
+- (id)initWithAccount:(Account *)account delegate:(id<LoginViewControllerDelegate>)delegate
+{
+    self = [self initWithServer:[Utility serverURLStringFromAccount:account] serverDisplayName:account.accountDescription username:account.username delegate:delegate];
+    if (self)
+    {
+        self.password = account.password;
+        self.loginToAccount = account;
+    }
+    return self;
+}
 
 - (id)initWithServer:(NSString *)serverURLString serverDisplayName:(NSString *)serverDisplayName username:(NSString *)username delegate:(id<LoginViewControllerDelegate>)delegate
 {
@@ -176,8 +190,14 @@
 
 - (void)login:(id)sender
 {
-    // inform the delegate
-    [self.delegate loginViewController:self didPressRequestLoginToServer:self.serverAddress username:self.usernameTextField.text password:self.passwordTextField.text];
+    if (self.loginToAccount && [self.delegate respondsToSelector:@selector(loginViewController:didPressRequestLoginToAccount:username:password:)])
+    {
+        [self.delegate loginViewController:self didPressRequestLoginToAccount:self.loginToAccount username:self.usernameTextField.text password:self.passwordTextField.text];
+    }
+    else if ([self.delegate respondsToSelector:@selector(loginViewController:didPressRequestLoginToServer:username:password:)])
+    {
+        [self.delegate loginViewController:self didPressRequestLoginToServer:self.serverAddress username:self.usernameTextField.text password:self.passwordTextField.text];
+    }
 }
 
 - (void)alfrescoApplicationPolicyUpdated:(NSNotification *)notification

@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "LoginViewController.h"
 
+@class Account;
+
 @interface LoginManager : NSObject <LoginViewControllerDelegate>
 
 + (id)sharedManager;
-- (void)attemptLogin;
+- (void)attemptLoginToAccount:(Account *)account;
 
 @end

@@ -20,6 +20,7 @@
 #import "LocationManager.h"
 #import <ImageIO/ImageIO.h>
 #import "ThumbnailDownloader.h"
+#import "AccountManager.h"
 
 static CGFloat kCellHeight = 60.0f;
 
@@ -1401,7 +1402,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     else
     {
         [self hidePullToRefreshView];
-        [[LoginManager sharedManager] attemptLogin];
+        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
     }
 }
 
