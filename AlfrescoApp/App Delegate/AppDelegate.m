@@ -109,13 +109,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    NSError *persistingError = nil;
     [[AccountManager sharedManager] saveAccountsToKeychain];
-    
-    if (persistingError)
-    {
-        AlfrescoLogDebug(@"Error occured persisting accounts. Error: %@", persistingError.localizedDescription);
-    }
 }
 
 #pragma mark - Private Functions
