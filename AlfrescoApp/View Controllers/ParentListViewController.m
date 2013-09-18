@@ -259,9 +259,8 @@
 - (void)hidePullToRefreshView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.lastUpdated = [NSDate date];
-        [self.refreshHeaderView refreshLastUpdatedDate];
-        [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
+        [self.refreshControl endRefreshing];
     });
 }
 
@@ -276,19 +275,24 @@
 
 - (void)enablePullToRefresh
 {
-    self.refreshHeaderView = [[CustomEGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)
-                                                                  arrowImageName:@"pull-to-refresh.png"
-                                                                       textColor:[UIColor grayColor]];
-    self.refreshHeaderView.delegate = self;
-    self.lastUpdated = [NSDate date];
-    [self.refreshHeaderView refreshLastUpdatedDate];
-    [self.tableView addSubview:self.refreshHeaderView];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
+    [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
+    self.refreshControl = refreshControl;
 }
 
 - (void)disablePullToRefresh
 {
-    [self.refreshHeaderView removeFromSuperview];
-    self.refreshHeaderView = nil;
+    [self.refreshControl removeFromSuperview];
+    self.refreshControl = nil;
+}
+
+- (void)showLoadingTextInRefreshControl:(UIRefreshControl *)refreshControl
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.refreshing", @"Loading...")];
+    });
 }
 
 #pragma mark - Private Functions
@@ -299,40 +303,11 @@
     self.session = session;
 }
 
-#pragma mark - UIScrollViewDelegate Methods
+#pragma mark - UIRefreshControl Functions
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView == self.tableView)
-    {
-        [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    }
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if (scrollView == self.tableView)
-    {
-        [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    }
-}
-
-#pragma mark - EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
     AlfrescoLogDebug(@"egoRefreshTableHeaderDidTriggerRefresh: is not implemented in the subclass of %@", [self class]);
 }
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
-{
-    return NO;
-}
-
-- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
-{
-    return self.lastUpdated;
-}
-
 
 @end

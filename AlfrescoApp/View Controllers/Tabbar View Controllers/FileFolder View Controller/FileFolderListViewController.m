@@ -117,11 +117,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    CGRect bounceAreaFrame = tableView.frame;
-    bounceAreaFrame.origin.y = tableView.frame.size.height * -1;
-    UIView *bounceAreaView = [[UIView alloc] initWithFrame:bounceAreaFrame];
-    bounceAreaView.backgroundColor = darkGrayColor;
-    [tableView addSubview:bounceAreaView];
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
+    {
+        CGRect bounceAreaFrame = tableView.frame;
+        bounceAreaFrame.origin.y = tableView.frame.size.height * -1;
+        UIView *bounceAreaView = [[UIView alloc] initWithFrame:bounceAreaFrame];
+        bounceAreaView.backgroundColor = darkGrayColor;
+        [tableView addSubview:bounceAreaView];
+    }
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
@@ -1391,10 +1394,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
 }
 
-#pragma mark - EGORefreshTableHeaderDelegate Methods
+#pragma mark - UIRefreshControl Functions
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
+    [self showLoadingTextInRefreshControl:refreshControl];
     if (self.session)
     {
         [self loadContentOfFolder];

@@ -50,11 +50,9 @@
 		73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */; };
 		73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582717A6750E0099FB84 /* NavigationViewController.m */; };
 		73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582917A6750E0099FB84 /* ParentListViewController.m */; };
-		73B9587117A6750F0099FB84 /* CustomEGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583817A6750F0099FB84 /* CustomEGORefreshTableHeaderView.m */; };
 		73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */; };
 		73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */; };
 		73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */; };
-		73B959DA17A67A760099FB84 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D017A67A760099FB84 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w"; }; };
 		73B959DB17A67A760099FB84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D317A67A760099FB84 /* MBProgressHUD.m */; };
 		73B959DC17A67A760099FB84 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D617A67A760099FB84 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D917A67A760099FB84 /* TTTAttributedLabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -195,13 +193,10 @@
 		73E9E1FF17E352C900A198B4 /* AlfrescoCMISObjectConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E1A117E352C800A198B4 /* AlfrescoCMISObjectConverter.m */; };
 		73E9E20017E352C900A198B4 /* AlfrescoCMISPassThroughAuthenticationProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E1A317E352C800A198B4 /* AlfrescoCMISPassThroughAuthenticationProvider.m */; };
 		73E9E20117E352C900A198B4 /* AlfrescoCMISUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E1A517E352C800A198B4 /* AlfrescoCMISUtil.m */; };
-		73E9E20217E352C900A198B4 /* libObjectiveCMIS-debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E1A617E352C800A198B4 /* libObjectiveCMIS-debug.a */; };
-		73E9E20317E352C900A198B4 /* libObjectiveCMIS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E1A717E352C800A198B4 /* libObjectiveCMIS.a */; };
 		73E9E20D17E7394900A198B4 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* Account.m */; };
 		73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E20E17E7446400A198B4 /* Security.framework */; };
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
 		73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
-		73F6347B17E34A990065590E /* AlfrescoSDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */; };
 		73F6347C17E34A990065590E /* AlfrescoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334817E34A990065590E /* AlfrescoConstants.m */; };
 		73F6347D17E34A990065590E /* AlfrescoErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334A17E34A990065590E /* AlfrescoErrors.m */; };
 		73F6347E17E34A990065590E /* AlfrescoInternalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334C17E34A990065590E /* AlfrescoInternalConstants.m */; };
@@ -391,16 +386,12 @@
 		73B9582717A6750E0099FB84 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
 		73B9582817A6750E0099FB84 /* ParentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentListViewController.h; sourceTree = "<group>"; };
 		73B9582917A6750E0099FB84 /* ParentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentListViewController.m; sourceTree = "<group>"; };
-		73B9583717A6750F0099FB84 /* CustomEGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomEGORefreshTableHeaderView.h; sourceTree = "<group>"; };
-		73B9583817A6750F0099FB84 /* CustomEGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomEGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailImageView.h; sourceTree = "<group>"; };
 		73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailImageView.m; sourceTree = "<group>"; };
 		73B9583E17A6750F0099FB84 /* MultiSelectActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionItem.h; sourceTree = "<group>"; };
 		73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionItem.m; sourceTree = "<group>"; };
 		73B9584017A6750F0099FB84 /* MultiSelectActionsToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionsToolbar.h; sourceTree = "<group>"; };
 		73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionsToolbar.m; sourceTree = "<group>"; };
-		73B959CF17A67A760099FB84 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
-		73B959D017A67A760099FB84 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		73B959D217A67A760099FB84 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		73B959D317A67A760099FB84 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		73B959D517A67A760099FB84 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -658,7 +649,6 @@
 		73E9E21117E854ED00A198B4 /* AccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManager.m; sourceTree = "<group>"; };
 		73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
 		73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
-		73F6334317E34A990065590E /* AlfrescoSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoSDK-Prefix.pch"; sourceTree = "<group>"; };
 		73F6334417E34A990065590E /* AlfrescoSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoSDK.h; sourceTree = "<group>"; };
 		73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoSDK.xcconfig; sourceTree = "<group>"; };
 		73F6334717E34A990065590E /* AlfrescoConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConstants.h; sourceTree = "<group>"; };
@@ -1190,8 +1180,6 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				73B9583717A6750F0099FB84 /* CustomEGORefreshTableHeaderView.h */,
-				73B9583817A6750F0099FB84 /* CustomEGORefreshTableHeaderView.m */,
 				73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */,
 				73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */,
 				73B9583D17A6750F0099FB84 /* MultiSelect */,
@@ -1222,21 +1210,11 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				73B959CE17A67A760099FB84 /* EGOTableViewPullRefresh */,
 				73B959D117A67A760099FB84 /* MBProgressHUD */,
 				73B959D417A67A760099FB84 /* Reachability */,
 				73B959D717A67A760099FB84 /* TTTAttributedLabel */,
 			);
 			path = "Third Party Libraries";
-			sourceTree = "<group>";
-		};
-		73B959CE17A67A760099FB84 /* EGOTableViewPullRefresh */ = {
-			isa = PBXGroup;
-			children = (
-				73B959CF17A67A760099FB84 /* EGORefreshTableHeaderView.h */,
-				73B959D017A67A760099FB84 /* EGORefreshTableHeaderView.m */,
-			);
-			path = EGOTableViewPullRefresh;
 			sourceTree = "<group>";
 		};
 		73B959D117A67A760099FB84 /* MBProgressHUD */ = {
@@ -2364,7 +2342,6 @@
 				73F6348517E34A990065590E /* AlfrescoCompany.m in Sources */,
 				73F6349617E34A990065590E /* AlfrescoWorkflowInfo.m in Sources */,
 				73F6349C17E34A990065590E /* AlfrescoDocumentFolderService.m in Sources */,
-				73B9587117A6750F0099FB84 /* CustomEGORefreshTableHeaderView.m in Sources */,
 				73F634D417E34A990065590E /* AlfrescoRequest.m in Sources */,
 				73F634AE17E34A990065590E /* AlfrescoWorkflowProcessServiceOldAPI.m in Sources */,
 				73F634D817E34A990065590E /* AlfrescoURLUtils.m in Sources */,
@@ -2382,7 +2359,6 @@
 				73F634B117E34A990065590E /* AlfrescoOnPremiseCommentService.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73F634D117E34A990065590E /* AlfrescoLog.m in Sources */,
-				73B959DA17A67A760099FB84 /* EGORefreshTableHeaderView.m in Sources */,
 				73F6348817E34A990065590E /* AlfrescoContentStream.m in Sources */,
 				73F634D017E34A990065590E /* AlfrescoFavoritesCache.m in Sources */,
 				73F634D917E34A990065590E /* AlfrescoWorkflowObjectConverter.m in Sources */,
@@ -2662,6 +2638,7 @@
 				08E89CAB17E7593C006936DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7373B4F017A66E9400869949 /* Build configuration list for PBXProject "AlfrescoApp" */ = {
 			isa = XCConfigurationList;

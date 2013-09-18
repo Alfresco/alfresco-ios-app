@@ -317,13 +317,11 @@
 "location.manager.purpose" = "Your location will be used to geotag photos taken with this device.";
 
 /**
- * THIRD PARTY LIBRARIES LOCALIZATIONS
+ * UIRefreshControl
  */
+"ui.refreshcontrol.pulltorefresh" = "Pull down to refresh...";
+"ui.refreshcontrol.refreshing" = "Loading...";
 
 /**
- * EGOTableViewPullRefresh
+ * THIRD PARTY LIBRARIES LOCALIZATIONS
  */
-"Release to refresh..." = "Release to refresh...";
-"Pull down to refresh..." = "Pull down to refresh...";
-"Loading..." = "Loading...";
-"Last Updated: %@" = "Last Updated: %@";
