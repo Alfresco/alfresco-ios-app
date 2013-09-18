@@ -198,6 +198,11 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
             [self updatePreviewState:PreviewStateTypeDocument];
         }
     }
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 #pragma mark - Private Functions
