@@ -1,5 +1,6 @@
 # files created by Xcode 4
 xcuserdata/
+*.xccheckout
 # build products
 *.build/
 build/
