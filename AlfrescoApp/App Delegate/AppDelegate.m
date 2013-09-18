@@ -17,6 +17,8 @@
 #import "LoginManager.h"
 #import "FileURLHandler.h"
 #import "LocationManager.h"
+#import "Account.h"
+#import "AccountManager.h"
 
 @interface AppDelegate()
 
@@ -45,7 +47,21 @@
     
     [self.window makeKeyAndVisible];
     
-    [[LoginManager sharedManager] attemptLogin];
+    // login to default account
+    NSArray *allAccounts = [[AccountManager sharedManager] allAccounts];
+    
+#ifdef DEBUG
+//    [[AccountManager sharedManager] removeAllAccounts];
+#endif
+    
+    // REMOVE THIS - TESTING PURPOSES ONLY
+    if (!allAccounts || allAccounts.count == 0)
+    {
+        Account *testAccount = [[Account alloc] initWithUsername:@"admin" password:@"incorrectPassword" description:@"test" serverAddress:@"localhost" port:@"8080"];
+        [[AccountManager sharedManager] addAccount:testAccount];
+    }
+    
+    [[LoginManager sharedManager] attemptLoginToAccount:allAccounts[0]];
     
     return YES;
 }
@@ -89,6 +105,17 @@
 //    }
     
     return NO;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    NSError *persistingError = nil;
+    [[AccountManager sharedManager] saveAccountsToKeychain];
+    
+    if (persistingError)
+    {
+        AlfrescoLogDebug(@"Error occured persisting accounts. Error: %@", persistingError.localizedDescription);
+    }
 }
 
 #pragma mark - Private Functions

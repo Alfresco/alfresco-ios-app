@@ -17,6 +17,7 @@
 #import "FileFolderCell.h"
 #import "MetaDataViewController.h"
 #import "ThumbnailDownloader.h"
+#import "AccountManager.h"
 
 CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
@@ -715,7 +716,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     else
     {
         [self hidePullToRefreshView];
-        [[LoginManager sharedManager] attemptLogin];
+        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
     }
 }
 

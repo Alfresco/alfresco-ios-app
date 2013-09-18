@@ -13,6 +13,7 @@
 #import "UniversalDevice.h"
 #import "Utility.h"
 #import "LoginManager.h"
+#import "AccountManager.h"
 
 NSString * const kActivityTableSectionToday = @"activities.section.today";
 NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
@@ -410,7 +411,7 @@ NSString * const kActivityTableSectionOlder = @"activities.section.older";
     else
     {
         [self hidePullToRefreshView];
-        [[LoginManager sharedManager] attemptLogin];
+        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
     }
 }
 

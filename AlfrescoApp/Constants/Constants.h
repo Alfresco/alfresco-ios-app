@@ -74,3 +74,5 @@ extern NSString * const kEditFileServiceParameterKey; // defined by Good Service
 extern NSString * const kEditFileServiceParameterAlfrescoDocument;
 extern NSString * const kEditFileServiceParameterAlfrescoDocumentIsDownloaded;
 extern NSString * const kEditFileServiceParameterDocumentFileName;
+
+extern NSString * const kAlfrescoOnPremiseServerURLTemplate;

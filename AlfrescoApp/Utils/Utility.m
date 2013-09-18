@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "NavigationViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "Account.h"
+#import "Constants.h"
 
 static NSDictionary *iconMappings;
 static NSDateFormatter *dateFormatter;
@@ -380,6 +382,11 @@ NSString *fileNameAppendedWithDate(NSString *name)
         CFRelease(pathExtension);
     }
     return mimeType;
+}
+
++ (NSString *)serverURLStringFromAccount:(Account *)account
+{
+    return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.serverAddress, account.serverPort];
 }
 
 @end

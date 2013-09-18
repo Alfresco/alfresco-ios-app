@@ -73,3 +73,5 @@ NSString * const kEditFileServiceParameterKey = @"identificationData"; // define
 NSString * const kEditFileServiceParameterAlfrescoDocument = @"alfrescoDocumentNode";
 NSString * const kEditFileServiceParameterAlfrescoDocumentIsDownloaded = @"documentIsDownloaded";
 NSString * const kEditFileServiceParameterDocumentFileName = @"documentFileName";
+
+NSString * const kAlfrescoOnPremiseServerURLTemplate = @"http://%@:%@/alfresco";
