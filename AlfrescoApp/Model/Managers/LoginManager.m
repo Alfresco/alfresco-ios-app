@@ -14,6 +14,8 @@
 #import "NavigationViewController.h"
 #import "MBProgressHUD.h"
 #import "ConnectivityManager.h"
+#import "Account.h"
+#import "AccountManager.h"
 
 @interface LoginManager()
 
@@ -55,7 +57,7 @@
     return self;
 }
 
-- (void)attemptLogin
+- (void)attemptLoginToAccount:(Account *)account
 {
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
@@ -63,6 +65,14 @@
         __block NSString *serverURLString = @"http://localhost:8080/alfresco";
         __block NSString *serverDisplayName = @"[localhost]";
         __block NSString *username = nil;
+        
+        if (account)
+        {
+            serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.serverAddress, account.serverPort];
+            serverDisplayName = account.accountDescription;
+            username = account.username;
+        }
+        
         
 #if DEBUG
         if (serverURLString == nil)
@@ -72,15 +82,11 @@
         }
 #endif
         
-        // check to see if the username and password are stored in Apple's keychain - if so, attempt the logon
-        // Nil at the moment to allow logging in to localhost
-        NSDictionary *appSettings = nil;
-        
-        if (appSettings)
+        if (account)
         {
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [self showHUDOnView:delegate.window];
-            [self loginToServer:serverURLString username:[appSettings valueForKey:kApplicationRepositoryUsername] password:[appSettings valueForKey:kApplicationRepositoryPassword] completionBlock:^(BOOL successful) {
+            [self loginToAccount:account username:account.username password:account.password completionBlock:^(BOOL successful) {
                 [self hideHUD];
                 if (!successful)
                 {
@@ -88,13 +94,13 @@
                     serverDisplayName = @"[localhost]";
                     username = nil;
                     
-                    [self displayLoginViewControllerWithServer:serverURLString serverDisplayName:serverDisplayName username:username];
+                    [self displayLoginViewControllerWithAccount:account username:username];
                 }
             }];
         }
         else
         {
-            [self displayLoginViewControllerWithServer:serverURLString serverDisplayName:serverDisplayName username:username];
+            [self displayLoginViewControllerWithAccount:account username:username];
         }
     }
     else
@@ -107,29 +113,33 @@
 
 #pragma mark - Private Functions
 
-- (void)displayLoginViewControllerWithServer:(NSString *)serverAddress serverDisplayName:(NSString *)serverDisplayName username:(NSString *)username
+- (void)displayLoginViewControllerWithAccount:(Account *)account username:(NSString *)username
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    LoginViewController *loginViewController = [[LoginViewController alloc] initWithServer:serverAddress serverDisplayName:(NSString *)serverDisplayName username:username delegate:self];
+    LoginViewController *loginViewController = [[LoginViewController alloc] initWithAccount:account delegate:self];
     NavigationViewController *loginNavigationController = [[NavigationViewController alloc] initWithRootViewController:loginViewController];
     
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)loginToServer:(NSString *)serverAddress username:(NSString *)username password:(NSString *)password completionBlock:(void (^)(BOOL successful))completionBlock
+- (void)loginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password completionBlock:(void (^)(BOOL successful))completionBlock
 {
     NSDictionary *sessionParameters = @{kAlfrescoMetadataExtraction : [NSNumber numberWithBool:YES],
                                         kAlfrescoThumbnailCreation : [NSNumber numberWithBool:YES]};
     
-    self.currentLoginURLString = serverAddress;
-    self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:serverAddress] username:username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+    self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
+    self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
          if (session)
          {
-             // TODO: Update the logged in username, password and server in Apple's keychain
-             
              [UniversalDevice clearDetailViewController];
+             
              [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+             
+             account.username = username;
+             account.password = password;
+             
+             [[AccountManager sharedManager] saveAccountsToKeychain];
              
              self.currentLoginURLString = nil;
              self.currentLoginRequest = nil;
@@ -168,7 +178,7 @@
 - (void)unauthorizedAccessNotificationReceived:(NSNotification *)notification
 {
     // try logging again
-    [self attemptLogin];
+    [self attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
 }
 
 - (void)cancelLoginRequest
@@ -179,13 +189,12 @@
     self.currentLoginURLString = nil;
 }
 
-
 #pragma mark - LoginViewControllerDelegate Functions
 
-- (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToServer:(NSString *)server username:(NSString *)username password:(NSString *)password
+- (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self loginToServer:server username:username password:password completionBlock:^(BOOL successful) {
+    [self loginToAccount:account username:username password:password completionBlock:^(BOOL successful) {
         [self hideHUD];
         if (successful)
         {
