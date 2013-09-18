@@ -8,22 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
-#import "CustomEGORefreshTableHeaderView.h"
 #import "ErrorDescriptions.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;
 @protocol AlfrescoSession;
 
-@interface ParentListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EGORefreshTableHeaderDelegate>
+@interface ParentListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *tableViewData;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
 @property (nonatomic, assign) BOOL moreItemsAvailable;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, strong) CustomEGORefreshTableHeaderView *refreshHeaderView;
-@property (nonatomic, strong) NSDate *lastUpdated;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
@@ -39,5 +37,7 @@
 - (void)enablePullToRefresh;
 - (void)disablePullToRefresh;
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)tableViewNodeIdentifiers;
+- (void)refreshTableView:(UIRefreshControl *)refreshControl;
+- (void)showLoadingTextInRefreshControl:(UIRefreshControl *)refreshControl;
 
 @end

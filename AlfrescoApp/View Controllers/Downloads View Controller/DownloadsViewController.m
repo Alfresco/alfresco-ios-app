@@ -419,16 +419,13 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     return returnImage;
 }
 
-#pragma mark - EGORefreshTableHeaderDelegate Methods
+#pragma mark - UIRefreshControl Functions
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
+    [self showLoadingTextInRefreshControl:refreshControl];
     [self refreshData];
-    // introducing delay to let the pull to refresh settle itself before egoRefreshScrollViewDataSourceDidFinishedLoading: is called
-    [self.refreshHeaderView performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:self.tableView afterDelay:kPullToRefreshDelay];
-    
-    self.lastUpdated = [NSDate date];
-    [self.refreshHeaderView refreshLastUpdatedDate];
+    [self.refreshControl performSelector:@selector(endRefreshing) withObject:nil afterDelay:kPullToRefreshDelay];
 }
 
 #pragma mark - DownloadManager Notifications
