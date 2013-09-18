@@ -401,10 +401,11 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
     }
 }
 
-#pragma mark - EGORefreshTableHeaderDelegate Methods
+#pragma mark - UIRefreshControl Functions
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
+    [self showLoadingTextInRefreshControl:refreshControl];
     if (self.session)
     {
         [self loadActivities];

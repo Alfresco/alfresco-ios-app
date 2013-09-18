@@ -32,6 +32,21 @@
     return self;
 }
 
+- (void)loadView
+{
+    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    // create and configure the table view
+    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [view addSubview:self.tableView];
+    
+    view.autoresizesSubviews = YES;
+    self.view = view;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -232,10 +247,11 @@
     return [self heightForRowUsingCell:cell maxWidth:tableView.frame.size.width];
 }
 
-#pragma mark - EGORefreshTableHeaderDelegate Methods
+#pragma mark - UIRefreshControl Functions
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
+    [self showLoadingTextInRefreshControl:refreshControl];
     [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [self hidePullToRefreshView];
         if (pagingResult)
