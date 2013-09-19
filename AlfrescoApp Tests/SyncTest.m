@@ -21,6 +21,7 @@
             
             if (syncedNodes)
             {
+                NSLog(@"Favorite Nodes: %@", [[syncedNodes valueForKey:@"identifier"] valueForKey:@"lastPathComponent"]);
                 self.lastTestSuccessful = YES;
             }
             self.callbackCompleted = YES;
