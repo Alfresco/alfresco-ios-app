@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ItemInDetailViewProtocol.h"
+#import <QuickLook/QuickLook.h>
 
 @class AlfrescoDocument;
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface PreviewViewController : UIViewController <UIWebViewDelegate, ItemInDetailViewProtocol, UIDocumentInteractionControllerDelegate>
+@interface PreviewViewController : UIViewController <UIWebViewDelegate, ItemInDetailViewProtocol, UIDocumentInteractionControllerDelegate, QLPreviewControllerDataSource, QLPreviewControllerDelegate>
 
 @property (nonatomic, strong, readonly, getter = displayedDocument) AlfrescoDocument *document;
 

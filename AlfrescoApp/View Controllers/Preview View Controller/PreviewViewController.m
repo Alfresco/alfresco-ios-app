@@ -41,6 +41,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
 @property (nonatomic, strong) UIDocumentInteractionController *documentInterationController;
 @property (nonatomic, strong) NSString *randomTemporaryFileName;
 @property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
+@property (nonatomic, strong) QLPreviewController *quickLookPreviewController;
 
 @end
 
@@ -143,6 +144,12 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     [view addSubview:webview];
     self.webView = webview;
     
+    QLPreviewController *previewController = [[QLPreviewController alloc] init];
+    previewController.delegate = self;
+    previewController.dataSource = self;
+    previewController.view.frame = view.frame;
+    self.quickLookPreviewController = previewController;
+    
     // playbutton size
     CGFloat playButtonWidthHeight = 72.0f;
     UIButton *playButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -174,6 +181,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     if (!self.contentFilePath)
     {
         self.webView.hidden = YES;
+        self.quickLookPreviewController.view.hidden = YES;
         [self updatePreviewState:PreviewStateTypeNone];
     }
     else
@@ -191,8 +199,18 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         }
         else
         {
-            // load the file
-            [self.webView loadRequest:[NSURLRequest requestWithURL:self.documentUrl]];
+            if ([QLPreviewController canPreviewItem:self.documentUrl])
+            {
+                // add preview controller and load the file
+                [self addChildViewController:self.quickLookPreviewController];
+                [self.view addSubview:self.quickLookPreviewController.view];
+                [self.quickLookPreviewController didMoveToParentViewController:self];
+                [self.quickLookPreviewController reloadData];
+            }
+            else
+            {
+                [self.webView loadRequest:[NSURLRequest requestWithURL:self.documentUrl]];
+            }
             
             // update state
             [self updatePreviewState:PreviewStateTypeDocument];
@@ -303,6 +321,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
             self.document = nil;
             self.contentFilePath = nil;
             self.webView.hidden = YES;
+            self.quickLookPreviewController.view.hidden = YES;
             self.videoSupportedLabel.hidden = YES;
             self.playButton.hidden = YES;
             self.alfrescoLogoImageView.hidden = NO;
@@ -314,6 +333,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeDocument:
         {
             self.webView.hidden = NO;
+            self.quickLookPreviewController.view.hidden = NO;
             self.playButton.hidden = YES;
             self.videoSupportedLabel.hidden = YES;
             self.alfrescoLogoImageView.hidden = YES;
@@ -323,6 +343,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeAudioVideoEnabled:
         {
             self.webView.hidden = YES;
+            self.quickLookPreviewController.view.hidden = YES;
             self.alfrescoLogoImageView.hidden = YES;
             self.videoSupportedLabel.hidden = YES;
             self.playButton.hidden = NO;
@@ -332,6 +353,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeAudioVideoDisabled:
         {
             self.webView.hidden = YES;
+            self.quickLookPreviewController.view.hidden = YES;
             self.alfrescoLogoImageView.hidden = NO;
             self.videoSupportedLabel.hidden = NO;
             self.playButton.hidden = YES;
@@ -409,6 +431,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
             self.document = (AlfrescoDocument *)documentNodeObject;
         }
         [self.webView reload];
+        [self.quickLookPreviewController reloadData];
     }
 }
 
@@ -442,6 +465,18 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
 - (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
 {
     [self removeTemporaryFileAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:self.randomTemporaryFileName]];
+}
+
+#pragma mark - QLPreviewControllerDataSource Functions
+
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controlle
+{
+    return 1;
+}
+
+- (id <QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
+{
+    return self.documentUrl;
 }
 
 @end
