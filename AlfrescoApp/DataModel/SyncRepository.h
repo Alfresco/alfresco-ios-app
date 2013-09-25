@@ -13,7 +13,7 @@
 
 @interface SyncRepository : NSManagedObject
 
-@property (nonatomic, retain) NSString * repositoryId;
+@property (nonatomic, retain) NSString *repositoryId;
 @property (nonatomic, retain) NSSet *nodes;
 @end
 
