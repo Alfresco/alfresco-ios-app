@@ -29,4 +29,14 @@ typedef NS_ENUM(NSUInteger, NavigationControllerType)
 // Makes a UITabBar active corresponding to the enum value passed-in
 - (void)activateTabBarForNavigationControllerOfType:(NavigationControllerType)navigationControllerType;
 
+/*
+ Core Data
+ */
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (void)saveContext;
+- (NSURL *)applicationDocumentsDirectory;
+
 @end
