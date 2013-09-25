@@ -203,6 +203,7 @@
 		73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E20E17E7446400A198B4 /* Security.framework */; };
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
 		73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
+		73F4316F17EB3731002FAFCA /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73F4316E17EB3731002FAFCA /* QuickLook.framework */; };
 		73F6347C17E34A990065590E /* AlfrescoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334817E34A990065590E /* AlfrescoConstants.m */; };
 		73F6347D17E34A990065590E /* AlfrescoErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334A17E34A990065590E /* AlfrescoErrors.m */; };
 		73F6347E17E34A990065590E /* AlfrescoInternalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334C17E34A990065590E /* AlfrescoInternalConstants.m */; };
@@ -665,6 +666,7 @@
 		73E9E21117E854ED00A198B4 /* AccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManager.m; sourceTree = "<group>"; };
 		73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
 		73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
+		73F4316E17EB3731002FAFCA /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		73F6334417E34A990065590E /* AlfrescoSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoSDK.h; sourceTree = "<group>"; };
 		73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoSDK.xcconfig; sourceTree = "<group>"; };
 		73F6334717E34A990065590E /* AlfrescoConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConstants.h; sourceTree = "<group>"; };
@@ -881,6 +883,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
+				73F4316F17EB3731002FAFCA /* QuickLook.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
 				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
 				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
@@ -956,6 +959,7 @@
 			isa = PBXGroup;
 			children = (
 				08E89CF617EB3921006936DF /* CoreData.framework */,
+				73F4316E17EB3731002FAFCA /* QuickLook.framework */,
 				73E9E20E17E7446400A198B4 /* Security.framework */,
 				73B959EC17A685090099FB84 /* MobileCoreServices.framework */,
 				73B959EA17A684FA0099FB84 /* SystemConfiguration.framework */,
