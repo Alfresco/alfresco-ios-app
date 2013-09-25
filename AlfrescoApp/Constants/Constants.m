@@ -35,6 +35,9 @@ NSString * const kApplicationPolicyServerDisplayName = @"ApplicationPolicySettin
 NSString * const kApplicationPolicySettingAudioEnabled = @"ApplicationPolicySettingAudioEnabled";
 NSString * const kApplicationPolicySettingVideoEnabled = @"ApplicationPolicySettingVideoEnabled";
 
+// Sync Notification constants
+NSString * const kNotificationSyncObstacles = @"kNotificationSyncObstacles";
+
 // User settings keychain constants
 NSString * const kApplicationRepositoryUsername = @"ApplictionRepositoryUsername";
 NSString * const kApplicationRepositoryPassword = @"ApplictionRepositoryPassword";
