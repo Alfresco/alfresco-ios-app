@@ -15,6 +15,27 @@
  */
 + (SyncManager *)sharedManager;
 
+/*
+ * Sync Methods
+ */
+- (NSString *)contentPathForNode:(AlfrescoDocument *)document;
+- (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSArray *syncedNodes))completionBlock;
+
+/*
+ * Sync Obstacle Methods
+ */
+- (BOOL)didEncounterObstaclesDuringSync;
+- (BOOL)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node;
+- (void)syncUnfavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer;
+- (void)saveDeletedFavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
+
+/*
+ * Sync Utilities
+ */
+- (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
+- (BOOL)isFirstUse;
+- (BOOL)isSyncEnabled;
+
 
 @end
