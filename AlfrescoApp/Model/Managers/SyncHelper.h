@@ -24,7 +24,7 @@ extern NSString * const kSyncNodeKey;
 - (void)deleteNodesFromSync:(NSArray *)array inRepitory:(NSString *)repositoryId;
 - (void)removeSyncContentAndInfo;
 
-- (SyncNodeStatus *)syncNodeSatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses;
+- (SyncNodeStatus *)syncNodeStatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses;
 
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document;
 

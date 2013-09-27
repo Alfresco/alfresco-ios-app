@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kStatus;
-extern NSString * const kActivityType;
-extern NSString * const kBytesTransfered;
+extern NSString * const kSyncStatus;
+extern NSString * const kSyncActivityType;
+extern NSString * const kSyncBytesTransfered;
 
-typedef enum
+typedef NS_ENUM(NSInteger, SyncStatus)
 {
     SyncStatusFailed,
     SyncStatusSuccessful,
@@ -21,22 +21,22 @@ typedef enum
     SyncStatusOffline,
     SyncStatusCancelled,
     SyncStatusDisabled,
-} Status;
+};
 
-typedef enum
+typedef NS_ENUM(NSInteger, SyncActivityType)
 {
     SyncActivityTypeDownload,
     SyncActivityTypeUpload,
     SyncActivityTypeIdle
-} ActivityType;
+};
 
 @interface SyncNodeStatus : NSObject
 
 - (id)initWithNodeId:(NSString *)nodeId;
 
 @property (nonatomic, strong) NSString *nodeId;
-@property (nonatomic, assign) Status status;
-@property (nonatomic, assign) ActivityType activityType;
+@property (nonatomic, assign) SyncStatus status;
+@property (nonatomic, assign) SyncActivityType activityType;
 @property (nonatomic, assign) unsigned long long bytesTransfered;
 
 @end

@@ -18,8 +18,6 @@
 #import "UIAlertView+ALF.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
-static NSString * const kSyncObstaclesKey = @"syncObstacles";
-static NSInteger const kMaximumAllowedDownloadSize = 20 * 1024 * 1024; // 20 MB
 
 static NSUInteger const kSyncDownloadConfirmationOptionYes = 0;
 static NSUInteger const kSyncDownloadConfirmationOptionNo = 1;
@@ -27,7 +25,7 @@ static NSUInteger const kSyncDownloadConfirmationOptionNo = 1;
 /*
  * Sync Obstacle keys
  */
-static NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavsOnServerWithLocalChanges";
+static NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavoritedOnServerWithLocalChanges";
 static NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
 static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyAfterUpload";
 
@@ -115,7 +113,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    return [syncHelper syncNodeSatusObjectForNode:node inSyncNodesStatus:self.syncNodesStatus];
+    return [syncHelper syncNodeStatusObjectForNode:node inSyncNodesStatus:self.syncNodesStatus];
 }
 
 #pragma mark - Private Methods
@@ -237,7 +235,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         for (int i=0; i < nodes.count; i++)
         {
             AlfrescoNode *remoteNode = nodes[i];
-            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeSatusObjectForNode:remoteNode inSyncNodesStatus:self.syncNodesStatus];
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNode:remoteNode inSyncNodesStatus:self.syncNodesStatus];
             nodeStatus.status = SyncStatusSuccessful;
             
             // getting last modification date for remote sync node
@@ -296,10 +294,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
             AlfrescoLogDebug(@"Total Download Size: %@", stringForLongFileSize(totalDownloadSize));
             
-            if (totalDownloadSize > kMaximumAllowedDownloadSize)
+            if (totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
             {
                 NSString *totalSizeString = stringForLongFileSize(totalDownloadSize);
-                NSString *maxAllowedString = stringForLongFileSize(kMaximumAllowedDownloadSize);
+                NSString *maxAllowedString = stringForLongFileSize(kDefaultMaximumAllowedDownloadSize);
                 NSString *confirmationTitle = NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title");
                 NSString *confirmationMessage = [NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"sync download size message alert message"), totalSizeString, maxAllowedString];
                 
@@ -552,7 +550,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
-    SyncNodeStatus *nodeStatus = [syncHelper syncNodeSatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
     nodeStatus.status = SyncStatusLoading;
     
     NSString *destinationPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
@@ -609,7 +607,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
     NSString *nodeExtension = [document.name pathExtension];
-    SyncNodeStatus *nodeStatus = [syncHelper syncNodeSatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
     NSString *mimeType = @"application/octet-stream";

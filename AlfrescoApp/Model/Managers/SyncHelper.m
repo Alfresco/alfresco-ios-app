@@ -231,16 +231,16 @@ static NSString * const kSyncContentDirectory = @"sync/content";
     [CoreDataUtils saveContext];
 }
 
-- (SyncNodeStatus *)syncNodeSatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses
+- (SyncNodeStatus *)syncNodeStatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses
 {
     SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:node.identifier];
     
     if (!nodeStatus)
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:node.identifier];
-        [nodeStatus addObserver:nodeStatus forKeyPath:kStatus options:NSKeyValueObservingOptionNew context:nil];
-        [nodeStatus addObserver:nodeStatus forKeyPath:kActivityType options:NSKeyValueObservingOptionNew context:nil];
-        [nodeStatus addObserver:nodeStatus forKeyPath:kBytesTransfered options:NSKeyValueObservingOptionNew context:nil];
+        [nodeStatus addObserver:nodeStatus forKeyPath:kSyncStatus options:NSKeyValueObservingOptionNew context:nil];
+        [nodeStatus addObserver:nodeStatus forKeyPath:kSyncActivityType options:NSKeyValueObservingOptionNew context:nil];
+        [nodeStatus addObserver:nodeStatus forKeyPath:kSyncBytesTransfered options:NSKeyValueObservingOptionNew context:nil];
         [syncStatuses setValue:nodeStatus forKey:node.identifier];
     }
     

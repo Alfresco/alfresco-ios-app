@@ -9,11 +9,11 @@
 #import "SyncNodeStatus.h"
 
 static NSString * const kNodeIdKey = @"nodeId";
-static NSString * const kPropertyChangedKey = @"propertyChange";
+static NSString * const kPropertyChangedKey = @"propertyChanged";
 
-NSString * const kStatus = @"status";
-NSString * const kActivityType = @"activityType";
-NSString * const kBytesTransfered = @"bytesTransfered";
+NSString * const kSyncStatus = @"syncStatus";
+NSString * const kSyncActivityType = @"syncActivityType";
+NSString * const kSyncBytesTransfered = @"syncBytesTransfered";
 
 @implementation SyncNodeStatus
 
@@ -31,17 +31,17 @@ NSString * const kBytesTransfered = @"bytesTransfered";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:kStatus])
+    if ([keyPath isEqualToString:kSyncStatus])
     {
-        [self sendNotificationForPropertyChange:kStatus];
+        [self sendNotificationForPropertyChange:kSyncStatus];
     }
-    else if ([keyPath isEqualToString:kActivityType])
+    else if ([keyPath isEqualToString:kSyncActivityType])
     {
-        [self sendNotificationForPropertyChange:kActivityType];
+        [self sendNotificationForPropertyChange:kSyncActivityType];
     }
-    else if ([keyPath isEqualToString:kBytesTransfered])
+    else if ([keyPath isEqualToString:kSyncBytesTransfered])
     {
-        [self sendNotificationForPropertyChange:kBytesTransfered];
+        [self sendNotificationForPropertyChange:kSyncBytesTransfered];
     }
 }
 
