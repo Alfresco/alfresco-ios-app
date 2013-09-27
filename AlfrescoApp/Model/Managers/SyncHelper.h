@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class SyncNodeStatus;
 
 extern NSString * const kLastDownloadedDateKey;
 extern NSString * const kSyncNodeKey;
@@ -22,6 +23,8 @@ extern NSString * const kSyncNodeKey;
 - (void)deleteNodeFromSync:(AlfrescoNode *)node inRepitory:(NSString *)repositoryId;
 - (void)deleteNodesFromSync:(NSArray *)array inRepitory:(NSString *)repositoryId;
 - (void)removeSyncContentAndInfo;
+
+- (SyncNodeStatus *)syncNodeStatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses;
 
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document;
 

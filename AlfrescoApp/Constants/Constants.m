@@ -35,8 +35,13 @@ NSString * const kApplicationPolicyServerDisplayName = @"ApplicationPolicySettin
 NSString * const kApplicationPolicySettingAudioEnabled = @"ApplicationPolicySettingAudioEnabled";
 NSString * const kApplicationPolicySettingVideoEnabled = @"ApplicationPolicySettingVideoEnabled";
 
+// Sync
+NSString * const kSyncObstaclesKey = @"syncObstacles";
+NSInteger const kDefaultMaximumAllowedDownloadSize = 20 * 1024 * 1024; // 20 MB
+
 // Sync Notification constants
-NSString * const kNotificationSyncObstacles = @"kNotificationSyncObstacles";
+NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification";
+NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 
 // User settings keychain constants
 NSString * const kApplicationRepositoryUsername = @"ApplictionRepositoryUsername";

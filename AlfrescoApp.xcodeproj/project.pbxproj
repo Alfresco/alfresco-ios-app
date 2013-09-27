@@ -11,6 +11,7 @@
 		0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */; };
 		0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243B17EC9AE900EE6AA8 /* SyncRepository.m */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
+		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
@@ -320,6 +321,8 @@
 		0833243B17EC9AE900EE6AA8 /* SyncRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncRepository.m; path = DataModel/SyncRepository.m; sourceTree = "<group>"; };
 		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
 		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
+		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
+		0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNodeStatus.m; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
@@ -1039,6 +1042,8 @@
 			children = (
 				73E9E20B17E7394900A198B4 /* Account.h */,
 				73E9E20C17E7394900A198B4 /* Account.m */,
+				0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */,
+				0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */,
 				73B957D017A6750E0099FB84 /* Managers */,
 				73B957DB17A6750E0099FB84 /* URLHandlers */,
 			);
@@ -2410,6 +2415,7 @@
 				73F634A217E34A990065590E /* AlfrescoVersionService.m in Sources */,
 				73B959DC17A67A760099FB84 /* Reachability.m in Sources */,
 				73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */,
+				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,
