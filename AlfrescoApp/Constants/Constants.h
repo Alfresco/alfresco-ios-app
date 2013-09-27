@@ -37,7 +37,8 @@ extern NSString * const kApplicationPolicySettingAudioEnabled;
 extern NSString * const kApplicationPolicySettingVideoEnabled;
 
 // Sync notification constants
-extern NSString * const kNotificationSyncObstacles;
+extern NSString * const kSyncStatusChangeNotification;
+extern NSString * const kSyncObstaclesNotification;
 
 // User settings keychain constants
 extern NSString * const kApplicationRepositoryUsername;

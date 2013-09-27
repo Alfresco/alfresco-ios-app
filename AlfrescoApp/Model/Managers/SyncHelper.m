@@ -10,6 +10,7 @@
 #import "SyncNodeInfo.h"
 #import "SyncRepository.h"
 #import "CoreDataUtils.h"
+#import "SyncNodeStatus.h"
 
 NSString * const kLastDownloadedDateKey = @"lastDownloadedDate";
 NSString * const kSyncNodeKey = @"node";
@@ -37,9 +38,12 @@ static NSString * const kSyncContentDirectory = @"sync/content";
     // refresh data in Database for repository
     [self deleteStoredInfoForRepository:repositoryId];
     
-    SyncRepository *syncRepository = [CoreDataUtils createSyncRepoMangedObject];
-    syncRepository.repositoryId = repositoryId;
-    
+    SyncRepository *syncRepository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId];
+    if (!syncRepository)
+    {
+        syncRepository = [CoreDataUtils createSyncRepoMangedObject];
+        syncRepository.repositoryId = repositoryId;
+    }
     NSMutableArray *syncNodesInfoKeys = [[syncNodesInfo allKeys] mutableCopy];
     
     NSArray *topLevelSyncItems = [syncNodesInfo objectForKey:repositoryId];
@@ -153,6 +157,7 @@ static NSString * const kSyncContentDirectory = @"sync/content";
         if (parentNodeInfo == nil)
         {
             parentNodeInfo = [CoreDataUtils createSyncNodeInfoMangedObject];
+            [parentNodeInfo setSyncNodeInfoId:folderId];
             [parentNodeInfo setIsFolder:[NSNumber numberWithBool:YES]];
         }
         [parentNodeInfo addNodesObject:syncNodeInfo];
@@ -224,6 +229,22 @@ static NSString * const kSyncContentDirectory = @"sync/content";
     SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
     nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
     [CoreDataUtils saveContext];
+}
+
+- (SyncNodeStatus *)syncNodeSatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses
+{
+    SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:node.identifier];
+    
+    if (!nodeStatus)
+    {
+        nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:node.identifier];
+        [nodeStatus addObserver:nodeStatus forKeyPath:kStatus options:NSKeyValueObservingOptionNew context:nil];
+        [nodeStatus addObserver:nodeStatus forKeyPath:kActivityType options:NSKeyValueObservingOptionNew context:nil];
+        [nodeStatus addObserver:nodeStatus forKeyPath:kBytesTransfered options:NSKeyValueObservingOptionNew context:nil];
+        [syncStatuses setValue:nodeStatus forKey:node.identifier];
+    }
+    
+    return nodeStatus;
 }
 
 #pragma mark - Delete Methods

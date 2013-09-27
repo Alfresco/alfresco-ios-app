@@ -12,23 +12,31 @@
 #import "CoreDataUtils.h"
 #import "SyncRepository.h"
 #import "SyncNodeInfo.h"
+#import "SyncNodeStatus.h"
 #import "SyncHelper.h"
 #import "DownloadManager.h"
+#import "UIAlertView+ALF.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
+static NSString * const kSyncObstaclesKey = @"syncObstacles";
+static NSInteger const kMaximumAllowedDownloadSize = 20 * 1024 * 1024; // 20 MB
+
+static NSUInteger const kSyncDownloadConfirmationOptionYes = 0;
+static NSUInteger const kSyncDownloadConfirmationOptionNo = 1;
 
 /*
  * Sync Obstacle keys
  */
-NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavsOnServerWithLocalChanges";
-NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
-NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyAfterUpload";
+static NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavsOnServerWithLocalChanges";
+static NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
+static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyAfterUpload";
 
 @interface SyncManager ()
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
+@property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 @end
@@ -52,6 +60,7 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
     self.alfrescoSession = alfrescoSession;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
     self.syncNodesInfo = [NSMutableDictionary dictionary];
+    self.syncNodesStatus = [NSMutableDictionary dictionary];
     
     [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
         
@@ -60,7 +69,6 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
             [self rearrangeNodesAndSync:array];
             completionBlock(array);
         }
-        
     }];
     return [self topLevelSyncNodesOrNodesInFolder:nil];
 }
@@ -104,6 +112,12 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
     return [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:[syncHelper syncNameForNode:document]];
 }
 
+- (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node
+{
+    SyncHelper *syncHelper = [SyncHelper sharedHelper];
+    return [syncHelper syncNodeSatusObjectForNode:node inSyncNodesStatus:self.syncNodesStatus];
+}
+
 #pragma mark - Private Methods
 
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
@@ -118,7 +132,6 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
             
             if (self.nodeChildrenRequestsCount == 0)
             {
-                
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     
                     [self syncNodes:[self allRemoteSyncDocuments]];
@@ -224,7 +237,8 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
         for (int i=0; i < nodes.count; i++)
         {
             AlfrescoNode *remoteNode = nodes[i];
-            // SyncStatusSuccessful;
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeSatusObjectForNode:remoteNode inSyncNodesStatus:self.syncNodesStatus];
+            nodeStatus.status = SyncStatusSuccessful;
             
             // getting last modification date for remote sync node
             NSDate *lastModifiedDateForRemote = remoteNode.modifiedAt;
@@ -248,7 +262,8 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
                 if ([self isNodeModifiedSinceLastDownload:remoteNode])
                 {
                     [nodesToUpload addObject:remoteNode];
-                    // SyncStatusWaiting
+                    nodeStatus.status = SyncStatusWaiting;
+                    nodeStatus.activityType = SyncActivityTypeUpload;
                 }
                 else
                 {
@@ -257,15 +272,15 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
                         // Check if document is updated on server
                         if ([lastModifiedDateForLocal compare:lastModifiedDateForRemote] == NSOrderedAscending)
                         {
-                            // SyncActivityTypeDownload;
-                            // SyncStatusWaiting;
+                            nodeStatus.status = SyncStatusWaiting;
+                            nodeStatus.activityType = SyncActivityTypeDownload;
                             [nodesToDownload addObject:remoteNode];
                         }
                     }
                     else
                     {
-                        // SyncActivityTypeDownload;
-                        // SyncStatusWaiting;
+                        nodeStatus.status = SyncStatusWaiting;
+                        nodeStatus.activityType = SyncActivityTypeDownload;
                         [nodesToDownload addObject:remoteNode];
                     }
                 }
@@ -278,13 +293,34 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
+            unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
+            AlfrescoLogDebug(@"Total Download Size: %@", stringForLongFileSize(totalDownloadSize));
+            
+            if (totalDownloadSize > kMaximumAllowedDownloadSize)
+            {
+                NSString *totalSizeString = stringForLongFileSize(totalDownloadSize);
+                NSString *maxAllowedString = stringForLongFileSize(kMaximumAllowedDownloadSize);
+                NSString *confirmationTitle = NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title");
+                NSString *confirmationMessage = [NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"sync download size message alert message"), totalSizeString, maxAllowedString];
+                
+                [self displayConfirmationAlertWithTitle:confirmationTitle message:confirmationMessage completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                    if (buttonIndex == kSyncDownloadConfirmationOptionYes)
+                    {
+                        [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
+                    }
+                }];
+            }
+            else
+            {
+                [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
+            }
+            
             [self uploadContentsForNodes:nodesToUpload withCompletionBlock:nil];
             
             if ([self didEncounterObstaclesDuringSync])
             {
-                NSDictionary *syncObstacles = @{@"syncObstacles" : [self syncObstacles]};
-                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationSyncObstacles object:syncObstacles userInfo:nil];
+                NSDictionary *syncObstacles = @{kSyncObstaclesKey : [self syncObstacles]};
+                [[NSNotificationCenter defaultCenter] postNotificationName:kSyncObstaclesNotification object:nil userInfo:syncObstacles];
             }
         });
     }
@@ -344,6 +380,7 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
             {
                 // if any problem encountered then set isUnfavoritedHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
                 nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:YES];
+                nodeInfo.parentNode = nil;
             }
         }
     }
@@ -459,6 +496,17 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
 
 #pragma mark - Private Utilities
 
+- (unsigned long long)totalSizeForDocuments:(NSArray *)documents
+{
+    unsigned long long totalSize = 0;
+    
+    for (AlfrescoDocument *document in documents)
+    {
+        totalSize += document.contentLength;
+    }
+    return totalSize;
+}
+
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AlfrescoLogDebug(@"Files to download: %@", [nodes valueForKey:@"name"]);
@@ -504,6 +552,8 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeSatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    nodeStatus.status = SyncStatusLoading;
     
     NSString *destinationPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
@@ -512,9 +562,15 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
     [documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            nodeStatus.status = SyncStatusSuccessful;
+            nodeStatus.activityType = SyncActivityTypeIdle;
             SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
             nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
             nodeInfo.lastDownloadedDate = [NSDate date];
+        }
+        else
+        {
+            nodeStatus.status = SyncStatusFailed;
         }
         completionBlock(YES);
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
@@ -553,6 +609,8 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
     NSString *nodeExtension = [document.name pathExtension];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeSatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
     NSString *mimeType = @"application/octet-stream";
     
@@ -568,15 +626,21 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
     [self.documentFolderService updateContentOfDocument:document contentStream:contentStream completionBlock:^(AlfrescoDocument *document, NSError *error) {
         if (document)
         {
+            nodeStatus.status = SyncStatusSuccessful;
+            nodeStatus.activityType = SyncActivityTypeIdle;
             SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
             nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
             nodeInfo.lastDownloadedDate = [NSDate date];
             nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
         }
+        else
+        {
+            nodeStatus.status = SyncStatusFailed;
+        }
         
         if (completionBlock != NULL)
         {
-            completionBlock(NO);
+            completionBlock(YES);
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
         
@@ -634,6 +698,18 @@ NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyA
         }
     }
     return NO;
+}
+
+#pragma mark - UIAlertview Methods
+
+- (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), NSLocalizedString(@"No", @"No"), nil];
+    [alert showWithCompletionBlock:completionBlock];
 }
 
 #pragma mark - Private Interface
