@@ -27,7 +27,7 @@ UIImage *imageForType(NSString *type);
 UIImage *resizeImage(UIImage *image, CGSize size);
 
 NSString *relativeDateFromDate(NSDate *objDate);
-NSString *stringForLongFileSize(long size);
+NSString *stringForLongFileSize(unsigned long long size);
 
 NSString *stringByRemovingHTMLTagsFromString(NSString *htmlString);
 

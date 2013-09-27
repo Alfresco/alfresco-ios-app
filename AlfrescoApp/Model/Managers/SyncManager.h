@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class SyncNodeStatus;
 
 @interface SyncManager : NSObject
 
@@ -19,6 +20,7 @@
  * Sync Methods
  */
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document;
+- (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node;
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSArray *syncedNodes))completionBlock;
 
