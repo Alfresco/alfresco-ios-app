@@ -8,6 +8,7 @@
 
 #import "SyncTest.h"
 #import "SyncManager.h"
+#import "AlfrescoLog.h"
 
 @implementation SyncTest
 
@@ -21,7 +22,7 @@
             
             if (syncedNodes)
             {
-                NSLog(@"Favorite Nodes: %@", [[syncedNodes valueForKey:@"identifier"] valueForKey:@"lastPathComponent"]);
+                AlfrescoLogDebug(@"Favorite Nodes: %@", [[syncedNodes valueForKey:@"identifier"] valueForKey:@"lastPathComponent"]);
                 self.lastTestSuccessful = YES;
             }
             self.callbackCompleted = YES;
