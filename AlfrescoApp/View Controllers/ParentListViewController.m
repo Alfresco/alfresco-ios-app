@@ -307,7 +307,7 @@
 
 - (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
-    AlfrescoLogDebug(@"egoRefreshTableHeaderDidTriggerRefresh: is not implemented in the subclass of %@", [self class]);
+    AlfrescoLogDebug(@"refreshTableView: is not implemented in the subclass of %@", [self class]);
 }
 
 @end

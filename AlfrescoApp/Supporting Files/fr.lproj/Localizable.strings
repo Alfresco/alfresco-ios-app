@@ -329,5 +329,16 @@
 "ui.refreshcontrol.refreshing" = "Loading...";
 
 /**
+ * Tasks
+ */
+"tasks.title" = "Tasks";
+"tasks.process.unnamed" = "Unnamed Process";
+
+/**
+ * Settings
+ */
+"settings.title" = "Settings";
+
+/**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */
