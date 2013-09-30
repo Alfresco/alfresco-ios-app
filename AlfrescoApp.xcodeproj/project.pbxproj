@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
+		0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */; };
+		0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243B17EC9AE900EE6AA8 /* SyncRepository.m */; };
+		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
+		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
@@ -16,6 +21,8 @@
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
 		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
+		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
+		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
@@ -317,6 +324,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
+		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
+		0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
+		0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncNodeInfo.m; path = DataModel/SyncNodeInfo.m; sourceTree = "<group>"; };
+		0833243A17EC9AE900EE6AA8 /* SyncRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncRepository.h; path = DataModel/SyncRepository.h; sourceTree = "<group>"; };
+		0833243B17EC9AE900EE6AA8 /* SyncRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncRepository.m; path = DataModel/SyncRepository.m; sourceTree = "<group>"; };
+		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
+		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
+		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
+		0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNodeStatus.m; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
@@ -330,6 +347,8 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -897,6 +916,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
 				73F4316F17EB3731002FAFCA /* QuickLook.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
 				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
@@ -938,6 +958,18 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		08E89CF817EB397C006936DF /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */,
+				0833243A17EC9AE900EE6AA8 /* SyncRepository.h */,
+				0833243B17EC9AE900EE6AA8 /* SyncRepository.m */,
+				0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */,
+				0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -960,6 +992,7 @@
 		7373B4F717A66E9400869949 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				08E89CF617EB3921006936DF /* CoreData.framework */,
 				73F4316E17EB3731002FAFCA /* QuickLook.framework */,
 				73E9E20E17E7446400A198B4 /* Security.framework */,
 				73B959EC17A685090099FB84 /* MobileCoreServices.framework */,
@@ -981,6 +1014,7 @@
 		7373B4FE17A66E9400869949 /* AlfrescoApp */ = {
 			isa = PBXGroup;
 			children = (
+				08E89CF817EB397C006936DF /* DataModel */,
 				73B957C717A673A90099FB84 /* App Delegate */,
 				73B957CA17A673A90099FB84 /* Constants */,
 				73B957CF17A6750E0099FB84 /* Model */,
@@ -1077,6 +1111,8 @@
 			children = (
 				73E9E20B17E7394900A198B4 /* Account.h */,
 				73E9E20C17E7394900A198B4 /* Account.m */,
+				0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */,
+				0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */,
 				73B957D017A6750E0099FB84 /* Managers */,
 				73B957DB17A6750E0099FB84 /* URLHandlers */,
 			);
@@ -1100,6 +1136,8 @@
 				73E9E21117E854ED00A198B4 /* AccountManager.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
 				08E89C9317E7488C006936DF /* SyncManager.m */,
+				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
+				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				7384BE0317F42CA800C6A54F /* PreferenceManager.h */,
 				7384BE0417F42CA800C6A54F /* PreferenceManager.m */,
 			);
@@ -1193,6 +1231,8 @@
 		73B957FA17A6750E0099FB84 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				080675E917EC44AA004AF3A2 /* CoreDataUtils.h */,
+				080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */,
 				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
 				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
 				73B957FB17A6750E0099FB84 /* ErrorDescriptions.h */,
@@ -2343,6 +2383,7 @@
 				73F634A717E34A990065590E /* AlfrescoCloudCommentService.m in Sources */,
 				73F634B817E34A990065590E /* AlfrescoPlaceholderActivityStreamService.m in Sources */,
 				73E9E1FD17E352C900A198B4 /* AlfrescoCMISDocument.m in Sources */,
+				0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */,
 				73F634D617E34A990065590E /* AlfrescoSortingUtils.m in Sources */,
 				73F634BF17E34A990065590E /* AlfrescoWorkflowPlaceholderProcessDefinitionService.m in Sources */,
 				73B959EE17A686590099FB84 /* main.m in Sources */,
@@ -2417,6 +2458,7 @@
 				73F634C817E34A990065590E /* AlfrescoOAuthAuthenticationProvider.m in Sources */,
 				73F634A917E34A990065590E /* AlfrescoCloudPersonService.m in Sources */,
 				73F634D517E34A990065590E /* AlfrescoSiteCache.m in Sources */,
+				0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */,
 				73F634B917E34A990065590E /* AlfrescoPlaceholderCommentService.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				73F6348117E34A990065590E /* AlfrescoFileManager.m in Sources */,
@@ -2457,6 +2499,9 @@
 				73F634A217E34A990065590E /* AlfrescoVersionService.m in Sources */,
 				73B959DC17A67A760099FB84 /* Reachability.m in Sources */,
 				73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */,
+				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
+				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
+				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,
 				73F634B217E34A990065590E /* AlfrescoOnPremiseDocumentFolderService.m in Sources */,
 				73B95AF417A68DF20099FB84 /* AddCommentViewController.m in Sources */,
@@ -2476,6 +2521,7 @@
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,
 				73F634D717E34A990065590E /* AlfrescoUntrustedSSLHTTPRequest.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
+				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
 				73F6348D17E34A990065590E /* AlfrescoNode.m in Sources */,
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
@@ -2749,6 +2795,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */,
+			);
+			currentVersion = 08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */;
+			name = AlfrescoApp.xcdatamodeld;
+			path = DataModel/AlfrescoApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7373B4ED17A66E9400869949 /* Project object */;
 }

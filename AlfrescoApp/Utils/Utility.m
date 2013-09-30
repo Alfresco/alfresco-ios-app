@@ -150,12 +150,12 @@ NSString *relativeDateFromDate(NSDate *objDate)
     return [NSString stringWithFormat:NSLocalizedString(key, @"Localized relative date string"), diff];
 }
 
-NSString *stringForLongFileSize(long size)
+NSString *stringForLongFileSize(unsigned long long size)
 {
-	float floatSize = size;
+	double floatSize = size;
 	if (size < 1023)
     {
-        return([NSString stringWithFormat:@"%ld %@", size, NSLocalizedString(@"file.size.bytes", @"file bytes, used as follows: '100 bytes'")]);
+        return([NSString stringWithFormat:@"%llu %@", size, NSLocalizedString(@"file.size.bytes", @"file bytes, used as follows: '100 bytes'")]);
     }
     
 	floatSize = floatSize / 1024;

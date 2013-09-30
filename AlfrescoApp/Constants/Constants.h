@@ -36,6 +36,14 @@ extern NSString * const kApplicationPolicyServerDisplayName;
 extern NSString * const kApplicationPolicySettingAudioEnabled;
 extern NSString * const kApplicationPolicySettingVideoEnabled;
 
+// Sync
+extern NSString * const kSyncObstaclesKey;
+extern NSInteger const kDefaultMaximumAllowedDownloadSize;
+
+// Sync notification constants
+extern NSString * const kSyncStatusChangeNotification;
+extern NSString * const kSyncObstaclesNotification;
+
 // User settings keychain constants
 extern NSString * const kApplicationRepositoryUsername;
 extern NSString * const kApplicationRepositoryPassword;

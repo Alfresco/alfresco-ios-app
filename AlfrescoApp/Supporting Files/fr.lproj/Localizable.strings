@@ -40,6 +40,12 @@
 "file.size.gigabytes" = "GB";
 
 /**
+ * Sync
+ */
+"sync.downloadsize.prompt.title" = "";
+"sync.downloadsize.prompt.message" = "Sync download size %@ exceeds the maximum size allowed %@. Do you want to proceed?";
+
+/**
  * Errors
  */
 "error.filefolder.rootfolder.notfound" = "Root folder could not be loaded. Error: %@.";
