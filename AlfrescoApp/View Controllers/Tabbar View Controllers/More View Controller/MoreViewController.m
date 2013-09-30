@@ -10,6 +10,8 @@
 #import "AboutViewController.h"
 #import "PreviewViewController.h"
 #import "UniversalDevice.h"
+#import "DownloadsViewController.h"
+#import "SettingsViewController.h"
 
 NSString *kHelpGuide = @"UserGuide.pdf";
 CGFloat const kMoreTableCellHeight = 60.0f;
@@ -58,6 +60,14 @@ CGFloat const kMoreTableCellHeight = 60.0f;
     {
         cell.imageView.image = [UIImage imageNamed:@"about-more"];
     }
+    else if ([self.tableViewData[indexPath.row] isEqualToString:NSLocalizedString(@"Downloads", @"Downloads tab bar button label")])
+    {
+        cell.imageView.image = [UIImage imageNamed:@"downloads-tabbar.png"];
+    }
+    else if ([self.tableViewData[indexPath.row] isEqualToString:NSLocalizedString(@"settings.title", @"Settings tab bar button label")])
+    {
+        cell.imageView.image = [UIImage imageNamed:@"help-more"];
+    }
     
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     
@@ -66,7 +76,10 @@ CGFloat const kMoreTableCellHeight = 60.0f;
 
 - (void)constructMoreTabs
 {
-    self.tableViewData = [@[NSLocalizedString(@"help.view.title", @"Help tab bar button label"), NSLocalizedString(@"About", @"About tab bar button label")] mutableCopy];
+    self.tableViewData = [@[NSLocalizedString(@"Downloads", @"Downloads tab bar button label"),
+                            NSLocalizedString(@"settings.title", @"Settings tab bar button label"),
+                            NSLocalizedString(@"help.view.title", @"Help tab bar button label"),
+                            NSLocalizedString(@"About", @"About tab bar button label")] mutableCopy];
 }
 
 #pragma mark - Table view delegate
@@ -83,8 +96,23 @@ CGFloat const kMoreTableCellHeight = 60.0f;
     {
         viewController = [[AboutViewController alloc] init];
     }
+    else if ([self.tableViewData[indexPath.row] isEqualToString:NSLocalizedString(@"Downloads", @"Downloads tab bar button label")])
+    {
+        viewController = [[DownloadsViewController alloc] initWithSession:nil];
+    }
+    else if ([self.tableViewData[indexPath.row] isEqualToString:NSLocalizedString(@"settings.title", @"Settings tab bar button label")])
+    {
+        viewController = [[SettingsViewController alloc] initWithSession:nil];
+    }
     
-    [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
+    if ([viewController isKindOfClass:[DownloadsViewController class]])
+    {
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else
+    {
+        [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
