@@ -12,6 +12,7 @@
 #import "DownloadManager.h"
 #import "NavigationViewController.h"
 #import "AppDelegate.h"
+#import "MoreViewController.h"
 
 @implementation FileURLHandler
 
@@ -30,10 +31,12 @@
         {
             // Get the right navigation controller for the Downloads view
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            NavigationViewController *navigationController = [appDelegate navigationControllerOfType:NavigationControllerTypeDownloads];
+            NavigationViewController *navigationController = [appDelegate navigationControllerOfType:NavigationControllerTypeMore];
             
             // Activate the tab hosting the Downloads view
-            [appDelegate activateTabBarForNavigationControllerOfType:NavigationControllerTypeDownloads];
+            [appDelegate activateTabBarForNavigationControllerOfType:NavigationControllerTypeMore];
+            MoreViewController *moreViewController = (MoreViewController *)[navigationController.viewControllers objectAtIndex:0];
+            [moreViewController.tableView.delegate tableView:moreViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             
             // Create and push the Preview controller
             PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:nil documentPermissions:nil contentFilePath:filePath session:nil];

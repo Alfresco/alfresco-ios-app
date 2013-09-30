@@ -11,7 +11,7 @@
 #import "FileFolderListViewController.h"
 #import "PlaceholderViewController.h"
 #import "ActivitiesViewController.h"
-#import "DownloadsViewController.h"
+#import "TaskViewController.h"
 #import "MoreViewController.h"
 #import "Utility.h"
 #import "LoginManager.h"
@@ -123,7 +123,7 @@
     SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
     ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
     MoreViewController *moreViewController = [[MoreViewController alloc] init];
-    DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:session];
+    TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
     
     // Navigation controllers
     NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
@@ -138,9 +138,9 @@
     [activitiesViewController setTitle:NSLocalizedString(@"activities.title", @"Activities Title")];
     [activitiesNavigationController.tabBarItem setImage:[UIImage imageNamed:@"activities-tabbar.png"]];
     
-    NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
-    [downloadsNavigationController setTitle:NSLocalizedString(@"downloads.title", @"Downloads Title")];
-    [downloadsNavigationController.tabBarItem setImage:[UIImage imageNamed:@"downloads-tabbar.png"]];
+    NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
+    [taskNavigationController setTitle:NSLocalizedString(@"tasks.title", @"Tasks Title")];
+    [taskNavigationController.tabBarItem setImage:[UIImage imageNamed:@"downloads-tabbar.png"]];
     
     NavigationViewController *moreNavigationController = [[NavigationViewController alloc] initWithRootViewController:moreViewController];
     moreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
@@ -154,7 +154,7 @@
     [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeActivities withObject:activitiesNavigationController];
     [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeRepository withObject:companyHomeNavigationController];
     [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeSites withObject:sitesListNavigationController];
-    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeDownloads withObject:downloadsNavigationController];
+    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeTasks withObject:taskNavigationController];
     [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeMore withObject:moreNavigationController];
     
     self.tabBarController = [[UITabBarController alloc] init];

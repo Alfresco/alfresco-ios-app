@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, NavigationControllerType)
     NavigationControllerTypeActivities = 0,
     NavigationControllerTypeRepository,
     NavigationControllerTypeSites,
-    NavigationControllerTypeDownloads,
+    NavigationControllerTypeTasks,
     NavigationControllerTypeMore,
     NavigationControllerType_MAX_ENUM    // <-- Ensure this is the last entry
 };
