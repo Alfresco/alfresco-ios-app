@@ -28,7 +28,7 @@ extern NSString * const kSyncNodeKey;
 
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document;
 
-- (void)resetLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo forRepositoryWithId:(NSString *)repositoryId preserveInfo:(NSDictionary *)info;
+- (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo forRepositoryWithId:(NSString *)repositoryId preserveInfo:(NSDictionary *)info refreshExistingSyncNodes:(BOOL)refreshExisting;
 
 + (SyncHelper *)sharedHelper;
 

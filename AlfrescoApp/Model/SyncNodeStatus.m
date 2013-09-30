@@ -11,9 +11,9 @@
 static NSString * const kNodeIdKey = @"nodeId";
 static NSString * const kPropertyChangedKey = @"propertyChanged";
 
-NSString * const kSyncStatus = @"syncStatus";
-NSString * const kSyncActivityType = @"syncActivityType";
-NSString * const kSyncBytesTransfered = @"syncBytesTransfered";
+NSString * const kSyncStatus = @"status";
+NSString * const kSyncActivityType = @"activityType";
+NSString * const kSyncBytesTransfered = @"bytesTransfered";
 
 @implementation SyncNodeStatus
 
@@ -25,6 +25,10 @@ NSString * const kSyncBytesTransfered = @"syncBytesTransfered";
         self.nodeId = nodeId;
         self.status = SyncStatusDisabled;
         self.activityType = SyncActivityTypeIdle;
+        
+        [self addObserver:self forKeyPath:kSyncStatus options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver:self forKeyPath:kSyncActivityType options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver:self forKeyPath:kSyncBytesTransfered options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -49,6 +53,13 @@ NSString * const kSyncBytesTransfered = @"syncBytesTransfered";
 {
     NSDictionary *info = @{kNodeIdKey : self.nodeId, kPropertyChangedKey : property};
     [[NSNotificationCenter defaultCenter] postNotificationName:kSyncStatusChangeNotification object:self userInfo:info];
+}
+
+- (void)dealloc
+{
+    [self removeObserver:self forKeyPath:kSyncStatus];
+    [self removeObserver:self forKeyPath:kSyncActivityType];
+    [self removeObserver:self forKeyPath:kSyncBytesTransfered];
 }
 
 @end

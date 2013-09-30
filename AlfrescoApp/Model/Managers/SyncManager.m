@@ -121,7 +121,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
 {
     // top level sync nodes are held in self.syncNodesInfo with key repository Identifier
-    [self.syncNodesInfo setValue:nodes forKey:self.alfrescoSession.repositoryInfo.identifier];
+    [self.syncNodesInfo setValue:[nodes mutableCopy] forKey:self.alfrescoSession.repositoryInfo.identifier];
     
     // retrieve nodes for top level sync nodes
     for (AlfrescoNode *node in nodes)
@@ -132,7 +132,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     
-                    [self syncNodes:[self allRemoteSyncDocuments]];
+                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
                 });
             }
         }];
@@ -223,7 +223,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return allDocuments;
 }
 
-- (void)syncNodes:(NSArray *)nodes
+- (void)syncNodes:(NSArray *)nodes includeExistingSyncNodes:(BOOL)includeExistingSyncNodes
 {
     if ([self isSyncEnabled])
     {
@@ -285,8 +285,15 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             }
         }
         
-        [self deleteUnWantedSyncedNodes:nodes];
-        [[SyncHelper sharedHelper] resetLocalSyncInfoWithRemoteInfo:self.syncNodesInfo forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier preserveInfo:infoToBePreservedInNewNodes];
+        if (includeExistingSyncNodes)
+        {
+            [self deleteUnWantedSyncedNodes:nodes];
+        }
+        
+        [[SyncHelper sharedHelper] updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
+                                                forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier
+                                                       preserveInfo:infoToBePreservedInNewNodes
+                                           refreshExistingSyncNodes:includeExistingSyncNodes];
         self.syncNodesInfo = nil;
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -505,6 +512,76 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return totalSize;
 }
 
+- (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    NSString *repositoryId = self.alfrescoSession.repositoryInfo.identifier;
+    BOOL isSyncNodesInfoInMemory = ([self.syncNodesInfo objectForKey:repositoryId] != nil);
+    
+    void (^addNodeToExistingSyncNodes)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
+    {
+        if (isSyncNodesInfoInMemory)
+        {
+            NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:repositoryId];
+            [topLevelSyncNodes addObject:node];
+        }
+        else
+        {
+            [self.syncNodesInfo setValue:node forKey:repositoryId];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:NO];
+            });
+        }
+    };
+    
+    if (node.isFolder)
+    {
+        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+            addNodeToExistingSyncNodes(node);
+            if (completionBlock != NULL)
+            {
+                completionBlock(YES);
+            }
+        }];
+    }
+    else
+    {
+        addNodeToExistingSyncNodes(node);
+        if (completionBlock != NULL)
+        {
+            completionBlock(YES);
+        }
+    }
+}
+
+- (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    NSString *repositoryId = self.alfrescoSession.repositoryInfo.identifier;
+    if (self.syncNodesInfo)
+    {
+        NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:repositoryId];
+        NSInteger nodeIndex = [[topLevelSyncNodes valueForKey:@"identifier"] indexOfObject:node.identifier];
+        if (nodeIndex != NSNotFound)
+        {
+            [topLevelSyncNodes removeObjectAtIndex:nodeIndex];
+        }
+    }
+    else
+    {
+        SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier];
+        if (repository)
+        {
+            [repository removeNodesObject:nodeInfo];
+        }
+        [CoreDataUtils saveContext];
+    }
+    
+    if (completionBlock != NULL)
+    {
+        completionBlock(YES);
+    }
+}
+
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AlfrescoLogDebug(@"Files to download: %@", [nodes valueForKey:@"name"]);
@@ -708,6 +785,54 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                           cancelButtonTitle:nil
                                           otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), NSLocalizedString(@"No", @"No"), nil];
     [alert showWithCompletionBlock:completionBlock];
+}
+
+#pragma mrak - Favorites Methods
+
+- (void)addFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
+{
+    __weak SyncManager *weakSelf = self;
+    [self.documentFolderService addFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
+        if (succeeded)
+        {
+            [weakSelf addNodeToSync:node withCompletionBlock:^(BOOL completed) {
+                if (completionBlock != NULL)
+                {
+                    completionBlock(succeeded);
+                }
+            }];
+        }
+        else
+        {
+            if (completionBlock != NULL)
+            {
+                completionBlock(NO);
+            }
+        }
+    }];
+}
+
+- (void)removeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
+{
+    __weak SyncManager *weakSelf = self;
+    [self.documentFolderService removeFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
+        if (succeeded)
+        {
+            [weakSelf removeFavorite:node withCompletionBlock:^(BOOL succeeded) {
+                if (completionBlock != NULL)
+                {
+                    completionBlock(succeeded);
+                }
+            }];
+        }
+        else
+        {
+            if (completionBlock != NULL)
+            {
+                completionBlock(succeeded);
+            }
+        }
+    }];
 }
 
 #pragma mark - Private Interface

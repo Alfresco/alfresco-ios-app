@@ -39,5 +39,10 @@
 - (BOOL)isFirstUse;
 - (BOOL)isSyncEnabled;
 
+/* 
+ * Favorites Methods - these are placed here since we dont have Favorites Manager
+ */
+- (void)addFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
+- (void)removeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
 
 @end
