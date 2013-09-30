@@ -33,10 +33,18 @@ static NSString * const kSyncContentDirectory = @"sync/content";
     return sharedObject;
 }
 
-- (void)resetLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo forRepositoryWithId:(NSString *)repositoryId preserveInfo:(NSDictionary *)info
+- (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo forRepositoryWithId:(NSString *)repositoryId preserveInfo:(NSDictionary *)info refreshExistingSyncNodes:(BOOL)refreshExisting
 {
-    // refresh data in Database for repository
-    [self deleteStoredInfoForRepository:repositoryId];
+    if (refreshExisting)
+    {
+        // refresh data in Database for repository
+        [self deleteStoredInfoForRepository:repositoryId];
+    }
+    else
+    {
+        // bring synco info to managed context
+        [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject];
+    }
     
     SyncRepository *syncRepository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId];
     if (!syncRepository)
@@ -238,9 +246,6 @@ static NSString * const kSyncContentDirectory = @"sync/content";
     if (!nodeStatus)
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:node.identifier];
-        [nodeStatus addObserver:nodeStatus forKeyPath:kSyncStatus options:NSKeyValueObservingOptionNew context:nil];
-        [nodeStatus addObserver:nodeStatus forKeyPath:kSyncActivityType options:NSKeyValueObservingOptionNew context:nil];
-        [nodeStatus addObserver:nodeStatus forKeyPath:kSyncBytesTransfered options:NSKeyValueObservingOptionNew context:nil];
         [syncStatuses setValue:nodeStatus forKey:node.identifier];
     }
     
