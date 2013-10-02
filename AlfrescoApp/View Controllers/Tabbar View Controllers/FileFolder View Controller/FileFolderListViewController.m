@@ -21,6 +21,7 @@
 #import <ImageIO/ImageIO.h>
 #import "ThumbnailDownloader.h"
 #import "AccountManager.h"
+#import "ThemeUtil.h"
 
 static CGFloat kCellHeight = 60.0f;
 
@@ -92,15 +93,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    UIColor *darkGrayColor = [UIColor colorWithRed:85.0f/255.0f green:85.0f/255.0f blue:85.0f/255.0f alpha:1.0f];
-    
     // create searchBar
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
                                                                            view.frame.origin.y,
                                                                            view.frame.size.width,
                                                                            44.0f)];
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.tintColor = [UIColor blackColor];
+    searchBar.tintColor = [ThemeUtil themeColour];
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.delegate = self;
     self.searchBar = searchBar;
@@ -117,14 +116,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
-    {
-        CGRect bounceAreaFrame = tableView.frame;
-        bounceAreaFrame.origin.y = tableView.frame.size.height * -1;
-        UIView *bounceAreaView = [[UIView alloc] initWithFrame:bounceAreaFrame];
-        bounceAreaView.backgroundColor = darkGrayColor;
-        [tableView addSubview:bounceAreaView];
-    }
+    [ThemeUtil applyThemeToTableView:tableView];
     self.tableView = tableView;
     [view addSubview:self.tableView];
     

@@ -7,6 +7,7 @@
 //
 
 #import "NavigationViewController.h"
+#import "ThemeUtil.h"
 
 @interface NavigationViewController ()
 
@@ -32,10 +33,7 @@
 {
     [super viewDidLoad];
     
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
-    {
-        self.navigationBar.barStyle = UIBarStyleBlack;
-    }
+    [ThemeUtil applyThemeToNavigationController:self];
     
     self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"expand.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
 }

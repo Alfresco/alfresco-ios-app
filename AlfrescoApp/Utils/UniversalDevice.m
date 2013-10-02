@@ -36,11 +36,6 @@
                     [detailNavigationViewController resetRootViewControllerWithViewController:viewController];
                     
                     [self addExpandCollapseButtonToRootViewControllerInNavigationController:detailNavigationViewController];
-//                    
-//                    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(test:)];
-//                    
-//                    UIViewController *rootViewController = detailNavigationViewController.viewControllers[0];
-//                    [rootViewController.navigationItem setLeftBarButtonItem:button];
                 }
             }
         }

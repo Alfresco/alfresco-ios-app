@@ -18,6 +18,7 @@
 #import "MetaDataViewController.h"
 #import "ThumbnailDownloader.h"
 #import "AccountManager.h"
+#import "ThemeUtil.h"
 
 CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
@@ -57,18 +58,9 @@ static CGFloat kSearchCellHeight = 60.0f;
 }
 
 - (void)loadView
-{
-    UIColor *darkGrayColor = [UIColor colorWithRed:85.0f/255.0f green:85.0f/255.0f blue:85.0f/255.0f alpha:1.0f];
-    
+{    
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
-    {
-        view.backgroundColor = darkGrayColor;
-    }
-    else
-    {
-        view.backgroundColor = [UIColor whiteColor];
-    }
+    view.backgroundColor = [ThemeUtil themeColour];
     
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[
                                    NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites"),
@@ -79,10 +71,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                                view.frame.size.width - kSegmentVerticalPadding,
                                kSegmentControllerHeight - kSegmentVerticalPadding);
     segment.segmentedControlStyle = UISegmentedControlStyleBar;
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
-    {
-        segment.tintColor = darkGrayColor;
-    }
+    [ThemeUtil applyThemeToSegmentControl:segment];
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     segment.selectedSegmentIndex = SiteListTypeFavouriteSites;
@@ -99,16 +88,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    CGRect bounceAreaFrame = tableView.frame;
-    bounceAreaFrame.origin.y = tableView.frame.size.height * -1;
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
-    {
-        CGRect bounceAreaFrame = tableView.frame;
-        bounceAreaFrame.origin.y = tableView.frame.size.height * -1;
-        UIView *bounceAreaView = [[UIView alloc] initWithFrame:bounceAreaFrame];
-        bounceAreaView.backgroundColor = darkGrayColor;
-        [tableView addSubview:bounceAreaView];
-    }
+    [ThemeUtil applyThemeToTableView:tableView];
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
@@ -118,7 +98,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                                                                            view.frame.size.width,
                                                                            44.0f)];
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.tintColor = [UIColor blackColor];
+    searchBar.tintColor = [ThemeUtil themeColour];
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.delegate = self;
     self.searchBar = searchBar;
