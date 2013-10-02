@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "Account.h"
 #import "Utility.h"
+#import "ThemeUtil.h"
 
 @interface LoginViewController ()
 
@@ -71,7 +72,7 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = [ThemeUtil themeColour];
     
     // table view
     UITableView *tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStyleGrouped];
@@ -162,7 +163,7 @@
                                                                       action:@selector(login:)];
     
     UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button Title")
-                                                                       style:UIBarButtonItemStyleDone
+                                                                       style:UIBarButtonItemStylePlain
                                                                       target:self
                                                                       action:@selector(cancel:)];
     loginBarButton.enabled = NO;
