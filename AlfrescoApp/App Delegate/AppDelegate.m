@@ -129,7 +129,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:session];
     SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
     ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
-    MoreViewController *moreViewController = [[MoreViewController alloc] init];
+    MoreViewController *moreViewController = [[MoreViewController alloc] initWithSession:session];
     TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
     
     // Navigation controllers

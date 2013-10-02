@@ -32,5 +32,6 @@ extern NSString * const kSyncNodeInfoManagedObject;
 // Retrieve ManagedObjects
 + (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId;
 + (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId;
++ (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId;
 
 @end

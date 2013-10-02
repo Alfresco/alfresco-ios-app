@@ -10,4 +10,6 @@
 
 @interface MoreViewController : UITableViewController
 
+- (id)initWithSession:(id<AlfrescoSession>)session;
+
 @end

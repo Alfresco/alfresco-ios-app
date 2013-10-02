@@ -12,7 +12,6 @@
 #import "CoreDataUtils.h"
 #import "SyncRepository.h"
 #import "SyncNodeInfo.h"
-#import "SyncNodeStatus.h"
 #import "SyncHelper.h"
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
@@ -35,6 +34,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
+@property (nonatomic, strong) NSMutableDictionary *syncDownloads;
+@property (nonatomic, strong) NSMutableDictionary *syncUploads;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 @end
@@ -59,6 +60,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
     self.syncNodesInfo = [NSMutableDictionary dictionary];
     self.syncNodesStatus = [NSMutableDictionary dictionary];
+    self.syncDownloads = [NSMutableDictionary dictionary];
+    self.syncUploads = [NSMutableDictionary dictionary];
     
     [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
         
@@ -78,26 +81,39 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     
     if (!syncNodes)
     {
-        id localFolder = nil;
+        syncNodes = [NSMutableArray array];
         if (folder)
         {
-            localFolder = [CoreDataUtils nodeInfoForObjectWithNodeId:folderKey];
+            SyncNodeInfo *localFolder = [CoreDataUtils nodeInfoForObjectWithNodeId:folderKey];
+            if (localFolder)
+            {
+                NSSet *synNodesInfo = localFolder.nodes;
+                
+                for (SyncNodeInfo *node in synNodesInfo)
+                {
+                    AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:node.node];
+                    [syncNodes addObject:alfrescoNode];
+                }
+            }
         }
         else
         {
-            // if folder is nil - retrieve top level sync nodes
-            localFolder = [CoreDataUtils repositoryObjectForRepositoryWithId:folderKey];
-        }
-        
-        if (localFolder)
-        {
-            NSSet *synNodesInfo = [localFolder nodes];
-            syncNodes = [NSMutableArray array];
-            
-            for (SyncNodeInfo *node in synNodesInfo)
+            // if folder is nil - retrieve top level sync nodes - To Be Discussed: when offline do we show sync nodes for all accounts? if not which one are we going to show?
+            //localFolder = [CoreDataUtils repositoryObjectForRepositoryWithId:folderKey];
+            NSArray *repositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject];
+            if (repositories.count > 0)
             {
-                AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:node.node];
-                [syncNodes addObject:alfrescoNode];
+                SyncRepository *repository = repositories[0];
+                
+                NSArray *topLevelSyncNodes = [CoreDataUtils topLevelSyncNodesInfoForRepositoryWithId:repository.repositoryId];
+                for (SyncNodeInfo *node in topLevelSyncNodes)
+                {
+                    AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:node.node];
+                    if (alfrescoNode)
+                    {
+                        [syncNodes addObject:alfrescoNode];
+                    }
+                }
             }
         }
     }
@@ -247,11 +263,12 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:localNodeInfo.node];
             if (localNode)
             {
+                // preserve node info until they are successfully downloaded or uploaded
                 [localNodeInfoToBePreserved setValue:localNode forKey:kSyncNodeKey];
-                [infoToBePreservedInNewNodes setValue:localNodeInfoToBePreserved forKey:localNode.identifier];
+                [localNodeInfoToBePreserved setValue:localNodeInfo.lastDownloadedDate forKey:kLastDownloadedDateKey];
+                
             }
-            // preserve node info until they are successfully downloaded or uploaded
-            [localNodeInfoToBePreserved setValue:localNodeInfo.lastDownloadedDate forKey:kLastDownloadedDateKey];
+            [infoToBePreservedInNewNodes setValue:localNodeInfoToBePreserved forKey:remoteNode.identifier];
             
             NSDate *lastModifiedDateForLocal = localNode.modifiedAt;
             
@@ -291,9 +308,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
         
         [[SyncHelper sharedHelper] updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
-                                                forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier
-                                                       preserveInfo:infoToBePreservedInNewNodes
-                                           refreshExistingSyncNodes:includeExistingSyncNodes];
+                                                 forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier
+                                                        preserveInfo:infoToBePreservedInNewNodes
+                                            refreshExistingSyncNodes:includeExistingSyncNodes];
         self.syncNodesInfo = nil;
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -586,31 +603,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     AlfrescoLogDebug(@"Files to download: %@", [nodes valueForKey:@"name"]);
     
-    NSInteger (^calculateTotalDownloads)(NSArray *) = ^ NSInteger (NSArray *downloads)
-    {
-        int numberOfDocuments = 0;
-        for (AlfrescoNode *node in downloads)
-        {
-            if (node.isDocument)
-            {
-                numberOfDocuments++;
-            }
-        }
-        return numberOfDocuments;
-    };
-    
-    
-    __block int totalDownloads = calculateTotalDownloads(nodes);
-    
     for (AlfrescoNode *node in nodes)
     {
         if (node.isDocument)
         {
             [self downloadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed) {
                 
-                totalDownloads--;
-                
-                if (totalDownloads == 0)
+                if (self.syncDownloads.count == 0)
                 {
                     [CoreDataUtils saveContext];
                     if (completionBlock != NULL)
@@ -634,7 +633,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
     AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
     
-    [documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+    AlfrescoRequest *downloadRequest = [documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
             nodeStatus.status = SyncStatusSuccessful;
@@ -647,16 +646,19 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             nodeStatus.status = SyncStatusFailed;
         }
+        [self.syncDownloads removeObjectForKey:document.identifier];
         completionBlock(YES);
+        
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        // TODO: Progress indicator update
+        nodeStatus.bytesTransfered = bytesTransferred;
+        nodeStatus.bytesTotal = bytesTotal;
     }];
+    [self.syncDownloads setValue:downloadRequest forKey:document.identifier];
 }
 
 - (void)uploadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AlfrescoLogDebug(@"Files to upload number: %d", nodes.count);
-    __block int totalUploads = nodes.count;
     
     for (AlfrescoNode *node in nodes)
     {
@@ -664,9 +666,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             [self uploadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed) {
                 
-                totalUploads--;
-                
-                if (totalUploads == 0)
+                if (self.syncUploads.count == 0)
                 {
                     [CoreDataUtils saveContext];
                     if (completionBlock != NULL)
@@ -698,7 +698,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSInputStream *readStream = [[AlfrescoFileManager sharedManager] inputStreamWithFilePath:contentPath];
     AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:readStream mimeType:mimeType length:contentFile.length];
     
-    [self.documentFolderService updateContentOfDocument:document contentStream:contentStream completionBlock:^(AlfrescoDocument *document, NSError *error) {
+    AlfrescoRequest *uploadRequest = [self.documentFolderService updateContentOfDocument:document contentStream:contentStream completionBlock:^(AlfrescoDocument *document, NSError *error) {
         if (document)
         {
             nodeStatus.status = SyncStatusSuccessful;
@@ -713,16 +713,55 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeStatus.status = SyncStatusFailed;
         }
         
+        [self.syncUploads removeObjectForKey:document.identifier];
         if (completionBlock != NULL)
         {
             completionBlock(YES);
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        
+        nodeStatus.bytesTransfered = bytesTransferred;
+        nodeStatus.bytesTotal = bytesTotal;
     }];
+    [self.syncUploads setValue:uploadRequest forKey:document.identifier];
 }
 
 #pragma mark - Public Utilities
+
+- (void)cancelSyncForDocument:(AlfrescoDocument *)document
+{
+    SyncNodeStatus *nodeStatus = [self syncStatusForNode:document];
+    
+    if (nodeStatus.activityType == SyncActivityTypeDownload)
+    {
+        AlfrescoRequest *downloadRequest = [self.syncDownloads objectForKey:document.identifier];
+        [downloadRequest cancel];
+        [self.syncDownloads removeObjectForKey:document.identifier];
+    }
+    else
+    {
+        AlfrescoRequest *uploadRequest = [self.syncUploads objectForKey:document.identifier];
+        [uploadRequest cancel];
+        [self.syncUploads removeObjectForKey:document.identifier];
+    }
+}
+
+- (void)retrySyncForDocument: (AlfrescoDocument *)document
+{
+    SyncNodeStatus *nodeStatus = [self syncStatusForNode:document];
+    
+    if (nodeStatus.activityType == SyncActivityTypeDownload)
+    {
+        [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+            [CoreDataUtils saveContext];
+        }];
+    }
+    else
+    {
+        [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
+            [CoreDataUtils saveContext];
+        }];
+    }
+}
 
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node
 {
