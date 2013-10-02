@@ -19,6 +19,8 @@
 #import "LocationManager.h"
 #import "Account.h"
 #import "AccountManager.h"
+#import "RootRevealControllerViewController.h"
+#import "DetailSplitViewController.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -171,17 +173,21 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     
     rootViewController = self.tabBarController;
     
+    RootRevealControllerViewController *rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:nil detailViewController:self.tabBarController];
+    
     if (IS_IPAD)
     {
-        UISplitViewController *splitViewController = [[UISplitViewController alloc] init];
         PlaceholderViewController *placeholderViewController = [[PlaceholderViewController alloc] init];
         NavigationViewController *detailNavigationController = [[NavigationViewController alloc] initWithRootViewController:placeholderViewController];
         
-        splitViewController.delegate = detailNavigationController;
-        splitViewController.viewControllers = @[self.tabBarController, detailNavigationController];
+        DetailSplitViewController *splitViewController = [[DetailSplitViewController alloc] initWithMasterViewController:self.tabBarController detailViewController:detailNavigationController];
         
-        rootViewController = splitViewController;
+        splitViewController.delegate = detailNavigationController;
+        
+        rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:nil detailViewController:splitViewController];
     }
+    
+    rootViewController = rootRevealViewController;
     
     return rootViewController;
 }

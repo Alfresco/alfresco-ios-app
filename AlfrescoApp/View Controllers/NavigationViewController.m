@@ -140,23 +140,11 @@
     }
 }
 
-#pragma mark - Split view
+#pragma mark - DetailSplitViewControllerDelegate
 
-- (void)splitViewController:(UISplitViewController *)splitController willHideViewController:(UIViewController *)viewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)popoverController
+- (void)didPressExpandCollapseButton:(DetailSplitViewController *)detailSplitViewController button:(UIBarButtonItem *)button
 {
-    barButtonItem.title = NSLocalizedString(@"splitviewcontroller.showmasterbutton", @"Show Master Button");
-    [self.rootViewController.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-    self.masterPopoverController = popoverController;
-    self.showMasterButton = barButtonItem;
-    self.isCurrentlyExpanded = NO;
-}
-
-- (void)splitViewController:(UISplitViewController *)splitController willShowViewController:(UIViewController *)viewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
-{
-    self.expandButton.image = [UIImage imageNamed:@"expand.png"];;
-    [self.rootViewController.navigationItem setLeftBarButtonItem:self.expandButton animated:YES];
-    self.masterPopoverController = nil;
-    self.isCurrentlyExpanded = NO;
+    [detailSplitViewController expandOrCollapse];
 }
 
 @end
