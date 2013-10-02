@@ -7,6 +7,8 @@
 //
 
 #import "UniversalDevice.h"
+#import "RootRevealControllerViewController.h"
+#import "DetailSplitViewController.h"
 #import "NavigationViewController.h"
 #import "ItemInDetailViewProtocol.h"
 #import "PlaceholderViewController.h"
@@ -19,11 +21,28 @@
     {
         UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         
-        if ([rootViewController isKindOfClass:[UISplitViewController class]])
+        if ([rootViewController isKindOfClass:[RootRevealControllerViewController class]])
         {
-            UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-            NavigationViewController *detailNavigationViewController = [splitViewController.viewControllers objectAtIndex:1];
-            [detailNavigationViewController resetRootViewControllerWithViewController:viewController];
+            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)rootViewController;
+            UIViewController *rootDetailController = splitViewController.detailViewController;
+            if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
+            {
+                DetailSplitViewController *rootDetailSplitViewController = (DetailSplitViewController *)rootDetailController;
+                UIViewController *controllerInRootDetailSplitViewController = rootDetailSplitViewController.detailViewController;
+                
+                if ([controllerInRootDetailSplitViewController isKindOfClass:[NavigationViewController class]])
+                {
+                    NavigationViewController *detailNavigationViewController = (NavigationViewController *)controllerInRootDetailSplitViewController;
+                    [detailNavigationViewController resetRootViewControllerWithViewController:viewController];
+                    
+                    [self addExpandCollapseButtonToRootViewControllerInNavigationController:detailNavigationViewController];
+//                    
+//                    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(test:)];
+//                    
+//                    UIViewController *rootViewController = detailNavigationViewController.viewControllers[0];
+//                    [rootViewController.navigationItem setLeftBarButtonItem:button];
+                }
+            }
         }
         else
         {
@@ -65,11 +84,21 @@
     {
         UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         
-        if ([rootViewController isKindOfClass:[UISplitViewController class]])
+        if ([rootViewController isKindOfClass:[RootRevealControllerViewController class]])
         {
-            UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-            NavigationViewController *detailNavigationViewController = [splitViewController.viewControllers objectAtIndex:1];
-            returnController = [detailNavigationViewController.viewControllers lastObject];
+            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)rootViewController;
+            UIViewController *rootDetailController = splitViewController.detailViewController;
+            if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
+            {
+                DetailSplitViewController *rootDetailSplitViewController = (DetailSplitViewController *)rootDetailController;
+                UIViewController *controllerInRootDetailSplitViewController = rootDetailSplitViewController.detailViewController;
+                
+                if ([controllerInRootDetailSplitViewController isKindOfClass:[NavigationViewController class]])
+                {
+                    NavigationViewController *detailNavigationViewController = (NavigationViewController *)controllerInRootDetailSplitViewController;
+                    returnController = [detailNavigationViewController.viewControllers lastObject];
+                }
+            }
         }
     }
     
@@ -86,6 +115,39 @@
     }
     
     return nil;
+}
+
++ (void)addExpandCollapseButtonToRootViewControllerInNavigationController:(UINavigationController *)navigationController
+{
+//    UIImage *image = [UIImage imageNamed:@"download"];
+//    CGRect buttonFrame = CGRectMake(0, 0, image.size.width + 2, image.size.height);
+//    UIButton *customButton = [[UIButton alloc] initWithFrame:buttonFrame];
+//    [customButton setImage:image forState:UIControlStateNormal];
+//    [customButton addTarget:self action:@selector(expandCollapseButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    customButton.showsTouchWhenHighlighted = YES;
+//    
+//    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"≡" style:UIBarButtonItemStylePlain target:self action:@selector(expandCollapseButtonAction:)];
+    
+    UIViewController *rootViewController = navigationController.viewControllers[0];
+    [rootViewController.navigationItem setLeftBarButtonItem:button];
+}
+
++ (void)expandCollapseButtonAction:(UIBarButtonItem *)button
+{
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    
+    if ([rootViewController isKindOfClass:[RootRevealControllerViewController class]])
+    {
+        RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)rootViewController;
+        UIViewController *rootDetailController = splitViewController.detailViewController;
+        if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
+        {
+            DetailSplitViewController *rootDetailSplitViewController = (DetailSplitViewController *)rootDetailController;
+            [rootDetailSplitViewController.delegate didPressExpandCollapseButton:rootDetailSplitViewController button:button];
+        }
+    }
 }
 
 @end
