@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const kSyncStatusNodeIdKey;
+extern NSString * const kSyncStatusPropertyChangedKey;
+
 extern NSString * const kSyncStatus;
 extern NSString * const kSyncActivityType;
 extern NSString * const kSyncBytesTransfered;
@@ -38,5 +41,6 @@ typedef NS_ENUM(NSInteger, SyncActivityType)
 @property (nonatomic, assign) SyncStatus status;
 @property (nonatomic, assign) SyncActivityType activityType;
 @property (nonatomic, assign) unsigned long long bytesTransfered;
+@property (nonatomic, assign) unsigned long long bytesTotal;
 
 @end
