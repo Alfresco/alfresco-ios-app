@@ -8,8 +8,8 @@
 
 #import "SyncNodeStatus.h"
 
-static NSString * const kNodeIdKey = @"nodeId";
-static NSString * const kPropertyChangedKey = @"propertyChanged";
+NSString * const kSyncStatusNodeIdKey = @"nodeId";
+NSString * const kSyncStatusPropertyChangedKey = @"propertyChanged";
 
 NSString * const kSyncStatus = @"status";
 NSString * const kSyncActivityType = @"activityType";
@@ -51,7 +51,7 @@ NSString * const kSyncBytesTransfered = @"bytesTransfered";
 
 - (void)sendNotificationForPropertyChange:(NSString *)property
 {
-    NSDictionary *info = @{kNodeIdKey : self.nodeId, kPropertyChangedKey : property};
+    NSDictionary *info = @{kSyncStatusNodeIdKey : self.nodeId, kSyncStatusPropertyChangedKey : property};
     [[NSNotificationCenter defaultCenter] postNotificationName:kSyncStatusChangeNotification object:self userInfo:info];
 }
 

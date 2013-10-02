@@ -2,6 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SyncNodeInfo" representedClassName="SyncNodeInfo" syncable="YES">
         <attribute name="isFolder" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isTopLevelSyncNode" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isUnfavoritedHasLocalChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastDownloadedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="node" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -16,7 +17,7 @@
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="repository" inverseEntity="SyncNodeInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SyncNodeInfo" positionX="0" positionY="0" width="234" height="178"/>
+        <element name="SyncNodeInfo" positionX="0" positionY="0" width="234" height="193"/>
         <element name="SyncRepository" positionX="-371" positionY="54" width="128" height="75"/>
     </elements>
 </model>
