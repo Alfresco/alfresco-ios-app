@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSNumber *isFolder;
 @property (nonatomic, retain) NSNumber *isUnfavoritedHasLocalChanges;
+@property (nonatomic, retain) NSNumber *isTopLevelSyncNode;
 @property (nonatomic, retain) NSDate *lastDownloadedDate;
 @property (nonatomic, retain) NSData *node;
 @property (nonatomic, retain) NSString *syncName;

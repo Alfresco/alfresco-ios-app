@@ -160,8 +160,14 @@
                                                                        style:UIBarButtonItemStyleDone
                                                                       target:self
                                                                       action:@selector(login:)];
+    
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button Title")
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(cancel:)];
     loginBarButton.enabled = NO;
     [self.navigationItem setRightBarButtonItem:loginBarButton];
+    [self.navigationItem setLeftBarButtonItem:cancelBarButton];
     self.loginButton = loginBarButton;
 }
 
@@ -198,6 +204,11 @@
     {
         [self.delegate loginViewController:self didPressRequestLoginToServer:self.serverAddress username:self.usernameTextField.text password:self.passwordTextField.text];
     }
+}
+
+- (void)cancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)alfrescoApplicationPolicyUpdated:(NSNotification *)notification

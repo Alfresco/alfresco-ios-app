@@ -129,6 +129,12 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
     return nil;
 }
 
++ (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId
+{
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"repository.repositoryId == %@ && isTopLevelSyncNode == YES", repositoryId]];
+    return nodes;
+}
+
 #pragma mark - Debugging Dump Methods
 
 + (void)logAllData
