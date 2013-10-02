@@ -47,6 +47,7 @@
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
+		73783CD517FC5A9D00140181 /* ThemeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73783CD417FC5A9D00140181 /* ThemeUtil.m */; };
 		7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDEA17F1A4A800C6A54F /* TaskViewController.m */; };
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
@@ -399,6 +400,8 @@
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7373B4FC17A66E9400869949 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		73783CD317FC5A9D00140181 /* ThemeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeUtil.h; sourceTree = "<group>"; };
+		73783CD417FC5A9D00140181 /* ThemeUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeUtil.m; sourceTree = "<group>"; };
 		7384BDE917F1A4A800C6A54F /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewController.h; path = "Task View Controller/TaskViewController.h"; sourceTree = "<group>"; };
 		7384BDEA17F1A4A800C6A54F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewController.m; path = "Task View Controller/TaskViewController.m"; sourceTree = "<group>"; };
 		7384BDEF17F2F8C000C6A54F /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = "Settings View Controller/SettingsViewController.h"; sourceTree = "<group>"; };
@@ -1349,6 +1352,8 @@
 				73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */,
 				73B957FD17A6750E0099FB84 /* Notifier.h */,
 				73B957FE17A6750E0099FB84 /* Notifier.m */,
+				73783CD317FC5A9D00140181 /* ThemeUtil.h */,
+				73783CD417FC5A9D00140181 /* ThemeUtil.m */,
 				73B957FF17A6750E0099FB84 /* UniversalDevice.h */,
 				73B9580017A6750E0099FB84 /* UniversalDevice.m */,
 				73B9580117A6750E0099FB84 /* Utility.h */,
@@ -2597,6 +2602,7 @@
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73F634D517E34A990065590E /* AlfrescoSiteCache.m in Sources */,
 				0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */,
+				73783CD517FC5A9D00140181 /* ThemeUtil.m in Sources */,
 				73F634B917E34A990065590E /* AlfrescoPlaceholderCommentService.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* SyncCell.m in Sources */,
