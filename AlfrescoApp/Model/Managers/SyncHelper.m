@@ -14,6 +14,7 @@
 
 NSString * const kLastDownloadedDateKey = @"lastDownloadedDate";
 NSString * const kSyncNodeKey = @"node";
+NSString * const kSyncContentPathKey = @"contentPath";
 
 static NSString * const kSyncContentDirectory = @"sync/content";
 
@@ -127,6 +128,7 @@ static NSString * const kSyncContentDirectory = @"sync/content";
             {
                 nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:existingNode];
                 nodeInfo.lastDownloadedDate = [infoTobePreserved objectForKey:kLastDownloadedDateKey];
+                nodeInfo.syncContentPath = [infoTobePreserved objectForKey:kSyncContentPathKey];
             }
             else
             {
@@ -162,7 +164,6 @@ static NSString * const kSyncContentDirectory = @"sync/content";
             syncNodeInfo = [CoreDataUtils createSyncNodeInfoMangedObject];
             syncNodeInfo.syncNodeInfoId = alfrescoNode.identifier;
             syncNodeInfo.isFolder = [NSNumber numberWithBool:alfrescoNode.isFolder];
-            syncNodeInfo.syncName = [self syncNameForNode:alfrescoNode];
             syncNodeInfo.node = archivedNode;
             syncNodeInfo.repository = repository;
             syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
@@ -186,7 +187,7 @@ static NSString * const kSyncContentDirectory = @"sync/content";
 {
     SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier];
     
-    if (nodeInfo.syncName == nil || [nodeInfo.syncName isEqualToString:@""])
+    if (nodeInfo.syncContentPath == nil || [nodeInfo.syncContentPath isEqualToString:@""])
     {
         NSString *newName = @"";
         NSString *nodeExtension = [node.name pathExtension];
@@ -199,10 +200,9 @@ static NSString * const kSyncContentDirectory = @"sync/content";
         {
             newName = [NSString stringWithFormat:@"%@.%@", [node.identifier lastPathComponent], nodeExtension];
         }
-        nodeInfo.syncName = newName;
-        [CoreDataUtils saveContext];
+        return newName;
     }
-    return nodeInfo.syncName;
+    return [nodeInfo.syncContentPath lastPathComponent];
 }
 
 - (NSString *)syncContentDirectoryPathForRepository:(NSString *)repositoryId

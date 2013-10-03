@@ -10,6 +10,9 @@
 #import "SyncManager.h"
 #import "SyncCell.h"
 #import "Utility.h"
+#import "PreviewViewController.h"
+#import "MetaDataViewController.h"
+#import "UniversalDevice.h"
 
 static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
@@ -19,6 +22,7 @@ static NSString * const kSyncInterface = @"SyncViewController";
 
 @interface SyncViewController ()
 @property (nonatomic) AlfrescoNode *parentNode;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @end
 
 @implementation SyncViewController
@@ -38,7 +42,10 @@ static NSString * const kSyncInterface = @"SyncViewController";
 {
     [super viewDidLoad];
 	
+    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     [self loadSyncNodesForFolder:self.parentNode];
+    
+    self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title") ;
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,7 +60,7 @@ static NSString * const kSyncInterface = @"SyncViewController";
 {
     if (folder)
     {
-        self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
+        self.tableViewData = [[[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode] mutableCopy];
         [self hidePullToRefreshView];
     }
     else
@@ -104,10 +111,17 @@ static NSString * const kSyncInterface = @"SyncViewController";
         syncCell = (SyncCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil] lastObject];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:syncCell
+                                             selector:@selector(statusChanged:)
+                                                 name:kSyncStatusChangeNotification
+                                               object:nil];
+    
     AlfrescoNode *node = self.tableViewData[indexPath.row];
+    SyncNodeStatus *nodeStatus = [[SyncManager sharedManager] syncStatusForNode:node];
     
     syncCell.nodeId = node.identifier;
     syncCell.filename.text = node.name;
+    [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:kSyncStatus];
     
     if (node.isFolder)
     {
@@ -118,26 +132,52 @@ static NSString * const kSyncInterface = @"SyncViewController";
         syncCell.image.image = imageForType([node.name pathExtension]);
     }
     
-    SyncNodeStatus *nodeStatus = [[SyncManager sharedManager] syncStatusForNode:node];
-    [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:syncCell
-                                             selector:@selector(statusChanged:)
-                                                 name:kSyncStatusChangeNotification
-                                               object:nil];
-    
     return syncCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    SyncManager *syncManager = [SyncManager sharedManager];
     AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
     
     if (selectedNode.isFolder)
     {
         SyncViewController *controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
-        
         [self.navigationController pushViewController:controller animated:YES];
+    }
+    else
+    {
+        NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
+        if (filePath)
+        {
+            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:nil contentFilePath:filePath session:self.session];
+            [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+        }
+        else
+        {
+            NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:selectedNode.name];
+            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
+            
+            [self showHUD];
+            [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                [self.documentFolderService retrieveContentOfDocument:(AlfrescoDocument *)selectedNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+                    [self hideHUD];
+                    if (succeeded)
+                    {
+                        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session];
+                        [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                    }
+                    else
+                    {
+                        // display an error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                    // progress indicator update
+                }];
+            }];
+        }
     }
 }
 
@@ -158,7 +198,11 @@ static NSString * const kSyncInterface = @"SyncViewController";
             break;
             
         default:
+        {
+            MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node showingVersionHistoryOption:YES session:self.session];
+            [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
             break;
+        }
     }
 }
 

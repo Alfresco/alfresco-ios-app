@@ -15,11 +15,12 @@
 #import "SyncHelper.h"
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
+#import "AccountManager.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
 
-static NSUInteger const kSyncDownloadConfirmationOptionYes = 0;
-static NSUInteger const kSyncDownloadConfirmationOptionNo = 1;
+static NSUInteger const kSyncConfirmationOptionYes = 0;
+static NSUInteger const kSyncConfirmationOptionNo = 1;
 
 /*
  * Sync Obstacle keys
@@ -37,7 +38,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) NSMutableDictionary *syncDownloads;
 @property (nonatomic, strong) NSMutableDictionary *syncUploads;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
-@property (atomic, assign) NSInteger nodeChildrenRequestsCount;
+@property (nonatomic, assign) NSInteger nodeChildrenRequestsCount;
 @end
 
 @implementation SyncManager
@@ -63,6 +64,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     self.syncDownloads = [NSMutableDictionary dictionary];
     self.syncUploads = [NSMutableDictionary dictionary];
     
+    [self.documentFolderService clearFavoritesCache];
     [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
         
         if (array)
@@ -92,7 +94,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 for (SyncNodeInfo *node in synNodesInfo)
                 {
                     AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:node.node];
-                    [syncNodes addObject:alfrescoNode];
+                    if (alfrescoNode)
+                    {
+                        [syncNodes addObject:alfrescoNode];
+                    }
                 }
             }
         }
@@ -122,8 +127,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
 {
-    SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    return [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:[syncHelper syncNameForNode:document]];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
+    return nodeInfo.syncContentPath;
 }
 
 - (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node
@@ -139,19 +144,55 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     // top level sync nodes are held in self.syncNodesInfo with key repository Identifier
     [self.syncNodesInfo setValue:[nodes mutableCopy] forKey:self.alfrescoSession.repositoryInfo.identifier];
     
-    // retrieve nodes for top level sync nodes
-    for (AlfrescoNode *node in nodes)
+    void (^checkIfFirstUseAndSync)(void) = ^ (void)
     {
-        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-            
-            if (self.nodeChildrenRequestsCount == 0)
-            {
+        if ([self isFirstUse])
+        {
+            [self showSyncAlertIfFirstUseWithCompletionBlock:^(BOOL completed) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     
                     [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
                 });
+            }];
+        }
+        else
+        {
+            [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+        }
+    };
+    
+    BOOL (^hasFolder)(NSArray *) = ^ BOOL (NSArray *nodesArray)
+    {
+        for (AlfrescoNode *alfrescoNode in nodesArray)
+        {
+            if (alfrescoNode.isFolder)
+            {
+                return YES;
             }
-        }];
+        }
+        return NO;
+    };
+    
+    if (!hasFolder(nodes))
+    {
+        checkIfFirstUseAndSync();
+    }
+    else
+    {
+        // retrieve nodes for top level sync nodes
+        for (AlfrescoNode *node in nodes)
+        {
+            if (node.isFolder)
+            {
+                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                    
+                    if (self.nodeChildrenRequestsCount == 0)
+                    {
+                        checkIfFirstUseAndSync();
+                    }
+                }];
+            }
+        }
     }
 }
 
@@ -266,7 +307,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 // preserve node info until they are successfully downloaded or uploaded
                 [localNodeInfoToBePreserved setValue:localNode forKey:kSyncNodeKey];
                 [localNodeInfoToBePreserved setValue:localNodeInfo.lastDownloadedDate forKey:kLastDownloadedDateKey];
-                
+                [localNodeInfoToBePreserved setValue:localNodeInfo.syncContentPath forKey:kSyncContentPathKey];
             }
             [infoToBePreservedInNewNodes setValue:localNodeInfoToBePreserved forKey:remoteNode.identifier];
             
@@ -326,7 +367,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 NSString *confirmationMessage = [NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"sync download size message alert message"), totalSizeString, maxAllowedString];
                 
                 [self displayConfirmationAlertWithTitle:confirmationTitle message:confirmationMessage completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                    if (buttonIndex == kSyncDownloadConfirmationOptionYes)
+                    if (buttonIndex == kSyncConfirmationOptionYes)
                     {
                         [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
                     }
@@ -641,6 +682,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
             nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
             nodeInfo.lastDownloadedDate = [NSDate date];
+            nodeInfo.syncContentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:[syncHelper syncNameForNode:document]];
         }
         else
         {
@@ -785,21 +827,41 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return isInSyncList;
 }
 
+- (void)showSyncAlertIfFirstUseWithCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    if ([self isFirstUse])
+    {
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
+        [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
+                                        message:message
+                                completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                                    
+                                    if (buttonIndex == kSyncConfirmationOptionYes)
+                                    {
+                                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSyncPreference];
+                                        [[NSUserDefaults standardUserDefaults] boolForKey:kSyncOnCellular];   // temporary
+                                    }
+                                    else
+                                    {
+                                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSyncPreference];
+                                    }
+                                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDidAskToSync];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
+                                    completionBlock(YES);
+                                }];
+    }
+}
+
 - (BOOL)isFirstUse
 {
     BOOL didAskToSync = [[NSUserDefaults standardUserDefaults] boolForKey:kDidAskToSync];
-    if (didAskToSync)
-    {
-        return NO;
-    }
-    return YES;
+    return !didAskToSync;
 }
 
 - (BOOL)isSyncEnabled
 {
-    // temporarary set YES until we have preferences set
-    BOOL syncPreferenceEnabled = YES;    // [[NSUserDefaults standardUserDefaults] boolForKey:kSyncPreference]
-    BOOL syncOnCellularEnabled = YES;    // [[NSUserDefaults standardUserDefaults] boolForKey:kSyncOnCellular]
+    BOOL syncPreferenceEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kSyncPreference];
+    BOOL syncOnCellularEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kSyncOnCellular];
     
     if (syncPreferenceEnabled)
     {
@@ -834,12 +896,27 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     [self.documentFolderService addFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
-            [weakSelf addNodeToSync:node withCompletionBlock:^(BOOL completed) {
-                if (completionBlock != NULL)
-                {
-                    completionBlock(succeeded);
-                }
-            }];
+            if ([weakSelf isFirstUse])
+            {
+                [weakSelf showSyncAlertIfFirstUseWithCompletionBlock:^(BOOL completed) {
+                    
+                    [weakSelf addNodeToSync:node withCompletionBlock:^(BOOL completed) {
+                        if (completionBlock != NULL)
+                        {
+                            completionBlock(succeeded);
+                        }
+                    }];
+                }];
+            }
+            else
+            {
+                [weakSelf addNodeToSync:node withCompletionBlock:^(BOOL completed) {
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock(succeeded);
+                    }
+                }];
+            }
         }
         else
         {
@@ -857,7 +934,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     [self.documentFolderService removeFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
-            [weakSelf removeFavorite:node withCompletionBlock:^(BOOL succeeded) {
+            [weakSelf removeNodeFromSync:node withCompletionBlock:^(BOOL succeeded) {
                 if (completionBlock != NULL)
                 {
                     completionBlock(succeeded);

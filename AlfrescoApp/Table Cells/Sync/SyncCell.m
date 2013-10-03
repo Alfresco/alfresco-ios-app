@@ -30,12 +30,6 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     // Configure the view for the selected state
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.details.font = [UIFont italicSystemFontOfSize:14.0];
-}
-
 - (void)statusChanged:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
@@ -43,7 +37,9 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     {
         SyncNodeStatus *nodeStatus = notification.object;
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
-        [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
+        });
     }
 }
 
@@ -51,9 +47,10 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
 {
     if ([propertyChanged isEqualToString:kSyncStatus])
     {
-        [self updateSyncStatus:nodeStatus.status];
         [self setAccessoryViewForState:nodeStatus.status];
     }
+    
+    self.status.image = [self statusImageForSyncState:nodeStatus.status];
     
     if (nodeStatus.status == SyncStatusLoading && nodeStatus.bytesTransfered > 0 && nodeStatus.bytesTransfered < nodeStatus.bytesTotal)
     {
@@ -67,44 +64,46 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     }
 }
 
-- (void)updateSyncStatus:(SyncStatus)status
+- (UIImage *)statusImageForSyncState:(SyncStatus)syncStatus
 {
-    switch (status)
+    UIImage *statusImage = nil;
+    switch (syncStatus)
     {
         case SyncStatusFailed:
-            self.status.image = [UIImage imageNamed:@"sync-status-failed"];
+            statusImage = [UIImage imageNamed:@"sync-status-failed"];
             break;
             
         case SyncStatusLoading:
-            self.status.image = [UIImage imageNamed:@"sync-status-loading"];
+            statusImage = [UIImage imageNamed:@"sync-status-loading"];
             break;
             
         case SyncStatusOffline:
             /**
              * NOTE: This image doesn't actually exist in the current codebase!
              */
-            self.status.image = [UIImage imageNamed:@"sync-status-offline"];
+            statusImage = [UIImage imageNamed:@"sync-status-offline"];
             break;
             
         case SyncStatusSuccessful:
-            self.status.image = [UIImage imageNamed:@"sync-status-success"];
+            statusImage = [UIImage imageNamed:@"sync-status-success"];
             break;
             
         case SyncStatusCancelled:
-            self.status.image = [UIImage imageNamed:@"sync-status-failed"];
+            statusImage = [UIImage imageNamed:@"sync-status-failed"];
             break;
             
         case SyncStatusWaiting:
-            self.status.image = [UIImage imageNamed:@"sync-status-pending"];
+            statusImage = [UIImage imageNamed:@"sync-status-pending"];
             break;
             
         case SyncStatusDisabled:
-            [self.status setImage:nil];
+            statusImage = nil;
             break;
             
         default:
             break;
     }
+    return statusImage;
 }
 
 - (void)setAccessoryViewForState:(SyncStatus)status

@@ -18,7 +18,7 @@
 @dynamic isTopLevelSyncNode;
 @dynamic lastDownloadedDate;
 @dynamic node;
-@dynamic syncName;
+@dynamic syncContentPath;
 @dynamic syncNodeInfoId;
 @dynamic nodes;
 @dynamic parentNode;
