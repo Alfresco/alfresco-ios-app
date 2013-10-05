@@ -13,9 +13,11 @@
 
 @implementation SyncNodeInfo
 
+@dynamic title;
 @dynamic isFolder;
 @dynamic isUnfavoritedHasLocalChanges;
 @dynamic isTopLevelSyncNode;
+@dynamic reloadContent;
 @dynamic lastDownloadedDate;
 @dynamic node;
 @dynamic syncContentPath;

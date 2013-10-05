@@ -13,9 +13,11 @@
 
 @interface SyncNodeInfo : NSManagedObject
 
+@property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSNumber *isFolder;
 @property (nonatomic, retain) NSNumber *isUnfavoritedHasLocalChanges;
 @property (nonatomic, retain) NSNumber *isTopLevelSyncNode;
+@property (nonatomic, retain) NSNumber *reloadContent;
 @property (nonatomic, retain) NSDate *lastDownloadedDate;
 @property (nonatomic, retain) NSData *node;
 @property (nonatomic, retain) NSString *syncContentPath;

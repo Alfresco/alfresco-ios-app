@@ -22,23 +22,30 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
 
 + (NSArray*)retrieveRecordsForTable:(NSString *)table
 {
-	NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:[CoreDataUtils managedObjectContext]];
-	
-	NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
-	[fetchRequest setEntity:entity];
-	
-	NSArray *records = [[CoreDataUtils managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-	return records;
+	return [CoreDataUtils retrieveRecordsForTable:table withPredicate:nil sortDescriptors:nil];
 }
 
 + (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate
+{
+    return [CoreDataUtils retrieveRecordsForTable:table withPredicate:predicate sortDescriptors:nil];
+}
+
++ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors
 {
     NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:[CoreDataUtils managedObjectContext]];
 	
 	NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entity];
-	[fetchRequest setPredicate:predicate];
-	
+    
+    if (predicate)
+    {
+        [fetchRequest setPredicate:predicate];
+    }
+	if (sortDescriptors)
+    {
+        [fetchRequest setSortDescriptors:sortDescriptors];
+    }
+    
 	NSArray *records = [[CoreDataUtils managedObjectContext] executeFetchRequest:fetchRequest error:nil];
 	return records;
 }
@@ -111,7 +118,7 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
 
 + (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId
 {
-     NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"syncNodeInfoId == %@", nodeId]];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"syncNodeInfoId == %@", nodeId]];
     if (nodes.count > 0)
     {
         return nodes[0];
@@ -131,7 +138,17 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
 
 + (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId
 {
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"repository.repositoryId == %@ && isTopLevelSyncNode == YES", repositoryId]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"repository.repositoryId == %@ && isTopLevelSyncNode == YES", repositoryId];
+    NSSortDescriptor *titleSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor]];
+    return nodes;
+}
+
++ (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parentNode.syncNodeInfoId == %@", folderId];
+    NSSortDescriptor *titleSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor]];
     return nodes;
 }
 

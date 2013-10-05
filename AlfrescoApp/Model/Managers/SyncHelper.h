@@ -12,6 +12,7 @@
 extern NSString * const kLastDownloadedDateKey;
 extern NSString * const kSyncNodeKey;
 extern NSString * const kSyncContentPathKey;
+extern NSString * const kSyncReloadContentKey;
 
 @interface SyncHelper : NSObject
 

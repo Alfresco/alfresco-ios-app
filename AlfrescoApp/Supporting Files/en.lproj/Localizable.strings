@@ -48,6 +48,16 @@
 "sync.enable.message" = "Would you like to automatically keep your favorite documents in sync with this %@?";
 
 /**
+ * Sync Obstacles
+ */
+"sync-errors.title" = "Sync Errors";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following documents have been unfavorited on the server but have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Downloads\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "The following documents have been deleted on the server but copies have been saved to the \"Downloads\" section";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following documents are pending sync and have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Downloads\"";
+"sync-errors.button.sync" = "Sync";
+"sync-errors.button.save" = "Save";
+
+/**
  * Errors
  */
 "error.filefolder.rootfolder.notfound" = "Root folder could not be loaded. Error: %@.";

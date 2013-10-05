@@ -6,8 +6,10 @@
         <attribute name="isUnfavoritedHasLocalChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastDownloadedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="node" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="reloadContent" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="syncContentPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="syncNodeInfoId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="parentNode" inverseEntity="SyncNodeInfo" syncable="YES"/>
         <relationship name="parentNode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="nodes" inverseEntity="SyncNodeInfo" syncable="YES"/>
         <relationship name="repository" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncRepository" inverseName="nodes" inverseEntity="SyncRepository" syncable="YES"/>

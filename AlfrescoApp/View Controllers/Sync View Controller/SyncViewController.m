@@ -13,6 +13,7 @@
 #import "PreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
+#import "SyncObstaclesViewController.h"
 
 static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
@@ -46,6 +47,11 @@ static NSString * const kSyncInterface = @"SyncViewController";
     [self loadSyncNodesForFolder:self.parentNode];
     
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title") ;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleSyncObstacles:)
+                                                 name:kSyncObstaclesNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -212,6 +218,22 @@ static NSString * const kSyncInterface = @"SyncViewController";
 {
     [self showLoadingTextInRefreshControl:refreshControl];
     [self loadSyncNodesForFolder:self.parentNode];
+}
+
+#pragma mark - Private Class Functions
+
+- (void)handleSyncObstacles:(NSNotification *)notification
+{
+    NSMutableDictionary *syncObstacles = [[notification.userInfo objectForKey:kSyncObstaclesKey] mutableCopy];
+    
+    if (syncObstacles)
+    {
+        SyncObstaclesViewController *syncObstaclesController = [[SyncObstaclesViewController alloc] initWithErrors:syncObstacles];
+        syncObstaclesController.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        UINavigationController *syncObstaclesNavigationController = [[UINavigationController alloc] initWithRootViewController:syncObstaclesController];
+        [UniversalDevice displayModalViewController:syncObstaclesNavigationController onController:self withCompletionBlock:nil];
+    }
 }
 
 @end

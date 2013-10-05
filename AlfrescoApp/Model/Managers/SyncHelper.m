@@ -15,8 +15,9 @@
 NSString * const kLastDownloadedDateKey = @"lastDownloadedDate";
 NSString * const kSyncNodeKey = @"node";
 NSString * const kSyncContentPathKey = @"contentPath";
+NSString * const kSyncReloadContentKey = @"reloadContent";
 
-static NSString * const kSyncContentDirectory = @"sync/content";
+static NSString * const kSyncContentDirectory = @"sync";
 
 @interface SyncHelper ()
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
@@ -122,17 +123,14 @@ static NSString * const kSyncContentDirectory = @"sync/content";
         
         if (infoTobePreserved)
         {
-            AlfrescoNode *existingNode = [infoTobePreserved objectForKey:kSyncNodeKey];
+            nodeInfo.reloadContent = [infoTobePreserved objectForKey:kSyncReloadContentKey];
             
+            AlfrescoNode *existingNode = [infoTobePreserved objectForKey:kSyncNodeKey];
             if (existingNode)
             {
                 nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:existingNode];
                 nodeInfo.lastDownloadedDate = [infoTobePreserved objectForKey:kLastDownloadedDateKey];
                 nodeInfo.syncContentPath = [infoTobePreserved objectForKey:kSyncContentPathKey];
-            }
-            else
-            {
-                nodeInfo.node = nil;
             }
         }
         return YES;
@@ -167,12 +165,14 @@ static NSString * const kSyncContentDirectory = @"sync/content";
             syncNodeInfo.node = archivedNode;
             syncNodeInfo.repository = repository;
             syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
+            syncNodeInfo.title = alfrescoNode.name;
         }
         
         // update node info with existing info for documents (will set their new info once they are successfully downloaded) - for folders update their nodes
         if ([syncNodeInfo.isFolder intValue])
         {
             syncNodeInfo.node = archivedNode;
+            syncNodeInfo.title = alfrescoNode.name;
         }
         else
         {

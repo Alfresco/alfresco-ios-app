@@ -25,8 +25,8 @@ static NSUInteger const kSyncConfirmationOptionNo = 1;
 /*
  * Sync Obstacle keys
  */
-static NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavoritedOnServerWithLocalChanges";
-static NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
+NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavoritedOnServerWithLocalChanges";
+NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
 static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyAfterUpload";
 
 @interface SyncManager ()
@@ -84,41 +84,28 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     if (!syncNodes)
     {
         syncNodes = [NSMutableArray array];
+        NSArray *nodesInfo = nil;
         if (folder)
         {
-            SyncNodeInfo *localFolder = [CoreDataUtils nodeInfoForObjectWithNodeId:folderKey];
-            if (localFolder)
-            {
-                NSSet *synNodesInfo = localFolder.nodes;
-                
-                for (SyncNodeInfo *node in synNodesInfo)
-                {
-                    AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:node.node];
-                    if (alfrescoNode)
-                    {
-                        [syncNodes addObject:alfrescoNode];
-                    }
-                }
-            }
+            nodesInfo = [CoreDataUtils syncNodesInfoForFolderWithId:folder.identifier];
         }
         else
         {
-            // if folder is nil - retrieve top level sync nodes - To Be Discussed: when offline do we show sync nodes for all accounts? if not which one are we going to show?
-            //localFolder = [CoreDataUtils repositoryObjectForRepositoryWithId:folderKey];
             NSArray *repositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject];
             if (repositories.count > 0)
             {
+                // temporarily displaying nodes for first repository when offline until Accounts Manager is able to return identifier for selected Account
                 SyncRepository *repository = repositories[0];
-                
-                NSArray *topLevelSyncNodes = [CoreDataUtils topLevelSyncNodesInfoForRepositoryWithId:repository.repositoryId];
-                for (SyncNodeInfo *node in topLevelSyncNodes)
-                {
-                    AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:node.node];
-                    if (alfrescoNode)
-                    {
-                        [syncNodes addObject:alfrescoNode];
-                    }
-                }
+                nodesInfo = [CoreDataUtils topLevelSyncNodesInfoForRepositoryWithId:repository.repositoryId];
+            }
+        }
+        
+        for (SyncNodeInfo *nodeInfo in nodesInfo)
+        {
+            AlfrescoNode *alfrescoNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
+            if (alfrescoNode)
+            {
+                [syncNodes addObject:alfrescoNode];
             }
         }
     }
@@ -309,6 +296,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 [localNodeInfoToBePreserved setValue:localNodeInfo.lastDownloadedDate forKey:kLastDownloadedDateKey];
                 [localNodeInfoToBePreserved setValue:localNodeInfo.syncContentPath forKey:kSyncContentPathKey];
             }
+            else
+            {
+                [localNodeInfoToBePreserved setValue:[NSNumber numberWithBool:YES] forKey:kSyncReloadContentKey];
+            }
             [infoToBePreservedInNewNodes setValue:localNodeInfoToBePreserved forKey:remoteNode.identifier];
             
             NSDate *lastModifiedDateForLocal = localNode.modifiedAt;
@@ -326,7 +317,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                     if (lastModifiedDateForLocal != nil && lastModifiedDateForRemote != nil)
                     {
                         // Check if document is updated on server
-                        if ([lastModifiedDateForLocal compare:lastModifiedDateForRemote] == NSOrderedAscending)
+                        BOOL reloadContent = [localNodeInfo.reloadContent intValue];
+                        if (reloadContent || ([lastModifiedDateForLocal compare:lastModifiedDateForRemote] == NSOrderedAscending))
                         {
                             nodeStatus.status = SyncStatusWaiting;
                             nodeStatus.activityType = SyncActivityTypeDownload;
@@ -343,49 +335,59 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             }
         }
         
+        // block to syncs info and content for qualified nodes
+        void (^syncInfoandContent)(void) = ^ void (void)
+        {
+            [[SyncHelper sharedHelper] updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
+                                                     forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier
+                                                            preserveInfo:infoToBePreservedInNewNodes
+                                                refreshExistingSyncNodes:includeExistingSyncNodes];
+            self.syncNodesInfo = nil;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
+                AlfrescoLogDebug(@"Total Download Size: %@", stringForLongFileSize(totalDownloadSize));
+                
+                if (totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
+                {
+                    NSString *totalSizeString = stringForLongFileSize(totalDownloadSize);
+                    NSString *maxAllowedString = stringForLongFileSize(kDefaultMaximumAllowedDownloadSize);
+                    NSString *confirmationTitle = NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title");
+                    NSString *confirmationMessage = [NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"sync download size message alert message"), totalSizeString, maxAllowedString];
+                    
+                    [self displayConfirmationAlertWithTitle:confirmationTitle message:confirmationMessage completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                        if (buttonIndex == kSyncConfirmationOptionYes)
+                        {
+                            [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
+                        }
+                    }];
+                }
+                else
+                {
+                    [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
+                }
+                
+                [self uploadContentsForNodes:nodesToUpload withCompletionBlock:nil];
+                
+                if ([self didEncounterObstaclesDuringSync])
+                {
+                    NSDictionary *syncObstacles = @{kSyncObstaclesKey : [self syncObstacles]};
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSyncObstaclesNotification object:nil userInfo:syncObstacles];
+                }
+            });
+        };
+        
         if (includeExistingSyncNodes)
         {
-            [self deleteUnWantedSyncedNodes:nodes];
+            [self deleteUnWantedSyncedNodes:nodes completionBlock:^(BOOL completed) {
+                syncInfoandContent();
+            }];
         }
-        
-        [[SyncHelper sharedHelper] updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
-                                                 forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier
-                                                        preserveInfo:infoToBePreservedInNewNodes
-                                            refreshExistingSyncNodes:includeExistingSyncNodes];
-        self.syncNodesInfo = nil;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
-            AlfrescoLogDebug(@"Total Download Size: %@", stringForLongFileSize(totalDownloadSize));
-            
-            if (totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
-            {
-                NSString *totalSizeString = stringForLongFileSize(totalDownloadSize);
-                NSString *maxAllowedString = stringForLongFileSize(kDefaultMaximumAllowedDownloadSize);
-                NSString *confirmationTitle = NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title");
-                NSString *confirmationMessage = [NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"sync download size message alert message"), totalSizeString, maxAllowedString];
-                
-                [self displayConfirmationAlertWithTitle:confirmationTitle message:confirmationMessage completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                    if (buttonIndex == kSyncConfirmationOptionYes)
-                    {
-                        [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
-                    }
-                }];
-            }
-            else
-            {
-                [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
-            }
-            
-            [self uploadContentsForNodes:nodesToUpload withCompletionBlock:nil];
-            
-            if ([self didEncounterObstaclesDuringSync])
-            {
-                NSDictionary *syncObstacles = @{kSyncObstaclesKey : [self syncObstacles]};
-                [[NSNotificationCenter defaultCenter] postNotificationName:kSyncObstaclesNotification object:nil userInfo:syncObstacles];
-            }
-        });
+        else
+        {
+            syncInfoandContent();
+        }
     }
     else
     {
@@ -408,46 +410,76 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return ([downloadedDate compare:localModificationDate] == NSOrderedAscending);
 }
 
-- (void)deleteUnWantedSyncedNodes:(NSArray *)nodes
+- (void)deleteUnWantedSyncedNodes:(NSArray *)nodes completionBlock:(void (^)(BOOL completed))completionBlock
 {
     NSMutableArray *identifiersForNodesToBeSynced = [nodes valueForKey:@"identifier"];
-    NSMutableArray *localNodesForCurrentRepository = [NSMutableArray array];
+    NSMutableArray *missingSyncDocumentsInRemote = [NSMutableArray array];
     
     // retrieve stored nodes info for current repository
     NSArray *localNodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject];
     for (SyncNodeInfo *nodeInfo in localNodes)
     {
-        if ([nodeInfo.repository.repositoryId isEqualToString:self.alfrescoSession.repositoryInfo.identifier])
+        BOOL isFolder = [nodeInfo.isFolder intValue];
+        if (!isFolder && [nodeInfo.repository.repositoryId isEqualToString:self.alfrescoSession.repositoryInfo.identifier])
         {
-            [localNodesForCurrentRepository addObject:nodeInfo];
+            // check if remote list dosnt have nodeInfo (indicates the node is unfavorited or deleted)
+            
+            if (![identifiersForNodesToBeSynced containsObject:nodeInfo.syncNodeInfoId])
+            {
+                [missingSyncDocumentsInRemote addObject:nodeInfo.syncNodeInfoId];
+            }
         }
     }
     
-    for (SyncNodeInfo *nodeInfo in localNodesForCurrentRepository)
+    NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+    NSMutableArray *syncObstacleUnFavorited = [_syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
+    [syncObstableDeleted removeAllObjects];
+    [syncObstacleUnFavorited removeAllObjects];
+    
+    __block int totalChecksForObstacles = missingSyncDocumentsInRemote.count;
+    
+    if (totalChecksForObstacles > 0)
     {
-        // check if nodeInfo is not a folder and remote list dosnt have nodeInfo (indicates the node is unfavorited or deleted)
-        BOOL isFolder = [nodeInfo.isFolder intValue];
-        if (!isFolder && ![identifiersForNodesToBeSynced containsObject:nodeInfo.syncNodeInfoId])
+        for (NSString *nodeId in missingSyncDocumentsInRemote)
         {
-            BOOL encounteredObstacle = NO;
+            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId];
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
             // check if there is any problem with removing the node from local sync
-            encounteredObstacle = [self checkForObstaclesInRemovingDownloadForNode:localNode];
             
-            if (encounteredObstacle == NO)
-            {
-                // if no problem with removing the node from local sync then delete the node from local sync nodes
-                [[SyncHelper sharedHelper] deleteNodeFromSync:localNode inRepitory:self.alfrescoSession.repositoryInfo.identifier];
-            }
-            else
-            {
-                // if any problem encountered then set isUnfavoritedHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
-                nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:YES];
-                nodeInfo.parentNode = nil;
-            }
+            [self checkForObstaclesInRemovingDownloadForNode:localNode completionBlock:^(BOOL encounteredObstacle) {
+                
+                totalChecksForObstacles--;
+                
+                if (encounteredObstacle == NO)
+                {
+                    // if no problem with removing the node from local sync then delete the node from local sync nodes
+                    [[SyncHelper sharedHelper] deleteNodeFromSync:localNode inRepitory:self.alfrescoSession.repositoryInfo.identifier];
+                }
+                else
+                {
+                    // if any problem encountered then set isUnfavoritedHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
+                    nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:YES];
+                    nodeInfo.parentNode = nil;
+                }
+                
+                if (totalChecksForObstacles == 0)
+                {
+                    [CoreDataUtils saveContext];
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock(YES);
+                    }
+                }
+            }];
         }
     }
-    [CoreDataUtils saveContext];
+    else
+    {
+        if (completionBlock != NULL)
+        {
+            completionBlock(YES);
+        }
+    }
 }
 
 #pragma mark - Sync Obstacle Methods
@@ -468,33 +500,38 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return obstacles;
 }
 
-- (BOOL)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node
+- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
 {
-    BOOL isDeletedOnServer = [self isNodeInSyncList:node];
     BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node];
-    
-    BOOL encounteredObstacle = NO;
     
     NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
     NSMutableArray *syncObstacleUnFavorited = [self.syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
     
-    if (isDeletedOnServer && isModifiedLocally)
+    if (isModifiedLocally)
     {
-        if (![[syncObstableDeleted valueForKey:@"identifier"] containsObject:node.identifier])
+        // check if node is not deleted on server
+        [self.documentFolderService retrieveNodeWithIdentifier:node.identifier completionBlock:^(AlfrescoNode *alfrescoNode, NSError *error) {
+            if (alfrescoNode)
+            {
+                [syncObstacleUnFavorited addObject:node];
+            }
+            else
+            {
+                [syncObstableDeleted addObject:node];
+            }
+            if (completionBlock != NULL)
+            {
+                completionBlock(YES);
+            }
+        }];
+    }
+    else
+    {
+        if (completionBlock != NULL)
         {
-            [syncObstableDeleted addObject:node];
-            encounteredObstacle = YES;
+            completionBlock(NO);
         }
     }
-    else if (!isDeletedOnServer && isModifiedLocally)
-    {
-        if (![[syncObstacleUnFavorited valueForKey:@"identifier"] containsObject:node.identifier])
-        {
-            [syncObstacleUnFavorited addObject:node];
-            encounteredObstacle = YES;
-        }
-    }
-    return encounteredObstacle;
 }
 
 - (NSDictionary *)nodesWithObstacleDuringSync
@@ -668,6 +705,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
     SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
     nodeStatus.status = SyncStatusLoading;
     
     NSString *destinationPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
@@ -679,14 +717,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             nodeStatus.status = SyncStatusSuccessful;
             nodeStatus.activityType = SyncActivityTypeIdle;
-            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
+            
             nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
             nodeInfo.lastDownloadedDate = [NSDate date];
-            nodeInfo.syncContentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:[syncHelper syncNameForNode:document]];
+            nodeInfo.syncContentPath = destinationPath;
+            nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
         }
         else
         {
             nodeStatus.status = SyncStatusFailed;
+            nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
         }
         [self.syncDownloads removeObjectForKey:document.identifier];
         completionBlock(YES);
