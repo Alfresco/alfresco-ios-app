@@ -32,6 +32,13 @@
 		0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */; };
 		0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */; };
 		0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247717FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png */; };
+		0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */; };
+		0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */; };
+		0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */; };
+		0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */; };
+		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */; };
+		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
+		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
@@ -379,6 +386,15 @@
 		0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stop-transfer@2x.png"; path = "Sync/stop-transfer@2x.png"; sourceTree = "<group>"; };
 		0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-button-bar-badge-error.png"; path = "Sync/ui-button-bar-badge-error.png"; sourceTree = "<group>"; };
 		0833247717FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-button-bar-badge-error@2x.png"; path = "Sync/ui-button-bar-badge-error@2x.png"; sourceTree = "<group>"; };
+		0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncObstaclesViewController.h; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.h"; sourceTree = "<group>"; };
+		0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncObstaclesViewController.m; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.m"; sourceTree = "<group>"; };
+		0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncObstaclesViewController.xib; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.xib"; sourceTree = "<group>"; };
+		0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncObstacleTableViewCell.h; sourceTree = "<group>"; };
+		0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncObstacleTableViewCell.m; sourceTree = "<group>"; };
+		0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncObstacleTableViewCell.xib; sourceTree = "<group>"; };
+		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SyncObstacleTableViewCell~ipad.xib"; sourceTree = "<group>"; };
+		0833248817FF0DC200EE6AA8 /* blue-button-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30.png"; sourceTree = "<group>"; };
+		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
@@ -993,6 +1009,7 @@
 				0833244E17F9823800EE6AA8 /* SyncViewController.h */,
 				0833244F17F9823800EE6AA8 /* SyncViewController.m */,
 				0833245117F9853600EE6AA8 /* SyncViewController.xib */,
+				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
 			);
 			name = "Sync ViewController";
 			sourceTree = "<group>";
@@ -1028,6 +1045,29 @@
 				0833247017F9900000EE6AA8 /* SyncCell.xib */,
 			);
 			name = Sync;
+			sourceTree = "<group>";
+		};
+		0833247A17FEB98900EE6AA8 /* Sync Obstacles */ = {
+			isa = PBXGroup;
+			children = (
+				0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */,
+				0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */,
+				0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */,
+				0833247E17FEB9C400EE6AA8 /* FavoritesErrorTableViewCell */,
+			);
+			name = "Sync Obstacles";
+			sourceTree = "<group>";
+		};
+		0833247E17FEB9C400EE6AA8 /* FavoritesErrorTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */,
+				0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */,
+				0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */,
+				0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */,
+			);
+			name = FavoritesErrorTableViewCell;
+			path = "Sync View Controller/Sync Obstacles/FavoritesErrorTableViewCell";
 			sourceTree = "<group>";
 		};
 		08E89C9E17E7593B006936DF /* AlfrescoApp Tests */ = {
@@ -1524,6 +1564,8 @@
 			children = (
 				73B959FB17A68B7E0099FB84 /* play-media.png */,
 				73B959FC17A68B7E0099FB84 /* play-media@2x.png */,
+				0833248817FF0DC200EE6AA8 /* blue-button-30.png */,
+				0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -2380,6 +2422,7 @@
 				73B95A6617A68B7E0099FB84 /* avatar@2x.png in Resources */,
 				73B95A6717A68B7E0099FB84 /* play-media.png in Resources */,
 				7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */,
+				0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */,
 				0833246517F98CED00EE6AA8 /* sync-status-failed@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
@@ -2424,6 +2467,7 @@
 				0833246B17F98CED00EE6AA8 /* sync-status-success@2x.png in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
+				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
@@ -2446,9 +2490,11 @@
 				73B95A9917A68B7E0099FB84 /* system_notice_error@2x.png in Resources */,
 				73B95A9A17A68B7E0099FB84 /* system_notice_info.png in Resources */,
 				73B95A9B17A68B7E0099FB84 /* system_notice_info@2x.png in Resources */,
+				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
 				73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */,
+				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */,
 				73B95AA017A68B7E0099FB84 /* activities-tabbar.png in Resources */,
 				73B95AA117A68B7E0099FB84 /* activities-tabbar@2x.png in Resources */,
@@ -2458,6 +2504,7 @@
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
+				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				73B95AA617A68B7E0099FB84 /* repository-tabbar.png in Resources */,
 				73B95AA717A68B7E0099FB84 /* repository-tabbar@2x.png in Resources */,
 				73B95AA817A68B7E0099FB84 /* sites-tabbar.png in Resources */,
@@ -2592,6 +2639,7 @@
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				73F6348417E34A990065590E /* AlfrescoComment.m in Sources */,
 				73F6349217E34A990065590E /* AlfrescoRepositoryCapabilities.m in Sources */,
+				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				73F634C217E34A990065590E /* AlfrescoWorkflowProcessDefinitionServicePublicAPI.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
@@ -2667,6 +2715,7 @@
 				73F634D717E34A990065590E /* AlfrescoUntrustedSSLHTTPRequest.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
+				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				73F6348D17E34A990065590E /* AlfrescoNode.m in Sources */,
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,

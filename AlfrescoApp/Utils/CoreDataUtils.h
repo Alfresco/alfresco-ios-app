@@ -20,6 +20,7 @@ extern NSString * const kSyncNodeInfoManagedObject;
 
 + (NSArray*)retrieveRecordsForTable:(NSString *)table;
 + (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate;
++ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
 
 + (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject;
 + (void)deleteAllRecordsInTable:(NSString*)table;
@@ -33,5 +34,6 @@ extern NSString * const kSyncNodeInfoManagedObject;
 + (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId;
 + (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId;
 + (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId;
++ (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId;
 
 @end
