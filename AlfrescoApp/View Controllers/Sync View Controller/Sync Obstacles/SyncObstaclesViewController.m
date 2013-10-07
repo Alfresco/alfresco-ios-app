@@ -212,7 +212,6 @@
         label.text = NSLocalizedString([self.sectionHeaders objectForKey:key], @"TableView Header Section Descriptions");
         
         [headerView addSubview:label];
-        
         return headerView;
     }
     return nil;
