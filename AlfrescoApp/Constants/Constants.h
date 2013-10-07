@@ -39,6 +39,8 @@ extern NSString * const kApplicationPolicySettingVideoEnabled;
 // Sync
 extern NSString * const kSyncObstaclesKey;
 extern NSInteger const kDefaultMaximumAllowedDownloadSize;
+extern NSString * const kSyncPreference;
+extern NSString * const kSyncOnCellular;
 
 // Sync notification constants
 extern NSString * const kSyncStatusChangeNotification;
