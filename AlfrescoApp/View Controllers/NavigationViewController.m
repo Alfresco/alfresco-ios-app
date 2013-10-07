@@ -7,6 +7,7 @@
 //
 
 #import "NavigationViewController.h"
+#import "ThemeUtil.h"
 
 @interface NavigationViewController ()
 
@@ -32,10 +33,7 @@
 {
     [super viewDidLoad];
     
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0"))
-    {
-        self.navigationBar.barStyle = UIBarStyleBlack;
-    }
+    [ThemeUtil applyThemeToNavigationController:self];
     
     self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"expand.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
 }
@@ -140,23 +138,11 @@
     }
 }
 
-#pragma mark - Split view
+#pragma mark - DetailSplitViewControllerDelegate
 
-- (void)splitViewController:(UISplitViewController *)splitController willHideViewController:(UIViewController *)viewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)popoverController
+- (void)didPressExpandCollapseButton:(DetailSplitViewController *)detailSplitViewController button:(UIBarButtonItem *)button
 {
-    barButtonItem.title = NSLocalizedString(@"splitviewcontroller.showmasterbutton", @"Show Master Button");
-    [self.rootViewController.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-    self.masterPopoverController = popoverController;
-    self.showMasterButton = barButtonItem;
-    self.isCurrentlyExpanded = NO;
-}
-
-- (void)splitViewController:(UISplitViewController *)splitController willShowViewController:(UIViewController *)viewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
-{
-    self.expandButton.image = [UIImage imageNamed:@"expand.png"];;
-    [self.rootViewController.navigationItem setLeftBarButtonItem:self.expandButton animated:YES];
-    self.masterPopoverController = nil;
-    self.isCurrentlyExpanded = NO;
+    [detailSplitViewController expandOrCollapse];
 }
 
 @end
