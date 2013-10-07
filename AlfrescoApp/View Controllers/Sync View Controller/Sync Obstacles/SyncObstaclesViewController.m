@@ -232,10 +232,10 @@
 
 - (NSIndexPath *)indexPathForButtonPressed:(UIButton *)button
 {
-    int cellViewHierarchyCount = 4;
     UIView *cell = button.superview;
     
-    for (int i = 0; i < cellViewHierarchyCount; i++)
+    BOOL foundTableView = NO;
+    while (!foundTableView)
     {
         if (![cell isKindOfClass:[UITableViewCell class]])
         {
@@ -243,7 +243,7 @@
         }
         else
         {
-            break;
+            foundTableView = YES;
         }
     }
     

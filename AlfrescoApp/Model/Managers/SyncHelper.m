@@ -42,11 +42,6 @@ static NSString * const kSyncContentDirectory = @"sync";
         // refresh data in Database for repository
         [self deleteStoredInfoForRepository:repositoryId];
     }
-    else
-    {
-        // bring synco info to managed context
-        [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject];
-    }
     
     SyncRepository *syncRepository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId];
     if (!syncRepository)
@@ -89,34 +84,6 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 - (void)populateNodes:(NSArray *)nodes inParentFolder:(NSString *)folderId forRepository:(NSString *)repositoryId preserveInfo:(NSDictionary *)info
 {
-    id (^objectInManagedObjectContextForNode)(NSString *) = ^ id (NSString *nodeId)
-    {
-        id objectInManagedContext = nil;
-        NSSet *managedContextRegisteredObjects = [[CoreDataUtils managedObjectContext] registeredObjects];
-        for (NSManagedObject *object in managedContextRegisteredObjects)
-        {
-            if ([object isKindOfClass:[SyncNodeInfo class]])
-            {
-                SyncNodeInfo *nodeInfo = (SyncNodeInfo *)object;
-                if ([nodeInfo.syncNodeInfoId isEqualToString:nodeId])
-                {
-                    objectInManagedContext = nodeInfo;
-                    break;
-                }
-            }
-            else if ([object isKindOfClass:[SyncRepository class]])
-            {
-                SyncRepository *syncRepository = (SyncRepository *)object;
-                if ([syncRepository.repositoryId isEqualToString:nodeId])
-                {
-                    objectInManagedContext = syncRepository;
-                    break;
-                }
-            }
-        }
-        return objectInManagedContext;
-    };
-    
     BOOL (^updateInfoWithExistingInfoForSyncNode)(SyncNodeInfo *) = ^ BOOL (SyncNodeInfo *nodeInfo)
     {
         NSDictionary *infoTobePreserved = [info objectForKey:nodeInfo.syncNodeInfoId];
@@ -136,24 +103,33 @@ static NSString * const kSyncContentDirectory = @"sync";
         return YES;
     };
     
-    SyncRepository *repository = objectInManagedObjectContextForNode(repositoryId);
+    SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId];
     BOOL isTopLevelSyncNode = ([folderId isEqualToString:repositoryId]);
     
     // retrieve existing or create new parent folder in managed context
-    id parentNodeInfo = objectInManagedObjectContextForNode(folderId);
-    if (parentNodeInfo == nil)
+    id parentNodeInfo = nil;
+    if (isTopLevelSyncNode)
     {
-        parentNodeInfo = [CoreDataUtils createSyncNodeInfoMangedObject];
-        [parentNodeInfo setSyncNodeInfoId:folderId];
-        [parentNodeInfo setRepository:repository];
-        [parentNodeInfo setIsFolder:[NSNumber numberWithBool:YES]];
+        parentNodeInfo = repository;
+    }
+    else
+    {
+        parentNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:folderId];
+        if (parentNodeInfo == nil)
+        {
+            parentNodeInfo = [CoreDataUtils createSyncNodeInfoMangedObject];
+            [parentNodeInfo setSyncNodeInfoId:folderId];
+            [parentNodeInfo setRepository:repository];
+            [parentNodeInfo setIsTopLevelSyncNode:[NSNumber numberWithBool:isTopLevelSyncNode]];
+            [parentNodeInfo setIsFolder:[NSNumber numberWithBool:YES]];
+        }
     }
     
     // populate parent folder with its children nodes
     for (AlfrescoNode *alfrescoNode in nodes)
     {
         // check if we already have object in managedContext for alfrescoNode
-        SyncNodeInfo *syncNodeInfo = objectInManagedObjectContextForNode(alfrescoNode.identifier);
+        SyncNodeInfo *syncNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:alfrescoNode.identifier];
         NSData *archivedNode = [NSKeyedArchiver archivedDataWithRootObject:alfrescoNode];
         
         // create new nodeInfo for node if it does not exist yet
@@ -161,20 +137,15 @@ static NSString * const kSyncContentDirectory = @"sync";
         {
             syncNodeInfo = [CoreDataUtils createSyncNodeInfoMangedObject];
             syncNodeInfo.syncNodeInfoId = alfrescoNode.identifier;
-            syncNodeInfo.isFolder = [NSNumber numberWithBool:alfrescoNode.isFolder];
-            syncNodeInfo.node = archivedNode;
-            syncNodeInfo.repository = repository;
             syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
-            syncNodeInfo.title = alfrescoNode.name;
+            syncNodeInfo.isFolder = [NSNumber numberWithBool:alfrescoNode.isFolder];
+            syncNodeInfo.repository = repository;
         }
+        syncNodeInfo.title = alfrescoNode.name;
+        syncNodeInfo.node = archivedNode;
         
         // update node info with existing info for documents (will set their new info once they are successfully downloaded) - for folders update their nodes
-        if ([syncNodeInfo.isFolder intValue])
-        {
-            syncNodeInfo.node = archivedNode;
-            syncNodeInfo.title = alfrescoNode.name;
-        }
-        else
+        if (!alfrescoNode.isFolder)
         {
             updateInfoWithExistingInfoForSyncNode(syncNodeInfo);
         }

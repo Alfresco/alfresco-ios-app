@@ -780,8 +780,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSInputStream *readStream = [[AlfrescoFileManager sharedManager] inputStreamWithFilePath:contentPath];
     AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:readStream mimeType:mimeType length:contentFile.length];
     
-    AlfrescoRequest *uploadRequest = [self.documentFolderService updateContentOfDocument:document contentStream:contentStream completionBlock:^(AlfrescoDocument *document, NSError *error) {
-        if (document)
+    AlfrescoRequest *uploadRequest = [self.documentFolderService updateContentOfDocument:document contentStream:contentStream completionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
+        if (uploadedDocument)
         {
             nodeStatus.status = SyncStatusSuccessful;
             nodeStatus.activityType = SyncActivityTypeIdle;
