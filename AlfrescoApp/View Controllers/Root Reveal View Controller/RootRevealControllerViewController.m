@@ -90,7 +90,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     
     if (self.masterViewController)
     {
-        self.masterViewController.view.frame = self.masterViewContainer.bounds;
+        self.masterViewController.view.frame = self.masterViewContainer.frame;
         [self addChildViewController:self.masterViewController];
         [self.masterViewContainer addSubview:self.masterViewController.view];
         [self.masterViewController didMoveToParentViewController:self];
@@ -98,7 +98,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     
     if (self.detailViewController)
     {
-        self.detailViewController.view.frame = self.detailViewContainer.bounds;
+        self.detailViewController.view.frame = self.detailViewContainer.frame;
         [self addChildViewController:self.detailViewController];
         [self.detailViewContainer addSubview:self.detailViewController.view];
         [self.detailViewController didMoveToParentViewController:self];

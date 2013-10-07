@@ -44,6 +44,11 @@
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
+		73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD01802C679007172EE /* ActionCollectionView.m */; };
+		73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD31802C679007172EE /* ActionCollectionViewCell.m */; };
+		73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AD41802C679007172EE /* ActionCollectionViewCell.xib */; };
+		73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD71802C679007172EE /* ActionCollectionItem.m */; };
+		73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD91802C679007172EE /* ActionCollectionRow.m */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
@@ -396,6 +401,15 @@
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
+		73632ACF1802C679007172EE /* ActionCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionView.h; sourceTree = "<group>"; };
+		73632AD01802C679007172EE /* ActionCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionView.m; sourceTree = "<group>"; };
+		73632AD21802C679007172EE /* ActionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionViewCell.h; sourceTree = "<group>"; };
+		73632AD31802C679007172EE /* ActionCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionViewCell.m; sourceTree = "<group>"; };
+		73632AD41802C679007172EE /* ActionCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionCollectionViewCell.xib; sourceTree = "<group>"; };
+		73632AD61802C679007172EE /* ActionCollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionItem.h; sourceTree = "<group>"; };
+		73632AD71802C679007172EE /* ActionCollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionItem.m; sourceTree = "<group>"; };
+		73632AD81802C679007172EE /* ActionCollectionRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionRow.h; sourceTree = "<group>"; };
+		73632AD91802C679007172EE /* ActionCollectionRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionRow.m; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1073,6 +1087,38 @@
 			name = "Detail Split View Controller";
 			sourceTree = "<group>";
 		};
+		73632ACE1802C679007172EE /* Action Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				73632ACF1802C679007172EE /* ActionCollectionView.h */,
+				73632AD01802C679007172EE /* ActionCollectionView.m */,
+				73632AD11802C679007172EE /* Cells */,
+				73632AD51802C679007172EE /* Model */,
+			);
+			path = "Action Collection View";
+			sourceTree = "<group>";
+		};
+		73632AD11802C679007172EE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				73632AD21802C679007172EE /* ActionCollectionViewCell.h */,
+				73632AD31802C679007172EE /* ActionCollectionViewCell.m */,
+				73632AD41802C679007172EE /* ActionCollectionViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		73632AD51802C679007172EE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				73632AD61802C679007172EE /* ActionCollectionItem.h */,
+				73632AD71802C679007172EE /* ActionCollectionItem.m */,
+				73632AD81802C679007172EE /* ActionCollectionRow.h */,
+				73632AD91802C679007172EE /* ActionCollectionRow.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -1414,6 +1460,7 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				73632ACE1802C679007172EE /* Action Collection View */,
 				73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */,
 				73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */,
 				73B9583D17A6750F0099FB84 /* MultiSelect */,
@@ -2423,6 +2470,7 @@
 				0833246A17F98CED00EE6AA8 /* sync-status-success.png in Resources */,
 				0833246B17F98CED00EE6AA8 /* sync-status-success@2x.png in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
+				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
@@ -2520,6 +2568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73F634C417E34A990065590E /* AlfrescoWorkflowTaskPublicAPI.m in Sources */,
+				73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */,
 				73F634A717E34A990065590E /* AlfrescoCloudCommentService.m in Sources */,
 				73F634B817E34A990065590E /* AlfrescoPlaceholderActivityStreamService.m in Sources */,
 				73E9E1FD17E352C900A198B4 /* AlfrescoCMISDocument.m in Sources */,
@@ -2538,6 +2587,7 @@
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
 				73F6349717E34A990065590E /* AlfrescoWorkflowProcess.m in Sources */,
 				73F6349117E34A990065590E /* AlfrescoProperty.m in Sources */,
+				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				73F6348C17E34A990065590E /* AlfrescoListingContext.m in Sources */,
 				73F634CE17E34A990065590E /* AlfrescoDefaultHTTPRequest.m in Sources */,
@@ -2599,6 +2649,7 @@
 				73F634B617E34A990065590E /* AlfrescoOnPremiseSiteService.m in Sources */,
 				73F634C817E34A990065590E /* AlfrescoOAuthAuthenticationProvider.m in Sources */,
 				73F634A917E34A990065590E /* AlfrescoCloudPersonService.m in Sources */,
+				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73F634D517E34A990065590E /* AlfrescoSiteCache.m in Sources */,
 				0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */,
@@ -2680,6 +2731,7 @@
 				73F634BC17E34A990065590E /* AlfrescoPlaceholderRatingService.m in Sources */,
 				73B95B0317A68DF20099FB84 /* SitesListViewController.m in Sources */,
 				73F6348317E34A990065590E /* AlfrescoActivityEntry.m in Sources */,
+				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
 				7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */,
 				73F634A317E34A990065590E /* AlfrescoWorkflowProcessDefinitionService.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
