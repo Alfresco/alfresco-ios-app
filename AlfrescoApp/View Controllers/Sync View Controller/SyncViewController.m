@@ -125,18 +125,42 @@ static NSString * const kSyncInterface = @"SyncViewController";
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [[SyncManager sharedManager] syncStatusForNode:node];
     
-    syncCell.nodeId = node.identifier;
+    syncCell.node = node;
     syncCell.filename.text = node.name;
-    [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:kSyncStatus];
+    
+    NSString *modifiedDateString = nil;
+    if (nodeStatus.activityType == SyncActivityTypeUpload)
+    {
+        modifiedDateString = relativeDateFromDate(node.modifiedAt);
+        
+        // getting downloaded file locally updated Date
+        SyncManager *syncManager = [SyncManager sharedManager];
+        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+        NSError *dateError = nil;
+        NSString *pathToSyncedFile = [syncManager contentPathForNode:(AlfrescoDocument *)node];
+        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
+        if (!dateError)
+        {
+            modifiedDateString = relativeDateFromDate([fileAttributes objectForKey:kAlfrescoFileLastModification]);
+        }
+    }
+    else
+    {
+        modifiedDateString = relativeDateFromDate(node.modifiedAt);
+    }
     
     if (node.isFolder)
     {
         syncCell.image.image = imageForType(@"folder");
+        syncCell.nodeDetails = modifiedDateString;
     }
     else if (node.isDocument)
     {
         syncCell.image.image = imageForType([node.name pathExtension]);
+        syncCell.nodeDetails = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(((AlfrescoDocument *)node).contentLength)];
     }
+    
+    [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:kSyncStatus];
     
     return syncCell;
 }

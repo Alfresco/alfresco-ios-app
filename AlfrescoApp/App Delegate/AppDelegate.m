@@ -60,13 +60,13 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     NSArray *allAccounts = [[AccountManager sharedManager] allAccounts];
     
 #ifdef DEBUG
-//    [[AccountManager sharedManager] removeAllAccounts];
+    [[AccountManager sharedManager] removeAllAccounts];
 #endif
     
     // REMOVE THIS - TESTING PURPOSES ONLY
     if (!allAccounts || allAccounts.count == 0)
     {
-        Account *testAccount = [[Account alloc] initWithUsername:@"admin" password:@"incorrectPassword" description:@"test" serverAddress:@"localhost" port:@"8080"];
+        Account *testAccount = [[Account alloc] initWithUsername:@"test" password:@"incorrectPassword" description:@"test" serverAddress:@"10.244.50.32" port:@"8080"];
         [[AccountManager sharedManager] addAccount:testAccount];
     }
     

@@ -121,7 +121,19 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    return [syncHelper syncNodeStatusObjectForNode:node inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:node inSyncNodesStatus:self.syncNodesStatus];
+    
+    // if user is offline determine if the node is modified locally
+    if (!self.alfrescoSession && nodeStatus.activityType != SyncActivityTypeUpload)
+    {
+        BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node];
+        if (isModifiedLocally)
+        {
+            nodeStatus.status = SyncStatusWaiting;
+            nodeStatus.activityType = SyncActivityTypeUpload;
+        }
+    }
+    return nodeStatus;
 }
 
 #pragma mark - Private Methods
@@ -397,15 +409,20 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node
 {
-    SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    // getting last downloaded date for repository item from local directory
-    NSDate *downloadedDate = [syncHelper lastDownloadedDateForNode:node];   // need to update to get exact date when file was downloaded
-    
-    // getting downloaded file locally updated Date
-    NSError *dateError = nil;
-    NSString *pathToSyncedFile = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:[syncHelper syncNameForNode:node]];
-    NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
-    NSDate *localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
+    NSDate *downloadedDate = nil;
+    NSDate *localModificationDate = nil;
+    if (node.isDocument)
+    {
+        SyncHelper *syncHelper = [SyncHelper sharedHelper];
+        // getting last downloaded date for node from local info
+        downloadedDate = [syncHelper lastDownloadedDateForNode:node];
+        
+        // getting downloaded file locally updated Date
+        NSError *dateError = nil;
+        NSString *pathToSyncedFile = [self contentPathForNode:(AlfrescoDocument *)node];
+        NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
+        localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
+    }
     
     return ([downloadedDate compare:localModificationDate] == NSOrderedAscending);
 }
@@ -740,7 +757,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)uploadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    AlfrescoLogDebug(@"Files to upload number: %d", nodes.count);
+    AlfrescoLogDebug(@"Files to upload: %@", [nodes valueForKey:@"name"]);
     
     for (AlfrescoNode *node in nodes)
     {
@@ -786,7 +803,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeStatus.status = SyncStatusSuccessful;
             nodeStatus.activityType = SyncActivityTypeIdle;
             SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
-            nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
+            nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:uploadedDocument];
             nodeInfo.lastDownloadedDate = [NSDate date];
             nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
         }
