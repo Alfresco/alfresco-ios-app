@@ -18,6 +18,7 @@
 "Done" = "Done";
 "Retry" = "Retry";
 "Upload" = "Upload";
+"Close" = "Close";
 
 /**
  * Relative Dates

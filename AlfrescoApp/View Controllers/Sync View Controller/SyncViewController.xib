@@ -8,22 +8,27 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SyncViewController">
             <connections>
                 <outlet property="tableView" destination="WDQ-em-wTb" id="6kT-fu-gEf"/>
-                <outlet property="view" destination="9fb-Fn-XA5" id="ovu-19-aOC"/>
+                <outlet property="view" destination="K1t-1D-gF3" id="xmS-30-N0l"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="9fb-Fn-XA5">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="852"/>
+        <view contentMode="scaleToFill" id="K1t-1D-gF3">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="521"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="WDQ-em-wTb">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="852"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="WDQ-em-wTb">
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="521"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <splitViewMasterSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <color key="backgroundColor" red="0.15834578460000001" green="0.4462703495" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="WDQ-em-wTb" firstAttribute="leading" secondItem="K1t-1D-gF3" secondAttribute="leading" id="HWW-To-qXK"/>
+                <constraint firstAttribute="bottom" secondItem="WDQ-em-wTb" secondAttribute="bottom" id="UuE-6X-7jH"/>
+                <constraint firstItem="WDQ-em-wTb" firstAttribute="top" secondItem="K1t-1D-gF3" secondAttribute="top" id="nus-td-Ruz"/>
+                <constraint firstAttribute="trailing" secondItem="WDQ-em-wTb" secondAttribute="trailing" id="xym-GF-qGv"/>
+            </constraints>
         </view>
     </objects>
 </document>

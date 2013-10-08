@@ -20,7 +20,6 @@ static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
 static CGFloat const kCellImageViewWidth = 32.0f;
 static CGFloat const kCellImageViewHeight = 32.0f;
-static NSString * const kSyncInterface = @"SyncViewController";
 
 @interface SyncViewController ()
 @property (nonatomic) AlfrescoNode *parentNode;
@@ -34,7 +33,7 @@ static NSString * const kSyncInterface = @"SyncViewController";
 
 - (id)initWithParentNode:(AlfrescoNode *)node andSession:(id<AlfrescoSession>)session
 {
-    self = [super initWithNibName:kSyncInterface andSession:session];
+    self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     if (self)
     {
         self.session = session;
