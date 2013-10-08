@@ -173,7 +173,7 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 - (NSString *)syncContentDirectoryPathForRepository:(NSString *)repositoryId
 {
-    NSString *contentDirectory = [self.fileManager.homeDirectory stringByAppendingPathComponent:kSyncContentDirectory];
+    NSString *contentDirectory = [self.fileManager.documentsDirectory stringByAppendingPathComponent:kSyncContentDirectory];
     if (repositoryId)
     {
         contentDirectory = [contentDirectory stringByAppendingPathComponent:repositoryId];

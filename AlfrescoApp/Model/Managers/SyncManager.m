@@ -731,9 +731,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     
     NSString *destinationPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
-    AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
     
-    AlfrescoRequest *downloadRequest = [documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+    AlfrescoRequest *downloadRequest = [self.documentFolderService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
             nodeStatus.status = SyncStatusSuccessful;
