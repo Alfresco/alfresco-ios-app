@@ -9,8 +9,8 @@
 #import "ActionCollectionView.h"
 #import "ActionCollectionViewCell.h"
 
-static CGFloat const kCollectionCellWidth = 100.0f;
-static CGFloat const kCollectionViewHeight = 100.0f;
+static CGFloat const kCollectionCellWidth = 70.0f;
+static CGFloat const kCollectionViewHeight = 80.0f;
 
 @interface ActionCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -67,7 +67,7 @@ static CGFloat const kCollectionViewHeight = 100.0f;
     self.frame = viewFrame;
     
     self.autoresizesSubviews = YES;
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -79,7 +79,8 @@ static CGFloat const kCollectionViewHeight = 100.0f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    ActionCollectionRow *rowLocation = [self.rows objectAtIndex:section];
+    NSUInteger collectionViewIndexPath = [self.collectionViews indexOfObject:collectionView];
+    ActionCollectionRow *rowLocation = [self.rows objectAtIndex:collectionViewIndexPath];
     return rowLocation.rowItems.count;
 }
 

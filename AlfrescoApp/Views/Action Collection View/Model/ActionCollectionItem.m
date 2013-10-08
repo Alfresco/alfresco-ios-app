@@ -23,7 +23,7 @@ NSString * const kActionCollectionIdentifierOpenIn = @"ActionCollectionIdentifie
 
 + (instancetype)emailItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"site.png"] title:NSLocalizedString(@"email", @"Email") identifier:kActionCollectionIdentifierEmail];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"email", @"Email") identifier:kActionCollectionIdentifierEmail];
 }
 
 + (instancetype)openInItem
