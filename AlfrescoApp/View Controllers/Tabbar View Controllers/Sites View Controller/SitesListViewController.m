@@ -211,7 +211,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
             searchCell.nodeImageView.image = placeholderImage;
             
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
+            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode toFolderAtPath:[[AlfrescoFileManager sharedManager] temporaryDirectory] renditionType:@"doclib" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
                 if (!error)
                 {
                     [weakSelf.thumbnails setValue:savedFileName forKey:uniqueIdentifier];

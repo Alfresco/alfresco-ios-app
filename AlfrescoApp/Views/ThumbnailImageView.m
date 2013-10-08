@@ -12,8 +12,7 @@
 
 - (void)setImageAtSecurePath:(NSString *)imagePath
 {
-    NSString *thumbnailLocationString = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:imagePath];
-    NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:thumbnailLocationString]];
+    NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:imagePath]];
     
     NSTimeInterval fadeSpeed = 0.2;
     [UIView animateWithDuration:fadeSpeed animations:^{
