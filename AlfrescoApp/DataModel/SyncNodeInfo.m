@@ -25,5 +25,6 @@
 @dynamic nodes;
 @dynamic parentNode;
 @dynamic repository;
+@dynamic syncError;
 
 @end

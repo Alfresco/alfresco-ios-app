@@ -12,6 +12,7 @@
 #import "CoreDataUtils.h"
 #import "SyncRepository.h"
 #import "SyncNodeInfo.h"
+#import "SyncError.h"
 #import "SyncHelper.h"
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
@@ -134,6 +135,12 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     return nodeStatus;
+}
+
+- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
+{
+    SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:node.identifier ifNotExistsCreateNew:NO];
+    return syncError.errorDescription;
 }
 
 #pragma mark - Private Methods
@@ -736,11 +743,20 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeInfo.lastDownloadedDate = [NSDate date];
             nodeInfo.syncContentPath = destinationPath;
             nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
+            
+            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:NO];
+            [CoreDataUtils deleteRecordForManagedObject:syncError];
         }
         else
         {
             nodeStatus.status = SyncStatusFailed;
             nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
+            
+            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:YES];
+            syncError.errorCode = [NSNumber numberWithInt:error.code];
+            syncError.errorDescription = [error localizedDescription];
+            
+            nodeInfo.syncError = syncError;
         }
         [self.syncDownloads removeObjectForKey:document.identifier];
         completionBlock(YES);
@@ -781,6 +797,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
     NSString *nodeExtension = [document.name pathExtension];
     SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
     NSString *mimeType = @"application/octet-stream";
@@ -799,14 +816,23 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             nodeStatus.status = SyncStatusSuccessful;
             nodeStatus.activityType = SyncActivityTypeIdle;
-            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
+            
             nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:uploadedDocument];
             nodeInfo.lastDownloadedDate = [NSDate date];
             nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
+            
+            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:NO];
+            [CoreDataUtils deleteRecordForManagedObject:syncError];
         }
         else
         {
             nodeStatus.status = SyncStatusFailed;
+            
+            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:YES];
+            syncError.errorCode = [NSNumber numberWithInt:error.code];
+            syncError.errorDescription = [error localizedDescription];
+            
+            nodeInfo.syncError = syncError;
         }
         
         [self.syncUploads removeObjectForKey:document.identifier];

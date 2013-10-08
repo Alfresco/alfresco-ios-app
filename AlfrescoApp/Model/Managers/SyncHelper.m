@@ -79,6 +79,7 @@ static NSString * const kSyncContentDirectory = @"sync";
         {
             [CoreDataUtils deleteRecordForManagedObject:nodeInfo];
         }
+        [CoreDataUtils deleteRecordForManagedObject:nodeInfo.syncError];
     }
 }
 

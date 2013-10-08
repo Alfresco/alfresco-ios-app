@@ -46,6 +46,10 @@ extern NSString * const kSyncOnCellular;
 extern NSString * const kSyncStatusChangeNotification;
 extern NSString * const kSyncObstaclesNotification;
 
+// Confirmation Options
+extern NSUInteger const kConfirmationOptionYes;
+extern NSUInteger const kConfirmationOptionNo;
+
 // User settings keychain constants
 extern NSString * const kApplicationRepositoryUsername;
 extern NSString * const kApplicationRepositoryPassword;

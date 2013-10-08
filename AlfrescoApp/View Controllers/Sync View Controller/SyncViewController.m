@@ -14,6 +14,7 @@
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
 #import "SyncObstaclesViewController.h"
+#import "FailedTransferDetailViewController.h"
 
 static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
@@ -24,6 +25,9 @@ static NSString * const kSyncInterface = @"SyncViewController";
 @interface SyncViewController ()
 @property (nonatomic) AlfrescoNode *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
+
+@property (nonatomic, strong) UIPopoverController *retrySyncPopover;
+@property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @end
 
 @implementation SyncViewController
@@ -224,8 +228,11 @@ static NSString * const kSyncInterface = @"SyncViewController";
             break;
             
         case SyncStatusFailed:
-            [syncManager retrySyncForDocument:(AlfrescoDocument *)node];
+        {
+            self.retrySyncNode = node;
+            [self showPopoverForFailedSyncNodeAtIndexPath:indexPath];
             break;
+        }
             
         default:
         {
@@ -234,6 +241,50 @@ static NSString * const kSyncInterface = @"SyncViewController";
             break;
         }
     }
+}
+
+- (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
+{
+    SyncManager *syncManager = [SyncManager sharedManager];
+    AlfrescoNode *node = self.tableViewData[indexPath.row];
+    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
+    
+    if (IS_IPAD)
+    {
+        FailedTransferDetailViewController *syncFailedDetailController = nil;
+        
+        syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
+                                                                                       message:errorDescription];
+        
+        syncFailedDetailController.closeTarget = self;
+        syncFailedDetailController.closeAction = @selector(retrySyncAndCloseRetryPopover:);
+        
+        self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
+        [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if(cell.accessoryView.window != nil)
+        {
+            [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
+                                    message:errorDescription
+                                   delegate:self
+                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                          otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
+    }
+}
+
+- (void)retrySyncAndCloseRetryPopover:(id)controller
+{
+    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
+    [self.retrySyncPopover dismissPopoverAnimated:YES];
+    self.retrySyncNode = nil;
+    self.retrySyncPopover = nil;
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -257,6 +308,17 @@ static NSString * const kSyncInterface = @"SyncViewController";
         
         UINavigationController *syncObstaclesNavigationController = [[UINavigationController alloc] initWithRootViewController:syncObstaclesController];
         [UniversalDevice displayModalViewController:syncObstaclesNavigationController onController:self withCompletionBlock:nil];
+    }
+}
+
+#pragma mark UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
+        self.retrySyncNode = nil;
     }
 }
 
