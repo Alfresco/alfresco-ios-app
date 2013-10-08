@@ -39,7 +39,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) NSMutableDictionary *syncDownloads;
 @property (nonatomic, strong) NSMutableDictionary *syncUploads;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
-@property (nonatomic, assign) NSInteger nodeChildrenRequestsCount;
+@property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 @end
 
 @implementation SyncManager
@@ -458,7 +458,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     [syncObstacleUnFavorited removeAllObjects];
     
     __block int totalChecksForObstacles = missingSyncDocumentsInRemote.count;
-    
     if (totalChecksForObstacles > 0)
     {
         for (NSString *nodeId in missingSyncDocumentsInRemote)
