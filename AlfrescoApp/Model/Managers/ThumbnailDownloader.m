@@ -44,7 +44,7 @@
     return self;
 }
 
-- (void)retrieveImageForDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session completionBlock:(ThumbnailCompletionBlock)completionBlock
+- (void)retrieveImageForDocument:(AlfrescoDocument *)document toFolderAtPath:(NSString *)folderPath renditionType:(NSString *)renditionType session:(id<AlfrescoSession>)session completionBlock:(ThumbnailCompletionBlock)completionBlock
 {
     if (!self.session)
     {
@@ -53,21 +53,34 @@
     }
        
     NSString *fileName = [uniqueFileNameForNode(document) stringByAppendingString:@".png"];
-    NSString *filePathForFileInContainer = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:fileName];
+    
+    // if the folder doesn't exist ... create it
+    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:folderPath])
+    {
+        NSError *creationError = nil;
+        [[AlfrescoFileManager sharedManager] createDirectoryAtPath:folderPath withIntermediateDirectories:YES attributes:Nil error:&creationError];
+        
+        if (creationError)
+        {
+            AlfrescoLogError(@"Error creating previews folder. Error: %@", creationError.localizedDescription);
+        }
+    }
+    
+    NSString *filePathForFileInContainer = [folderPath stringByAppendingPathComponent:fileName];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:filePathForFileInContainer append:NO];
     
     __weak ThumbnailDownloader *weakSelf = self;
     
     if (![self thumbnailHasBeenRequestedForDocument:document])
     {
-        [self.thumbnailService retrieveRenditionOfNode:document renditionName:@"doclib" outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+        [self.thumbnailService retrieveRenditionOfNode:document renditionName:renditionType outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded)
             {
                 NSArray *completionBlocks = [weakSelf.requestedThumbnailCompletionBlocks objectForKey:fileName];
                 
                 [completionBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     ThumbnailCompletionBlock block = (ThumbnailCompletionBlock)obj;
-                    block(fileName, error);
+                    block(filePathForFileInContainer, error);
                 }];
                 
                 [weakSelf removeAllCompletionBlocksForKey:fileName];

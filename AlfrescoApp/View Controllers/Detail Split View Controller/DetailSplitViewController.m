@@ -182,10 +182,14 @@ static const CGFloat kMasterViewWidth = 300.0f;
 
 - (void)addShadowToView:(UIView *)view
 {
+    CGPathRef path = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
+    [view.layer setShadowPath:path];
     [view.layer setShadowColor:[UIColor grayColor].CGColor];
-    [view.layer setShadowOpacity:0.4];
+    [view.layer setShadowOpacity:0.5];
     [view.layer setShadowRadius:2.0];
-    [view.layer setShadowOffset:CGSizeMake(-.5, 0.0)];
+    [view.layer setShadowOffset:CGSizeMake(-0.5, 0.0)];
+    view.layer.shouldRasterize = YES;
+    view.layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
 
 @end
