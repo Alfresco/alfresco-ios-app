@@ -91,14 +91,8 @@ static NSString * const kSyncContentDirectory = @"sync";
         if (infoTobePreserved)
         {
             nodeInfo.reloadContent = [infoTobePreserved objectForKey:kSyncReloadContentKey];
-            
-            AlfrescoNode *existingNode = [infoTobePreserved objectForKey:kSyncNodeKey];
-            if (existingNode)
-            {
-                nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:existingNode];
-                nodeInfo.lastDownloadedDate = [infoTobePreserved objectForKey:kLastDownloadedDateKey];
-                nodeInfo.syncContentPath = [infoTobePreserved objectForKey:kSyncContentPathKey];
-            }
+            nodeInfo.lastDownloadedDate = [infoTobePreserved objectForKey:kLastDownloadedDateKey];
+            nodeInfo.syncContentPath = [infoTobePreserved objectForKey:kSyncContentPathKey];
         }
         return YES;
     };

@@ -304,13 +304,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             if (localNode)
             {
                 // preserve node info until they are successfully downloaded or uploaded
-                [localNodeInfoToBePreserved setValue:localNode forKey:kSyncNodeKey];
                 [localNodeInfoToBePreserved setValue:localNodeInfo.lastDownloadedDate forKey:kLastDownloadedDateKey];
                 [localNodeInfoToBePreserved setValue:localNodeInfo.syncContentPath forKey:kSyncContentPathKey];
-            }
-            else
-            {
-                [localNodeInfoToBePreserved setValue:[NSNumber numberWithBool:YES] forKey:kSyncReloadContentKey];
             }
             [infoToBePreservedInNewNodes setValue:localNodeInfoToBePreserved forKey:remoteNode.identifier];
             
@@ -335,6 +330,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                             nodeStatus.status = SyncStatusWaiting;
                             nodeStatus.activityType = SyncActivityTypeDownload;
                             [nodesToDownload addObject:remoteNode];
+                            [localNodeInfoToBePreserved setValue:[NSNumber numberWithBool:YES] forKey:kSyncReloadContentKey];
                         }
                     }
                     else
@@ -342,6 +338,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                         nodeStatus.status = SyncStatusWaiting;
                         nodeStatus.activityType = SyncActivityTypeDownload;
                         [nodesToDownload addObject:remoteNode];
+                        [localNodeInfoToBePreserved setValue:[NSNumber numberWithBool:YES] forKey:kSyncReloadContentKey];
                     }
                 }
             }
