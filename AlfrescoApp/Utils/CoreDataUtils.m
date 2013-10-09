@@ -14,6 +14,7 @@ static NSManagedObjectContext *managedObjectContext;
 
 NSString * const kSyncRepoManagedObject = @"SyncRepository";
 NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
+NSString * const kSyncErrorManagedObject = @"SyncError";
 
 
 @implementation CoreDataUtils
@@ -64,9 +65,11 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
 
 + (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject
 {
-	[[CoreDataUtils managedObjectContext] deleteObject:managedObject];
-	
-	[self saveContext];
+    if (managedObject)
+    {
+        [[CoreDataUtils managedObjectContext] deleteObject:managedObject];
+        [self saveContext];
+    }
 }
 
 + (void)deleteAllRecordsInTable:(NSString*)table
@@ -114,6 +117,12 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
     return syncNodeInfo;
 }
 
++ (SyncError *)createSyncErrorMangedObject
+{
+    SyncError *syncError = (SyncError *)[NSEntityDescription insertNewObjectForEntityForName:kSyncErrorManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    return syncError;
+}
+
 #pragma mark - Retrieve ManagedObjects
 
 + (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId
@@ -134,6 +143,19 @@ NSString * const kSyncNodeInfoManagedObject = @"SyncNodeInfo";
         return nodes[0];
     }
     return nil;
+}
+
++ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew
+{
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId];
+    SyncError *syncError = nodeInfo.syncError;
+    
+    if (createNew && !syncError)
+    {
+        syncError = [CoreDataUtils createSyncErrorMangedObject];
+        syncError.errorId = nodeId;
+    }
+    return syncError;
 }
 
 + (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId

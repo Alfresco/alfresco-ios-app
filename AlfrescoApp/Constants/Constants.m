@@ -45,6 +45,10 @@ NSString * const kSyncOnCellular = @"SyncOnCellular";
 NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification";
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 
+// Confirmation Options
+NSUInteger const kConfirmationOptionYes = 0;
+NSUInteger const kConfirmationOptionNo = 1;
+
 // User settings keychain constants
 NSString * const kApplicationRepositoryUsername = @"ApplictionRepositoryUsername";
 NSString * const kApplicationRepositoryPassword = @"ApplictionRepositoryPassword";
