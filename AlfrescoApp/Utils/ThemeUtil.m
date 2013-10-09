@@ -39,6 +39,7 @@ static UIColor *iOS6ThemeColour;
         bounceAreaFrame.origin.y = tableView.frame.size.height * -1;
         UIView *bounceAreaView = [[UIView alloc] initWithFrame:bounceAreaFrame];
         bounceAreaView.backgroundColor = [self iOS6ThemeColour];
+        bounceAreaView.layer.zPosition -= 1;
         [tableView addSubview:bounceAreaView];
     }
 }
