@@ -79,6 +79,7 @@ static NSString * const kSyncContentDirectory = @"sync";
         {
             [CoreDataUtils deleteRecordForManagedObject:nodeInfo];
         }
+        [CoreDataUtils deleteRecordForManagedObject:nodeInfo.syncError];
     }
 }
 
@@ -91,14 +92,8 @@ static NSString * const kSyncContentDirectory = @"sync";
         if (infoTobePreserved)
         {
             nodeInfo.reloadContent = [infoTobePreserved objectForKey:kSyncReloadContentKey];
-            
-            AlfrescoNode *existingNode = [infoTobePreserved objectForKey:kSyncNodeKey];
-            if (existingNode)
-            {
-                nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:existingNode];
-                nodeInfo.lastDownloadedDate = [infoTobePreserved objectForKey:kLastDownloadedDateKey];
-                nodeInfo.syncContentPath = [infoTobePreserved objectForKey:kSyncContentPathKey];
-            }
+            nodeInfo.lastDownloadedDate = [infoTobePreserved objectForKey:kLastDownloadedDateKey];
+            nodeInfo.syncContentPath = [infoTobePreserved objectForKey:kSyncContentPathKey];
         }
         return YES;
     };
@@ -178,7 +173,7 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 - (NSString *)syncContentDirectoryPathForRepository:(NSString *)repositoryId
 {
-    NSString *contentDirectory = [self.fileManager.homeDirectory stringByAppendingPathComponent:kSyncContentDirectory];
+    NSString *contentDirectory = [self.fileManager.documentsDirectory stringByAppendingPathComponent:kSyncContentDirectory];
     if (repositoryId)
     {
         contentDirectory = [contentDirectory stringByAppendingPathComponent:repositoryId];

@@ -9,14 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "SyncRepository.h"
 #import "SyncNodeInfo.h"
+#import "SyncError.h"
 
 extern NSString * const kSyncRepoManagedObject;
 extern NSString * const kSyncNodeInfoManagedObject;
+extern NSString * const kSyncErrorManagedObject;
 
 @interface CoreDataUtils : NSObject
 
 + (SyncRepository *)createSyncRepoMangedObject;
 + (SyncNodeInfo *)createSyncNodeInfoMangedObject;
++ (SyncError *)createSyncErrorMangedObject;
 
 + (NSArray*)retrieveRecordsForTable:(NSString *)table;
 + (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate;
@@ -33,6 +36,7 @@ extern NSString * const kSyncNodeInfoManagedObject;
 // Retrieve ManagedObjects
 + (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId;
 + (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId;
++ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew;
 + (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId;
 + (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId;
 

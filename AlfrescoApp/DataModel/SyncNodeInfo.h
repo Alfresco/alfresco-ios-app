@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class SyncNodeInfo, SyncRepository;
+@class SyncNodeInfo, SyncRepository, SyncError;
 
 @interface SyncNodeInfo : NSManagedObject
 
@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) SyncNodeInfo *parentNode;
 @property (nonatomic, retain) SyncRepository *repository;
+@property (nonatomic, retain) SyncError *syncError;
 @end
 
 @interface SyncNodeInfo (CoreDataGeneratedAccessors)
