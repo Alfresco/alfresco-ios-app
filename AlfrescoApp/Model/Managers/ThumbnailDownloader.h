@@ -16,7 +16,7 @@ typedef void (^ThumbnailCompletionBlock) (NSString *savedFileName, NSError *erro
 @interface ThumbnailDownloader : NSObject
 
 + (id)sharedManager;
-- (void)retrieveImageForDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session completionBlock:(ThumbnailCompletionBlock)completionBlock;
+- (void)retrieveImageForDocument:(AlfrescoDocument *)document toFolderAtPath:(NSString *)folderPath renditionType:(NSString *)renditionType session:(id<AlfrescoSession>)session completionBlock:(ThumbnailCompletionBlock)completionBlock;
 - (BOOL)thumbnailHasBeenRequestedForDocument:(AlfrescoDocument *)document;
 
 @end

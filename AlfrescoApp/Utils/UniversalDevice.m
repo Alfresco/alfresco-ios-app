@@ -35,7 +35,7 @@
                     NavigationViewController *detailNavigationViewController = (NavigationViewController *)controllerInRootDetailSplitViewController;
                     [detailNavigationViewController resetRootViewControllerWithViewController:viewController];
                     
-                    [self addExpandCollapseButtonToRootViewControllerInNavigationController:detailNavigationViewController];
+                    [self addExpandCollapseButtonToViewController:viewController];
                 }
             }
         }
@@ -112,7 +112,7 @@
     return nil;
 }
 
-+ (void)addExpandCollapseButtonToRootViewControllerInNavigationController:(UINavigationController *)navigationController
++ (void)addExpandCollapseButtonToViewController:(UIViewController *)viewController
 {
 //    UIImage *image = [UIImage imageNamed:@"download"];
 //    CGRect buttonFrame = CGRectMake(0, 0, image.size.width + 2, image.size.height);
@@ -125,8 +125,7 @@
 //    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:customButton];
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"≡" style:UIBarButtonItemStylePlain target:self action:@selector(expandCollapseButtonAction:)];
     
-    UIViewController *rootViewController = navigationController.viewControllers[0];
-    [rootViewController.navigationItem setLeftBarButtonItem:button];
+    [viewController.navigationItem setLeftBarButtonItem:button];
 }
 
 + (void)expandCollapseButtonAction:(UIBarButtonItem *)button

@@ -15,5 +15,6 @@
 + (UIViewController *)controllerDisplayedInDetailNavigationController;
 + (NSString *)detailViewItemIdentifier;
 + (void)clearDetailViewController;
++ (void)addExpandCollapseButtonToViewController:(UIViewController *)viewController;
 
 @end

@@ -22,6 +22,7 @@
 #import "ThumbnailDownloader.h"
 #import "AccountManager.h"
 #import "ThemeUtil.h"
+#import "DocumentPreviewViewController.h"
 
 static CGFloat kCellHeight = 60.0f;
 
@@ -685,11 +686,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     UIImage *returnImage = nil;
     
-    NSString *savedFileName = [self.thumbnails objectForKey:uniqueIdentifier];
-    if (savedFileName)
+    NSString *savedFileNamePath = [self.thumbnails objectForKey:uniqueIdentifier];
+    if (savedFileNamePath)
     {
-        NSString *filePathToFile = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:savedFileName];
-        NSURL *fileURL = [NSURL fileURLWithPath:filePathToFile];
+        NSURL *fileURL = [NSURL fileURLWithPath:savedFileNamePath];
         NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:fileURL];
         
         returnImage = [UIImage imageWithData:imageData];
@@ -881,7 +881,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
             cell.nodeImageView.image = placeholderImage;
             
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
+            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode toFolderAtPath:[[AlfrescoFileManager sharedManager] temporaryDirectory] renditionType:@"doclib" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
                 if (!error)
                 {
                     [weakSelf.thumbnails setValue:savedFileName forKey:uniqueIdentifier];
@@ -977,27 +977,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         else
         {
-            NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:selectedNode.name];
-            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
-            
             [self showHUD];
             [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                [self.documentService retrieveContentOfDocument:(AlfrescoDocument *)selectedNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                    [self hideHUD];
-                    if (succeeded)
-                    {
-                        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session];
-                        [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
-                    }
-                    else
-                    {
-                        // display an error
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                    // progress indicator update
-                }];
+                [self hideHUD];
+                
+                if (error)
+                {
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+                else
+                {
+                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:permissions session:self.session];
+                    previewController.hidesBottomBarWhenPushed = YES;
+                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                }
             }];
         }
     }
