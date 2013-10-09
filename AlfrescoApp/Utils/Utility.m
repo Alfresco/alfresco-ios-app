@@ -12,6 +12,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "Account.h"
 #import "Constants.h"
+#import "RootRevealControllerViewController.h"
+#import "DetailSplitViewController.h"
 
 static NSDictionary *iconMappings;
 static NSDateFormatter *dateFormatter;
@@ -53,7 +55,7 @@ SystemNotice * displayInformationMessageWithTitle(NSString *message, NSString *t
 UIView *activeView(void)
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NavigationViewController *detailNavigation = (NavigationViewController *)[[(UISplitViewController *)appDelegate.window.rootViewController viewControllers] objectAtIndex:1];
+    DetailSplitViewController *rootDetailController = (DetailSplitViewController *)[(RootRevealControllerViewController *)appDelegate.window.rootViewController detailViewController];
     if (appDelegate.window.rootViewController.presentedViewController)
     {
         //To work around a system notice that is tried to be presented in a modal view controller
@@ -61,15 +63,7 @@ UIView *activeView(void)
     }
     else if (IS_IPAD)
     {
-        if (detailNavigation.masterPopoverController.popoverVisible)
-        {
-            // Work around for displaying the alert on the master view controller's view only if it is visible
-            return detailNavigation.masterPopoverController.contentViewController.view;
-        }
-        else if (detailNavigation.isCurrentlyExpanded)
-        {
-            return detailNavigation.view;
-        }
+        return rootDetailController.view;
     }
     return appDelegate.window.rootViewController.view;
 }
