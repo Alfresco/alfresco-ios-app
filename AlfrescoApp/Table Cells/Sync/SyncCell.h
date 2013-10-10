@@ -24,6 +24,7 @@ extern NSString * const kSyncTableCellIdentifier;
 @property (nonatomic, strong) IBOutlet UIImageView *status;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteIcon;
 
+- (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus;
 - (void)updateCellWithNodeStatus:(SyncNodeStatus *)nodeStatus propertyChanged:(NSString *)propertyChanged;
 
 @end

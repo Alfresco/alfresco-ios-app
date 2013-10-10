@@ -10,10 +10,13 @@
 
 extern NSString * const kSyncStatusNodeIdKey;
 extern NSString * const kSyncStatusPropertyChangedKey;
+extern NSString * const kSyncStatusChangeKey;
+extern NSString * const kSyncLocalModificationDate;
 
 extern NSString * const kSyncStatus;
 extern NSString * const kSyncActivityType;
 extern NSString * const kSyncBytesTransfered;
+extern NSString * const kSyncTotalSize;
 
 typedef NS_ENUM(NSInteger, SyncStatus)
 {
@@ -41,6 +44,9 @@ typedef NS_ENUM(NSInteger, SyncActivityType)
 @property (nonatomic, assign) SyncStatus status;
 @property (nonatomic, assign) SyncActivityType activityType;
 @property (nonatomic, assign) unsigned long long bytesTransfered;
-@property (nonatomic, assign) unsigned long long bytesTotal;
+@property (nonatomic, assign) unsigned long long totalBytesToTransfer;
+
+@property (nonatomic, strong) NSDate *localModificationDate;
+@property (nonatomic, assign) unsigned long long totalSize;
 
 @end
