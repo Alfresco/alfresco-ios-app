@@ -11,7 +11,7 @@
 
 @interface NavigationViewController : UINavigationController <UISplitViewControllerDelegate, DetailSplitViewControllerDelegate>
 
-@property (nonatomic, weak) UIViewController *rootViewController;
+@property (nonatomic, strong) UIViewController *rootViewController;
 @property (nonatomic, strong) UIPopoverController *masterPopoverController;
 @property (nonatomic, assign) BOOL isCurrentlyExpanded;
 
