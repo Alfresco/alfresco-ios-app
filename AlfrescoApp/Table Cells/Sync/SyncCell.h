@@ -13,7 +13,9 @@ extern NSString * const kSyncTableCellIdentifier;
 
 @interface SyncCell : UITableViewCell
 
-@property (nonatomic, strong) NSString *nodeId;
+@property (nonatomic, strong) AlfrescoNode *node;
+@property (nonatomic, strong) NSString *nodeDetails;
+
 @property (nonatomic, strong) IBOutlet UILabel *filename;
 @property (nonatomic, strong) IBOutlet UILabel *details;
 @property (nonatomic, strong) IBOutlet UILabel *serverName;

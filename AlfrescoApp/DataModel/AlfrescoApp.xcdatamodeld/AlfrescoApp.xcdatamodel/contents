@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="SyncError" representedClassName="SyncError" syncable="YES">
+        <attribute name="errorCode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="errorDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="errorId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="nodeInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="syncError" inverseEntity="SyncNodeInfo" syncable="YES"/>
+    </entity>
     <entity name="SyncNodeInfo" representedClassName="SyncNodeInfo" syncable="YES">
         <attribute name="isFolder" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isTopLevelSyncNode" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isUnfavoritedHasLocalChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastDownloadedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="node" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="syncName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reloadContent" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="syncContentPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="syncNodeInfoId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="parentNode" inverseEntity="SyncNodeInfo" syncable="YES"/>
         <relationship name="parentNode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="nodes" inverseEntity="SyncNodeInfo" syncable="YES"/>
         <relationship name="repository" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncRepository" inverseName="nodes" inverseEntity="SyncRepository" syncable="YES"/>
+        <relationship name="syncError" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncError" inverseName="nodeInfo" inverseEntity="SyncError" syncable="YES"/>
     </entity>
     <entity name="SyncRepository" representedClassName="SyncRepository" syncable="YES">
         <attribute name="repositoryId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="repository" inverseEntity="SyncNodeInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SyncNodeInfo" positionX="0" positionY="0" width="234" height="193"/>
-        <element name="SyncRepository" positionX="-371" positionY="54" width="128" height="75"/>
+        <element name="SyncNodeInfo" positionX="-522" positionY="-252" width="128" height="238"/>
+        <element name="SyncRepository" positionX="-900" positionY="-63" width="128" height="75"/>
+        <element name="SyncError" positionX="-765" positionY="-225" width="128" height="103"/>
     </elements>
 </model>

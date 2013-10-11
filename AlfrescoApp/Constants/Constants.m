@@ -38,10 +38,16 @@ NSString * const kApplicationPolicySettingVideoEnabled = @"ApplicationPolicySett
 // Sync
 NSString * const kSyncObstaclesKey = @"syncObstacles";
 NSInteger const kDefaultMaximumAllowedDownloadSize = 20 * 1024 * 1024; // 20 MB
+NSString * const kSyncPreference = @"SyncNodes";
+NSString * const kSyncOnCellular = @"SyncOnCellular";
 
 // Sync Notification constants
 NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification";
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
+
+// Confirmation Options
+NSUInteger const kConfirmationOptionYes = 0;
+NSUInteger const kConfirmationOptionNo = 1;
 
 // User settings keychain constants
 NSString * const kApplicationRepositoryUsername = @"ApplictionRepositoryUsername";

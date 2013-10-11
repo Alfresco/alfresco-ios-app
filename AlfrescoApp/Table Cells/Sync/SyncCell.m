@@ -30,20 +30,16 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     // Configure the view for the selected state
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.details.font = [UIFont italicSystemFontOfSize:14.0];
-}
-
 - (void)statusChanged:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
-    if ([[info objectForKey:kSyncStatusNodeIdKey] isEqualToString:self.nodeId])
+    if ([[info objectForKey:kSyncStatusNodeIdKey] isEqualToString:self.node.identifier])
     {
         SyncNodeStatus *nodeStatus = notification.object;
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
-        [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
+        });
     }
 }
 
@@ -51,9 +47,10 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
 {
     if ([propertyChanged isEqualToString:kSyncStatus])
     {
-        [self updateSyncStatus:nodeStatus.status];
         [self setAccessoryViewForState:nodeStatus.status];
+        [self updateDetails:nodeStatus];
     }
+    [self updateStatusImageForSyncState:nodeStatus.status];
     
     if (nodeStatus.status == SyncStatusLoading && nodeStatus.bytesTransfered > 0 && nodeStatus.bytesTransfered < nodeStatus.bytesTotal)
     {
@@ -67,44 +64,46 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     }
 }
 
-- (void)updateSyncStatus:(SyncStatus)status
+- (void)updateStatusImageForSyncState:(SyncStatus)syncStatus
 {
-    switch (status)
+    UIImage *statusImage = nil;
+    switch (syncStatus)
     {
         case SyncStatusFailed:
-            self.status.image = [UIImage imageNamed:@"sync-status-failed"];
+            statusImage = [UIImage imageNamed:@"sync-status-failed"];
             break;
             
         case SyncStatusLoading:
-            self.status.image = [UIImage imageNamed:@"sync-status-loading"];
+            statusImage = [UIImage imageNamed:@"sync-status-loading"];
             break;
             
         case SyncStatusOffline:
             /**
              * NOTE: This image doesn't actually exist in the current codebase!
              */
-            self.status.image = [UIImage imageNamed:@"sync-status-offline"];
+            statusImage = [UIImage imageNamed:@"sync-status-offline"];
             break;
             
         case SyncStatusSuccessful:
-            self.status.image = [UIImage imageNamed:@"sync-status-success"];
+            statusImage = [UIImage imageNamed:@"sync-status-success"];
             break;
             
         case SyncStatusCancelled:
-            self.status.image = [UIImage imageNamed:@"sync-status-failed"];
+            statusImage = [UIImage imageNamed:@"sync-status-failed"];
             break;
             
         case SyncStatusWaiting:
-            self.status.image = [UIImage imageNamed:@"sync-status-pending"];
+            statusImage = [UIImage imageNamed:@"sync-status-pending"];
             break;
             
         case SyncStatusDisabled:
-            [self.status setImage:nil];
+            statusImage = nil;
             break;
             
         default:
             break;
     }
+    self.status.image = statusImage;
 }
 
 - (void)setAccessoryViewForState:(SyncStatus)status
@@ -135,15 +134,36 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
         
         [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-    if (button)
+    else
     {
-        [self setAccessoryView:button];
+        button = [UIButton buttonWithType:UIButtonTypeInfoDark];
+        [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if (self.node.isFolder)
+    {
+        self.accessoryView = nil;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     else
     {
-        self.accessoryView = nil;
-        self.accessoryType = UITableViewCellAccessoryDetailButton;
+        [self setAccessoryView:button];
+    }
+}
+
+- (void)updateDetails:(SyncNodeStatus *)nodeStatus
+{
+    if (nodeStatus.status == SyncStatusWaiting)
+    {
+        self.details.text = NSLocalizedString(@"sync.state.waiting-to-sync", @"waiting to sync");
+    }
+    else if (nodeStatus.status == SyncStatusFailed)
+    {
+        self.details.text = NSLocalizedString(@"sync.state.failed-to-sync", @"failed to sync");
+    }
+    else
+    {
+        self.details.text = self.nodeDetails;
     }
 }
 

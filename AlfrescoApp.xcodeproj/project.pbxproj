@@ -32,8 +32,19 @@
 		0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */; };
 		0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */; };
 		0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247717FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png */; };
+		0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */; };
+		0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */; };
+		0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */; };
+		0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */; };
+		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */; };
+		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
+		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
+		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
+		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
+		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
+		08B61FA5180421C800C827EA /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61FA4180421C800C827EA /* SyncError.m */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89C9B17E7593B006936DF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89C9A17E7593B006936DF /* XCTest.framework */; };
 		08E89C9C17E7593B006936DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
@@ -389,8 +400,23 @@
 		0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stop-transfer@2x.png"; path = "Sync/stop-transfer@2x.png"; sourceTree = "<group>"; };
 		0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-button-bar-badge-error.png"; path = "Sync/ui-button-bar-badge-error.png"; sourceTree = "<group>"; };
 		0833247717FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-button-bar-badge-error@2x.png"; path = "Sync/ui-button-bar-badge-error@2x.png"; sourceTree = "<group>"; };
+		0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncObstaclesViewController.h; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.h"; sourceTree = "<group>"; };
+		0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncObstaclesViewController.m; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.m"; sourceTree = "<group>"; };
+		0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncObstaclesViewController.xib; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.xib"; sourceTree = "<group>"; };
+		0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncObstacleTableViewCell.h; sourceTree = "<group>"; };
+		0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncObstacleTableViewCell.m; sourceTree = "<group>"; };
+		0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncObstacleTableViewCell.xib; sourceTree = "<group>"; };
+		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SyncObstacleTableViewCell~ipad.xib"; sourceTree = "<group>"; };
+		0833248817FF0DC200EE6AA8 /* blue-button-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30.png"; sourceTree = "<group>"; };
+		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
+		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
+		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
+		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
+		08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button@2x.png"; sourceTree = "<group>"; };
+		08B61FA3180421C800C827EA /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
+		08B61FA4180421C800C827EA /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncError.m; path = DataModel/SyncError.m; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
 		08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AlfrescoApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1021,6 +1047,7 @@
 				0833244E17F9823800EE6AA8 /* SyncViewController.h */,
 				0833244F17F9823800EE6AA8 /* SyncViewController.m */,
 				0833245117F9853600EE6AA8 /* SyncViewController.xib */,
+				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
 			);
 			name = "Sync ViewController";
 			sourceTree = "<group>";
@@ -1058,6 +1085,38 @@
 			name = Sync;
 			sourceTree = "<group>";
 		};
+		0833247A17FEB98900EE6AA8 /* Sync Obstacles */ = {
+			isa = PBXGroup;
+			children = (
+				0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */,
+				0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */,
+				0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */,
+				0833247E17FEB9C400EE6AA8 /* FavoritesErrorTableViewCell */,
+			);
+			name = "Sync Obstacles";
+			sourceTree = "<group>";
+		};
+		0833247E17FEB9C400EE6AA8 /* FavoritesErrorTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */,
+				0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */,
+				0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */,
+				0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */,
+			);
+			name = FavoritesErrorTableViewCell;
+			path = "Sync View Controller/Sync Obstacles/FavoritesErrorTableViewCell";
+			sourceTree = "<group>";
+		};
+		08B61F9B1804076800C827EA /* Custom Popovers */ = {
+			isa = PBXGroup;
+			children = (
+				08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */,
+				08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */,
+			);
+			name = "Custom Popovers";
+			sourceTree = "<group>";
+		};
 		08E89C9E17E7593B006936DF /* AlfrescoApp Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1088,6 +1147,8 @@
 				0833243B17EC9AE900EE6AA8 /* SyncRepository.m */,
 				0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */,
 				0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */,
+				08B61FA3180421C800C827EA /* SyncError.h */,
+				08B61FA4180421C800C827EA /* SyncError.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -1489,6 +1550,7 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				08B61F9B1804076800C827EA /* Custom Popovers */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
@@ -1626,6 +1688,10 @@
 			children = (
 				73B959FB17A68B7E0099FB84 /* play-media.png */,
 				73B959FC17A68B7E0099FB84 /* play-media@2x.png */,
+				0833248817FF0DC200EE6AA8 /* blue-button-30.png */,
+				0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */,
+				08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */,
+				08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -2482,6 +2548,7 @@
 				73B95A6617A68B7E0099FB84 /* avatar@2x.png in Resources */,
 				73B95A6717A68B7E0099FB84 /* play-media.png in Resources */,
 				7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */,
+				0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */,
 				0833246517F98CED00EE6AA8 /* sync-status-failed@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
@@ -2528,6 +2595,7 @@
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
+				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
@@ -2536,6 +2604,7 @@
 				73B95A8D17A68B7E0099FB84 /* Default@2x.png in Resources */,
 				73B95A8E17A68B7E0099FB84 /* alfresco.png in Resources */,
 				73B95A8F17A68B7E0099FB84 /* alfresco@2x.png in Resources */,
+				08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */,
 				73B95A9017A68B7E0099FB84 /* authorisationLogo.png in Resources */,
 				73B95A9117A68B7E0099FB84 /* authorisationLogo@2x.png in Resources */,
 				73B95A9217A68B7E0099FB84 /* collapse.png in Resources */,
@@ -2550,9 +2619,11 @@
 				73B95A9917A68B7E0099FB84 /* system_notice_error@2x.png in Resources */,
 				73B95A9A17A68B7E0099FB84 /* system_notice_info.png in Resources */,
 				73B95A9B17A68B7E0099FB84 /* system_notice_info@2x.png in Resources */,
+				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
 				73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */,
+				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */,
 				73B95AA017A68B7E0099FB84 /* activities-tabbar.png in Resources */,
 				73B95AA117A68B7E0099FB84 /* activities-tabbar@2x.png in Resources */,
@@ -2562,6 +2633,7 @@
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
+				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				73B95AA617A68B7E0099FB84 /* repository-tabbar.png in Resources */,
 				73B95AA717A68B7E0099FB84 /* repository-tabbar@2x.png in Resources */,
 				73B95AA817A68B7E0099FB84 /* sites-tabbar.png in Resources */,
@@ -2584,6 +2656,7 @@
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */,
+				08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
@@ -2685,6 +2758,7 @@
 				73F634A817E34A990065590E /* AlfrescoCloudDocumentFolderService.m in Sources */,
 				73F6349017E34A990065590E /* AlfrescoPerson.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
+				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				73F6349E17E34A990065590E /* AlfrescoRatingService.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
 				73F634B517E34A990065590E /* AlfrescoOnPremiseRatingService.m in Sources */,
@@ -2698,6 +2772,7 @@
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				73F6348417E34A990065590E /* AlfrescoComment.m in Sources */,
 				73F6349217E34A990065590E /* AlfrescoRepositoryCapabilities.m in Sources */,
+				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				73F634C217E34A990065590E /* AlfrescoWorkflowProcessDefinitionServicePublicAPI.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
@@ -2778,6 +2853,7 @@
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
+				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				73F6348D17E34A990065590E /* AlfrescoNode.m in Sources */,
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
@@ -2801,6 +2877,7 @@
 				73F634B417E34A990065590E /* AlfrescoOnPremisePersonService.m in Sources */,
 				73F634CA17E34A990065590E /* AlfrescoOAuthHelper.m in Sources */,
 				73F634A017E34A990065590E /* AlfrescoSiteService.m in Sources */,
+				08B61FA5180421C800C827EA /* SyncError.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
 				73F6349F17E34A990065590E /* AlfrescoSearchService.m in Sources */,
 			);
@@ -2917,6 +2994,87 @@
 			};
 			name = Release;
 		};
+		277F715317FEB6FD00B2E958 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = AdHoc;
+		};
+		277F715417FEB6FD00B2E958 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS",
+				);
+				OTHER_LDFLAGS = "\"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS/libObjectiveCMIS.a\"";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = AdHoc;
+		};
+		277F715517FEB6FD00B2E958 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AlfrescoApp.app/AlfrescoApp";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AlfrescoApp Tests/AlfrescoApp Tests-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "AlfrescoApp Tests/AlfrescoApp Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = AdHoc;
+		};
 		7373B51017A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */;
@@ -2970,7 +3128,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2980,8 +3141,6 @@
 		7373B51317A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -2996,7 +3155,6 @@
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS/libObjectiveCMIS-debug.a\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3005,8 +3163,6 @@
 		7373B51417A66E9400869949 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3021,7 +3177,6 @@
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS/libObjectiveCMIS.a\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3035,6 +3190,7 @@
 			buildConfigurations = (
 				08E89CAA17E7593C006936DF /* Debug */,
 				08E89CAB17E7593C006936DF /* Release */,
+				277F715517FEB6FD00B2E958 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3044,6 +3200,7 @@
 			buildConfigurations = (
 				7373B51017A66E9400869949 /* Debug */,
 				7373B51117A66E9400869949 /* Release */,
+				277F715317FEB6FD00B2E958 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3053,6 +3210,7 @@
 			buildConfigurations = (
 				7373B51317A66E9400869949 /* Debug */,
 				7373B51417A66E9400869949 /* Release */,
+				277F715417FEB6FD00B2E958 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
