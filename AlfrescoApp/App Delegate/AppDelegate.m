@@ -21,14 +21,18 @@
 #import "AccountManager.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
+#import "MainMenuViewController.h"
+#import "SwitchViewController.h"
+#import "PreviewViewController.h"
+#import "AboutViewController.h"
+#import "DownloadsViewController.h"
+#import "SyncViewController.h"
+#import "SettingsViewController.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 
 @interface AppDelegate()
-
-@property (nonatomic, strong) NSMutableArray *navigationControllers;
-@property (nonatomic, strong) UITabBarController *tabBarController;
 
 // Storage for deferred application:openURL:sourceApplication:annotation:
 @property (nonatomic, assign) BOOL hasDeferredOpenURLToProcess;
@@ -125,83 +129,113 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 
 - (UIViewController *)buildMainAppUIWithSession:(id<AlfrescoSession>)session
 {
-    UIViewController *rootViewController = nil;
+    RootRevealControllerViewController *rootRevealViewController = nil;
     
     // View controllers
     FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:session];
     SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
     ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
-    MoreViewController *moreViewController = [[MoreViewController alloc] initWithSession:session];
     TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
+    SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:session];
+    DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:session];
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:session];
+    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
+    PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
     
     // Navigation controllers
     NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
-    [companyHomeNavigationController setTitle:NSLocalizedString(@"companyHome.title", @"Company Home Title")];
-    [companyHomeNavigationController.tabBarItem setImage:[UIImage imageNamed:@"repository-tabbar.png"]];
-    
     NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
-    [sitesListNavigationController setTitle:NSLocalizedString(@"sites.title", @"Sites Title")];
-    [sitesListNavigationController.tabBarItem setImage:[UIImage imageNamed:@"sites-tabbar.png"]];
-    
     NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
-    [activitiesViewController setTitle:NSLocalizedString(@"activities.title", @"Activities Title")];
-    [activitiesNavigationController.tabBarItem setImage:[UIImage imageNamed:@"activities-tabbar.png"]];
-    
     NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
-    [taskNavigationController setTitle:NSLocalizedString(@"tasks.title", @"Tasks Title")];
-    [taskNavigationController.tabBarItem setImage:[UIImage imageNamed:@"downloads-tabbar.png"]];
+    NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
+    NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
+    NavigationViewController *settingsNavigationController = [[NavigationViewController alloc] initWithRootViewController:settingsViewController];
+    NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
+    NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
-    NavigationViewController *moreNavigationController = [[NavigationViewController alloc] initWithRootViewController:moreViewController];
-    moreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
+    MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
+                                                                      imageName:@"activities-tabbar.png"
+                                                              localizedTitleKey:@"activities.title"
+                                                                 viewController:activitiesNavigationController
+                                                                displayInDetail:NO];
+    MainMenuItem *repositoryItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
+                                                                      imageName:@"repository-tabbar.png"
+                                                              localizedTitleKey:@"companyHome.title"
+                                                                 viewController:companyHomeNavigationController
+                                                                displayInDetail:NO];
+    MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
+                                                                 imageName:@"sites-tabbar.png"
+                                                         localizedTitleKey:@"sites.title"
+                                                            viewController:sitesListNavigationController
+                                                           displayInDetail:NO];
+    MainMenuItem *tasksItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
+                                                                 imageName:@"help-more.png"
+                                                         localizedTitleKey:@"tasks.title"
+                                                            viewController:taskNavigationController
+                                                           displayInDetail:NO];
+    MainMenuItem *syncItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                                                                imageName:@"about-more.png"
+                                                        localizedTitleKey:@"sync.title"
+                                                           viewController:syncNavigationController
+                                                          displayInDetail:NO];
+    MainMenuItem *downloadsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
+                                                                     imageName:@"downloads-tabbar.png"
+                                                             localizedTitleKey:@"Downloads"
+                                                                viewController:downloadsNavigationController
+                                                               displayInDetail:NO];
+    MainMenuItem *settingsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSettings
+                                                                    imageName:@"help-more.png"
+                                                            localizedTitleKey:@"settings.title"
+                                                               viewController:settingsNavigationController
+                                                            displayInDetail:YES];
+    MainMenuItem *aboutItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAbout
+                                                                 imageName:@"about-more.png"
+                                                         localizedTitleKey:@"about.title"
+                                                            viewController:aboutNavigationController
+                                                           displayInDetail:YES];
+    MainMenuItem *helpItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
+                                                                imageName:@"help-more.png"
+                                                        localizedTitleKey:@"Help"
+                                                           viewController:helpNavigationController
+                                                          displayInDetail:YES];
+
+    SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:sitesListNavigationController];
     
-    // This section looks over-engineered, but does guarantee the array indices (and UITabBar order) match the enum values
-    self.navigationControllers = [NSMutableArray arrayWithCapacity:NavigationControllerType_MAX_ENUM];
-    for (NSUInteger index = 0; index < NavigationControllerType_MAX_ENUM; index++)
-    {
-        [self.navigationControllers addObject:[NSNull null]];
-    }
-    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeActivities withObject:activitiesNavigationController];
-    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeRepository withObject:companyHomeNavigationController];
-    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeSites withObject:sitesListNavigationController];
-    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeTasks withObject:taskNavigationController];
-    [self.navigationControllers replaceObjectAtIndex:NavigationControllerTypeMore withObject:moreNavigationController];
+    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithSectionArrays:@[activitiesItem],
+                                                  @[repositoryItem, sitesItem, tasksItem, syncItem],
+                                                  @[settingsItem, downloadsItem, aboutItem, helpItem],
+                                                  nil];
+    mainMenuController.delegate = switchController;
     
-    self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.delegate = self;
-    self.tabBarController.viewControllers = [NSArray arrayWithArray:self.navigationControllers];
-    [self.tabBarController setSelectedViewController:sitesListNavigationController];
-    
-    rootViewController = self.tabBarController;
-    
-    RootRevealControllerViewController *rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:nil detailViewController:self.tabBarController];
+    rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];
     
     if (IS_IPAD)
     {
         PlaceholderViewController *placeholderViewController = [[PlaceholderViewController alloc] init];
         NavigationViewController *detailNavigationController = [[NavigationViewController alloc] initWithRootViewController:placeholderViewController];
         
-        DetailSplitViewController *splitViewController = [[DetailSplitViewController alloc] initWithMasterViewController:self.tabBarController detailViewController:detailNavigationController];
-        
+        DetailSplitViewController *splitViewController = [[DetailSplitViewController alloc] initWithMasterViewController:switchController detailViewController:detailNavigationController];
         splitViewController.delegate = detailNavigationController;
         
-        rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:nil detailViewController:splitViewController];
+        rootRevealViewController.masterViewController = mainMenuController;
+        rootRevealViewController.detailViewController = splitViewController;
     }
     
-    rootViewController = rootRevealViewController;
-    
-    return rootViewController;
+    return rootRevealViewController;
 }
 
 #pragma mark - Public Interface
 
-- (NavigationViewController *)navigationControllerOfType:(NavigationControllerType)navigationControllerType
+- (NavigationViewController *)navigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType
 {
-    return [self.navigationControllers objectAtIndex:navigationControllerType];
+//    return [self.navigationControllers objectAtIndex:navigationControllerType];
+    // TODO
+    return nil;
 }
 
-- (void)activateTabBarForNavigationControllerOfType:(NavigationControllerType)navigationControllerType
+- (void)activateTabBarForNavigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType
 {
-    [self.tabBarController setSelectedIndex:navigationControllerType];
+    //    [self.tabBarController setSelectedIndex:navigationControllerType];
 }
 
 #pragma mark - UITabbarControllerDelegate Functions

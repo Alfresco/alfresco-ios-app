@@ -11,23 +11,27 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
-typedef NS_ENUM(NSUInteger, NavigationControllerType)
+typedef NS_ENUM(NSUInteger, MainMenuNavigationControllerType)
 {
     NavigationControllerTypeActivities = 0,
     NavigationControllerTypeRepository,
     NavigationControllerTypeSites,
     NavigationControllerTypeTasks,
-    NavigationControllerTypeMore,
+    NavigationControllerTypeSync,
+    NavigationControllerTypeDownloads,
+    NavigationControllerTypeSettings,
+    NavigationControllerTypeAbout,
+    NavigationControllerTypeHelp,
     NavigationControllerType_MAX_ENUM    // <-- Ensure this is the last entry
 };
 
 @property (strong, nonatomic) UIWindow *window;
 
 // Returns a NavigationViewController corresponding to the enum value passed-in
-- (NavigationViewController *)navigationControllerOfType:(NavigationControllerType)navigationControllerType;
+- (NavigationViewController *)navigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType;
 
 // Makes a UITabBar active corresponding to the enum value passed-in
-- (void)activateTabBarForNavigationControllerOfType:(NavigationControllerType)navigationControllerType;
+- (void)activateTabBarForNavigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType;
 
 /*
  Core Data

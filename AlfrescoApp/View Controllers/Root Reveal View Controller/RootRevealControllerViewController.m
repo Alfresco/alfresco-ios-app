@@ -7,6 +7,7 @@
 //
 
 #import "RootRevealControllerViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 static CGFloat kDeviceSpecificRevealWidth;
 static const CGFloat kPadRevealWidth = 50.0f;
@@ -16,8 +17,6 @@ static const CGFloat kAnimationSpeed = 0.2f;
 
 @interface RootRevealControllerViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong, readwrite) UIViewController *masterViewController;
-@property (nonatomic, strong, readwrite) UIViewController *detailViewController;
 @property (nonatomic, strong) UIView *masterViewContainer;
 @property (nonatomic, strong) UIView *detailViewContainer;
 @property (nonatomic, assign) BOOL isExpanded;
@@ -105,6 +104,8 @@ static const CGFloat kAnimationSpeed = 0.2f;
     }
     
     [self positionViews];
+    
+    [self addShadowToView:self.detailViewContainer];
 }
 
 #pragma mark - Public Functions
@@ -222,6 +223,18 @@ static const CGFloat kAnimationSpeed = 0.2f;
 - (void)handleTap:(UITapGestureRecognizer *)tapGesture
 {
     [self collapseViewController];
+}
+
+- (void)addShadowToView:(UIView *)view
+{
+    CGPathRef path = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
+    [view.layer setShadowPath:path];
+    [view.layer setShadowColor:[UIColor grayColor].CGColor];
+    [view.layer setShadowOpacity:0.5];
+    [view.layer setShadowRadius:2.0];
+    [view.layer setShadowOffset:CGSizeMake(-0.5, 0.0)];
+    view.layer.shouldRasterize = YES;
+    view.layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
 
 #pragma mark - UIPanGestureRecognizerDelegate Functions
