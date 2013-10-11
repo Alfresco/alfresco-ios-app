@@ -51,6 +51,9 @@
 		73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD91802C679007172EE /* ActionCollectionRow.m */; };
 		73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AE11802E5C6007172EE /* DocumentPreviewViewController.m */; };
 		73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AE21802E5C6007172EE /* DocumentPreviewViewController.xib */; };
+		73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEB1806F5D2007172EE /* SwitchViewController.m */; };
+		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
+		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
@@ -415,6 +418,12 @@
 		73632AE01802E5C6007172EE /* DocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentPreviewViewController.h; path = "Document Preview View Controller/DocumentPreviewViewController.h"; sourceTree = "<group>"; };
 		73632AE11802E5C6007172EE /* DocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentPreviewViewController.m; path = "Document Preview View Controller/DocumentPreviewViewController.m"; sourceTree = "<group>"; };
 		73632AE21802E5C6007172EE /* DocumentPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DocumentPreviewViewController.xib; path = "Document Preview View Controller/DocumentPreviewViewController.xib"; sourceTree = "<group>"; };
+		73632AEA1806F5D2007172EE /* SwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwitchViewController.h; path = "Switcher View Controller/SwitchViewController.h"; sourceTree = "<group>"; };
+		73632AEB1806F5D2007172EE /* SwitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwitchViewController.m; path = "Switcher View Controller/SwitchViewController.m"; sourceTree = "<group>"; };
+		73632AEE1806F674007172EE /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuViewController.h; path = "Main Menu View Controller/MainMenuViewController.h"; sourceTree = "<group>"; };
+		73632AEF1806F674007172EE /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuViewController.m; path = "Main Menu View Controller/MainMenuViewController.m"; sourceTree = "<group>"; };
+		73632AF318080E7C007172EE /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItem.h; path = "Main Menu View Controller/Model/MainMenuItem.h"; sourceTree = "<group>"; };
+		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1134,6 +1143,34 @@
 			name = "Document Preview Controller";
 			sourceTree = "<group>";
 		};
+		73632AE61806C2F8007172EE /* Switcher View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73632AEA1806F5D2007172EE /* SwitchViewController.h */,
+				73632AEB1806F5D2007172EE /* SwitchViewController.m */,
+			);
+			name = "Switcher View Controller";
+			sourceTree = "<group>";
+		};
+		73632AED1806F62C007172EE /* Main Menu View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73632AF618080E80007172EE /* Model */,
+				73632AEE1806F674007172EE /* MainMenuViewController.h */,
+				73632AEF1806F674007172EE /* MainMenuViewController.m */,
+			);
+			name = "Main Menu View Controller";
+			sourceTree = "<group>";
+		};
+		73632AF618080E80007172EE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				73632AF318080E7C007172EE /* MainMenuItem.h */,
+				73632AF418080E7C007172EE /* MainMenuItem.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -1452,6 +1489,8 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				73632AED1806F62C007172EE /* Main Menu View Controller */,
+				73632AE61806C2F8007172EE /* Switcher View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
 				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
 				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
@@ -2704,6 +2743,7 @@
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73F634D117E34A990065590E /* AlfrescoLog.m in Sources */,
 				73F6348817E34A990065590E /* AlfrescoContentStream.m in Sources */,
+				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
 				73F634D017E34A990065590E /* AlfrescoFavoritesCache.m in Sources */,
 				73F634D917E34A990065590E /* AlfrescoWorkflowObjectConverter.m in Sources */,
 				73F634A517E34A990065590E /* AlfrescoWorkflowTaskService.m in Sources */,
@@ -2713,6 +2753,7 @@
 				73F634A217E34A990065590E /* AlfrescoVersionService.m in Sources */,
 				73B959DC17A67A760099FB84 /* Reachability.m in Sources */,
 				73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */,
+				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
@@ -2735,6 +2776,7 @@
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,
 				73F634D717E34A990065590E /* AlfrescoUntrustedSSLHTTPRequest.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
+				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
 				73F6348D17E34A990065590E /* AlfrescoNode.m in Sources */,
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
