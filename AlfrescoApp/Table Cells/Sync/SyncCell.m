@@ -8,8 +8,11 @@
 
 #import "SyncCell.h"
 #import "SyncNodeStatus.h"
+#import "Utility.h"
 
 NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
+static CGFloat const kFavoriteIconYPosition = 4.0f;
+static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
 
 @implementation SyncCell
 
@@ -50,12 +53,21 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
         [self setAccessoryViewForState:nodeStatus.status];
         [self updateDetails:nodeStatus];
     }
-    [self updateStatusImageForSyncState:nodeStatus.status];
+    else if ([propertyChanged isEqualToString:kSyncTotalSize] || [propertyChanged isEqualToString:kSyncLocalModificationDate])
+    {
+        [self updateNodeDetails:nodeStatus];
+    }
+    else if ([propertyChanged isEqualToString:kSyncIsFavorite])
+    {
+        [self updateFavoriteState:nodeStatus.isFavorite];
+    }
     
-    if (nodeStatus.status == SyncStatusLoading && nodeStatus.bytesTransfered > 0 && nodeStatus.bytesTransfered < nodeStatus.bytesTotal)
+    [self updateStatusImageForSyncState:nodeStatus];
+    
+    if (nodeStatus.status == SyncStatusLoading && nodeStatus.bytesTransfered > 0 && nodeStatus.bytesTransfered < nodeStatus.totalBytesToTransfer)
     {
         self.progressBar.hidden = NO;
-        float percentTransfered = (float)nodeStatus.bytesTransfered / (float)nodeStatus.bytesTotal;
+        float percentTransfered = (float)nodeStatus.bytesTransfered / (float)nodeStatus.totalBytesToTransfer;
         self.progressBar.progress = percentTransfered;
     }
     else
@@ -64,10 +76,10 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     }
 }
 
-- (void)updateStatusImageForSyncState:(SyncStatus)syncStatus
+- (void)updateStatusImageForSyncState:(SyncNodeStatus *)nodeStatus
 {
     UIImage *statusImage = nil;
-    switch (syncStatus)
+    switch (nodeStatus.status)
     {
         case SyncStatusFailed:
             statusImage = [UIImage imageNamed:@"sync-status-failed"];
@@ -78,12 +90,20 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
             break;
             
         case SyncStatusOffline:
-            /**
-             * NOTE: This image doesn't actually exist in the current codebase!
-             */
-            statusImage = [UIImage imageNamed:@"sync-status-offline"];
+        {
+            if (nodeStatus.activityType == SyncActivityTypeUpload)
+            {
+                statusImage = [UIImage imageNamed:@"sync-status-pending"];
+            }
+            else
+            {
+                /**
+                 * NOTE: This image doesn't actually exist in the current codebase!
+                 */
+                statusImage = [UIImage imageNamed:@"sync-status-offline"];
+            }
             break;
-            
+        }
         case SyncStatusSuccessful:
             statusImage = [UIImage imageNamed:@"sync-status-success"];
             break;
@@ -151,6 +171,28 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     }
 }
 
+- (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus
+{
+    NSString *fileSizeString = nil;
+    NSString *modifiedDateString = nil;
+    
+    if (self.node.isFolder)
+    {
+        if (nodeStatus.totalSize > 0)
+        {
+            fileSizeString = stringForLongFileSize(nodeStatus.totalSize);
+            self.nodeDetails = fileSizeString;
+        }
+    }
+    else
+    {
+        modifiedDateString = nodeStatus.localModificationDate ? relativeDateFromDate(nodeStatus.localModificationDate) : relativeDateFromDate(self.node.modifiedAt);
+        fileSizeString = (nodeStatus.totalSize > 0) ? stringForLongFileSize(nodeStatus.totalSize) : stringForLongFileSize(((AlfrescoDocument *)self.node).contentLength);
+        self.nodeDetails = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, fileSizeString];
+    }
+    [self updateDetails:nodeStatus];
+}
+
 - (void)updateDetails:(SyncNodeStatus *)nodeStatus
 {
     if (nodeStatus.status == SyncStatusWaiting)
@@ -164,6 +206,33 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     else
     {
         self.details.text = self.nodeDetails;
+    }
+}
+
+- (void)updateFavoriteState:(BOOL)isFavorite;
+{
+    self.isFavorite = isFavorite;
+    
+    CGRect detailsFrame = self.details.frame;
+    if (self.isFavorite)
+    {
+        CGRect favoriteIconFrame = self.favoriteIcon.frame;
+        favoriteIconFrame.origin.y = kFavoriteIconYPosition;
+        self.favoriteIcon.frame = favoriteIconFrame;
+        
+        [self.detailsView addSubview:self.favoriteIcon];
+        
+        detailsFrame.origin.x = self.favoriteIcon.frame.size.width + kFavoriteIconAndDetailsLabelGap;
+        self.details.frame = detailsFrame;
+        
+        [self.detailsView addSubview:self.details];
+    }
+    else
+    {
+        [self.detailsView addSubview:self.details];
+        
+        [self.favoriteIcon setImage:nil];
+        [self.favoriteIcon setHighlightedImage:nil];
     }
 }
 

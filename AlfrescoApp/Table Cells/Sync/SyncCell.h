@@ -15,8 +15,10 @@ extern NSString * const kSyncTableCellIdentifier;
 
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) NSString *nodeDetails;
+@property (nonatomic, assign) BOOL isFavorite;
 
 @property (nonatomic, strong) IBOutlet UILabel *filename;
+@property (nonatomic, strong) IBOutlet UIView *detailsView;
 @property (nonatomic, strong) IBOutlet UILabel *details;
 @property (nonatomic, strong) IBOutlet UILabel *serverName;
 @property (nonatomic, strong) IBOutlet UIImageView *image;
@@ -24,6 +26,8 @@ extern NSString * const kSyncTableCellIdentifier;
 @property (nonatomic, strong) IBOutlet UIImageView *status;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteIcon;
 
+- (void)updateFavoriteState:(BOOL)isFavorite;
+- (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus;
 - (void)updateCellWithNodeStatus:(SyncNodeStatus *)nodeStatus propertyChanged:(NSString *)propertyChanged;
 
 @end

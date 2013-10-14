@@ -39,5 +39,6 @@ extern NSString * const kSyncErrorManagedObject;
 + (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew;
 + (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId;
 + (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId;
++ (BOOL)isTopLevelSyncNode:(NSString *)nodeId;
 
 @end
