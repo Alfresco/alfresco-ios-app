@@ -31,10 +31,10 @@
         {
             // Get the right navigation controller for the Downloads view
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            NavigationViewController *navigationController = [appDelegate navigationControllerOfType:NavigationControllerTypeMore];
+            NavigationViewController *navigationController = [appDelegate navigationControllerOfType:NavigationControllerTypeDownloads];
             
             // Activate the tab hosting the Downloads view
-            [appDelegate activateTabBarForNavigationControllerOfType:NavigationControllerTypeMore];
+            [appDelegate activateTabBarForNavigationControllerOfType:NavigationControllerTypeDownloads];
             MoreViewController *moreViewController = (MoreViewController *)[navigationController.viewControllers objectAtIndex:0];
             [moreViewController.tableView.delegate tableView:moreViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             

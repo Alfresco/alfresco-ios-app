@@ -10,8 +10,8 @@
 
 @interface RootRevealControllerViewController : UIViewController
 
-@property (nonatomic, strong, readonly) UIViewController *masterViewController;
-@property (nonatomic, strong, readonly) UIViewController *detailViewController;
+@property (nonatomic, strong) UIViewController *masterViewController;
+@property (nonatomic, strong) UIViewController *detailViewController;
 
 - (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController;
 

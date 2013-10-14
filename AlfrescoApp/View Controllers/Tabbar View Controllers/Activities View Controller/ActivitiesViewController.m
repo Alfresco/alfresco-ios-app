@@ -45,6 +45,8 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
 {
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"activities.title", @"Activities Title");
+    
     if (self.session)
     {
         [self loadActivities];

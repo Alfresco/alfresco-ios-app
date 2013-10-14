@@ -33,6 +33,12 @@
                 if ([controllerInRootDetailSplitViewController isKindOfClass:[NavigationViewController class]])
                 {
                     NavigationViewController *detailNavigationViewController = (NavigationViewController *)controllerInRootDetailSplitViewController;
+                    
+                    if ([viewController isKindOfClass:[NavigationViewController class]])
+                    {
+                        viewController = [(NavigationViewController *)viewController rootViewController];
+                    }
+                    
                     [detailNavigationViewController resetRootViewControllerWithViewController:viewController];
                     
                     [self addExpandCollapseButtonToViewController:viewController];
