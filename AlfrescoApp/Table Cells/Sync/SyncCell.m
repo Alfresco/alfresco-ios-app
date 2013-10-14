@@ -11,6 +11,8 @@
 #import "Utility.h"
 
 NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
+static CGFloat const kFavoriteIconYPosition = 4.0f;
+static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
 
 @implementation SyncCell
 
@@ -54,6 +56,10 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     else if ([propertyChanged isEqualToString:kSyncTotalSize] || [propertyChanged isEqualToString:kSyncLocalModificationDate])
     {
         [self updateNodeDetails:nodeStatus];
+    }
+    else if ([propertyChanged isEqualToString:kSyncIsFavorite])
+    {
+        [self updateFavoriteState:nodeStatus.isFavorite];
     }
     
     [self updateStatusImageForSyncState:nodeStatus];
@@ -200,6 +206,33 @@ NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
     else
     {
         self.details.text = self.nodeDetails;
+    }
+}
+
+- (void)updateFavoriteState:(BOOL)isFavorite;
+{
+    self.isFavorite = isFavorite;
+    
+    CGRect detailsFrame = self.details.frame;
+    if (self.isFavorite)
+    {
+        CGRect favoriteIconFrame = self.favoriteIcon.frame;
+        favoriteIconFrame.origin.y = kFavoriteIconYPosition;
+        self.favoriteIcon.frame = favoriteIconFrame;
+        
+        [self.detailsView addSubview:self.favoriteIcon];
+        
+        detailsFrame.origin.x = self.favoriteIcon.frame.size.width + kFavoriteIconAndDetailsLabelGap;
+        self.details.frame = detailsFrame;
+        
+        [self.detailsView addSubview:self.details];
+    }
+    else
+    {
+        [self.detailsView addSubview:self.details];
+        
+        [self.favoriteIcon setImage:nil];
+        [self.favoriteIcon setHighlightedImage:nil];
     }
 }
 

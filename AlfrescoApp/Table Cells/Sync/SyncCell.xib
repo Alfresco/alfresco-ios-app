@@ -25,13 +25,6 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="mmuller 10-Dec-1999 12:49PM" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="O9X-kf-MLY">
-                        <rect key="frame" x="68" y="32" width="145" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="Helvetica-Oblique" family="Helvetica" pointSize="14"/>
-                        <color key="textColor" white="0.4314516129" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Alfresco Server" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Gao-gp-GrF">
                         <rect key="frame" x="52" y="55" width="168" height="21"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -43,20 +36,22 @@
                         <rect key="frame" x="29" y="48" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="favorite-indicator.png" highlightedImage="selected-favorite-indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vla-5x-ThV">
-                        <rect key="frame" x="52" y="37" width="13" height="13"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
                     <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xnk-Mu-sus">
                         <rect key="frame" x="29" y="77" width="238" height="2"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </progressView>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bvD-ac-gPv">
+                        <rect key="frame" x="53" y="32" width="220" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="details" destination="O9X-kf-MLY" id="M6b-4O-dbU"/>
-                <outlet property="favoriteIcon" destination="Vla-5x-ThV" id="cvy-Yk-ruA"/>
+                <outlet property="details" destination="VXn-wI-NbF" id="ixW-Xe-TIR"/>
+                <outlet property="detailsView" destination="bvD-ac-gPv" id="C0U-Bf-xY8"/>
+                <outlet property="favoriteIcon" destination="mrb-Tc-R4Z" id="FoT-hg-i9Z"/>
                 <outlet property="filename" destination="8Du-PP-Hzm" id="MMB-v6-LTG"/>
                 <outlet property="image" destination="dCW-ri-Siv" id="nvz-ko-mBb"/>
                 <outlet property="progressBar" destination="xnk-Mu-sus" id="4jj-92-GGY"/>
@@ -64,6 +59,17 @@
                 <outlet property="status" destination="4VX-QY-3dE" id="gHJ-k3-tiz"/>
             </connections>
         </tableViewCell>
+        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="mmuller 10-Dec-1999 12:49PM" lineBreakMode="tailTruncation" minimumFontSize="10" id="VXn-wI-NbF">
+            <rect key="frame" x="0.0" y="0.0" width="172" height="21"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" name="Helvetica-Oblique" family="Helvetica" pointSize="14"/>
+            <color key="textColor" white="0.4314516129" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+        </label>
+        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="favorite-indicator.png" highlightedImage="selected-favorite-indicator.png" id="mrb-Tc-R4Z">
+            <rect key="frame" x="0.0" y="0.0" width="13" height="13"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+        </imageView>
     </objects>
     <resources>
         <image name="favorite-indicator.png" width="12" height="12"/>

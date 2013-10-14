@@ -17,6 +17,7 @@ extern NSString * const kSyncStatus;
 extern NSString * const kSyncActivityType;
 extern NSString * const kSyncBytesTransfered;
 extern NSString * const kSyncTotalSize;
+extern NSString * const kSyncIsFavorite;
 
 typedef NS_ENUM(NSInteger, SyncStatus)
 {
@@ -43,6 +44,7 @@ typedef NS_ENUM(NSInteger, SyncActivityType)
 @property (nonatomic, strong) NSString *nodeId;
 @property (nonatomic, assign) SyncStatus status;
 @property (nonatomic, assign) SyncActivityType activityType;
+@property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, assign) unsigned long long bytesTransfered;
 @property (nonatomic, assign) unsigned long long totalBytesToTransfer;
 

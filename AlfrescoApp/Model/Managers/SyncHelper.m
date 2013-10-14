@@ -219,7 +219,7 @@ static NSString * const kSyncContentDirectory = @"sync";
 {
     SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:nodeId];
     
-    if (!nodeStatus)
+    if (!nodeStatus && nodeId)
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:nodeId];
         [syncStatuses setValue:nodeStatus forKey:nodeId];

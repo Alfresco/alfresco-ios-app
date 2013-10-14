@@ -27,6 +27,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
+
+@property (nonatomic, strong) UILabel *tableViewFooter;
 @end
 
 @implementation SyncViewController
@@ -49,8 +51,13 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     [self loadSyncNodesForFolder:self.parentNode];
     
-    self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title") ;
+    self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
+    self.tableViewFooter = [[UILabel alloc] init];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusChanged:)
+                                                 name:kSyncStatusChangeNotification
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
@@ -111,13 +118,26 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     return kFooterHeight;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    self.tableViewFooter.text = [self tableView:tableView titleForFooterInSection:section];
+    self.tableViewFooter.backgroundColor = [UIColor whiteColor];
+    self.tableViewFooter.textAlignment = NSTextAlignmentCenter;
+    
+    return self.tableViewFooter;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //static NSString *cellIdentifier = kSyncTableCellIdentifier;
     SyncCell *syncCell = [tableView dequeueReusableCellWithIdentifier:kSyncTableCellIdentifier];
     if (nil == syncCell)
     {
-        syncCell = (SyncCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil] lastObject];
+        NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil];
+        if (subViews.count > 0)
+        {
+            syncCell = (SyncCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil][0];
+        }
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:syncCell
@@ -125,8 +145,10 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                                                  name:kSyncStatusChangeNotification
                                                object:nil];
     
+    SyncManager *syncManager = [SyncManager sharedManager];
+    
     AlfrescoNode *node = self.tableViewData[indexPath.row];
-    SyncNodeStatus *nodeStatus = [[SyncManager sharedManager] syncStatusForNode:node];
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
     syncCell.node = node;
     syncCell.filename.text = node.name;
@@ -139,6 +161,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     {
         syncCell.image.image = imageForType([node.name pathExtension]);
     }
+    
+    [syncCell updateFavoriteState:nodeStatus.isFavorite];
     
     [syncCell updateNodeDetails:nodeStatus];
     [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:kSyncStatus];
@@ -196,7 +220,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     SyncManager *syncManager = [SyncManager sharedManager];
     AlfrescoNode *node = self.tableViewData[indexPath.row];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNode:node];
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
     switch (nodeStatus.status)
     {
@@ -272,6 +296,29 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     [self loadSyncNodesForFolder:self.parentNode];
 }
 
+#pragma mark - Status Changed Notification Handling
+
+- (void)statusChanged:(NSNotification *)notification
+{
+    NSDictionary *info = notification.userInfo;
+    
+    NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
+    NSString *notificationNodeId = [info objectForKey:kSyncStatusNodeIdKey];
+    
+    if ([propertyChanged isEqualToString:kSyncTotalSize])
+    {
+        if (!self.parentNode || [self.parentNode.identifier isEqualToString:notificationNodeId])
+        {
+            self.tableViewFooter.text = [self tableFooterText];
+        }
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return [self tableFooterText];
+}
+
 #pragma mark - Private Class Functions
 
 - (void)handleSyncObstacles:(NSNotification *)notification
@@ -286,6 +333,43 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         UINavigationController *syncObstaclesNavigationController = [[UINavigationController alloc] initWithRootViewController:syncObstaclesController];
         [UniversalDevice displayModalViewController:syncObstaclesNavigationController onController:self withCompletionBlock:nil];
     }
+}
+
+- (NSString *)tableFooterText
+{
+    SyncNodeStatus *nodeStatus = nil;
+    if (!self.parentNode)
+    {
+        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:self.session.repositoryInfo.identifier];
+    }
+    else
+    {
+        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:self.parentNode.identifier];
+    }
+    
+    NSString *footerText = @"";
+    
+    if (self.tableViewData.count > 0)
+    {
+        NSString *documentsText = @"";
+        
+        switch (self.tableViewData.count)
+        {
+            case 1:
+            {
+                documentsText = NSLocalizedString(@"downloadview.footer.one-document", @"1 Document");
+                break;
+            }
+            default:
+            {
+                documentsText = [NSString stringWithFormat:NSLocalizedString(@"downloadview.footer.multiple-documents", @"%d Documents"), self.tableViewData.count];
+                break;
+            }
+        }
+        
+        footerText = [NSString stringWithFormat:@"%@ %@", documentsText, stringForLongFileSize(nodeStatus.totalSize)];
+    }
+    return footerText;
 }
 
 #pragma mark UIAlertView delegate methods

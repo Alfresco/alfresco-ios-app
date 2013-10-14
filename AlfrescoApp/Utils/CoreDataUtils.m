@@ -174,6 +174,13 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return nodes;
 }
 
++ (BOOL)isTopLevelSyncNode:(NSString *)nodeId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"syncNodeInfoId == %@ && isTopLevelSyncNode == YES", nodeId];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate];
+    return nodes.count > 0;
+}
+
 #pragma mark - Debugging Dump Methods
 
 + (void)logAllData

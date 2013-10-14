@@ -23,7 +23,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  * Sync Methods
  */
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document;
-- (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node;
+- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (NSArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSArray *syncedNodes))completionBlock;
@@ -50,5 +50,6 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (void)addFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
 - (void)removeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
+- (void)isNodeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL isFavorite))completionBlock;
 
 @end

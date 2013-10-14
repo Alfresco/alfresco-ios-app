@@ -17,6 +17,7 @@ NSString * const kSyncActivityType = @"activityType";
 NSString * const kSyncBytesTransfered = @"bytesTransfered";
 NSString * const kSyncTotalSize = @"totalSize";
 NSString * const kSyncLocalModificationDate = @"localModificationDate";
+NSString * const kSyncIsFavorite = @"isFavorite";
 
 @implementation SyncNodeStatus
 
@@ -35,6 +36,7 @@ NSString * const kSyncLocalModificationDate = @"localModificationDate";
         [self addObserver:self forKeyPath:kSyncBytesTransfered options:NSKeyValueObservingOptionNew context:nil];
         [self addObserver:self forKeyPath:kSyncTotalSize options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
         [self addObserver:self forKeyPath:kSyncLocalModificationDate options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver:self forKeyPath:kSyncIsFavorite options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -61,6 +63,10 @@ NSString * const kSyncLocalModificationDate = @"localModificationDate";
     {
         [self sendNotificationForPropertyChange:kSyncLocalModificationDate change:nil];
     }
+    else if ([keyPath isEqualToString:kSyncIsFavorite])
+    {
+        [self sendNotificationForPropertyChange:kSyncIsFavorite change:nil];
+    }
 }
 
 - (void)sendNotificationForPropertyChange:(NSString *)property change:(NSDictionary *)change
@@ -84,6 +90,7 @@ NSString * const kSyncLocalModificationDate = @"localModificationDate";
     [self removeObserver:self forKeyPath:kSyncBytesTransfered];
     [self removeObserver:self forKeyPath:kSyncTotalSize];
     [self removeObserver:self forKeyPath:kSyncLocalModificationDate];
+    [self removeObserver:self forKeyPath:kSyncIsFavorite];
 }
 
 @end
