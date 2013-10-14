@@ -215,14 +215,14 @@ static NSString * const kSyncContentDirectory = @"sync";
     [CoreDataUtils saveContext];
 }
 
-- (SyncNodeStatus *)syncNodeStatusObjectForNode:(AlfrescoNode *)node inSyncNodesStatus:(NSDictionary *)syncStatuses
+- (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses
 {
-    SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:node.identifier];
+    SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:nodeId];
     
-    if (!nodeStatus)
+    if (!nodeStatus && nodeId)
     {
-        nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:node.identifier];
-        [syncStatuses setValue:nodeStatus forKey:node.identifier];
+        nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:nodeId];
+        [syncStatuses setValue:nodeStatus forKey:nodeId];
     }
     
     return nodeStatus;

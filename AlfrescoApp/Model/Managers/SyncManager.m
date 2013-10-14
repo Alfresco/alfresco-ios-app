@@ -65,15 +65,22 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     self.syncDownloads = [NSMutableDictionary dictionary];
     self.syncUploads = [NSMutableDictionary dictionary];
     
-    [self.documentFolderService clearFavoritesCache];
-    [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
-        
-        if (array)
-        {
-            [self rearrangeNodesAndSync:array];
-            completionBlock(array);
-        }
-    }];
+    if (self.documentFolderService)
+    {
+        [self.documentFolderService clearFavoritesCache];
+        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
+            
+            if (array)
+            {
+                [self rearrangeNodesAndSync:array];
+                completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
+            }
+        }];
+    }
+    else
+    {
+        [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:YES];
+    }
     return [self topLevelSyncNodesOrNodesInFolder:nil];
 }
 
@@ -110,6 +117,17 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             }
         }
     }
+    
+    // if folder is nil - means favorite nodes are being returned
+    if (!folder)
+    {
+        for (AlfrescoNode *node in syncNodes)
+        {
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+            nodeStatus.isFavorite = YES;
+        }
+    }
+    
     return syncNodes;
 }
 
@@ -119,21 +137,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return nodeInfo.syncContentPath;
 }
 
-- (SyncNodeStatus *)syncStatusForNode:(AlfrescoNode *)node
+- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:node inSyncNodesStatus:self.syncNodesStatus];
-    
-    // if user is offline determine if the node is modified locally
-    if (!self.alfrescoSession && nodeStatus.activityType != SyncActivityTypeUpload)
-    {
-        BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node];
-        if (isModifiedLocally)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
-    }
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:nodeId inSyncNodesStatus:self.syncNodesStatus];
     return nodeStatus;
 }
 
@@ -148,7 +155,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
 {
     // top level sync nodes are held in self.syncNodesInfo with key repository Identifier
-    [self.syncNodesInfo setValue:[nodes mutableCopy] forKey:self.alfrescoSession.repositoryInfo.identifier];
+    if (nodes)
+    {
+        [self.syncNodesInfo setValue:[nodes mutableCopy] forKey:self.alfrescoSession.repositoryInfo.identifier];
+    }
     
     void (^checkIfFirstUseAndSync)(void) = ^ (void)
     {
@@ -298,7 +308,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         for (int i=0; i < nodes.count; i++)
         {
             AlfrescoNode *remoteNode = nodes[i];
-            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNode:remoteNode inSyncNodesStatus:self.syncNodesStatus];
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:remoteNode.identifier inSyncNodesStatus:self.syncNodesStatus];
             nodeStatus.status = SyncStatusSuccessful;
             
             // getting last modification date for remote sync node
@@ -359,6 +369,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                             preserveInfo:infoToBePreservedInNewNodes
                                                 refreshExistingSyncNodes:includeExistingSyncNodes];
             self.syncNodesInfo = nil;
+            
+            [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
@@ -427,8 +439,22 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
         localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
     }
+    BOOL isModifiedLocally = ([downloadedDate compare:localModificationDate] == NSOrderedAscending);
     
-    return ([downloadedDate compare:localModificationDate] == NSOrderedAscending);
+    if (isModifiedLocally)
+    {
+        SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+        
+        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+        NSError *dateError = nil;
+        NSString *pathToSyncedFile = [self contentPathForNode:(AlfrescoDocument *)node];
+        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
+        if (!dateError)
+        {
+            nodeStatus.localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
+        }
+    }
+    return isModifiedLocally;
 }
 
 - (void)deleteUnWantedSyncedNodes:(NSArray *)nodes completionBlock:(void (^)(BOOL completed))completionBlock
@@ -724,7 +750,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
-    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:document.identifier inSyncNodesStatus:self.syncNodesStatus];
     SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
     nodeStatus.status = SyncStatusLoading;
     
@@ -761,7 +787,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
         nodeStatus.bytesTransfered = bytesTransferred;
-        nodeStatus.bytesTotal = bytesTotal;
+        nodeStatus.totalBytesToTransfer = bytesTotal;
     }];
     [self.syncDownloads setValue:downloadRequest forKey:document.identifier];
 }
@@ -794,7 +820,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document];
     NSString *nodeExtension = [document.name pathExtension];
-    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNode:document inSyncNodesStatus:self.syncNodesStatus];
+    SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:document.identifier inSyncNodesStatus:self.syncNodesStatus];
     SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
@@ -840,7 +866,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
         nodeStatus.bytesTransfered = bytesTransferred;
-        nodeStatus.bytesTotal = bytesTotal;
+        nodeStatus.totalBytesToTransfer = bytesTotal;
     }];
     [self.syncUploads setValue:uploadRequest forKey:document.identifier];
 }
@@ -849,7 +875,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)cancelSyncForDocument:(AlfrescoDocument *)document
 {
-    SyncNodeStatus *nodeStatus = [self syncStatusForNode:document];
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:document.identifier];
     
     if (nodeStatus.activityType == SyncActivityTypeDownload)
     {
@@ -867,7 +893,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)retrySyncForDocument: (AlfrescoDocument *)document
 {
-    SyncNodeStatus *nodeStatus = [self syncStatusForNode:document];
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:document.identifier];
     
     if (nodeStatus.activityType == SyncActivityTypeDownload)
     {
@@ -1029,6 +1055,124 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }];
 }
 
+- (void)isNodeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL isFavorite))completionBlock;
+{
+    BOOL isFavorite = NO;
+    if (self.syncNodesInfo)
+    {
+        NSArray *topLevelSyncedItems = [self.syncNodesInfo objectForKey:self.alfrescoSession.repositoryInfo.identifier];
+        isFavorite = [[topLevelSyncedItems valueForKey:@"identifier"] containsObject:node.identifier];
+    }
+    else
+    {
+        isFavorite = [CoreDataUtils isTopLevelSyncNode:node.identifier];
+    }
+    completionBlock(isFavorite);
+}
+
+- (void)updateFolderSizes:(BOOL)updateFolderSizes andCheckIfAnyFileModifiedLocally:(BOOL)checkIfModified
+{
+    if (updateFolderSizes)
+    {
+        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"isFolder == NO"]];
+        
+        for (SyncNodeInfo *nodeInfo in documentsInfo)
+        {
+            AlfrescoNode *node = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+            nodeStatus.totalSize = ((AlfrescoDocument *)node).contentLength;
+            
+            if (checkIfModified && nodeStatus.activityType != SyncActivityTypeUpload)
+            {
+                BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node];
+                if (isModifiedLocally)
+                {
+                    nodeStatus.status = SyncStatusOffline;
+                    nodeStatus.activityType = SyncActivityTypeUpload;
+                }
+            }
+        }
+    }
+}
+
+#pragma mark - Status Changed Notification Handling
+
+- (void)statusChanged:(NSNotification *)notification
+{
+    NSDictionary *info = notification.userInfo;
+    
+    SyncNodeStatus *nodeStatus = notification.object;
+    NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
+    SyncHelper *syncHelper = [SyncHelper sharedHelper];
+    
+    // update total size for parent folder
+    if ([propertyChanged isEqualToString:kSyncTotalSize])
+    {
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeStatus.nodeId];
+        
+        SyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
+        if (parentNodeInfo)
+        {
+            AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
+            SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:parentNode.identifier];
+            
+            NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
+            parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+        }
+        else
+        {
+            // if parent folder is nil - update total size for repository
+            SyncNodeStatus *repositorySyncStatus = [syncHelper syncNodeStatusObjectForNodeWithId:self.alfrescoSession.repositoryInfo.identifier inSyncNodesStatus:self.syncNodesStatus];
+            
+            if (nodeStatus != repositorySyncStatus)
+            {
+                NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
+                repositorySyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+            }
+        }
+    }
+    // update sync status for folder depending on its child nodes statuses
+    else if ([propertyChanged isEqualToString:kSyncStatus])
+    {
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeStatus.nodeId];
+        SyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
+        
+        if (parentNodeInfo)
+        {
+            SyncNodeStatus *parentNodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:parentNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+            NSSet *subNodes = parentNodeInfo.nodes;
+            
+            SyncStatus syncStatus = SyncStatusSuccessful;
+            for (SyncNodeInfo *subNodeInfo in subNodes)
+            {
+                SyncNodeStatus *subNodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:subNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+                
+                if (subNodeStatus.status == SyncStatusLoading)
+                {
+                    syncStatus = SyncStatusLoading;
+                    break;
+                }
+                else if (subNodeStatus.status == SyncStatusFailed)
+                {
+                    syncStatus = SyncStatusFailed;
+                    break;
+                }
+                else if (subNodeStatus.status == SyncStatusOffline)
+                {
+                    syncStatus = SyncStatusOffline;
+                    parentNodeStatus.activityType = SyncActivityTypeUpload;
+                    break;
+                }
+                else if (subNodeStatus.status == SyncStatusWaiting)
+                {
+                    syncStatus = SyncStatusWaiting;
+                }
+            }
+            parentNodeStatus.status = syncStatus;
+        }
+    }
+}
+
 #pragma mark - Private Interface
 
 - (id)init
@@ -1041,9 +1185,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         self.syncObstacles = @{kDocumentsUnfavoritedOnServerWithLocalChanges: [NSMutableArray array],
                                kDocumentsDeletedOnServerWithLocalChanges: [NSMutableArray array],
                                kDocumentsToBeDeletedLocallyAfterUpload: [NSMutableArray array]};
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(statusChanged:)
+                                                     name:kSyncStatusChangeNotification
+                                                   object:nil];
     }
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end
