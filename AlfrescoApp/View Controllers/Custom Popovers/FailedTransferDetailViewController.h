@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^FailedTransferRetryCompletionBlock)(BOOL retry);
+
 @interface FailedTransferDetailViewController : UIViewController
 
-@property (nonatomic, strong) id userInfo;
-@property (nonatomic, assign) SEL closeAction;
-@property (nonatomic, assign) id closeTarget;
+@property (nonatomic, strong) FailedTransferRetryCompletionBlock retryCompletionBlock;
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message;
+- (id)initWithTitle:(NSString *)title message:(NSString *)message retryCompletionBlock:(FailedTransferRetryCompletionBlock)retryCompletionBlock;
 
 @end

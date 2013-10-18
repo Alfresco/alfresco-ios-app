@@ -147,13 +147,18 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 + (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew
 {
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId];
-    SyncError *syncError = nodeInfo.syncError;
+    SyncError *syncError = nil;
     
-    if (createNew && !syncError)
+    if (nodeId)
     {
-        syncError = [CoreDataUtils createSyncErrorMangedObject];
-        syncError.errorId = nodeId;
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId];
+        syncError = nodeInfo.syncError;
+        
+        if (createNew && !syncError)
+        {
+            syncError = [CoreDataUtils createSyncErrorMangedObject];
+            syncError.errorId = nodeId;
+        }
     }
     return syncError;
 }

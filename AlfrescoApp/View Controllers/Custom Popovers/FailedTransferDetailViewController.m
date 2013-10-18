@@ -20,13 +20,14 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
 
 @implementation FailedTransferDetailViewController
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message
+- (id)initWithTitle:(NSString *)title message:(NSString *)message retryCompletionBlock:(FailedTransferRetryCompletionBlock)retryCompletionBlock
 {
     self = [super init];
     if (self)
     {
-        [self setTitleText:title];
-        [self setMessageText:message];
+        self.titleText = title;
+        self.messageText = message;
+        self.retryCompletionBlock = retryCompletionBlock;
     }
     return self;
 }
@@ -88,10 +89,9 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
 
 - (void)retryButtonAction:(id)sender
 {
-    if (self.closeTarget && [self.closeTarget respondsToSelector:self.closeAction])
+    if (self.retryCompletionBlock != NULL)
     {
-        [self.closeTarget performSelector:self.closeAction withObject:self];
-        //objc_msgSend(self.closeTarget, self.closeAction);
+        self.retryCompletionBlock(YES);
     }
 }
 

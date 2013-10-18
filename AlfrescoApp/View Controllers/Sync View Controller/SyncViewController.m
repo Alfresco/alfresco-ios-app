@@ -97,8 +97,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
-    
-    [self loadSyncNodesForFolder:self.parentNode];
 }
 
 #pragma mark - TableView Datasource
@@ -255,10 +253,12 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         FailedTransferDetailViewController *syncFailedDetailController = nil;
         
         syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
-                                                                                       message:errorDescription];
-        
-        syncFailedDetailController.closeTarget = self;
-        syncFailedDetailController.closeAction = @selector(retrySyncAndCloseRetryPopover:);
+                                                                                       message:errorDescription retryCompletionBlock:^(BOOL retry) {
+                                                                                           if (retry)
+                                                                                           {
+                                                                                               [self retrySyncAndCloseRetryPopover];
+                                                                                           }
+                                                                                       }];
         
         self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
         [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
@@ -280,7 +280,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     }
 }
 
-- (void)retrySyncAndCloseRetryPopover:(id)controller
+- (void)retrySyncAndCloseRetryPopover
 {
     [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
     [self.retrySyncPopover dismissPopoverAnimated:YES];
