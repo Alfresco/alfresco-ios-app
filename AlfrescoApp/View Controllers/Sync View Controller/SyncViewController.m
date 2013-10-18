@@ -97,8 +97,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
-    
-    [self loadSyncNodesForFolder:self.parentNode];
 }
 
 #pragma mark - TableView Datasource
