@@ -17,28 +17,29 @@ extern NSString * const kSyncErrorManagedObject;
 
 @interface CoreDataUtils : NSObject
 
-+ (SyncRepository *)createSyncRepoMangedObject;
-+ (SyncNodeInfo *)createSyncNodeInfoMangedObject;
-+ (SyncError *)createSyncErrorMangedObject;
++ (SyncRepository *)createSyncRepoMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (SyncNodeInfo *)createSyncNodeInfoMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (SyncError *)createSyncErrorMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-+ (NSArray*)retrieveRecordsForTable:(NSString *)table;
-+ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate;
-+ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
++ (NSArray*)retrieveRecordsForTable:(NSString *)table inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-+ (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject;
-+ (void)deleteAllRecordsInTable:(NSString*)table;
++ (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (void)deleteAllRecordsInTable:(NSString*)table inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-+ (void)logAllData;
++ (void)logAllDataInManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-+ (void)saveContext;
++ (void)saveContextForManagedObjectContext:(NSManagedObjectContext *)managedContext;
 + (NSManagedObjectContext *)managedObjectContext;
++ (NSManagedObjectContext *)createPrivateManagedObjectContext;
 
 // Retrieve ManagedObjects
-+ (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId;
-+ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId;
-+ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew;
-+ (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId;
-+ (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId;
-+ (BOOL)isTopLevelSyncNode:(NSString *)nodeId;
++ (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (BOOL)isTopLevelSyncNode:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 @end

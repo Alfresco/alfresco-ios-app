@@ -98,16 +98,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSArray *nodesInfo = nil;
         if (folder)
         {
-            nodesInfo = [CoreDataUtils syncNodesInfoForFolderWithId:folder.identifier];
+            nodesInfo = [CoreDataUtils syncNodesInfoForFolderWithId:folder.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         }
         else
         {
-            NSArray *repositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject];
+            NSArray *repositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
             if (repositories.count > 0)
             {
                 // temporarily displaying nodes for first repository when offline until Accounts Manager is able to return identifier for selected Account
                 SyncRepository *repository = repositories[0];
-                nodesInfo = [CoreDataUtils topLevelSyncNodesInfoForRepositoryWithId:repository.repositoryId];
+                nodesInfo = [CoreDataUtils topLevelSyncNodesInfoForRepositoryWithId:repository.repositoryId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
             }
         }
         
@@ -136,7 +136,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
 {
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     return nodeInfo.syncContentPath;
 }
 
@@ -149,7 +149,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
 {
-    SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:node.identifier ifNotExistsCreateNew:NO];
+    SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:node.identifier ifNotExistsCreateNew:NO inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     return syncError.errorDescription;
 }
 
@@ -307,6 +307,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSMutableArray *nodesToDownload = [[NSMutableArray alloc] init];
         
         NSMutableDictionary *infoToBePreservedInNewNodes = [NSMutableDictionary dictionary];
+        NSManagedObjectContext *privateManagedObjectContext = [CoreDataUtils createPrivateManagedObjectContext];
         
         for (int i=0; i < nodes.count; i++)
         {
@@ -319,7 +320,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             
             // getting last modification date for local node
             NSMutableDictionary *localNodeInfoToBePreserved = [NSMutableDictionary dictionary];
-            SyncNodeInfo *localNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:remoteNode.identifier];
+            SyncNodeInfo *localNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:remoteNode.identifier inManagedObjectContext:privateManagedObjectContext];
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:localNodeInfo.node];
             if (localNode)
             {
@@ -333,7 +334,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             
             if (remoteNode.name != nil && ![remoteNode.name isEqualToString:@""])
             {
-                if ([self isNodeModifiedSinceLastDownload:remoteNode])
+                if ([self isNodeModifiedSinceLastDownload:remoteNode inManagedObjectContext:privateManagedObjectContext])
                 {
                     [nodesToUpload addObject:remoteNode];
                     nodeStatus.status = SyncStatusWaiting;
@@ -370,7 +371,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             [[SyncHelper sharedHelper] updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
                                                      forRepositoryWithId:self.alfrescoSession.repositoryInfo.identifier
                                                             preserveInfo:infoToBePreservedInNewNodes
-                                                refreshExistingSyncNodes:includeExistingSyncNodes];
+                                                refreshExistingSyncNodes:includeExistingSyncNodes
+                                                  inManagedObjectContext:privateManagedObjectContext];
             self.syncNodesInfo = nil;
             
             [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
@@ -422,11 +424,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        [[SyncHelper sharedHelper] removeSyncContentAndInfo];
+        [[SyncHelper sharedHelper] removeSyncContentAndInfoInManagedObjectContext:[CoreDataUtils managedObjectContext]];
     }
 }
 
-- (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node
+- (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     NSDate *downloadedDate = nil;
     NSDate *localModificationDate = nil;
@@ -434,7 +436,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         SyncHelper *syncHelper = [SyncHelper sharedHelper];
         // getting last downloaded date for node from local info
-        downloadedDate = [syncHelper lastDownloadedDateForNode:node];
+        downloadedDate = [syncHelper lastDownloadedDateForNode:node inManagedObjectContext:managedContext];
         
         // getting downloaded file locally updated Date
         NSError *dateError = nil;
@@ -466,7 +468,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSMutableArray *missingSyncDocumentsInRemote = [NSMutableArray array];
     
     // retrieve stored nodes info for current repository
-    NSArray *localNodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject];
+    NSArray *localNodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     for (SyncNodeInfo *nodeInfo in localNodes)
     {
         BOOL isFolder = [nodeInfo.isFolder intValue];
@@ -491,7 +493,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         for (NSString *nodeId in missingSyncDocumentsInRemote)
         {
-            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId];
+            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
             // check if there is any problem with removing the node from local sync
             
@@ -502,7 +504,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 if (encounteredObstacle == NO)
                 {
                     // if no problem with removing the node from local sync then delete the node from local sync nodes
-                    [[SyncHelper sharedHelper] deleteNodeFromSync:localNode inRepitory:self.alfrescoSession.repositoryInfo.identifier];
+                    [[SyncHelper sharedHelper] deleteNodeFromSync:localNode inRepitory:self.alfrescoSession.repositoryInfo.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
                 }
                 else
                 {
@@ -513,7 +515,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (totalChecksForObstacles == 0)
                 {
-                    [CoreDataUtils saveContext];
+                    [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
                     if (completionBlock != NULL)
                     {
                         completionBlock(YES);
@@ -551,7 +553,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
 {
-    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node];
+    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     
     NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
     NSMutableArray *syncObstacleUnFavorited = [self.syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
@@ -598,14 +600,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
             [self.fileManager removeItemAtPath:contentPath error:nil];
-            [[SyncHelper sharedHelper] resolvedObstacleForDocument:document];
+            [[SyncHelper sharedHelper] resolvedObstacleForDocument:document inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         }];
     }
     else
     {
         [[DownloadManager sharedManager] saveDocument:document contentPath:contentPath completionBlock:^(NSString *filePath) {
             [self.fileManager removeItemAtPath:contentPath error:nil];
-            [[SyncHelper sharedHelper] resolvedObstacleForDocument:document];
+            [[SyncHelper sharedHelper] resolvedObstacleForDocument:document inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         }];
     }
     
@@ -628,7 +630,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     
     [[DownloadManager sharedManager] saveDocument:document contentPath:contentPath completionBlock:^(NSString *filePath) {
         [self.fileManager removeItemAtPath:contentPath error:nil];
-        [[SyncHelper sharedHelper] resolvedObstacleForDocument:document];
+        [[SyncHelper sharedHelper] resolvedObstacleForDocument:document inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     }];
     
     // remove document from obstacles dictionary
@@ -711,13 +713,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId];
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier];
+        SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         if (repository)
         {
             [repository removeNodesObject:nodeInfo];
         }
-        [CoreDataUtils saveContext];
+        [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
     }
     
     if (completionBlock != NULL)
@@ -738,7 +740,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (self.syncOperations.count == 0)
                 {
-                    [CoreDataUtils saveContext];
+                    [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
                     if (completionBlock != NULL)
                     {
                         completionBlock(YES);
@@ -752,9 +754,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)downloadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    NSString *syncNameForNode = [syncHelper syncNameForNode:document];
+    NSString *syncNameForNode = [syncHelper syncNameForNode:document inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:document.identifier inSyncNodesStatus:self.syncNodesStatus];
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     nodeStatus.status = SyncStatusLoading;
     
     NSString *destinationPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
@@ -771,15 +773,15 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeInfo.syncContentPath = destinationPath;
             nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
             
-            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:NO];
-            [CoreDataUtils deleteRecordForManagedObject:syncError];
+            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:NO inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+            [CoreDataUtils deleteRecordForManagedObject:syncError inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         }
         else
         {
             nodeStatus.status = SyncStatusFailed;
             nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
             
-            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:YES];
+            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:YES inManagedObjectContext:[CoreDataUtils managedObjectContext]];
             syncError.errorCode = [NSNumber numberWithInt:error.code];
             syncError.errorDescription = [error localizedDescription];
             
@@ -808,7 +810,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (self.syncOperations.count == 0)
                 {
-                    [CoreDataUtils saveContext];
+                    [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
                     if (completionBlock != NULL)
                     {
                         completionBlock(YES);
@@ -822,10 +824,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
-    NSString *syncNameForNode = [syncHelper syncNameForNode:document];
+    NSString *syncNameForNode = [syncHelper syncNameForNode:document inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     NSString *nodeExtension = [document.name pathExtension];
     SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:document.identifier inSyncNodesStatus:self.syncNodesStatus];
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[syncHelper syncContentDirectoryPathForRepository:self.alfrescoSession.repositoryInfo.identifier] stringByAppendingPathComponent:syncNameForNode];
     NSString *mimeType = @"application/octet-stream";
@@ -852,14 +854,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             nodeInfo.lastDownloadedDate = [NSDate date];
                                                                             nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
                                                                             
-                                                                            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:NO];
-                                                                            [CoreDataUtils deleteRecordForManagedObject:syncError];
+                                                                            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier
+                                                                                                                      ifNotExistsCreateNew:NO
+                                                                                                                    inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+                                                                            [CoreDataUtils deleteRecordForManagedObject:syncError inManagedObjectContext:[CoreDataUtils managedObjectContext]];
                                                                         }
                                                                         else
                                                                         {
                                                                             nodeStatus.status = SyncStatusFailed;
                                                                             
-                                                                            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier ifNotExistsCreateNew:YES];
+                                                                            SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier
+                                                                                                                      ifNotExistsCreateNew:YES
+                                                                                                                    inManagedObjectContext:[CoreDataUtils managedObjectContext]];
                                                                             syncError.errorCode = [NSNumber numberWithInt:error.code];
                                                                             syncError.errorDescription = [error localizedDescription];
                                                                             
@@ -895,13 +901,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     if (nodeStatus.activityType == SyncActivityTypeDownload)
     {
         [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-            [CoreDataUtils saveContext];
+            [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
         }];
     }
     else
     {
         [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
-            [CoreDataUtils saveContext];
+            [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
         }];
     }
 }
@@ -919,7 +925,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         if (nodeInfo)
         {
             isInSyncList = YES;
@@ -1062,7 +1068,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        isFavorite = [CoreDataUtils isTopLevelSyncNode:node.identifier];
+        isFavorite = [CoreDataUtils isTopLevelSyncNode:node.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
     }
     completionBlock(isFavorite);
 }
@@ -1071,7 +1077,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     if (updateFolderSizes)
     {
-        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"isFolder == NO"]];
+        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"isFolder == NO"] inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         
         for (SyncNodeInfo *nodeInfo in documentsInfo)
         {
@@ -1081,7 +1087,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             
             if (checkIfModified && nodeStatus.activityType != SyncActivityTypeUpload)
             {
-                BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node];
+                BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:[CoreDataUtils managedObjectContext]];
                 if (isModifiedLocally)
                 {
                     nodeStatus.status = SyncStatusOffline;
@@ -1105,7 +1111,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     // update total size for parent folder
     if ([propertyChanged isEqualToString:kSyncTotalSize])
     {
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeStatus.nodeId];
+        syncHelper = [SyncHelper sharedHelper];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeStatus.nodeId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         
         SyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
         if (parentNodeInfo)
@@ -1131,7 +1138,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     // update sync status for folder depending on its child nodes statuses
     else if ([propertyChanged isEqualToString:kSyncStatus])
     {
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeStatus.nodeId];
+        syncHelper = [SyncHelper sharedHelper];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeStatus.nodeId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         SyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
         
         if (parentNodeInfo)
