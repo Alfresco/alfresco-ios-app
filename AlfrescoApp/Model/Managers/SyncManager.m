@@ -17,6 +17,7 @@
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
 #import "AccountManager.h"
+#import "Account.h"
 #import "SyncOperation.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
@@ -66,7 +67,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
     self.syncNodesInfo = [NSMutableDictionary dictionary];
     self.syncNodesStatus = [NSMutableDictionary dictionary];
-    self.syncOperations = [NSMutableDictionary dictionary];
     
     if (self.documentFolderService)
     {
@@ -102,11 +102,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
         else
         {
-            NSArray *repositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
-            if (repositories.count > 0)
+            NSString *selectedAccountId = [[[AccountManager sharedManager] selectedAccount] repositoryId];
+            SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:selectedAccountId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+            if (repository)
             {
-                // temporarily displaying nodes for first repository when offline until Accounts Manager is able to return identifier for selected Account
-                SyncRepository *repository = repositories[0];
                 nodesInfo = [CoreDataUtils topLevelSyncNodesInfoForRepositoryWithId:repository.repositoryId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
             }
         }
@@ -1126,8 +1125,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         else
         {
             // if parent folder is nil - update total size for repository
-            SyncNodeStatus *repositorySyncStatus = [syncHelper syncNodeStatusObjectForNodeWithId:self.alfrescoSession.repositoryInfo.identifier inSyncNodesStatus:self.syncNodesStatus];
-            
+            NSString *repostoryId = self.alfrescoSession ? self.alfrescoSession.repositoryInfo.identifier : [[[AccountManager sharedManager] selectedAccount] repositoryId];
+            SyncNodeStatus *repositorySyncStatus = [syncHelper syncNodeStatusObjectForNodeWithId:repostoryId inSyncNodesStatus:self.syncNodesStatus];
             if (nodeStatus != repositorySyncStatus)
             {
                 NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
@@ -1190,6 +1189,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         self.syncQueue = [[NSOperationQueue alloc] init];
         self.syncQueue.name = kSyncQueueName;
         self.syncQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
+        self.syncOperations = [NSMutableDictionary dictionary];
         
         self.syncObstacles = @{kDocumentsUnfavoritedOnServerWithLocalChanges: [NSMutableArray array],
                                kDocumentsDeletedOnServerWithLocalChanges: [NSMutableArray array],

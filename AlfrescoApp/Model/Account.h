@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *accountDescription;
 @property (nonatomic, strong) NSString *serverAddress;
 @property (nonatomic, strong) NSString *serverPort;
+@property (nonatomic, strong) NSString *repositoryId;
 
 - (instancetype)initWithUsername:(NSString *)username password:(NSString *)password description:(NSString *)description serverAddress:(NSString *)server port:(NSString *)port;
 

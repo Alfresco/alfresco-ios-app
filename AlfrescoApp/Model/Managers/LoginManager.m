@@ -138,6 +138,7 @@
              
              account.username = username;
              account.password = password;
+             account.repositoryId = session.repositoryInfo.identifier;
              
              [[AccountManager sharedManager] saveAccountsToKeychain];
              
