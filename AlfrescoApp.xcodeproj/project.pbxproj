@@ -41,6 +41,7 @@
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
+		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
@@ -411,6 +412,8 @@
 		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
+		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
+		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
@@ -1409,6 +1412,8 @@
 				08E89C9317E7488C006936DF /* SyncManager.m */,
 				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
+				088364FB180C3EC3008EA97D /* SyncOperation.h */,
+				088364FC180C3EC3008EA97D /* SyncOperation.m */,
 				7384BE0317F42CA800C6A54F /* PreferenceManager.h */,
 				7384BE0417F42CA800C6A54F /* PreferenceManager.m */,
 			);
@@ -2803,6 +2808,7 @@
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				73F634D817E34A990065590E /* AlfrescoURLUtils.m in Sources */,
 				73F634AF17E34A990065590E /* AlfrescoWorkflowTaskOldAPI.m in Sources */,
+				088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */,
 				73F6349517E34A990065590E /* AlfrescoTag.m in Sources */,
 				73F634BD17E34A990065590E /* AlfrescoPlaceholderSiteService.m in Sources */,
 				73F634AB17E34A990065590E /* AlfrescoCloudSiteService.m in Sources */,
@@ -3027,6 +3033,8 @@
 		277F715417FEB6FD00B2E958 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3041,6 +3049,7 @@
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS/libObjectiveCMIS.a\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3141,6 +3150,8 @@
 		7373B51317A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3155,6 +3166,7 @@
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS/libObjectiveCMIS-debug.a\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3163,6 +3175,8 @@
 		7373B51417A66E9400869949 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3177,6 +3191,7 @@
 				);
 				OTHER_LDFLAGS = "\"$(SRCROOT)/AlfrescoSDK/AlfrescoSDK/CMIS/libObjectiveCMIS.a\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
