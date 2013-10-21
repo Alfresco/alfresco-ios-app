@@ -69,15 +69,17 @@
         {
             return;
         }
-        __block BOOL complete = NO;
+        __block BOOL operationCompleted = NO;
         __weak SyncOperation *weakSelf = self;
         
         if (self.isDownload)
         {
             self.syncRequest = [self.documentFolderService retrieveContentOfDocument:self.document outputStream:(NSOutputStream *)self.stream completionBlock:^(BOOL succeeded, NSError *error) {
                 
-                weakSelf.downloadCompletionBlock(succeeded, error);
-                complete = YES;
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    weakSelf.downloadCompletionBlock(succeeded, error);
+                }];
+                operationCompleted = YES;
                 
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 
@@ -88,8 +90,10 @@
         {
             self.syncRequest = [self.documentFolderService updateContentOfDocument:self.document contentStream:(AlfrescoContentStream *)self.stream completionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
                 
-                weakSelf.uploadCompletionBlock(uploadedDocument, error);
-                complete = YES;
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    weakSelf.uploadCompletionBlock(uploadedDocument, error);
+                }];
+                operationCompleted = YES;
                 
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 
@@ -97,9 +101,9 @@
             }];
         }
         
-        while (!complete)
+        while (!operationCompleted)
         {
-            if (![self isCancelled] && !complete)
+            if (![self isCancelled] && !operationCompleted)
             {
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
