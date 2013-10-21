@@ -17,20 +17,24 @@ extern NSString * const kSyncReloadContentKey;
 @interface SyncHelper : NSObject
 
 - (NSString *)syncContentDirectoryPathForRepository:(NSString *)repositoryId;
-- (NSString *)syncNameForNode:(AlfrescoNode *)node;
+- (NSString *)syncNameForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-- (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId;
-- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node;
+- (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-- (void)deleteNodeFromSync:(AlfrescoNode *)node inRepitory:(NSString *)repositoryId;
-- (void)deleteNodesFromSync:(NSArray *)array inRepitory:(NSString *)repositoryId;
-- (void)removeSyncContentAndInfo;
+- (void)deleteNodeFromSync:(AlfrescoNode *)node inRepitory:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (void)deleteNodesFromSync:(NSArray *)array inRepitory:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (void)removeSyncContentAndInfoInManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses;
 
-- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document;
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-- (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo forRepositoryWithId:(NSString *)repositoryId preserveInfo:(NSDictionary *)info refreshExistingSyncNodes:(BOOL)refreshExisting;
+- (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo
+                      forRepositoryWithId:(NSString *)repositoryId
+                             preserveInfo:(NSDictionary *)info
+                 refreshExistingSyncNodes:(BOOL)refreshExisting
+                   inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 + (SyncHelper *)sharedHelper;
 

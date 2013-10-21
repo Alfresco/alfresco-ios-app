@@ -21,19 +21,19 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 #pragma mark - Fetch Methods
 
-+ (NSArray*)retrieveRecordsForTable:(NSString *)table
++ (NSArray*)retrieveRecordsForTable:(NSString *)table inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-	return [CoreDataUtils retrieveRecordsForTable:table withPredicate:nil sortDescriptors:nil];
+	return [CoreDataUtils retrieveRecordsForTable:table withPredicate:nil sortDescriptors:nil inManagedObjectContext:managedContext];
 }
 
-+ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate
++ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    return [CoreDataUtils retrieveRecordsForTable:table withPredicate:predicate sortDescriptors:nil];
+    return [CoreDataUtils retrieveRecordsForTable:table withPredicate:predicate sortDescriptors:nil inManagedObjectContext:managedContext];
 }
 
-+ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors
++ (NSArray*)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:managedContext];
 	
 	NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entity];
@@ -47,7 +47,7 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
         [fetchRequest setSortDescriptors:sortDescriptors];
     }
     
-	NSArray *records = [[CoreDataUtils managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	NSArray *records = [managedContext executeFetchRequest:fetchRequest error:nil];
 	return records;
 }
 
@@ -61,20 +61,27 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return managedObjectContext;
 }
 
++ (NSManagedObjectContext *)createPrivateManagedObjectContext
+{
+    NSManagedObjectContext *privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    privateContext.parentContext = [CoreDataUtils managedObjectContext];
+    return privateContext;
+}
+
 #pragma mark - Delete Records Methods
 
-+ (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject
++ (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     if (managedObject)
     {
-        [[CoreDataUtils managedObjectContext] deleteObject:managedObject];
-        [self saveContext];
+        [managedContext deleteObject:managedObject];
+        [self saveContextForManagedObjectContext:managedContext];
     }
 }
 
-+ (void)deleteAllRecordsInTable:(NSString*)table
++ (void)deleteAllRecordsInTable:(NSString*)table inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-	NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:managedContext];
     
 	NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
 	
@@ -83,51 +90,76 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 	
 	[fetchRequest setEntity:entity];
 	
-	NSArray* resultsArray = [[CoreDataUtils managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	NSArray* resultsArray = [managedContext executeFetchRequest:fetchRequest error:nil];
     
 	for (NSManagedObject *managedObject in resultsArray)
     {
-        [[CoreDataUtils managedObjectContext] deleteObject:managedObject];
+        [managedContext deleteObject:managedObject];
     }
-	[self saveContext];
+	[self saveContextForManagedObjectContext:managedContext];
 }
 
 #pragma mark - Save context methods
 
-+ (void)saveContext
++ (void)saveContextForManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-	NSError* error = nil;
-	if (![[CoreDataUtils managedObjectContext] save:&error])
+    NSManagedObjectContext *mainManagedObjectContext = [CoreDataUtils managedObjectContext];
+    
+    if (managedContext == managedObjectContext)
     {
-		AlfrescoLogDebug(@"Error with database transaction: %@", error);
-	}
+        NSError* error = nil;
+        if (![managedContext save:&error])
+        {
+            AlfrescoLogDebug(@"Error with database transaction Main MOC: %@", error);
+        }
+    }
+    else
+    {
+        [managedContext performBlockAndWait:^{
+            NSError *secondaryMOCError = nil;
+            if ([managedContext save:&secondaryMOCError])
+            {
+                [mainManagedObjectContext performBlockAndWait:^{
+                    NSError *mainMOCError = nil;
+                    if (![mainManagedObjectContext save:&mainMOCError])
+                    {
+                        AlfrescoLogDebug(@"Error with database transaction Main MOC: %@", mainMOCError);
+                    }
+                }];
+            }
+            else
+            {
+                AlfrescoLogDebug(@"Error with database transaction secondary MOC: %@", secondaryMOCError);
+            }
+        }];
+    }
 }
 
 #pragma mark - Create ManagedObject Methods
 
-+ (SyncRepository *)createSyncRepoMangedObject
++ (SyncRepository *)createSyncRepoMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncRepository *syncRepo = (SyncRepository *)[NSEntityDescription insertNewObjectForEntityForName:kSyncRepoManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    SyncRepository *syncRepo = (SyncRepository *)[NSEntityDescription insertNewObjectForEntityForName:kSyncRepoManagedObject inManagedObjectContext:managedContext];
     return syncRepo;
 }
 
-+ (SyncNodeInfo *)createSyncNodeInfoMangedObject
++ (SyncNodeInfo *)createSyncNodeInfoMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncNodeInfo *syncNodeInfo = (SyncNodeInfo *)[NSEntityDescription insertNewObjectForEntityForName:kSyncNodeInfoManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    SyncNodeInfo *syncNodeInfo = (SyncNodeInfo *)[NSEntityDescription insertNewObjectForEntityForName:kSyncNodeInfoManagedObject inManagedObjectContext:managedContext];
     return syncNodeInfo;
 }
 
-+ (SyncError *)createSyncErrorMangedObject
++ (SyncError *)createSyncErrorMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncError *syncError = (SyncError *)[NSEntityDescription insertNewObjectForEntityForName:kSyncErrorManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    SyncError *syncError = (SyncError *)[NSEntityDescription insertNewObjectForEntityForName:kSyncErrorManagedObject inManagedObjectContext:managedContext];
     return syncError;
 }
 
 #pragma mark - Retrieve ManagedObjects
 
-+ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId
++ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"syncNodeInfoId == %@", nodeId]];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"syncNodeInfoId == %@", nodeId] inManagedObjectContext:managedContext];
     if (nodes.count > 0)
     {
         return nodes[0];
@@ -135,9 +167,9 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return nil;
 }
 
-+ (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId
++ (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"repositoryId == %@", repositoryId]];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"repositoryId == %@", repositoryId] inManagedObjectContext:managedContext];
     if (nodes.count > 0)
     {
         return nodes[0];
@@ -145,58 +177,58 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return nil;
 }
 
-+ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew
++ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     SyncError *syncError = nil;
     
     if (nodeId)
     {
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId inManagedObjectContext:managedContext];
         syncError = nodeInfo.syncError;
         
         if (createNew && !syncError)
         {
-            syncError = [CoreDataUtils createSyncErrorMangedObject];
+            syncError = [CoreDataUtils createSyncErrorMangedObjectInManagedObjectContext:managedContext];
             syncError.errorId = nodeId;
         }
     }
     return syncError;
 }
 
-+ (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId
++ (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"repository.repositoryId == %@ && isTopLevelSyncNode == YES", repositoryId];
     NSSortDescriptor *titleSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor]];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor] inManagedObjectContext:managedContext];
     return nodes;
 }
 
-+ (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId
++ (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parentNode.syncNodeInfoId == %@", folderId];
     NSSortDescriptor *titleSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor]];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor] inManagedObjectContext:managedContext];
     return nodes;
 }
 
-+ (BOOL)isTopLevelSyncNode:(NSString *)nodeId
++ (BOOL)isTopLevelSyncNode:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"syncNodeInfoId == %@ && isTopLevelSyncNode == YES", nodeId];
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
     return nodes.count > 0;
 }
 
 #pragma mark - Debugging Dump Methods
 
-+ (void)logAllData
++ (void)logAllDataInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSArray *syncRepositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject];
+    NSArray *syncRepositories = [CoreDataUtils retrieveRecordsForTable:kSyncRepoManagedObject inManagedObjectContext:managedContext];
     for (SyncRepository *repo in syncRepositories)
     {
         AlfrescoLogDebug(@"Sync Repository : %@", repo.repositoryId);
     }
     
-    NSArray *nodesInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject];
+    NSArray *nodesInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject inManagedObjectContext:managedContext];
     
     for (SyncNodeInfo *nodeInfo in nodesInfo)
     {
