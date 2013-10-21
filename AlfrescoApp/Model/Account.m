@@ -13,6 +13,7 @@ static NSString * const kAccountPassword = @"kAccountPassword";
 static NSString * const kAccountDescription = @"kAccountDescription";
 static NSString * const kAccountServerAddress = @"kAccountServerAddress";
 static NSString * const kAccountServerPort= @"kAccountServerPort";
+static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 
 @interface Account ()
 
@@ -43,6 +44,7 @@ static NSString * const kAccountServerPort= @"kAccountServerPort";
     [aCoder encodeObject:self.accountDescription forKey:kAccountDescription];
     [aCoder encodeObject:self.serverAddress forKey:kAccountServerAddress];
     [aCoder encodeObject:self.serverPort forKey:kAccountServerPort];
+    [aCoder encodeObject:self.repositoryId forKey:kAccountRepositoryId];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -55,6 +57,7 @@ static NSString * const kAccountServerPort= @"kAccountServerPort";
         self.accountDescription = [aDecoder decodeObjectForKey:kAccountDescription];
         self.serverAddress = [aDecoder decodeObjectForKey:kAccountServerAddress];
         self.serverPort = [aDecoder decodeObjectForKey:kAccountServerPort];
+        self.repositoryId = [aDecoder decodeObjectForKey:kAccountRepositoryId];
     }
     return self;
 }
