@@ -63,26 +63,29 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSArray *syncedNodes))completionBlock
 {
-    self.alfrescoSession = alfrescoSession;
-    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
-    self.syncNodesInfo = [NSMutableDictionary dictionary];
-    self.syncNodesStatus = [NSMutableDictionary dictionary];
-    
-    if (self.documentFolderService)
+    if (self.syncQueue.operationCount == 0)
     {
-        [self.documentFolderService clearFavoritesCache];
-        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
-            
-            if (array)
-            {
-                [self rearrangeNodesAndSync:array];
-                completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
-            }
-        }];
-    }
-    else
-    {
-        [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:YES];
+        self.alfrescoSession = alfrescoSession;
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
+        self.syncNodesInfo = [NSMutableDictionary dictionary];
+        self.syncNodesStatus = [NSMutableDictionary dictionary];
+        
+        if (self.documentFolderService)
+        {
+            [self.documentFolderService clearFavoritesCache];
+            [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
+                
+                if (array)
+                {
+                    [self rearrangeNodesAndSync:array];
+                    completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
+                }
+            }];
+        }
+        else
+        {
+            [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:YES];
+        }
     }
     return [self topLevelSyncNodesOrNodesInFolder:nil];
 }
@@ -1143,6 +1146,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
         if (parentNodeInfo)
         {
+            AlfrescoLogDebug(@"Info Log: %@ --- %@ ------ %@ -", syncHelper, parentNodeInfo.syncNodeInfoId, self.syncNodesStatus);
             SyncNodeStatus *parentNodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:parentNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
             NSSet *subNodes = parentNodeInfo.nodes;
             

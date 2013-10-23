@@ -15,6 +15,8 @@
 #import "UniversalDevice.h"
 #import "SyncObstaclesViewController.h"
 #import "FailedTransferDetailViewController.h"
+#import "AccountManager.h"
+#import "Account.h"
 
 static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
@@ -77,7 +79,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     if (folder)
     {
         self.tableViewData = [[[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode] mutableCopy];
-        [self hidePullToRefreshView];
     }
     else
     {
@@ -90,6 +91,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
             }
         }] mutableCopy];
     }
+    [self hidePullToRefreshView];
     [self.tableView reloadData];
 }
 
@@ -135,6 +137,15 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         if (subViews.count > 0)
         {
             syncCell = (SyncCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil][0];
+            
+            static NSInteger const infoIconRightMargin = 5;
+            static NSInteger const infoIconTopMargin = 5;
+            static NSInteger const infoIconFrameWidth = 16;
+            static NSInteger const infoIconFrameHeight = 16;
+            
+            int infoIconsCurrentXPosition = self.tableView.frame.size.width - infoIconFrameWidth - infoIconRightMargin;
+            syncCell.status = [[UIImageView alloc] initWithFrame:CGRectMake(infoIconsCurrentXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
+            [syncCell addSubview:syncCell.status];
         }
     }
     
@@ -172,6 +183,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     SyncManager *syncManager = [SyncManager sharedManager];
     AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
     
     if (selectedNode.isFolder)
     {
@@ -188,6 +200,11 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         }
         else
         {
+            if (nodeStatus.status == SyncStatusLoading)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                return;
+            }
             NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:selectedNode.name];
             NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
             
@@ -340,7 +357,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     SyncNodeStatus *nodeStatus = nil;
     if (!self.parentNode)
     {
-        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:self.session.repositoryInfo.identifier];
+        NSString *repositoryId = self.session ?  self.session.repositoryInfo.identifier : [[[AccountManager sharedManager] selectedAccount] repositoryId];
+        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:repositoryId];
     }
     else
     {
