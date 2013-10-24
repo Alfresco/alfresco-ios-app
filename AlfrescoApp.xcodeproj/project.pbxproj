@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */; };
 		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
 		0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */; };
 		0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243B17EC9AE900EE6AA8 /* SyncRepository.m */; };
@@ -369,6 +370,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0804DCA218180D8B00E3ACC2 /* ThumbnailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailManager.h; sourceTree = "<group>"; };
+		0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailManager.m; sourceTree = "<group>"; };
 		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
 		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
 		0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
@@ -1406,6 +1409,8 @@
 				73B957D817A6750E0099FB84 /* LoginManager.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */,
+				0804DCA218180D8B00E3ACC2 /* ThumbnailManager.h */,
+				0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */,
 				73E9E21017E854ED00A198B4 /* AccountManager.h */,
 				73E9E21117E854ED00A198B4 /* AccountManager.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
@@ -2709,6 +2714,7 @@
 				0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */,
 				73F634D617E34A990065590E /* AlfrescoSortingUtils.m in Sources */,
 				73F634BF17E34A990065590E /* AlfrescoWorkflowPlaceholderProcessDefinitionService.m in Sources */,
+				0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */,
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,

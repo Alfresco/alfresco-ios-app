@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ThumbnailImageView.h"
 @class SyncNodeStatus;
 
 extern NSString * const kSyncTableCellIdentifier;
@@ -21,7 +22,7 @@ extern NSString * const kSyncTableCellIdentifier;
 @property (nonatomic, strong) IBOutlet UIView *detailsView;
 @property (nonatomic, strong) IBOutlet UILabel *details;
 @property (nonatomic, strong) IBOutlet UILabel *serverName;
-@property (nonatomic, strong) IBOutlet UIImageView *image;
+@property (nonatomic, strong) IBOutlet ThumbnailImageView *image;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressBar;
 @property (nonatomic, strong) IBOutlet UIImageView *status;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteIcon;
