@@ -19,7 +19,7 @@
 #import "UIAlertView+ALF.h"
 #import "LocationManager.h"
 #import <ImageIO/ImageIO.h>
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "AccountManager.h"
 #import "ThemeUtil.h"
 #import "DocumentPreviewViewController.h"
@@ -43,8 +43,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, strong) __block NSMutableDictionary *thumbnails;
-@property (nonatomic, strong) __block NSMutableArray *requestedThumbnailDocuments;
 @property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
@@ -81,7 +79,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.displayFolder = folder;
         self.folderPermissions = permissions;
         self.folderDisplayName = (displayName) ? displayName : folder.name;
-        self.requestedThumbnailDocuments = [NSMutableArray array];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(documentUpdated:)
                                                      name:kAlfrescoDocumentUpdatedOnServerNotification
@@ -199,7 +196,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)dealloc
 {
-    [self saveThumbnailMapping];
+    [[ThumbnailManager sharedManager] saveThumbnailMappingForFolder:self.displayFolder];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -224,8 +221,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
 {
     _displayFolder = displayFolder;
-    
-    [self loadThumbnailMappings];
     
     if (_displayFolder)
     {
@@ -682,68 +677,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }];
 }
 
-- (UIImage *)thumbnailFromDiskForDocumentUniqueIdentifier:(NSString *)uniqueIdentifier
-{
-    UIImage *returnImage = nil;
-    
-    NSString *savedFileNamePath = [self.thumbnails objectForKey:uniqueIdentifier];
-    if (savedFileNamePath)
-    {
-        NSURL *fileURL = [NSURL fileURLWithPath:savedFileNamePath];
-        NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:fileURL];
-        
-        returnImage = [UIImage imageWithData:imageData];
-    }
-    return returnImage;
-}
-
-- (void)saveThumbnailMapping
-{
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [[fileManager homeDirectory] stringByAppendingPathComponent:(NSString *)kThumbnailMappingFolder];
-    
-    if (![fileManager fileExistsAtPath:mappingsFolderPath])
-    {
-        NSError *folderCreationError = nil;
-        [fileManager createDirectoryAtPath:mappingsFolderPath withIntermediateDirectories:YES attributes:nil error:&folderCreationError];
-        
-        if (folderCreationError)
-        {
-            AlfrescoLogError([folderCreationError localizedDescription]);
-        }
-    }
-    
-    NSError *dictionarySavingError = nil;
-    NSString *fileNameForDisplayedFolder = uniqueFileNameForNode(self.displayFolder);
-    NSString *completeFilePath = [mappingsFolderPath stringByAppendingPathComponent:fileNameForDisplayedFolder];
-    NSData *thumbnailDictionaryData = [NSKeyedArchiver archivedDataWithRootObject:self.thumbnails];
-    
-    [fileManager createFileAtPath:completeFilePath contents:thumbnailDictionaryData error:&dictionarySavingError];
-    
-    if (dictionarySavingError)
-    {
-        AlfrescoLogError([dictionarySavingError localizedDescription]);
-    }
-}
-
-- (void)loadThumbnailMappings
-{
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [[fileManager homeDirectory] stringByAppendingPathComponent:(NSString *)kThumbnailMappingFolder];
-    NSString *fileNameForDisplayedFolder = uniqueFileNameForNode(self.displayFolder);
-    NSURL *completeFilePathURL = [NSURL fileURLWithPath:[mappingsFolderPath stringByAppendingPathComponent:fileNameForDisplayedFolder]];
-    NSData *thumbnailDictionaryData = [fileManager dataWithContentsOfURL:completeFilePathURL];
-
-    if (thumbnailDictionaryData)
-    {
-        self.thumbnails = (NSMutableDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:thumbnailDictionaryData];
-    }
-    else
-    {
-        self.thumbnails = [NSMutableDictionary dictionary];
-    }
-}
-
 - (void)documentUpdated:(NSNotification *)notification
 {
     NSDictionary *updatedDocumentDetails = (NSDictionary *)notification.object;
@@ -861,38 +794,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     else
     {
         AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-        
-        // get unique identifier of the document - last modified date will be suffixed
-        NSString *uniqueIdentifier = uniqueFileNameForNode(documentNode);
-        
-        UIImage *thumbnailImage = [self thumbnailFromDiskForDocumentUniqueIdentifier:uniqueIdentifier];
-        
-        // file has been downloaded completely for this document
-        if ([self.thumbnails objectForKey:uniqueIdentifier] && thumbnailImage)
-        {
-            cell.nodeImageView.image = thumbnailImage;
-        }
-        else if (!thumbnailImage || ![[ThumbnailDownloader sharedManager] thumbnailHasBeenRequestedForDocument:documentNode])
-        {
-            __weak FileFolderListViewController *weakSelf = self;
-            
-            // request the file to be downloaded, only if an existing request for this document hasn't been made.
-            // set a placeholder image
-            UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
-            cell.nodeImageView.image = placeholderImage;
-            
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode toFolderAtPath:[[AlfrescoFileManager sharedManager] temporaryDirectory] renditionType:@"doclib" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-                if (!error)
-                {
-                    [weakSelf.thumbnails setValue:savedFileName forKey:uniqueIdentifier];
-                    // update the image view
-                    if (cell.nodeImageView.image == placeholderImage)
-                    {
-                        [cell.nodeImageView setImageAtSecurePath:savedFileName];
-                    }
-                }
-            }];
-        }
+        UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForNode:documentNode withParentNode:self.displayFolder session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
+           
+                [cell.nodeImageView setImageAtSecurePath:savedFileName];
+        }];
+        cell.nodeImageView.image = thumbnail;
         
         cell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(documentNode.contentLength)];
     }

@@ -17,6 +17,7 @@
 #import "FailedTransferDetailViewController.h"
 #import "AccountManager.h"
 #import "Account.h"
+#import "ThumbnailManager.h"
 
 static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
@@ -168,7 +169,18 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     }
     else if (node.isDocument)
     {
-        syncCell.image.image = imageForType([node.name pathExtension]);
+        AlfrescoDocument *document = (AlfrescoDocument *)node;
+        ThumbnailManager *thumbnailManager = [ThumbnailManager sharedManager];
+        UIImage *thumbnail = [thumbnailManager thumbnailFromDiskForDocument:document];
+        
+        if (!thumbnail)
+        {
+            thumbnail = [thumbnailManager thumbnailForNode:document withParentNode:self.parentNode session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
+                
+                [syncCell.image setImageAtSecurePath:savedFileName];
+            }];
+        }
+        syncCell.image.image = thumbnail;
     }
     
     [syncCell updateFavoriteState:nodeStatus.isFavorite];
