@@ -380,7 +380,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
 
 + (NSString *)serverURLStringFromAccount:(Account *)account
 {
-    return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.serverAddress, account.serverPort];
+    return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
 }
 
 @end

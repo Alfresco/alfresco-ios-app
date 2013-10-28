@@ -68,7 +68,7 @@
         
         if (account)
         {
-            serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.serverAddress, account.serverPort];
+            serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
             serverDisplayName = account.accountDescription;
             username = account.username;
         }
