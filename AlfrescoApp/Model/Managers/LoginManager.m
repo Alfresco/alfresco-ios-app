@@ -68,7 +68,7 @@
         
         if (account)
         {
-            serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.serverAddress, account.serverPort];
+            serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
             serverDisplayName = account.accountDescription;
             username = account.username;
         }
@@ -84,9 +84,15 @@
         
         if (account)
         {
+            if (!account.password || [account.password isEqualToString:@""])
+            {
+                [self displayLoginViewControllerWithAccount:account username:account.username];
+                return;
+            }
+            
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [self showHUDOnView:delegate.window];
-            [self loginToAccount:account username:account.username password:account.password completionBlock:^(BOOL successful) {
+            [self loginToAccount:account username:account.username password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
                 [self hideHUD];
                 if (!successful)
                 {
@@ -123,7 +129,7 @@
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)loginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password completionBlock:(void (^)(BOOL successful))completionBlock
+- (void)loginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
 {
     NSDictionary *sessionParameters = @{kAlfrescoMetadataExtraction : [NSNumber numberWithBool:YES],
                                         kAlfrescoThumbnailCreation : [NSNumber numberWithBool:YES]};
@@ -134,16 +140,16 @@
          {
              [UniversalDevice clearDetailViewController];
              
-             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+             if (!temporarySession)
+             {
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+             }
              
-             account.username = username;
-             account.password = password;
              account.repositoryId = session.repositoryInfo.identifier;
-             
              [[AccountManager sharedManager] saveAccountsToKeychain];
              
              self.currentLoginURLString = nil;
-             self.currentLoginRequest = nil;
+             self.currentLoginRequest = nil; 
              
              if (completionBlock != NULL)
              {
@@ -195,7 +201,7 @@
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self loginToAccount:account username:username password:password completionBlock:^(BOOL successful) {
+    [self loginToAccount:account username:username password:password temporarySession:NO completionBlock:^(BOOL successful) {
         [self hideHUD];
         if (successful)
         {

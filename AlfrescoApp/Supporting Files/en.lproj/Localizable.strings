@@ -123,6 +123,34 @@
 "sites.siteCell.join" = "Join";
 
 /**
+ * Accounts View Controller
+ */
+"accounts.title" = "Accounts";
+"accountdetails.title.newaccount" = "New Account";
+"accountdetails.title.editingaccount" = "Editing Account";
+"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.alfrescoServer" = "Alfresco Server";
+
+"accounttype.footer.alfrescoServer" = "Connect to an Alfresco Server";
+"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account";
+"accounttype.footer.signuplink" = "New to Alfresco? Sign up for a free account";
+"accounttype.footer.signuplink.linktext" = "Sign up";
+
+"accountdetails.placeholder.required" = "Required";
+"accountdetails.placeholder.optional" = "Optional";
+"accountdetails.placeholder.email" = "example@acme.com";
+"accountdetails.fields.hostname" = "Server Address";
+"accountdetails.fields.description" = "Description";
+"accountdetails.fields.port" = "Port";
+"accountdetails.fields.protocol" = "HTTPS";
+"accountdetails.fields.servicedocument" = "Service Document";
+"accountdetails.header.authentication" = "Account Authentication";
+"accountdetails.header.advanced" = "Advanced";
+
+"accountdetails.alert.save.title" = "Save Account";
+"accountdetails.alert.save.validationerror" = "Failure to authenticate. Check your account settings with your system administrator.";
+
+/**
  * Company Home View Controller
  */
 "companyHome.title" = "Repository";

@@ -14,6 +14,9 @@ NSString * const kLicenseDictionaries = @"thirdPartyLibraries";
 
 NSString * const kImageMappingPlist = @"ImageMapping";
 
+NSString * const kProtocolHTTP = @"http";
+NSString * const kProtocolHTTPS = @"https";
+
 // Notificiations
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
 NSString * const kAlfrescoAccessDeniedNotification = @"AlfrescoUnauthorizedAccessNotification";
@@ -25,6 +28,10 @@ NSString * const kAlfrescoDocumentUpdatedLocallyNotification = @"AlfrescoDocumen
 NSString * const kAlfrescoDocumentUpdatedDocumentParameterKey = @"AlfrescoDocumentUpdatedDocumentParameterKey";
 NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey = @"AlfrescoDocumentUpdatedFilenameParameterKey";
 NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDownloadedIdentifierKey";
+
+// Accounts
+NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";
+NSString * const kAlfrescoAccountRemovedNotification = @"AlfrescoAccountRemovedNotification";
 
 // Application policy constants
 NSString * const kApplicationPolicySettings = @"ApplicationPolicySettings";
@@ -88,4 +95,4 @@ NSString * const kEditFileServiceParameterAlfrescoDocument = @"alfrescoDocumentN
 NSString * const kEditFileServiceParameterAlfrescoDocumentIsDownloaded = @"documentIsDownloaded";
 NSString * const kEditFileServiceParameterDocumentFileName = @"documentFileName";
 
-NSString * const kAlfrescoOnPremiseServerURLTemplate = @"http://%@:%@/alfresco";
+NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";

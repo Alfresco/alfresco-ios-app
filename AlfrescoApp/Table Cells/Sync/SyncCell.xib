@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dCW-ri-Siv" customClass="ThumbnailImageView">
-                        <rect key="frame" x="0.0" y="21" width="44" height="44"/>
+                        <rect key="frame" x="2" y="23" width="40" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="BigLongFilename.txt" lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Du-PP-Hzm">
@@ -25,8 +25,8 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xnk-Mu-sus">
-                        <rect key="frame" x="29" y="73" width="238" height="2"/>
+                    <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xnk-Mu-sus">
+                        <rect key="frame" x="44" y="81" width="220" height="2"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </progressView>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bvD-ac-gPv">
@@ -35,6 +35,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="xnk-Mu-sus" firstAttribute="leading" secondItem="DfA-ge-hh7" secondAttribute="leading" constant="44" id="47C-z5-RPV"/>
+                    <constraint firstAttribute="trailing" secondItem="xnk-Mu-sus" secondAttribute="trailing" constant="9" id="AhQ-Lt-v3m"/>
+                    <constraint firstAttribute="bottom" secondItem="xnk-Mu-sus" secondAttribute="bottom" id="koI-hl-nV2"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <connections>

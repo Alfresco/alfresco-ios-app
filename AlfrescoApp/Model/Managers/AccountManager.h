@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class Account;
+#import "Account.h"
 
 @interface AccountManager : NSObject
 
@@ -20,5 +19,6 @@
 - (void)removeAccount:(Account *)account;
 - (void)removeAllAccounts;
 - (void)saveAccountsToKeychain;
+- (NSInteger)totalNumberOfAddedAccounts;
 
 @end

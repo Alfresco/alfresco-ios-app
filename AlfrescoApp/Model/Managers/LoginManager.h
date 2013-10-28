@@ -15,5 +15,6 @@
 
 + (id)sharedManager;
 - (void)attemptLoginToAccount:(Account *)account;
+- (void)loginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock;
 
 @end

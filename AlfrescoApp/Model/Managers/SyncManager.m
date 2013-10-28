@@ -105,7 +105,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
         else
         {
-            NSString *selectedAccountId = [[[AccountManager sharedManager] selectedAccount] repositoryId];
+            NSString *selectedAccountId = self.alfrescoSession ? self.alfrescoSession.repositoryInfo.identifier : [[[AccountManager sharedManager] selectedAccount] repositoryId];
             SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:selectedAccountId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
             if (repository)
             {

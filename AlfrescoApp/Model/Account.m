@@ -13,6 +13,8 @@ static NSString * const kAccountPassword = @"kAccountPassword";
 static NSString * const kAccountDescription = @"kAccountDescription";
 static NSString * const kAccountServerAddress = @"kAccountServerAddress";
 static NSString * const kAccountServerPort= @"kAccountServerPort";
+static NSString * const kAccountProtocol= @"kAccountProtocol";
+static NSString * const kAccountServiceDocument = @"kAccountServiceDocument";
 static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 
 @interface Account ()
@@ -44,6 +46,8 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     [aCoder encodeObject:self.accountDescription forKey:kAccountDescription];
     [aCoder encodeObject:self.serverAddress forKey:kAccountServerAddress];
     [aCoder encodeObject:self.serverPort forKey:kAccountServerPort];
+    [aCoder encodeObject:self.protocol forKey:kAccountProtocol];
+    [aCoder encodeObject:self.serviceDocument forKey:kAccountServiceDocument];
     [aCoder encodeObject:self.repositoryId forKey:kAccountRepositoryId];
 }
 
@@ -57,6 +61,8 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
         self.accountDescription = [aDecoder decodeObjectForKey:kAccountDescription];
         self.serverAddress = [aDecoder decodeObjectForKey:kAccountServerAddress];
         self.serverPort = [aDecoder decodeObjectForKey:kAccountServerPort];
+        self.protocol = [aDecoder decodeObjectForKey:kAccountProtocol];
+        self.serviceDocument = [aDecoder decodeObjectForKey:kAccountServiceDocument];
         self.repositoryId = [aDecoder decodeObjectForKey:kAccountRepositoryId];
     }
     return self;
