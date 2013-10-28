@@ -81,7 +81,6 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
         
         [self dismissViewControllerAnimated:YES completion:^{
             [accountManager addAccount:self.account];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:nil];
         }];
     }];
 }
@@ -127,7 +126,8 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    selectedCell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
@@ -280,7 +280,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     temporaryAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.accountDescription = ([accountDescription isEqualToString:@""]) ? NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server") : accountDescription;
+    temporaryAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server") : accountDescription;
     temporaryAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
     temporaryAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
@@ -310,6 +310,14 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
             {
                 updateAccountInfo(temporaryAccount);
                 completionBlock(YES);
+            }
+            else
+            {
+                UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                       message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                      delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                             otherButtonTitles:nil, nil];
+                [failureAlert show];
             }
         }];
     }

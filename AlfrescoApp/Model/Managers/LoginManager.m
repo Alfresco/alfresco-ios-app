@@ -84,6 +84,12 @@
         
         if (account)
         {
+            if (!account.password || [account.password isEqualToString:@""])
+            {
+                [self displayLoginViewControllerWithAccount:account username:account.username];
+                return;
+            }
+            
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [self showHUDOnView:delegate.window];
             [self loginToAccount:account username:account.username password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
@@ -139,10 +145,7 @@
                  [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
              }
              
-             account.username = username;
-             account.password = password;
              account.repositoryId = session.repositoryInfo.identifier;
-             
              [[AccountManager sharedManager] saveAccountsToKeychain];
              
              self.currentLoginURLString = nil;

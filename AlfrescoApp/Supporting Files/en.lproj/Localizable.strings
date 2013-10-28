@@ -147,6 +147,9 @@
 "accountdetails.header.authentication" = "Account Authentication";
 "accountdetails.header.advanced" = "Advanced";
 
+"accountdetails.alert.save.title" = "Save Account";
+"accountdetails.alert.save.validationerror" = "Failure to authenticate. Check your account settings with your system administrator.";
+
 /**
  * Company Home View Controller
  */

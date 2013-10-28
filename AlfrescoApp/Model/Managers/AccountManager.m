@@ -48,12 +48,14 @@ static NSString * const kSelectedAccountUsername = @"selectedAccountUsername";
 {
     [self.accountsFromKeychain addObject:account];
     [self saveAllAccountsToKeychain];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:nil];
 }
 
 - (void)removeAccount:(Account *)account
 {
     [self.accountsFromKeychain removeObject:account];
     [self saveAllAccountsToKeychain];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:nil];
 }
 
 - (void)removeAllAccounts

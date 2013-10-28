@@ -96,7 +96,7 @@
     Account *account = self.tableViewData[indexPath.row];
     
     cell.textLabel.text = account.accountDescription;
-    cell.imageView.image = [UIImage imageNamed:@"account.png"];
+    cell.imageView.image = [UIImage imageNamed:@"server.png"];
     
     if ([accountManager.selectedAccount.username isEqualToString:account.username])
     {
@@ -123,6 +123,22 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AccountManager *accountManager = [AccountManager sharedManager];
+    Account *account = self.tableViewData[indexPath.row];
+    
+    [accountManager removeAccount:account];
+    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Add Account
