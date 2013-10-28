@@ -8,6 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */; };
+		0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA7181962E700E3ACC2 /* AccountsViewController.m */; };
+		0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCA91819634000E3ACC2 /* AccountsViewController.xib */; };
+		0804DCAD181965B000E3ACC2 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCAB181965B000E3ACC2 /* account.png */; };
+		0804DCAE181965B000E3ACC2 /* account@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCAC181965B000E3ACC2 /* account@2x.png */; };
+		0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCB41819680E00E3ACC2 /* AccountCell.m */; };
+		0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCB61819682700E3ACC2 /* AccountCell.xib */; };
+		0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */; };
+		0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */; };
+		0804DCC3181A6BAB00E3ACC2 /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCBF181A6BAB00E3ACC2 /* cloud.png */; };
+		0804DCC4181A6BAB00E3ACC2 /* cloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCC0181A6BAB00E3ACC2 /* cloud@2x.png */; };
+		0804DCC5181A6BAB00E3ACC2 /* server.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCC1181A6BAB00E3ACC2 /* server.png */; };
+		0804DCC6181A6BAB00E3ACC2 /* server@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCC2181A6BAB00E3ACC2 /* server@2x.png */; };
+		0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */; };
+		0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */; };
 		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
 		0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */; };
 		0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243B17EC9AE900EE6AA8 /* SyncRepository.m */; };
@@ -372,6 +386,24 @@
 /* Begin PBXFileReference section */
 		0804DCA218180D8B00E3ACC2 /* ThumbnailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailManager.h; sourceTree = "<group>"; };
 		0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailManager.m; sourceTree = "<group>"; };
+		0804DCA6181962E700E3ACC2 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountsViewController.h; path = "Accounts View Controller/AccountsViewController.h"; sourceTree = "<group>"; };
+		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountsViewController.m; path = "Accounts View Controller/AccountsViewController.m"; sourceTree = "<group>"; };
+		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountsViewController.xib; path = "Accounts View Controller/AccountsViewController.xib"; sourceTree = "<group>"; };
+		0804DCAB181965B000E3ACC2 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
+		0804DCAC181965B000E3ACC2 /* account@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account@2x.png"; sourceTree = "<group>"; };
+		0804DCB31819680E00E3ACC2 /* AccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountCell.h; path = Account/AccountCell.h; sourceTree = "<group>"; };
+		0804DCB41819680E00E3ACC2 /* AccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountCell.m; path = Account/AccountCell.m; sourceTree = "<group>"; };
+		0804DCB61819682700E3ACC2 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountCell.xib; path = Account/AccountCell.xib; sourceTree = "<group>"; };
+		0804DCBA18197F8600E3ACC2 /* AccountTypeSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountTypeSelectionViewController.h; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.h"; sourceTree = "<group>"; };
+		0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountTypeSelectionViewController.m; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.m"; sourceTree = "<group>"; };
+		0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountTypeSelectionViewController.xib; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.xib"; sourceTree = "<group>"; };
+		0804DCBF181A6BAB00E3ACC2 /* cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud.png; sourceTree = "<group>"; };
+		0804DCC0181A6BAB00E3ACC2 /* cloud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud@2x.png"; sourceTree = "<group>"; };
+		0804DCC1181A6BAB00E3ACC2 /* server.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = server.png; sourceTree = "<group>"; };
+		0804DCC2181A6BAB00E3ACC2 /* server@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "server@2x.png"; sourceTree = "<group>"; };
+		0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountInfoViewController.h; path = "Accounts View Controller/New Account/AccountInfoViewController.h"; sourceTree = "<group>"; };
+		0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountInfoViewController.m; path = "Accounts View Controller/New Account/AccountInfoViewController.m"; sourceTree = "<group>"; };
+		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "Accounts View Controller/New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
 		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
 		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
 		0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
@@ -1047,6 +1079,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0804DCA5181962A400E3ACC2 /* Accounts View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0804DCB818197F0C00E3ACC2 /* New Account */,
+				0804DCA6181962E700E3ACC2 /* AccountsViewController.h */,
+				0804DCA7181962E700E3ACC2 /* AccountsViewController.m */,
+				0804DCA91819634000E3ACC2 /* AccountsViewController.xib */,
+			);
+			name = "Accounts View Controllers";
+			sourceTree = "<group>";
+		};
+		0804DCB2181967EE00E3ACC2 /* AccountCell */ = {
+			isa = PBXGroup;
+			children = (
+				0804DCB31819680E00E3ACC2 /* AccountCell.h */,
+				0804DCB41819680E00E3ACC2 /* AccountCell.m */,
+				0804DCB61819682700E3ACC2 /* AccountCell.xib */,
+			);
+			name = AccountCell;
+			sourceTree = "<group>";
+		};
+		0804DCB818197F0C00E3ACC2 /* New Account */ = {
+			isa = PBXGroup;
+			children = (
+				0804DCBA18197F8600E3ACC2 /* AccountTypeSelectionViewController.h */,
+				0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */,
+				0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */,
+				0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */,
+				0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */,
+				0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */,
+			);
+			name = "New Account";
+			sourceTree = "<group>";
+		};
 		0833244D17F981EC00EE6AA8 /* Sync ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1446,6 +1512,7 @@
 		73B957E117A6750E0099FB84 /* Table Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0804DCB2181967EE00E3ACC2 /* AccountCell */,
 				73B957E217A6750E0099FB84 /* ActivitiesTableViewCellController.h */,
 				73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */,
 				73B957E417A6750E0099FB84 /* ActivityTableViewCell.h */,
@@ -1560,6 +1627,7 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0804DCA5181962A400E3ACC2 /* Accounts View Controllers */,
 				08B61F9B1804076800C827EA /* Custom Popovers */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
@@ -1804,6 +1872,8 @@
 		73B95A3817A68B7E0099FB84 /* Tabbar */ = {
 			isa = PBXGroup;
 			children = (
+				0804DCAB181965B000E3ACC2 /* account.png */,
+				0804DCAC181965B000E3ACC2 /* account@2x.png */,
 				73B95A3917A68B7E0099FB84 /* about-more.png */,
 				73B95A3A17A68B7E0099FB84 /* about-more@2x.png */,
 				73B95A3B17A68B7E0099FB84 /* activities-tabbar.png */,
@@ -1816,6 +1886,10 @@
 				73B95A4217A68B7E0099FB84 /* repository-tabbar@2x.png */,
 				73B95A4317A68B7E0099FB84 /* sites-tabbar.png */,
 				73B95A4417A68B7E0099FB84 /* sites-tabbar@2x.png */,
+				0804DCBF181A6BAB00E3ACC2 /* cloud.png */,
+				0804DCC0181A6BAB00E3ACC2 /* cloud@2x.png */,
+				0804DCC1181A6BAB00E3ACC2 /* server.png */,
+				0804DCC2181A6BAB00E3ACC2 /* server@2x.png */,
 			);
 			path = Tabbar;
 			sourceTree = "<group>";
@@ -2562,6 +2636,7 @@
 				0833246517F98CED00EE6AA8 /* sync-status-failed@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
+				0804DCAE181965B000E3ACC2 /* account@2x.png in Resources */,
 				73B95A6A17A68B7E0099FB84 /* folder@2x.png in Resources */,
 				73B95A6B17A68B7E0099FB84 /* generic.png in Resources */,
 				73B95A6C17A68B7E0099FB84 /* generic@2x.png in Resources */,
@@ -2574,6 +2649,7 @@
 				0833246217F98CED00EE6AA8 /* selected-favorite-indicator.png in Resources */,
 				73B95A7217A68B7E0099FB84 /* mime_img@2x.png in Resources */,
 				73B95A7317A68B7E0099FB84 /* mime_mp3.png in Resources */,
+				0804DCC4181A6BAB00E3ACC2 /* cloud@2x.png in Resources */,
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				73B95A7417A68B7E0099FB84 /* mime_mp3@2x.png in Resources */,
 				73B95A7517A68B7E0099FB84 /* mime_pdf.png in Resources */,
@@ -2601,9 +2677,11 @@
 				73B95A8617A68B7E0099FB84 /* site@2x.png in Resources */,
 				73B95A8717A68B7E0099FB84 /* Default-568h@2x.png in Resources */,
 				0833246A17F98CED00EE6AA8 /* sync-status-success.png in Resources */,
+				0804DCC6181A6BAB00E3ACC2 /* server@2x.png in Resources */,
 				0833246B17F98CED00EE6AA8 /* sync-status-success@2x.png in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
+				0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
 				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
@@ -2639,6 +2717,7 @@
 				73B95AA117A68B7E0099FB84 /* activities-tabbar@2x.png in Resources */,
 				73B95AA217A68B7E0099FB84 /* downloads-tabbar.png in Resources */,
 				73B95AA317A68B7E0099FB84 /* downloads-tabbar@2x.png in Resources */,
+				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
 				73B95AA417A68B7E0099FB84 /* help-more.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
@@ -2647,13 +2726,16 @@
 				73B95AA617A68B7E0099FB84 /* repository-tabbar.png in Resources */,
 				73B95AA717A68B7E0099FB84 /* repository-tabbar@2x.png in Resources */,
 				73B95AA817A68B7E0099FB84 /* sites-tabbar.png in Resources */,
+				0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */,
 				73B95AA917A68B7E0099FB84 /* sites-tabbar@2x.png in Resources */,
 				73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */,
+				0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */,
 				73B95AAB17A68B7E0099FB84 /* black-cell-action-button@2x.png in Resources */,
 				73B95AAC17A68B7E0099FB84 /* cell-actions-inner-shadow.png in Resources */,
 				0833246617F98CED00EE6AA8 /* sync-status-loading.png in Resources */,
 				73B95AAD17A68B7E0099FB84 /* grey-accessory-down.png in Resources */,
 				73B95AAE17A68B7E0099FB84 /* grey-accessory-down@2x.png in Resources */,
+				0804DCC5181A6BAB00E3ACC2 /* server.png in Resources */,
 				73B95AAF17A68B7E0099FB84 /* grey-accessory-up.png in Resources */,
 				73B95AB017A68B7E0099FB84 /* grey-accessory-up@2x.png in Resources */,
 				0833246317F98CED00EE6AA8 /* selected-favorite-indicator@2x.png in Resources */,
@@ -2674,6 +2756,7 @@
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
 				73B95ABE17A68B7E0099FB84 /* actionButton@2x.png in Resources */,
 				73B95ABF17A68B7E0099FB84 /* comments.png in Resources */,
+				0804DCC3181A6BAB00E3ACC2 /* cloud.png in Resources */,
 				73B95AC017A68B7E0099FB84 /* comments@2x.png in Resources */,
 				73B95AC117A68B7E0099FB84 /* download.png in Resources */,
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
@@ -2681,6 +2764,7 @@
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
 				73B95B0C17A6A83A0099FB84 /* ImageMapping.plist in Resources */,
+				0804DCAD181965B000E3ACC2 /* account.png in Resources */,
 				73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */,
 				0833246717F98CED00EE6AA8 /* sync-status-loading@2x.png in Resources */,
 				73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */,
@@ -2730,6 +2814,7 @@
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				73F6348C17E34A990065590E /* AlfrescoListingContext.m in Sources */,
+				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				73F634CE17E34A990065590E /* AlfrescoDefaultHTTPRequest.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73F634A117E34A990065590E /* AlfrescoTaggingService.m in Sources */,
@@ -2804,8 +2889,10 @@
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				73F634CC17E34A990065590E /* AlfrescoRepositorySession.m in Sources */,
 				73F6349317E34A990065590E /* AlfrescoRepositoryInfo.m in Sources */,
+				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				73F6348517E34A990065590E /* AlfrescoCompany.m in Sources */,
+				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				73F6349617E34A990065590E /* AlfrescoWorkflowInfo.m in Sources */,
 				73F6349C17E34A990065590E /* AlfrescoDocumentFolderService.m in Sources */,
 				73F634D417E34A990065590E /* AlfrescoRequest.m in Sources */,
@@ -2850,6 +2937,7 @@
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				73F634BE17E34A990065590E /* AlfrescoPlaceholderTaggingService.m in Sources */,
+				0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */,
 				73B95AF717A68DF20099FB84 /* LicenseViewController.m in Sources */,
 				73F6347E17E34A990065590E /* AlfrescoInternalConstants.m in Sources */,
 				73F6349D17E34A990065590E /* AlfrescoPersonService.m in Sources */,

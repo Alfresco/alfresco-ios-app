@@ -28,6 +28,7 @@
 #import "DownloadsViewController.h"
 #import "SyncViewController.h"
 #import "SettingsViewController.h"
+#import "AccountsViewController.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -60,21 +61,15 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     
     [self.window makeKeyAndVisible];
     
-    // login to default account
-    NSArray *allAccounts = [[AccountManager sharedManager] allAccounts];
-    
 #ifdef DEBUG
     //[[AccountManager sharedManager] removeAllAccounts];
 #endif
     
-    // REMOVE THIS - TESTING PURPOSES ONLY
-    if (!allAccounts || allAccounts.count == 0)
+    AccountManager *accountManager = [AccountManager sharedManager];
+    if (accountManager.selectedAccount)
     {
-        Account *testAccount = [[Account alloc] initWithUsername:@"admin" password:@"incorrectPassword" description:@"test" serverAddress:@"localhost" port:@"8080"];
-        [[AccountManager sharedManager] addAccount:testAccount];
+        [[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
     }
-    
-    [[LoginManager sharedManager] attemptLoginToAccount:allAccounts[0]];
     
     return YES;
 }
@@ -141,8 +136,10 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:session];
     AboutViewController *aboutViewController = [[AboutViewController alloc] init];
     PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
+    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
     
     // Navigation controllers
+    NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
     NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
     NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
     NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
@@ -153,6 +150,11 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
+    MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
+                                                                    imageName:@"account.png"
+                                                            localizedTitleKey:@"accounts.title"
+                                                               viewController:accountsNavigationController
+                                                              displayInDetail:NO];
     MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
                                                                       imageName:@"activities-tabbar.png"
                                                               localizedTitleKey:@"activities.title"
@@ -201,7 +203,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:sitesListNavigationController];
     
-    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithSectionArrays:@[activitiesItem],
+    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithSectionArrays:@[accountsItem], @[activitiesItem],
                                                   @[repositoryItem, sitesItem, tasksItem, syncItem],
                                                   @[settingsItem, downloadsItem, aboutItem, helpItem],
                                                   nil];

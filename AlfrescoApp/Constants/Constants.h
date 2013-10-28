@@ -14,6 +14,9 @@ extern NSString * const kLicenseDictionaries;
 
 extern NSString * const kImageMappingPlist;
 
+extern NSString * const kProtocolHTTP;
+extern NSString * const kProtocolHTTPS;
+
 // Notificiations
 extern NSString * const kAlfrescoSessionReceivedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;
@@ -26,6 +29,10 @@ extern NSString * const kAlfrescoDocumentUpdatedLocallyNotification;
 extern NSString * const kAlfrescoDocumentUpdatedDocumentParameterKey;
 extern NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey;
 extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
+
+// Accounts
+extern NSString * const kAlfrescoAccountAddedNotification;
+extern NSString * const kAlfrescoAccountRemovedNotification;
 
 // Application policy constants
 extern NSString * const kApplicationPolicySettings;

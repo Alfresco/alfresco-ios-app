@@ -123,6 +123,15 @@
 "sites.siteCell.join" = "Join";
 
 /**
+ * Accounts View Controller
+ */
+"accounts.title" = "Accounts";
+"accountdetails.title.newaccount" = "New Account";
+"accountdetails.title.editingaccount" = "Editing Account";
+"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.alfrescoServer" = "Alfresco Server";
+
+/**
  * Company Home View Controller
  */
 "companyHome.title" = "Repository";

@@ -8,7 +8,8 @@
 
 #import "AccountManager.h"
 #import "KeychainUtils.h"
-#import "Account.h"
+
+static NSString * const kSelectedAccountUsername = @"selectedAccountUsername";
 
 @interface AccountManager ()
 
@@ -72,6 +73,20 @@
     [self saveAllAccountsToKeychain];
 }
 
+- (void)setSelectedAccount:(Account *)selectedAccount
+{
+    _selectedAccount = selectedAccount;
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:selectedAccount.username forKey:kSelectedAccountUsername];
+    [userDefaults synchronize];
+}
+
+- (NSInteger)totalNumberOfAddedAccounts
+{
+    return self.allAccounts.count;
+}
+
 #pragma mark - Private Functions
 
 - (void)saveAllAccountsToKeychain
@@ -100,9 +115,15 @@
         self.accountsFromKeychain = [NSMutableArray array];
     }
     
-    if (self.accountsFromKeychain && self.accountsFromKeychain.count > 0)
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *selectedAccountUsername = [userDefaults objectForKey:kSelectedAccountUsername];
+    
+    for (Account *account in self.accountsFromKeychain)
     {
-        self.selectedAccount = [self.accountsFromKeychain objectAtIndex:0];
+        if ([account.username isEqualToString:selectedAccountUsername])
+        {
+            self.selectedAccount = account;
+        }
     }
 }
 
