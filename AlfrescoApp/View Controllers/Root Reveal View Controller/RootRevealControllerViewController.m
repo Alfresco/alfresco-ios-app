@@ -179,7 +179,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
         {
             if (translation.x > kDeviceSpecificRevealWidth)
             {
-                self.detailViewContainer.frame = CGRectMake(self.dragStartRect.origin.x + translation.x,
+                self.detailViewContainer.frame = CGRectMake(MIN(self.dragStartRect.origin.x + translation.x, kMasterViewWidth),
                                                             self.dragStartRect.origin.y,
                                                             self.detailViewContainer.frame.size.width,
                                                             self.detailViewContainer.frame.size.height);
@@ -190,7 +190,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
         {
             if (translation.x < kDeviceSpecificRevealWidth)
             {
-                self.detailViewContainer.frame = CGRectMake(self.dragStartRect.origin.x + translation.x,
+                self.detailViewContainer.frame = CGRectMake(MAX(self.dragStartRect.origin.x + translation.x, kDeviceSpecificRevealWidth),
                                                             self.dragStartRect.origin.y,
                                                             self.detailViewContainer.frame.size.width,
                                                             self.detailViewContainer.frame.size.height);
