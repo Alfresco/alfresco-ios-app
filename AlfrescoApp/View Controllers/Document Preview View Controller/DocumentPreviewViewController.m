@@ -15,10 +15,23 @@
 #import "Utility.h"
 #import "ErrorDescriptions.h"
 #import "UniversalDevice.h"
+#import "MetaDataViewController.h"
+#import "VersionHistoryViewController.h"
+#import "PagedScrollView.h"
+#import "CommentViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 static NSString * const kPreviewFolderName = @"DocumentPreviews";
 
-@interface DocumentPreviewViewController () <ActionCollectionViewDelegate>
+typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
+{
+    PagingScrollViewSegmentTypePreview = 0,
+    PagingScrollViewSegmentTypeMetadata,
+    PagingScrollViewSegmentTypeVersionHistory,
+    PagingScrollViewSegmentTypeComments
+};
+
+@interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate>
 
 @property (nonatomic, strong, readwrite) AlfrescoDocument *document;
 @property (nonatomic, strong, readwrite) AlfrescoPermissions *documentPermissions;
@@ -28,6 +41,10 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
 @property (nonatomic, strong, readwrite) NSString *previewFolderURLString;
 @property (nonatomic, weak, readwrite) IBOutlet ThumbnailImageView *documentThumbnail;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *shareMenuContainer;
+@property (nonatomic, weak, readwrite) IBOutlet PagedScrollView *pagingScrollView;
+@property (nonatomic, weak, readwrite) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *pagingSegmentControl;
+@property (nonatomic, strong, readwrite) NSMutableArray *pagingControllers;
 
 @end
 
@@ -43,6 +60,7 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
         self.session = session;
         self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         self.previewFolderURLString = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:kPreviewFolderName];
+        self.pagingControllers = [NSMutableArray array];
     }
     return self;
 }
@@ -62,6 +80,7 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
     imageTap.numberOfTapsRequired = 1;
     [self.documentThumbnail addGestureRecognizer:imageTap];
     
+    // collection menu
     ActionCollectionRow *alfrescoActions = [[ActionCollectionRow alloc] initWithItems:@[[ActionCollectionItem emailItem]]];
     ActionCollectionRow *shareRow = [[ActionCollectionRow alloc] initWithItems:@[[ActionCollectionItem emailItem],
                                                                                  [ActionCollectionItem openInItem],
@@ -85,6 +104,10 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
     self.shareMenuContainer.frame = actionViewFrame;
     [self.shareMenuContainer addSubview:actionView];
     
+    // setup the paging view
+    [self setupPagingScrollView];
+    
+    // setup the preview image
     NSString *uniqueIdentifier = uniqueFileNameForNode(self.document);
     NSString *filePath = [[self.previewFolderURLString stringByAppendingPathComponent:uniqueIdentifier] stringByAppendingPathExtension:@"png"];
     
@@ -106,6 +129,8 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
             }
         }];
     }
+    
+    [self localiseUI];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -174,6 +199,43 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
     }
 }
 
+- (void)setupPagingScrollView
+{
+    MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document showingVersionHistoryOption:NO session:self.session];
+    VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
+    CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session];
+    [self.pagingControllers addObject:metaDataController];
+    [self.pagingControllers addObject:versionHistoryController];
+    [self.pagingControllers addObject:commentViewController];
+    
+    [self.pagingScrollView addSubview:self.documentThumbnail];
+    for (int i = 0; i < self.pagingControllers.count; i++)
+    {
+        UIViewController *currentController = self.pagingControllers[i];
+        [self.pagingScrollView addSubview:currentController.view];
+    }
+    
+    [self.pagingScrollView layoutSubviews];
+    self.pageControl.numberOfPages = self.pagingScrollView.subviews.count;
+    self.pagingScrollView.layer.cornerRadius = 5.0f;
+}
+
+- (void)localiseUI
+{
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypePreview];
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.version.history.title", @"Version Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeVersionHistory];
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)segmentValueChanged:(id)sender
+{
+    PagingScrollViewSegmentType selectedSegment = self.pagingSegmentControl.selectedSegmentIndex;
+    [self.pagingScrollView scrollToDisplayViewAtIndex:selectedSegment animated:YES];
+}
+
 #pragma mark - ActionCollectionViewDelegate Functions
 
 - (void)didPressActionItem:(ActionCollectionItem *)actionItem
@@ -181,6 +243,19 @@ static NSString * const kPreviewFolderName = @"DocumentPreviews";
     // handle the action
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:actionItem.itemTitle message:actionItem.itemIdentifier delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+}
+
+
+#pragma mark - PagedScrollViewDelegate Functions
+
+- (void)pagedScrollViewDidScrollToFocusViewAtIndex:(NSInteger)viewIndex whilstDragging:(BOOL)dragging
+{
+    // only want to update the segment control on each call if we are swiping and not using the segemnt control
+    if (dragging)
+    {
+        [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
+    }
+    self.pageControl.currentPage = viewIndex;
 }
 
 @end

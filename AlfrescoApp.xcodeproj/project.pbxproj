@@ -71,6 +71,8 @@
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
+		7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */; };
+		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
 		73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD01802C679007172EE /* ActionCollectionView.m */; };
 		73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD31802C679007172EE /* ActionCollectionViewCell.m */; };
 		73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AD41802C679007172EE /* ActionCollectionViewCell.xib */; };
@@ -470,6 +472,9 @@
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
+		7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
+		7335AA6F181FBA500091CA95 /* PagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedScrollView.h; path = "Paged Scroll View/PagedScrollView.h"; sourceTree = "<group>"; };
+		7335AA70181FBA500091CA95 /* PagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedScrollView.m; path = "Paged Scroll View/PagedScrollView.m"; sourceTree = "<group>"; };
 		73632ACF1802C679007172EE /* ActionCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionView.h; sourceTree = "<group>"; };
 		73632AD01802C679007172EE /* ActionCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionView.m; sourceTree = "<group>"; };
 		73632AD21802C679007172EE /* ActionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1234,6 +1239,15 @@
 			name = "Detail Split View Controller";
 			sourceTree = "<group>";
 		};
+		7335AA6E181FBA1A0091CA95 /* Paged Scroll View */ = {
+			isa = PBXGroup;
+			children = (
+				7335AA6F181FBA500091CA95 /* PagedScrollView.h */,
+				7335AA70181FBA500091CA95 /* PagedScrollView.m */,
+			);
+			name = "Paged Scroll View";
+			sourceTree = "<group>";
+		};
 		73632ACE1802C679007172EE /* Action Collection View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1272,6 +1286,7 @@
 				73632AE01802E5C6007172EE /* DocumentPreviewViewController.h */,
 				73632AE11802E5C6007172EE /* DocumentPreviewViewController.m */,
 				73632AE21802E5C6007172EE /* DocumentPreviewViewController.xib */,
+				7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */,
 			);
 			name = "Document Preview Controller";
 			sourceTree = "<group>";
@@ -1655,6 +1670,7 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
 				73632ACE1802C679007172EE /* Action Collection View */,
 				73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */,
 				73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */,
@@ -2620,6 +2636,7 @@
 				73B9584B17A6750F0099FB84 /* CommentCell.xib in Resources */,
 				73B9584D17A6750F0099FB84 /* FileFolderCell.xib in Resources */,
 				73B9584F17A6750F0099FB84 /* MetadataCell.xib in Resources */,
+				7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */,
 				73B9585117A6750F0099FB84 /* SitesCell.xib in Resources */,
 				73B9585317A6750F0099FB84 /* VersionHistoryCell.xib in Resources */,
 				73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */,
@@ -2929,6 +2946,7 @@
 				73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
+				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,

@@ -218,6 +218,14 @@
 "tagselection.newTag.error.invalidtag.message" = "Tags must contain text";
 
 /**
+ * Document Node Preview Controller
+ */
+"document.segment.preview.title" = "Preview";
+"document.segment.metadata.title" = "Metadata";
+"document.segment.version.history.title" = "History";
+"document.segment.comments.title" = "Comments";
+
+/**
  * Document Preview Controller
  */
 "document.video.not.supported" = "Playback is not available";
