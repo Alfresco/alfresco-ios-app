@@ -96,9 +96,9 @@
     Account *account = self.tableViewData[indexPath.row];
     
     cell.textLabel.text = account.accountDescription;
-    cell.imageView.image = [UIImage imageNamed:@"server.png"];
+    cell.imageView.image = (account.accountType == OnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
     
-    if ([accountManager.selectedAccount.username isEqualToString:account.username])
+    if ([accountManager.selectedAccount.repositoryId isEqualToString:account.repositoryId])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }

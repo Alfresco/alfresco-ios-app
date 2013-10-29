@@ -33,8 +33,27 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 - (id)init
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
-    if (self) {
-        // Custom initialization
+    if (self)
+    {
+        
+    }
+    return self;
+}
+
+- (id)initWithAccount:(Account *)account
+{
+    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
+    if (self)
+    {
+        if (account)
+        {
+            self.account = account;
+        }
+        else
+        {
+            self.account = [[Account alloc] init];
+            self.account.accountType = OnPremise;
+        }
     }
     return self;
 }
@@ -45,10 +64,6 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 	// Do any additional setup after loading the view.
     
     self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
-    if (!self.account)
-    {
-        self.account = [[Account alloc] init];
-    }
     [self constructTableCellsForAlfrescoServer];
     
     self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -70,7 +85,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 -(void)saveButtonClicked:(id)sender
 {
-    [self validateAccountOnStandardServerWithCompletionBlock:^(BOOL successful) {
+    [self validateAccountOnServerWithCompletionBlock:^(BOOL successful) {
         
         AccountManager *accountManager = [AccountManager sharedManager];
         
@@ -172,6 +187,21 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     self.passwordTextField = passwordTextField;
     [passwordCell.contentView addSubview:passwordTextField];
     
+    UITableViewCell *descriptionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DescriptionCell"];
+    descriptionCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
+    UITextField *descriptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
+                                                                                      topBottomPadding,
+                                                                                      descriptionCell.frame.size.width - xPosition,
+                                                                                      descriptionCell.frame.size.height - (topBottomPadding * 2))];
+    descriptionTextField.textAlignment = NSTextAlignmentRight;
+    descriptionTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    descriptionTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    descriptionTextField.delegate = self;
+    descriptionTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+    descriptionTextField.returnKeyType = UIReturnKeyNext;
+    self.descriptionTextField = descriptionTextField;
+    [descriptionCell.contentView addSubview:descriptionTextField];
+    
     UITableViewCell *serverAddressCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ServerAddressCell"];
     serverAddressCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
     UITextField *serverAddressTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
@@ -186,21 +216,6 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     serverAddressTextField.delegate = self;
     self.serverAddressTextField = serverAddressTextField;
     [serverAddressCell.contentView addSubview:serverAddressTextField];
-    
-    UITableViewCell *descriptionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DescriptionCell"];
-    descriptionCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
-    UITextField *descriptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
-                                                                                      topBottomPadding,
-                                                                                      descriptionCell.frame.size.width - xPosition,
-                                                                                      descriptionCell.frame.size.height - (topBottomPadding * 2))];
-    descriptionTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-    descriptionTextField.textAlignment = NSTextAlignmentRight;
-    descriptionTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    descriptionTextField.returnKeyType = UIReturnKeyNext;
-    descriptionTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    descriptionTextField.delegate = self;
-    self.descriptionTextField = descriptionTextField;
-    [descriptionCell.contentView addSubview:descriptionTextField];
     
     UITableViewCell *protocolCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ProtocolCell"];
     protocolCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
@@ -244,11 +259,29 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     
     NSArray *group1 = @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell];
     NSArray *group2 = @[portCell, serviceDocumentCell];
-    
     self.tableGroups = @[group1, group2];
 }
 
 #pragma mark - private Methods
+
+- (Account *)accountWithUserEnteredInfo
+{
+    Account *temporaryAccount = [[Account alloc] init];
+    
+    temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+    temporaryAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
+    
+    temporaryAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    temporaryAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    temporaryAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+    temporaryAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    temporaryAccount.accountType = OnPremise;
+    
+    return temporaryAccount;
+}
 
 /**
  validateAccountFieldsValues
@@ -272,25 +305,17 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     return !hostnameError && !portIsInvalid && !usernameError && !serviceDocError;
 }
 
-- (void)validateAccountOnStandardServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
+- (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
 {
-    Account *temporaryAccount = [[Account alloc] init];
-    temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server") : accountDescription;
-    temporaryAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
-    temporaryAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
+    Account *temporaryAccount = [self accountWithUserEnteredInfo];
     void (^updateAccountInfo)(Account *) = ^(Account *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
         self.account.password = temporaryAccount.password;
+        self.account.accountDescription = temporaryAccount.accountDescription;
+        self.account.repositoryId = temporaryAccount.repositoryId;
         self.account.serverAddress = temporaryAccount.serverAddress;
         self.account.serverPort = temporaryAccount.serverPort;
-        self.account.accountDescription = temporaryAccount.accountDescription;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
     };
@@ -304,7 +329,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     else
     {
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
-        [[LoginManager sharedManager] loginToAccount:temporaryAccount username:temporaryAccount.username password:temporaryAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
+        [[LoginManager sharedManager] authenticateOnPremiseAccount:temporaryAccount password:temporaryAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
             
             if (successful)
             {
@@ -321,22 +346,6 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
             }
         }];
     }
-}
-
-- (BOOL)validateAccountFieldsValuesForCloud
-{
-    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (password == nil || [password isEqualToString:@""])
-    {
-        return YES;
-    }
-    
-    int statusCode = 0; // [self requestToCloud]; needs updating
-    if (200 <= statusCode && 299 >= statusCode)
-    {
-        return YES;
-    }
-    return NO;
 }
 
 #pragma mark - UITextFieldDelegate Functions
@@ -360,7 +369,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self.saveButton setEnabled:[self validateAccountFieldsValuesForStandardServer]];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
     
     if (textField == self.usernameTextField)
     {
@@ -391,7 +400,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 - (void)textFieldDidChange:(NSNotification *)note
 {
-    [self.saveButton setEnabled:[self validateAccountFieldsValuesForStandardServer]];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
 }
 
 @end

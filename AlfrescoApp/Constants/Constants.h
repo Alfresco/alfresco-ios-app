@@ -17,6 +17,10 @@ extern NSString * const kImageMappingPlist;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;
 
+// Cloud API Keys
+extern NSString * const kCloudAPIKey;
+extern NSString * const kCloudSecretKey;
+
 // Notificiations
 extern NSString * const kAlfrescoSessionReceivedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;

@@ -17,6 +17,10 @@ NSString * const kImageMappingPlist = @"ImageMapping";
 NSString * const kProtocolHTTP = @"http";
 NSString * const kProtocolHTTPS = @"https";
 
+// Cloud Keys
+NSString * const kCloudAPIKey = @"l7xx2577040ffd3a4f01b3d8913cddfa0179";
+NSString * const kCloudSecretKey = @"4b209d7bb2f3486a89e9c2acb7ab6c8f";
+
 // Notificiations
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
 NSString * const kAlfrescoAccessDeniedNotification = @"AlfrescoUnauthorizedAccessNotification";

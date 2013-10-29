@@ -8,6 +8,8 @@
 
 #import "AccountTypeSelectionViewController.h"
 #import "AccountInfoViewController.h"
+#import "LoginManager.h"
+#import "AccountManager.h"
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
@@ -91,8 +93,31 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] init];
-    [self.navigationController pushViewController:accountInfoController animated:YES];
+    if (indexPath.section == 0)
+    {
+        Account *account = [[Account alloc] init];
+        account.accountType = Cloud;
+        account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
+        BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
+        
+        [[LoginManager sharedManager] authenticateCloudAccount:account temporarySession:useTemporarySession navigationConroller:self.navigationController completionBlock:^(BOOL successful) {
+            
+            AccountManager *accountManager = [AccountManager sharedManager];
+            
+            if (accountManager.totalNumberOfAddedAccounts == 0)
+            {
+                accountManager.selectedAccount = account;
+            }
+            [self dismissViewControllerAnimated:YES completion:^{
+                [accountManager addAccount:account];
+            }];
+        }];
+    }
+    else
+    {
+        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:nil];
+        [self.navigationController pushViewController:accountInfoController animated:YES];
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

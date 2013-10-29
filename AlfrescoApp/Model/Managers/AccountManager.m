@@ -9,8 +9,6 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 
-static NSString * const kSelectedAccountUsername = @"selectedAccountUsername";
-
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
@@ -80,7 +78,7 @@ static NSString * const kSelectedAccountUsername = @"selectedAccountUsername";
     _selectedAccount = selectedAccount;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:selectedAccount.username forKey:kSelectedAccountUsername];
+    [userDefaults setObject:selectedAccount.repositoryId forKey:kAccountRepositoryId];
     [userDefaults synchronize];
 }
 
@@ -118,11 +116,11 @@ static NSString * const kSelectedAccountUsername = @"selectedAccountUsername";
     }
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *selectedAccountUsername = [userDefaults objectForKey:kSelectedAccountUsername];
+    NSString *selectedAccountRepositoryId = [userDefaults objectForKey:kAccountRepositoryId];
     
     for (Account *account in self.accountsFromKeychain)
     {
-        if ([account.username isEqualToString:selectedAccountUsername])
+        if ([account.repositoryId isEqualToString:selectedAccountRepositoryId])
         {
             self.selectedAccount = account;
         }
