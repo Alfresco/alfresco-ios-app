@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kAccountRepositoryId;
-
 typedef NS_ENUM(NSInteger, AccountType)
 {
-    OnPremise = 0,
-    Cloud
+    AccountTypeOnPremise = 0,
+    AccountTypeCloud
 };
 
 @interface Account : NSObject <NSCoding>
@@ -29,6 +27,7 @@ typedef NS_ENUM(NSInteger, AccountType)
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
 @property (nonatomic, strong) NSString *repositoryId;
 
-- (instancetype)initWithUsername:(NSString *)username password:(NSString *)password description:(NSString *)description serverAddress:(NSString *)server port:(NSString *)port;
+
+- (instancetype)initWithAccoutType:(AccountType)accountType;
 
 @end

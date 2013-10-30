@@ -65,7 +65,7 @@
         __block NSString *serverDisplayName = @"[localhost]";
         __block NSString *username = nil;
         
-        if (account.accountType == OnPremise)
+        if (account.accountType == AccountTypeOnPremise)
         {
             if (account)
             {
@@ -150,14 +150,18 @@
     }
     else
     {
-        self.loginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:kCloudAPIKey
-                                                                              secretKey:kCloudSecretKey
+        self.loginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:[self cloudAPIKey]
+                                                                              secretKey:[self cloudPrivateKey]
                                                                         completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
                                                                             
                                                                             if (oauthData)
                                                                             {
                                                                                 account.oauthData = oauthData;
                                                                                 connectToCloudWithOAuthData(oauthData);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                completionBlock(NO);
                                                                             }
                                                                         }];
         self.loginController.oauthDelegate = self;
@@ -172,6 +176,18 @@
 }
 
 #pragma mark - Private Functions
+
+- (NSString *)cloudAPIKey
+{
+    NSString *apiKey = [[[NSProcessInfo processInfo] environment] objectForKey:kCloudAPIKey];
+    return apiKey;
+}
+
+- (NSString *)cloudPrivateKey
+{
+    NSString *privateKey = [[[NSProcessInfo processInfo] environment] objectForKey:kCloudSecretKey];
+    return privateKey;
+}
 
 - (void)displayLoginViewControllerWithAccount:(Account *)account username:(NSString *)username
 {

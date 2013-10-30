@@ -18,8 +18,8 @@ NSString * const kProtocolHTTP = @"http";
 NSString * const kProtocolHTTPS = @"https";
 
 // Cloud Keys
-NSString * const kCloudAPIKey = @"l7xx2577040ffd3a4f01b3d8913cddfa0179";
-NSString * const kCloudSecretKey = @"4b209d7bb2f3486a89e9c2acb7ab6c8f";
+NSString * const kCloudAPIKey = @"ALFRESCO_CLOUD_API_KEY";
+NSString * const kCloudSecretKey = @"ALFRESCO_CLOUD_SECRET_KEY";
 
 // Notificiations
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";

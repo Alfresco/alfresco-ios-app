@@ -9,6 +9,8 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 
+static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
+
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;

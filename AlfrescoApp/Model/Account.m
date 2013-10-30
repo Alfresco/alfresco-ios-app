@@ -15,7 +15,7 @@ static NSString * const kAccountServerAddress = @"kAccountServerAddress";
 static NSString * const kAccountServerPort= @"kAccountServerPort";
 static NSString * const kAccountProtocol= @"kAccountProtocol";
 static NSString * const kAccountServiceDocument = @"kAccountServiceDocument";
-NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
+static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 static NSString * const kAccountType = @"kAccountType";
 static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 
@@ -25,16 +25,12 @@ static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 
 @implementation Account
 
-- (instancetype)initWithUsername:(NSString *)username password:(NSString *)password description:(NSString *)description serverAddress:(NSString *)server port:(NSString *)port
+- (instancetype)initWithAccoutType:(AccountType)accountType
 {
     self = [super init];
     if (self)
     {
-        self.username = username;
-        self.password = password;
-        self.accountDescription = description;
-        self.serverAddress = server;
-        self.serverPort = port;
+        self.accountType = accountType;
     }
     return self;
 }

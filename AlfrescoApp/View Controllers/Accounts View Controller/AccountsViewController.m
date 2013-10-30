@@ -96,7 +96,7 @@
     Account *account = self.tableViewData[indexPath.row];
     
     cell.textLabel.text = account.accountDescription;
-    cell.imageView.image = (account.accountType == OnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
+    cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
     
     if ([accountManager.selectedAccount.repositoryId isEqualToString:account.repositoryId])
     {

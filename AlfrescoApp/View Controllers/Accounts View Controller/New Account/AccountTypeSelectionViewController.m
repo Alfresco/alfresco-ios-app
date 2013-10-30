@@ -14,6 +14,9 @@
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
 
+static NSInteger const kCloudSectionNumber = 0;
+static NSInteger const kOnPremiseSectionNumber = 1;
+
 static CGFloat const kAccountTypeTitleFontSize = 20.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
@@ -93,24 +96,34 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0)
+    if (indexPath.section == kCloudSectionNumber)
     {
-        Account *account = [[Account alloc] init];
-        account.accountType = Cloud;
+        Account *account = [[Account alloc] initWithAccoutType:AccountTypeCloud];
         account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
         
         [[LoginManager sharedManager] authenticateCloudAccount:account temporarySession:useTemporarySession navigationConroller:self.navigationController completionBlock:^(BOOL successful) {
             
-            AccountManager *accountManager = [AccountManager sharedManager];
-            
-            if (accountManager.totalNumberOfAddedAccounts == 0)
+            if (successful)
             {
-                accountManager.selectedAccount = account;
+                AccountManager *accountManager = [AccountManager sharedManager];
+                
+                if (accountManager.totalNumberOfAddedAccounts == 0)
+                {
+                    accountManager.selectedAccount = account;
+                }
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [accountManager addAccount:account];
+                }];
             }
-            [self dismissViewControllerAnimated:YES completion:^{
-                [accountManager addAccount:account];
-            }];
+            else
+            {
+                UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                       message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                      delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                             otherButtonTitles:nil, nil];
+                [failureAlert show];
+            }
         }];
     }
     else
@@ -122,7 +135,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == kCloudSectionNumber)
     {
         return [self cloudAccountFooter];
     }

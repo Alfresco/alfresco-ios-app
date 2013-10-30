@@ -51,8 +51,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
         }
         else
         {
-            self.account = [[Account alloc] init];
-            self.account.accountType = OnPremise;
+            self.account = [[Account alloc] initWithAccoutType:AccountTypeOnPremise];
         }
     }
     return self;
@@ -266,7 +265,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 - (Account *)accountWithUserEnteredInfo
 {
-    Account *temporaryAccount = [[Account alloc] init];
+    Account *temporaryAccount = [[Account alloc] initWithAccoutType:AccountTypeOnPremise];
     
     temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -278,7 +277,6 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     temporaryAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
     temporaryAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.accountType = OnPremise;
     
     return temporaryAccount;
 }
