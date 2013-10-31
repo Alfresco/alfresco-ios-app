@@ -1,0 +1,9 @@
+//
+//  AlfrescoApp.xcconfig
+//  AlfrescoApp
+//
+//  Created by Mohamad Saeedi on 31/10/2013.
+//  Copyright (c) 2013 Alfresco. All rights reserved.
+//
+
+OTHER_CFLAGS=-DALFRESCO_CLOUD_OAUTH_KEY="@\"${ALFRESCO_CLOUD_OAUTH_KEY}\"" -DALFRESCO_CLOUD_OAUTH_SECRET="@\"${ALFRESCO_CLOUD_OAUTH_SECRET}\""

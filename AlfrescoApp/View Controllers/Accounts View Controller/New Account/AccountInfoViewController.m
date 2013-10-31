@@ -26,6 +26,8 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 @property (nonatomic, strong) UISwitch *protocolSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) Account *account;
+@property (nonatomic, strong) UITextField *activeTextField;
+@property (nonatomic, assign) CGRect tableViewVisibleRect;
 @end
 
 @implementation AccountInfoViewController
@@ -63,6 +65,8 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 	// Do any additional setup after loading the view.
     
     self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
+    [self disablePullToRefresh];
+    
     [self constructTableCellsForAlfrescoServer];
     
     self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -80,6 +84,13 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
                                              selector:@selector(textFieldDidChange:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 -(void)saveButtonClicked:(id)sender
@@ -151,8 +162,11 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 - (void)constructTableCellsForAlfrescoServer
 {
     // cells
-    CGFloat xPosition = 100.0f;
-    CGFloat topBottomPadding = 10.0f;
+    
+    static CGFloat xPosition = 100.0f;
+    static CGFloat topBottomPadding = 10.0f;
+    static CGFloat labelFieldGap = 14.0f;
+    static CGFloat rightPadding = 8.0f;
     
     UITableViewCell *usernameCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
     usernameCell.textLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
@@ -218,13 +232,15 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     
     UITableViewCell *protocolCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ProtocolCell"];
     protocolCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-    UISwitch *protocolSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(self.view.frame.size.width,
-                                                                          topBottomPadding,
-                                                                          protocolCell.frame.size.width - xPosition,
-                                                                          protocolCell.frame.size.height - (topBottomPadding * 2))];
+    UISwitch *protocolSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+    CGRect switchFrame = protocolSwitch.frame;
+    switchFrame.origin.x = protocolCell.frame.size.width - switchFrame.size.width - rightPadding;
+    switchFrame.origin.y = topBottomPadding;
+    protocolSwitch.frame = switchFrame;
     [protocolCell.contentView addSubview:protocolSwitch];
     self.protocolSwitch = protocolSwitch;
     [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
+    protocolSwitch.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     
     UITableViewCell *portCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PortCell"];
     portCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
@@ -243,9 +259,11 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     
     UITableViewCell *serviceDocumentCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ServerAddressCell"];
     serviceDocumentCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-    UITextField *serviceDocumentTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
+    
+    NSInteger x = serviceDocumentCell.frame.size.width / 2 + labelFieldGap;
+    UITextField *serviceDocumentTextField = [[UITextField alloc] initWithFrame:CGRectMake(x - rightPadding,
                                                                                           topBottomPadding,
-                                                                                          serviceDocumentCell.frame.size.width - xPosition,
+                                                                                          serviceDocumentCell.frame.size.width - x,
                                                                                           serviceDocumentCell.frame.size.height - (topBottomPadding * 2))];
     serviceDocumentTextField.text = kServiceDocument;
     serviceDocumentTextField.textAlignment = NSTextAlignmentRight;
@@ -365,6 +383,18 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     }
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    self.activeTextField = textField;
+    
+    [self showActiveTextField];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    self.activeTextField = nil;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
@@ -399,6 +429,56 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 - (void)textFieldDidChange:(NSNotification *)note
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+}
+
+#pragma mark - UIKeyboard Notifications
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+    
+    CGFloat height = isPortrait ? kbSize.height : kbSize.width;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height -= kbSize.height;
+    self.tableViewVisibleRect = tableViewFrame;
+    [self showActiveTextField];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+- (void)showActiveTextField
+{
+    UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
+    
+    BOOL foundTableViewCell = NO;
+    while (!foundTableViewCell)
+    {
+        if (![cell isKindOfClass:[UITableViewCell class]])
+        {
+            cell = (UITableViewCell *)cell.superview;
+        }
+        else
+        {
+            foundTableViewCell = YES;
+        }
+    }
+    
+    if (!CGRectContainsPoint(self.tableViewVisibleRect, cell.frame.origin) )
+    {
+        [self.tableView scrollRectToVisible:cell.frame animated:YES];
+    }
 }
 
 @end

@@ -449,6 +449,7 @@
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
 		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
+		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = AlfrescoApp.xcconfig; path = "Supporting Files/AlfrescoApp.xcconfig"; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
@@ -1375,6 +1376,7 @@
 				73B957C417A6728A0099FB84 /* Default.png */,
 				73B957C517A6728A0099FB84 /* Default@2x.png */,
 				73B957C617A6728A0099FB84 /* main.m */,
+				08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */,
 				73B95B1E17A6AE7E0099FB84 /* Localizable.strings */,
 				73B95B0D17A6A8D00099FB84 /* Activities.strings */,
 				73B95B0B17A6A83A0099FB84 /* ImageMapping.plist */,
@@ -3096,7 +3098,7 @@
 		};
 		277F715317FEB6FD00B2E958 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */;
+			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3180,7 +3182,7 @@
 		};
 		7373B51017A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */;
+			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3213,7 +3215,7 @@
 		};
 		7373B51117A66E9400869949 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73F6334517E34A990065590E /* AlfrescoSDK.xcconfig */;
+			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

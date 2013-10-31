@@ -150,8 +150,8 @@
     }
     else
     {
-        self.loginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:[self cloudAPIKey]
-                                                                              secretKey:[self cloudPrivateKey]
+        self.loginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY
+                                                                              secretKey:ALFRESCO_CLOUD_OAUTH_SECRET
                                                                         completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
                                                                             
                                                                             if (oauthData)
@@ -176,18 +176,6 @@
 }
 
 #pragma mark - Private Functions
-
-- (NSString *)cloudAPIKey
-{
-    NSString *apiKey = [[[NSProcessInfo processInfo] environment] objectForKey:kCloudAPIKey];
-    return apiKey;
-}
-
-- (NSString *)cloudPrivateKey
-{
-    NSString *privateKey = [[[NSProcessInfo processInfo] environment] objectForKey:kCloudSecretKey];
-    return privateKey;
-}
 
 - (void)displayLoginViewControllerWithAccount:(Account *)account username:(NSString *)username
 {
