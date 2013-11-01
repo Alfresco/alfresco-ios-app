@@ -60,19 +60,10 @@
 {
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        // TODO: read these from Apple's Keychain
-        __block NSString *serverURLString = @"http://localhost:8080/alfresco";
-        __block NSString *serverDisplayName = @"[localhost]";
-        __block NSString *username = nil;
-        
         if (account.accountType == AccountTypeOnPremise)
         {
             if (account)
             {
-                serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
-                serverDisplayName = account.accountDescription;
-                username = account.username;
-                
                 if (!account.password || [account.password isEqualToString:@""])
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
@@ -85,17 +76,13 @@
                     [self hideHUD];
                     if (!successful)
                     {
-                        serverURLString = @"http://localhost:8080/alfresco";
-                        serverDisplayName = @"[localhost]";
-                        username = nil;
-                        
-                        [self displayLoginViewControllerWithAccount:account username:username];
+                        [self displayLoginViewControllerWithAccount:account username:account.username];
                     }
                 }];
             }
             else
             {
-                [self displayLoginViewControllerWithAccount:account username:username];
+                [self displayLoginViewControllerWithAccount:account username:nil];
             }
         }
         else

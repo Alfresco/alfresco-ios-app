@@ -28,6 +28,6 @@ typedef NS_ENUM(NSInteger, AccountType)
 @property (nonatomic, strong) NSString *repositoryId;
 
 
-- (instancetype)initWithAccoutType:(AccountType)accountType;
+- (instancetype)initWithAccountType:(AccountType)accountType;
 
 @end

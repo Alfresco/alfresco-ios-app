@@ -10,6 +10,8 @@
 #import "AccountManager.h"
 #import "LoginManager.h"
 #import "Constants.h"
+#import "TextFieldCell.h"
+#import "SwitchCell.h"
 
 static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
@@ -32,16 +34,6 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 @implementation AccountInfoViewController
 
-- (id)init
-{
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-
 - (id)initWithAccount:(Account *)account
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
@@ -53,7 +45,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
         }
         else
         {
-            self.account = [[Account alloc] initWithAccoutType:AccountTypeOnPremise];
+            self.account = [[Account alloc] initWithAccountType:AccountTypeOnPremise];
         }
     }
     return self;
@@ -162,117 +154,53 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 - (void)constructTableCellsForAlfrescoServer
 {
     // cells
+    TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
+    usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Optional");
+    usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    usernameCell.valueTextField.delegate = self;
+    self.usernameTextField = usernameCell.valueTextField;
     
-    static CGFloat xPosition = 100.0f;
-    static CGFloat topBottomPadding = 10.0f;
-    static CGFloat labelFieldGap = 14.0f;
-    static CGFloat rightPadding = 8.0f;
+    TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
+    passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
+    passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    passwordCell.valueTextField.secureTextEntry = YES;
+    passwordCell.valueTextField.delegate = self;
+    self.passwordTextField = passwordCell.valueTextField;
     
-    UITableViewCell *usernameCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
-    usernameCell.textLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-    UITextField *usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
-                                                                                   topBottomPadding,
-                                                                                   usernameCell.frame.size.width - xPosition,
-                                                                                   usernameCell.frame.size.height - (topBottomPadding * 2))];
-    usernameTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Optional");
-    usernameTextField.textAlignment = NSTextAlignmentRight;
-    usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    usernameTextField.returnKeyType = UIReturnKeyNext;
-    usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    usernameTextField.delegate = self;
-    self.usernameTextField = usernameTextField;
-    [usernameCell.contentView addSubview:usernameTextField];
+    TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
+    descriptionCell.valueTextField.delegate = self;
+    descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+    descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    self.descriptionTextField = descriptionCell.valueTextField;
     
-    UITableViewCell *passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
-    passwordCell.textLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
-                                                                                   topBottomPadding,
-                                                                                   passwordCell.frame.size.width - xPosition,
-                                                                                   passwordCell.frame.size.height - (topBottomPadding * 2))];
-    passwordTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
-    passwordTextField.textAlignment = NSTextAlignmentRight;
-    passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    passwordTextField.returnKeyType = UIReturnKeyNext;
-    passwordTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    passwordTextField.secureTextEntry = YES;
-    passwordTextField.delegate = self;
-    self.passwordTextField = passwordTextField;
-    [passwordCell.contentView addSubview:passwordTextField];
+    TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
+    serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Optional");
+    serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    serverAddressCell.valueTextField.delegate = self;
+    self.serverAddressTextField = serverAddressCell.valueTextField;
     
-    UITableViewCell *descriptionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DescriptionCell"];
-    descriptionCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
-    UITextField *descriptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
-                                                                                      topBottomPadding,
-                                                                                      descriptionCell.frame.size.width - xPosition,
-                                                                                      descriptionCell.frame.size.height - (topBottomPadding * 2))];
-    descriptionTextField.textAlignment = NSTextAlignmentRight;
-    descriptionTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    descriptionTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    descriptionTextField.delegate = self;
-    descriptionTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-    descriptionTextField.returnKeyType = UIReturnKeyNext;
-    self.descriptionTextField = descriptionTextField;
-    [descriptionCell.contentView addSubview:descriptionTextField];
-    
-    UITableViewCell *serverAddressCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ServerAddressCell"];
-    serverAddressCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-    UITextField *serverAddressTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
-                                                                                        topBottomPadding,
-                                                                                        serverAddressCell.frame.size.width - xPosition,
-                                                                                        serverAddressCell.frame.size.height - (topBottomPadding * 2))];
-    serverAddressTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Optional");
-    serverAddressTextField.textAlignment = NSTextAlignmentRight;
-    serverAddressTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    serverAddressTextField.returnKeyType = UIReturnKeyNext;
-    serverAddressTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    serverAddressTextField.delegate = self;
-    self.serverAddressTextField = serverAddressTextField;
-    [serverAddressCell.contentView addSubview:serverAddressTextField];
-    
-    UITableViewCell *protocolCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ProtocolCell"];
-    protocolCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-    UISwitch *protocolSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-    CGRect switchFrame = protocolSwitch.frame;
-    switchFrame.origin.x = protocolCell.frame.size.width - switchFrame.size.width - rightPadding;
-    switchFrame.origin.y = topBottomPadding;
-    protocolSwitch.frame = switchFrame;
-    [protocolCell.contentView addSubview:protocolSwitch];
-    self.protocolSwitch = protocolSwitch;
+    SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+    protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
+    self.protocolSwitch = protocolCell.valueSwitch;
     [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
-    protocolSwitch.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     
-    UITableViewCell *portCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PortCell"];
-    portCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-    UITextField *portTextField = [[UITextField alloc] initWithFrame:CGRectMake(xPosition - topBottomPadding,
-                                                                               topBottomPadding,
-                                                                               portCell.frame.size.width - xPosition,
-                                                                               portCell.frame.size.height - (topBottomPadding * 2))];
-    portTextField.text = kDefaultHTTPPort;
-    portTextField.textAlignment = NSTextAlignmentRight;
-    portTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    portTextField.returnKeyType = UIReturnKeyNext;
-    portTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    portTextField.delegate = self;
-    self.portTextField = portTextField;
-    [portCell.contentView addSubview:portTextField];
+    TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
+    portCell.valueTextField.text = kDefaultHTTPPort;
+    portCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    portCell.valueTextField.delegate = self;
+    self.portTextField = portCell.valueTextField;
     
-    UITableViewCell *serviceDocumentCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ServerAddressCell"];
-    serviceDocumentCell.textLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-    
-    NSInteger x = serviceDocumentCell.frame.size.width / 2 + labelFieldGap;
-    UITextField *serviceDocumentTextField = [[UITextField alloc] initWithFrame:CGRectMake(x - rightPadding,
-                                                                                          topBottomPadding,
-                                                                                          serviceDocumentCell.frame.size.width - x,
-                                                                                          serviceDocumentCell.frame.size.height - (topBottomPadding * 2))];
-    serviceDocumentTextField.text = kServiceDocument;
-    serviceDocumentTextField.textAlignment = NSTextAlignmentRight;
-    serviceDocumentTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    serviceDocumentTextField.returnKeyType = UIReturnKeyDone;
-    serviceDocumentTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    serviceDocumentTextField.delegate = self;
-    self.serviceDocumentTextField = serviceDocumentTextField;
-    [serviceDocumentCell.contentView addSubview:serviceDocumentTextField];
+    TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
+    serviceDocumentCell.valueTextField.text = kServiceDocument;
+    serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
+    serviceDocumentCell.valueTextField.delegate = self;
+    self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
     
     NSArray *group1 = @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell];
     NSArray *group2 = @[portCell, serviceDocumentCell];
@@ -283,7 +211,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 - (Account *)accountWithUserEnteredInfo
 {
-    Account *temporaryAccount = [[Account alloc] initWithAccoutType:AccountTypeOnPremise];
+    Account *temporaryAccount = [[Account alloc] initWithAccountType:AccountTypeOnPremise];
     
     temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

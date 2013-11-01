@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6m1-jS-SI3" customClass="TextFieldCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6m1-jS-SI3" id="4bz-Vo-ZDx">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1C-3q-825">
+                        <rect key="frame" x="12" y="9" width="42" height="23"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CBP-G3-7ak">
+                        <rect key="frame" x="67" y="6" width="244" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="CBP-G3-7ak" secondAttribute="trailing" constant="9" id="6Gl-JV-yQn"/>
+                    <constraint firstItem="CBP-G3-7ak" firstAttribute="top" secondItem="4bz-Vo-ZDx" secondAttribute="top" constant="6" id="RKn-vQ-uml"/>
+                    <constraint firstItem="L1C-3q-825" firstAttribute="top" secondItem="4bz-Vo-ZDx" secondAttribute="top" constant="9" id="Sth-yL-obb"/>
+                    <constraint firstAttribute="bottom" secondItem="CBP-G3-7ak" secondAttribute="bottom" constant="7" id="W2N-za-mxs"/>
+                    <constraint firstItem="L1C-3q-825" firstAttribute="leading" secondItem="4bz-Vo-ZDx" secondAttribute="leading" constant="12" id="WHR-dc-V80"/>
+                    <constraint firstAttribute="bottom" secondItem="L1C-3q-825" secondAttribute="bottom" constant="11" id="Yel-Ek-5hc"/>
+                    <constraint firstItem="CBP-G3-7ak" firstAttribute="leading" secondItem="L1C-3q-825" secondAttribute="trailing" constant="13" id="ZEl-XQ-2Og"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="titleLabel" destination="L1C-3q-825" id="Zht-Rh-UJn"/>
+                <outlet property="valueTextField" destination="CBP-G3-7ak" id="pAX-J1-T27"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

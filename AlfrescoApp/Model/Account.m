@@ -25,7 +25,7 @@ static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 
 @implementation Account
 
-- (instancetype)initWithAccoutType:(AccountType)accountType
+- (instancetype)initWithAccountType:(AccountType)accountType
 {
     self = [super init];
     if (self)

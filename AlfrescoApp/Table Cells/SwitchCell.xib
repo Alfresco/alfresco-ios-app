@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="NCj-W9-LZO" customClass="SwitchCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NCj-W9-LZO" id="M1h-eO-Cso">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuE-sW-wS5">
+                        <rect key="frame" x="12" y="11" width="143" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="KDf-jw-Fm0">
+                        <rect key="frame" x="261" y="6" width="51" height="31"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </switch>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="KuE-sW-wS5" firstAttribute="top" secondItem="M1h-eO-Cso" secondAttribute="top" constant="11" id="5fp-JL-i0z"/>
+                    <constraint firstAttribute="bottom" secondItem="KDf-jw-Fm0" secondAttribute="bottom" constant="6" id="BQF-HC-sZo"/>
+                    <constraint firstItem="KuE-sW-wS5" firstAttribute="leading" secondItem="M1h-eO-Cso" secondAttribute="leading" constant="12" id="JR1-bJ-Yvp"/>
+                    <constraint firstAttribute="trailing" secondItem="KDf-jw-Fm0" secondAttribute="trailing" constant="10" id="YgI-IW-AHc"/>
+                    <constraint firstItem="KDf-jw-Fm0" firstAttribute="top" secondItem="M1h-eO-Cso" secondAttribute="top" constant="6" id="YkJ-lv-khY"/>
+                    <constraint firstItem="KDf-jw-Fm0" firstAttribute="leading" secondItem="KuE-sW-wS5" secondAttribute="trailing" constant="106" id="n8K-b3-SaM"/>
+                    <constraint firstAttribute="bottom" secondItem="KuE-sW-wS5" secondAttribute="bottom" constant="11" id="vOk-gU-lGv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="titleLabel" destination="KuE-sW-wS5" id="fU2-Fy-PlI"/>
+                <outlet property="valueSwitch" destination="KDf-jw-Fm0" id="gWd-qa-rKZ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
