@@ -8,8 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const kActionCollectionItemUpdateNotification;
+extern NSString * const kActionCollectionItemUpdateItemTitleKey;
+extern NSString * const kActionCollectionItemUpdateItemImageKey;
+extern NSString * const kActionCollectionItemUpdateItemIndentifier;
+
 extern NSString * const kActionCollectionIdentifierEmail;
 extern NSString * const kActionCollectionIdentifierOpenIn;
+extern NSString * const kActionCollectionIdentifierLike;
+extern NSString * const kActionCollectionIdentifierUnlike;
+extern NSString * const kActionCollectionIdentifierFavourite;
+extern NSString * const kActionCollectionIdentifierUnfavourite;
+extern NSString * const kActionCollectionIdentifierComment;
 
 @interface ActionCollectionItem : NSObject
 
@@ -19,6 +29,9 @@ extern NSString * const kActionCollectionIdentifierOpenIn;
 
 + (instancetype)emailItem;
 + (instancetype)openInItem;
++ (instancetype)likeItem;
++ (instancetype)favouriteItem;
++ (instancetype)commentItem;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

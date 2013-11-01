@@ -31,9 +31,15 @@ static CGFloat const kCollectionViewHeight = 80.0f;
         self.rows = rows;
         self.delegate = delegate;
         self.collectionViews = [NSMutableArray array];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
         [self setup];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setup
@@ -73,6 +79,16 @@ static CGFloat const kCollectionViewHeight = 80.0f;
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
     self.frame = newSuperview.bounds;
+}
+
+#pragma mark - Private Functions
+
+- (void)handleUpdateNotification:(NSNotification *)notification
+{
+    for (UICollectionView *collectionView in self.collectionViews)
+    {
+        [collectionView reloadData];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource Functions

@@ -76,6 +76,10 @@ extern NSString * const kMultiSelectDelete;
 // Thumbnail mappings folder
 extern NSString * const kThumbnailMappingFolder;
 
+// Favourites notifications
+extern NSString * const kFavouritesDidAddNodeNotification;
+extern NSString * const kFavouritesDidRemoveNodeNotification;
+
 // Cache
 extern NSInteger const kNumberOfDaysToKeepCachedData;
 

@@ -27,6 +27,8 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (NSArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSArray *syncedNodes))completionBlock;
+- (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 - (void)cancelSyncForDocument:(AlfrescoDocument *)document;
 - (void)retrySyncForDocument: (AlfrescoDocument *)document;
@@ -44,12 +46,5 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
 - (BOOL)isFirstUse;
 - (BOOL)isSyncEnabled;
-
-/* 
- * Favorites Methods - these are placed here since we dont have Favorites Manager
- */
-- (void)addFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
-- (void)removeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL succeeded))completionBlock;
-- (void)isNodeFavorite:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL isFavorite))completionBlock;
 
 @end
