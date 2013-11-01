@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
+@class Account;
 
 @interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate>
+
+- (id)initWithAccount:(Account *)account;
 
 @end

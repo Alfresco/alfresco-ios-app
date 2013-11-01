@@ -11,10 +11,11 @@
 
 @class Account;
 
-@interface LoginManager : NSObject <LoginViewControllerDelegate>
+@interface LoginManager : NSObject <LoginViewControllerDelegate, AlfrescoOAuthLoginDelegate>
 
 + (id)sharedManager;
 - (void)attemptLoginToAccount:(Account *)account;
-- (void)loginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock;
+- (void)authenticateOnPremiseAccount:(Account *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock;
+- (void)authenticateCloudAccount:(Account *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))completionBlock;
 
 @end

@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, AccountType)
+{
+    AccountTypeOnPremise = 0,
+    AccountTypeCloud
+};
+
 @interface Account : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *username;
@@ -17,8 +23,11 @@
 @property (nonatomic, strong) NSString *serverPort;
 @property (nonatomic, strong) NSString *protocol;
 @property (nonatomic, strong) NSString *serviceDocument;
+@property (nonatomic, assign) AccountType accountType;
+@property (nonatomic, strong) AlfrescoOAuthData *oauthData;
 @property (nonatomic, strong) NSString *repositoryId;
 
-- (instancetype)initWithUsername:(NSString *)username password:(NSString *)password description:(NSString *)description serverAddress:(NSString *)server port:(NSString *)port;
+
+- (instancetype)initWithAccountType:(AccountType)accountType;
 
 @end

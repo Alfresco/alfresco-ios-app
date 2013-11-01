@@ -22,8 +22,7 @@
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
-
-
+@property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
 @end
 
 @implementation LoginManager
@@ -61,52 +60,36 @@
 {
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        // TODO: read these from Apple's Keychain
-        __block NSString *serverURLString = @"http://localhost:8080/alfresco";
-        __block NSString *serverDisplayName = @"[localhost]";
-        __block NSString *username = nil;
-        
-        if (account)
+        if (account.accountType == AccountTypeOnPremise)
         {
-            serverURLString = [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
-            serverDisplayName = account.accountDescription;
-            username = account.username;
-        }
-        
-        
-#if DEBUG
-        if (serverURLString == nil)
-        {
-            serverDisplayName = @"[localhost]";
-            serverURLString = @"http://localhost:8080/alfresco";
-        }
-#endif
-        
-        if (account)
-        {
-            if (!account.password || [account.password isEqualToString:@""])
+            if (account)
             {
-                [self displayLoginViewControllerWithAccount:account username:account.username];
-                return;
-            }
-            
-            AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [self showHUDOnView:delegate.window];
-            [self loginToAccount:account username:account.username password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
-                [self hideHUD];
-                if (!successful)
+                if (!account.password || [account.password isEqualToString:@""])
                 {
-                    serverURLString = @"http://localhost:8080/alfresco";
-                    serverDisplayName = @"[localhost]";
-                    username = nil;
-                    
-                    [self displayLoginViewControllerWithAccount:account username:username];
+                    [self displayLoginViewControllerWithAccount:account username:account.username];
+                    return;
                 }
-            }];
+                
+                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [self showHUDOnView:delegate.window];
+                [self authenticateOnPremiseAccount:account password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
+                    [self hideHUD];
+                    if (!successful)
+                    {
+                        [self displayLoginViewControllerWithAccount:account username:account.username];
+                    }
+                }];
+            }
+            else
+            {
+                [self displayLoginViewControllerWithAccount:account username:nil];
+            }
         }
         else
         {
-            [self displayLoginViewControllerWithAccount:account username:username];
+            [self authenticateCloudAccount:account temporarySession:NO navigationConroller:nil completionBlock:^(BOOL successful) {
+                
+            }];
         }
     }
     else
@@ -115,6 +98,68 @@
         NSString *messageBody = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Error Message");
         displayErrorMessageWithTitle(messageBody, messageTitle);
     }
+}
+
+- (void)authenticateCloudAccount:(Account *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))completionBlock
+{
+    void (^connectToCloudWithOAuthData)(AlfrescoOAuthData *) = ^(AlfrescoOAuthData *oauthData)
+    {
+        [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+            [navigationController popViewControllerAnimated:YES];
+            if (nil == session)
+            {
+                if (completionBlock != NULL)
+                {
+                    completionBlock(NO);
+                }
+            }
+            else
+            {
+                [UniversalDevice clearDetailViewController];
+                if (!temporarySession)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                }
+                
+                account.repositoryId = session.repositoryInfo.identifier;
+                
+                if (completionBlock != NULL)
+                {
+                    completionBlock(YES);
+                }
+            }
+        }];
+    };
+    
+    if (account.oauthData)
+    {
+        connectToCloudWithOAuthData(account.oauthData);
+    }
+    else
+    {
+        self.loginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY
+                                                                              secretKey:ALFRESCO_CLOUD_OAUTH_SECRET
+                                                                        completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
+                                                                            
+                                                                            if (oauthData)
+                                                                            {
+                                                                                account.oauthData = oauthData;
+                                                                                connectToCloudWithOAuthData(oauthData);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                completionBlock(NO);
+                                                                            }
+                                                                        }];
+        self.loginController.oauthDelegate = self;
+        [navigationController pushViewController:self.loginController animated:YES];
+    }
+}
+
+#pragma mark - OAuth delegate
+- (void)oauthLoginDidFailWithError:(NSError *)error
+{
+    AlfrescoLogDebug(@"OAuth Failed");
 }
 
 #pragma mark - Private Functions
@@ -129,41 +174,44 @@
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)loginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
+- (void)authenticateOnPremiseAccount:(Account *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
 {
     NSDictionary *sessionParameters = @{kAlfrescoMetadataExtraction : [NSNumber numberWithBool:YES],
                                         kAlfrescoThumbnailCreation : [NSNumber numberWithBool:YES]};
     
     self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
-    self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-         if (session)
-         {
-             [UniversalDevice clearDetailViewController];
-             
-             if (!temporarySession)
-             {
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-             }
-             
-             account.repositoryId = session.repositoryInfo.identifier;
-             [[AccountManager sharedManager] saveAccountsToKeychain];
-             
-             self.currentLoginURLString = nil;
-             self.currentLoginRequest = nil; 
-             
-             if (completionBlock != NULL)
-             {
-                 completionBlock(YES);
-             }
-         }
-         else
-         {
-             if (completionBlock != NULL)
-             {
-                 completionBlock(NO);
-             }
-         }
-     }];
+    self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString]
+                                                                username:account.username
+                                                                password:password
+                                                              parameters:sessionParameters
+                                                         completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                                                             if (session)
+                                                             {
+                                                                 [UniversalDevice clearDetailViewController];
+                                                                 
+                                                                 if (!temporarySession)
+                                                                 {
+                                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                                                                 }
+                                                                 
+                                                                 account.repositoryId = session.repositoryInfo.identifier;
+                                                                 
+                                                                 self.currentLoginURLString = nil;
+                                                                 self.currentLoginRequest = nil;
+                                                                 
+                                                                 if (completionBlock != NULL)
+                                                                 {
+                                                                     completionBlock(YES);
+                                                                 }
+                                                             }
+                                                             else
+                                                             {
+                                                                 if (completionBlock != NULL)
+                                                                 {
+                                                                     completionBlock(NO);
+                                                                 }
+                                                             }
+                                                         }];
 }
 
 - (void)showHUDOnView:(UIView *)view
@@ -201,7 +249,7 @@
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self loginToAccount:account username:username password:password temporarySession:NO completionBlock:^(BOOL successful) {
+    [self authenticateOnPremiseAccount:account password:(NSString *)password temporarySession:NO completionBlock:^(BOOL successful) {
         [self hideHUD];
         if (successful)
         {

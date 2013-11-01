@@ -16,6 +16,8 @@ static NSString * const kAccountServerPort= @"kAccountServerPort";
 static NSString * const kAccountProtocol= @"kAccountProtocol";
 static NSString * const kAccountServiceDocument = @"kAccountServiceDocument";
 static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
+static NSString * const kAccountType = @"kAccountType";
+static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 
 @interface Account ()
 
@@ -23,16 +25,12 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 
 @implementation Account
 
-- (instancetype)initWithUsername:(NSString *)username password:(NSString *)password description:(NSString *)description serverAddress:(NSString *)server port:(NSString *)port
+- (instancetype)initWithAccountType:(AccountType)accountType
 {
     self = [super init];
     if (self)
     {
-        self.username = username;
-        self.password = password;
-        self.accountDescription = description;
-        self.serverAddress = server;
-        self.serverPort = port;
+        self.accountType = accountType;
     }
     return self;
 }
@@ -49,6 +47,8 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     [aCoder encodeObject:self.protocol forKey:kAccountProtocol];
     [aCoder encodeObject:self.serviceDocument forKey:kAccountServiceDocument];
     [aCoder encodeObject:self.repositoryId forKey:kAccountRepositoryId];
+    [aCoder encodeInteger:self.accountType forKey:kAccountType];
+    [aCoder encodeObject:self.oauthData forKey:kAlfrescoOAuthData];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -64,6 +64,8 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
         self.protocol = [aDecoder decodeObjectForKey:kAccountProtocol];
         self.serviceDocument = [aDecoder decodeObjectForKey:kAccountServiceDocument];
         self.repositoryId = [aDecoder decodeObjectForKey:kAccountRepositoryId];
+        self.accountType = [aDecoder decodeIntegerForKey:kAccountType];
+        self.oauthData = [aDecoder decodeObjectForKey:kAlfrescoOAuthData];
     }
     return self;
 }

@@ -138,6 +138,7 @@
 
 "accountdetails.placeholder.required" = "Required";
 "accountdetails.placeholder.optional" = "Optional";
+"accountdetails.fields.email" = "Email";
 "accountdetails.placeholder.email" = "example@acme.com";
 "accountdetails.fields.hostname" = "Server Address";
 "accountdetails.fields.description" = "Description";
