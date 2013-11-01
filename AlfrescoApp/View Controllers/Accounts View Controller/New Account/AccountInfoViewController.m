@@ -273,8 +273,11 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
     else
     {
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
+        
+        [self showHUD];
         [[LoginManager sharedManager] authenticateOnPremiseAccount:temporaryAccount password:temporaryAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
             
+            [self hideHUD];
             if (successful)
             {
                 updateAccountInfo(temporaryAccount);

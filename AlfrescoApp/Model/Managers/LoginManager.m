@@ -16,6 +16,7 @@
 #import "ConnectivityManager.h"
 #import "Account.h"
 #import "AccountManager.h"
+#import "NavigationViewController.h"
 
 @interface LoginManager()
 
@@ -100,59 +101,128 @@
     }
 }
 
-- (void)authenticateCloudAccount:(Account *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))completionBlock
+#pragma mark - Cloud authentication Methods
+
+- (void)authenticateCloudAccount:(Account *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
 {
-    void (^connectToCloudWithOAuthData)(AlfrescoOAuthData *) = ^(AlfrescoOAuthData *oauthData)
+    void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session)
     {
-        [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-            [navigationController popViewControllerAnimated:YES];
-            if (nil == session)
+        if (!session)
+        {
+            if (authenticationCompletionBlock != NULL)
             {
-                if (completionBlock != NULL)
-                {
-                    completionBlock(NO);
-                }
+                authenticationCompletionBlock(NO);
             }
-            else
+        }
+        else
+        {
+            [UniversalDevice clearDetailViewController];
+            if (!temporarySession)
             {
-                [UniversalDevice clearDetailViewController];
-                if (!temporarySession)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-                }
-                
-                account.repositoryId = session.repositoryInfo.identifier;
-                
-                if (completionBlock != NULL)
-                {
-                    completionBlock(YES);
-                }
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
             }
-        }];
+            
+            account.repositoryId = session.repositoryInfo.identifier;
+            
+            if (authenticationCompletionBlock != NULL)
+            {
+                authenticationCompletionBlock(YES);
+            }
+        }
+    };
+    
+    AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^ AlfrescoOAuthLoginViewController * (void)
+    {
+        NavigationViewController *oauthNavigationController = nil;
+        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY
+                                                                                                                 secretKey:ALFRESCO_CLOUD_OAUTH_SECRET
+                                                                                                           completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
+                                                                                                               
+                                                                                                               if (oauthData)
+                                                                                                               {
+                                                                                                                   account.oauthData = oauthData;
+                                                                                                                   
+                                                                                                                   [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                                                                                                                       if (navigationController)
+                                                                                                                       {
+                                                                                                                           [navigationController popViewControllerAnimated:YES];
+                                                                                                                       }
+                                                                                                                       else
+                                                                                                                       {
+                                                                                                                           [oauthNavigationController dismissViewControllerAnimated:YES completion:nil];
+                                                                                                                       }
+                                                                                                                       
+                                                                                                                       authenticationComplete(session);
+                                                                                                                   }];
+                                                                                                               }
+                                                                                                               else
+                                                                                                               {
+                                                                                                                   authenticationComplete(nil);
+                                                                                                               }
+                                                                                                           }];
+        if (navigationController)
+        {
+            [navigationController pushViewController:oauthLoginController animated:YES];
+        }
+        else
+        {
+            oauthNavigationController = [[NavigationViewController alloc] initWithRootViewController:oauthLoginController];
+            oauthNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            
+            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [UniversalDevice displayModalViewController:oauthNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
+        }
+        return oauthLoginController;
     };
     
     if (account.oauthData)
     {
-        connectToCloudWithOAuthData(account.oauthData);
+        [AlfrescoCloudSession connectWithOAuthData:account.oauthData completionBlock:^(id<AlfrescoSession> cloudSession, NSError *connectionError) {
+            [navigationController popViewControllerAnimated:YES];
+            if (nil == cloudSession)
+            {
+                if (connectionError.code == kAlfrescoErrorCodeAccessTokenExpired)
+                {
+                    // refresh token
+                    AlfrescoOAuthHelper *oauthHelper = [[AlfrescoOAuthHelper alloc] initWithParameters:nil delegate:self];
+                    [oauthHelper refreshAccessToken:account.oauthData completionBlock:^(AlfrescoOAuthData *refreshedOAuthData, NSError *refreshError) {
+                        if (nil == refreshedOAuthData)
+                        {
+                            // if refresh token is expired or invalid present OAuth LoginView
+                            if (refreshError.code == kAlfrescoErrorCodeRefreshTokenExpired || refreshError.code == kAlfrescoErrorCodeRefreshTokenInvalid)
+                            {
+                                self.loginController = showOAuthLoginViewController();
+                                self.loginController.oauthDelegate = self;
+                            }
+                            authenticationComplete(nil);
+                        }
+                        else
+                        {
+                            account.oauthData = refreshedOAuthData;
+                            [[AccountManager sharedManager] saveAccountsToKeychain];
+                            
+                            // try to connect once OAuthData is refreshed
+                            [AlfrescoCloudSession connectWithOAuthData:refreshedOAuthData completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                                authenticationComplete(session);
+                            }];
+                        }
+                    }];
+                }
+                else
+                {
+                    authenticationComplete(nil);
+                }
+            }
+            else
+            {
+                authenticationComplete(cloudSession);
+            }
+        }];
     }
     else
     {
-        self.loginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY
-                                                                              secretKey:ALFRESCO_CLOUD_OAUTH_SECRET
-                                                                        completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
-                                                                            
-                                                                            if (oauthData)
-                                                                            {
-                                                                                account.oauthData = oauthData;
-                                                                                connectToCloudWithOAuthData(oauthData);
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                completionBlock(NO);
-                                                                            }
-                                                                        }];
+        self.loginController = showOAuthLoginViewController();
         self.loginController.oauthDelegate = self;
-        [navigationController pushViewController:self.loginController animated:YES];
     }
 }
 
