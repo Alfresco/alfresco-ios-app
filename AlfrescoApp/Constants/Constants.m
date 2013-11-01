@@ -75,6 +75,10 @@ NSString * const kMultiSelectDelete = @"deleteAction";
 // Thumbnail mappings folder
 NSString * const kThumbnailMappingFolder = @"ThumbnailMappings";
 
+// Favourites notifications
+NSString * const kFavouritesDidAddNodeNotification = @"FavouritesDidAddNodeNotification";
+NSString * const kFavouritesDidRemoveNodeNotification = @"FavouritesDidRemoveNodeNotification";
+
 // cache
 NSInteger const kNumberOfDaysToKeepCachedData = 7;
 

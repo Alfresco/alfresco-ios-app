@@ -62,7 +62,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     [self.window makeKeyAndVisible];
     
 #ifdef DEBUG
-    //[[AccountManager sharedManager] removeAllAccounts];
+//    [[AccountManager sharedManager] removeAllAccounts];
 #endif
     
     AccountManager *accountManager = [AccountManager sharedManager];

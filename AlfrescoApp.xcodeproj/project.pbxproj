@@ -99,6 +99,7 @@
 		7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
 		7384BE0F17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0E17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
+		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
 		73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D217A6750E0099FB84 /* ConnectivityManager.m */; };
@@ -373,6 +374,8 @@
 		73F634D817E34A990065590E /* AlfrescoURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6341317E34A990065590E /* AlfrescoURLUtils.m */; };
 		73F634D917E34A990065590E /* AlfrescoWorkflowObjectConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6341517E34A990065590E /* AlfrescoWorkflowObjectConverter.m */; };
 		73F634DA17E34A990065590E /* AlfrescoWorkflowUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6341717E34A990065590E /* AlfrescoWorkflowUtils.m */; };
+		73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73FC470918227F1700864E80 /* MessageUI.framework */; };
+		73FC470C1823BE7400864E80 /* Email Template in Resources */ = {isa = PBXBuildFile; fileRef = 73FC470B1823BE7400864E80 /* Email Template */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -521,6 +524,8 @@
 		7384BE0E17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoWorkflowVariable.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
 		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
+		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
+		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
 		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Supporting Files/Default-568h@2x.png"; sourceTree = "<group>"; };
 		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = "Supporting Files/Default.png"; sourceTree = "<group>"; };
@@ -1047,6 +1052,8 @@
 		73F6341517E34A990065590E /* AlfrescoWorkflowObjectConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoWorkflowObjectConverter.m; sourceTree = "<group>"; };
 		73F6341617E34A990065590E /* AlfrescoWorkflowUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoWorkflowUtils.h; sourceTree = "<group>"; };
 		73F6341717E34A990065590E /* AlfrescoWorkflowUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoWorkflowUtils.m; sourceTree = "<group>"; };
+		73FC470918227F1700864E80 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		73FC470B1823BE7400864E80 /* Email Template */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Email Template"; path = "Supporting Files/Email Template"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1064,6 +1071,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
 				73F4316F17EB3731002FAFCA /* QuickLook.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
@@ -1341,6 +1349,7 @@
 		7373B4F717A66E9400869949 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				73FC470918227F1700864E80 /* MessageUI.framework */,
 				08E89CF617EB3921006936DF /* CoreData.framework */,
 				73F4316E17EB3731002FAFCA /* QuickLook.framework */,
 				73E9E20E17E7446400A198B4 /* Security.framework */,
@@ -1382,6 +1391,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73FC470B1823BE7400864E80 /* Email Template */,
 				73B95B0617A68E770099FB84 /* Help Guides */,
 				73B959F117A68B7E0099FB84 /* Images */,
 				73B95B1617A6ADD40099FB84 /* AlfrescoApp-Info.plist */,
@@ -1496,6 +1506,8 @@
 				73E9E21117E854ED00A198B4 /* AccountManager.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
 				08E89C9317E7488C006936DF /* SyncManager.m */,
+				73A47E45182268AD00D35FBD /* FavouriteManager.h */,
+				73A47E46182268AD00D35FBD /* FavouriteManager.m */,
 				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				088364FB180C3EC3008EA97D /* SyncOperation.h */,
@@ -2727,6 +2739,7 @@
 				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
+				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */,
@@ -2964,6 +2977,7 @@
 				73F6349417E34A990065590E /* AlfrescoSite.m in Sources */,
 				73B95AFA17A68DF20099FB84 /* VersionHistoryViewController.m in Sources */,
 				73E9E1FF17E352C900A198B4 /* AlfrescoCMISObjectConverter.m in Sources */,
+				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				73F634C617E34A990065590E /* AlfrescoCloudNetwork.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,

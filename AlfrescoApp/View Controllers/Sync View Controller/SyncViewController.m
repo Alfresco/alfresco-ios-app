@@ -18,6 +18,7 @@
 #import "AccountManager.h"
 #import "Account.h"
 #import "ThumbnailManager.h"
+#import "Constants.h"
 
 static NSInteger const kCellHeight = 84;
 static CGFloat const kFooterHeight = 32.0f;
@@ -65,15 +66,22 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didAddNodeToFavourites:)
+                                                 name:kFavouritesDidAddNodeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRemoveNodeFromFavourites:)
+                                                 name:kFavouritesDidRemoveNodeNotification
+                                               object:nil];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)dealloc
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - private methods
+#pragma mark - Private Methods
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
 {
@@ -100,6 +108,20 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
+}
+
+- (void)didAddNodeToFavourites:(NSNotification *)notification
+{
+    AlfrescoNode *nodeAdded = (AlfrescoNode *)notification.object;
+    [self addAlfrescoNodes:@[nodeAdded] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)didRemoveNodeFromFavourites:(NSNotification *)notification
+{
+    AlfrescoNode *nodeRemoved = (AlfrescoNode *)notification.object;
+    NSIndexPath *index = [self indexPathForNodeWithIdentifier:nodeRemoved.identifier inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
+    [self.tableViewData removeObjectAtIndex:index.row];
+    [self.tableView deleteRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - TableView Datasource
