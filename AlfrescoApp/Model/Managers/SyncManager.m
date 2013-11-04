@@ -666,36 +666,44 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSString *repositoryId = self.alfrescoSession.repositoryInfo.identifier;
         BOOL isSyncNodesInfoInMemory = ([self.syncNodesInfo objectForKey:repositoryId] != nil);
         
-        void (^addNodeToExistingSyncNodes)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
+        void (^syncNode)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
         {
-            if (isSyncNodesInfoInMemory)
+            // start sync for this node only if s
+            if (!isSyncNodesInfoInMemory)
             {
-                NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:repositoryId];
-                [topLevelSyncNodes addObject:node];
-            }
-            else
-            {
-                [self.syncNodesInfo setValue:node forKey:repositoryId];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    // to be looked at ... discussed with Mohamad
-//                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:NO];
+                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:NO];
                 });
             }
         };
         
+        if (isSyncNodesInfoInMemory)
+        {
+            NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:repositoryId];
+            [topLevelSyncNodes addObject:node];
+        }
+        else
+        {
+            self.syncNodesInfo = [NSMutableDictionary dictionary];
+            [self.syncNodesInfo setValue:@[node] forKey:repositoryId];
+        }
+        
         if (node.isFolder)
         {
             [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                addNodeToExistingSyncNodes(node);
-                if (completionBlock != NULL)
+                if (self.nodeChildrenRequestsCount == 0)
                 {
-                    completionBlock(YES);
+                    syncNode(node);
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock(YES);
+                    }
                 }
             }];
         }
         else
         {
-            addNodeToExistingSyncNodes(node);
+            syncNode(node);
             if (completionBlock != NULL)
             {
                 completionBlock(YES);
@@ -718,11 +726,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        SyncRepository *repository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
-        if (repository && nodeInfo)
+        if (nodeInfo)
         {
-            [repository removeNodesObject:nodeInfo];
+            nodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:NO];
         }
         [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
     }
