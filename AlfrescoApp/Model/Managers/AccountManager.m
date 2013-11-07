@@ -9,9 +9,6 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 
-static NSString * const kSelectedAccountIdentifier = @"kSelectedAccountIdentifier";
-static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
-
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
@@ -52,15 +49,6 @@ static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
 
-- (BOOL)isSelectedAccount:(Account *)account
-{
-    if ([self.selectedAccount.username isEqualToString:account.username] && [self.selectedAccount.serverAddress isEqualToString:account.serverAddress])
-    {
-        return YES;
-    }
-    return NO;
-}
-
 - (void)removeAccount:(Account *)account
 {
     [self.accountsFromKeychain removeObject:account];
@@ -89,10 +77,12 @@ static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
 {
     _selectedAccount = selectedAccount;
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *selectedAccountIdentifier = [NSString stringWithFormat:@"%@%@%@", selectedAccount.username, kSelectedAccountIdentifierComponentsSeparator, selectedAccount.serverAddress];
-    [userDefaults setObject:selectedAccountIdentifier forKey:kSelectedAccountIdentifier];
-    [userDefaults synchronize];
+    for (Account *account in self.accountsFromKeychain)
+    {
+        account.isSelectedAccount = NO;
+    }
+    selectedAccount.isSelectedAccount = YES;
+    [self saveAccountsToKeychain];
 }
 
 - (NSInteger)totalNumberOfAddedAccounts
@@ -128,19 +118,11 @@ static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
         self.accountsFromKeychain = [NSMutableArray array];
     }
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *selectedAccountIdentifier = [userDefaults objectForKey:kSelectedAccountIdentifier];
-    NSArray *accountIdentifierComponents = [selectedAccountIdentifier componentsSeparatedByString:kSelectedAccountIdentifierComponentsSeparator];
-    int expectedComponentsCount = 2;
-    
-    if (accountIdentifierComponents.count == expectedComponentsCount)
+    for (Account *account in self.accountsFromKeychain)
     {
-        for (Account *account in self.accountsFromKeychain)
+        if (account.isSelectedAccount)
         {
-            if ([account.username isEqualToString:accountIdentifierComponents[0]] && [account.serverAddress isEqualToString:accountIdentifierComponents[1]])
-            {
-                self.selectedAccount = account;
-            }
+            self.selectedAccount = account;
         }
     }
 }

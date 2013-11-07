@@ -74,12 +74,13 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 - (void)deleteStoredInfoForRepository:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSArray *allNodeInfos = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject inManagedObjectContext:managedContext];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"repository.repositoryId == %@", repositoryId];
+    NSArray *allNodeInfos = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
     for (SyncNodeInfo *nodeInfo in allNodeInfos)
     {
         // delete all sync node info records for current repository so we get everything refreshed (except if file is changed locally but has changes - will be deleted after its uploaded)
         BOOL isUnfavoritedHasLocalChanges = [nodeInfo.isUnfavoritedHasLocalChanges intValue];
-        if (!isUnfavoritedHasLocalChanges && [nodeInfo.repository.repositoryId isEqualToString:repositoryId])
+        if (!isUnfavoritedHasLocalChanges)
         {
             [CoreDataUtils deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
         }

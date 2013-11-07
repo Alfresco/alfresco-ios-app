@@ -108,6 +108,13 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    if (self.documentFolderService)
+    {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+        [self loadSyncNodesForFolder:self.parentNode];
+    }
 }
 
 - (void)didAddNodeToFavourites:(NSNotification *)notification

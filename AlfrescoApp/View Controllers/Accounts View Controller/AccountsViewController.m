@@ -104,15 +104,13 @@
     {
         cell = (AccountCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AccountCell class]) owner:self options:nil] lastObject];
     }
-    
-    AccountManager *accountManager = [AccountManager sharedManager];
-    
+
     Account *account = self.tableViewData[indexPath.row];
     
     cell.textLabel.text = account.accountDescription;
     cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
     
-    if ([accountManager isSelectedAccount:account])
+    if (account.isSelectedAccount)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }

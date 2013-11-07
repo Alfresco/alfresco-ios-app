@@ -1083,7 +1083,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
         if (parentNodeInfo)
         {
-            AlfrescoLogDebug(@"Info Log: %@" , syncHelper);
+            AlfrescoLogDebug(@"ParentNode Id: %@" , parentNodeInfo.syncNodeInfoId);
             SyncNodeStatus *parentNodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:parentNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
             NSSet *subNodes = parentNodeInfo.nodes;
             
