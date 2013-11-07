@@ -15,6 +15,7 @@
 
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;
+- (BOOL)isSelectedAccount:(Account *)account;
 - (void)addAccount:(Account *)account;
 - (void)removeAccount:(Account *)account;
 - (void)removeAllAccounts;

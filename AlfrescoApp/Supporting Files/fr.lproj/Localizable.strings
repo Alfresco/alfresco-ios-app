@@ -152,6 +152,23 @@
 "accountdetails.alert.save.validationerror" = "Failure to authenticate. Check your account settings with your system administrator.";
 
 /**
+ * Cloud Signup
+ **/
+"cloudsignup.title" = "Alfresco in the cloud";
+"accountdetails.fields.firstName" = "First Name";
+"accountdetails.fields.lastName" = "Last Name";
+"accountdetails.fields.username" = "Username";
+"accountdetails.fields.email" = "Email";
+"accountdetails.fields.password" = "Password";
+"accountdetails.fields.confirmPassword" = "Confirm Password";
+"accountdetails.placeholder.password.requirement" = "6 characters min.";
+"cloudsignup.button.signup" = "Sign Up";
+"cloudsignup.footer.firstLine" = "By tapping Sign Up, you are agreeing to the";
+"cloudsignup.footer.secondLine" = "Alfresco Terms of Service and Privacy Policy";
+"cloudsignup.footer.termsOfService" = "Terms of Service";
+"cloudsignup.footer.privacyPolicy" = "Privacy Policy";
+
+/**
  * Company Home View Controller
  */
 "companyHome.title" = "Repository";

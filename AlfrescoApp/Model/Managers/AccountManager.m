@@ -9,7 +9,8 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 
-static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
+static NSString * const kSelectedAccountIdentifier = @"kSelectedAccountIdentifier";
+static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
 
 @interface AccountManager ()
 
@@ -51,6 +52,15 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:nil];
 }
 
+- (BOOL)isSelectedAccount:(Account *)account
+{
+    if ([self.selectedAccount.username isEqualToString:account.username] && [self.selectedAccount.serverAddress isEqualToString:account.serverAddress])
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)removeAccount:(Account *)account
 {
     [self.accountsFromKeychain removeObject:account];
@@ -80,7 +90,8 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     _selectedAccount = selectedAccount;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:selectedAccount.repositoryId forKey:kAccountRepositoryId];
+    NSString *selectedAccountIdentifier = [NSString stringWithFormat:@"%@%@%@", selectedAccount.username, kSelectedAccountIdentifierComponentsSeparator, selectedAccount.serverAddress];
+    [userDefaults setObject:selectedAccountIdentifier forKey:kSelectedAccountIdentifier];
     [userDefaults synchronize];
 }
 
@@ -118,13 +129,18 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     }
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *selectedAccountRepositoryId = [userDefaults objectForKey:kAccountRepositoryId];
+    NSString *selectedAccountIdentifier = [userDefaults objectForKey:kSelectedAccountIdentifier];
+    NSArray *accountIdentifierComponents = [selectedAccountIdentifier componentsSeparatedByString:kSelectedAccountIdentifierComponentsSeparator];
+    int expectedComponentsCount = 2;
     
-    for (Account *account in self.accountsFromKeychain)
+    if (accountIdentifierComponents.count == expectedComponentsCount)
     {
-        if ([account.repositoryId isEqualToString:selectedAccountRepositoryId])
+        for (Account *account in self.accountsFromKeychain)
         {
-            self.selectedAccount = account;
+            if ([account.username isEqualToString:accountIdentifierComponents[0]] && [account.serverAddress isEqualToString:accountIdentifierComponents[1]])
+            {
+                self.selectedAccount = account;
+            }
         }
     }
 }

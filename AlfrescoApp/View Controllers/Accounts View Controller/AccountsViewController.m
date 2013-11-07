@@ -13,6 +13,8 @@
 #import "NavigationViewController.h"
 #import "AccountInfoViewController.h"
 #import "LoginManager.h"
+#import "AccountInfoViewController.h"
+#import "UniversalDevice.h"
 
 @interface AccountsViewController ()
 
@@ -98,7 +100,7 @@
     cell.textLabel.text = account.accountDescription;
     cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
     
-    if ([accountManager.selectedAccount.repositoryId isEqualToString:account.repositoryId])
+    if ([accountManager isSelectedAccount:account])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
@@ -118,7 +120,10 @@
     [self.tableView reloadData];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
+    //[[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
+    
+    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityViewAccount];
+    [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
