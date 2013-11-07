@@ -48,7 +48,13 @@
                                              selector:@selector(accountAdded:)
                                                  name:kAlfrescoAccountAddedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountRemoved:)
+                                                 name:kAlfrescoAccountRemovedNotification
+                                               object:nil];
 }
+
+#pragma mark - Notification Methods
 
 - (void)sessionReceived:(NSNotification *)notification
 {
@@ -57,6 +63,12 @@
 }
 
 - (void)accountAdded:(NSNotification *)notification
+{
+    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self.tableView reloadData];
+}
+
+- (void)accountRemoved:(NSNotification *)notification
 {
     self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
     [self.tableView reloadData];
@@ -120,7 +132,7 @@
     [self.tableView reloadData];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    //[[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
+    [[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
     
     AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityViewAccount];
     [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];

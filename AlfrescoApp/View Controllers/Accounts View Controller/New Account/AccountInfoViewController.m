@@ -13,11 +13,17 @@
 #import "TextFieldCell.h"
 #import "SwitchCell.h"
 #import "LabelCell.h"
+#import "CenterLabelCell.h"
 #import "NavigationViewController.h"
 
 static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
 static NSString * const kServiceDocument = @"/alfresco/service/cmis";
+
+static NSInteger const kAuthenticationSectionNumber = 0;
+static NSInteger const kAdvanceSectionNumber = 1;
+static NSInteger const kBrowseSectionNumber = 2;
+static NSInteger const kDeleteSectionNumber = 3;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
@@ -158,13 +164,17 @@ static NSString * const kServiceDocument = @"/alfresco/service/cmis";
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == kAuthenticationSectionNumber)
     {
         return NSLocalizedString(@"accountdetails.header.authentication", @"Authenticate");
     }
-    else
+    else if (section == kAdvanceSectionNumber)
     {
         return NSLocalizedString(@"accountdetails.header.advanced", @"Advanced");
+    }
+    else
+    {
+        return nil;
     }
 }
 
@@ -180,8 +190,21 @@ static NSString * const kServiceDocument = @"/alfresco/service/cmis";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    selectedCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.section == kBrowseSectionNumber)
+    {
+        
+    }
+    else if (indexPath.section == kDeleteSectionNumber)
+    {
+        AccountManager *accountManager = [AccountManager sharedManager];
+        [accountManager removeAccount:self.account];
+        
+    }
+    else
+    {
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        selectedCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
 }
 
 - (void)constructTableCellsForAlfrescoServer
@@ -284,15 +307,19 @@ static NSString * const kServiceDocument = @"/alfresco/service/cmis";
         serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
         serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
         
-        ButtonCell *signUpCell = (ButtonCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([ButtonCell class]) owner:self options:nil] lastObject];
-        [signUpCell.button setTitle:NSLocalizedString(@"cloudsignup.button.signup", @"Sign Up") forState:UIControlStateNormal];
-        [signUpCell.button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
-        signUpCell.button.enabled = NO;
-        self.signUpButton = signUpCell.button;
+        CenterLabelCell *browseDocumentsCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        browseDocumentsCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.browse", @"Browse Document");
+        
+        CenterLabelCell *deleteAccountCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        deleteAccountCell.backgroundColor = [UIColor redColor];
+        deleteAccountCell.titleLabel.textColor = [UIColor whiteColor];
+        deleteAccountCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.delete", @"Delete Document");
         
         NSArray *group1 = @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell];
         NSArray *group2 = @[portCell, serviceDocumentCell];
-        self.tableGroups = @[group1, group2];
+        NSArray *group3 = @[browseDocumentsCell];
+        NSArray *group4 = @[deleteAccountCell];
+        self.tableGroups = @[group1, group2, group3, group4];
     }
 }
 

@@ -49,7 +49,7 @@ static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
 {
     [self.accountsFromKeychain addObject:account];
     [self saveAllAccountsToKeychain];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
 
 - (BOOL)isSelectedAccount:(Account *)account
@@ -65,7 +65,7 @@ static NSString * const kSelectedAccountIdentifierComponentsSeparator = @".@";
 {
     [self.accountsFromKeychain removeObject:account];
     [self saveAllAccountsToKeychain];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];
 }
 
 - (void)removeAllAccounts

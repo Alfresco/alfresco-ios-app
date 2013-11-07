@@ -57,6 +57,8 @@
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
+		0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */; };
+		0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */; };
 		08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C581823B5EC006D38F5 /* TextFieldCell.m */; };
 		08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C5C1823B62E006D38F5 /* TextFieldCell.xib */; };
 		08948C601823C24D006D38F5 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C5F1823C24D006D38F5 /* SwitchCell.m */; };
@@ -464,6 +466,9 @@
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
 		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
+		0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
+		0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterLabelCell.m; sourceTree = "<group>"; };
+		0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterLabelCell.xib; sourceTree = "<group>"; };
 		08948C571823B5EC006D38F5 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFieldCell.h; path = Account/TextFieldCell.h; sourceTree = "<group>"; };
 		08948C581823B5EC006D38F5 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextFieldCell.m; path = Account/TextFieldCell.m; sourceTree = "<group>"; };
 		08948C5C1823B62E006D38F5 /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldCell.xib; path = Account/TextFieldCell.xib; sourceTree = "<group>"; };
@@ -1147,6 +1152,9 @@
 				08E799B4182AA3CF0030FD53 /* LabelCell.h */,
 				08E799B5182AA3CF0030FD53 /* LabelCell.m */,
 				08E799B7182AA3EC0030FD53 /* LabelCell.xib */,
+				0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */,
+				0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */,
+				0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */,
 			);
 			name = AccountCell;
 			sourceTree = "<group>";
@@ -2796,6 +2804,7 @@
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
 				73B95AA417A68B7E0099FB84 /* help-more.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
+				0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */,
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
@@ -3016,6 +3025,7 @@
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,
 				73F634B217E34A990065590E /* AlfrescoOnPremiseDocumentFolderService.m in Sources */,
 				73B95AF417A68DF20099FB84 /* AddCommentViewController.m in Sources */,
+				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				73F634BE17E34A990065590E /* AlfrescoPlaceholderTaggingService.m in Sources */,

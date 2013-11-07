@@ -1015,7 +1015,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     if (updateFolderSizes)
     {
-        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"isFolder == NO"] inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+        NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"isFolder == NO && repository.repositoryId == %@", [[[AccountManager sharedManager] selectedAccount] repositoryId]];
+        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         
         for (SyncNodeInfo *nodeInfo in documentsInfo)
         {
@@ -1082,7 +1083,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
         if (parentNodeInfo)
         {
-            AlfrescoLogDebug(@"Info Log: %@ --- %@ ------ %@ -", syncHelper, parentNodeInfo.syncNodeInfoId, self.syncNodesStatus);
+            AlfrescoLogDebug(@"Info Log: %@" , syncHelper);
             SyncNodeStatus *parentNodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:parentNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
             NSSet *subNodes = parentNodeInfo.nodes;
             

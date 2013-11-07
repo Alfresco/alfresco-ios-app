@@ -147,6 +147,8 @@
 "accountdetails.fields.servicedocument" = "Service Document";
 "accountdetails.header.authentication" = "Account Authentication";
 "accountdetails.header.advanced" = "Advanced";
+"accountdetails.buttons.browse" = "Browse Documents";
+"accountdetails.buttons.delete" = "Delete Account";
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "Failure to authenticate. Check your account settings with your system administrator.";
