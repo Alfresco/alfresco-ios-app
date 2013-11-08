@@ -10,6 +10,7 @@
 #import "AccountInfoViewController.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
+#import "CloudSignUpViewController.h"
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
@@ -128,7 +129,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     }
     else
     {
-        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:nil];
+        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:nil accountActivityType:AccountActivityNewAccount];
         [self.navigationController pushViewController:accountInfoController animated:YES];
     }
 }
@@ -235,7 +236,8 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    
+    CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] init];
+    [self.navigationController pushViewController:signUpController animated:YES];
 }
 
 @end

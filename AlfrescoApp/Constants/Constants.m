@@ -100,3 +100,10 @@ NSString * const kEditFileServiceParameterAlfrescoDocumentIsDownloaded = @"docum
 NSString * const kEditFileServiceParameterDocumentFileName = @"documentFileName";
 
 NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";
+
+// Cloud Sign
+NSString * const kAlfrescoCloudTermOfServiceUrl = @"http://www.alfresco.com/legal/agreements/cloud/";
+NSString * const kAlfrescoCloudPrivacyPolicyUrl = @"http://www.alfresco.com/privacy/";
+NSString * const kAlfrescoCloudCustomerCareUrl = @"https://getsatisfaction.com/alfresco/products/alfresco_alfresco_mobile_app";
+NSString * const kAlfrescoCloudSignUpUrl = @"http://cloud.alfresco.com/?utm_source=mobile&utm_medium=ios_%@&utm_campaign=FreshDocs-%@";
+

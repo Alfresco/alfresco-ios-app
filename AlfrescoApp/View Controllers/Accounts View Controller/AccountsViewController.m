@@ -13,6 +13,8 @@
 #import "NavigationViewController.h"
 #import "AccountInfoViewController.h"
 #import "LoginManager.h"
+#import "AccountInfoViewController.h"
+#import "UniversalDevice.h"
 
 @interface AccountsViewController ()
 
@@ -46,7 +48,13 @@
                                              selector:@selector(accountAdded:)
                                                  name:kAlfrescoAccountAddedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountRemoved:)
+                                                 name:kAlfrescoAccountRemovedNotification
+                                               object:nil];
 }
+
+#pragma mark - Notification Methods
 
 - (void)sessionReceived:(NSNotification *)notification
 {
@@ -55,6 +63,12 @@
 }
 
 - (void)accountAdded:(NSNotification *)notification
+{
+    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self.tableView reloadData];
+}
+
+- (void)accountRemoved:(NSNotification *)notification
 {
     self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
     [self.tableView reloadData];
@@ -90,15 +104,13 @@
     {
         cell = (AccountCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AccountCell class]) owner:self options:nil] lastObject];
     }
-    
-    AccountManager *accountManager = [AccountManager sharedManager];
-    
+
     Account *account = self.tableViewData[indexPath.row];
     
     cell.textLabel.text = account.accountDescription;
     cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
     
-    if ([accountManager.selectedAccount.repositoryId isEqualToString:account.repositoryId])
+    if (account.isSelectedAccount)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
@@ -119,6 +131,9 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     [[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
+    
+    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityViewAccount];
+    [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
