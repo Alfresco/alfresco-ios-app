@@ -36,7 +36,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  * Sync Obstacle Methods
  */
 - (BOOL)didEncounterObstaclesDuringSync;
-- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock;
+- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock;
 - (void)syncUnfavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer;
 - (void)saveDeletedFavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 

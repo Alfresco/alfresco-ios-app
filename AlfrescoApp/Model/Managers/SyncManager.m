@@ -415,7 +415,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
         if (includeExistingSyncNodes)
         {
-            [self deleteUnWantedSyncedNodes:nodes completionBlock:^(BOOL completed) {
+            [self deleteUnWantedSyncedNodes:nodes inManagedObjectContext:privateManagedObjectContext completionBlock:^(BOOL completed) {
+                [CoreDataUtils saveContextForManagedObjectContext:privateManagedObjectContext];
+                [privateManagedObjectContext reset];
                 syncInfoandContent();
             }];
         }
@@ -464,24 +466,21 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return isModifiedLocally;
 }
 
-- (void)deleteUnWantedSyncedNodes:(NSArray *)nodes completionBlock:(void (^)(BOOL completed))completionBlock
+- (void)deleteUnWantedSyncedNodes:(NSArray *)nodes inManagedObjectContext:(NSManagedObjectContext *)managedContext completionBlock:(void (^)(BOOL completed))completionBlock
 {
     NSMutableArray *identifiersForNodesToBeSynced = [nodes valueForKey:@"identifier"];
     NSMutableArray *missingSyncDocumentsInRemote = [NSMutableArray array];
     
     // retrieve stored nodes info for current repository
-    NSArray *localNodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"isFolder == NO && repository.repositoryId == %@", self.alfrescoSession.repositoryInfo.identifier];
+    NSArray *localNodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:managedContext];
     for (SyncNodeInfo *nodeInfo in localNodes)
     {
-        BOOL isFolder = [nodeInfo.isFolder intValue];
-        if (!isFolder && [nodeInfo.repository.repositoryId isEqualToString:self.alfrescoSession.repositoryInfo.identifier])
+        // check if remote list dosnt have nodeInfo (indicates the node is unfavorited or deleted)
+        
+        if (![identifiersForNodesToBeSynced containsObject:nodeInfo.syncNodeInfoId])
         {
-            // check if remote list dosnt have nodeInfo (indicates the node is unfavorited or deleted)
-            
-            if (![identifiersForNodesToBeSynced containsObject:nodeInfo.syncNodeInfoId])
-            {
-                [missingSyncDocumentsInRemote addObject:nodeInfo.syncNodeInfoId];
-            }
+            [missingSyncDocumentsInRemote addObject:nodeInfo.syncNodeInfoId];
         }
     }
     
@@ -495,18 +494,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         for (NSString *nodeId in missingSyncDocumentsInRemote)
         {
-            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+            SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId inManagedObjectContext:managedContext];
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
             // check if there is any problem with removing the node from local sync
             
-            [self checkForObstaclesInRemovingDownloadForNode:localNode completionBlock:^(BOOL encounteredObstacle) {
+            [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
                 
                 totalChecksForObstacles--;
                 
                 if (encounteredObstacle == NO)
                 {
                     // if no problem with removing the node from local sync then delete the node from local sync nodes
-                    [[SyncHelper sharedHelper] deleteNodeFromSync:localNode inRepitory:self.alfrescoSession.repositoryInfo.identifier inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+                    [[SyncHelper sharedHelper] deleteNodeFromSync:localNode inRepitory:self.alfrescoSession.repositoryInfo.identifier inManagedObjectContext:managedContext];
                 }
                 else
                 {
@@ -517,7 +516,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (totalChecksForObstacles == 0)
                 {
-                    [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
                     if (completionBlock != NULL)
                     {
                         completionBlock(YES);
@@ -553,9 +551,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return obstacles;
 }
 
-- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
+- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
 {
-    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:managedContext];
     
     NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
     NSMutableArray *syncObstacleUnFavorited = [self.syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
@@ -1015,8 +1013,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     if (updateFolderSizes)
     {
+        NSManagedObjectContext *privateManagedObjectContext = [CoreDataUtils createPrivateManagedObjectContext];
         NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"isFolder == NO && repository.repositoryId == %@", [[[AccountManager sharedManager] selectedAccount] repositoryId]];
-        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+        NSArray *documentsInfo = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:privateManagedObjectContext];
         
         for (SyncNodeInfo *nodeInfo in documentsInfo)
         {
@@ -1026,7 +1025,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             
             if (checkIfModified && nodeStatus.activityType != SyncActivityTypeUpload)
             {
-                BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+                BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:privateManagedObjectContext];
                 if (isModifiedLocally)
                 {
                     nodeStatus.status = SyncStatusOffline;
@@ -1034,6 +1033,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
             }
         }
+        [privateManagedObjectContext reset];
+        privateManagedObjectContext = nil;
     }
 }
 

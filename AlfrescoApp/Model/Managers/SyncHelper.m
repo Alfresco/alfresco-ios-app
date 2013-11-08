@@ -72,6 +72,7 @@ static NSString * const kSyncContentDirectory = @"sync";
             }
         }
         [CoreDataUtils saveContextForManagedObjectContext:managedContext];
+        [managedContext reset];
     }
 }
 
