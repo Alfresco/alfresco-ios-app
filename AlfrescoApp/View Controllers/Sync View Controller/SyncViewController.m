@@ -87,18 +87,18 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     if (folder)
     {
-        self.tableViewData = [[[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode] mutableCopy];
+        self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
     }
     else
     {
-        self.tableViewData = [[[SyncManager sharedManager] syncDocumentsAndFoldersForSession:self.session withCompletionBlock:^(NSArray *syncedNodes) {
+        self.tableViewData = [[SyncManager sharedManager] syncDocumentsAndFoldersForSession:self.session withCompletionBlock:^(NSMutableArray *syncedNodes) {
             if (syncedNodes)
             {
-                self.tableViewData = [syncedNodes mutableCopy];
+                self.tableViewData = syncedNodes;
                 [self.tableView reloadData];
                 [self hidePullToRefreshView];
             }
-        }] mutableCopy];
+        }];
     }
     [self hidePullToRefreshView];
     [self.tableView reloadData];
@@ -110,7 +110,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     self.session = session;
     
     [self.navigationController popToRootViewControllerAnimated:YES];
-    if (self.documentFolderService)
+    if (![[SyncManager sharedManager] isFirstUse])
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];

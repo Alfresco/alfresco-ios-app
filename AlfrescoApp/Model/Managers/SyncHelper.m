@@ -41,35 +41,38 @@ static NSString * const kSyncContentDirectory = @"sync";
                  refreshExistingSyncNodes:(BOOL)refreshExisting
                    inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    if (refreshExisting)
+    @autoreleasepool
     {
-        // refresh data in Database for repository
-        [self deleteStoredInfoForRepository:repositoryId inManagedObjectContext:managedContext];
-    }
-    
-    SyncRepository *syncRepository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId inManagedObjectContext:managedContext];
-    if (!syncRepository)
-    {
-        syncRepository = [CoreDataUtils createSyncRepoMangedObjectInManagedObjectContext:managedContext];
-        syncRepository.repositoryId = repositoryId;
-    }
-    NSMutableArray *syncNodesInfoKeys = [[syncNodesInfo allKeys] mutableCopy];
-    
-    NSArray *topLevelSyncItems = [syncNodesInfo objectForKey:repositoryId];
-    
-    [self populateNodes:topLevelSyncItems inParentFolder:syncRepository.repositoryId forRepository:repositoryId preserveInfo:info inManagedObjectContext:managedContext];
-    [syncNodesInfoKeys removeObject:repositoryId];
-    
-    for (NSString *syncFolderInfoKey in syncNodesInfoKeys)
-    {
-        NSArray *nodesInFolder = [syncNodesInfo objectForKey:syncFolderInfoKey];
-        
-        if (nodesInFolder.count > 0)
+        if (refreshExisting)
         {
-            [self populateNodes:nodesInFolder inParentFolder:syncFolderInfoKey forRepository:repositoryId preserveInfo:info inManagedObjectContext:managedContext];
+            // refresh data in Database for repository
+            [self deleteStoredInfoForRepository:repositoryId inManagedObjectContext:managedContext];
         }
+        
+        SyncRepository *syncRepository = [CoreDataUtils repositoryObjectForRepositoryWithId:repositoryId inManagedObjectContext:managedContext];
+        if (!syncRepository)
+        {
+            syncRepository = [CoreDataUtils createSyncRepoMangedObjectInManagedObjectContext:managedContext];
+            syncRepository.repositoryId = repositoryId;
+        }
+        NSMutableArray *syncNodesInfoKeys = [[syncNodesInfo allKeys] mutableCopy];
+        
+        NSArray *topLevelSyncItems = [syncNodesInfo objectForKey:repositoryId];
+        
+        [self populateNodes:topLevelSyncItems inParentFolder:syncRepository.repositoryId forRepository:repositoryId preserveInfo:info inManagedObjectContext:managedContext];
+        [syncNodesInfoKeys removeObject:repositoryId];
+        
+        for (NSString *syncFolderInfoKey in syncNodesInfoKeys)
+        {
+            NSArray *nodesInFolder = [syncNodesInfo objectForKey:syncFolderInfoKey];
+            
+            if (nodesInFolder.count > 0)
+            {
+                [self populateNodes:nodesInFolder inParentFolder:syncFolderInfoKey forRepository:repositoryId preserveInfo:info inManagedObjectContext:managedContext];
+            }
+        }
+        [CoreDataUtils saveContextForManagedObjectContext:managedContext];
     }
-    [CoreDataUtils saveContextForManagedObjectContext:managedContext];
 }
 
 - (void)deleteStoredInfoForRepository:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext
