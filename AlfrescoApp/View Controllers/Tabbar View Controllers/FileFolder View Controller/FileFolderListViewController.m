@@ -522,7 +522,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)accessoryButtonTapped:(UIButton *)accessoryButton withEvent:(UIEvent *)event
 {
-    FileFolderCell *selectedCell = (FileFolderCell *)accessoryButton.superview;
+    FileFolderCell *selectedCell = (FileFolderCell*)accessoryButton.superview;
+    
+    BOOL foundFileFolderCell = NO;
+    while (!foundFileFolderCell)
+    {
+        if (![selectedCell isKindOfClass:[UITableViewCell class]])
+        {
+            selectedCell = (FileFolderCell *)selectedCell.superview;
+        }
+        else
+        {
+            foundFileFolderCell = YES;
+        }
+    }
+    
     NSIndexPath *indexPathToSelectedCell = nil;
     
     AlfrescoNode *selectedNode = nil;
@@ -782,6 +796,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     cell.nodeNameLabel.text = currentNode.name;
     cell.accessoryType = UITableViewCellAccessoryNone;
+    // FIXME: Consider for iOS 7 replacing this with native info button support
     cell.accessoryView = [self makeDetailDisclosureButton];
     NSString *modifiedDateString = relativeDateFromDate(currentNode.modifiedAt);
     

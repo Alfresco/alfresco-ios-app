@@ -26,7 +26,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
-- (NSArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSArray *syncedNodes))completionBlock;
+- (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock;
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
@@ -36,7 +36,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  * Sync Obstacle Methods
  */
 - (BOOL)didEncounterObstaclesDuringSync;
-- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock;
+- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock;
 - (void)syncUnfavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer;
 - (void)saveDeletedFavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 

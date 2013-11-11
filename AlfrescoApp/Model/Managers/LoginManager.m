@@ -265,6 +265,7 @@
                                                                  }
                                                                  
                                                                  account.repositoryId = session.repositoryInfo.identifier;
+                                                                 [[AccountManager sharedManager] saveAccountsToKeychain];
                                                                  
                                                                  self.currentLoginURLString = nil;
                                                                  self.currentLoginRequest = nil;

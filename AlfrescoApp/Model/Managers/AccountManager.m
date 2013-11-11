@@ -9,8 +9,6 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 
-static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
-
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
@@ -48,14 +46,14 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 {
     [self.accountsFromKeychain addObject:account];
     [self saveAllAccountsToKeychain];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
 
 - (void)removeAccount:(Account *)account
 {
     [self.accountsFromKeychain removeObject:account];
     [self saveAllAccountsToKeychain];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];
 }
 
 - (void)removeAllAccounts
@@ -79,9 +77,12 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 {
     _selectedAccount = selectedAccount;
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:selectedAccount.repositoryId forKey:kAccountRepositoryId];
-    [userDefaults synchronize];
+    for (Account *account in self.accountsFromKeychain)
+    {
+        account.isSelectedAccount = NO;
+    }
+    selectedAccount.isSelectedAccount = YES;
+    [self saveAccountsToKeychain];
 }
 
 - (NSInteger)totalNumberOfAddedAccounts
@@ -117,12 +118,9 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
         self.accountsFromKeychain = [NSMutableArray array];
     }
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *selectedAccountRepositoryId = [userDefaults objectForKey:kAccountRepositoryId];
-    
     for (Account *account in self.accountsFromKeychain)
     {
-        if ([account.repositoryId isEqualToString:selectedAccountRepositoryId])
+        if (account.isSelectedAccount)
         {
             self.selectedAccount = account;
         }
