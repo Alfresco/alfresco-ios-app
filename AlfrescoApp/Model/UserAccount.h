@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, AccountType)
     AccountTypeCloud
 };
 
-@interface Account : NSObject <NSCoding>
+@interface UserAccount : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;

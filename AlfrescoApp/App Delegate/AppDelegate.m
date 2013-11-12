@@ -17,7 +17,7 @@
 #import "LoginManager.h"
 #import "FileURLHandler.h"
 #import "LocationManager.h"
-#import "Account.h"
+#import "UserAccount.h"
 #import "AccountManager.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
@@ -203,8 +203,8 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:sitesListNavigationController];
     
-    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithSectionArrays:@[accountsItem], @[activitiesItem],
-                                                  @[repositoryItem, sitesItem, tasksItem, syncItem],
+    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithSectionArrays:@[accountsItem],
+                                                  @[activitiesItem, repositoryItem, sitesItem, tasksItem, syncItem],
                                                   @[settingsItem, downloadsItem, aboutItem, helpItem],
                                                   nil];
     mainMenuController.delegate = switchController;

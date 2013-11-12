@@ -14,7 +14,7 @@
 #import "NavigationViewController.h"
 #import "MBProgressHUD.h"
 #import "ConnectivityManager.h"
-#import "Account.h"
+#import "UserAccount.h"
 #import "AccountManager.h"
 #import "NavigationViewController.h"
 
@@ -57,7 +57,7 @@
     return self;
 }
 
-- (void)attemptLoginToAccount:(Account *)account
+- (void)attemptLoginToAccount:(UserAccount *)account
 {
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
@@ -103,7 +103,7 @@
 
 #pragma mark - Cloud authentication Methods
 
-- (void)authenticateCloudAccount:(Account *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
+- (void)authenticateCloudAccount:(UserAccount *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
 {
     void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session)
     {
@@ -234,7 +234,7 @@
 
 #pragma mark - Private Functions
 
-- (void)displayLoginViewControllerWithAccount:(Account *)account username:(NSString *)username
+- (void)displayLoginViewControllerWithAccount:(UserAccount *)account username:(NSString *)username
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -244,7 +244,7 @@
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)authenticateOnPremiseAccount:(Account *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
+- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
 {
     NSDictionary *sessionParameters = @{kAlfrescoMetadataExtraction : [NSNumber numberWithBool:YES],
                                         kAlfrescoThumbnailCreation : [NSNumber numberWithBool:YES]};
@@ -317,7 +317,7 @@
 
 #pragma mark - LoginViewControllerDelegate Functions
 
-- (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(Account *)account username:(NSString *)username password:(NSString *)password
+- (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
     [self authenticateOnPremiseAccount:account password:(NSString *)password temporarySession:NO completionBlock:^(BOOL successful) {

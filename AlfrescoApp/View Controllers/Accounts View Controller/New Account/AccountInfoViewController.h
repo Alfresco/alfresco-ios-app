@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
-@class Account;
+
+@class UserAccount;
 
 typedef NS_ENUM(NSInteger, AccountActivityType)
 {
@@ -19,6 +20,6 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
 
 @interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate>
 
-- (id)initWithAccount:(Account *)account accountActivityType:(AccountActivityType)activityType;
+- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType;
 
 @end

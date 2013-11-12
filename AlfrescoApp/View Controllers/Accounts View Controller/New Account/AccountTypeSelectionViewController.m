@@ -99,7 +99,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 {
     if (indexPath.section == kCloudSectionNumber)
     {
-        Account *account = [[Account alloc] initWithAccountType:AccountTypeCloud];
+        UserAccount *account = [[UserAccount alloc] initWithAccountType:AccountTypeCloud];
         account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
         

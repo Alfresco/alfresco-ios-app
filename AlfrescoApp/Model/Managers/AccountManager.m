@@ -42,14 +42,14 @@
     return self.accountsFromKeychain;
 }
 
-- (void)addAccount:(Account *)account
+- (void)addAccount:(UserAccount *)account
 {
     [self.accountsFromKeychain addObject:account];
     [self saveAllAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
 
-- (void)removeAccount:(Account *)account
+- (void)removeAccount:(UserAccount *)account
 {
     [self.accountsFromKeychain removeObject:account];
     [self saveAllAccountsToKeychain];
@@ -73,11 +73,11 @@
     [self saveAllAccountsToKeychain];
 }
 
-- (void)setSelectedAccount:(Account *)selectedAccount
+- (void)setSelectedAccount:(UserAccount *)selectedAccount
 {
     _selectedAccount = selectedAccount;
     
-    for (Account *account in self.accountsFromKeychain)
+    for (UserAccount *account in self.accountsFromKeychain)
     {
         account.isSelectedAccount = NO;
     }
@@ -97,7 +97,7 @@
     NSError *saveError = nil;
     [KeychainUtils updateSavedAccounts:self.accountsFromKeychain error:&saveError];
     
-    if (saveError)
+    if (saveError && saveError.code != -25300)
     {
         AlfrescoLogDebug(@"Error saving to keychain. Error: %@", saveError.localizedDescription);
     }
@@ -118,7 +118,7 @@
         self.accountsFromKeychain = [NSMutableArray array];
     }
     
-    for (Account *account in self.accountsFromKeychain)
+    for (UserAccount *account in self.accountsFromKeychain)
     {
         if (account.isSelectedAccount)
         {

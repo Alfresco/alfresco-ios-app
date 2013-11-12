@@ -17,7 +17,7 @@
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
 #import "AccountManager.h"
-#import "Account.h"
+#import "UserAccount.h"
 #import "SyncOperation.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
