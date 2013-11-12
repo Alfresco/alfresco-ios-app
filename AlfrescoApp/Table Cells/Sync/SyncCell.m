@@ -183,6 +183,10 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
             fileSizeString = stringForLongFileSize(nodeStatus.totalSize);
             self.nodeDetails = fileSizeString;
         }
+        else
+        {
+            self.nodeDetails = @"";
+        }
     }
     else
     {

@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
+
 @class UserAccount;
+
+typedef NS_ENUM(NSInteger, AccountActivityType)
+{
+    AccountActivityTypeNewAccount,
+    AccountActivityTypeEditAccount,
+    AccountActivityTypeViewAccount
+};
 
 @interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate>
 
-- (id)initWithAccount:(UserAccount *)account;
+- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType;
 
 @end

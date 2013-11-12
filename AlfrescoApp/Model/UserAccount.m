@@ -18,6 +18,7 @@ static NSString * const kAccountServiceDocument = @"kAccountServiceDocument";
 static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 static NSString * const kAccountType = @"kAccountType";
 static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
+static NSString * const kAccountIsSelected = @"kAccountIsSelected";
 
 @interface UserAccount ()
 
@@ -49,6 +50,7 @@ static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
     [aCoder encodeObject:self.repositoryId forKey:kAccountRepositoryId];
     [aCoder encodeInteger:self.accountType forKey:kAccountType];
     [aCoder encodeObject:self.oauthData forKey:kAlfrescoOAuthData];
+    [aCoder encodeInteger:self.isSelectedAccount forKey:kAccountIsSelected];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -66,6 +68,7 @@ static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
         self.repositoryId = [aDecoder decodeObjectForKey:kAccountRepositoryId];
         self.accountType = [aDecoder decodeIntegerForKey:kAccountType];
         self.oauthData = [aDecoder decodeObjectForKey:kAlfrescoOAuthData];
+        self.isSelectedAccount = [aDecoder decodeIntegerForKey:kAccountIsSelected];
     }
     return self;
 }

@@ -40,6 +40,7 @@ NSString *fileNameAppendedWithDate(NSString *name);
 
 @interface Utility : NSObject
 
++ (BOOL)isValidEmail:(NSString *)emailAddress;
 + (BOOL)isVideo:(NSString *)filePath;
 + (BOOL)isAudio:(NSString *)filePath;
 + (BOOL)isAudioOrVideo:(NSString *)filePath;

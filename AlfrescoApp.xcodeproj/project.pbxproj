@@ -57,6 +57,8 @@
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
+		0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */; };
+		0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */; };
 		08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C581823B5EC006D38F5 /* TextFieldCell.m */; };
 		08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C5C1823B62E006D38F5 /* TextFieldCell.xib */; };
 		08948C601823C24D006D38F5 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C5F1823C24D006D38F5 /* SwitchCell.m */; };
@@ -65,6 +67,12 @@
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
 		08B61FA5180421C800C827EA /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61FA4180421C800C827EA /* SyncError.m */; };
+		08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */; };
+		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
+		08E799B1182A57850030FD53 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B0182A57850030FD53 /* ButtonCell.m */; };
+		08E799B3182A579B0030FD53 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799B2182A579B0030FD53 /* ButtonCell.xib */; };
+		08E799B6182AA3CF0030FD53 /* LabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B5182AA3CF0030FD53 /* LabelCell.m */; };
+		08E799B8182AA3EC0030FD53 /* LabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799B7182AA3EC0030FD53 /* LabelCell.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89C9B17E7593B006936DF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89C9A17E7593B006936DF /* XCTest.framework */; };
 		08E89C9C17E7593B006936DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
@@ -458,6 +466,9 @@
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
 		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
+		0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
+		0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterLabelCell.m; sourceTree = "<group>"; };
+		0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterLabelCell.xib; sourceTree = "<group>"; };
 		08948C571823B5EC006D38F5 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFieldCell.h; path = Account/TextFieldCell.h; sourceTree = "<group>"; };
 		08948C581823B5EC006D38F5 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextFieldCell.m; path = Account/TextFieldCell.m; sourceTree = "<group>"; };
 		08948C5C1823B62E006D38F5 /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldCell.xib; path = Account/TextFieldCell.xib; sourceTree = "<group>"; };
@@ -471,6 +482,15 @@
 		08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button@2x.png"; sourceTree = "<group>"; };
 		08B61FA3180421C800C827EA /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
 		08B61FA4180421C800C827EA /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncError.m; path = DataModel/SyncError.m; sourceTree = "<group>"; };
+		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
+		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
+		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
+		08E799AF182A57850030FD53 /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
+		08E799B0182A57850030FD53 /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
+		08E799B2182A579B0030FD53 /* ButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
+		08E799B4182AA3CF0030FD53 /* LabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelCell.h; sourceTree = "<group>"; };
+		08E799B5182AA3CF0030FD53 /* LabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelCell.m; sourceTree = "<group>"; };
+		08E799B7182AA3EC0030FD53 /* LabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelCell.xib; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
 		08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AlfrescoApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1126,6 +1146,15 @@
 				08948C5E1823C24D006D38F5 /* SwitchCell.h */,
 				08948C5F1823C24D006D38F5 /* SwitchCell.m */,
 				08948C611823C26E006D38F5 /* SwitchCell.xib */,
+				08E799AF182A57850030FD53 /* ButtonCell.h */,
+				08E799B0182A57850030FD53 /* ButtonCell.m */,
+				08E799B2182A579B0030FD53 /* ButtonCell.xib */,
+				08E799B4182AA3CF0030FD53 /* LabelCell.h */,
+				08E799B5182AA3CF0030FD53 /* LabelCell.m */,
+				08E799B7182AA3EC0030FD53 /* LabelCell.xib */,
+				0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */,
+				0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */,
+				0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */,
 			);
 			name = AccountCell;
 			sourceTree = "<group>";
@@ -1139,6 +1168,9 @@
 				0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */,
 				0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */,
 				0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */,
+				08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */,
+				08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */,
+				08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */,
 			);
 			name = "New Account";
 			sourceTree = "<group>";
@@ -2690,6 +2722,7 @@
 				73B95A6D17A68B7E0099FB84 /* mime_audio.png in Resources */,
 				73B95A6E17A68B7E0099FB84 /* mime_audio@2x.png in Resources */,
 				73B95A6F17A68B7E0099FB84 /* mime_doc.png in Resources */,
+				08E799B3182A579B0030FD53 /* ButtonCell.xib in Resources */,
 				0833246917F98CED00EE6AA8 /* sync-status-pending@2x.png in Resources */,
 				73B95A7017A68B7E0099FB84 /* mime_doc@2x.png in Resources */,
 				73B95A7117A68B7E0099FB84 /* mime_img.png in Resources */,
@@ -2730,10 +2763,12 @@
 				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
 				0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */,
 				08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */,
+				08E799B8182AA3EC0030FD53 /* LabelCell.xib in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
 				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
+				08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
 				0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */,
 				0833246117F98CED00EE6AA8 /* favorite-indicator@2x.png in Resources */,
@@ -2769,6 +2804,7 @@
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
 				73B95AA417A68B7E0099FB84 /* help-more.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
+				0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */,
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
@@ -2864,6 +2900,7 @@
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				73F6348C17E34A990065590E /* AlfrescoListingContext.m in Sources */,
+				08E799B6182AA3CF0030FD53 /* LabelCell.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				73F634CE17E34A990065590E /* AlfrescoDefaultHTTPRequest.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
@@ -2879,6 +2916,7 @@
 				73F6349B17E34A990065590E /* AlfrescoCommentService.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
+				08E799B1182A57850030FD53 /* ButtonCell.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */,
 				73F634C517E34A990065590E /* AlfrescoBasicAuthenticationProvider.m in Sources */,
 				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
@@ -2957,6 +2995,7 @@
 				73F634BD17E34A990065590E /* AlfrescoPlaceholderSiteService.m in Sources */,
 				73F634AB17E34A990065590E /* AlfrescoCloudSiteService.m in Sources */,
 				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
+				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
 				73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				73F634BB17E34A990065590E /* AlfrescoPlaceholderPersonService.m in Sources */,
@@ -2986,6 +3025,7 @@
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,
 				73F634B217E34A990065590E /* AlfrescoOnPremiseDocumentFolderService.m in Sources */,
 				73B95AF417A68DF20099FB84 /* AddCommentViewController.m in Sources */,
+				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				73F634BE17E34A990065590E /* AlfrescoPlaceholderTaggingService.m in Sources */,
