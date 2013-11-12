@@ -44,14 +44,14 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     return self.accountsFromKeychain;
 }
 
-- (void)addAccount:(Account *)account
+- (void)addAccount:(UserAccount *)account
 {
     [self.accountsFromKeychain addObject:account];
     [self saveAllAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:nil];
 }
 
-- (void)removeAccount:(Account *)account
+- (void)removeAccount:(UserAccount *)account
 {
     [self.accountsFromKeychain removeObject:account];
     [self saveAllAccountsToKeychain];
@@ -75,7 +75,7 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     [self saveAllAccountsToKeychain];
 }
 
-- (void)setSelectedAccount:(Account *)selectedAccount
+- (void)setSelectedAccount:(UserAccount *)selectedAccount
 {
     _selectedAccount = selectedAccount;
     
@@ -96,7 +96,7 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     NSError *saveError = nil;
     [KeychainUtils updateSavedAccounts:self.accountsFromKeychain error:&saveError];
     
-    if (saveError)
+    if (saveError && saveError.code != -25300)
     {
         AlfrescoLogDebug(@"Error saving to keychain. Error: %@", saveError.localizedDescription);
     }
@@ -120,7 +120,7 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *selectedAccountRepositoryId = [userDefaults objectForKey:kAccountRepositoryId];
     
-    for (Account *account in self.accountsFromKeychain)
+    for (UserAccount *account in self.accountsFromKeychain)
     {
         if ([account.repositoryId isEqualToString:selectedAccountRepositoryId])
         {

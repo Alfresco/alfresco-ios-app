@@ -10,7 +10,7 @@
 #import "SystemNotice.h"
 
 @class AlfrescoNode;
-@class Account;
+@class UserAccount;
 
 /* System Notices */
 SystemNotice * displayErrorMessage(NSString *message);
@@ -49,6 +49,6 @@ NSString *fileNameAppendedWithDate(NSString *name);
 //+ (BOOL)isAudioOrVideoAndSupported:(NSString *)filePath;
 //+ (BOOL)isAudioOrVideoAndNotSupported:(NSString *)filePath;
 + (NSString *)mimeTypeForFileExtension:(NSString *)extension;
-+ (NSString *)serverURLStringFromAccount:(Account *)account;
++ (NSString *)serverURLStringFromAccount:(UserAccount *)account;
 
 @end

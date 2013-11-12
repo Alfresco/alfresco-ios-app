@@ -278,7 +278,7 @@
 		73E9E1FF17E352C900A198B4 /* AlfrescoCMISObjectConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E1A117E352C800A198B4 /* AlfrescoCMISObjectConverter.m */; };
 		73E9E20017E352C900A198B4 /* AlfrescoCMISPassThroughAuthenticationProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E1A317E352C800A198B4 /* AlfrescoCMISPassThroughAuthenticationProvider.m */; };
 		73E9E20117E352C900A198B4 /* AlfrescoCMISUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E1A517E352C800A198B4 /* AlfrescoCMISUtil.m */; };
-		73E9E20D17E7394900A198B4 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* Account.m */; };
+		73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
 		73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E20E17E7446400A198B4 /* Security.framework */; };
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
 		73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
@@ -857,8 +857,8 @@
 		73E9E1FA17E352C900A198B4 /* CMISURLUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMISURLUtil.h; sourceTree = "<group>"; };
 		73E9E1FB17E352C900A198B4 /* CMISVersioningService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMISVersioningService.h; sourceTree = "<group>"; };
 		73E9E1FC17E352C900A198B4 /* CMISWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMISWorkspace.h; sourceTree = "<group>"; };
-		73E9E20B17E7394900A198B4 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
-		73E9E20C17E7394900A198B4 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		73E9E20B17E7394900A198B4 /* UserAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAccount.h; sourceTree = "<group>"; };
+		73E9E20C17E7394900A198B4 /* UserAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserAccount.m; sourceTree = "<group>"; };
 		73E9E20E17E7446400A198B4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		73E9E21017E854ED00A198B4 /* AccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountManager.h; sourceTree = "<group>"; };
 		73E9E21117E854ED00A198B4 /* AccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManager.m; sourceTree = "<group>"; };
@@ -1495,8 +1495,8 @@
 		73B957CF17A6750E0099FB84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				73E9E20B17E7394900A198B4 /* Account.h */,
-				73E9E20C17E7394900A198B4 /* Account.m */,
+				73E9E20B17E7394900A198B4 /* UserAccount.h */,
+				73E9E20C17E7394900A198B4 /* UserAccount.m */,
 				0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */,
 				0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */,
 				73B957D017A6750E0099FB84 /* Managers */,
@@ -2956,7 +2956,7 @@
 				73F6349517E34A990065590E /* AlfrescoTag.m in Sources */,
 				73F634BD17E34A990065590E /* AlfrescoPlaceholderSiteService.m in Sources */,
 				73F634AB17E34A990065590E /* AlfrescoCloudSiteService.m in Sources */,
-				73E9E20D17E7394900A198B4 /* Account.m in Sources */,
+				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
 				73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				73F634BB17E34A990065590E /* AlfrescoPlaceholderPersonService.m in Sources */,

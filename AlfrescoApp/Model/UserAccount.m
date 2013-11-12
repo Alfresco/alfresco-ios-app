@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import "Account.h"
+#import "UserAccount.h"
 
 static NSString * const kAccountUsername = @"kAccountUsername";
 static NSString * const kAccountPassword = @"kAccountPassword";
@@ -19,11 +19,11 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 static NSString * const kAccountType = @"kAccountType";
 static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 
-@interface Account ()
+@interface UserAccount ()
 
 @end
 
-@implementation Account
+@implementation UserAccount
 
 - (instancetype)initWithAccountType:(AccountType)accountType
 {

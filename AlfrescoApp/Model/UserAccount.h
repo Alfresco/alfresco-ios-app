@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, AccountType)
     AccountTypeCloud
 };
 
-@interface Account : NSObject <NSCoding>
+@interface UserAccount : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
@@ -26,7 +26,6 @@ typedef NS_ENUM(NSInteger, AccountType)
 @property (nonatomic, assign) AccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
 @property (nonatomic, strong) NSString *repositoryId;
-
 
 - (instancetype)initWithAccountType:(AccountType)accountType;
 

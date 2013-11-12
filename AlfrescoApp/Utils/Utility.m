@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "NavigationViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "Account.h"
+#import "UserAccount.h"
 #import "Constants.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
@@ -378,7 +378,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
     return mimeType;
 }
 
-+ (NSString *)serverURLStringFromAccount:(Account *)account
++ (NSString *)serverURLStringFromAccount:(UserAccount *)account
 {
     return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
 }

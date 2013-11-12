@@ -17,7 +17,7 @@
 #import "LoginManager.h"
 #import "FileURLHandler.h"
 #import "LocationManager.h"
-#import "Account.h"
+#import "UserAccount.h"
 #import "AccountManager.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"

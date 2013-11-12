@@ -93,7 +93,7 @@
     
     AccountManager *accountManager = [AccountManager sharedManager];
     
-    Account *account = self.tableViewData[indexPath.row];
+    UserAccount *account = self.tableViewData[indexPath.row];
     
     cell.textLabel.text = account.accountDescription;
     cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
@@ -112,7 +112,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Account *account = self.tableViewData[indexPath.row];
+    UserAccount *account = self.tableViewData[indexPath.row];
     [[AccountManager sharedManager] setSelectedAccount:account];
     
     [self.tableView reloadData];
@@ -134,7 +134,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AccountManager *accountManager = [AccountManager sharedManager];
-    Account *account = self.tableViewData[indexPath.row];
+    UserAccount *account = self.tableViewData[indexPath.row];
     
     [accountManager removeAccount:account];
     self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];

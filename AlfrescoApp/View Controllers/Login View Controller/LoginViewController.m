@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "MBProgressHUD.h"
-#import "Account.h"
+#import "UserAccount.h"
 #import "Utility.h"
 #import "ThemeUtil.h"
 
@@ -26,13 +26,13 @@
 @property (nonatomic, weak) id<LoginViewControllerDelegate>delegate;
 @property (nonatomic, weak) UIBarButtonItem *loginButton;
 @property (nonatomic, strong) UIView *sectionHeaderContainerView;
-@property (nonatomic, strong) Account *loginToAccount;
+@property (nonatomic, strong) UserAccount *loginToAccount;
 
 @end
 
 @implementation LoginViewController
 
-- (id)initWithAccount:(Account *)account delegate:(id<LoginViewControllerDelegate>)delegate
+- (id)initWithAccount:(UserAccount *)account delegate:(id<LoginViewControllerDelegate>)delegate
 {
     self = [self initWithServer:[Utility serverURLStringFromAccount:account] serverDisplayName:account.accountDescription username:account.username delegate:delegate];
     if (self)

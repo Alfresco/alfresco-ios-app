@@ -27,14 +27,14 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 @property (nonatomic, strong) UITextField *serviceDocumentTextField;
 @property (nonatomic, strong) UISwitch *protocolSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
-@property (nonatomic, strong) Account *account;
+@property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
 @end
 
 @implementation AccountInfoViewController
 
-- (id)initWithAccount:(Account *)account
+- (id)initWithAccount:(UserAccount *)account
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self)
@@ -45,7 +45,7 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
         }
         else
         {
-            self.account = [[Account alloc] initWithAccountType:AccountTypeOnPremise];
+            self.account = [[UserAccount alloc] initWithAccountType:AccountTypeOnPremise];
         }
     }
     return self;
@@ -209,9 +209,9 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 #pragma mark - private Methods
 
-- (Account *)accountWithUserEnteredInfo
+- (UserAccount *)accountWithUserEnteredInfo
 {
-    Account *temporaryAccount = [[Account alloc] initWithAccountType:AccountTypeOnPremise];
+    UserAccount *temporaryAccount = [[UserAccount alloc] initWithAccountType:AccountTypeOnPremise];
     
     temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -251,8 +251,8 @@ static NSString * const kServiceDocument = @"alfresco/service/cmis";
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
 {
-    Account *temporaryAccount = [self accountWithUserEnteredInfo];
-    void (^updateAccountInfo)(Account *) = ^(Account *temporaryAccount)
+    UserAccount *temporaryAccount = [self accountWithUserEnteredInfo];
+    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
         self.account.password = temporaryAccount.password;

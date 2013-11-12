@@ -8,7 +8,7 @@
 
 #import "KeychainUtils.h"
 
-static NSString * const kKeychainAccountListIdentifier = @"AccountList";
+static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 static NSString * const kKeychainServiceName = @"com.alfresco.mobile.alfrescoapp";
 
 @implementation KeychainUtils
