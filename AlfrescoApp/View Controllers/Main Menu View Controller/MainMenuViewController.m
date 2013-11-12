@@ -106,4 +106,19 @@
     [self.delegate didSelectMenuItem:menuItem];
 }
 
+#pragma mark - Public Functions
+
+- (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType
+{
+    [self.tableData enumerateObjectsUsingBlock:^(NSArray *sectionArray, NSUInteger idx, BOOL *stop) {
+        [sectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            MainMenuItem *currentMenuItem = (MainMenuItem *)obj;
+            if (currentMenuItem.controllerType == controllerType)
+            {
+                [self.delegate didSelectMenuItem:currentMenuItem];
+            }
+        }];
+    }];
+}
+
 @end
