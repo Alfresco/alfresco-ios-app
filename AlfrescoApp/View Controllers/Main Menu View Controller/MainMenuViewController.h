@@ -20,5 +20,6 @@
 @property (nonatomic, weak) id<MainMenuViewControllerDelegate> delegate;
 
 - (instancetype)initWithSectionArrays:(NSArray *)sections, ... NS_REQUIRES_NIL_TERMINATION;
+- (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType;
 
 @end

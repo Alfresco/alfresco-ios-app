@@ -150,4 +150,16 @@
     }
 }
 
++ (UIViewController *)rootMasterViewController
+{
+    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    return rootViewController.masterViewController;
+}
+
++ (UIViewController *)rootDetailViewController
+{
+    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    return rootViewController.detailViewController;
+}
+
 @end
