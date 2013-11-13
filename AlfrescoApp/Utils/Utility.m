@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "NavigationViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "Account.h"
+#import "UserAccount.h"
 #import "Constants.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
@@ -281,6 +281,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
 
 + (BOOL)isValidEmail:(NSString *)emailAddress
 {
+    // FIXME: Consider removing this completely / simply checking for "@" or copying Share's regex
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     
@@ -386,7 +387,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
     return mimeType;
 }
 
-+ (NSString *)serverURLStringFromAccount:(Account *)account
++ (NSString *)serverURLStringFromAccount:(UserAccount *)account
 {
     return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
 }

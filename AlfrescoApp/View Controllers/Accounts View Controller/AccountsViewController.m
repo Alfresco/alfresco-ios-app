@@ -15,6 +15,7 @@
 #import "LoginManager.h"
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
+#import "MainMenuViewController.h"
 
 static NSInteger const kCellIndentationLevel = 2;
 static NSInteger const kCellIndentationWidth = 30;
@@ -64,7 +65,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     self.tableViewData = [NSMutableArray array];
     NSArray *allAccounts = [[AccountManager sharedManager] allAccounts];
     
-    for (Account *account in allAccounts)
+    for (UserAccount *account in allAccounts)
     {
         if (account.accountType == AccountTypeOnPremise)
         {
@@ -140,7 +141,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     
     if (indexPath.row == kAccountRowNumber)
     {
-        Account *account = self.tableViewData[indexPath.section][indexPath.row];
+        UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
         
         cell.textLabel.text = account.accountDescription;
         cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
@@ -162,7 +163,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
         cell.indentationLevel = kCellIndentationLevel;
         cell.accessoryType = UITableViewCellAccessoryNone;
         
-        Account *account = self.tableViewData[indexPath.section][kAccountRowNumber];
+        UserAccount *account = self.tableViewData[indexPath.section][kAccountRowNumber];
         if ([account.selectedNetworkId isEqualToString:identifier])
         {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -179,7 +180,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id item = self.tableViewData[indexPath.section][indexPath.row];
-    Account *account = nil;
+    UserAccount *account = nil;
     NSString *networkId = nil;
     
     if (indexPath.row > kAccountRowNumber && [item isKindOfClass:[NSString class]])
@@ -190,7 +191,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     }
     else
     {
-        account = (Account *)item;
+        account = (UserAccount *)item;
     }
     
     [[AccountManager sharedManager] setSelectedAccount:account];
@@ -233,9 +234,9 @@ static NSInteger const kNetworksStartRowNumber = 1;
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    Account *account = self.tableViewData[indexPath.section][indexPath.row];
+    UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
     
-    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityViewAccount];
+    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
     [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
 }
 
@@ -247,7 +248,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AccountManager *accountManager = [AccountManager sharedManager];
-    Account *account = self.tableViewData[indexPath.section][indexPath.row];
+    UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
     
     [accountManager removeAccount:account];
     [self updateAccountList];
@@ -264,7 +265,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     [self presentViewController:addAccountNavigationController animated:YES completion:nil];
 }
 
-- (void)showAccountNetworksForAccount:(Account *)account atIndexPath:(NSIndexPath *)indexPath
+- (void)showAccountNetworksForAccount:(UserAccount *)account atIndexPath:(NSIndexPath *)indexPath
 {
     [self hideAccountNetworks];
     self.expandedSection = indexPath.section;

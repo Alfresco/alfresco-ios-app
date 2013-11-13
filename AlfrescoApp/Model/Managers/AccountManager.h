@@ -7,16 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Account.h"
+#import "UserAccount.h"
 
 @interface AccountManager : NSObject
 
-@property (nonatomic, strong, readwrite) Account *selectedAccount;
+@property (nonatomic, strong, readwrite) UserAccount *selectedAccount;
 
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;
-- (void)addAccount:(Account *)account;
-- (void)removeAccount:(Account *)account;
+- (void)addAccount:(UserAccount *)account;
+- (void)removeAccount:(UserAccount *)account;
 - (void)removeAllAccounts;
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;

@@ -16,7 +16,7 @@
 #import "SyncObstaclesViewController.h"
 #import "FailedTransferDetailViewController.h"
 #import "AccountManager.h"
-#import "Account.h"
+#import "UserAccount.h"
 #import "ThumbnailManager.h"
 #import "Constants.h"
 

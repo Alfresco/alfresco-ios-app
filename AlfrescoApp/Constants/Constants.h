@@ -102,8 +102,7 @@ extern NSString * const kEditFileServiceParameterDocumentFileName;
 
 extern NSString * const kAlfrescoOnPremiseServerURLTemplate;
 
-// Cloud Sign
+// Cloud Sign Up
 extern NSString * const kAlfrescoCloudTermOfServiceUrl;
 extern NSString * const kAlfrescoCloudPrivacyPolicyUrl;
 extern NSString * const kAlfrescoCloudCustomerCareUrl;
-extern NSString * const kAlfrescoCloudSignUpUrl;

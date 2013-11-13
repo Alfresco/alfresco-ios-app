@@ -796,6 +796,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     cell.nodeNameLabel.text = currentNode.name;
     cell.accessoryType = UITableViewCellAccessoryNone;
+    // FIXME: Consider for iOS 7 replacing this with native info button support
     cell.accessoryView = [self makeDetailDisclosureButton];
     NSString *modifiedDateString = relativeDateFromDate(currentNode.modifiedAt);
     
@@ -1312,7 +1313,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     else
     {
         [self hidePullToRefreshView];
-        Account *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }

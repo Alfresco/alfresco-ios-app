@@ -20,10 +20,13 @@ static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
 static NSString * const kServiceDocument = @"/alfresco";
 
-static NSInteger const kAuthenticationSectionNumber = 0;
-static NSInteger const kAdvanceSectionNumber = 1;
-static NSInteger const kBrowseSectionNumber = 2;
-static NSInteger const kDeleteSectionNumber = 3;
+typedef NS_ENUM(NSInteger, AccountInfoTableSection)
+{
+    AccountInfoTableSectionAuthentication = 0,
+    AccountInfoTableSectionAdvanced,
+    AccountInfoTableSectionBrowse,
+    AccountInfoTableSectionDelete
+};
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
@@ -36,14 +39,14 @@ static NSInteger const kDeleteSectionNumber = 3;
 @property (nonatomic, strong) UITextField *serviceDocumentTextField;
 @property (nonatomic, strong) UISwitch *protocolSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
-@property (nonatomic, strong) Account *account;
+@property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
 @end
 
 @implementation AccountInfoViewController
 
-- (id)initWithAccount:(Account *)account accountActivityType:(AccountActivityType)activityType
+- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self)
@@ -54,7 +57,7 @@ static NSInteger const kDeleteSectionNumber = 3;
         }
         else
         {
-            self.account = [[Account alloc] initWithAccountType:AccountTypeOnPremise];
+            self.account = [[UserAccount alloc] initWithAccountType:AccountTypeOnPremise];
         }
         self.activityType = activityType;
     }
@@ -71,7 +74,7 @@ static NSInteger const kDeleteSectionNumber = 3;
     
     
     
-    if (self.activityType == AccountActivityViewAccount)
+    if (self.activityType == AccountActivityTypeViewAccount)
     {
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                     target:self
@@ -80,7 +83,7 @@ static NSInteger const kDeleteSectionNumber = 3;
     }
     else
     {
-        if (self.activityType == AccountActivityNewAccount)
+        if (self.activityType == AccountActivityTypeNewAccount)
         {
             self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
         }
@@ -125,7 +128,7 @@ static NSInteger const kDeleteSectionNumber = 3;
         }
         
         [self dismissViewControllerAnimated:YES completion:^{
-            if (self.activityType == AccountActivityNewAccount)
+            if (self.activityType == AccountActivityTypeNewAccount)
             {
                 [accountManager addAccount:self.account];
             }
@@ -139,7 +142,7 @@ static NSInteger const kDeleteSectionNumber = 3;
 
 -(void)editButtonClicked:(id)sender
 {
-    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:self.account accountActivityType:AccountActivityEditAccount];
+    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:self.account accountActivityType:AccountActivityTypeEditAccount];
     NavigationViewController *editAccountNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountInfoController];
     editAccountNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:editAccountNavigationController animated:YES completion:nil];
@@ -164,11 +167,11 @@ static NSInteger const kDeleteSectionNumber = 3;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == kAuthenticationSectionNumber)
+    if (section == AccountInfoTableSectionAuthentication)
     {
         return NSLocalizedString(@"accountdetails.header.authentication", @"Authenticate");
     }
-    else if (section == kAdvanceSectionNumber)
+    else if (section == AccountInfoTableSectionAdvanced)
     {
         return NSLocalizedString(@"accountdetails.header.advanced", @"Advanced");
     }
@@ -190,11 +193,11 @@ static NSInteger const kDeleteSectionNumber = 3;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == kBrowseSectionNumber)
+    if (indexPath.section == AccountInfoTableSectionBrowse)
     {
         
     }
-    else if (indexPath.section == kDeleteSectionNumber)
+    else if (indexPath.section == AccountInfoTableSectionDelete)
     {
         AccountManager *accountManager = [AccountManager sharedManager];
         [accountManager removeAccount:self.account];
@@ -210,7 +213,7 @@ static NSInteger const kDeleteSectionNumber = 3;
 - (void)constructTableCellsForAlfrescoServer
 {
     // cells
-    if (self.activityType == AccountActivityNewAccount || self.activityType == AccountActivityEditAccount)
+    if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
     {
         TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
@@ -261,7 +264,7 @@ static NSInteger const kDeleteSectionNumber = 3;
         serviceDocumentCell.valueTextField.delegate = self;
         self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
         
-        if (self.activityType == AccountActivityEditAccount)
+        if (self.activityType == AccountActivityTypeEditAccount)
         {
             self.usernameTextField.text = self.account.username;
             self.passwordTextField.text = self.account.password;
@@ -277,7 +280,7 @@ static NSInteger const kDeleteSectionNumber = 3;
         NSArray *group2 = @[portCell, serviceDocumentCell];
         self.tableGroups = @[group1, group2];
     }
-    else if (self.activityType == AccountActivityViewAccount)
+    else if (self.activityType == AccountActivityTypeViewAccount)
     {
         LabelCell *usernameCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
         usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
@@ -325,9 +328,9 @@ static NSInteger const kDeleteSectionNumber = 3;
 
 #pragma mark - private Methods
 
-- (Account *)accountWithUserEnteredInfo
+- (UserAccount *)accountWithUserEnteredInfo
 {
-    Account *temporaryAccount = [[Account alloc] initWithAccountType:AccountTypeOnPremise];
+    UserAccount *temporaryAccount = [[UserAccount alloc] initWithAccountType:AccountTypeOnPremise];
     
     temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -367,8 +370,8 @@ static NSInteger const kDeleteSectionNumber = 3;
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
 {
-    Account *temporaryAccount = [self accountWithUserEnteredInfo];
-    void (^updateAccountInfo)(Account *) = ^(Account *temporaryAccount)
+    UserAccount *temporaryAccount = [self accountWithUserEnteredInfo];
+    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
         self.account.password = temporaryAccount.password;

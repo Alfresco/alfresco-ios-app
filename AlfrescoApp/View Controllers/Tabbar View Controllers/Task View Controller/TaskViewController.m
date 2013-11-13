@@ -164,7 +164,7 @@
     else
     {
         [self hidePullToRefreshView];
-        Account *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
