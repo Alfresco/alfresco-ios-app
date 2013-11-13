@@ -18,7 +18,7 @@
 
 static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
-static NSString * const kServiceDocument = @"/alfresco/service/cmis";
+static NSString * const kServiceDocument = @"/alfresco";
 
 static NSInteger const kAuthenticationSectionNumber = 0;
 static NSInteger const kAdvanceSectionNumber = 1;

@@ -57,39 +57,47 @@
     return self;
 }
 
-- (void)attemptLoginToAccount:(Account *)account
+- (void)attemptLoginToAccount:(Account *)account networkId:(NSString *)networkId completionBlock:(void (^)(BOOL successful))loginCompletionBlock
 {
+    void (^logInSuccessful)(BOOL) = ^(BOOL successful)
+    {
+        if (loginCompletionBlock != NULL)
+        {
+            loginCompletionBlock(successful);
+        }
+    };
+    
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
         if (account.accountType == AccountTypeOnPremise)
         {
-            if (account)
+            if (!account.password || [account.password isEqualToString:@""])
             {
-                if (!account.password || [account.password isEqualToString:@""])
+                [self displayLoginViewControllerWithAccount:account username:account.username];
+                logInSuccessful(NO);
+                return;
+            }
+            
+            AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [self showHUDOnView:delegate.window];
+            [self authenticateOnPremiseAccount:account password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
+                [self hideHUD];
+                if (!successful)
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
-                    return;
+                    logInSuccessful(NO);
                 }
-                
-                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [self showHUDOnView:delegate.window];
-                [self authenticateOnPremiseAccount:account password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
-                    [self hideHUD];
-                    if (!successful)
-                    {
-                        [self displayLoginViewControllerWithAccount:account username:account.username];
-                    }
-                }];
-            }
-            else
-            {
-                [self displayLoginViewControllerWithAccount:account username:nil];
-            }
+                else
+                {
+                    logInSuccessful(YES);
+                }
+            }];
         }
         else
         {
-            [self authenticateCloudAccount:account temporarySession:NO navigationConroller:nil completionBlock:^(BOOL successful) {
+            [self authenticateCloudAccount:account networkId:networkId temporarySession:NO navigationConroller:nil completionBlock:^(BOOL successful) {
                 
+                logInSuccessful(successful);
             }];
         }
     }
@@ -98,12 +106,17 @@
         NSString *messageTitle = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Error Title");
         NSString *messageBody = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Error Message");
         displayErrorMessageWithTitle(messageBody, messageTitle);
+        logInSuccessful(NO);
     }
 }
 
 #pragma mark - Cloud authentication Methods
 
-- (void)authenticateCloudAccount:(Account *)account temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
+- (void)authenticateCloudAccount:(Account *)account
+                       networkId:(NSString *)networkId
+                temporarySession:(BOOL)temporarySession
+             navigationConroller:(UINavigationController *)navigationController
+                 completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
 {
     void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session)
     {
@@ -116,18 +129,31 @@
         }
         else
         {
-            [UniversalDevice clearDetailViewController];
-            if (!temporarySession)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-            }
-            
-            account.repositoryId = session.repositoryInfo.identifier;
-            
-            if (authenticationCompletionBlock != NULL)
-            {
-                authenticationCompletionBlock(YES);
-            }
+            [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *array, NSError *error) {
+                
+                if (array && error == nil)
+                {
+                    account.accountNetworks = [array valueForKey:@"identifier"];
+                    if (!temporarySession)
+                    {
+                        [UniversalDevice clearDetailViewController];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                    }
+                    account.repositoryId = session.repositoryInfo.identifier;
+                    
+                    if (authenticationCompletionBlock != NULL)
+                    {
+                        authenticationCompletionBlock(YES);
+                    }
+                }
+                else
+                {
+                    if (authenticationCompletionBlock != NULL)
+                    {
+                        authenticationCompletionBlock(NO);
+                    }
+                }
+            }];
         }
     };
     
@@ -142,18 +168,20 @@
                                                                                                                {
                                                                                                                    account.oauthData = oauthData;
                                                                                                                    
-                                                                                                                   [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                                                                                                                       if (navigationController)
-                                                                                                                       {
-                                                                                                                           [navigationController popViewControllerAnimated:YES];
-                                                                                                                       }
-                                                                                                                       else
-                                                                                                                       {
-                                                                                                                           [oauthNavigationController dismissViewControllerAnimated:YES completion:nil];
-                                                                                                                       }
-                                                                                                                       
-                                                                                                                       authenticationComplete(session);
-                                                                                                                   }];
+                                                                                                                   [self connectWithOAuthData:oauthData
+                                                                                                                                    networkId:networkId
+                                                                                                                              completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                                                                                                                                  if (navigationController)
+                                                                                                                                  {
+                                                                                                                                      [navigationController popViewControllerAnimated:YES];
+                                                                                                                                  }
+                                                                                                                                  else
+                                                                                                                                  {
+                                                                                                                                      [oauthNavigationController dismissViewControllerAnimated:YES completion:nil];
+                                                                                                                                  }
+                                                                                                                                  
+                                                                                                                                  authenticationComplete(session);
+                                                                                                                              }];
                                                                                                                }
                                                                                                                else
                                                                                                                {
@@ -177,7 +205,7 @@
     
     if (account.oauthData)
     {
-        [AlfrescoCloudSession connectWithOAuthData:account.oauthData completionBlock:^(id<AlfrescoSession> cloudSession, NSError *connectionError) {
+        [self connectWithOAuthData:account.oauthData networkId:networkId completionBlock:^(id<AlfrescoSession> cloudSession, NSError *connectionError) {
             [navigationController popViewControllerAnimated:YES];
             if (nil == cloudSession)
             {
@@ -202,7 +230,7 @@
                             [[AccountManager sharedManager] saveAccountsToKeychain];
                             
                             // try to connect once OAuthData is refreshed
-                            [AlfrescoCloudSession connectWithOAuthData:refreshedOAuthData completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                            [self connectWithOAuthData:refreshedOAuthData networkId:networkId completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                                 authenticationComplete(session);
                             }];
                         }
@@ -223,6 +251,18 @@
     {
         self.loginController = showOAuthLoginViewController();
         self.loginController.oauthDelegate = self;
+    }
+}
+
+- (void)connectWithOAuthData:(AlfrescoOAuthData *)oauthData networkId:(NSString *)networkId completionBlock:(AlfrescoSessionCompletionBlock)completionBlock
+{
+    if (networkId)
+    {
+        [AlfrescoCloudSession connectWithOAuthData:oauthData networkIdentifer:networkId completionBlock:completionBlock];
+    }
+    else
+    {
+        [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:completionBlock];
     }
 }
 
@@ -304,7 +344,8 @@
 - (void)unauthorizedAccessNotificationReceived:(NSNotification *)notification
 {
     // try logging again
-    [self attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
+    Account *selectedAccount = [AccountManager sharedManager].selectedAccount;
+    [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
 }
 
 - (void)cancelLoginRequest

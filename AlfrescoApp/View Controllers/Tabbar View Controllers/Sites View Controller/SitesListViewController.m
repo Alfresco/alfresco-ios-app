@@ -712,7 +712,8 @@ static CGFloat kSearchCellHeight = 60.0f;
     else
     {
         [self hidePullToRefreshView];
-        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
+        Account *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
 

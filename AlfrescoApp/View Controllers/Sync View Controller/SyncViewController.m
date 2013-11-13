@@ -53,7 +53,11 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     [super viewDidLoad];
 	
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-    [self loadSyncNodesForFolder:self.parentNode];
+    
+    if ([[SyncManager sharedManager] isFirstUse] || self.parentNode != nil)
+    {
+        [self loadSyncNodesForFolder:self.parentNode];
+    }
     
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
     self.tableViewFooter = [[UILabel alloc] init];

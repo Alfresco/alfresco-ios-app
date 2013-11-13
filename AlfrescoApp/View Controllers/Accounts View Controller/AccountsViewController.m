@@ -16,8 +16,14 @@
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
 
-@interface AccountsViewController ()
+static NSInteger const kCellIndentationLevel = 2;
+static NSInteger const kCellIndentationWidth = 30;
 
+static NSInteger const kAccountRowNumber = 0;
+static NSInteger const kNetworksStartRowNumber = 1;
+
+@interface AccountsViewController ()
+@property (nonatomic, assign) NSInteger expandedSection;
 @end
 
 @implementation AccountsViewController
@@ -34,10 +40,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     self.title = NSLocalizedString(@"accounts.title", @"Accounts");
-    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self updateAccountList];
     
     UIBarButtonItem *addAccount = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                 target:self
@@ -54,6 +59,24 @@
                                                object:nil];
 }
 
+- (void)updateAccountList
+{
+    self.tableViewData = [NSMutableArray array];
+    NSArray *allAccounts = [[AccountManager sharedManager] allAccounts];
+    
+    for (Account *account in allAccounts)
+    {
+        if (account.accountType == AccountTypeOnPremise)
+        {
+            [self.tableViewData addObject:@[account]];
+        }
+        else
+        {
+            [self.tableViewData addObject:[@[account] mutableCopy]];
+        }
+    }
+}
+
 #pragma mark - Notification Methods
 
 - (void)sessionReceived:(NSNotification *)notification
@@ -64,13 +87,13 @@
 
 - (void)accountAdded:(NSNotification *)notification
 {
-    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self updateAccountList];
     [self.tableView reloadData];
 }
 
 - (void)accountRemoved:(NSNotification *)notification
 {
-    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self updateAccountList];
     [self.tableView reloadData];
 }
 
@@ -79,21 +102,31 @@
 - (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
     [self showLoadingTextInRefreshControl:refreshControl];
-    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self updateAccountList];
     [self.tableView reloadData];
     [self hidePullToRefreshView];
 }
 
 #pragma mark - TableView Datasource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.tableViewData.count;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return nil;
+    return [self.tableViewData[section] count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -104,19 +137,40 @@
     {
         cell = (AccountCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AccountCell class]) owner:self options:nil] lastObject];
     }
-
-    Account *account = self.tableViewData[indexPath.row];
     
-    cell.textLabel.text = account.accountDescription;
-    cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
-    
-    if (account.isSelectedAccount)
+    if (indexPath.row == kAccountRowNumber)
     {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        Account *account = self.tableViewData[indexPath.section][indexPath.row];
+        
+        cell.textLabel.text = account.accountDescription;
+        cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
+        
+        if (account.isSelectedAccount)
+        {
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
     else
     {
+        NSString *identifier = self.tableViewData[indexPath.section][indexPath.row];
+        cell.textLabel.text = identifier;
+        cell.indentationWidth = kCellIndentationWidth;
+        cell.indentationLevel = kCellIndentationLevel;
         cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        Account *account = self.tableViewData[indexPath.section][kAccountRowNumber];
+        if ([account.selectedNetworkId isEqualToString:identifier])
+        {
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
     
     return cell;
@@ -124,21 +178,65 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Account *account = self.tableViewData[indexPath.row];
+    id item = self.tableViewData[indexPath.section][indexPath.row];
+    Account *account = nil;
+    NSString *networkId = nil;
+    
+    if (indexPath.row > kAccountRowNumber && [item isKindOfClass:[NSString class]])
+    {
+        account = self.tableViewData[indexPath.section][kAccountRowNumber];
+        networkId = (NSString *)item;
+        account.selectedNetworkId = (NSString *)item;
+    }
+    else
+    {
+        account = (Account *)item;
+    }
+    
     [[AccountManager sharedManager] setSelectedAccount:account];
     
-    [self.tableView reloadData];
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
-    
-    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityViewAccount];
-    [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
+    if (account.accountType == AccountTypeCloud && networkId == nil)
+    {
+        if ([self.tableViewData[indexPath.section] count] > 1)
+        {
+            [self hideAccountNetworks];
+        }
+        else
+        {
+            // temporary calling this service until bug on AlfrescoCloudSession  is resolved connectWithOAuthData:networkIdentifer:completionBlock: does not hit completion block
+            // unless it first authenticate cloud account using connectWithOAuthData:completionBlock:
+            [self showHUD];
+            [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil temporarySession:YES navigationConroller:self.navigationController completionBlock:^(BOOL successful) {
+                [self hideHUD];
+                if (successful)
+                {
+                    [self showAccountNetworksForAccount:account atIndexPath:(NSIndexPath *)indexPath];
+                }
+            }];
+        }
+    }
+    else
+    {
+        [self showHUD];
+        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful) {
+            
+            [self hideHUD];
+            
+            //[self showAccountNetworksForAccount:account atIndexPath:(NSIndexPath *)indexPath];
+            if (account.accountType == AccountTypeOnPremise)
+            {
+                [self hideAccountNetworks];
+            }
+        }];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    Account *account = self.tableViewData[indexPath.section][indexPath.row];
     
+    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityViewAccount];
+    [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -149,10 +247,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AccountManager *accountManager = [AccountManager sharedManager];
-    Account *account = self.tableViewData[indexPath.row];
+    Account *account = self.tableViewData[indexPath.section][indexPath.row];
     
     [accountManager removeAccount:account];
-    self.tableViewData = [[[AccountManager sharedManager] allAccounts] mutableCopy];
+    [self updateAccountList];
     [self.tableView reloadData];
 }
 
@@ -164,6 +262,48 @@
     NavigationViewController *addAccountNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountTypeController];
     addAccountNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:addAccountNavigationController animated:YES completion:nil];
+}
+
+- (void)showAccountNetworksForAccount:(Account *)account atIndexPath:(NSIndexPath *)indexPath
+{
+    [self hideAccountNetworks];
+    self.expandedSection = indexPath.section;
+    
+    if (account.accountNetworks)
+    {
+        [self.tableViewData[indexPath.section] addObjectsFromArray:account.accountNetworks];
+        
+        NSMutableArray *indexPaths = [NSMutableArray array];
+        for (int i = kNetworksStartRowNumber; i < [self.tableViewData[indexPath.section] count]; i++)
+        {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
+        }
+        
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+    }
+}
+
+- (void)hideAccountNetworks
+{
+    if (self.expandedSection != NSNotFound && self.expandedSection < self.tableViewData.count)
+    {
+        NSMutableArray *tenants = self.tableViewData[self.expandedSection];
+        
+        if (tenants.count > 0)
+        {
+            NSMutableArray *indexPaths = [NSMutableArray array];
+            for (int i = kNetworksStartRowNumber; i < tenants.count; i++)
+            {
+                [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:self.expandedSection]];
+            }
+            
+            tenants = [@[tenants[0]] mutableCopy];
+            
+            [self.tableViewData replaceObjectAtIndex:self.expandedSection withObject:tenants];
+            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+            self.expandedSection = NSNotFound;
+        }
+    }
 }
 
 @end

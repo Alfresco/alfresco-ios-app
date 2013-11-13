@@ -1312,7 +1312,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     else
     {
         [self hidePullToRefreshView];
-        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount];
+        Account *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
 
