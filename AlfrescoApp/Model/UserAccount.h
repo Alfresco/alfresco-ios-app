@@ -27,6 +27,8 @@ typedef NS_ENUM(NSInteger, AccountType)
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
 @property (nonatomic, strong) NSString *repositoryId;
 @property (nonatomic, assign) BOOL isSelectedAccount;
+@property (nonatomic, strong) NSString *selectedNetworkId;
+@property (nonatomic, strong) NSArray *accountNetworks;
 
 - (instancetype)initWithAccountType:(AccountType)accountType;
 
