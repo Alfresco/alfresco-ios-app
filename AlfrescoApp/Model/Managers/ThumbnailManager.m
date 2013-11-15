@@ -66,7 +66,10 @@
     }
     else
     {
-        [self.thumbnails removeObjectForKey:folder.identifier];
+        if (folder)
+        {
+            [self.thumbnails removeObjectForKey:folder.identifier];
+        }
     }
 }
 

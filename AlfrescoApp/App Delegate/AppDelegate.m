@@ -68,7 +68,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     AccountManager *accountManager = [AccountManager sharedManager];
     if (accountManager.selectedAccount)
     {
-        [[LoginManager sharedManager] attemptLoginToAccount:[[AccountManager sharedManager] selectedAccount]];
+        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:nil];
     }
     
     return YES;

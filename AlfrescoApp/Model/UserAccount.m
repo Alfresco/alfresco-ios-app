@@ -19,6 +19,8 @@ static NSString * const kAccountRepositoryId= @"kAccountRepositoryId";
 static NSString * const kAccountType = @"kAccountType";
 static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 static NSString * const kAccountIsSelected = @"kAccountIsSelected";
+static NSString * const kAccountNetworks = @"kAccountNetworks";
+static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
 
 @interface UserAccount ()
 
@@ -51,6 +53,8 @@ static NSString * const kAccountIsSelected = @"kAccountIsSelected";
     [aCoder encodeInteger:self.accountType forKey:kAccountType];
     [aCoder encodeObject:self.oauthData forKey:kAlfrescoOAuthData];
     [aCoder encodeInteger:self.isSelectedAccount forKey:kAccountIsSelected];
+    [aCoder encodeObject:self.accountNetworks forKey:kAccountNetworks];
+    [aCoder encodeObject:self.selectedNetworkId forKey:kSelectedNetworkId];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -69,6 +73,8 @@ static NSString * const kAccountIsSelected = @"kAccountIsSelected";
         self.accountType = [aDecoder decodeIntegerForKey:kAccountType];
         self.oauthData = [aDecoder decodeObjectForKey:kAlfrescoOAuthData];
         self.isSelectedAccount = [aDecoder decodeIntegerForKey:kAccountIsSelected];
+        self.accountNetworks = [aDecoder decodeObjectForKey:kAccountNetworks];
+        self.selectedNetworkId = [aDecoder decodeObjectForKey:kSelectedNetworkId];
     }
     return self;
 }
