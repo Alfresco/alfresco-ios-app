@@ -10,7 +10,7 @@
 
 @implementation MainMenuItemCell
 
-- (void) layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     self.imageView.center = CGPointMake(25.0f, self.imageView.center.y);
