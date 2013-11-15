@@ -12,7 +12,7 @@
 static CGFloat kDeviceSpecificRevealWidth;
 static const CGFloat kPadRevealWidth = 50.0f;
 static const CGFloat kPhoneRevealWidth = 0.0f;
-static const CGFloat kMasterViewWidth = 300.0f;
+static const CGFloat kMasterViewWidth = 250.0f;
 static const CGFloat kAnimationSpeed = 0.2f;
 
 @interface RootRevealControllerViewController () <UIGestureRecognizerDelegate>
@@ -87,6 +87,8 @@ static const CGFloat kAnimationSpeed = 0.2f;
 {
     [super viewDidLoad];
     
+    [self positionViews];
+    
     if (self.masterViewController)
     {
         self.masterViewController.view.frame = self.masterViewContainer.frame;
@@ -97,13 +99,11 @@ static const CGFloat kAnimationSpeed = 0.2f;
     
     if (self.detailViewController)
     {
-        self.detailViewController.view.frame = self.detailViewContainer.frame;
+        self.detailViewController.view.frame = self.detailViewContainer.bounds;
         [self addChildViewController:self.detailViewController];
         [self.detailViewContainer addSubview:self.detailViewController.view];
         [self.detailViewController didMoveToParentViewController:self];
     }
-    
-    [self positionViews];
     
     [self addShadowToView:self.detailViewContainer];
 }
@@ -153,7 +153,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     {
         CGRect detailFrame = self.detailViewContainer.frame;
         detailFrame.origin.x = kDeviceSpecificRevealWidth;
-        detailFrame.size.width += kMasterViewWidth - kDeviceSpecificRevealWidth;
+        detailFrame.size.width -= kDeviceSpecificRevealWidth;
         self.detailViewContainer.frame = detailFrame;
     }
     else

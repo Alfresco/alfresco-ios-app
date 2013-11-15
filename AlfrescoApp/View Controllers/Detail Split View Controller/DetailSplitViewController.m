@@ -123,7 +123,7 @@ static const CGFloat kMasterViewWidth = 300.0f;
     {
         CGRect detailFrame = self.detailViewContainer.frame;
         detailFrame.origin.x = kMasterViewWidth;
-        detailFrame.size.width -= kMasterViewWidth * 2;
+        detailFrame.size.width -= kMasterViewWidth;
         self.detailViewContainer.frame = detailFrame;
         self.isExpanded = YES;
     }
@@ -131,7 +131,6 @@ static const CGFloat kMasterViewWidth = 300.0f;
     {
         CGRect detailFrame = self.detailViewContainer.frame;
         detailFrame.origin.x = 0;
-        detailFrame.size.width -= kMasterViewWidth;
         self.detailViewContainer.frame = detailFrame;
         self.isExpanded = NO;
     }
