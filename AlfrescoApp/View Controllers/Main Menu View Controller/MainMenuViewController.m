@@ -7,6 +7,7 @@
 //
 
 #import "MainMenuViewController.h"
+#import "MainMenuItemCell.h"
 
 @interface MainMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -73,7 +74,7 @@
     
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[MainMenuItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];

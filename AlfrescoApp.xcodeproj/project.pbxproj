@@ -10,8 +10,6 @@
 		0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */; };
 		0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA7181962E700E3ACC2 /* AccountsViewController.m */; };
 		0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCA91819634000E3ACC2 /* AccountsViewController.xib */; };
-		0804DCAD181965B000E3ACC2 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCAB181965B000E3ACC2 /* account.png */; };
-		0804DCAE181965B000E3ACC2 /* account@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCAC181965B000E3ACC2 /* account@2x.png */; };
 		0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCB41819680E00E3ACC2 /* AccountCell.m */; };
 		0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCB61819682700E3ACC2 /* AccountCell.xib */; };
 		0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */; };
@@ -111,6 +109,14 @@
 		7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
 		7384BE0F17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0E17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
+		73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */; };
+		73A26A8518364641006C1D81 /* account-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A7E18364641006C1D81 /* account-main-menu.png */; };
+		73A26A8618364641006C1D81 /* activities-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A7F18364641006C1D81 /* activities-main-menu.png */; };
+		73A26A8718364641006C1D81 /* download-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8018364641006C1D81 /* download-main-menu.png */; };
+		73A26A8818364641006C1D81 /* favourites-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8118364641006C1D81 /* favourites-main-menu.png */; };
+		73A26A8918364641006C1D81 /* settings-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8218364641006C1D81 /* settings-main-menu.png */; };
+		73A26A8A18364641006C1D81 /* sites-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8318364641006C1D81 /* sites-main-menu.png */; };
+		73A26A8B18364641006C1D81 /* tasks-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8418364641006C1D81 /* tasks-main-menu.png */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
@@ -221,16 +227,10 @@
 		73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3717A68B7E0099FB84 /* system_notice_warning@2x.png */; };
 		73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3917A68B7E0099FB84 /* about-more.png */; };
 		73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3A17A68B7E0099FB84 /* about-more@2x.png */; };
-		73B95AA017A68B7E0099FB84 /* activities-tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3B17A68B7E0099FB84 /* activities-tabbar.png */; };
-		73B95AA117A68B7E0099FB84 /* activities-tabbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3C17A68B7E0099FB84 /* activities-tabbar@2x.png */; };
-		73B95AA217A68B7E0099FB84 /* downloads-tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3D17A68B7E0099FB84 /* downloads-tabbar.png */; };
-		73B95AA317A68B7E0099FB84 /* downloads-tabbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3E17A68B7E0099FB84 /* downloads-tabbar@2x.png */; };
 		73B95AA417A68B7E0099FB84 /* help-more.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3F17A68B7E0099FB84 /* help-more.png */; };
 		73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4017A68B7E0099FB84 /* help-more@2x.png */; };
 		73B95AA617A68B7E0099FB84 /* repository-tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4117A68B7E0099FB84 /* repository-tabbar.png */; };
 		73B95AA717A68B7E0099FB84 /* repository-tabbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4217A68B7E0099FB84 /* repository-tabbar@2x.png */; };
-		73B95AA817A68B7E0099FB84 /* sites-tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4317A68B7E0099FB84 /* sites-tabbar.png */; };
-		73B95AA917A68B7E0099FB84 /* sites-tabbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4417A68B7E0099FB84 /* sites-tabbar@2x.png */; };
 		73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4717A68B7E0099FB84 /* black-cell-action-button.png */; };
 		73B95AAB17A68B7E0099FB84 /* black-cell-action-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4817A68B7E0099FB84 /* black-cell-action-button@2x.png */; };
 		73B95AAC17A68B7E0099FB84 /* cell-actions-inner-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4917A68B7E0099FB84 /* cell-actions-inner-shadow.png */; };
@@ -406,8 +406,6 @@
 		0804DCA6181962E700E3ACC2 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountsViewController.h; path = "Accounts View Controller/AccountsViewController.h"; sourceTree = "<group>"; };
 		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountsViewController.m; path = "Accounts View Controller/AccountsViewController.m"; sourceTree = "<group>"; };
 		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountsViewController.xib; path = "Accounts View Controller/AccountsViewController.xib"; sourceTree = "<group>"; };
-		0804DCAB181965B000E3ACC2 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
-		0804DCAC181965B000E3ACC2 /* account@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account@2x.png"; sourceTree = "<group>"; };
 		0804DCB31819680E00E3ACC2 /* AccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountCell.h; path = Account/AccountCell.h; sourceTree = "<group>"; };
 		0804DCB41819680E00E3ACC2 /* AccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountCell.m; path = Account/AccountCell.m; sourceTree = "<group>"; };
 		0804DCB61819682700E3ACC2 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountCell.xib; path = Account/AccountCell.xib; sourceTree = "<group>"; };
@@ -555,6 +553,15 @@
 		7384BE0E17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoWorkflowVariable.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
 		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
+		73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItemCell.h; path = "Main Menu View Controller/Cell/MainMenuItemCell.h"; sourceTree = "<group>"; };
+		73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItemCell.m; path = "Main Menu View Controller/Cell/MainMenuItemCell.m"; sourceTree = "<group>"; };
+		73A26A7E18364641006C1D81 /* account-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account-main-menu.png"; sourceTree = "<group>"; };
+		73A26A7F18364641006C1D81 /* activities-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "activities-main-menu.png"; sourceTree = "<group>"; };
+		73A26A8018364641006C1D81 /* download-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "download-main-menu.png"; sourceTree = "<group>"; };
+		73A26A8118364641006C1D81 /* favourites-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favourites-main-menu.png"; sourceTree = "<group>"; };
+		73A26A8218364641006C1D81 /* settings-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-main-menu.png"; sourceTree = "<group>"; };
+		73A26A8318364641006C1D81 /* sites-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sites-main-menu.png"; sourceTree = "<group>"; };
+		73A26A8418364641006C1D81 /* tasks-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tasks-main-menu.png"; sourceTree = "<group>"; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
@@ -704,16 +711,10 @@
 		73B95A3717A68B7E0099FB84 /* system_notice_warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "system_notice_warning@2x.png"; sourceTree = "<group>"; };
 		73B95A3917A68B7E0099FB84 /* about-more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about-more.png"; sourceTree = "<group>"; };
 		73B95A3A17A68B7E0099FB84 /* about-more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about-more@2x.png"; sourceTree = "<group>"; };
-		73B95A3B17A68B7E0099FB84 /* activities-tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "activities-tabbar.png"; sourceTree = "<group>"; };
-		73B95A3C17A68B7E0099FB84 /* activities-tabbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "activities-tabbar@2x.png"; sourceTree = "<group>"; };
-		73B95A3D17A68B7E0099FB84 /* downloads-tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downloads-tabbar.png"; sourceTree = "<group>"; };
-		73B95A3E17A68B7E0099FB84 /* downloads-tabbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downloads-tabbar@2x.png"; sourceTree = "<group>"; };
 		73B95A3F17A68B7E0099FB84 /* help-more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-more.png"; sourceTree = "<group>"; };
 		73B95A4017A68B7E0099FB84 /* help-more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-more@2x.png"; sourceTree = "<group>"; };
 		73B95A4117A68B7E0099FB84 /* repository-tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repository-tabbar.png"; sourceTree = "<group>"; };
 		73B95A4217A68B7E0099FB84 /* repository-tabbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repository-tabbar@2x.png"; sourceTree = "<group>"; };
-		73B95A4317A68B7E0099FB84 /* sites-tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sites-tabbar.png"; sourceTree = "<group>"; };
-		73B95A4417A68B7E0099FB84 /* sites-tabbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sites-tabbar@2x.png"; sourceTree = "<group>"; };
 		73B95A4717A68B7E0099FB84 /* black-cell-action-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-cell-action-button.png"; sourceTree = "<group>"; };
 		73B95A4817A68B7E0099FB84 /* black-cell-action-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-cell-action-button@2x.png"; sourceTree = "<group>"; };
 		73B95A4917A68B7E0099FB84 /* cell-actions-inner-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-actions-inner-shadow.png"; sourceTree = "<group>"; };
@@ -1360,6 +1361,7 @@
 		73632AED1806F62C007172EE /* Main Menu View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				73A26A6B183532D6006C1D81 /* Cell */,
 				73632AF618080E80007172EE /* Model */,
 				73632AEE1806F674007172EE /* MainMenuViewController.h */,
 				73632AEF1806F674007172EE /* MainMenuViewController.m */,
@@ -1504,6 +1506,29 @@
 				7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */,
 			);
 			name = "Root Reveal Controller";
+			sourceTree = "<group>";
+		};
+		73A26A6B183532D6006C1D81 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */,
+				73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		73A26A6F18364328006C1D81 /* Main Menu Icons */ = {
+			isa = PBXGroup;
+			children = (
+				73A26A7E18364641006C1D81 /* account-main-menu.png */,
+				73A26A7F18364641006C1D81 /* activities-main-menu.png */,
+				73A26A8018364641006C1D81 /* download-main-menu.png */,
+				73A26A8118364641006C1D81 /* favourites-main-menu.png */,
+				73A26A8218364641006C1D81 /* settings-main-menu.png */,
+				73A26A8318364641006C1D81 /* sites-main-menu.png */,
+				73A26A8418364641006C1D81 /* tasks-main-menu.png */,
+			);
+			path = "Main Menu Icons";
 			sourceTree = "<group>";
 		};
 		73B957C717A673A90099FB84 /* App Delegate */ = {
@@ -1704,16 +1729,16 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
+				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
+				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
+				73B9582917A6750E0099FB84 /* ParentListViewController.m */,
 				0804DCA5181962A400E3ACC2 /* Accounts View Controllers */,
 				08B61F9B1804076800C827EA /* Custom Popovers */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
 				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
-				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
-				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
-				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
-				73B9582917A6750E0099FB84 /* ParentListViewController.m */,
 				73B95AC317A68DF20099FB84 /* Comments View Controller */,
 				73632ADF1802E574007172EE /* Document Preview Controller */,
 				73B95AC817A68DF20099FB84 /* Downloads View Controller */,
@@ -1808,6 +1833,7 @@
 				73B959FD17A68B7E0099FB84 /* Icons */,
 				73B95A1C17A68B7E0099FB84 /* Launch Images */,
 				73B95A2417A68B7E0099FB84 /* Logo */,
+				73A26A6F18364328006C1D81 /* Main Menu Icons */,
 				73B95A2917A68B7E0099FB84 /* Navigation */,
 				73B95A2E17A68B7E0099FB84 /* Pull To Refresh */,
 				73B95A3117A68B7E0099FB84 /* System Notification */,
@@ -1950,20 +1976,12 @@
 		73B95A3817A68B7E0099FB84 /* Tabbar */ = {
 			isa = PBXGroup;
 			children = (
-				0804DCAB181965B000E3ACC2 /* account.png */,
-				0804DCAC181965B000E3ACC2 /* account@2x.png */,
 				73B95A3917A68B7E0099FB84 /* about-more.png */,
 				73B95A3A17A68B7E0099FB84 /* about-more@2x.png */,
-				73B95A3B17A68B7E0099FB84 /* activities-tabbar.png */,
-				73B95A3C17A68B7E0099FB84 /* activities-tabbar@2x.png */,
-				73B95A3D17A68B7E0099FB84 /* downloads-tabbar.png */,
-				73B95A3E17A68B7E0099FB84 /* downloads-tabbar@2x.png */,
 				73B95A3F17A68B7E0099FB84 /* help-more.png */,
 				73B95A4017A68B7E0099FB84 /* help-more@2x.png */,
 				73B95A4117A68B7E0099FB84 /* repository-tabbar.png */,
 				73B95A4217A68B7E0099FB84 /* repository-tabbar@2x.png */,
-				73B95A4317A68B7E0099FB84 /* sites-tabbar.png */,
-				73B95A4417A68B7E0099FB84 /* sites-tabbar@2x.png */,
 				0804DCBF181A6BAB00E3ACC2 /* cloud.png */,
 				0804DCC0181A6BAB00E3ACC2 /* cloud@2x.png */,
 				0804DCC1181A6BAB00E3ACC2 /* server.png */,
@@ -2715,9 +2733,9 @@
 				0833246517F98CED00EE6AA8 /* sync-status-failed@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
-				0804DCAE181965B000E3ACC2 /* account@2x.png in Resources */,
 				73B95A6A17A68B7E0099FB84 /* folder@2x.png in Resources */,
 				73B95A6B17A68B7E0099FB84 /* generic.png in Resources */,
+				73A26A8918364641006C1D81 /* settings-main-menu.png in Resources */,
 				73B95A6C17A68B7E0099FB84 /* generic@2x.png in Resources */,
 				73B95A6D17A68B7E0099FB84 /* mime_audio.png in Resources */,
 				73B95A6E17A68B7E0099FB84 /* mime_audio@2x.png in Resources */,
@@ -2729,6 +2747,7 @@
 				0833246217F98CED00EE6AA8 /* selected-favorite-indicator.png in Resources */,
 				73B95A7217A68B7E0099FB84 /* mime_img@2x.png in Resources */,
 				73B95A7317A68B7E0099FB84 /* mime_mp3.png in Resources */,
+				73A26A8818364641006C1D81 /* favourites-main-menu.png in Resources */,
 				0804DCC4181A6BAB00E3ACC2 /* cloud@2x.png in Resources */,
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				73B95A7417A68B7E0099FB84 /* mime_mp3@2x.png in Resources */,
@@ -2741,12 +2760,14 @@
 				73B95A7B17A68B7E0099FB84 /* mime_video.png in Resources */,
 				73B95A7C17A68B7E0099FB84 /* mime_video@2x.png in Resources */,
 				73B95A7D17A68B7E0099FB84 /* mime_xls.png in Resources */,
+				73A26A8A18364641006C1D81 /* sites-main-menu.png in Resources */,
 				73B95A7E17A68B7E0099FB84 /* mime_xls@2x.png in Resources */,
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				7384BDF917F3377A00C6A54F /* Settings.plist in Resources */,
 				73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */,
 				73B95A7F17A68B7E0099FB84 /* mime_xml.png in Resources */,
 				73B95A8017A68B7E0099FB84 /* mime_xml@2x.png in Resources */,
+				73A26A8618364641006C1D81 /* activities-main-menu.png in Resources */,
 				73B95A8117A68B7E0099FB84 /* mime_zip.png in Resources */,
 				73B95A8217A68B7E0099FB84 /* mime_zip@2x.png in Resources */,
 				73B95A8317A68B7E0099FB84 /* repository.png in Resources */,
@@ -2797,10 +2818,6 @@
 				73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */,
-				73B95AA017A68B7E0099FB84 /* activities-tabbar.png in Resources */,
-				73B95AA117A68B7E0099FB84 /* activities-tabbar@2x.png in Resources */,
-				73B95AA217A68B7E0099FB84 /* downloads-tabbar.png in Resources */,
-				73B95AA317A68B7E0099FB84 /* downloads-tabbar@2x.png in Resources */,
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
 				73B95AA417A68B7E0099FB84 /* help-more.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
@@ -2808,11 +2825,10 @@
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
+				73A26A8518364641006C1D81 /* account-main-menu.png in Resources */,
 				73B95AA617A68B7E0099FB84 /* repository-tabbar.png in Resources */,
 				73B95AA717A68B7E0099FB84 /* repository-tabbar@2x.png in Resources */,
-				73B95AA817A68B7E0099FB84 /* sites-tabbar.png in Resources */,
 				0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */,
-				73B95AA917A68B7E0099FB84 /* sites-tabbar@2x.png in Resources */,
 				73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */,
 				0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */,
 				73B95AAB17A68B7E0099FB84 /* black-cell-action-button@2x.png in Resources */,
@@ -2836,6 +2852,7 @@
 				0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */,
 				08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
+				73A26A8B18364641006C1D81 /* tasks-main-menu.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
@@ -2847,10 +2864,10 @@
 				73B95AC117A68B7E0099FB84 /* download.png in Resources */,
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
+				73A26A8718364641006C1D81 /* download-main-menu.png in Resources */,
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
 				73B95B0C17A6A83A0099FB84 /* ImageMapping.plist in Resources */,
-				0804DCAD181965B000E3ACC2 /* account.png in Resources */,
 				73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */,
 				0833246717F98CED00EE6AA8 /* sync-status-loading@2x.png in Resources */,
 				73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */,
@@ -3020,6 +3037,7 @@
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
+				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
 				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,

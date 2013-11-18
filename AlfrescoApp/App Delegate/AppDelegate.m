@@ -151,12 +151,12 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
     MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
-                                                                    imageName:@"account.png"
+                                                                    imageName:@"account-main-menu.png"
                                                             localizedTitleKey:@"accounts.title"
                                                                viewController:accountsNavigationController
                                                               displayInDetail:NO];
     MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
-                                                                      imageName:@"activities-tabbar.png"
+                                                                      imageName:@"activities-main-menu.png"
                                                               localizedTitleKey:@"activities.title"
                                                                  viewController:activitiesNavigationController
                                                                 displayInDetail:NO];
@@ -166,27 +166,27 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
                                                                  viewController:companyHomeNavigationController
                                                                 displayInDetail:NO];
     MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
-                                                                 imageName:@"sites-tabbar.png"
+                                                                 imageName:@"sites-main-menu.png"
                                                          localizedTitleKey:@"sites.title"
                                                             viewController:sitesListNavigationController
                                                            displayInDetail:NO];
     MainMenuItem *tasksItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
-                                                                 imageName:@"help-more.png"
+                                                                 imageName:@"tasks-main-menu.png"
                                                          localizedTitleKey:@"tasks.title"
                                                             viewController:taskNavigationController
                                                            displayInDetail:NO];
     MainMenuItem *syncItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                imageName:@"about-more.png"
+                                                                imageName:@"favourites-main-menu.png"
                                                         localizedTitleKey:@"sync.title"
                                                            viewController:syncNavigationController
                                                           displayInDetail:NO];
     MainMenuItem *downloadsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
-                                                                     imageName:@"downloads-tabbar.png"
+                                                                     imageName:@"download-main-menu.png"
                                                              localizedTitleKey:@"Downloads"
                                                                 viewController:downloadsNavigationController
                                                                displayInDetail:NO];
     MainMenuItem *settingsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSettings
-                                                                    imageName:@"help-more.png"
+                                                                    imageName:@"settings-main-menu.png"
                                                             localizedTitleKey:@"settings.title"
                                                                viewController:settingsNavigationController
                                                             displayInDetail:YES];
