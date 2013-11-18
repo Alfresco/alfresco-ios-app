@@ -1,8 +1,8 @@
 //
-//  SyncRepository.h
+//  SyncAccount.h
 //  AlfrescoApp
 //
-//  Created by Mohamad Saeedi on 20/09/2013.
+//  Created by Mohamad Saeedi on 18/11/2013.
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
@@ -11,17 +11,17 @@
 
 @class SyncNodeInfo;
 
-@interface SyncRepository : NSManagedObject
+@interface SyncAccount : NSManagedObject
 
-@property (nonatomic, retain) NSString *repositoryId;
+@property (nonatomic, retain) NSString * accountId;
 @property (nonatomic, retain) NSSet *nodes;
 @end
 
-@interface SyncRepository (CoreDataGeneratedAccessors)
+@interface SyncAccount (CoreDataGeneratedAccessors)
 
 - (void)addNodesObject:(SyncNodeInfo *)value;
 - (void)removeNodesObject:(SyncNodeInfo *)value;
-- (void)addNodes:(NSSet *)values;
-- (void)removeNodes:(NSSet *)values;
+- (void)addSyncNodes:(NSSet *)values;
+- (void)removeSyncNodes:(NSSet *)values;
 
 @end

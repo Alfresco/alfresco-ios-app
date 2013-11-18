@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="SyncAccount" representedClassName="SyncRepository" syncable="YES">
+        <attribute name="accountId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="account" inverseEntity="SyncNodeInfo" syncable="YES"/>
+    </entity>
     <entity name="SyncError" representedClassName="SyncError" syncable="YES">
         <attribute name="errorCode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="errorDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -16,18 +20,14 @@
         <attribute name="syncContentPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="syncNodeInfoId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncAccount" inverseName="nodes" inverseEntity="SyncAccount" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="parentNode" inverseEntity="SyncNodeInfo" syncable="YES"/>
         <relationship name="parentNode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="nodes" inverseEntity="SyncNodeInfo" syncable="YES"/>
-        <relationship name="repository" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncRepository" inverseName="nodes" inverseEntity="SyncRepository" syncable="YES"/>
         <relationship name="syncError" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncError" inverseName="nodeInfo" inverseEntity="SyncError" syncable="YES"/>
     </entity>
-    <entity name="SyncRepository" representedClassName="SyncRepository" syncable="YES">
-        <attribute name="repositoryId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="repository" inverseEntity="SyncNodeInfo" syncable="YES"/>
-    </entity>
     <elements>
-        <element name="SyncNodeInfo" positionX="-522" positionY="-252" width="128" height="238"/>
-        <element name="SyncRepository" positionX="-900" positionY="-63" width="128" height="75"/>
+        <element name="SyncAccount" positionX="-207" positionY="-135" width="128" height="73"/>
         <element name="SyncError" positionX="-765" positionY="-225" width="128" height="103"/>
+        <element name="SyncNodeInfo" positionX="-522" positionY="-252" width="128" height="238"/>
     </elements>
 </model>
