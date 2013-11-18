@@ -36,8 +36,8 @@ extern NSString * const kSyncErrorManagedObject;
 
 // Retrieve ManagedObjects
 + (SyncRepository *)repositoryObjectForRepositoryWithId:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
-+ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
-+ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId accountId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
++ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId accountId:(NSString *)accountId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 + (NSArray *)topLevelSyncNodesInfoForRepositoryWithId:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 + (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 + (BOOL)isTopLevelSyncNode:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext;

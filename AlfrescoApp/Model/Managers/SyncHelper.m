@@ -118,7 +118,7 @@ static NSString * const kSyncContentDirectory = @"sync";
     }
     else
     {
-        parentNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:folderId inManagedObjectContext:managedContext];
+        parentNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:folderId accountId:repositoryId inManagedObjectContext:managedContext];
         if (parentNodeInfo == nil)
         {
             parentNodeInfo = [CoreDataUtils createSyncNodeInfoMangedObjectInManagedObjectContext:managedContext];
@@ -133,7 +133,7 @@ static NSString * const kSyncContentDirectory = @"sync";
     for (AlfrescoNode *alfrescoNode in nodes)
     {
         // check if we already have object in managedContext for alfrescoNode
-        SyncNodeInfo *syncNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:alfrescoNode.identifier inManagedObjectContext:managedContext];
+        SyncNodeInfo *syncNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:alfrescoNode.identifier accountId:repositoryId inManagedObjectContext:managedContext];
         NSData *archivedNode = [NSKeyedArchiver archivedDataWithRootObject:alfrescoNode];
         
         // create new nodeInfo for node if it does not exist yet
@@ -158,9 +158,9 @@ static NSString * const kSyncContentDirectory = @"sync";
     }
 }
 
-- (NSString *)syncNameForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (NSString *)syncNameForNode:(AlfrescoNode *)node accountId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier accountId:accountId inManagedObjectContext:managedContext];
     
     if (nodeInfo.syncContentPath == nil || [nodeInfo.syncContentPath isEqualToString:@""])
     {
@@ -200,9 +200,9 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 #pragma mark - SyncInfo Utilities
 
-- (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId accountId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId accountId:accountId inManagedObjectContext:managedContext];
     if (nodeInfo.node)
     {
         return [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
@@ -210,16 +210,16 @@ static NSString * const kSyncContentDirectory = @"sync";
     return nil;
 }
 
-- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node accountId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier accountId:accountId inManagedObjectContext:managedContext];
     return nodeInfo.lastDownloadedDate;
 }
 
-- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document accountId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
-    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier accountId:accountId inManagedObjectContext:managedContext];
     nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
     [CoreDataUtils saveContextForManagedObjectContext:managedContext];
 }
@@ -241,7 +241,7 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 - (void)deleteNodeFromSync:(AlfrescoNode *)node inRepitory:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSString *nodeSyncName = [self syncNameForNode:node inManagedObjectContext:managedContext];
+    NSString *nodeSyncName = [self syncNameForNode:node accountId:repositoryId inManagedObjectContext:managedContext];
     NSString *syncNodeContentPath = [[self syncContentDirectoryPathForRepository:repositoryId] stringByAppendingPathComponent:nodeSyncName];
     
     NSError *error = nil;
@@ -249,7 +249,7 @@ static NSString * const kSyncContentDirectory = @"sync";
     
     if (!error)
     {
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inManagedObjectContext:managedContext];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier accountId:repositoryId inManagedObjectContext:managedContext];
         [CoreDataUtils deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
     }
 }

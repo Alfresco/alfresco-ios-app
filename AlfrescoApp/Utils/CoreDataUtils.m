@@ -157,9 +157,10 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 #pragma mark - Retrieve ManagedObjects
 
-+ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext
++ (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId accountId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:[NSPredicate predicateWithFormat:@"syncNodeInfoId == %@", nodeId] inManagedObjectContext:managedContext];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"repository.repositoryId == %@ && syncNodeInfoId == %@", accountId, nodeId];
+    NSArray *nodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
     if (nodes.count > 0)
     {
         return nodes[0];
@@ -177,13 +178,13 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return nil;
 }
 
-+ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext
++ (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId accountId:(NSString *)accountId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     SyncError *syncError = nil;
     
     if (nodeId)
     {
-        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId inManagedObjectContext:managedContext];
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:nodeId accountId:accountId inManagedObjectContext:managedContext];
         syncError = nodeInfo.syncError;
         
         if (createNew && !syncError)
