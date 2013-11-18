@@ -13,9 +13,9 @@
 
 @interface SyncError : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * errorCode;
-@property (nonatomic, retain) NSString * errorDescription;
-@property (nonatomic, retain) NSString * errorId;
+@property (nonatomic, retain) NSNumber *errorCode;
+@property (nonatomic, retain) NSString *errorDescription;
+@property (nonatomic, retain) NSString *errorId;
 @property (nonatomic, retain) SyncNodeInfo *nodeInfo;
 
 @end

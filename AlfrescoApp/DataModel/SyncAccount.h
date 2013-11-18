@@ -13,7 +13,7 @@
 
 @interface SyncAccount : NSManagedObject
 
-@property (nonatomic, retain) NSString * accountId;
+@property (nonatomic, retain) NSString *accountId;
 @property (nonatomic, retain) NSSet *nodes;
 @end
 
@@ -21,7 +21,7 @@
 
 - (void)addNodesObject:(SyncNodeInfo *)value;
 - (void)removeNodesObject:(SyncNodeInfo *)value;
-- (void)addSyncNodes:(NSSet *)values;
-- (void)removeSyncNodes:(NSSet *)values;
+- (void)addNodes:(NSSet *)values;
+- (void)removeNodes:(NSSet *)values;
 
 @end

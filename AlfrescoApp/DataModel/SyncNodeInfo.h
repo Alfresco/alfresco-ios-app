@@ -13,15 +13,15 @@
 
 @interface SyncNodeInfo : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * isFolder;
-@property (nonatomic, retain) NSNumber * isTopLevelSyncNode;
-@property (nonatomic, retain) NSNumber * isUnfavoritedHasLocalChanges;
-@property (nonatomic, retain) NSDate * lastDownloadedDate;
-@property (nonatomic, retain) NSData * node;
-@property (nonatomic, retain) NSNumber * reloadContent;
-@property (nonatomic, retain) NSString * syncContentPath;
-@property (nonatomic, retain) NSString * syncNodeInfoId;
-@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber *isFolder;
+@property (nonatomic, retain) NSNumber *isTopLevelSyncNode;
+@property (nonatomic, retain) NSNumber *isUnfavoritedHasLocalChanges;
+@property (nonatomic, retain) NSDate *lastDownloadedDate;
+@property (nonatomic, retain) NSData *node;
+@property (nonatomic, retain) NSNumber *reloadContent;
+@property (nonatomic, retain) NSString *syncContentPath;
+@property (nonatomic, retain) NSString *syncNodeInfoId;
+@property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) SyncAccount *account;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) SyncNodeInfo *parentNode;
