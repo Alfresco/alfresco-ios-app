@@ -2,29 +2,30 @@
 //  SyncNodeInfo.m
 //  AlfrescoApp
 //
-//  Created by Mohamad Saeedi on 20/09/2013.
+//  Created by Mohamad Saeedi on 18/11/2013.
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
 #import "SyncNodeInfo.h"
+#import "SyncError.h"
 #import "SyncNodeInfo.h"
-#import "SyncRepository.h"
+#import "SyncAccount.h"
 
 
 @implementation SyncNodeInfo
 
-@dynamic title;
 @dynamic isFolder;
-@dynamic isUnfavoritedHasLocalChanges;
 @dynamic isTopLevelSyncNode;
-@dynamic reloadContent;
+@dynamic isUnfavoritedHasLocalChanges;
 @dynamic lastDownloadedDate;
 @dynamic node;
+@dynamic reloadContent;
 @dynamic syncContentPath;
 @dynamic syncNodeInfoId;
+@dynamic title;
+@dynamic account;
 @dynamic nodes;
 @dynamic parentNode;
-@dynamic repository;
 @dynamic syncError;
 
 @end

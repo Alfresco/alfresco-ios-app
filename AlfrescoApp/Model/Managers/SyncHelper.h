@@ -16,22 +16,22 @@ extern NSString * const kSyncReloadContentKey;
 
 @interface SyncHelper : NSObject
 
-- (NSString *)syncContentDirectoryPathForRepository:(NSString *)repositoryId;
-- (NSString *)syncNameForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
+- (NSString *)syncNameForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-- (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
-- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
-- (void)deleteNodeFromSync:(AlfrescoNode *)node inRepitory:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
-- (void)deleteNodesFromSync:(NSArray *)array inRepitory:(NSString *)repositoryId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (void)deleteNodeFromSync:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (void)deleteNodesFromSync:(NSArray *)array inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (void)removeSyncContentAndInfoInManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses;
 
-- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo
-                      forRepositoryWithId:(NSString *)repositoryId
+                         forAccountWithId:(NSString *)accountId
                              preserveInfo:(NSDictionary *)info
                  refreshExistingSyncNodes:(BOOL)refreshExisting
                    inManagedObjectContext:(NSManagedObjectContext *)managedContext;
