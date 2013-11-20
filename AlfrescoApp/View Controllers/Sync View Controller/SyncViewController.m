@@ -402,8 +402,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     SyncNodeStatus *nodeStatus = nil;
     if (!self.parentNode)
     {
-        NSString *repositoryId = self.session ?  self.session.repositoryInfo.identifier : [[[AccountManager sharedManager] selectedAccount] repositoryId];
-        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:repositoryId];
+        NSString *selectedAccountIdentifier = [[[AccountManager sharedManager] selectedAccount] accountIdentifier];
+        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:selectedAccountIdentifier];
     }
     else
     {

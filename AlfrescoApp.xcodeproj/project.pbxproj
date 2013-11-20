@@ -21,8 +21,9 @@
 		0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */; };
 		0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */; };
 		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
-		0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */; };
-		0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833243B17EC9AE900EE6AA8 /* SyncRepository.m */; };
+		0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D4183A5EE6000A8984 /* SyncError.m */; };
+		0808B9D8183A5EE7000A8984 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */; };
+		0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9DA183A5EE7000A8984 /* SyncAccount.m */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244F17F9823800EE6AA8 /* SyncViewController.m */; };
@@ -64,7 +65,6 @@
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
-		08B61FA5180421C800C827EA /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61FA4180421C800C827EA /* SyncError.m */; };
 		08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */; };
 		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
 		08E799B1182A57850030FD53 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B0182A57850030FD53 /* ButtonCell.m */; };
@@ -421,10 +421,12 @@
 		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "Accounts View Controller/New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
 		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
 		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
-		0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
-		0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncNodeInfo.m; path = DataModel/SyncNodeInfo.m; sourceTree = "<group>"; };
-		0833243A17EC9AE900EE6AA8 /* SyncRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncRepository.h; path = DataModel/SyncRepository.h; sourceTree = "<group>"; };
-		0833243B17EC9AE900EE6AA8 /* SyncRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncRepository.m; path = DataModel/SyncRepository.m; sourceTree = "<group>"; };
+		0808B9D3183A5EE6000A8984 /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
+		0808B9D4183A5EE6000A8984 /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncError.m; path = DataModel/SyncError.m; sourceTree = "<group>"; };
+		0808B9D6183A5EE7000A8984 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
+		0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncNodeInfo.m; path = DataModel/SyncNodeInfo.m; sourceTree = "<group>"; };
+		0808B9D9183A5EE7000A8984 /* SyncAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncAccount.h; path = DataModel/SyncAccount.h; sourceTree = "<group>"; };
+		0808B9DA183A5EE7000A8984 /* SyncAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncAccount.m; path = DataModel/SyncAccount.m; sourceTree = "<group>"; };
 		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
 		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
 		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
@@ -478,8 +480,6 @@
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
 		08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button@2x.png"; sourceTree = "<group>"; };
-		08B61FA3180421C800C827EA /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
-		08B61FA4180421C800C827EA /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncError.m; path = DataModel/SyncError.m; sourceTree = "<group>"; };
 		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
 		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
 		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
@@ -1279,12 +1279,12 @@
 			isa = PBXGroup;
 			children = (
 				08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */,
-				0833243A17EC9AE900EE6AA8 /* SyncRepository.h */,
-				0833243B17EC9AE900EE6AA8 /* SyncRepository.m */,
-				0833243717EC9AE800EE6AA8 /* SyncNodeInfo.h */,
-				0833243817EC9AE800EE6AA8 /* SyncNodeInfo.m */,
-				08B61FA3180421C800C827EA /* SyncError.h */,
-				08B61FA4180421C800C827EA /* SyncError.m */,
+				0808B9D9183A5EE7000A8984 /* SyncAccount.h */,
+				0808B9DA183A5EE7000A8984 /* SyncAccount.m */,
+				0808B9D6183A5EE7000A8984 /* SyncNodeInfo.h */,
+				0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */,
+				0808B9D3183A5EE6000A8984 /* SyncError.h */,
+				0808B9D4183A5EE6000A8984 /* SyncError.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -2909,7 +2909,6 @@
 				73F634A717E34A990065590E /* AlfrescoCloudCommentService.m in Sources */,
 				73F634B817E34A990065590E /* AlfrescoPlaceholderActivityStreamService.m in Sources */,
 				73E9E1FD17E352C900A198B4 /* AlfrescoCMISDocument.m in Sources */,
-				0833243917EC9AE800EE6AA8 /* SyncNodeInfo.m in Sources */,
 				73F634D617E34A990065590E /* AlfrescoSortingUtils.m in Sources */,
 				73F634BF17E34A990065590E /* AlfrescoWorkflowPlaceholderProcessDefinitionService.m in Sources */,
 				0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */,
@@ -2997,7 +2996,6 @@
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73F634D517E34A990065590E /* AlfrescoSiteCache.m in Sources */,
-				0833243C17EC9AE900EE6AA8 /* SyncRepository.m in Sources */,
 				73783CD517FC5A9D00140181 /* ThemeUtil.m in Sources */,
 				73F634B917E34A990065590E /* AlfrescoPlaceholderCommentService.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
@@ -3031,6 +3029,7 @@
 				73F634C917E34A990065590E /* AlfrescoOAuthData.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73F634CD17E34A990065590E /* AlfrescoCMISToAlfrescoObjectConverter.m in Sources */,
+				0808B9D8183A5EE7000A8984 /* SyncNodeInfo.m in Sources */,
 				73F634A617E34A990065590E /* AlfrescoCloudActivityStreamService.m in Sources */,
 				73F634B117E34A990065590E /* AlfrescoOnPremiseCommentService.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
@@ -3082,6 +3081,7 @@
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
 				73B95B0217A68DF20099FB84 /* MoreViewController.m in Sources */,
+				0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */,
 				73F634CB17E34A990065590E /* AlfrescoOAuthLoginViewController.m in Sources */,
 				7384BE0F17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m in Sources */,
 				73F634B017E34A990065590E /* AlfrescoOnPremiseActivityStreamService.m in Sources */,
@@ -3096,12 +3096,12 @@
 				73F634A317E34A990065590E /* AlfrescoWorkflowProcessDefinitionService.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
 				73F6348F17E34A990065590E /* AlfrescoPermissions.m in Sources */,
+				0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */,
 				73F6348917E34A990065590E /* AlfrescoDocument.m in Sources */,
 				73F634C717E34A990065590E /* AlfrescoCloudSession.m in Sources */,
 				73F634B417E34A990065590E /* AlfrescoOnPremisePersonService.m in Sources */,
 				73F634CA17E34A990065590E /* AlfrescoOAuthHelper.m in Sources */,
 				73F634A017E34A990065590E /* AlfrescoSiteService.m in Sources */,
-				08B61FA5180421C800C827EA /* SyncError.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
 				73F6349F17E34A990065590E /* AlfrescoSearchService.m in Sources */,
 			);

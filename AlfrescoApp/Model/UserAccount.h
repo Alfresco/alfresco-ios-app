@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, AccountType)
 
 @interface UserAccount : NSObject <NSCoding>
 
+@property (nonatomic, strong) NSString *accountIdentifier;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *accountDescription;

@@ -8,6 +8,7 @@
 
 #import "UserAccount.h"
 
+static NSString * const kAccountIdentifier = @"kAccountIdentifier";
 static NSString * const kAccountUsername = @"kAccountUsername";
 static NSString * const kAccountPassword = @"kAccountPassword";
 static NSString * const kAccountDescription = @"kAccountDescription";
@@ -34,6 +35,7 @@ static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
     if (self)
     {
         self.accountType = accountType;
+        self.accountIdentifier = [[NSUUID UUID] UUIDString];
     }
     return self;
 }
@@ -42,6 +44,7 @@ static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeObject:self.accountIdentifier forKey:kAccountIdentifier];
     [aCoder encodeObject:self.username forKey:kAccountUsername];
     [aCoder encodeObject:self.password forKey:kAccountPassword];
     [aCoder encodeObject:self.accountDescription forKey:kAccountDescription];
@@ -62,6 +65,7 @@ static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
     self = [super init];
     if (self)
     {
+        self.accountIdentifier = [aDecoder decodeObjectForKey:kAccountIdentifier];
         self.username = [aDecoder decodeObjectForKey:kAccountUsername];
         self.password = [aDecoder decodeObjectForKey:kAccountPassword];
         self.accountDescription = [aDecoder decodeObjectForKey:kAccountDescription];
