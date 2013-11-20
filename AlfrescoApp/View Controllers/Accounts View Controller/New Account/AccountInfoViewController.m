@@ -212,7 +212,8 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 
 - (void)constructTableCellsForAlfrescoServer
 {
-    // cells
+    NSArray *group1 = nil;
+    NSArray *group2 = nil;
     if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
     {
         TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -276,9 +277,8 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
             self.serviceDocumentTextField.text = self.account.serviceDocument;
         }
         
-        NSArray *group1 = @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell];
-        NSArray *group2 = @[portCell, serviceDocumentCell];
-        self.tableGroups = @[group1, group2];
+        group1 = (self.account.accountType == AccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
+        group2 = (self.account.accountType == AccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
     }
     else if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -310,20 +310,10 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
         serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
         
-        CenterLabelCell *browseDocumentsCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
-        browseDocumentsCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.browse", @"Browse Document");
-        
-        CenterLabelCell *deleteAccountCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
-        deleteAccountCell.backgroundColor = [UIColor redColor];
-        deleteAccountCell.titleLabel.textColor = [UIColor whiteColor];
-        deleteAccountCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.delete", @"Delete Document");
-        
-        NSArray *group1 = @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell];
-        NSArray *group2 = @[portCell, serviceDocumentCell];
-        NSArray *group3 = @[browseDocumentsCell];
-        NSArray *group4 = @[deleteAccountCell];
-        self.tableGroups = @[group1, group2, group3, group4];
+        group1 = (self.account.accountType == AccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
+        group2 = (self.account.accountType == AccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
     }
+    self.tableGroups = (self.account.accountType == AccountTypeOnPremise) ? @[group1, group2] : @[group1];
 }
 
 #pragma mark - private Methods
@@ -376,7 +366,6 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         self.account.username = temporaryAccount.username;
         self.account.password = temporaryAccount.password;
         self.account.accountDescription = temporaryAccount.accountDescription;
-        self.account.repositoryId = temporaryAccount.repositoryId;
         self.account.serverAddress = temporaryAccount.serverAddress;
         self.account.serverPort = temporaryAccount.serverPort;
         self.account.protocol = temporaryAccount.protocol;

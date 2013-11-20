@@ -20,5 +20,6 @@
 - (void)removeAllAccounts;
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;
+- (void)setSelectedAccount:(UserAccount *)selectedAccount selectedNetwork:(NSString *)networkIdentifier;
 
 @end
