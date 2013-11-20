@@ -80,7 +80,7 @@
     [self saveAllAccountsToKeychain];
 }
 
-- (void)setSelectedAccount:(UserAccount *)selectedAccount selectedNetwork:(NSString *)networkIdentifier
+- (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier
 {
     self.selectedAccount = selectedAccount;
     

@@ -152,7 +152,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
         
         if (account.accountType != AccountTypeCloud)
         {
-            [self setAccountSelectionButtonImageForCell:cell isSelected:account.isSelectedAccount];
+            [self updateAccountSelectionButtonImageForCell:cell isSelected:account.isSelectedAccount];
         }
         else
         {
@@ -169,7 +169,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
         
         UserAccount *account = self.tableViewData[indexPath.section][kAccountRowNumber];
         BOOL isSelectedNetwork = [account.selectedNetworkId isEqualToString:networkIdentifier];
-        [self setAccountSelectionButtonImageForCell:cell isSelected:isSelectedNetwork];
+        [self updateAccountSelectionButtonImageForCell:cell isSelected:isSelectedNetwork];
     }
     
     return cell;
@@ -228,7 +228,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     return button;
 }
 
-- (void)setAccountSelectionButtonImageForCell:(AccountCell *)cell isSelected:(BOOL)isSelected
+- (void)updateAccountSelectionButtonImageForCell:(AccountCell *)cell isSelected:(BOOL)isSelected
 {
     UIImage *selectionImage = isSelected ? [UIImage imageNamed:@"green_selected_circle"] : [UIImage imageNamed:@"unselected_circle"];
     [(UIButton *)cell.accessoryView setBackgroundImage:selectionImage forState:UIControlStateNormal];
@@ -272,7 +272,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
         [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful) {
             
             [self hideHUD];
-            [[AccountManager sharedManager] setSelectedAccount:account selectedNetwork:networkId];
+            [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId];
             [self.tableView reloadData];
         }];
     }

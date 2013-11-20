@@ -124,7 +124,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         
         if (accountManager.totalNumberOfAddedAccounts == 0)
         {
-            [accountManager setSelectedAccount:self.account selectedNetwork:nil];
+            [accountManager selectAccount:self.account selectNetwork:nil];
         }
         
         [self dismissViewControllerAnimated:YES completion:^{
