@@ -39,7 +39,7 @@
             [moreViewController.tableView.delegate tableView:moreViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             
             // Create and push the Preview controller
-            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:nil documentPermissions:nil contentFilePath:filePath session:nil];
+            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:nil documentPermissions:nil contentFilePath:filePath session:nil displayOverlayCloseButton:NO];
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:navigationController animated:YES];
         }
 

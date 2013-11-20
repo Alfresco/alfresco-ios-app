@@ -248,7 +248,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
             AlfrescoDocument *documentToDisplay = [[DownloadManager sharedManager] infoForDocument:contentFullPath];
             // Additional property added by category
             documentToDisplay.isDownloaded = YES;
-            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:documentToDisplay documentPermissions:nil contentFilePath:contentFullPath session:self.session];
+            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:documentToDisplay documentPermissions:nil contentFilePath:contentFullPath session:self.session displayOverlayCloseButton:NO];
             
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }

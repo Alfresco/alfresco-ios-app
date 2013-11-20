@@ -8,17 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "ItemInDetailViewProtocol.h"
-#import <QuickLook/QuickLook.h>
 
 @class AlfrescoDocument;
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface PreviewViewController : UIViewController <UIWebViewDelegate, ItemInDetailViewProtocol, UIDocumentInteractionControllerDelegate, QLPreviewControllerDataSource, QLPreviewControllerDelegate>
+@interface PreviewViewController : UIViewController <UIWebViewDelegate, ItemInDetailViewProtocol, UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong, readonly, getter = displayedDocument) AlfrescoDocument *document;
 
-- (id)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session;
+- (id)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session displayOverlayCloseButton:(BOOL)displaycloseButton;
 - (id)initWithBundleDocument:(NSString *)document;
 - (void)clearDisplayedDocument;
 

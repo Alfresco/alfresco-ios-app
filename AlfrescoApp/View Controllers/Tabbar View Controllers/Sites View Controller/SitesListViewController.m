@@ -333,7 +333,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                 [self hideHUD];
                 if (succeeded)
                 {
-                    PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session];
+                    PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session displayOverlayCloseButton:NO];
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                 }
                 else

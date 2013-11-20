@@ -38,7 +38,7 @@
                     </connections>
                 </scrollView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="261.00000351353697" y="27" width="247" height="29"/>
+                    <rect key="frame" x="261.00000882534079" y="27" width="247" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="qv4-4a-6Ij"/>
