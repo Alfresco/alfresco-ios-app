@@ -12,8 +12,8 @@
     </entity>
     <entity name="SyncNodeInfo" representedClassName="SyncNodeInfo" syncable="YES">
         <attribute name="isFolder" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isRemovedFromSyncHasLocalChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isTopLevelSyncNode" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isUnfavoritedHasLocalChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastDownloadedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="node" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="reloadContent" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -26,8 +26,8 @@
         <relationship name="syncError" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncError" inverseName="nodeInfo" inverseEntity="SyncError" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SyncAccount" positionX="-207" positionY="-135" width="128" height="73"/>
-        <element name="SyncError" positionX="-765" positionY="-225" width="128" height="103"/>
-        <element name="SyncNodeInfo" positionX="-522" positionY="-252" width="128" height="238"/>
+        <element name="SyncAccount" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SyncError" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SyncNodeInfo" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

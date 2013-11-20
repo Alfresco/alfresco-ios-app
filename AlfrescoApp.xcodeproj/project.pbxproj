@@ -26,6 +26,7 @@
 		0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9DA183A5EE7000A8984 /* SyncAccount.m */; };
 		0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9DD183BB40B000A8984 /* green_selected_circle.png */; };
 		0808B9E0183BB40B000A8984 /* unselected_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9DE183BB40B000A8984 /* unselected_circle.png */; };
+		0808B9E2183D1083000A8984 /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9E1183D1083000A8984 /* empty_icon.png */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244F17F9823800EE6AA8 /* SyncViewController.m */; };
@@ -431,6 +432,7 @@
 		0808B9DA183A5EE7000A8984 /* SyncAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncAccount.m; path = DataModel/SyncAccount.m; sourceTree = "<group>"; };
 		0808B9DD183BB40B000A8984 /* green_selected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_selected_circle.png; path = Accounts/green_selected_circle.png; sourceTree = "<group>"; };
 		0808B9DE183BB40B000A8984 /* unselected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_circle.png; path = Accounts/unselected_circle.png; sourceTree = "<group>"; };
+		0808B9E1183D1083000A8984 /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = empty_icon.png; path = Accounts/empty_icon.png; sourceTree = "<group>"; };
 		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
 		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
 		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
@@ -1185,6 +1187,7 @@
 			children = (
 				0808B9DD183BB40B000A8984 /* green_selected_circle.png */,
 				0808B9DE183BB40B000A8984 /* unselected_circle.png */,
+				0808B9E1183D1083000A8984 /* empty_icon.png */,
 			);
 			name = Account;
 			sourceTree = "<group>";
@@ -2835,6 +2838,7 @@
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */,
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
+				0808B9E2183D1083000A8984 /* empty_icon.png in Resources */,
 				73B95AA417A68B7E0099FB84 /* help-more.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
 				0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */,

@@ -17,9 +17,6 @@
 #import "UniversalDevice.h"
 #import "MainMenuViewController.h"
 
-static NSInteger const kCellIndentationLevel = 2;
-static NSInteger const kCellIndentationWidth = 30;
-
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
 
@@ -168,8 +165,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
         
         cell.textLabel.font = (indexPath.row == kNetworksStartRowNumber) ? [UIFont boldSystemFontOfSize:[UIFont systemFontSize]] : [UIFont systemFontOfSize:[UIFont systemFontSize]];
         cell.textLabel.text = networkIdentifier;
-        cell.indentationWidth = kCellIndentationWidth;
-        cell.indentationLevel = kCellIndentationLevel;
+        cell.imageView.image = [UIImage imageNamed:@"empty_icon"];
         
         UserAccount *account = self.tableViewData[indexPath.section][kAccountRowNumber];
         BOOL isSelectedNetwork = [account.selectedNetworkId isEqualToString:networkIdentifier];

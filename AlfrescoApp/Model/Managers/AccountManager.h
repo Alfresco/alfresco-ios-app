@@ -11,7 +11,7 @@
 
 @interface AccountManager : NSObject
 
-@property (nonatomic, strong, readwrite) UserAccount *selectedAccount;
+@property (nonatomic, strong, readonly) UserAccount *selectedAccount;
 
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;

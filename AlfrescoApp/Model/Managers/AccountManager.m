@@ -12,6 +12,7 @@
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
+@property (nonatomic, strong, readwrite) UserAccount *selectedAccount;
 
 @end
 
