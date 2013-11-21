@@ -31,7 +31,7 @@ static NSUInteger const kSyncConfirmationOptionNo = 1;
 /*
  * Sync Obstacle keys
  */
-NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges = @"unFavoritedOnServerWithLocalChanges";
+NSString * const kDocumentsRemovedFromSyncOnServerWithLocalChanges = @"removedFromSyncOnServerWithLocalChanges";
 NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
 static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyAfterUpload";
 
@@ -122,7 +122,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     
-    // if folder is nil - means favorite nodes are being returned
+    // if folder is nil - means top level sync nodes are being returned
     if (!folder)
     {
         for (AlfrescoNode *node in syncNodes)
@@ -475,7 +475,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSArray *localNodes = [CoreDataUtils retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:managedContext];
     for (SyncNodeInfo *nodeInfo in localNodes)
     {
-        // check if remote list dosnt have nodeInfo (indicates the node is unfavorited or deleted)
+        // check if remote list dosnt have nodeInfo (indicates the node is removed from sync on server or deleted)
         
         if (![identifiersForNodesToBeSynced containsObject:nodeInfo.syncNodeInfoId])
         {
@@ -484,9 +484,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     
     NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
-    NSMutableArray *syncObstacleUnFavorited = [_syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
+    NSMutableArray *syncObstacleRemovedFromSync = [_syncObstacles objectForKey:kDocumentsRemovedFromSyncOnServerWithLocalChanges];
     [syncObstableDeleted removeAllObjects];
-    [syncObstacleUnFavorited removeAllObjects];
+    [syncObstacleRemovedFromSync removeAllObjects];
     
     __block int totalChecksForObstacles = missingSyncDocumentsInRemote.count;
     if (totalChecksForObstacles > 0)
@@ -508,8 +508,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
                 else
                 {
-                    // if any problem encountered then set isUnfavoritedHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
-                    nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:YES];
+                    // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
+                    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
                     nodeInfo.parentNode = nil;
                 }
                 
@@ -540,9 +540,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     
     // Note: Deliberate property getter bypass
     NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
-    NSMutableArray *syncObstacleUnFavorited = [_syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
+    NSMutableArray *syncObstacleRemovedFromSync = [_syncObstacles objectForKey:kDocumentsRemovedFromSyncOnServerWithLocalChanges];
     
-    if(syncObstableDeleted.count > 0 || syncObstacleUnFavorited.count > 0)
+    if(syncObstableDeleted.count > 0 || syncObstacleRemovedFromSync.count > 0)
     {
         obstacles = YES;
     }
@@ -555,7 +555,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:managedContext];
     
     NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
-    NSMutableArray *syncObstacleUnFavorited = [self.syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
+    NSMutableArray *syncObstacleRemovedFromSync = [self.syncObstacles objectForKey:kDocumentsRemovedFromSyncOnServerWithLocalChanges];
     
     if (isModifiedLocally)
     {
@@ -563,7 +563,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         [self.documentFolderService retrieveNodeWithIdentifier:node.identifier completionBlock:^(AlfrescoNode *alfrescoNode, NSError *error) {
             if (alfrescoNode)
             {
-                [syncObstacleUnFavorited addObject:node];
+                [syncObstacleRemovedFromSync addObject:node];
             }
             else
             {
@@ -589,11 +589,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return self.syncObstacles;
 }
 
-- (void)syncUnfavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer
+- (void)syncFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer
 {
     NSString *contentPath = [self contentPathForNode:document];
     
-    NSMutableArray *syncObstaclesUnfavorited = [self.syncObstacles objectForKey:kDocumentsUnfavoritedOnServerWithLocalChanges];
+    NSMutableArray *syncObstaclesRemovedFromSync = [self.syncObstacles objectForKey:kDocumentsRemovedFromSyncOnServerWithLocalChanges];
     
     if (syncToServer)
     {
@@ -611,18 +611,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     
     // remove document from obstacles dictionary
-    NSArray *syncObstaclesUnfavoritedNodesIds = [syncObstaclesUnfavorited valueForKey:@"identifier"];
-    for (int i = 0;  i < syncObstaclesUnfavoritedNodesIds.count; i++)
+    NSArray *syncObstaclesRemovedFromSyncNodeIdentifiers = [syncObstaclesRemovedFromSync valueForKey:@"identifier"];
+    for (int i = 0;  i < syncObstaclesRemovedFromSyncNodeIdentifiers.count; i++)
     {
-        if ([syncObstaclesUnfavoritedNodesIds[i] isEqualToString:document.identifier])
+        if ([syncObstaclesRemovedFromSyncNodeIdentifiers[i] isEqualToString:document.identifier])
         {
-            [syncObstaclesUnfavorited removeObjectAtIndex:i];
+            [syncObstaclesRemovedFromSync removeObjectAtIndex:i];
             break;
         }
     }
 }
 
-- (void)saveDeletedFavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document
+- (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document
 {
     NSString *contentPath = [self contentPathForNode:document];
     NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
@@ -633,10 +633,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }];
     
     // remove document from obstacles dictionary
-    NSArray *syncObstaclesUnfavoritedNodesIds = [syncObstableDeleted valueForKey:@"identifier"];
-    for (int i = 0;  i < syncObstaclesUnfavoritedNodesIds.count; i++)
+    NSArray *syncObstaclesDeletedNodeIdentifiers = [syncObstableDeleted valueForKey:@"identifier"];
+    for (int i = 0;  i < syncObstaclesDeletedNodeIdentifiers.count; i++)
     {
-        if ([syncObstaclesUnfavoritedNodesIds[i] isEqualToString:document.identifier])
+        if ([syncObstaclesDeletedNodeIdentifiers[i] isEqualToString:document.identifier])
         {
             [syncObstableDeleted removeObjectAtIndex:i];
             break;
@@ -865,7 +865,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             
                                                                             nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:uploadedDocument];
                                                                             nodeInfo.lastDownloadedDate = [NSDate date];
-                                                                            nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
+                                                                            nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
                                                                             
                                                                             SyncError *syncError = [CoreDataUtils errorObjectForNodeWithId:document.identifier
                                                                                                                            inAccountWithId:[self selectedAccountIdentifier]
@@ -1138,7 +1138,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         self.syncQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
         self.syncOperations = [NSMutableDictionary dictionary];
         
-        self.syncObstacles = @{kDocumentsUnfavoritedOnServerWithLocalChanges: [NSMutableArray array],
+        self.syncObstacles = @{kDocumentsRemovedFromSyncOnServerWithLocalChanges: [NSMutableArray array],
                                kDocumentsDeletedOnServerWithLocalChanges: [NSMutableArray array],
                                kDocumentsToBeDeletedLocallyAfterUpload: [NSMutableArray array]};
         

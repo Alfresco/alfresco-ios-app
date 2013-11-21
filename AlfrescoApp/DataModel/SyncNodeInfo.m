@@ -16,7 +16,7 @@
 
 @dynamic isFolder;
 @dynamic isTopLevelSyncNode;
-@dynamic isUnfavoritedHasLocalChanges;
+@dynamic isRemovedFromSyncHasLocalChanges;
 @dynamic lastDownloadedDate;
 @dynamic node;
 @dynamic reloadContent;

@@ -11,7 +11,7 @@
 
 @interface AccountManager : NSObject
 
-@property (nonatomic, strong, readwrite) UserAccount *selectedAccount;
+@property (nonatomic, strong, readonly) UserAccount *selectedAccount;
 
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;
@@ -20,5 +20,6 @@
 - (void)removeAllAccounts;
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;
+- (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier;
 
 @end

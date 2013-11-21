@@ -12,6 +12,7 @@
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
+@property (nonatomic, strong, readwrite) UserAccount *selectedAccount;
 
 @end
 
@@ -44,7 +45,13 @@
 
 - (void)addAccount:(UserAccount *)account
 {
-    [self.accountsFromKeychain addObject:account];
+    NSComparator comparator = ^(UserAccount *account1, UserAccount *account2)
+    {
+        return (NSComparisonResult)[account1.accountDescription caseInsensitiveCompare:account2.accountDescription];
+    };
+    NSInteger index = [self.accountsFromKeychain indexOfObject:account inSortedRange:NSMakeRange(0, self.accountsFromKeychain.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+    
+    [self.accountsFromKeychain insertObject:account atIndex:index];
     [self saveAllAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
@@ -73,15 +80,20 @@
     [self saveAllAccountsToKeychain];
 }
 
-- (void)setSelectedAccount:(UserAccount *)selectedAccount
+- (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier
 {
-    _selectedAccount = selectedAccount;
+    self.selectedAccount = selectedAccount;
     
     for (UserAccount *account in self.accountsFromKeychain)
     {
+        account.selectedNetworkId = nil;
         account.isSelectedAccount = NO;
     }
     selectedAccount.isSelectedAccount = YES;
+    if ([selectedAccount.accountNetworks containsObject:networkIdentifier])
+    {
+        selectedAccount.selectedNetworkId = networkIdentifier;
+    }
     [self saveAccountsToKeychain];
 }
 

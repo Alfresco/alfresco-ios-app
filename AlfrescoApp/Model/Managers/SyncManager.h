@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SyncNodeStatus.h"
 
-extern NSString * const kDocumentsUnfavoritedOnServerWithLocalChanges;
+extern NSString * const kDocumentsRemovedFromSyncOnServerWithLocalChanges;
 extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 
 @interface SyncManager : NSObject
@@ -37,8 +37,8 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (BOOL)didEncounterObstaclesDuringSync;
 - (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inManagedObjectContext:(NSManagedObjectContext *)managedContext completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock;
-- (void)syncUnfavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer;
-- (void)saveDeletedFavoriteFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
+- (void)syncFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer;
+- (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 
 /*
  * Sync Utilities
