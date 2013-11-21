@@ -13,9 +13,11 @@
 #import "CommentViewController.h"
 #import "Utility.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "DocumentOverlayView.h"
 
 static CGFloat const kToolbarButtonPadding = 5.0f;
 static NSUInteger const kRandomStringLength = 32;
+static CGFloat const kAnimationSpeed = 0.3f;
 
 typedef NS_ENUM(NSUInteger, PreviewStateType)
 {
@@ -25,7 +27,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     PreviewStateTypeAudioVideoDisabled
 };
 
-@interface PreviewViewController ()
+@interface PreviewViewController () <UIGestureRecognizerDelegate, DocumentOverlayDelegate>
 
 @property (nonatomic, strong, readwrite) AlfrescoDocument *document;
 @property (nonatomic, strong) AlfrescoPermissions *permissions;
@@ -41,13 +43,15 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
 @property (nonatomic, strong) UIDocumentInteractionController *documentInterationController;
 @property (nonatomic, strong) NSString *randomTemporaryFileName;
 @property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
-@property (nonatomic, strong) QLPreviewController *quickLookPreviewController;
+@property (nonatomic, weak) DocumentOverlayView *overlayView;
+@property (nonatomic, assign) BOOL displayOverlayCloseButton;
+@property (nonatomic, assign) BOOL fullScreenMode;
 
 @end
 
 @implementation PreviewViewController
 
-- (id)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session
+- (id)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session displayOverlayCloseButton:(BOOL)displaycloseButton
 {
     self = [super init];
     if (self)
@@ -58,6 +62,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         self.contentFilePath = contentFilePath;
         self.documentUrl = [NSURL fileURLWithPath:self.contentFilePath];
         self.shouldDisplayActions = (nil != document);
+        self.displayOverlayCloseButton = displaycloseButton;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(playbackDidFinish:)
@@ -140,15 +145,10 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     UIWebView *webview = [[UIWebView alloc] initWithFrame:view.frame];
     webview.delegate = self;
     webview.scalesPageToFit = YES;
+    webview.opaque = NO;
     webview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [view addSubview:webview];
     self.webView = webview;
-    
-    QLPreviewController *previewController = [[QLPreviewController alloc] init];
-    previewController.delegate = self;
-    previewController.dataSource = self;
-    previewController.view.frame = view.frame;
-    self.quickLookPreviewController = previewController;
     
     // playbutton size
     CGFloat playButtonWidthHeight = 72.0f;
@@ -161,6 +161,29 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     playButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [view addSubview:playButton];
     self.playButton = playButton;
+    
+    // overlay
+    // dont display expand button for audio
+    BOOL displayExpandButton = ![Utility isAudioOrVideo:self.contentFilePath];
+    DocumentOverlayView *overlay = [[DocumentOverlayView alloc] initWithFrame:view.frame delegate:self displayCloseButton:self.displayOverlayCloseButton displayExpandButton:displayExpandButton];
+    [overlay show];
+    self.overlayView = overlay;
+    UITapGestureRecognizer *displayOverlayTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    displayOverlayTap.delegate = self;
+    displayOverlayTap.numberOfTapsRequired = 1;
+    displayOverlayTap.numberOfTouchesRequired = 1;
+    
+    // if viewing a document, add the tap to the webview, otherwise add it to the main view
+    if ([Utility isAudioOrVideo:self.contentFilePath])
+    {
+        [view addSubview:overlay];
+        [view addGestureRecognizer:displayOverlayTap];
+    }
+    else
+    {
+        [webview addSubview:overlay];
+        [webview addGestureRecognizer:displayOverlayTap];
+    }
     
     view.autoresizesSubviews = YES;
     view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -175,13 +198,10 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self updateActionButtonsWithAnimation:NO];
 	
     if (!self.contentFilePath)
     {
         self.webView.hidden = YES;
-        self.quickLookPreviewController.view.hidden = YES;
         [self updatePreviewState:PreviewStateTypeNone];
     }
     else
@@ -192,25 +212,14 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         if ([Utility isAudioOrVideo:self.contentFilePath])
         {
             // play the video
-            [self playAudioOrVideo];
-                
+//            [self playAudioOrVideo];
+            
             // update the state
             [self updatePreviewState:PreviewStateTypeAudioVideoEnabled];
         }
         else
         {
-            if ([QLPreviewController canPreviewItem:self.documentUrl])
-            {
-                // add preview controller and load the file
-                [self addChildViewController:self.quickLookPreviewController];
-                [self.view addSubview:self.quickLookPreviewController.view];
-                [self.quickLookPreviewController didMoveToParentViewController:self];
-                [self.quickLookPreviewController reloadData];
-            }
-            else
-            {
-                [self.webView loadRequest:[NSURLRequest requestWithURL:self.documentUrl]];
-            }
+            [self.webView loadRequest:[NSURLRequest requestWithURL:self.documentUrl]];
             
             // update state
             [self updatePreviewState:PreviewStateTypeDocument];
@@ -221,34 +230,20 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    
+    self.view.alpha = 0.0f;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [UIView animateWithDuration:kAnimationSpeed animations:^{
+        self.view.alpha = 1.0f;
+    }];
 }
 
 #pragma mark - Private Functions
-
-- (void)updateActionButtonsWithAnimation:(BOOL)animated
-{
-    // Navigation buttons populated in array order from right to left
-    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
-    if (self.shouldDisplayActions && self.contentFilePath)
-    {
-        /**
-         * Download button: Only if the current document is not flagged as downloaded
-         */
-        if (!self.document.isDownloaded)
-        {
-            [rightBarButtonItems addObject:[self barButtonItemFromImageNamed:@"download.png" action:@selector(saveToDownloads:)]];
-        }
-        
-        /**
-         * Comment button: Always show, as comments are serialised
-         */
-        [rightBarButtonItems addObject:[self barButtonItemFromImageNamed:@"comments.png" action:@selector(displayComments)]];
-    }
-    
-    [rightBarButtonItems addObject:[self barButtonItemFromImageNamed:@"actionButton.png" action:@selector(displayDocumentInteractionController:)]];
-    
-    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
-}
 
 - (void)playAudioOrVideo
 {
@@ -276,39 +271,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     }
 }
 
-- (void)saveToDownloads:(id)sender
-{
-    if (self.document)
-    {
-        [[DownloadManager sharedManager] downloadDocument:self.document contentPath:self.contentFilePath session:self.session];
-    }
-}
-
-- (UIBarButtonItem *)barButtonItemFromImageNamed:(NSString *)imageName action:(SEL)action
-{
-    UIImage *image = [UIImage imageNamed:imageName];
-    CGRect buttonFrame = CGRectMake(0, 0, image.size.width + 2 * kToolbarButtonPadding, image.size.height);
-    UIButton *customButton = [[UIButton alloc] initWithFrame:buttonFrame];
-    [customButton setImage:image forState:UIControlStateNormal];
-    [customButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-    
-    customButton.showsTouchWhenHighlighted = YES;
-    
-    return [[UIBarButtonItem alloc] initWithCustomView:customButton];
-}
-
-- (void)displayComments
-{
-    CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.permissions session:self.session];
-    
-    [self.navigationController pushViewController:commentViewController animated:YES];
-}
-
-- (void)removeActionButtons
-{
-    self.navigationItem.rightBarButtonItems = nil;
-}
-
 - (void)updatePreviewState:(PreviewStateType)previewType
 {
     switch (previewType)
@@ -316,12 +278,10 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeNone:
         {
             self.navigationItem.title = nil;
-            [self removeActionButtons];
             
             self.document = nil;
             self.contentFilePath = nil;
             self.webView.hidden = YES;
-            self.quickLookPreviewController.view.hidden = YES;
             self.videoSupportedLabel.hidden = YES;
             self.playButton.hidden = YES;
             self.alfrescoLogoImageView.hidden = NO;
@@ -333,7 +293,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeDocument:
         {
             self.webView.hidden = NO;
-            self.quickLookPreviewController.view.hidden = NO;
             self.playButton.hidden = YES;
             self.videoSupportedLabel.hidden = YES;
             self.alfrescoLogoImageView.hidden = YES;
@@ -343,7 +302,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeAudioVideoEnabled:
         {
             self.webView.hidden = YES;
-            self.quickLookPreviewController.view.hidden = YES;
             self.alfrescoLogoImageView.hidden = YES;
             self.videoSupportedLabel.hidden = YES;
             self.playButton.hidden = NO;
@@ -353,7 +311,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         case PreviewStateTypeAudioVideoDisabled:
         {
             self.webView.hidden = YES;
-            self.quickLookPreviewController.view.hidden = YES;
             self.alfrescoLogoImageView.hidden = NO;
             self.videoSupportedLabel.hidden = NO;
             self.playButton.hidden = YES;
@@ -431,7 +388,18 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
             self.document = (AlfrescoDocument *)documentNodeObject;
         }
         [self.webView reload];
-        [self.quickLookPreviewController reloadData];
+    }
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)tapGesture
+{
+    if (self.overlayView.isShowing)
+    {
+        [self.overlayView hide];
+    }
+    else
+    {
+        [self.overlayView show];
     }
 }
 
@@ -467,16 +435,56 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     [self removeTemporaryFileAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:self.randomTemporaryFileName]];
 }
 
-#pragma mark - QLPreviewControllerDataSource Functions
+#pragma mark - UIGestureRecognizerDelegate Functions
 
-- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controlle
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return 1;
+    return YES;
 }
 
-- (id <QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
+#pragma mark - DocumentOverlayViewDelegate Functions
+
+- (void)documentOverlay:(DocumentOverlayView *)documentOverlayView didPressExpandCollapseButton:(UIButton *)expandCollapseButton
 {
-    return self.documentUrl;
+    if (self.fullScreenMode)
+    {
+        CGRect convertedRect = [self.webView convertRect:self.webView.frame fromView:self.view];
+        
+        [UIView animateWithDuration:kAnimationSpeed animations:^{
+            self.webView.frame = convertedRect;
+        } completion:^(BOOL finished) {
+            [self.view addSubview:self.webView];
+            self.webView.frame = self.view.bounds;
+            self.fullScreenMode = NO;
+            [documentOverlayView toggleCloseButtonVisibility];
+        }];
+    }
+    else
+    {
+        UIView *rootView =  [[[[[UIApplication sharedApplication] delegate] window] rootViewController] view];
+        CGRect convertedRect = [self.view convertRect:self.view.bounds toView:rootView];
+        self.webView.frame = convertedRect;
+        [rootView addSubview:self.webView];
+        
+        [UIView animateWithDuration:kAnimationSpeed animations:^{
+            self.webView.frame = rootView.bounds;
+        } completion:^(BOOL finished) {
+            [documentOverlayView hide];
+            self.fullScreenMode = YES;
+            [documentOverlayView toggleCloseButtonVisibility];
+        }];
+    }
+}
+
+- (void)documentOverlay:(DocumentOverlayView *)documentOverlayView didPressCloseDocumentButton:(UIButton *)closeButton
+{
+    [UIView animateWithDuration:kAnimationSpeed animations:^{
+        self.view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [self willMoveToParentViewController:nil];
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+    }];
 }
 
 @end

@@ -243,7 +243,7 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
                 [self hideHUD];
                 if (succeeded)
                 {
-                    PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:document documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session];
+                    PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:document documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session displayOverlayCloseButton:NO];
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                 }
                 else

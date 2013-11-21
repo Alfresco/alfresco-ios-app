@@ -80,6 +80,7 @@
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
+		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
@@ -290,7 +291,6 @@
 		73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E20E17E7446400A198B4 /* Security.framework */; };
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
 		73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
-		73F4316F17EB3731002FAFCA /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73F4316E17EB3731002FAFCA /* QuickLook.framework */; };
 		73F6347C17E34A990065590E /* AlfrescoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334817E34A990065590E /* AlfrescoConstants.m */; };
 		73F6347D17E34A990065590E /* AlfrescoErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334A17E34A990065590E /* AlfrescoErrors.m */; };
 		73F6347E17E34A990065590E /* AlfrescoInternalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F6334C17E34A990065590E /* AlfrescoInternalConstants.m */; };
@@ -502,6 +502,8 @@
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
+		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
+		73190190183CDF26002C82C1 /* DocumentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentOverlayView.m; path = "Document Overlay View/DocumentOverlayView.m"; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -1105,7 +1107,6 @@
 			files = (
 				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
-				73F4316F17EB3731002FAFCA /* QuickLook.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
 				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
 				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
@@ -1286,6 +1287,15 @@
 				0808B9D4183A5EE6000A8984 /* SyncError.m */,
 			);
 			name = DataModel;
+			sourceTree = "<group>";
+		};
+		7319018E183CDEE0002C82C1 /* Document Overlay View */ = {
+			isa = PBXGroup;
+			children = (
+				7319018F183CDF26002C82C1 /* DocumentOverlayView.h */,
+				73190190183CDF26002C82C1 /* DocumentOverlayView.m */,
+			);
+			name = "Document Overlay View";
 			sourceTree = "<group>";
 		};
 		732F275117FAC57C00BAFDDE /* Detail Split View Controller */ = {
@@ -1757,6 +1767,7 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7319018E183CDEE0002C82C1 /* Document Overlay View */,
 				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
 				73632ACE1802C679007172EE /* Action Collection View */,
 				73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */,
@@ -2937,6 +2948,7 @@
 				73F634C517E34A990065590E /* AlfrescoBasicAuthenticationProvider.m in Sources */,
 				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
 				73F6349817E34A990065590E /* AlfrescoWorkflowProcessDefinition.m in Sources */,
+				73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */,
 				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,

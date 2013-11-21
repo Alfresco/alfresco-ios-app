@@ -165,9 +165,12 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:self.document.name];
     
     [self downloadContentOfDocumentToLocation:downloadDestinationPath completionBlock:^(NSString *fileLocation) {
-        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document documentPermissions:self.documentPermissions contentFilePath:fileLocation session:self.session];
-        // push for now
-        [self.navigationController pushViewController:previewController animated:YES];
+        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document documentPermissions:self.documentPermissions contentFilePath:fileLocation session:self.session displayOverlayCloseButton:YES];
+        
+        previewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [self addChildViewController:previewController];
+        [self.view addSubview:previewController.view];
+        [previewController didMoveToParentViewController:self];
     }];
 }
 
