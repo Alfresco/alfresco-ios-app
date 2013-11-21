@@ -129,17 +129,31 @@
         }
         else
         {
-            [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *array, NSError *error) {
+            [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *networks, NSError *error) {
                 
-                if (array && error == nil)
+                if (networks && error == nil)
                 {
-                    account.accountNetworks = [array valueForKey:@"identifier"];
+                    NSMutableArray *sortedNetworks = [NSMutableArray array];
+                    for (AlfrescoCloudNetwork *network in networks)
+                    {
+                        NSInteger index = 0;
+                        if (!network.isHomeNetwork)
+                        {
+                            NSComparator comparator = ^(NSString *network1, NSString *network2)
+                            {
+                                return (NSComparisonResult)[network1 caseInsensitiveCompare:network2];
+                            };
+                            index = [sortedNetworks indexOfObject:network.identifier inSortedRange:NSMakeRange(0, sortedNetworks.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+                        }
+                        [sortedNetworks insertObject:network.identifier atIndex:index];
+                    }
+                    account.accountNetworks = sortedNetworks;
+                    
                     if (!temporarySession)
                     {
                         [UniversalDevice clearDetailViewController];
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                     }
-                    account.repositoryId = session.repositoryInfo.identifier;
                     
                     if (authenticationCompletionBlock != NULL)
                     {
@@ -303,9 +317,6 @@
                                                                  {
                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                                                                  }
-                                                                 
-                                                                 account.repositoryId = session.repositoryInfo.identifier;
-                                                                 [[AccountManager sharedManager] saveAccountsToKeychain];
                                                                  
                                                                  self.currentLoginURLString = nil;
                                                                  self.currentLoginRequest = nil;

@@ -49,9 +49,8 @@
     
     [self.navigationItem setTitle:NSLocalizedString(@"sync-errors.title", @"Sync Error Navigation Bar Title")];
     
-    self.sectionHeaders = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"sync-errors.unfavorited-on-server-with-local-changes.header",
-                                                                      @"sync-errors.deleted-on-server-with-local-changes.header", nil]
-                                                             forKeys:[NSArray arrayWithObjects:kDocumentsUnfavoritedOnServerWithLocalChanges, kDocumentsDeletedOnServerWithLocalChanges, nil]];
+    self.sectionHeaders = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"sync-errors.unfavorited-on-server-with-local-changes.header", @"sync-errors.deleted-on-server-with-local-changes.header", nil]
+                                                             forKeys:[NSArray arrayWithObjects:kDocumentsRemovedFromSyncOnServerWithLocalChanges, kDocumentsDeletedOnServerWithLocalChanges, nil]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -93,7 +92,7 @@
     NSArray *syncObstacles = [[self.errorDictionary objectForKey:kDocumentsDeletedOnServerWithLocalChanges] mutableCopy];
     for (AlfrescoDocument *document in syncObstacles)
     {
-        [[SyncManager sharedManager] saveDeletedFavoriteFileBeforeRemovingFromSync:document];
+        [[SyncManager sharedManager] saveDeletedFileBeforeRemovingFromSync:document];
     }
 }
 
@@ -256,7 +255,7 @@
     NSString *key = [self keyForSection:cellIndexPath.section];
     NSArray *currentErrorArray = [self.errorDictionary objectForKey:key];
     AlfrescoDocument *document = currentErrorArray[cellIndexPath.row];
-    [[SyncManager sharedManager] syncUnfavoriteFileBeforeRemovingFromSync:document syncToServer:YES];
+    [[SyncManager sharedManager] syncFileBeforeRemovingFromSync:document syncToServer:YES];
     [self reloadTableView];
 }
 
@@ -267,7 +266,7 @@
     NSString *key = [self keyForSection:cellIndexPath.section];
     NSArray *currentErrorArray = [self.errorDictionary objectForKey:key];
     AlfrescoDocument *document = currentErrorArray[cellIndexPath.row];
-    [[SyncManager sharedManager] syncUnfavoriteFileBeforeRemovingFromSync:document syncToServer:NO];
+    [[SyncManager sharedManager] syncFileBeforeRemovingFromSync:document syncToServer:NO];
     [self reloadTableView];
 }
 

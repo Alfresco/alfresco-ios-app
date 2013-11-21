@@ -111,7 +111,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
-                    accountManager.selectedAccount = account;
+                    [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject]];
                 }
                 [self dismissViewControllerAnimated:YES completion:^{
                     [accountManager addAccount:account];

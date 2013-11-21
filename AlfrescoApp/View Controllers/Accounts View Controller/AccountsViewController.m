@@ -17,8 +17,8 @@
 #import "UniversalDevice.h"
 #import "MainMenuViewController.h"
 
-static NSInteger const kCellIndentationLevel = 2;
-static NSInteger const kCellIndentationWidth = 30;
+static NSInteger const kAccountSelectionButtonWidth = 32;
+static NSInteger const kAccountSelectionButtongHeight = 32;
 
 static NSInteger const kAccountRowNumber = 0;
 static NSInteger const kNetworksStartRowNumber = 1;
@@ -73,7 +73,10 @@ static NSInteger const kNetworksStartRowNumber = 1;
         }
         else
         {
-            [self.tableViewData addObject:[@[account] mutableCopy]];
+            NSMutableArray *accountData = [NSMutableArray array];
+            [accountData addObject:account];
+            [accountData addObjectsFromArray:account.accountNetworks];
+            [self.tableViewData addObject:accountData];
         }
     }
 }
@@ -138,6 +141,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     {
         cell = (AccountCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AccountCell class]) owner:self options:nil] lastObject];
     }
+    cell.accessoryView = [self createAccountSelectionButton];
     
     if (indexPath.row == kAccountRowNumber)
     {
@@ -146,32 +150,26 @@ static NSInteger const kNetworksStartRowNumber = 1;
         cell.textLabel.text = account.accountDescription;
         cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
         
-        if (account.isSelectedAccount)
+        if (account.accountType != AccountTypeCloud)
         {
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self updateAccountSelectionButtonImageForCell:cell isSelected:account.isSelectedAccount];
         }
         else
         {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            cell.accessoryView.hidden = YES;
         }
     }
     else
     {
-        NSString *identifier = self.tableViewData[indexPath.section][indexPath.row];
-        cell.textLabel.text = identifier;
-        cell.indentationWidth = kCellIndentationWidth;
-        cell.indentationLevel = kCellIndentationLevel;
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        NSString *networkIdentifier = self.tableViewData[indexPath.section][indexPath.row];
+        
+        cell.textLabel.font = (indexPath.row == kNetworksStartRowNumber) ? [UIFont boldSystemFontOfSize:[UIFont systemFontSize]] : [UIFont systemFontOfSize:[UIFont systemFontSize]];
+        cell.textLabel.text = networkIdentifier;
+        cell.imageView.image = [UIImage imageNamed:@"empty_icon"];
         
         UserAccount *account = self.tableViewData[indexPath.section][kAccountRowNumber];
-        if ([account.selectedNetworkId isEqualToString:identifier])
-        {
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
-        else
-        {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
+        BOOL isSelectedNetwork = [account.selectedNetworkId isEqualToString:networkIdentifier];
+        [self updateAccountSelectionButtonImageForCell:cell isSelected:isSelectedNetwork];
     }
     
     return cell;
@@ -179,56 +177,12 @@ static NSInteger const kNetworksStartRowNumber = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id item = self.tableViewData[indexPath.section][indexPath.row];
-    UserAccount *account = nil;
-    NSString *networkId = nil;
-    
-    if (indexPath.row > kAccountRowNumber && [item isKindOfClass:[NSString class]])
+    if (indexPath.row == kAccountRowNumber)
     {
-        account = self.tableViewData[indexPath.section][kAccountRowNumber];
-        networkId = (NSString *)item;
-        account.selectedNetworkId = (NSString *)item;
-    }
-    else
-    {
-        account = (UserAccount *)item;
-    }
-    
-    [[AccountManager sharedManager] setSelectedAccount:account];
-    
-    if (account.accountType == AccountTypeCloud && networkId == nil)
-    {
-        if ([self.tableViewData[indexPath.section] count] > 1)
-        {
-            [self hideAccountNetworks];
-        }
-        else
-        {
-            // temporary calling this service until bug on AlfrescoCloudSession  is resolved connectWithOAuthData:networkIdentifer:completionBlock: does not hit completion block
-            // unless it first authenticate cloud account using connectWithOAuthData:completionBlock:
-            [self showHUD];
-            [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil temporarySession:YES navigationConroller:self.navigationController completionBlock:^(BOOL successful) {
-                [self hideHUD];
-                if (successful)
-                {
-                    [self showAccountNetworksForAccount:account atIndexPath:(NSIndexPath *)indexPath];
-                }
-            }];
-        }
-    }
-    else
-    {
-        [self showHUD];
-        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful) {
-            
-            [self hideHUD];
-            
-            //[self showAccountNetworksForAccount:account atIndexPath:(NSIndexPath *)indexPath];
-            if (account.accountType == AccountTypeOnPremise)
-            {
-                [self hideAccountNetworks];
-            }
-        }];
+        UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
+        
+        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
+        [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
     }
 }
 
@@ -242,7 +196,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    return (indexPath.row == kAccountRowNumber);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -265,45 +219,62 @@ static NSInteger const kNetworksStartRowNumber = 1;
     [self presentViewController:addAccountNavigationController animated:YES completion:nil];
 }
 
-- (void)showAccountNetworksForAccount:(UserAccount *)account atIndexPath:(NSIndexPath *)indexPath
+#pragma mark - Private Methods
+
+- (UIButton *)createAccountSelectionButton
 {
-    [self hideAccountNetworks];
-    self.expandedSection = indexPath.section;
-    
-    if (account.accountNetworks)
-    {
-        [self.tableViewData[indexPath.section] addObjectsFromArray:account.accountNetworks];
-        
-        NSMutableArray *indexPaths = [NSMutableArray array];
-        for (int i = kNetworksStartRowNumber; i < [self.tableViewData[indexPath.section] count]; i++)
-        {
-            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
-        }
-        
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    }
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kAccountSelectionButtonWidth, kAccountSelectionButtongHeight)];
+    [button addTarget:self action:@selector(selectAccountButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
-- (void)hideAccountNetworks
+- (void)updateAccountSelectionButtonImageForCell:(AccountCell *)cell isSelected:(BOOL)isSelected
 {
-    if (self.expandedSection != NSNotFound && self.expandedSection < self.tableViewData.count)
+    UIImage *selectionImage = isSelected ? [UIImage imageNamed:@"green_selected_circle"] : [UIImage imageNamed:@"unselected_circle"];
+    [(UIButton *)cell.accessoryView setBackgroundImage:selectionImage forState:UIControlStateNormal];
+}
+
+- (void)selectAccountButtonClicked:(UIButton *)sender
+{
+    AccountCell *selectedCell = (AccountCell*)sender.superview;
+    
+    BOOL foundAcccountCell = NO;
+    while (!foundAcccountCell)
     {
-        NSMutableArray *tenants = self.tableViewData[self.expandedSection];
-        
-        if (tenants.count > 0)
+        if (![selectedCell isKindOfClass:[UITableViewCell class]])
         {
-            NSMutableArray *indexPaths = [NSMutableArray array];
-            for (int i = kNetworksStartRowNumber; i < tenants.count; i++)
-            {
-                [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:self.expandedSection]];
-            }
-            
-            tenants = [@[tenants[0]] mutableCopy];
-            
-            [self.tableViewData replaceObjectAtIndex:self.expandedSection withObject:tenants];
-            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
-            self.expandedSection = NSNotFound;
+            selectedCell = (AccountCell *)selectedCell.superview;
         }
+        else
+        {
+            foundAcccountCell = YES;
+        }
+    }
+    NSIndexPath *indexPathForSelectedCell = [self.tableView indexPathForCell:selectedCell];
+    
+    id item = self.tableViewData[indexPathForSelectedCell.section][indexPathForSelectedCell.row];
+    UserAccount *account = nil;
+    NSString *networkId = nil;
+    
+    if (indexPathForSelectedCell.row > kAccountRowNumber && [item isKindOfClass:[NSString class]])
+    {
+        account = self.tableViewData[indexPathForSelectedCell.section][kAccountRowNumber];
+        networkId = (NSString *)item;
+    }
+    else
+    {
+        account = (UserAccount *)item;
+    }
+    
+    if (account.accountType == AccountTypeOnPremise || networkId != nil)
+    {
+        [self showHUD];
+        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful) {
+            
+            [self hideHUD];
+            [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId];
+            [self.tableView reloadData];
+        }];
     }
 }
 

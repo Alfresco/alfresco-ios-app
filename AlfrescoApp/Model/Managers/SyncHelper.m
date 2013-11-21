@@ -83,8 +83,8 @@ static NSString * const kSyncContentDirectory = @"sync";
     for (SyncNodeInfo *nodeInfo in allNodeInfos)
     {
         // delete all sync node info records for current account so we get everything refreshed (except if file is changed locally but has changes - will be deleted after its uploaded)
-        BOOL isUnfavoritedHasLocalChanges = [nodeInfo.isUnfavoritedHasLocalChanges intValue];
-        if (!isUnfavoritedHasLocalChanges)
+        BOOL isRemovedFromSyncHasLocalChanges = [nodeInfo.isRemovedFromSyncHasLocalChanges intValue];
+        if (!isRemovedFromSyncHasLocalChanges)
         {
             [CoreDataUtils deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
         }
@@ -220,7 +220,7 @@ static NSString * const kSyncContentDirectory = @"sync";
 {
     // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
     SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
-    nodeInfo.isUnfavoritedHasLocalChanges = [NSNumber numberWithBool:NO];
+    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
     [CoreDataUtils saveContextForManagedObjectContext:managedContext];
 }
 
