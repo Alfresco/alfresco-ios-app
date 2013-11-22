@@ -65,10 +65,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         self.displayOverlayCloseButton = displaycloseButton;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(playbackDidFinish:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleUpdatedApplicationPolicyUpdated:)
                                                      name:kAlfrescoApplicationPolicyUpdatedNotification
                                                    object:nil];
@@ -211,9 +207,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         
         if ([Utility isAudioOrVideo:self.contentFilePath])
         {
-            // play the video
-//            [self playAudioOrVideo];
-            
             // update the state
             [self updatePreviewState:PreviewStateTypeAudioVideoEnabled];
         }
@@ -243,6 +236,14 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     }];
 }
 
+- (void)didMoveToParentViewController:(UIViewController *)parent
+{
+    if (parent && [Utility isAudioOrVideo:self.contentFilePath])
+    {
+        [self playAudioOrVideo];
+    }
+}
+
 #pragma mark - Private Functions
 
 - (void)playAudioOrVideo
@@ -251,24 +252,6 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:urlToFile];
     self.moviePlayerViewController = moviePlayer;
     [self presentMoviePlayerViewControllerAnimated:moviePlayer];
-}
-
-- (void)playbackDidFinish:(NSNotification *)notification
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *downloadDestinationPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[self.contentFilePath lastPathComponent]];
-    self.moviePlayerViewController = nil;
-    
-    if ([fileManager fileExistsAtPath:downloadDestinationPath])
-    {
-        NSError *removalError = nil;
-        [fileManager removeItemAtPath:downloadDestinationPath error:&removalError];
-        
-        if (removalError)
-        {
-            AlfrescoLogError([removalError localizedDescription]);
-        }
-    }
 }
 
 - (void)updatePreviewState:(PreviewStateType)previewType
