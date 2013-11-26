@@ -94,14 +94,14 @@
 
 #pragma mark - CloudSignUpViewControllerDelegate Functions
 
-- (void)cloudSignupControllerWillDismiss:(CloudSignUpViewController *)controller
+- (void)cloudSignupControllerDidDismiss:(CloudSignUpViewController *)controller
 {
     [Utility resetAppZoomLevelWithCompletionBlock:nil];
 }
 
 #pragma mark - AccountInfoViewControllerDelegate Functions
 
-- (void)accountInfoViewControllerWillDismiss:(AccountInfoViewController *)controller
+- (void)accountInfoViewControllerDidDismiss:(AccountInfoViewController *)controller
 {
     [Utility resetAppZoomLevelWithCompletionBlock:nil];
 }

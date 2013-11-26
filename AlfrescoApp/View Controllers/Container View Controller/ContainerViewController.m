@@ -26,6 +26,14 @@
     return self;
 }
 
+- (void)loadView
+{
+    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"[view]" options:NSLayoutFormatAlignAllCenterX metrics:nil views:NSDictionaryOfVariableBindings(view)];
+    [view addConstraints:constraints];
+    self.view = view;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -18,6 +18,7 @@
 
 static NSDictionary *iconMappings;
 static NSDateFormatter *dateFormatter;
+static CGFloat const kZoomAnimationSpeed = 0.2f;
 
 @interface Utility ()
 
@@ -395,7 +396,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
 
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock
 {
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:kZoomAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
         RootRevealControllerViewController *revealViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
         UIView *revealView = revealViewController.view;
         revealView.transform = CGAffineTransformMakeScale(0.9f, 0.9f);
@@ -409,7 +410,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
 
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock
 {
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:kZoomAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
         RootRevealControllerViewController *revealViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
         UIView *revealView = revealViewController.view;
         revealView.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
