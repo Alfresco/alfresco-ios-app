@@ -29,6 +29,8 @@
 #import "SyncViewController.h"
 #import "SettingsViewController.h"
 #import "AccountsViewController.h"
+#import "OnboardingViewController.h"
+#import "ContainerViewController.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -223,7 +225,17 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
         rootRevealViewController.detailViewController = splitViewController;
     }
     
-    return rootRevealViewController;
+    // check accounts and add this if applicable
+    if ([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0)
+    {
+        OnboardingViewController *onboardingViewController = [[OnboardingViewController alloc] init];
+        [rootRevealViewController addOverlayedViewController:onboardingViewController];
+    }
+    
+    // add reveal controller to the container
+    ContainerViewController *containerController = [[ContainerViewController alloc] initWithController:rootRevealViewController];
+    
+    return containerController;
 }
 
 #pragma mark - Public Interface

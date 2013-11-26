@@ -1,4 +1,3 @@
-//
 // TTTAttributedLabel.h
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
@@ -38,6 +37,31 @@ typedef enum {
  */
 extern NSString * const kTTTStrikeOutAttributeName;
 
+/**
+ The background fill color. Value must be a `CGColorRef`. Default value is `nil` (no fill).
+ */
+extern NSString * const kTTTBackgroundFillColorAttributeName;
+
+/**
+ The padding for the background fill. Value must be a `UIEdgeInsets`. Default value is `UIEdgeInsetsZero` (no padding).
+ */
+extern NSString * const kTTTBackgroundFillPaddingAttributeName;
+
+/**
+ The background stroke color. Value must be a `CGColorRef`. Default value is `nil` (no stroke).
+ */
+extern NSString * const kTTTBackgroundStrokeColorAttributeName;
+
+/**
+ The background stroke line width. Value must be an `NSNumber`. Default value is `1.0f`.
+ */
+extern NSString * const kTTTBackgroundLineWidthAttributeName;
+
+/**
+ The background corner radius. Value must be an `NSNumber`. Default value is `5.0f`.
+ */
+extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
+
 @protocol TTTAttributedLabelDelegate;
 
 // Override UILabel @property to accept both NSString and NSAttributedString
@@ -54,32 +78,17 @@ extern NSString * const kTTTStrikeOutAttributeName;
  
  - `text` - This property now takes an `id` type argument, which can either be a kind of `NSString` or `NSAttributedString` (mutable or immutable in both cases)
  - `lineBreakMode` - This property displays only the first line when the value is `UILineBreakModeHeadTruncation`, `UILineBreakModeTailTruncation`, or `UILineBreakModeMiddleTruncation`
- - `adjustsFontsizeToFitWidth` - This property is effective for any value of `numberOfLines` greater than zero
+ - `adjustsFontsizeToFitWidth` - Supported in iOS 5 and greater, this property is effective for any value of `numberOfLines` greater than zero. In iOS 4, setting `numberOfLines` to a value greater than 1 with `adjustsFontSizeToFitWidth` set to `YES` may cause `sizeToFit` to execute indefinitely.
  
- @warning Any properties changed on the label after setting the text will not be reflected until a subsequent call to `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`. This is to say, order of operations matters in this case. For example, if the label text color is originally black when the text is set, changing the text color to red will have no effect on the display of the label until the text is set once again. 
+ Any properties affecting text or paragraph styling, such as `firstLineIndent` will only apply when text is set with an `NSString`. If the text is set with an `NSAttributedString`, these properties will not apply.
+ 
+ ### NSCoding
+ 
+ `TTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
+ 
+ @warning Any properties changed on the label after setting the text will not be reflected until a subsequent call to `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`. This is to say, order of operations matters in this case. For example, if the label text color is originally black when the text is set, changing the text color to red will have no effect on the display of the label until the text is set once again.
  */
-@interface TTTAttributedLabel : UILabel <TTTAttributedLabel, UIGestureRecognizerDelegate> {
-@private
-    NSAttributedString *_attributedText;
-    CTFramesetterRef _framesetter;
-    BOOL _needsFramesetter;
-    
-    id _delegate;
-    UIDataDetectorTypes _dataDetectorTypes;
-    NSDataDetector *_dataDetector;
-    NSArray *_links;
-    NSDictionary *_linkAttributes;
-    
-    CGFloat _shadowRadius;
-    
-    CGFloat _leading;
-    CGFloat _lineHeightMultiple;
-    CGFloat _firstLineIndent;
-    UIEdgeInsets _textInsets;
-    TTTAttributedLabelVerticalAlignment _verticalAlignment;
-    
-    UITapGestureRecognizer *_tapGestureRecognizer;
-}
+@interface TTTAttributedLabel : UILabel <TTTAttributedLabel, UIGestureRecognizerDelegate>
 
 ///-----------------------------
 /// @name Accessing the Delegate
@@ -90,30 +99,40 @@ extern NSString * const kTTTStrikeOutAttributeName;
  
  @discussion A `TTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
  */
-@property (nonatomic, assign) id <TTTAttributedLabelDelegate> delegate;
+@property (nonatomic, unsafe_unretained) IBOutlet id <TTTAttributedLabelDelegate> delegate;
 
 ///--------------------------------------------
 /// @name Detecting, Accessing, & Styling Links
 ///--------------------------------------------
 
 /**
- A bitmask of `UIDataDetectorTypes` which are used to automatically detect links in the label text. This is `UIDataDetectorTypeNone` by default.
- 
- @warning You must specify `dataDetectorTypes` before setting the `text`, with either `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`.
+ @deprecated Use `enabledTextCheckingTypes` property instead.
  */
-@property (nonatomic, assign) UIDataDetectorTypes dataDetectorTypes;
+@property (nonatomic, assign) NSTextCheckingTypes dataDetectorTypes DEPRECATED_ATTRIBUTE;
+
+/**
+ A bitmask of `NSTextCheckingType` which are used to automatically detect links in the label text.
+
+ @warning You must specify `enabledTextCheckingTypes` before setting the `text`, with either `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`.
+ */
+@property (nonatomic, assign) NSTextCheckingTypes enabledTextCheckingTypes;
 
 /**
  An array of `NSTextCheckingResult` objects for links detected or manually added to the label text.
  */
-@property (readonly, nonatomic, retain) NSArray *links;
+@property (readonly, nonatomic, strong) NSArray *links;
 
 /**
  A dictionary containing the `NSAttributedString` attributes to be applied to links detected or manually added to the label text. The default link style is blue and underlined.
  
  @warning You must specify `linkAttributes` before setting autodecting or manually-adding links for these attributes to be applied.
  */
-@property (nonatomic, retain) NSDictionary *linkAttributes;
+@property (nonatomic, strong) NSDictionary *linkAttributes;
+
+/**
+ A dictionary containing the `NSAttributedString` attributes to be applied to links when they are in the active state. Supply `nil` or an empty dictionary to opt out of active link styling. The default active link style is red and underlined.
+ */
+@property (nonatomic, strong) NSDictionary *activeLinkAttributes;
 
 ///---------------------------------------
 /// @name Acccessing Text Style Attributes
@@ -123,6 +142,19 @@ extern NSString * const kTTTStrikeOutAttributeName;
  The shadow blur radius for the label. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0. 
  */
 @property (nonatomic, assign) CGFloat shadowRadius;
+
+/** 
+ The shadow blur radius for the label when the label's `highlighted` property is `YES`. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0.
+ */
+@property (nonatomic, assign) CGFloat highlightedShadowRadius;
+/** 
+ The shadow offset for the label when the label's `highlighted` property is `YES`. A size of {0, 0} indicates no offset, with positive values extending down and to the right. The default size is {0, 0}.
+ */
+@property (nonatomic, assign) CGSize highlightedShadowOffset;
+/** 
+ The shadow color for the label when the label's `highlighted` property is `YES`. The default value is `nil` (no shadow color).
+ */
+@property (nonatomic, strong) UIColor *highlightedShadowColor;
 
 ///--------------------------------------------
 /// @name Acccessing Paragraph Style Attributes
@@ -139,7 +171,7 @@ extern NSString * const kTTTStrikeOutAttributeName;
 @property (nonatomic, assign) CGFloat leading;
 
 /**
- The line height multiple. This value is 0.0 by default.
+ The line height multiple. This value is 1.0 by default.
  */
 @property (nonatomic, assign) CGFloat lineHeightMultiple;
 
@@ -163,6 +195,22 @@ extern NSString * const kTTTStrikeOutAttributeName;
  */
 @property (nonatomic, assign) TTTAttributedLabelVerticalAlignment verticalAlignment;
 
+///--------------------------------------------
+/// @name Accessing Truncation Token Appearance
+///--------------------------------------------
+
+/**
+ The truncation token that appears at the end of the truncated line. `nil` by default.
+
+ @discussion When truncation is enabled for the label, by setting `lineBreakMode` to either `UILineBreakModeHeadTruncation`, `UILineBreakModeTailTruncation`, or `UILineBreakModeMiddleTruncation`, the token used to terminate the truncated line will be `truncationTokenString` if defined, otherwise the Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026).
+ */
+@property (nonatomic, strong) NSString *truncationTokenString;
+
+/**
+ The attributes to apply to the truncation token at the end of a truncated line. If unspecified, attributes will be inherited from the preceding character.
+ */
+@property (nonatomic, strong) NSDictionary *truncationTokenStringAttributes;
+
 ///----------------------------------
 /// @name Setting the Text Attributes
 ///----------------------------------
@@ -184,7 +232,17 @@ extern NSString * const kTTTStrikeOutAttributeName;
  
  @discussion This string is `nil` by default.
  */
-- (void)setText:(id)text afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString *(^)(NSMutableAttributedString *mutableAttributedString))block;
+- (void)setText:(id)text
+afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString *(^)(NSMutableAttributedString *mutableAttributedString))block;
+
+///----------------------------------
+/// @name Accessing the Text Attributes
+///----------------------------------
+
+/**
+ A copy of the label's current attributedText. This returns `nil` if an attributed string has never been set on the label.
+ */
+@property (readwrite, nonatomic, copy) NSAttributedString *attributedText;
 
 ///-------------------
 /// @name Adding Links
@@ -194,9 +252,17 @@ extern NSString * const kTTTStrikeOutAttributeName;
  Adds a link to an `NSTextCheckingResult`.
  
  @param result An `NSTextCheckingResult` representing the link's location and type.
+ */
+- (void)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
+
+/**
+ Adds a link to an `NSTextCheckingResult`.
+ 
+ @param result An `NSTextCheckingResult` representing the link's location and type.
  @param attributes The attributes to be added to the text in the range of the specified link. If `nil`, no attributes are added.
  */
-- (void)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result attributes:(NSDictionary *)attributes;
+- (void)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
+                           attributes:(NSDictionary *)attributes;
 
 /**
  Adds a link to a URL for a specified range in the label text.
@@ -204,7 +270,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param url The url to be linked to
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  */
-- (void)addLinkToURL:(NSURL *)url withRange:(NSRange)range;
+- (void)addLinkToURL:(NSURL *)url
+           withRange:(NSRange)range;
 
 /**
  Adds a link to an address for a specified range in the label text.
@@ -214,7 +281,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  
  @discussion The address component dictionary keys are described in `NSTextCheckingResult`'s "Keys for Address Components." 
  */
-- (void)addLinkToAddress:(NSDictionary *)addressComponents withRange:(NSRange)range;
+- (void)addLinkToAddress:(NSDictionary *)addressComponents
+               withRange:(NSRange)range;
 
 /**
  Adds a link to a phone number for a specified range in the label text.
@@ -222,7 +290,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param phoneNumber The phone number to be linked to.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  */
-- (void)addLinkToPhoneNumber:(NSString *)phoneNumber withRange:(NSRange)range;
+- (void)addLinkToPhoneNumber:(NSString *)phoneNumber
+                   withRange:(NSRange)range;
 
 /**
  Adds a link to a date for a specified range in the label text.
@@ -230,7 +299,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param date The date to be linked to.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  */
-- (void)addLinkToDate:(NSDate *)date withRange:(NSRange)range;
+- (void)addLinkToDate:(NSDate *)date
+            withRange:(NSRange)range;
 
 /**
  Adds a link to a date with a particular time zone and duration for a specified range in the label text.
@@ -240,7 +310,19 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param duration The duration, in seconds from the specified date.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  */
-- (void)addLinkToDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone duration:(NSTimeInterval)duration withRange:(NSRange)range;
+- (void)addLinkToDate:(NSDate *)date
+             timeZone:(NSTimeZone *)timeZone
+             duration:(NSTimeInterval)duration
+            withRange:(NSRange)range;
+
+/**
+ Adds a link to transit information for a specified range in the label text.
+
+ @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
+ @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
+ */
+- (void)addLinkToTransitInformation:(NSDictionary *)components
+                          withRange:(NSRange)range;
 
 @end
 
@@ -260,7 +342,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param label The label whose link was selected.
  @param url The URL for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url;
+- (void)attributedLabel:(TTTAttributedLabel *)label
+   didSelectLinkWithURL:(NSURL *)url;
 
 /**
  Tells the delegate that the user did select a link to an address.
@@ -268,7 +351,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param label The label whose link was selected.
  @param addressComponents The components of the address for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithAddress:(NSDictionary *)addressComponents;
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didSelectLinkWithAddress:(NSDictionary *)addressComponents;
 
 /**
  Tells the delegate that the user did select a link to a phone number.
@@ -276,7 +360,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param label The label whose link was selected.
  @param phoneNumber The phone number for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
 
 /**
  Tells the delegate that the user did select a link to a date.
@@ -284,7 +369,8 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param label The label whose link was selected.
  @param date The datefor the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithDate:(NSDate *)date;
+- (void)attributedLabel:(TTTAttributedLabel *)label
+  didSelectLinkWithDate:(NSDate *)date;
 
 /**
  Tells the delegate that the user did select a link to a date with a time zone and duration.
@@ -294,5 +380,29 @@ extern NSString * const kTTTStrikeOutAttributeName;
  @param timeZone The time zone of the date for the selected link.
  @param duration The duration, in seconds from the date for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone duration:(NSTimeInterval)duration;
+- (void)attributedLabel:(TTTAttributedLabel *)label
+  didSelectLinkWithDate:(NSDate *)date
+               timeZone:(NSTimeZone *)timeZone
+               duration:(NSTimeInterval)duration;
+
+/**
+ Tells the delegate that the user did select a link to transit information
+
+ @param label The label whose link was selected.
+ @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didSelectLinkWithTransitInformation:(NSDictionary *)components;
+
+/**
+ Tells the delegate that the user did select a link to a text checking result.
+ 
+ @discussion This method is called if no other delegate method was called, which can occur by either now implementing the method in `TTTAttributedLabelDelegate` corresponding to a particular link, or the link was added by passing an instance of a custom `NSTextCheckingResult` subclass into `-addLinkWithTextCheckingResult:`.
+ 
+ @param label The label whose link was selected.
+ @param result The custom text checking result.
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
+
 @end
