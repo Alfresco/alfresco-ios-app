@@ -67,7 +67,16 @@ static NSInteger const kCloudSignUpActionSectionNumber = 1;
 
 - (void)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(cloudSignupControllerWillDismiss:)])
+    {
+        [self.delegate cloudSignupControllerWillDismiss:self];
+    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        if ([self.delegate respondsToSelector:@selector(cloudSignupControllerDidDismiss:)])
+        {
+            [self.delegate cloudSignupControllerDidDismiss:self];
+        }
+    }];
 }
 
 #pragma mark - TableView Datasource

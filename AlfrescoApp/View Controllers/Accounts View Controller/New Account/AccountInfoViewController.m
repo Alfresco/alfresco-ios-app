@@ -119,24 +119,37 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 -(void)saveButtonClicked:(id)sender
 {
     [self validateAccountOnServerWithCompletionBlock:^(BOOL successful) {
-        
-        AccountManager *accountManager = [AccountManager sharedManager];
-        
-        if (accountManager.totalNumberOfAddedAccounts == 0)
+        if (successful)
         {
-            [accountManager selectAccount:self.account selectNetwork:nil];
+            AccountManager *accountManager = [AccountManager sharedManager];
+            
+            if (accountManager.totalNumberOfAddedAccounts == 0)
+            {
+                [accountManager selectAccount:self.account selectNetwork:nil];
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
+            {
+                [self.delegate accountInfoViewController:self willDismissAfterAddingAccount:self.account];
+            }
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (self.activityType == AccountActivityTypeNewAccount)
+                {
+                    [accountManager addAccount:self.account];
+                }
+                else
+                {
+                    [accountManager saveAccountsToKeychain];
+                }
+                
+                if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
+                {
+                    [self.delegate accountInfoViewController:self didDismissAfterAddingAccount:self.account];
+                }
+            }];
         }
         
-        [self dismissViewControllerAnimated:YES completion:^{
-            if (self.activityType == AccountActivityTypeNewAccount)
-            {
-                [accountManager addAccount:self.account];
-            }
-            else
-            {
-                [accountManager saveAccountsToKeychain];
-            }
-        }];
     }];
 }
 
@@ -150,7 +163,16 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 
 - (void)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(accountInfoViewControllerWillDismiss:)])
+    {
+        [self.delegate accountInfoViewControllerWillDismiss:self];
+    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        if ([self.delegate respondsToSelector:@selector(accountInfoViewControllerDidDismiss:)])
+        {
+            [self.delegate accountInfoViewControllerDidDismiss:self];
+        }
+    }];
 }
 
 #pragma mark - TableView Datasource

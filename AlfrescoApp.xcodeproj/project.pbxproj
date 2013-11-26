@@ -84,6 +84,15 @@
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
+		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
+		73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73190195184365AA002C82C1 /* OnboardingViewController.xib */; };
+		7319019E1843B614002C82C1 /* onboarding-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 7319019C1843B614002C82C1 /* onboarding-blue.png */; };
+		7319019F1843B614002C82C1 /* onboarding-grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 7319019D1843B614002C82C1 /* onboarding-grey.png */; };
+		731901A21844B490002C82C1 /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901A11844B490002C82C1 /* ContainerViewController.m */; };
+		731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */; };
+		731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
+		731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A81844D217002C82C1 /* onboarding-blue@2x.png */; };
+		731901AB1844D217002C82C1 /* onboarding-grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A91844D217002C82C1 /* onboarding-grey@2x.png */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
@@ -158,7 +167,7 @@
 		73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */; };
 		73B959DB17A67A760099FB84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D317A67A760099FB84 /* MBProgressHUD.m */; };
 		73B959DC17A67A760099FB84 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D617A67A760099FB84 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D917A67A760099FB84 /* TTTAttributedLabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D917A67A760099FB84 /* TTTAttributedLabel.m */; };
 		73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959DE17A6844B0099FB84 /* QuartzCore.framework */; };
 		73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959E017A684550099FB84 /* AVFoundation.framework */; };
 		73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959E217A684690099FB84 /* ImageIO.framework */; };
@@ -510,6 +519,17 @@
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
 		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
 		73190190183CDF26002C82C1 /* DocumentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentOverlayView.m; path = "Document Overlay View/DocumentOverlayView.m"; sourceTree = "<group>"; };
+		73190193184365AA002C82C1 /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnboardingViewController.h; path = "Onboarding View Controller/OnboardingViewController.h"; sourceTree = "<group>"; };
+		73190194184365AA002C82C1 /* OnboardingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnboardingViewController.m; path = "Onboarding View Controller/OnboardingViewController.m"; sourceTree = "<group>"; };
+		73190195184365AA002C82C1 /* OnboardingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OnboardingViewController.xib; path = "Onboarding View Controller/OnboardingViewController.xib"; sourceTree = "<group>"; };
+		7319019C1843B614002C82C1 /* onboarding-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-blue.png"; sourceTree = "<group>"; };
+		7319019D1843B614002C82C1 /* onboarding-grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-grey.png"; sourceTree = "<group>"; };
+		731901A01844B490002C82C1 /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContainerViewController.h; path = "Container View Controller/ContainerViewController.h"; sourceTree = "<group>"; };
+		731901A11844B490002C82C1 /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContainerViewController.m; path = "Container View Controller/ContainerViewController.m"; sourceTree = "<group>"; };
+		731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfrescoColourLogo.png; sourceTree = "<group>"; };
+		731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alfrescoColourLogo@2x.png"; sourceTree = "<group>"; };
+		731901A81844D217002C82C1 /* onboarding-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-blue@2x.png"; sourceTree = "<group>"; };
+		731901A91844D217002C82C1 /* onboarding-grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-grey@2x.png"; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -1314,6 +1334,36 @@
 			name = "Document Overlay View";
 			sourceTree = "<group>";
 		};
+		7319019218436504002C82C1 /* Onboarding View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73190193184365AA002C82C1 /* OnboardingViewController.h */,
+				73190194184365AA002C82C1 /* OnboardingViewController.m */,
+				73190195184365AA002C82C1 /* OnboardingViewController.xib */,
+			);
+			name = "Onboarding View Controller";
+			sourceTree = "<group>";
+		};
+		7319019B1843B614002C82C1 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				7319019C1843B614002C82C1 /* onboarding-blue.png */,
+				7319019D1843B614002C82C1 /* onboarding-grey.png */,
+				731901A81844D217002C82C1 /* onboarding-blue@2x.png */,
+				731901A91844D217002C82C1 /* onboarding-grey@2x.png */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		731901A31844B49A002C82C1 /* Container View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				731901A01844B490002C82C1 /* ContainerViewController.h */,
+				731901A11844B490002C82C1 /* ContainerViewController.m */,
+			);
+			name = "Container View Controller";
+			sourceTree = "<group>";
+		};
 		732F275117FAC57C00BAFDDE /* Detail Split View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -1763,11 +1813,13 @@
 				08B61F9B1804076800C827EA /* Custom Popovers */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
+				731901A31844B49A002C82C1 /* Container View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
 				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
 				73B95AC317A68DF20099FB84 /* Comments View Controller */,
 				73632ADF1802E574007172EE /* Document Preview Controller */,
 				73B95AC817A68DF20099FB84 /* Downloads View Controller */,
+				7319019218436504002C82C1 /* Onboarding View Controller */,
 				73B95ACC17A68DF20099FB84 /* License View Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
 				73B95AD217A68DF20099FB84 /* Metadata View Controller */,
@@ -1863,6 +1915,7 @@
 				73B95A2417A68B7E0099FB84 /* Logo */,
 				73A26A6F18364328006C1D81 /* Main Menu Icons */,
 				73B95A2917A68B7E0099FB84 /* Navigation */,
+				7319019B1843B614002C82C1 /* Onboarding */,
 				73B95A2E17A68B7E0099FB84 /* Pull To Refresh */,
 				73B95A3117A68B7E0099FB84 /* System Notification */,
 				73B95A3817A68B7E0099FB84 /* Tabbar */,
@@ -1962,6 +2015,8 @@
 			children = (
 				73B95A2517A68B7E0099FB84 /* alfresco.png */,
 				73B95A2617A68B7E0099FB84 /* alfresco@2x.png */,
+				731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */,
+				731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */,
 				73B95A2717A68B7E0099FB84 /* authorisationLogo.png */,
 				73B95A2817A68B7E0099FB84 /* authorisationLogo@2x.png */,
 			);
@@ -2762,6 +2817,7 @@
 				0833246517F98CED00EE6AA8 /* sync-status-failed@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
+				731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */,
 				73B95A6A17A68B7E0099FB84 /* folder@2x.png in Resources */,
 				73B95A6B17A68B7E0099FB84 /* generic.png in Resources */,
 				73A26A8918364641006C1D81 /* settings-main-menu.png in Resources */,
@@ -2788,6 +2844,7 @@
 				73B95A7917A68B7E0099FB84 /* mime_txt.png in Resources */,
 				73B95A7A17A68B7E0099FB84 /* mime_txt@2x.png in Resources */,
 				73B95A7B17A68B7E0099FB84 /* mime_video.png in Resources */,
+				73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */,
 				73B95A7C17A68B7E0099FB84 /* mime_video@2x.png in Resources */,
 				73B95A7D17A68B7E0099FB84 /* mime_xls.png in Resources */,
 				73A26A8A18364641006C1D81 /* sites-main-menu.png in Resources */,
@@ -2840,6 +2897,7 @@
 				73B95A9817A68B7E0099FB84 /* system_notice_error.png in Resources */,
 				73B95A9917A68B7E0099FB84 /* system_notice_error@2x.png in Resources */,
 				73B95A9A17A68B7E0099FB84 /* system_notice_info.png in Resources */,
+				731901AB1844D217002C82C1 /* onboarding-grey@2x.png in Resources */,
 				73B95A9B17A68B7E0099FB84 /* system_notice_info@2x.png in Resources */,
 				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
@@ -2875,11 +2933,14 @@
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
+				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
+				7319019E1843B614002C82C1 /* onboarding-blue.png in Resources */,
 				73B95AB517A68B7E0099FB84 /* site-action-join.png in Resources */,
 				73B95AB617A68B7E0099FB84 /* site-action-join@2x.png in Resources */,
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
+				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
 				0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */,
 				08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
@@ -2893,6 +2954,7 @@
 				0804DCC3181A6BAB00E3ACC2 /* cloud.png in Resources */,
 				73B95AC017A68B7E0099FB84 /* comments@2x.png in Resources */,
 				73B95AC117A68B7E0099FB84 /* download.png in Resources */,
+				7319019F1843B614002C82C1 /* onboarding-grey.png in Resources */,
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
 				73A26A8718364641006C1D81 /* download-main-menu.png in Resources */,
@@ -2932,6 +2994,7 @@
 				73F634D617E34A990065590E /* AlfrescoSortingUtils.m in Sources */,
 				73F634BF17E34A990065590E /* AlfrescoWorkflowPlaceholderProcessDefinitionService.m in Sources */,
 				0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */,
+				731901A21844B490002C82C1 /* ContainerViewController.m in Sources */,
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
@@ -3089,6 +3152,7 @@
 				73B95AFA17A68DF20099FB84 /* VersionHistoryViewController.m in Sources */,
 				73E9E1FF17E352C900A198B4 /* AlfrescoCMISObjectConverter.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
+				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				73F634C617E34A990065590E /* AlfrescoCloudNetwork.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,

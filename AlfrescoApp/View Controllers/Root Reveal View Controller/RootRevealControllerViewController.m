@@ -26,6 +26,8 @@ static const CGFloat kAnimationSpeed = 0.2f;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, assign) BOOL shouldExpandOrCollapse;
 
+@property (nonatomic, strong) UIViewController *overlayedViewController;
+
 @end
 
 @implementation RootRevealControllerViewController
@@ -79,6 +81,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     view.backgroundColor = [UIColor underPageBackgroundColor];
     
     view.autoresizesSubviews = YES;
+    view.clipsToBounds = YES;
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view = view;
 }
@@ -143,6 +146,27 @@ static const CGFloat kAnimationSpeed = 0.2f;
             self.isExpanded = NO;
         }];
     }
+}
+
+- (void)addOverlayedViewController:(UIViewController *)overlayViewController
+{
+    overlayViewController.view.frame = self.view.frame;
+    [self addChildViewController:overlayViewController];
+    [self.view addSubview:overlayViewController.view];
+    [overlayViewController didMoveToParentViewController:self];
+    
+    self.overlayedViewController = overlayViewController;
+}
+
+- (void)removeOverlayedViewController
+{
+    [UIView animateWithDuration:0.3f animations:^{
+        self.overlayedViewController.view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [self willMoveToParentViewController:nil];
+        [self.overlayedViewController.view removeFromSuperview];
+        [self.overlayedViewController removeFromParentViewController];
+    }];
 }
 
 #pragma mark - Private Functions
