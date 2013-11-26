@@ -10,11 +10,31 @@
 #import "TextFieldCell.h"
 #import "ButtonCell.h"
 #import "Utility.h"
+#import "RequestHandler.h"
+#import "UserAccount.h"
+#import "AccountManager.h"
+#import "CenterLabelCell.h"
+#import "AttributedLabelCell.h"
 
-static NSInteger const kCloudSignUpActionSectionNumber = 1;
+static NSInteger const kCloudSignUpActionSection = 1;
+static NSInteger const kCloudRefreshSection = 1;
+static NSInteger const kCloudReEmailSection = 2;
+
+static NSInteger kAwaitingVerificationTextFontSize = 20;
+
+static CGFloat const kNormalRowHeight = 44.0f;
+
+static NSString * const kFirstNameKey = @"firstName";
+static NSString * const kLastNameKey = @"lastName";
+static NSString * const kEmailKey = @"email";
+static NSString * const kPasswordKey = @"password";
+static NSString * const kSourceKey = @"source";
+static NSString * const kSource = @"mobile";
+static NSString * const kCloudAPIHeaderKey = @"key";
 
 @interface CloudSignUpViewController ()
 @property (nonatomic, strong) NSArray *tableGroups;
+@property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UITextField *firstNameTextField;
 @property (nonatomic, strong) UITextField *LastNameTextField;
 @property (nonatomic, strong) UITextField *emailTextField;
@@ -23,16 +43,17 @@ static NSInteger const kCloudSignUpActionSectionNumber = 1;
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, strong) UIButton *signUpButton;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
+@property (nonatomic, strong) NSString *awaitingVerificationText;
 @end
 
 @implementation CloudSignUpViewController
 
-- (id)init
+- (id)initWithAccount:(UserAccount *)account
 {
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:nil];
     if (self)
     {
-        
+        self.account = account;
     }
     return self;
 }
@@ -41,28 +62,37 @@ static NSInteger const kCloudSignUpActionSectionNumber = 1;
 {
     [super viewDidLoad];
 	
-    self.title = NSLocalizedString(@"cloudsignup.title", @"New Account");
-    [self disablePullToRefresh];
+    if (self.account)
+    {
+        self.title = NSLocalizedString(@"awaitingverification.title", @"Alfresco Cloud");
+    }
+    else
+    {
+        self.title = NSLocalizedString(@"cloudsignup.title", @"New Account");
+        
+        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                target:self
+                                                                                action:@selector(cancel:)];
+        self.navigationItem.leftBarButtonItem = cancel;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textFieldDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWasShown:)
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillBeHidden:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
     
+    [self disablePullToRefresh];
     [self constructTableCells];
     [self validateSignUpFields];
-    
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                            target:self
-                                                                            action:@selector(cancel:)];
-    self.navigationItem.leftBarButtonItem = cancel;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidChange:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)cancel:(id)sender
@@ -84,11 +114,24 @@ static NSInteger const kCloudSignUpActionSectionNumber = 1;
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == kCloudSignUpActionSectionNumber)
+    if (!self.account && (section == kCloudSignUpActionSection))
     {
         return [self cloudAccountFooter];
     }
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ((self.account.accountStatus == AccountStatusAwaitingVerification) && indexPath.section == 0)
+    {
+        return ceilf([self.awaitingVerificationText sizeWithFont:[UIFont systemFontOfSize:kAwaitingVerificationTextFontSize]
+                                               constrainedToSize:CGSizeMake(tableView.bounds.size.width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height);
+    }
+    else
+    {
+        return kNormalRowHeight;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -98,78 +141,190 @@ static NSInteger const kCloudSignUpActionSectionNumber = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    selectedCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self.account && self.account.accountStatus == AccountStatusAwaitingVerification)
+    {
+        if (indexPath.section == kCloudRefreshSection)
+        {
+            [self refreshCloudSignupRequest];
+        }
+        else if (indexPath.section == kCloudReEmailSection)
+        {
+            [self resentCloudSignupEmail];
+        }
+    }
+    else
+    {
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        selectedCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
 }
 
 - (void)constructTableCells
 {
-    TextFieldCell *firstNameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-    firstNameCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.firstName", @"First Name");
-    firstNameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-    firstNameCell.valueTextField.returnKeyType = UIReturnKeyNext;
-    firstNameCell.valueTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    firstNameCell.valueTextField.delegate = self;
-    self.firstNameTextField = firstNameCell.valueTextField;
+    NSArray *group1 = nil;
+    NSArray *group2 = nil;
+    NSArray *group3 = nil;
+    if (self.account == nil)
+    {
+        TextFieldCell *firstNameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        firstNameCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.firstName", @"First Name");
+        firstNameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+        firstNameCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        firstNameCell.valueTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+        firstNameCell.valueTextField.delegate = self;
+        self.firstNameTextField = firstNameCell.valueTextField;
+        
+        TextFieldCell *lastNameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        lastNameCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.lastName", @"Last Name");
+        lastNameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+        lastNameCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        lastNameCell.valueTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+        lastNameCell.valueTextField.delegate = self;
+        self.LastNameTextField = lastNameCell.valueTextField;
+        
+        TextFieldCell *emailCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        emailCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.email", @"Email address");
+        emailCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.email", @"example@acme.com");
+        emailCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        emailCell.valueTextField.keyboardType = UIKeyboardTypeEmailAddress;
+        emailCell.valueTextField.delegate = self;
+        self.emailTextField = emailCell.valueTextField;
+        
+        TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        passwordCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.password", @"Password");
+        passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.password.requirement", @"password minimum characters");
+        passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        passwordCell.valueTextField.secureTextEntry = YES;
+        passwordCell.valueTextField.delegate = self;
+        self.passwordTextField = passwordCell.valueTextField;
+        
+        TextFieldCell *confirmPasswordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        confirmPasswordCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm Password");
+        confirmPasswordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+        confirmPasswordCell.valueTextField.returnKeyType = UIReturnKeyDone;
+        confirmPasswordCell.valueTextField.secureTextEntry = YES;
+        confirmPasswordCell.valueTextField.delegate = self;
+        self.confirmPasswordTextField = confirmPasswordCell.valueTextField;
+        
+        ButtonCell *signUpCell = (ButtonCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([ButtonCell class]) owner:self options:nil] lastObject];
+        [signUpCell.button setTitle:NSLocalizedString(@"cloudsignup.button.signup", @"Sign Up") forState:UIControlStateNormal];
+        [signUpCell.button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
+        signUpCell.button.enabled = NO;
+        self.signUpButton = signUpCell.button;
+        
+        group1 = @[firstNameCell, lastNameCell, emailCell, passwordCell, confirmPasswordCell];
+        group2 = @[signUpCell];
+        self.tableGroups = @[group1, group2];
+    }
+    else if (self.account.accountStatus == AccountStatusAwaitingVerification)
+    {
+        CenterLabelCell *refreshCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        refreshCell.titleLabel.text = NSLocalizedString(@"awaitingverification.buttons.refresh", @"Refresh");
+        
+        CenterLabelCell *resendEmailCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        resendEmailCell.titleLabel.text = NSLocalizedString(@"awaitingverification.buttons.resendEmail", @"Browse Documents");
+        
+        group1 = @[[self awaitingVerificationCell]];
+        group2 = @[refreshCell];
+        group3 = @[resendEmailCell];
+        self.tableGroups = @[group1, group2, group3];
+    }
+}
+
+- (AttributedLabelCell *)awaitingVerificationCell
+{
+    AttributedLabelCell *attributedLabelCell = (AttributedLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AttributedLabelCell class]) owner:self options:nil] lastObject];
+    TTTAttributedLabel *label = attributedLabelCell.attributedLabel;
     
-    TextFieldCell *lastNameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-    lastNameCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.lastName", @"Last Name");
-    lastNameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-    lastNameCell.valueTextField.returnKeyType = UIReturnKeyNext;
-    lastNameCell.valueTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    lastNameCell.valueTextField.delegate = self;
-    self.LastNameTextField = lastNameCell.valueTextField;
+    label.textColor = [UIColor blackColor];
+    label.backgroundColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentLeft;
+    self.awaitingVerificationText = [NSString stringWithFormat:NSLocalizedString(@"awaitingverification.description", @"Account Awaiting Email Verification..."), self.account.username];
     
-    TextFieldCell *emailCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-    emailCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.email", @"Email address");
-    emailCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.email", @"example@acme.com");
-    emailCell.valueTextField.returnKeyType = UIReturnKeyNext;
-    emailCell.valueTextField.keyboardType = UIKeyboardTypeEmailAddress;
-    emailCell.valueTextField.delegate = self;
-    self.emailTextField = emailCell.valueTextField;
+    [label setText:self.awaitingVerificationText afterInheritingLabelAttributesAndConfiguringWithBlock:
+     ^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString)
+     {
+         NSRange titleRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.title", @"email verification")];
+         NSRange helpRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.subtitle", @"having trouble activating")];
+         UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kAwaitingVerificationTextFontSize];
+         CTFontRef font = CTFontCreateWithName((CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
+         if (font)
+         {
+             [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:titleRange];
+             [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:helpRange];
+             CFRelease(font);
+         }
+         return mutableAttributedString;
+     }];
+    [label sizeToFit];
     
-    TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-    passwordCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.password", @"Password");
-    passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.password.requirement", @"password minimum characters");
-    passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
-    passwordCell.valueTextField.secureTextEntry = YES;
-    passwordCell.valueTextField.delegate = self;
-    self.passwordTextField = passwordCell.valueTextField;
-    
-    TextFieldCell *confirmPasswordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-    confirmPasswordCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm Password");
-    confirmPasswordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-    confirmPasswordCell.valueTextField.returnKeyType = UIReturnKeyDone;
-    confirmPasswordCell.valueTextField.secureTextEntry = YES;
-    confirmPasswordCell.valueTextField.delegate = self;
-    self.confirmPasswordTextField = confirmPasswordCell.valueTextField;
-    
-    ButtonCell *signUpCell = (ButtonCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([ButtonCell class]) owner:self options:nil] lastObject];
-    [signUpCell.button setTitle:NSLocalizedString(@"cloudsignup.button.signup", @"Sign Up") forState:UIControlStateNormal];
-    [signUpCell.button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
-    signUpCell.button.enabled = NO;
-    self.signUpButton = signUpCell.button;
-    
-    NSArray *group1 = @[firstNameCell, lastNameCell, emailCell, passwordCell, confirmPasswordCell];
-    NSArray *group2 = @[signUpCell];
-    self.tableGroups = @[group1, group2];
+    NSString *customerCareUrl = kAlfrescoCloudCustomerCareUrl;
+    NSRange textRange = [label.text rangeOfString:NSLocalizedString(@"awaitingverification.description.customerCare", @"customer care url") options:NSBackwardsSearch];
+    if (textRange.length > 0)
+    {
+        [label addLinkToURL:[NSURL URLWithString:customerCareUrl] withRange:textRange];
+        [label setDelegate:self];
+    }
+    return attributedLabelCell;
 }
 
 #pragma mark - private methods
 
-- (void)signUp:(id)sender
+- (void)refreshCloudSignupRequest
 {
-    NSLog(@"signup button pressed");
+    
+}
+
+- (void)resentCloudSignupEmail
+{
+    
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
+    AlfrescoLogDebug(@"link selected: %@", url.path);
     [[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)signUp:(id)sender
+{
+    NSDictionary *accountInfo = @{kEmailKey : self.emailTextField.text,
+                                  kFirstNameKey : self.firstNameTextField.text,
+                                  kLastNameKey : self.LastNameTextField.text,
+                                  kPasswordKey : self.passwordTextField.text,
+                                  kSourceKey : kSource};
+    
+    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    
+    RequestHandler *request = [[RequestHandler alloc] init];
+    [self showHUD];
+    [request connectWithURL:[NSURL URLWithString:kAlfrescoCloudAPISignUpUrl] method:kHTTPMethodPOST headers:headers requestBody:mutableJSONDataFromDictionary(accountInfo) completionBlock:^(NSData *data, NSError *error) {
+        
+        [self hideHUD];
+        if (error)
+        {
+            AlfrescoLogDebug(@"Signup Error: %@", error);
+        }
+        else
+        {
+            UserAccount *account = [[UserAccount alloc] initWithAccountType:AccountTypeCloud];
+            account.accountStatus = AccountStatusAwaitingVerification;
+            account.username = self.emailTextField.text;
+            account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
+            
+            [[AccountManager sharedManager] addAccount:account];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
 }
 
 - (UIView *)cloudAccountFooter
 {
-    CGFloat footerWidth = IS_IPAD ? 540 : (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? 480 : 320);
+    static NSInteger iPadFoodterWidth = 540;
+    static NSInteger iPhoneLandscapeFooterWidth = 480;
+    static NSInteger iPhonePortraitFootrWidth = 320;
+    
+    CGFloat footerWidth = IS_IPAD ? iPadFoodterWidth : (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? iPhoneLandscapeFooterWidth : iPhonePortraitFootrWidth);
     NSString *footerText = NSLocalizedString(@"cloudsignup.footer.firstLine", @"By tapping 'Sign Up'...");
     NSString *signupText = NSLocalizedString(@"cloudsignup.footer.secondLine", @"Alfresco Terms of ...");
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, footerWidth, 0)];

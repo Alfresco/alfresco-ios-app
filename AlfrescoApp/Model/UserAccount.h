@@ -14,6 +14,14 @@ typedef NS_ENUM(NSInteger, AccountType)
     AccountTypeCloud
 };
 
+typedef NS_ENUM(NSInteger, AccountStatus)
+{
+    AccountStatusActive,
+    AccountStatusAwaitingVerification,
+    AccountStatusConnectionError,
+    AccountStatusInvalidCredentials
+};
+
 @interface UserAccount : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *accountIdentifier;
@@ -29,6 +37,7 @@ typedef NS_ENUM(NSInteger, AccountType)
 @property (nonatomic, assign) BOOL isSelectedAccount;
 @property (nonatomic, strong) NSString *selectedNetworkId;
 @property (nonatomic, strong) NSArray *accountNetworks;
+@property (nonatomic, assign) AccountStatus accountStatus;
 
 - (instancetype)initWithAccountType:(AccountType)accountType;
 

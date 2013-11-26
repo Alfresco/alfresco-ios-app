@@ -16,6 +16,7 @@ NSString * const kImageMappingPlist = @"ImageMapping";
 
 NSString * const kProtocolHTTP = @"http";
 NSString * const kProtocolHTTPS = @"https";
+NSString * const kHTTPMethodPOST = @"POST";
 
 // Notificiations
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
@@ -102,6 +103,7 @@ NSString * const kEditFileServiceParameterDocumentFileName = @"documentFileName"
 NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";
 
 // Cloud Sign Up
+NSString * const kAlfrescoCloudAPISignUpUrl = @"https://a.alfresco.me/alfresco/a/-default-/internal/cloud/accounts/signupqueue";
 NSString * const kAlfrescoCloudTermOfServiceUrl = @"http://www.alfresco.com/legal/agreements/cloud/";
 NSString * const kAlfrescoCloudPrivacyPolicyUrl = @"http://www.alfresco.com/privacy/";
 NSString * const kAlfrescoCloudCustomerCareUrl = @"https://getsatisfaction.com/alfresco/products/alfresco_alfresco_mobile_app";
