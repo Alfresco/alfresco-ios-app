@@ -64,11 +64,6 @@
     self.tableView.dataSource = self;
     self.view.autoresizesSubviews = YES;
     
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-    {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
     // Pull to Refresh
     [self enablePullToRefresh];
 }
