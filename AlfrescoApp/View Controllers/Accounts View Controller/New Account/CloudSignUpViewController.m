@@ -251,21 +251,20 @@ static NSString * const kSource = @"mobile";
     label.textAlignment = NSTextAlignmentLeft;
     self.awaitingVerificationText = [NSString stringWithFormat:NSLocalizedString(@"awaitingverification.description", @"Account Awaiting Email Verification..."), self.account.username];
     
-    [label setText:self.awaitingVerificationText afterInheritingLabelAttributesAndConfiguringWithBlock:
-     ^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString)
-     {
-         NSRange titleRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.title", @"email verification")];
-         NSRange helpRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.subtitle", @"having trouble activating")];
-         UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kAwaitingVerificationTextFontSize];
-         CTFontRef font = CTFontCreateWithName((CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
-         if (font)
-         {
-             [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:titleRange];
-             [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:helpRange];
-             CFRelease(font);
-         }
-         return mutableAttributedString;
-     }];
+    [label setText:self.awaitingVerificationText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+        
+        NSRange titleRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.title", @"email verification")];
+        NSRange helpRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.subtitle", @"having trouble activating")];
+        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kAwaitingVerificationTextFontSize];
+        CTFontRef font = CTFontCreateWithName((CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
+        if (font)
+        {
+            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:titleRange];
+            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:helpRange];
+            CFRelease(font);
+        }
+        return mutableAttributedString;
+    }];
     [label sizeToFit];
     
     NSString *customerCareUrl = kAlfrescoCloudCustomerCareUrl;
@@ -284,7 +283,7 @@ static NSString * const kSource = @"mobile";
 {
     AccountManager *accountManager = [AccountManager sharedManager];
     [self showHUD];
-    [accountManager updateAccountStatusInfoForAccount:self.account completionBlock:^(BOOL successful) {
+    [accountManager updateAccountStatusForAccount:self.account completionBlock:^(BOOL successful) {
         
         [self hideHUD];
         if (successful)

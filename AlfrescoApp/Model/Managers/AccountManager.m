@@ -141,12 +141,12 @@
         
         if (account.accountType == AccountTypeCloud && account.accountStatus == AccountStatusAwaitingVerification)
         {
-            [self updateAccountStatusInfoForAccount:account completionBlock:nil];
+            [self updateAccountStatusForAccount:account completionBlock:nil];
         }
     }
 }
 
-- (void)updateAccountStatusInfoForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful))completionBlock
+- (void)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful))completionBlock
 {
     NSString *accountStatusUrl = [kAlfrescoCloudAPIAccountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountID withString:account.cloudAccountId];
     accountStatusUrl = [accountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountKey withString:account.cloudAccountKey];
