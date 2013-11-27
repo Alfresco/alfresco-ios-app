@@ -79,7 +79,7 @@
     {
         [self displayViewController:mainMenuItem.viewController];
     }
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
     [rootViewController collapseViewController];
 }
 

@@ -140,6 +140,11 @@ static CGFloat kSearchCellHeight = 60.0f;
     }
     
     [self loadThumbnailMappings];
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 #pragma mark - Table view data source

@@ -17,5 +17,7 @@
 
 - (void)expandViewController;
 - (void)collapseViewController;
+- (void)addOverlayedViewController:(UIViewController *)overlayViewController;
+- (void)removeOverlayedViewController;
 
 @end

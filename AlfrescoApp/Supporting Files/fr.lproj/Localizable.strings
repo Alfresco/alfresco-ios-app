@@ -426,5 +426,12 @@
 "settings.title" = "Settings";
 
 /**
+ * Onboarding View Controller
+ */
+"onboarding.setup.cloud.button.title" = "Signup for Cloud";
+"onboarding.setup.existing.account.button.title" = "Use existing account";
+"onboarding.help.button.title" = "help";
+
+/**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */

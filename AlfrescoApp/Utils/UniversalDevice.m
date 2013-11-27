@@ -12,6 +12,7 @@
 #import "NavigationViewController.h"
 #import "ItemInDetailViewProtocol.h"
 #import "PlaceholderViewController.h"
+#import "ContainerViewController.h"
 
 @implementation UniversalDevice
 
@@ -21,9 +22,10 @@
     {
         UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         
-        if ([rootViewController isKindOfClass:[RootRevealControllerViewController class]])
+        if ([rootViewController isKindOfClass:[ContainerViewController class]])
         {
-            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)rootViewController;
+            ContainerViewController *containerViewController = (ContainerViewController *)rootViewController;
+            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)containerViewController.rootViewController;
             UIViewController *rootDetailController = splitViewController.detailViewController;
             if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
             {
@@ -85,9 +87,10 @@
     {
         UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         
-        if ([rootViewController isKindOfClass:[RootRevealControllerViewController class]])
+        if ([rootViewController isKindOfClass:[ContainerViewController class]])
         {
-            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)rootViewController;
+            ContainerViewController *containerViewController = (ContainerViewController *)rootViewController;
+            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)containerViewController.rootViewController;
             UIViewController *rootDetailController = splitViewController.detailViewController;
             if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
             {
@@ -138,9 +141,10 @@
 {
     UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     
-    if ([rootViewController isKindOfClass:[RootRevealControllerViewController class]])
+    if ([rootViewController isKindOfClass:[ContainerViewController class]])
     {
-        RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)rootViewController;
+        ContainerViewController *containerViewController = (ContainerViewController *)rootViewController;
+        RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)containerViewController.rootViewController;
         UIViewController *rootDetailController = splitViewController.detailViewController;
         if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
         {
@@ -150,15 +154,27 @@
     }
 }
 
++ (UIViewController *)containerViewController
+{
+    ContainerViewController *rootViewController = (ContainerViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    return rootViewController;
+}
+
++ (UIViewController *)revealViewController
+{
+    ContainerViewController *rootViewController = (ContainerViewController *)[self containerViewController];
+    return rootViewController.rootViewController;
+}
+
 + (UIViewController *)rootMasterViewController
 {
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[self revealViewController];
     return rootViewController.masterViewController;
 }
 
 + (UIViewController *)rootDetailViewController
 {
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[self revealViewController];
     return rootViewController.detailViewController;
 }
 

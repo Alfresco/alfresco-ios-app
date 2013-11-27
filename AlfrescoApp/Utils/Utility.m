@@ -14,9 +14,11 @@
 #import "Constants.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
+#import "UniversalDevice.h"
 
 static NSDictionary *iconMappings;
 static NSDateFormatter *dateFormatter;
+static CGFloat const kZoomAnimationSpeed = 0.2f;
 
 @interface Utility ()
 
@@ -404,6 +406,34 @@ NSString *fileNameAppendedWithDate(NSString *name)
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account
 {
     return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
+}
+
++ (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock
+{
+    [UIView animateWithDuration:kZoomAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+        RootRevealControllerViewController *revealViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+        UIView *revealView = revealViewController.view;
+        revealView.transform = CGAffineTransformMakeScale(0.9f, 0.9f);
+    } completion:^(BOOL finished) {
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
+}
+
++ (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock
+{
+    [UIView animateWithDuration:kZoomAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+        RootRevealControllerViewController *revealViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+        UIView *revealView = revealViewController.view;
+        revealView.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+    } completion:^(BOOL finished) {
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
 }
 
 @end

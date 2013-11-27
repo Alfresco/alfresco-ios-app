@@ -53,5 +53,7 @@ NSMutableData *mutableJSONDataFromDictionary(NSDictionary *dictionary);
 //+ (BOOL)isAudioOrVideoAndNotSupported:(NSString *)filePath;
 + (NSString *)mimeTypeForFileExtension:(NSString *)extension;
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account;
++ (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock;
++ (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock;
 
 @end
