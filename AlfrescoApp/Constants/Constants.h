@@ -17,6 +17,7 @@ extern NSString * const kImageMappingPlist;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;
 extern NSString * const kHTTPMethodPOST;
+extern NSString * const kHTTPMethodGET;
 
 // Notificiations
 extern NSString * const kAlfrescoSessionReceivedNotification;
@@ -104,7 +105,16 @@ extern NSString * const kEditFileServiceParameterDocumentFileName;
 extern NSString * const kAlfrescoOnPremiseServerURLTemplate;
 
 // Cloud Sign Up
+extern NSString * const kCloudAPIHeaderKey;
 extern NSString * const kAlfrescoCloudAPISignUpUrl;
 extern NSString * const kAlfrescoCloudTermOfServiceUrl;
 extern NSString * const kAlfrescoCloudPrivacyPolicyUrl;
 extern NSString * const kAlfrescoCloudCustomerCareUrl;
+
+// Cloud Account Status
+extern NSString * const kCloudAccountIdValuePath;
+extern NSString * const kCloudAccountKeyValuePath;
+extern NSString * const kCloudAccountStatusValuePath;
+extern NSString * const kAlfrescoCloudAPIAccountStatusUrl;
+extern NSString * const kAlfrescoCloudAPIAccountKey;
+extern NSString * const kAlfrescoCloudAPIAccountID;

@@ -21,5 +21,6 @@
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier;
+- (void)updateAccountStatusInfoForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful))completionBlock;
 
 @end

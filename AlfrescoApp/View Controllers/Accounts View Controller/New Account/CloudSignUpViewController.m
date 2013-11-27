@@ -15,6 +15,7 @@
 #import "AccountManager.h"
 #import "CenterLabelCell.h"
 #import "AttributedLabelCell.h"
+#import "UniversalDevice.h"
 
 static NSInteger const kCloudSignUpActionSection = 1;
 static NSInteger const kCloudRefreshSection = 1;
@@ -30,7 +31,6 @@ static NSString * const kEmailKey = @"email";
 static NSString * const kPasswordKey = @"password";
 static NSString * const kSourceKey = @"source";
 static NSString * const kSource = @"mobile";
-static NSString * const kCloudAPIHeaderKey = @"key";
 
 @interface CloudSignUpViewController ()
 @property (nonatomic, strong) NSArray *tableGroups;
@@ -154,12 +154,13 @@ static NSString * const kCloudAPIHeaderKey = @"key";
     {
         if (indexPath.section == kCloudRefreshSection)
         {
-            [self refreshCloudSignupRequest];
+            [self refreshCloudAccountStatus];
         }
         else if (indexPath.section == kCloudReEmailSection)
         {
-            [self resentCloudSignupEmail];
+            [self resendCloudSignupEmail];
         }
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     else
     {
@@ -279,14 +280,49 @@ static NSString * const kCloudAPIHeaderKey = @"key";
 
 #pragma mark - private methods
 
-- (void)refreshCloudSignupRequest
+- (void)refreshCloudAccountStatus
 {
-    
+    AccountManager *accountManager = [AccountManager sharedManager];
+    [self showHUD];
+    [accountManager updateAccountStatusInfoForAccount:self.account completionBlock:^(BOOL successful) {
+        
+        [self hideHUD];
+        if (successful)
+        {
+            [accountManager saveAccountsToKeychain];
+        }
+        
+        if (self.account.accountStatus != AccountStatusAwaitingVerification)
+        {
+            [UniversalDevice clearDetailViewController];
+        }
+    }];
 }
 
-- (void)resentCloudSignupEmail
+- (void)resendCloudSignupEmail
 {
+    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    NSData *accountInfoJsonData = mutableJSONDataFromDictionary([self accountInfo]);
     
+    RequestHandler *request = [[RequestHandler alloc] init];
+    [self showHUD];
+    [request connectWithURL:[NSURL URLWithString:kAlfrescoCloudAPISignUpUrl] method:kHTTPMethodPOST headers:headers requestBody:accountInfoJsonData completionBlock:^(NSData *data, NSError *error) {
+        
+        [self hideHUD];
+        if (error)
+        {
+            displayErrorMessageWithTitle(NSLocalizedString(@"awaitingverification.alert.resendEmail.error", @"The Email resend unsuccessful..."), NSLocalizedString(@"awaitingverification.alerts.title", @"Alfresco Cloud"));
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"awaitingverification.alert.resendEmail.title", @"Successfully Resent Email")
+                                                            message:NSLocalizedString(@"awaitingverification.alert.resendEmail.success", @"The Email was...")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }];
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
@@ -297,34 +333,63 @@ static NSString * const kCloudAPIHeaderKey = @"key";
 
 - (void)signUp:(id)sender
 {
-    NSDictionary *accountInfo = @{kEmailKey : self.emailTextField.text,
-                                  kFirstNameKey : self.firstNameTextField.text,
-                                  kLastNameKey : self.LastNameTextField.text,
-                                  kPasswordKey : self.passwordTextField.text,
-                                  kSourceKey : kSource};
-    
     NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    NSData *accountInfoJsonData = mutableJSONDataFromDictionary([self accountInfo]);
     
     RequestHandler *request = [[RequestHandler alloc] init];
     [self showHUD];
-    [request connectWithURL:[NSURL URLWithString:kAlfrescoCloudAPISignUpUrl] method:kHTTPMethodPOST headers:headers requestBody:mutableJSONDataFromDictionary(accountInfo) completionBlock:^(NSData *data, NSError *error) {
+    [request connectWithURL:[NSURL URLWithString:kAlfrescoCloudAPISignUpUrl] method:kHTTPMethodPOST headers:headers requestBody:accountInfoJsonData completionBlock:^(NSData *data, NSError *error) {
         
         [self hideHUD];
         if (error)
         {
-            AlfrescoLogDebug(@"Signup Error: %@", error);
+            displayErrorMessageWithTitle(NSLocalizedString(@"cloudsignup.unsuccessful.message", @"The cloud sign up was unsuccessful, please try again later"), NSLocalizedString(@"cloudsignup.alert.title", @"Alfresco Cloud Sign Up"));
         }
         else
         {
             UserAccount *account = [[UserAccount alloc] initWithAccountType:AccountTypeCloud];
             account.accountStatus = AccountStatusAwaitingVerification;
             account.username = self.emailTextField.text;
+            account.password = self.passwordTextField.text;
+            account.firstName = self.firstNameTextField.text;
+            account.lastName = self.LastNameTextField.text;
             account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
+            
+            NSError *error = nil;
+            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            
+            if (!error)
+            {
+                account.cloudAccountId = [accountInfoReceived valueForKeyPath:kCloudAccountIdValuePath];
+                account.cloudAccountKey = [accountInfoReceived valueForKeyPath:kCloudAccountKeyValuePath];
+            }
             
             [[AccountManager sharedManager] addAccount:account];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
+}
+
+- (NSDictionary *)accountInfo
+{
+    NSDictionary *accountInfo = nil;
+    if (self.account)
+    {
+        accountInfo = @{kEmailKey : self.account.username,
+                        kFirstNameKey : self.account.firstName,
+                        kLastNameKey : self.account.lastName,
+                        kPasswordKey : self.account.password,
+                        kSourceKey : kSource};
+    }
+    else
+    {
+        accountInfo = @{kEmailKey : self.emailTextField.text,
+                        kFirstNameKey : self.firstNameTextField.text,
+                        kLastNameKey : self.LastNameTextField.text,
+                        kPasswordKey : self.passwordTextField.text,
+                        kSourceKey : kSource};
+    }
+    return accountInfo;
 }
 
 - (UIView *)cloudAccountFooter

@@ -169,6 +169,8 @@
 "cloudsignup.footer.secondLine" = "Alfresco Terms of Service and Privacy Policy";
 "cloudsignup.footer.termsOfService" = "Terms of Service";
 "cloudsignup.footer.privacyPolicy" = "Privacy Policy";
+"cloudsignup.alert.title" = "Alfresco in the cloud Sign Up";
+"cloudsignup.unsuccessful.message" = "The cloud sign up was unsuccessful, please try again later";
 
 "awaitingverification.description" = "Account waiting for email verification\n\nYou've signed up for Alfresco in the cloud using the email address %@\n\nPlease check your email. We've sent you a link that you'll need to use to complete the registration process.\n\nHaving trouble activating?\n\nPlease let us know if you are unable to activate your account.";
 "awaitingverification.description.title" = "Account waiting for email verification";

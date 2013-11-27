@@ -17,6 +17,7 @@ NSString * const kImageMappingPlist = @"ImageMapping";
 NSString * const kProtocolHTTP = @"http";
 NSString * const kProtocolHTTPS = @"https";
 NSString * const kHTTPMethodPOST = @"POST";
+NSString * const kHTTPMethodGET = @"GET";
 
 // Notificiations
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
@@ -103,7 +104,16 @@ NSString * const kEditFileServiceParameterDocumentFileName = @"documentFileName"
 NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";
 
 // Cloud Sign Up
+NSString * const kCloudAPIHeaderKey = @"key";
 NSString * const kAlfrescoCloudAPISignUpUrl = @"https://a.alfresco.me/alfresco/a/-default-/internal/cloud/accounts/signupqueue";
 NSString * const kAlfrescoCloudTermOfServiceUrl = @"http://www.alfresco.com/legal/agreements/cloud/";
 NSString * const kAlfrescoCloudPrivacyPolicyUrl = @"http://www.alfresco.com/privacy/";
 NSString * const kAlfrescoCloudCustomerCareUrl = @"https://getsatisfaction.com/alfresco/products/alfresco_alfresco_mobile_app";
+
+// Cloud Account Status
+NSString * const kCloudAccountIdValuePath = @"registration.id";
+NSString * const kCloudAccountKeyValuePath = @"registration.key";
+NSString * const kCloudAccountStatusValuePath = @"isActivated";
+NSString * const kAlfrescoCloudAPIAccountStatusUrl = @"https://a.alfresco.me/alfresco/a/-default-/internal/cloud/accounts/signupqueue/{AccountId}?key={AccountKey}";
+NSString * const kAlfrescoCloudAPIAccountKey = @"{AccountKey}";
+NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";

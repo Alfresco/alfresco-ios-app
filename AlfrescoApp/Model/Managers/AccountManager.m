@@ -8,6 +8,8 @@
 
 #import "AccountManager.h"
 #import "KeychainUtils.h"
+#import "RequestHandler.h"
+#import "Constants.h"
 
 @interface AccountManager ()
 
@@ -136,7 +138,49 @@
         {
             self.selectedAccount = account;
         }
+        
+        if (account.accountType == AccountTypeCloud && account.accountStatus == AccountStatusAwaitingVerification)
+        {
+            [self updateAccountStatusInfoForAccount:account completionBlock:nil];
+        }
     }
+}
+
+- (void)updateAccountStatusInfoForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful))completionBlock
+{
+    NSString *accountStatusUrl = [kAlfrescoCloudAPIAccountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountID withString:account.cloudAccountId];
+    accountStatusUrl = [accountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountKey withString:account.cloudAccountKey];
+    
+    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    
+    RequestHandler *request = [[RequestHandler alloc] init];
+    [request connectWithURL:[NSURL URLWithString:accountStatusUrl] method:kHTTPMethodGET headers:headers requestBody:nil completionBlock:^(NSData *data, NSError *error) {
+        
+        if (error && completionBlock != NULL)
+        {
+            completionBlock(NO);
+        }
+        else
+        {
+            NSError *error = nil;
+            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            
+            if (error && completionBlock != NULL)
+            {
+                completionBlock(NO);
+            }
+            else
+            {
+                BOOL isActiviated = [[accountInfoReceived valueForKeyPath:kCloudAccountStatusValuePath] boolValue];
+                account.accountStatus = isActiviated ? AccountStatusActive : AccountStatusAwaitingVerification;
+                
+                if (completionBlock != NULL)
+                {
+                    completionBlock(YES);
+                }
+            }
+        }
+    }];
 }
 
 @end
