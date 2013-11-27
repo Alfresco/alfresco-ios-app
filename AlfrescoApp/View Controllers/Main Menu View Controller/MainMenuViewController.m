@@ -8,31 +8,52 @@
 
 #import "MainMenuViewController.h"
 #import "MainMenuItemCell.h"
+#import "FileFolderListViewController.h"
+#import "SitesListViewController.h"
+#import "ActivitiesViewController.h"
+#import "TaskViewController.h"
+#import "SyncViewController.h"
+#import "UserAccount.h"
+#import "AccountManager.h"
+
+// where the repo items should be displayed in the tableview
+static NSUInteger const kRepositoryItemsSectionNumber = 1;
 
 @interface MainMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong, readwrite) NSMutableArray *tableData;
 @property (nonatomic, weak, readwrite) UITableView *tableView;
+@property (nonatomic, assign, readwrite) BOOL hasRepositorySpecificSection;
 
 @end
 
 @implementation MainMenuViewController
 
-- (instancetype)initWithSectionArrays:(NSArray *)sections, ...
+- (instancetype)initWithAccountsSectionItems:(NSArray *)accountSectionItems localSectionItems:(NSArray *)localSectionItems
 {
     self = [super init];
     if (self)
     {
         self.tableData = [NSMutableArray array];
-        va_list args;
-        va_start(args, sections);
-        for (id arg = sections; arg != nil; arg = va_arg(args, id))
+        if (accountSectionItems)
         {
-            [self.tableData addObject:arg];
+            [self.tableData addObject:accountSectionItems];
         }
-        va_end(args);
+        
+        if (localSectionItems)
+        {
+            [self.tableData addObject:localSectionItems];
+        }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionUpdated:) name:kAlfrescoSessionReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
@@ -107,6 +128,69 @@
     [self.delegate didSelectMenuItem:menuItem];
 }
 
+- (void)sessionUpdated:(NSNotification *)notification
+{
+    // this will eventually be be moved from this controller once the mobile server module is added and the app
+    // needs to carry out multiple dynamic behaviours.
+    id<AlfrescoSession> session = (id<AlfrescoSession>)notification.object;
+    
+    FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:session];
+    SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
+    ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
+    TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
+    SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:session];
+    
+    NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
+    NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
+    NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
+    NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
+    NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
+    
+    MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
+                                                                      imageName:@"activities-main-menu.png"
+                                                              localizedTitleKey:@"activities.title"
+                                                                 viewController:activitiesNavigationController
+                                                                displayInDetail:NO];
+    MainMenuItem *repositoryItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
+                                                                      imageName:@"repository-tabbar.png"
+                                                              localizedTitleKey:@"companyHome.title"
+                                                                 viewController:companyHomeNavigationController
+                                                                displayInDetail:NO];
+    MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
+                                                                 imageName:@"sites-main-menu.png"
+                                                         localizedTitleKey:@"sites.title"
+                                                            viewController:sitesListNavigationController
+                                                           displayInDetail:NO];
+    MainMenuItem *tasksItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
+                                                                 imageName:@"tasks-main-menu.png"
+                                                         localizedTitleKey:@"tasks.title"
+                                                            viewController:taskNavigationController
+                                                           displayInDetail:NO];
+    MainMenuItem *syncItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                                                                imageName:@"favourites-main-menu.png"
+                                                        localizedTitleKey:@"sync.title"
+                                                           viewController:syncNavigationController
+                                                          displayInDetail:NO];
+    
+    [self addRepositoryItems:@[activitiesItem, repositoryItem, sitesItem, tasksItem, syncItem]];
+    [self displayViewControllerWithType:NavigationControllerTypeSites];
+}
+
+- (void)accountRemoved:(NSNotification *)notification
+{
+    UserAccount *accountRemoved = (UserAccount *)notification.object;
+    
+    if ([[[AccountManager sharedManager] selectedAccount] isEqual:accountRemoved])
+    {
+        [self removeAllRepositoryItems];
+    }
+}
+
+- (void)noMoreAccounts:(NSNotification *)notification
+{
+    [self removeAllRepositoryItems];
+}
+
 #pragma mark - Public Functions
 
 - (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType
@@ -120,6 +204,32 @@
             }
         }];
     }];
+}
+
+- (void)addRepositoryItems:(NSArray *)repositoryItems
+{
+    if (!self.hasRepositorySpecificSection)
+    {
+        [self.tableData insertObject:repositoryItems atIndex:kRepositoryItemsSectionNumber];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationFade];
+        self.hasRepositorySpecificSection = YES;
+    }
+    else
+    {
+        [self.tableData replaceObjectAtIndex:kRepositoryItemsSectionNumber withObject:repositoryItems];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)removeAllRepositoryItems
+{
+    if (self.hasRepositorySpecificSection)
+    {
+        [self.tableData removeObjectAtIndex:kRepositoryItemsSectionNumber];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationFade];
+        self.hasRepositorySpecificSection = NO;
+        [self displayViewControllerWithType:NavigationControllerTypeAccounts];
+    }
 }
 
 @end
