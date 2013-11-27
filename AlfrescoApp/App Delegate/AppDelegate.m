@@ -129,59 +129,25 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     RootRevealControllerViewController *rootRevealViewController = nil;
     
     // View controllers
-    FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:session];
-    SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
-    ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
-    TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
-    SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:session];
+    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
     DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:session];
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:session];
     AboutViewController *aboutViewController = [[AboutViewController alloc] init];
     PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
-    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
     
     // Navigation controllers
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
-    NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
-    NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
-    NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
-    NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
-    NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
     NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
     NavigationViewController *settingsNavigationController = [[NavigationViewController alloc] initWithRootViewController:settingsViewController];
     NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
-    MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
+    MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAccounts
                                                                     imageName:@"account-main-menu.png"
                                                             localizedTitleKey:@"accounts.title"
                                                                viewController:accountsNavigationController
                                                               displayInDetail:NO];
-    MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
-                                                                      imageName:@"activities-main-menu.png"
-                                                              localizedTitleKey:@"activities.title"
-                                                                 viewController:activitiesNavigationController
-                                                                displayInDetail:NO];
-    MainMenuItem *repositoryItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
-                                                                      imageName:@"repository-tabbar.png"
-                                                              localizedTitleKey:@"companyHome.title"
-                                                                 viewController:companyHomeNavigationController
-                                                                displayInDetail:NO];
-    MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
-                                                                 imageName:@"sites-main-menu.png"
-                                                         localizedTitleKey:@"sites.title"
-                                                            viewController:sitesListNavigationController
-                                                           displayInDetail:NO];
-    MainMenuItem *tasksItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
-                                                                 imageName:@"tasks-main-menu.png"
-                                                         localizedTitleKey:@"tasks.title"
-                                                            viewController:taskNavigationController
-                                                           displayInDetail:NO];
-    MainMenuItem *syncItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                imageName:@"favourites-main-menu.png"
-                                                        localizedTitleKey:@"sync.title"
-                                                           viewController:syncNavigationController
-                                                          displayInDetail:NO];
+    
     MainMenuItem *downloadsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
                                                                      imageName:@"download-main-menu.png"
                                                              localizedTitleKey:@"Downloads"
@@ -203,12 +169,9 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
                                                            viewController:helpNavigationController
                                                           displayInDetail:YES];
 
-    SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:sitesListNavigationController];
+    SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
-    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithSectionArrays:@[accountsItem],
-                                                  @[activitiesItem, repositoryItem, sitesItem, tasksItem, syncItem],
-                                                  @[settingsItem, downloadsItem, aboutItem, helpItem],
-                                                  nil];
+    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithAccountsSectionItems:@[accountsItem] localSectionItems:@[settingsItem, downloadsItem, aboutItem, helpItem]];
     mainMenuController.delegate = switchController;
     
     rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];

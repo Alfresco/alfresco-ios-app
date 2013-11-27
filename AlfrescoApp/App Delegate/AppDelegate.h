@@ -13,7 +13,8 @@
 
 typedef NS_ENUM(NSUInteger, MainMenuNavigationControllerType)
 {
-    NavigationControllerTypeActivities = 0,
+    NavigationControllerTypeAccounts = 0,
+    NavigationControllerTypeActivities,
     NavigationControllerTypeRepository,
     NavigationControllerTypeSites,
     NavigationControllerTypeTasks,
