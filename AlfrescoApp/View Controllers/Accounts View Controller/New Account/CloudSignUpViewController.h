@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
 #import "TTTAttributedLabel.h"
-@class UserAccount;
 
+@class UserAccount;
 @class CloudSignUpViewController;
 
 @protocol CloudSignUpViewControllerDelegate <NSObject>
