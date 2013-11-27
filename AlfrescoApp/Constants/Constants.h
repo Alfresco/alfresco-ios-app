@@ -33,6 +33,7 @@ extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 // Accounts
 extern NSString * const kAlfrescoAccountAddedNotification;
 extern NSString * const kAlfrescoAccountRemovedNotification;
+extern NSString * const kAlfrescoAccountsListEmptyNotification;
 
 // Application policy constants
 extern NSString * const kApplicationPolicySettings;

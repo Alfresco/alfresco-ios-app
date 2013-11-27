@@ -283,11 +283,15 @@ NSString *fileNameAppendedWithDate(NSString *name)
 
 + (BOOL)isValidEmail:(NSString *)emailAddress
 {
-    // FIXME: Consider removing this completely / simply checking for "@" or copying Share's regex
-    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    BOOL isEmail = NO;
     
-    return [emailTest evaluateWithObject:emailAddress];
+    NSUInteger locationOfAtSymbol = [emailAddress rangeOfString:@"@"].location;
+    if (emailAddress.length > 0 && locationOfAtSymbol != NSNotFound && locationOfAtSymbol < emailAddress.length - 1)
+    {
+        isEmail = YES;
+    }
+    
+    return isEmail;
 }
 
 + (BOOL)isVideo:(NSString *)filePath

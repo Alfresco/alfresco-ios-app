@@ -61,6 +61,10 @@
     [self.accountsFromKeychain removeObject:account];
     [self saveAllAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];
+    if (self.accountsFromKeychain.count == 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
+    }
 }
 
 - (void)removeAllAccounts
