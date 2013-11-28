@@ -17,11 +17,12 @@
 #import "AttributedLabelCell.h"
 #import "UniversalDevice.h"
 
+static NSInteger const kCloudAwaitingVerificationTextSection = 0;
 static NSInteger const kCloudSignUpActionSection = 1;
 static NSInteger const kCloudRefreshSection = 1;
 static NSInteger const kCloudReEmailSection = 2;
 
-static NSInteger kAwaitingVerificationTextFontSize = 20;
+static CGFloat const kAwaitingVerificationTextFontSize = 20.0f;
 
 static CGFloat const kNormalRowHeight = 44.0f;
 
@@ -132,7 +133,7 @@ static NSString * const kSource = @"mobile";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((self.account.accountStatus == AccountStatusAwaitingVerification) && indexPath.section == 0)
+    if ((self.account.accountStatus == AccountStatusAwaitingVerification) && (indexPath.section == kCloudAwaitingVerificationTextSection))
     {
         return ceilf([self.awaitingVerificationText sizeWithFont:[UIFont systemFontOfSize:kAwaitingVerificationTextFontSize]
                                                constrainedToSize:CGSizeMake(tableView.bounds.size.width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height);
@@ -246,8 +247,6 @@ static NSString * const kSource = @"mobile";
     AttributedLabelCell *attributedLabelCell = (AttributedLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AttributedLabelCell class]) owner:self options:nil] lastObject];
     TTTAttributedLabel *label = attributedLabelCell.attributedLabel;
     
-    label.textColor = [UIColor blackColor];
-    label.backgroundColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentLeft;
     self.awaitingVerificationText = [NSString stringWithFormat:NSLocalizedString(@"awaitingverification.description", @"Account Awaiting Email Verification..."), self.account.username];
     
@@ -283,17 +282,25 @@ static NSString * const kSource = @"mobile";
 {
     AccountManager *accountManager = [AccountManager sharedManager];
     [self showHUD];
-    [accountManager updateAccountStatusForAccount:self.account completionBlock:^(BOOL successful) {
+    [accountManager updateAccountStatusForAccount:self.account completionBlock:^(BOOL successful, NSError *error) {
         
         [self hideHUD];
         if (successful)
         {
-            [accountManager saveAccountsToKeychain];
+            if (self.account.accountStatus == AccountStatusAwaitingVerification)
+            {
+                displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.awaiting", @"Still waiting for verification"));
+            }
+            else
+            {
+                [UniversalDevice clearDetailViewController];
+                [accountManager saveAccountsToKeychain];
+                displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.verified", @"The Account is now..."));
+            }
         }
-        
-        if (self.account.accountStatus != AccountStatusAwaitingVerification)
+        else
         {
-            [UniversalDevice clearDetailViewController];
+            displayErrorMessage(NSLocalizedString(@"error.no.internet.access.title", "A connection couldn't be made"));
         }
     }];
 }
@@ -301,7 +308,7 @@ static NSString * const kSource = @"mobile";
 - (void)resendCloudSignupEmail
 {
     NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
-    NSData *accountInfoJsonData = mutableJSONDataFromDictionary([self accountInfo]);
+    NSData *accountInfoJsonData = jsonDataFromDictionary([self accountInfo]);
     
     RequestHandler *request = [[RequestHandler alloc] init];
     [self showHUD];
@@ -333,7 +340,7 @@ static NSString * const kSource = @"mobile";
 - (void)signUp:(id)sender
 {
     NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
-    NSData *accountInfoJsonData = mutableJSONDataFromDictionary([self accountInfo]);
+    NSData *accountInfoJsonData = jsonDataFromDictionary([self accountInfo]);
     
     RequestHandler *request = [[RequestHandler alloc] init];
     [self showHUD];
@@ -393,11 +400,11 @@ static NSString * const kSource = @"mobile";
 
 - (UIView *)cloudAccountFooter
 {
-    static NSInteger iPadFoodterWidth = 540;
+    static NSInteger iPadFooterWidth = 540;
     static NSInteger iPhoneLandscapeFooterWidth = 480;
-    static NSInteger iPhonePortraitFootrWidth = 320;
+    static NSInteger iPhonePortraitFooterWidth = 320;
     
-    CGFloat footerWidth = IS_IPAD ? iPadFoodterWidth : (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? iPhoneLandscapeFooterWidth : iPhonePortraitFootrWidth);
+    CGFloat footerWidth = IS_IPAD ? iPadFooterWidth : (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? iPhoneLandscapeFooterWidth : iPhonePortraitFooterWidth);
     NSString *footerText = NSLocalizedString(@"cloudsignup.footer.firstLine", @"By tapping 'Sign Up'...");
     NSString *signupText = NSLocalizedString(@"cloudsignup.footer.secondLine", @"Alfresco Terms of ...");
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, footerWidth, 0)];

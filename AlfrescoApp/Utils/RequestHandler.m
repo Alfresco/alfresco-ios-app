@@ -7,6 +7,7 @@
 //
 
 #import "RequestHandler.h"
+#import "Constants.h"
 
 static NSString * const kJSONContentType = @"application/json";
 static NSString * const kContentTypeHeaderKey = @"Content-Type";
@@ -21,7 +22,7 @@ static NSString * const kContentTypeHeaderKey = @"Content-Type";
 
 @implementation RequestHandler
 
-- (void)connectWithURL:(NSURL*)requestURL
+- (void)connectWithURL:(NSURL *)requestURL
                 method:(NSString *)method
                headers:(NSDictionary *)headers
            requestBody:(NSData *)requestBody
@@ -33,7 +34,7 @@ static NSString * const kContentTypeHeaderKey = @"Content-Type";
     
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:requestURL
                                                               cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                          timeoutInterval:60];
+                                                          timeoutInterval:kRequestTimeOutInterval];
     
     [urlRequest setHTTPMethod:method];
     
@@ -50,6 +51,18 @@ static NSString * const kContentTypeHeaderKey = @"Content-Type";
     self.responseData = nil;
     self.connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO];
     [self.connection start];
+}
+
+- (void)cancelRequest
+{
+    if (self.connection)
+    {
+        [self.connection cancel];
+        self.connection = nil;
+        
+        NSError *cancelError = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeNetworkRequestCancelled];
+        self.completionBlock(nil, cancelError);
+    }
 }
 
 #pragma URL delegate methods
@@ -70,15 +83,7 @@ static NSString * const kContentTypeHeaderKey = @"Content-Type";
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    if (nil == data)
-    {
-        return;
-    }
-    if (0 == data.length)
-    {
-        return;
-    }
-    if (nil != self.responseData)
+    if (data && data.length > 0 && self.responseData)
     {
         [self.responseData appendData:data];
     }

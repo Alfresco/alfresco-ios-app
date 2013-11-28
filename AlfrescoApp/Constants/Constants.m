@@ -14,6 +14,8 @@ NSString * const kLicenseDictionaries = @"thirdPartyLibraries";
 
 NSString * const kImageMappingPlist = @"ImageMapping";
 
+// Request Handler
+NSInteger const kRequestTimeOutInterval = 60;
 NSString * const kProtocolHTTP = @"http";
 NSString * const kProtocolHTTPS = @"https";
 NSString * const kHTTPMethodPOST = @"POST";

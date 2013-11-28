@@ -14,6 +14,7 @@ extern NSString * const kLicenseDictionaries;
 
 extern NSString * const kImageMappingPlist;
 
+extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;
 extern NSString * const kHTTPMethodPOST;

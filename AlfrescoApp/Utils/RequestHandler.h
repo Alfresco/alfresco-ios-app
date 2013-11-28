@@ -10,10 +10,12 @@
 
 @interface RequestHandler : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
-- (void)connectWithURL:(NSURL*)requestURL
+- (void)connectWithURL:(NSURL *)requestURL
                 method:(NSString *)method
                headers:(NSDictionary *)headers
            requestBody:(NSData *)requestBody
        completionBlock:(AlfrescoDataCompletionBlock)completionBlock;
+
+- (void)cancelRequest;
 
 @end

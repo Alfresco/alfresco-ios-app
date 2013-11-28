@@ -204,20 +204,20 @@ NSString *uniqueFileNameForNode(AlfrescoNode *node)
     return fileNameString;
 }
 
-NSMutableData *mutableJSONDataFromDictionary(NSDictionary *dictionary)
+NSData *jsonDataFromDictionary(NSDictionary *dictionary)
 {
-    NSError *jsonError = nil;
-    NSMutableData *mutableData = nil;
+    NSData *jsonData = nil;
     
     if ([NSJSONSerialization isValidJSONObject:dictionary])
     {
+        NSError *jsonError = nil;
         NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&jsonError];
         if (jsonError == nil)
         {
-            mutableData = [NSMutableData dataWithData:data];
+            jsonData = data;
         }
     }
-    return mutableData;
+    return jsonData;
 }
 
 /*

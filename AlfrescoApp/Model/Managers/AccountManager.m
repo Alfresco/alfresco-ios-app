@@ -145,12 +145,15 @@
         
         if (account.accountType == AccountTypeCloud && account.accountStatus == AccountStatusAwaitingVerification)
         {
-            [self updateAccountStatusForAccount:account completionBlock:nil];
+            [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
+                
+                // TODO: if account has been activated then retrieve its networks
+            }];
         }
     }
 }
 
-- (void)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful))completionBlock
+- (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock
 {
     NSString *accountStatusUrl = [kAlfrescoCloudAPIAccountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountID withString:account.cloudAccountId];
     accountStatusUrl = [accountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountKey withString:account.cloudAccountKey];
@@ -162,16 +165,16 @@
         
         if (error && completionBlock != NULL)
         {
-            completionBlock(NO);
+            completionBlock(NO, error);
         }
         else
         {
-            NSError *error = nil;
-            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            NSError *parserError = nil;
+            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parserError];
             
             if (error && completionBlock != NULL)
             {
-                completionBlock(NO);
+                completionBlock(NO, parserError);
             }
             else
             {
@@ -180,11 +183,12 @@
                 
                 if (completionBlock != NULL)
                 {
-                    completionBlock(YES);
+                    completionBlock(YES, nil);
                 }
             }
         }
     }];
+    return request;
 }
 
 @end

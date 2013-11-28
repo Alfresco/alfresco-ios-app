@@ -167,7 +167,9 @@
 "cloudsignup.button.signup" = "Sign Up";
 "cloudsignup.footer.firstLine" = "By tapping Sign Up, you are agreeing to the";
 "cloudsignup.footer.secondLine" = "Alfresco Terms of Service and Privacy Policy";
+/** NOTE TO TRANSLATORS: the phrase "cloudsignup.footer.termsOfService" must match a phrase in the "cloudsignup.footer.secondLine" string above. */
 "cloudsignup.footer.termsOfService" = "Terms of Service";
+/** NOTE TO TRANSLATORS: the phrase "cloudsignup.footer.privacyPolicy" must match a phrase in the "cloudsignup.footer.secondLine" string above. */
 "cloudsignup.footer.privacyPolicy" = "Privacy Policy";
 "cloudsignup.alert.title" = "Alfresco in the cloud Sign Up";
 "cloudsignup.unsuccessful.message" = "The cloud sign up was unsuccessful, please try again later";
@@ -175,6 +177,7 @@
 "awaitingverification.description" = "Account waiting for email verification\n\nYou've signed up for Alfresco in the cloud using the email address %@\n\nPlease check your email. We've sent you a link that you'll need to use to complete the registration process.\n\nHaving trouble activating?\n\nPlease let us know if you are unable to activate your account.";
 "awaitingverification.description.title" = "Account waiting for email verification";
 "awaitingverification.description.subtitle" = "Having trouble activating?";
+/** NOTE TO TRANSLATORS: the phrase "awaitingverification.description.customerCare" must match a phrase in the "awaitingverification.description" string above. */
 "awaitingverification.description.customerCare" = "Please let us know";
 "awaitingverification.title" = "Alfresco in the cloud";
 "awaitingverification.buttons.refresh" = "Refresh";
