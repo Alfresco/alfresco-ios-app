@@ -204,6 +204,22 @@ NSString *uniqueFileNameForNode(AlfrescoNode *node)
     return fileNameString;
 }
 
+NSData *jsonDataFromDictionary(NSDictionary *dictionary)
+{
+    NSData *jsonData = nil;
+    
+    if ([NSJSONSerialization isValidJSONObject:dictionary])
+    {
+        NSError *jsonError = nil;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&jsonError];
+        if (jsonError == nil)
+        {
+            jsonData = data;
+        }
+    }
+    return jsonData;
+}
+
 /*
  * appends current timestamp to name
  * @param name: current filename

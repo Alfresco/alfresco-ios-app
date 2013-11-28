@@ -34,6 +34,8 @@ NSString *stringByRemovingHTMLTagsFromString(NSString *htmlString);
 NSString *uniqueFileNameForNode(AlfrescoNode *node);
 NSString *fileNameAppendedWithDate(NSString *name);
 
+NSData *jsonDataFromDictionary(NSDictionary *dictionary);
+
 //void clearOutdatedCacheFiles();
 
 //void uncaughtExceptionHandler(NSException *exception);
