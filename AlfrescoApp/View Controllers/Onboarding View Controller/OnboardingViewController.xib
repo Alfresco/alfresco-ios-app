@@ -19,18 +19,21 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q36-Ki-rGv">
-                    <rect key="frame" x="265" y="25" width="40" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q36-Ki-rGv">
+                    <rect key="frame" x="275" y="25" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Close">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="Qfb-a7-BQw"/>
+                        <constraint firstAttribute="width" constant="30" id="ROS-Q4-jxR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="closeButton.png"/>
                     <connections>
                         <action selector="closeButtonPressed:" destination="-1" eventType="touchUpInside" id="I6Q-8x-JUe"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ta7-Ya-swz">
-                    <rect key="frame" x="10" y="59" width="300" height="450"/>
+                    <rect key="frame" x="10" y="68" width="300" height="432"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alfrescoColourLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="WNL-qv-5ke">
@@ -38,7 +41,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ynq-Zb-vUs">
-                            <rect key="frame" x="25" y="330" width="250" height="35"/>
+                            <rect key="frame" x="25" y="312" width="250" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="35" id="ccj-Fl-7aF"/>
@@ -65,10 +68,12 @@
                                 <action selector="createCloudAccountButtonPressed:" destination="-1" eventType="touchUpInside" id="joh-TB-jMo"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjd-SG-Xih">
-                            <rect key="frame" x="237" y="400" width="32" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjd-SG-Xih">
+                            <rect key="frame" x="237" y="382" width="32" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="Help">
+                                <color key="titleColor" red="0.11372549831867218" green="0.94117653369903564" blue="0.94117653369903564" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -82,7 +87,7 @@
                         <constraint firstItem="WNL-qv-5ke" firstAttribute="top" secondItem="Ta7-Ya-swz" secondAttribute="top" constant="20" id="21O-BS-6rN"/>
                         <constraint firstAttribute="bottom" secondItem="yjd-SG-Xih" secondAttribute="bottom" constant="20" id="4J9-Mz-H2F"/>
                         <constraint firstItem="yjd-SG-Xih" firstAttribute="top" secondItem="ynq-Zb-vUs" secondAttribute="bottom" constant="35" id="OaH-f9-HmN"/>
-                        <constraint firstItem="ynq-Zb-vUs" firstAttribute="top" secondItem="2ox-5D-XrO" secondAttribute="bottom" constant="32" id="Uek-Gg-X2Z"/>
+                        <constraint firstItem="ynq-Zb-vUs" firstAttribute="top" secondItem="2ox-5D-XrO" secondAttribute="bottom" constant="14" id="Uek-Gg-X2Z"/>
                         <constraint firstItem="2ox-5D-XrO" firstAttribute="top" secondItem="WNL-qv-5ke" secondAttribute="bottom" constant="43" id="UwU-pd-hjJ"/>
                         <constraint firstAttribute="trailing" secondItem="ynq-Zb-vUs" secondAttribute="trailing" constant="25" id="WOI-2D-um2"/>
                         <constraint firstAttribute="centerX" secondItem="WNL-qv-5ke" secondAttribute="centerX" id="ZWJ-rf-0Ur"/>
@@ -98,7 +103,7 @@
             <constraints>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ta7-Ya-swz" secondAttribute="bottom" constant="59" id="0aD-sO-qBK"/>
                 <constraint firstAttribute="centerX" secondItem="Ta7-Ya-swz" secondAttribute="centerX" id="7Ey-W1-jq5"/>
-                <constraint firstItem="Q36-Ki-rGv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1" secondAttribute="leading" constant="265" id="EaJ-5W-yzc"/>
+                <constraint firstItem="Q36-Ki-rGv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1" secondAttribute="leading" constant="275" id="EaJ-5W-yzc"/>
                 <constraint firstItem="Ta7-Ya-swz" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Q36-Ki-rGv" secondAttribute="bottom" constant="4" id="JQh-D8-KWv"/>
                 <constraint firstAttribute="trailing" secondItem="Q36-Ki-rGv" secondAttribute="trailing" constant="15" id="MmH-Je-zVX"/>
                 <constraint firstAttribute="centerY" secondItem="Ta7-Ya-swz" secondAttribute="centerY" priority="718" id="fKM-5g-Epg"/>
@@ -110,5 +115,6 @@
     </objects>
     <resources>
         <image name="alfrescoColourLogo.png" width="200" height="200"/>
+        <image name="closeButton.png" width="60" height="60"/>
     </resources>
 </document>

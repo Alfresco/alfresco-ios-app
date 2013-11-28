@@ -93,6 +93,7 @@
 		731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
 		731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A81844D217002C82C1 /* onboarding-blue@2x.png */; };
 		731901AB1844D217002C82C1 /* onboarding-grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A91844D217002C82C1 /* onboarding-grey@2x.png */; };
+		731901AF18475B14002C82C1 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901AE18475B14002C82C1 /* closeButton.png */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
@@ -530,6 +531,7 @@
 		731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alfrescoColourLogo@2x.png"; sourceTree = "<group>"; };
 		731901A81844D217002C82C1 /* onboarding-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-blue@2x.png"; sourceTree = "<group>"; };
 		731901A91844D217002C82C1 /* onboarding-grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-grey@2x.png"; sourceTree = "<group>"; };
+		731901AE18475B14002C82C1 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closeButton.png; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -1949,6 +1951,7 @@
 		73B959FA17A68B7E0099FB84 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				731901AE18475B14002C82C1 /* closeButton.png */,
 				73B959FB17A68B7E0099FB84 /* play-media.png */,
 				73B959FC17A68B7E0099FB84 /* play-media@2x.png */,
 				0833248817FF0DC200EE6AA8 /* blue-button-30.png */,
@@ -2932,6 +2935,7 @@
 				0833246317F98CED00EE6AA8 /* selected-favorite-indicator@2x.png in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
+				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
