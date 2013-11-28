@@ -16,6 +16,7 @@
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
 #import "MainMenuViewController.h"
+#import "CloudSignUpViewController.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -181,8 +182,16 @@ static NSInteger const kNetworksStartRowNumber = 1;
     {
         UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
         
-        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
-        [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
+        id viewController = nil;
+        if (account.accountStatus == AccountStatusAwaitingVerification)
+        {
+            viewController = [[CloudSignUpViewController alloc] initWithAccount:account];
+        }
+        else
+        {
+            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
+        }
+        [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
     }
 }
 

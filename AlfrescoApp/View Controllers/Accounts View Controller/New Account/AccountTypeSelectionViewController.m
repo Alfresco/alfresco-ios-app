@@ -236,7 +236,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] init];
+    CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] initWithAccount:nil];
     [self.navigationController pushViewController:signUpController animated:YES];
 }
 

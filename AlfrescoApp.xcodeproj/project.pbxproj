@@ -58,6 +58,9 @@
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
+		088228641843722B006E58A4 /* RequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228631843722B006E58A4 /* RequestHandler.m */; };
+		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
+		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
 		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
 		0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */; };
 		0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */; };
@@ -479,6 +482,11 @@
 		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
+		088228621843722B006E58A4 /* RequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestHandler.h; sourceTree = "<group>"; };
+		088228631843722B006E58A4 /* RequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestHandler.m; sourceTree = "<group>"; };
+		088228651843B180006E58A4 /* AttributedLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedLabelCell.h; sourceTree = "<group>"; };
+		088228661843B180006E58A4 /* AttributedLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributedLabelCell.m; sourceTree = "<group>"; };
+		088228681843B1B7006E58A4 /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
 		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
 		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
 		0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
@@ -1695,6 +1703,9 @@
 				73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */,
 				73B957E417A6750E0099FB84 /* ActivityTableViewCell.h */,
 				73B957E517A6750E0099FB84 /* ActivityTableViewCell.m */,
+				088228651843B180006E58A4 /* AttributedLabelCell.h */,
+				088228661843B180006E58A4 /* AttributedLabelCell.m */,
+				088228681843B1B7006E58A4 /* AttributedLabelCell.xib */,
 				73B957E617A6750E0099FB84 /* Comments */,
 				73B957EA17A6750E0099FB84 /* FileFolder */,
 				73B957EE17A6750E0099FB84 /* Metadata */,
@@ -1774,6 +1785,8 @@
 				73B9580217A6750E0099FB84 /* Utility.m */,
 				73B9580317A6750E0099FB84 /* Categories */,
 				73B9580817A6750E0099FB84 /* System Notice */,
+				088228621843722B006E58A4 /* RequestHandler.h */,
+				088228631843722B006E58A4 /* RequestHandler.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2887,6 +2900,7 @@
 				73B95A9017A68B7E0099FB84 /* authorisationLogo.png in Resources */,
 				73B95A9117A68B7E0099FB84 /* authorisationLogo@2x.png in Resources */,
 				73B95A9217A68B7E0099FB84 /* collapse.png in Resources */,
+				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
 				73B95A9317A68B7E0099FB84 /* collapse@2x.png in Resources */,
 				73B95A9417A68B7E0099FB84 /* expand.png in Resources */,
 				0833247417FADFE600EE6AA8 /* stop-transfer.png in Resources */,
@@ -3026,6 +3040,7 @@
 				73F6349B17E34A990065590E /* AlfrescoCommentService.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
+				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				08E799B1182A57850030FD53 /* ButtonCell.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */,
 				73F634C517E34A990065590E /* AlfrescoBasicAuthenticationProvider.m in Sources */,
@@ -3179,6 +3194,7 @@
 				7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */,
 				73F634A317E34A990065590E /* AlfrescoWorkflowProcessDefinitionService.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
+				088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */,
 				73F6348F17E34A990065590E /* AlfrescoPermissions.m in Sources */,
 				0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */,
 				73F6348917E34A990065590E /* AlfrescoDocument.m in Sources */,
