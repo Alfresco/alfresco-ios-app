@@ -17,12 +17,15 @@
 #import "UniversalDevice.h"
 #import "MainMenuViewController.h"
 #import "CloudSignUpViewController.h"
+#import "Utility.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
 
 static NSInteger const kAccountRowNumber = 0;
 static NSInteger const kNetworksStartRowNumber = 1;
+
+static CGFloat const kDefaultFontSize = 18.0f;
 
 @interface AccountsViewController ()
 @property (nonatomic, assign) NSInteger expandedSection;
@@ -59,6 +62,10 @@ static NSInteger const kNetworksStartRowNumber = 1;
                                              selector:@selector(accountRemoved:)
                                                  name:kAlfrescoAccountRemovedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountUpdated:)
+                                                 name:kAlfrescoAccountUpdatedNotification
+                                               object:nil];
 }
 
 - (void)updateAccountList
@@ -80,6 +87,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
             [self.tableViewData addObject:accountData];
         }
     }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Notification Methods
@@ -93,13 +101,16 @@ static NSInteger const kNetworksStartRowNumber = 1;
 - (void)accountAdded:(NSNotification *)notification
 {
     [self updateAccountList];
-    [self.tableView reloadData];
 }
 
 - (void)accountRemoved:(NSNotification *)notification
 {
     [self updateAccountList];
-    [self.tableView reloadData];
+}
+
+- (void)accountUpdated:(NSNotification *)notification
+{
+    [self updateAccountList];
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -108,7 +119,6 @@ static NSInteger const kNetworksStartRowNumber = 1;
 {
     [self showLoadingTextInRefreshControl:refreshControl];
     [self updateAccountList];
-    [self.tableView reloadData];
     [self hidePullToRefreshView];
 }
 
@@ -148,6 +158,7 @@ static NSInteger const kNetworksStartRowNumber = 1;
     {
         UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
         
+        cell.textLabel.font = [UIFont systemFontOfSize:kDefaultFontSize];
         cell.textLabel.text = account.accountDescription;
         cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
         
@@ -187,11 +198,25 @@ static NSInteger const kNetworksStartRowNumber = 1;
         {
             viewController = [[CloudSignUpViewController alloc] initWithAccount:account];
         }
+        else if ((account.accountType == AccountTypeCloud) && (account.accountNetworks.count == 0))
+        {
+            [self showHUD];
+            [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful) {
+                
+                [self hideHUD];
+                [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject];
+                [self updateAccountList];
+            }];
+        }
         else
         {
             viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
         }
-        [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
+        
+        if (viewController)
+        {
+            [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
+        }
     }
 }
 
@@ -215,7 +240,6 @@ static NSInteger const kNetworksStartRowNumber = 1;
     
     [accountManager removeAccount:account];
     [self updateAccountList];
-    [self.tableView reloadData];
 }
 
 #pragma mark - Add Account

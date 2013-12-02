@@ -191,7 +191,7 @@
                                                                                                                                   }
                                                                                                                                   else
                                                                                                                                   {
-                                                                                                                                      [oauthNavigationController dismissViewControllerAnimated:YES completion:nil];
+                                                                                                                                      [self.loginController dismissViewControllerAnimated:YES completion:nil];
                                                                                                                                   }
                                                                                                                                   
                                                                                                                                   authenticationComplete(session);
@@ -209,6 +209,10 @@
         else
         {
             oauthNavigationController = [[NavigationViewController alloc] initWithRootViewController:oauthLoginController];
+            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                    target:self
+                                                                                    action:@selector(cancelCloudAuthentication:)];
+            oauthLoginController.navigationItem.leftBarButtonItem = cancel;
             oauthNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
             
             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -278,6 +282,11 @@
     {
         [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:completionBlock];
     }
+}
+
+- (void)cancelCloudAuthentication:(id)sender
+{
+    [self.loginController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - OAuth delegate

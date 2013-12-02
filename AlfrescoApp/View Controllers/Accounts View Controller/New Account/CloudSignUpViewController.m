@@ -16,6 +16,7 @@
 #import "CenterLabelCell.h"
 #import "AttributedLabelCell.h"
 #import "UniversalDevice.h"
+#import "LoginManager.h"
 
 static NSInteger const kCloudAwaitingVerificationTextSection = 0;
 static NSInteger const kCloudSignUpActionSection = 1;
@@ -296,6 +297,30 @@ static NSString * const kSource = @"mobile";
                 [UniversalDevice clearDetailViewController];
                 [accountManager saveAccountsToKeychain];
                 displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.verified", @"The Account is now..."));
+                
+                // Authenticate account and use temporary session if there are other accounts configured - if total number of accounts is 1 it means this is the only account
+                BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 1);
+                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil temporarySession:useTemporarySession navigationConroller:nil completionBlock:^(BOOL successful) {
+                    
+                    if (successful)
+                    {
+                        AccountManager *accountManager = [AccountManager sharedManager];
+                        // select this account as selected Account if this is the only account configured
+                        if (accountManager.totalNumberOfAddedAccounts == 1)
+                        {
+                            [accountManager selectAccount:self.account selectNetwork:[self.account.accountNetworks firstObject]];
+                        }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                    }
+                    else
+                    {
+                        UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                               message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                              delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                                     otherButtonTitles:nil, nil];
+                        [failureAlert show];
+                    }
+                }];
             }
         }
         else

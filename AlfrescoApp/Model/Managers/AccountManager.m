@@ -147,7 +147,10 @@
         {
             [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
                 
-                // TODO: if account has been activated then retrieve its networks
+                if (successful && account.accountStatus != AccountStatusAwaitingVerification)
+                {
+                    [self saveAllAccountsToKeychain];
+                }
             }];
         }
     }
@@ -163,9 +166,18 @@
     RequestHandler *request = [[RequestHandler alloc] init];
     [request connectWithURL:[NSURL URLWithString:accountStatusUrl] method:kHTTPMethodGET headers:headers requestBody:nil completionBlock:^(NSData *data, NSError *error) {
         
-        if (error && completionBlock != NULL)
+        if (error)
         {
-            completionBlock(NO, error);
+            BOOL success = NO;
+            if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+            {
+                account.accountStatus = AccountStatusActive;
+                success = YES;
+            }
+            if (completionBlock != NULL)
+            {
+                completionBlock(success, error);
+            }
         }
         else
         {

@@ -98,6 +98,10 @@ static NSString * const kContentTypeHeaderKey = @"Content-Type";
         {
             error = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeUnauthorisedAccess];
         }
+        else if (self.statusCode == 404)
+        {
+            error = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeRequestedNodeNotFound];
+        }
         else
         {
             error = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeHTTPResponse];
