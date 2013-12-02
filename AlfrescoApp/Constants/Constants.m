@@ -36,6 +36,7 @@ NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDo
 // Accounts
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";
 NSString * const kAlfrescoAccountRemovedNotification = @"AlfrescoAccountRemovedNotification";
+NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedNotification";
 NSString * const kAlfrescoAccountsListEmptyNotification = @"AlfrescoAccountsListEmptyNotification";
 
 // Application policy constants

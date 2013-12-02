@@ -15,6 +15,7 @@
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
 #import "UniversalDevice.h"
+#import "ContainerViewController.h"
 
 static NSDictionary *iconMappings;
 static NSDateFormatter *dateFormatter;
@@ -57,7 +58,9 @@ SystemNotice * displayInformationMessageWithTitle(NSString *message, NSString *t
 UIView *activeView(void)
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    DetailSplitViewController *rootDetailController = (DetailSplitViewController *)[(RootRevealControllerViewController *)appDelegate.window.rootViewController detailViewController];
+    ContainerViewController *containerController = (ContainerViewController *)appDelegate.window.rootViewController;
+    DetailSplitViewController *rootDetailController = (DetailSplitViewController *)[(RootRevealControllerViewController *)containerController.rootViewController detailViewController];
+    
     if (appDelegate.window.rootViewController.presentedViewController)
     {
         //To work around a system notice that is tried to be presented in a modal view controller
