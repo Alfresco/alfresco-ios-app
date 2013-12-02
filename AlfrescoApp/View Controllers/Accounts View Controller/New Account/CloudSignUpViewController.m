@@ -425,9 +425,9 @@ static NSString * const kSource = @"mobile";
 
 - (UIView *)cloudAccountFooter
 {
-    static NSInteger iPadFooterWidth = 540;
-    static NSInteger iPhoneLandscapeFooterWidth = 480;
-    static NSInteger iPhonePortraitFooterWidth = 320;
+    static CGFloat iPadFooterWidth = 540.0f;
+    static CGFloat iPhoneLandscapeFooterWidth = 480.0f;
+    static CGFloat iPhonePortraitFooterWidth = 320.0f;
     
     CGFloat footerWidth = IS_IPAD ? iPadFooterWidth : (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? iPhoneLandscapeFooterWidth : iPhonePortraitFooterWidth);
     NSString *footerText = NSLocalizedString(@"cloudsignup.footer.firstLine", @"By tapping 'Sign Up'...");
@@ -461,11 +461,9 @@ static NSString * const kSource = @"mobile";
     signupLabel.delegate = self;
     signupLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [signupLabel setText:signupText afterInheritingLabelAttributesAndConfiguringWithBlock:
-     ^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString)
-     {
-         return mutableAttributedString;
-     }];
+    [signupLabel setText:signupText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+        return mutableAttributedString;
+    }];
     
     [self addLink:[NSURL URLWithString:kAlfrescoCloudTermOfServiceUrl] toText:NSLocalizedString(@"cloudsignup.footer.termsOfService", @"") inString:signupText label:signupLabel];
     [self addLink:[NSURL URLWithString:kAlfrescoCloudPrivacyPolicyUrl] toText:NSLocalizedString(@"cloudsignup.footer.privacyPolicy", @"") inString:signupText label:signupLabel];
