@@ -21,6 +21,7 @@
 		0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */; };
 		0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */; };
 		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
+		080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 080828A5184DEDCB000524A3 /* AccountCertificate.m */; };
 		0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D4183A5EE6000A8984 /* SyncError.m */; };
 		0808B9D8183A5EE7000A8984 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */; };
 		0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9DA183A5EE7000A8984 /* SyncAccount.m */; };
@@ -446,6 +447,8 @@
 		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "Accounts View Controller/New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
 		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
 		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
+		080828A4184DEDCB000524A3 /* AccountCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCertificate.h; sourceTree = "<group>"; };
+		080828A5184DEDCB000524A3 /* AccountCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCertificate.m; sourceTree = "<group>"; };
 		0808B9D3183A5EE6000A8984 /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
 		0808B9D4183A5EE6000A8984 /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncError.m; path = DataModel/SyncError.m; sourceTree = "<group>"; };
 		0808B9D6183A5EE7000A8984 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
@@ -1700,6 +1703,8 @@
 				731901B318477E4E002C82C1 /* Legacy */,
 				73E9E20B17E7394900A198B4 /* UserAccount.h */,
 				73E9E20C17E7394900A198B4 /* UserAccount.m */,
+				080828A4184DEDCB000524A3 /* AccountCertificate.h */,
+				080828A5184DEDCB000524A3 /* AccountCertificate.m */,
 				0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */,
 				0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */,
 				73B957D017A6750E0099FB84 /* Managers */,
@@ -3122,6 +3127,7 @@
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */,
 				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,
+				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
 				73E9E20017E352C900A198B4 /* AlfrescoCMISPassThroughAuthenticationProvider.m in Sources */,
 				73F634C317E34A990065590E /* AlfrescoWorkflowProcessServicePublicAPI.m in Sources */,

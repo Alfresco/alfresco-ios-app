@@ -11,6 +11,13 @@
 
 @class RequestHandler;
 
+typedef NS_ENUM(NSInteger, ImportCertificateStatus)
+{
+    ImportCertificateStatusCancelled = 0,
+    ImportCertificateStatusFailed,
+    ImportCertificateStatusSucceeded
+};
+
 @interface AccountManager : NSObject
 
 @property (nonatomic, strong, readonly) UserAccount *selectedAccount;
@@ -25,5 +32,11 @@
 - (NSInteger)totalNumberOfAddedAccounts;
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier;
 - (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock;
+
+/*
+ * Account Certificates Methods
+ */
+- (ImportCertificateStatus)validatePKCS12:(NSData *)pkcs12Data withPasscode:(NSString *)passcode;
+- (ImportCertificateStatus)saveCertificateIdentityData:(NSData *)identityData withPasscode:(NSString *)passcode forAccount:(UserAccount *)account;
 
 @end

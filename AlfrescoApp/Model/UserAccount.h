@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class AccountCertificate;
+
 typedef NS_ENUM(NSInteger, UserAccountType)
 {
     UserAccountTypeOnPremise = 0,
@@ -34,6 +36,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *serviceDocument;
 @property (nonatomic, assign) UserAccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
+@property (nonatomic, strong) AccountCertificate *accountCertificate;
 @property (nonatomic, assign) BOOL isSelectedAccount;
 @property (nonatomic, strong) NSString *selectedNetworkId;
 @property (nonatomic, strong) NSArray *accountNetworks;
