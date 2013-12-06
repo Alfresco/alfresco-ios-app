@@ -651,7 +651,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
     NSString *accountIdentifier = selectedAccount.accountIdentifier;
     
-    if (selectedAccount.accountType == AccountTypeCloud)
+    if (selectedAccount.accountType == UserAccountTypeCloud)
     {
         accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, selectedAccount.selectedNetworkId];
     }

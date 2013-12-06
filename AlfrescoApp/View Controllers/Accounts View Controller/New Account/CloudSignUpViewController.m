@@ -134,7 +134,7 @@ static NSString * const kSource = @"mobile";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((self.account.accountStatus == AccountStatusAwaitingVerification) && (indexPath.section == kCloudAwaitingVerificationTextSection))
+    if ((self.account.accountStatus == UserAccountStatusAwaitingVerification) && (indexPath.section == kCloudAwaitingVerificationTextSection))
     {
         return ceilf([self.awaitingVerificationText sizeWithFont:[UIFont systemFontOfSize:kAwaitingVerificationTextFontSize]
                                                constrainedToSize:CGSizeMake(tableView.bounds.size.width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height);
@@ -152,7 +152,7 @@ static NSString * const kSource = @"mobile";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.account && self.account.accountStatus == AccountStatusAwaitingVerification)
+    if (self.account && self.account.accountStatus == UserAccountStatusAwaitingVerification)
     {
         if (indexPath.section == kCloudRefreshSection)
         {
@@ -228,7 +228,7 @@ static NSString * const kSource = @"mobile";
         group2 = @[signUpCell];
         self.tableGroups = @[group1, group2];
     }
-    else if (self.account.accountStatus == AccountStatusAwaitingVerification)
+    else if (self.account.accountStatus == UserAccountStatusAwaitingVerification)
     {
         CenterLabelCell *refreshCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
         refreshCell.titleLabel.text = NSLocalizedString(@"awaitingverification.buttons.refresh", @"Refresh");
@@ -288,7 +288,7 @@ static NSString * const kSource = @"mobile";
         [self hideHUD];
         if (successful)
         {
-            if (self.account.accountStatus == AccountStatusAwaitingVerification)
+            if (self.account.accountStatus == UserAccountStatusAwaitingVerification)
             {
                 displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.awaiting", @"Still waiting for verification"));
             }
@@ -378,8 +378,8 @@ static NSString * const kSource = @"mobile";
         }
         else
         {
-            UserAccount *account = [[UserAccount alloc] initWithAccountType:AccountTypeCloud];
-            account.accountStatus = AccountStatusAwaitingVerification;
+            UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
+            account.accountStatus = UserAccountStatusAwaitingVerification;
             account.username = self.emailTextField.text;
             account.password = self.passwordTextField.text;
             account.firstName = self.firstNameTextField.text;

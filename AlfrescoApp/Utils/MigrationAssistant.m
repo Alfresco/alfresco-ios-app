@@ -102,7 +102,7 @@ static NSString * oldAppMigrationAbsoluteFilePath = nil;
     UserAccount *account = [[UserAccount alloc] init];
     if ([oldAccount.multitenant boolValue])
     {
-        account.accountType = AccountTypeCloud;
+        account.accountType = UserAccountTypeCloud;
     }
     account.username = oldAccount.username;
     account.password = oldAccount.password;

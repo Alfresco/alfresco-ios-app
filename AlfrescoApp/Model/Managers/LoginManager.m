@@ -69,7 +69,7 @@
     
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        if (account.accountType == AccountTypeOnPremise)
+        if (account.accountType == UserAccountTypeOnPremise)
         {
             if (!account.password || [account.password isEqualToString:@""])
             {

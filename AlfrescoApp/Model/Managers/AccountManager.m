@@ -162,11 +162,11 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
             self.selectedAccount = account;
         }
         
-        if (account.accountType == AccountTypeCloud && account.accountStatus == AccountStatusAwaitingVerification)
+        if (account.accountType == UserAccountTypeCloud && account.accountStatus == UserAccountStatusAwaitingVerification)
         {
             [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
                 
-                if (successful && account.accountStatus != AccountStatusAwaitingVerification)
+                if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
                 {
                     [self saveAllAccountsToKeychain];
                 }
@@ -190,7 +190,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
             BOOL success = NO;
             if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
             {
-                account.accountStatus = AccountStatusActive;
+                account.accountStatus = UserAccountStatusActive;
                 success = YES;
             }
             if (completionBlock != NULL)
@@ -210,7 +210,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
             else
             {
                 BOOL isActiviated = [[accountInfoReceived valueForKeyPath:kCloudAccountStatusValuePath] boolValue];
-                account.accountStatus = isActiviated ? AccountStatusActive : AccountStatusAwaitingVerification;
+                account.accountStatus = isActiviated ? UserAccountStatusActive : UserAccountStatusAwaitingVerification;
                 
                 if (completionBlock != NULL)
                 {
