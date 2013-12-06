@@ -9,6 +9,8 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 
+static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
+
 @interface AccountManager ()
 
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
@@ -56,6 +58,23 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
 
+- (void)addAccounts:(NSArray *)accounts
+{
+    for (UserAccount *account in accounts)
+    {
+        NSComparator comparator = ^(UserAccount *account1, UserAccount *account2)
+        {
+            return (NSComparisonResult)[account1.accountDescription caseInsensitiveCompare:account2.accountDescription];
+        };
+        NSInteger index = [self.accountsFromKeychain indexOfObject:account inSortedRange:NSMakeRange(0, self.accountsFromKeychain.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+        
+        [self.accountsFromKeychain insertObject:account atIndex:index];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
+    }
+    [self saveAllAccountsToKeychain];
+}
+
 - (void)removeAccount:(UserAccount *)account
 {
     [self.accountsFromKeychain removeObject:account];
@@ -71,7 +90,7 @@
 {
     [self.accountsFromKeychain removeAllObjects];
     NSError *deleteError = nil;
-    [KeychainUtils deleteSavedAccountsWithError:&deleteError];
+    [KeychainUtils deleteSavedAccountsForListIdentifier:kKeychainAccountListIdentifier error:&deleteError];
     
     if (deleteError)
     {
@@ -111,7 +130,7 @@
 - (void)saveAllAccountsToKeychain
 {
     NSError *saveError = nil;
-    [KeychainUtils updateSavedAccounts:self.accountsFromKeychain error:&saveError];
+    [KeychainUtils updateSavedAccounts:self.accountsFromKeychain forListIdentifier:kKeychainAccountListIdentifier error:&saveError];
     
     if (saveError && saveError.code != -25300)
     {
@@ -122,7 +141,7 @@
 - (void)loadAccountsFromKeychain
 {
     NSError *keychainRetrieveError = nil;
-    self.accountsFromKeychain = [[KeychainUtils savedAccountsWithError:&keychainRetrieveError] mutableCopy];
+    self.accountsFromKeychain = [[KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier error:&keychainRetrieveError] mutableCopy];
     
     if (keychainRetrieveError)
     {

@@ -8,17 +8,13 @@
 
 #import "KeychainUtils.h"
 
-static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
-static NSString * const kKeychainServiceName = @"com.alfresco.mobile.alfrescoapp";
-
 @implementation KeychainUtils
 
-+ (NSArray *)savedAccountsWithError:(NSError *__autoreleasing *)error
++ (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error
 {
     NSArray *accountsArray = nil;
     NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrService : (id)kKeychainServiceName,
-                            (__bridge id)kSecAttrGeneric : (id)kKeychainAccountListIdentifier,
+                            (__bridge id)kSecAttrGeneric : (id)listIdentifier,
                             (__bridge id)kSecReturnData : @YES};
     
     NSData *data = NULL;
@@ -42,18 +38,17 @@ static NSString * const kKeychainServiceName = @"com.alfresco.mobile.alfrescoapp
     return accountsArray;
 }
 
-+ (void)updateSavedAccounts:(NSArray *)accounts error:(NSError *__autoreleasing *)updateError
++ (void)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError
 {
     if (accounts)
     {
         NSData *accountsArrayData = [NSKeyedArchiver archivedDataWithRootObject:accounts];
         NSDictionary *searchDictionary = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                                           (__bridge id)kSecAttrService : (id)kKeychainServiceName,
-                                           (__bridge id)kSecAttrGeneric : (id)kKeychainAccountListIdentifier};
+                                           (__bridge id)kSecAttrGeneric : (id)listIdentifier};
         
         NSDictionary *updateDictionary = @{(__bridge id)kSecValueData : (id)accountsArrayData};
         
-        NSArray *accountsList = [self savedAccountsWithError:updateError];
+        NSArray *accountsList = [self savedAccountsForListIdentifier:listIdentifier error:updateError];
         OSStatus status = noErr;
         
         // if no accounts in the keychain, add to the keychain, else, update
@@ -80,11 +75,10 @@ static NSString * const kKeychainServiceName = @"com.alfresco.mobile.alfrescoapp
     }
 }
 
-+ (void)deleteSavedAccountsWithError:(NSError *__autoreleasing *)deleteError
++ (void)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError
 {
     NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrService : (id)kKeychainServiceName,
-                            (__bridge id)kSecAttrGeneric : (id)kKeychainAccountListIdentifier};
+                            (__bridge id)kSecAttrGeneric : (id)listIdentifier};
     
     OSStatus status = noErr;
     status = SecItemDelete((__bridge CFDictionaryRef)query);

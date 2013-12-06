@@ -24,9 +24,21 @@ static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
 
 @interface UserAccount ()
 
+@property (nonatomic, strong, readwrite) NSString *accountIdentifier;
+
 @end
 
 @implementation UserAccount
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.accountIdentifier = [[NSUUID UUID] UUIDString];
+    }
+    return self;
+}
 
 - (instancetype)initWithAccountType:(AccountType)accountType
 {
@@ -34,7 +46,6 @@ static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
     if (self)
     {
         self.accountType = accountType;
-        self.accountIdentifier = [[NSUUID UUID] UUIDString];
     }
     return self;
 }
