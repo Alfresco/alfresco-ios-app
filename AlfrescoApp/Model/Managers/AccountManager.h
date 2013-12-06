@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "UserAccount.h"
 
+@class RequestHandler;
+
 @interface AccountManager : NSObject
 
 @property (nonatomic, strong, readonly) UserAccount *selectedAccount;
@@ -22,5 +24,6 @@
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier;
+- (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock;
 
 @end

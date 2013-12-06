@@ -8,6 +8,8 @@
 
 #import "AccountManager.h"
 #import "KeychainUtils.h"
+#import "RequestHandler.h"
+#import "Constants.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -159,7 +161,65 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         {
             self.selectedAccount = account;
         }
+        
+        if (account.accountType == AccountTypeCloud && account.accountStatus == AccountStatusAwaitingVerification)
+        {
+            [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
+                
+                if (successful && account.accountStatus != AccountStatusAwaitingVerification)
+                {
+                    [self saveAllAccountsToKeychain];
+                }
+            }];
+        }
     }
+}
+
+- (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock
+{
+    NSString *accountStatusUrl = [kAlfrescoCloudAPIAccountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountID withString:account.cloudAccountId];
+    accountStatusUrl = [accountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountKey withString:account.cloudAccountKey];
+    
+    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    
+    RequestHandler *request = [[RequestHandler alloc] init];
+    [request connectWithURL:[NSURL URLWithString:accountStatusUrl] method:kHTTPMethodGET headers:headers requestBody:nil completionBlock:^(NSData *data, NSError *error) {
+        
+        if (error)
+        {
+            BOOL success = NO;
+            if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+            {
+                account.accountStatus = AccountStatusActive;
+                success = YES;
+            }
+            if (completionBlock != NULL)
+            {
+                completionBlock(success, error);
+            }
+        }
+        else
+        {
+            NSError *parserError = nil;
+            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parserError];
+            
+            if (error && completionBlock != NULL)
+            {
+                completionBlock(NO, parserError);
+            }
+            else
+            {
+                BOOL isActiviated = [[accountInfoReceived valueForKeyPath:kCloudAccountStatusValuePath] boolValue];
+                account.accountStatus = isActiviated ? AccountStatusActive : AccountStatusAwaitingVerification;
+                
+                if (completionBlock != NULL)
+                {
+                    completionBlock(YES, nil);
+                }
+            }
+        }
+    }];
+    return request;
 }
 
 @end
