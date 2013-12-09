@@ -8,23 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, AccountType)
+typedef NS_ENUM(NSInteger, UserAccountType)
 {
-    AccountTypeOnPremise = 0,
-    AccountTypeCloud
+    UserAccountTypeOnPremise = 0,
+    UserAccountTypeCloud
 };
 
-typedef NS_ENUM(NSInteger, AccountStatus)
+typedef NS_ENUM(NSInteger, UserAccountStatus)
 {
-    AccountStatusActive,
-    AccountStatusAwaitingVerification,
-    AccountStatusConnectionError,
-    AccountStatusInvalidCredentials
+    UserAccountStatusActive,
+    UserAccountStatusAwaitingVerification,
+    UserAccountStatusConnectionError,
+    UserAccountStatusInvalidCredentials
 };
 
 @interface UserAccount : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSString *accountIdentifier;
+@property (nonatomic, strong, readonly) NSString *accountIdentifier;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *accountDescription;
@@ -32,12 +32,12 @@ typedef NS_ENUM(NSInteger, AccountStatus)
 @property (nonatomic, strong) NSString *serverPort;
 @property (nonatomic, strong) NSString *protocol;
 @property (nonatomic, strong) NSString *serviceDocument;
-@property (nonatomic, assign) AccountType accountType;
+@property (nonatomic, assign) UserAccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
 @property (nonatomic, assign) BOOL isSelectedAccount;
 @property (nonatomic, strong) NSString *selectedNetworkId;
 @property (nonatomic, strong) NSArray *accountNetworks;
-@property (nonatomic, assign) AccountStatus accountStatus;
+@property (nonatomic, assign) UserAccountStatus accountStatus;
 
 // cloud signup specific properties, needed for refreshing Account Statuses and resending signup request
 @property (nonatomic, strong) NSString *firstName;
@@ -45,6 +45,6 @@ typedef NS_ENUM(NSInteger, AccountStatus)
 @property (nonatomic, strong) NSString *cloudAccountId;
 @property (nonatomic, strong) NSString *cloudAccountKey;
 
-- (instancetype)initWithAccountType:(AccountType)accountType;
+- (instancetype)initWithAccountType:(UserAccountType)accountType;
 
 @end

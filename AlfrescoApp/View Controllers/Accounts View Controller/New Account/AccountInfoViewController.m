@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         }
         else
         {
-            self.account = [[UserAccount alloc] initWithAccountType:AccountTypeOnPremise];
+            self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
         }
         self.activityType = activityType;
     }
@@ -299,8 +299,8 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
             self.serviceDocumentTextField.text = self.account.serviceDocument;
         }
         
-        group1 = (self.account.accountType == AccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == AccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
+        group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
+        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
     }
     else if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -332,17 +332,17 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
         serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
         
-        group1 = (self.account.accountType == AccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == AccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
+        group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
+        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
     }
-    self.tableGroups = (self.account.accountType == AccountTypeOnPremise) ? @[group1, group2] : @[group1];
+    self.tableGroups = (self.account.accountType == UserAccountTypeOnPremise) ? @[group1, group2] : @[group1];
 }
 
 #pragma mark - private Methods
 
 - (UserAccount *)accountWithUserEnteredInfo
 {
-    UserAccount *temporaryAccount = [[UserAccount alloc] initWithAccountType:AccountTypeOnPremise];
+    UserAccount *temporaryAccount = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
     
     temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

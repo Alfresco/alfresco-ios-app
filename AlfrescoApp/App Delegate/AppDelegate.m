@@ -31,6 +31,7 @@
 #import "AccountsViewController.h"
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
+#import "MigrationAssistant.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -58,6 +59,8 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.hasDeferredOpenURLToProcess = NO;
+    
+    [MigrationAssistant runMigrationAssistant];
     
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     

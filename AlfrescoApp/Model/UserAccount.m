@@ -29,17 +29,28 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
 
 @interface UserAccount ()
 
+@property (nonatomic, strong, readwrite) NSString *accountIdentifier;
+
 @end
 
 @implementation UserAccount
 
-- (instancetype)initWithAccountType:(AccountType)accountType
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.accountIdentifier = [[NSUUID UUID] UUIDString];
+    }
+    return self;
+}
+
+- (instancetype)initWithAccountType:(UserAccountType)accountType
 {
     self = [super init];
     if (self)
     {
         self.accountType = accountType;
-        self.accountIdentifier = [[NSUUID UUID] UUIDString];
     }
     return self;
 }

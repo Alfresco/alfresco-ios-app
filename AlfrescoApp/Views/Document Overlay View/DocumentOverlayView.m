@@ -9,7 +9,7 @@
 #import "DocumentOverlayView.h"
 
 static CGFloat const kToolbarButtonPadding = 5.0f;
-static CGFloat const kCloseButtonWidthAndHeight = 50.0f;
+static CGFloat const kCloseButtonWidthAndHeight = 30.0f;
 static CGFloat const kAnimationSpeed = 0.5f;
 
 @interface DocumentOverlayView () <UIGestureRecognizerDelegate>
@@ -51,8 +51,8 @@ static CGFloat const kAnimationSpeed = 0.5f;
         if (self.shouldDisplayCloseButton)
         {
             UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            closeButton.frame = CGRectMake(self.frame.size.width - kCloseButtonWidthAndHeight, kToolbarButtonPadding, kCloseButtonWidthAndHeight, kCloseButtonWidthAndHeight);
-            [closeButton setTitle:@"X" forState:UIControlStateNormal];
+            closeButton.frame = CGRectMake(self.frame.size.width - (kCloseButtonWidthAndHeight + kToolbarButtonPadding), kToolbarButtonPadding, kCloseButtonWidthAndHeight, kCloseButtonWidthAndHeight);
+            [closeButton setImage:[UIImage imageNamed:@"closeButton.png"] forState:UIControlStateNormal];
             [closeButton addTarget:self action:@selector(closeDocument:) forControlEvents:UIControlEventTouchUpInside];
             closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
             [self addSubview:closeButton];

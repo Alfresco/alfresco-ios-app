@@ -10,8 +10,8 @@
 
 @interface KeychainUtils : NSObject
 
-+ (NSArray *)savedAccountsWithError:(NSError **)error;
-+ (void)updateSavedAccounts:(NSArray *)accounts error:(NSError **)updateError;
-+ (void)deleteSavedAccountsWithError:(NSError **)deleteError;
++ (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error;
++ (void)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError;
++ (void)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError;
 
 @end

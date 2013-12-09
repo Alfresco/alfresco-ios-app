@@ -96,6 +96,11 @@
 		731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
 		731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A81844D217002C82C1 /* onboarding-blue@2x.png */; };
 		731901AB1844D217002C82C1 /* onboarding-grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A91844D217002C82C1 /* onboarding-grey@2x.png */; };
+		731901AF18475B14002C82C1 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901AE18475B14002C82C1 /* closeButton.png */; };
+		731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B1184770F5002C82C1 /* MigrationAssistant.m */; };
+		731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B518477E4E002C82C1 /* AccountInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B718477E4E002C82C1 /* AccountStatus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		731901BC18477E4E002C82C1 /* FDCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B918477E4E002C82C1 /* FDCertificate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
@@ -134,6 +139,11 @@
 		73A26A8A18364641006C1D81 /* sites-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8318364641006C1D81 /* sites-main-menu.png */; };
 		73A26A8B18364641006C1D81 /* tasks-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8418364641006C1D81 /* tasks-main-menu.png */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
+		73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350B61851E8BF0037E3E3 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		73B350C91851E9AA0037E3E3 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BC1851E9AA0037E3E3 /* RNCryptor.m */; };
+		73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */; };
+		73B350CB1851E9AA0037E3E3 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C01851E9AA0037E3E3 /* RNDecryptor.m */; };
+		73B350CC1851E9AA0037E3E3 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C21851E9AA0037E3E3 /* RNEncryptor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
 		73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D217A6750E0099FB84 /* ConnectivityManager.m */; };
@@ -538,6 +548,15 @@
 		731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alfrescoColourLogo@2x.png"; sourceTree = "<group>"; };
 		731901A81844D217002C82C1 /* onboarding-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-blue@2x.png"; sourceTree = "<group>"; };
 		731901A91844D217002C82C1 /* onboarding-grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-grey@2x.png"; sourceTree = "<group>"; };
+		731901AE18475B14002C82C1 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closeButton.png; sourceTree = "<group>"; };
+		731901B0184770F5002C82C1 /* MigrationAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationAssistant.h; sourceTree = "<group>"; };
+		731901B1184770F5002C82C1 /* MigrationAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationAssistant.m; sourceTree = "<group>"; };
+		731901B418477E4E002C82C1 /* AccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountInfo.h; sourceTree = "<group>"; };
+		731901B518477E4E002C82C1 /* AccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfo.m; sourceTree = "<group>"; };
+		731901B618477E4E002C82C1 /* AccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatus.h; sourceTree = "<group>"; };
+		731901B718477E4E002C82C1 /* AccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStatus.m; sourceTree = "<group>"; };
+		731901B818477E4E002C82C1 /* FDCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDCertificate.h; sourceTree = "<group>"; };
+		731901B918477E4E002C82C1 /* FDCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDCertificate.m; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -600,6 +619,18 @@
 		73A26A8418364641006C1D81 /* tasks-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tasks-main-menu.png"; sourceTree = "<group>"; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
+		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		73B350B91851E9AA0037E3E3 /* RNCryptor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor+Private.h"; sourceTree = "<group>"; };
+		73B350BA1851E9AA0037E3E3 /* RNCryptor-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor-Prefix.pch"; sourceTree = "<group>"; };
+		73B350BB1851E9AA0037E3E3 /* RNCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
+		73B350BC1851E9AA0037E3E3 /* RNCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptor.m; sourceTree = "<group>"; };
+		73B350BD1851E9AA0037E3E3 /* RNCryptorEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptorEngine.h; sourceTree = "<group>"; };
+		73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptorEngine.m; sourceTree = "<group>"; };
+		73B350BF1851E9AA0037E3E3 /* RNDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDecryptor.h; sourceTree = "<group>"; };
+		73B350C01851E9AA0037E3E3 /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
+		73B350C11851E9AA0037E3E3 /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
+		73B350C21851E9AA0037E3E3 /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
 		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Supporting Files/Default-568h@2x.png"; sourceTree = "<group>"; };
 		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = "Supporting Files/Default.png"; sourceTree = "<group>"; };
@@ -1372,6 +1403,19 @@
 			name = "Container View Controller";
 			sourceTree = "<group>";
 		};
+		731901B318477E4E002C82C1 /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				731901B418477E4E002C82C1 /* AccountInfo.h */,
+				731901B518477E4E002C82C1 /* AccountInfo.m */,
+				731901B618477E4E002C82C1 /* AccountStatus.h */,
+				731901B718477E4E002C82C1 /* AccountStatus.m */,
+				731901B818477E4E002C82C1 /* FDCertificate.h */,
+				731901B918477E4E002C82C1 /* FDCertificate.m */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
 		732F275117FAC57C00BAFDDE /* Detail Split View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -1615,6 +1659,23 @@
 			path = "Main Menu Icons";
 			sourceTree = "<group>";
 		};
+		73B350B81851E9AA0037E3E3 /* RNCryptor */ = {
+			isa = PBXGroup;
+			children = (
+				73B350B91851E9AA0037E3E3 /* RNCryptor+Private.h */,
+				73B350BA1851E9AA0037E3E3 /* RNCryptor-Prefix.pch */,
+				73B350BB1851E9AA0037E3E3 /* RNCryptor.h */,
+				73B350BC1851E9AA0037E3E3 /* RNCryptor.m */,
+				73B350BD1851E9AA0037E3E3 /* RNCryptorEngine.h */,
+				73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */,
+				73B350BF1851E9AA0037E3E3 /* RNDecryptor.h */,
+				73B350C01851E9AA0037E3E3 /* RNDecryptor.m */,
+				73B350C11851E9AA0037E3E3 /* RNEncryptor.h */,
+				73B350C21851E9AA0037E3E3 /* RNEncryptor.m */,
+			);
+			path = RNCryptor;
+			sourceTree = "<group>";
+		};
 		73B957C717A673A90099FB84 /* App Delegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -1636,6 +1697,7 @@
 		73B957CF17A6750E0099FB84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				731901B318477E4E002C82C1 /* Legacy */,
 				73E9E20B17E7394900A198B4 /* UserAccount.h */,
 				73E9E20C17E7394900A198B4 /* UserAccount.m */,
 				0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */,
@@ -1787,6 +1849,8 @@
 				73B9580817A6750E0099FB84 /* System Notice */,
 				088228621843722B006E58A4 /* RequestHandler.h */,
 				088228631843722B006E58A4 /* RequestHandler.m */,
+				731901B0184770F5002C82C1 /* MigrationAssistant.h */,
+				731901B1184770F5002C82C1 /* MigrationAssistant.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1796,6 +1860,8 @@
 			children = (
 				73B9580417A6750E0099FB84 /* AlfrescoDocument+ALF.h */,
 				73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */,
+				73B350B51851E8BF0037E3E3 /* NSData+Base64.h */,
+				73B350B61851E8BF0037E3E3 /* NSData+Base64.m */,
 				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
 				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
 			);
@@ -1883,6 +1949,7 @@
 			children = (
 				73B959D117A67A760099FB84 /* MBProgressHUD */,
 				73B959D417A67A760099FB84 /* Reachability */,
+				73B350B81851E9AA0037E3E3 /* RNCryptor */,
 				73B959D717A67A760099FB84 /* TTTAttributedLabel */,
 			);
 			path = "Third Party Libraries";
@@ -1962,6 +2029,7 @@
 		73B959FA17A68B7E0099FB84 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				731901AE18475B14002C82C1 /* closeButton.png */,
 				73B959FB17A68B7E0099FB84 /* play-media.png */,
 				73B959FC17A68B7E0099FB84 /* play-media@2x.png */,
 				0833248817FF0DC200EE6AA8 /* blue-button-30.png */,
@@ -2946,6 +3014,7 @@
 				0833246317F98CED00EE6AA8 /* selected-favorite-indicator@2x.png in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
+				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
@@ -3005,6 +3074,7 @@
 				73F634A717E34A990065590E /* AlfrescoCloudCommentService.m in Sources */,
 				73F634B817E34A990065590E /* AlfrescoPlaceholderActivityStreamService.m in Sources */,
 				73E9E1FD17E352C900A198B4 /* AlfrescoCMISDocument.m in Sources */,
+				731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */,
 				73F634D617E34A990065590E /* AlfrescoSortingUtils.m in Sources */,
 				73F634BF17E34A990065590E /* AlfrescoWorkflowPlaceholderProcessDefinitionService.m in Sources */,
 				0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */,
@@ -3013,6 +3083,7 @@
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
 				73F6348217E34A990065590E /* AlfrescoPlaceholderFileManager.m in Sources */,
+				73B350CC1851E9AA0037E3E3 /* RNEncryptor.m in Sources */,
 				73F634D317E34A990065590E /* AlfrescoPagingUtils.m in Sources */,
 				73F634DA17E34A990065590E /* AlfrescoWorkflowUtils.m in Sources */,
 				73F634AC17E34A990065590E /* AlfrescoCloudTaggingService.m in Sources */,
@@ -3032,6 +3103,7 @@
 				73F634B317E34A990065590E /* AlfrescoOnPremiseJoinSiteRequest.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				73F6348A17E34A990065590E /* AlfrescoFolder.m in Sources */,
+				73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
 				73E9E20117E352C900A198B4 /* AlfrescoCMISUtil.m in Sources */,
 				73F6348E17E34A990065590E /* AlfrescoPagingResult.m in Sources */,
@@ -3063,6 +3135,7 @@
 				73B9585017A6750F0099FB84 /* SitesCell.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73F6348717E34A990065590E /* AlfrescoContentFile.m in Sources */,
+				73B350CB1851E9AA0037E3E3 /* RNDecryptor.m in Sources */,
 				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				73F634A817E34A990065590E /* AlfrescoCloudDocumentFolderService.m in Sources */,
@@ -3099,11 +3172,13 @@
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* SyncCell.m in Sources */,
+				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				73F6348117E34A990065590E /* AlfrescoFileManager.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				73F634CC17E34A990065590E /* AlfrescoRepositorySession.m in Sources */,
 				73F6349317E34A990065590E /* AlfrescoRepositoryInfo.m in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
+				73B350C91851E9AA0037E3E3 /* RNCryptor.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				73F6348517E34A990065590E /* AlfrescoCompany.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
@@ -3177,6 +3252,8 @@
 				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				73F6348D17E34A990065590E /* AlfrescoNode.m in Sources */,
+				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
+				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
 				73B95B0217A68DF20099FB84 /* MoreViewController.m in Sources */,
@@ -3185,6 +3262,7 @@
 				7384BE0F17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m in Sources */,
 				73F634B017E34A990065590E /* AlfrescoOnPremiseActivityStreamService.m in Sources */,
 				73F634C117E34A990065590E /* AlfrescoWorkflowPlaceholderTaskService.m in Sources */,
+				731901BC18477E4E002C82C1 /* FDCertificate.m in Sources */,
 				73F634C017E34A990065590E /* AlfrescoWorkflowPlaceholderProcessService.m in Sources */,
 				73F634B717E34A990065590E /* AlfrescoOnPremiseTaggingService.m in Sources */,
 				73F634BC17E34A990065590E /* AlfrescoPlaceholderRatingService.m in Sources */,

@@ -18,6 +18,7 @@
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;
 - (void)addAccount:(UserAccount *)account;
+- (void)addAccounts:(NSArray *)accounts;
 - (void)removeAccount:(UserAccount *)account;
 - (void)removeAllAccounts;
 - (void)saveAccountsToKeychain;

@@ -75,7 +75,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
     
     for (UserAccount *account in allAccounts)
     {
-        if (account.accountType == AccountTypeOnPremise)
+        if (account.accountType == UserAccountTypeOnPremise)
         {
             [self.tableViewData addObject:@[account]];
         }
@@ -160,9 +160,9 @@ static CGFloat const kDefaultFontSize = 18.0f;
         
         cell.textLabel.font = [UIFont systemFontOfSize:kDefaultFontSize];
         cell.textLabel.text = account.accountDescription;
-        cell.imageView.image = (account.accountType == AccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
+        cell.imageView.image = (account.accountType == UserAccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
         
-        if (account.accountType != AccountTypeCloud)
+        if (account.accountType != UserAccountTypeCloud)
         {
             [self updateAccountSelectionButtonImageForCell:cell isSelected:account.isSelectedAccount];
         }
@@ -194,18 +194,20 @@ static CGFloat const kDefaultFontSize = 18.0f;
         UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
         
         id viewController = nil;
-        if (account.accountStatus == AccountStatusAwaitingVerification)
+        if (account.accountStatus == UserAccountStatusAwaitingVerification)
         {
             viewController = [[CloudSignUpViewController alloc] initWithAccount:account];
         }
-        else if ((account.accountType == AccountTypeCloud) && (account.accountNetworks.count == 0))
+        else if ((account.accountType == UserAccountTypeCloud) && (account.accountNetworks.count == 0))
         {
             [self showHUD];
             [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful) {
-                
                 [self hideHUD];
-                [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject];
-                [self updateAccountList];
+                if (successful)
+                {
+                    [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject];
+                    [self updateAccountList];
+                }
             }];
         }
         else
@@ -299,7 +301,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
         account = (UserAccount *)item;
     }
     
-    if (account.accountType == AccountTypeOnPremise || networkId != nil)
+    if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
         [self showHUD];
         [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful) {
