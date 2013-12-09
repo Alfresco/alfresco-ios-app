@@ -1091,29 +1091,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
         }
         
-        if (IS_IPAD)
-        {
-            UIViewController *cameraContainerViewController = [[UIViewController alloc] init];
-            
-            CGRect rootViewFrame = [[[[[UIApplication sharedApplication] keyWindow] rootViewController] view] frame];
-            CGRect cameraViewFrame = [self.view convertRect:rootViewFrame fromView:self.view.window];
-            cameraContainerViewController.view.frame = cameraViewFrame;
-            
-            [cameraContainerViewController.view addSubview:self.imagePickerController.view];
-            
-            [self presentViewInPopoverOrModal:cameraContainerViewController animated:YES];
-            self.capturingMedia = YES;
-            
-            [self.popover setPopoverContentSize:self.imagePickerController.view.frame.size animated:YES];
-            [self.popover setPassthroughViews:@[[[UIApplication sharedApplication] keyWindow]]];
-            self.imagePickerController.view.frame = self.popover.contentViewController.view.frame;
-            
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        }
-        else
-        {
-            [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
-        }
+        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
     }
     else if ([selectedButtonText isEqualToString:NSLocalizedString(@"multiselect.button.delete", @"Multi Select Deleteconfirmation")])
     {
@@ -1184,7 +1162,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
             [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         }];
     }
@@ -1203,9 +1181,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         NSString *videoFileNameWithoutExtension = [NSString stringWithFormat:NSLocalizedString(@"upload.default.video.name", @"Video default Name"), timestamp];
         NSString *videoFileName = [videoFileNameWithoutExtension stringByAppendingPathExtension:fileExtension];
         
-        // stream for writing
-        NSString *fullFilePath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:videoFileName];
-                
+        // rename the file
+        NSString *renamedFilePath = [[filePathInDefaultFileSystem stringByDeletingLastPathComponent] stringByAppendingPathComponent:videoFileName];
+        NSError *renameError = nil;
+        [[AlfrescoFileManager sharedManager] moveItemAtPath:filePathInDefaultFileSystem toPath:renamedFilePath error:&renameError];
+        
+        if (renameError)
+        {
+            AlfrescoLogError(@"Error trying to rename file at path: %@ to path %@. Error: %@", filePathInDefaultFileSystem, renamedFilePath, renameError.localizedDescription);
+        }
+        
         // determine if the content was created or picked
         UploadFormType contentFormType = UploadFormTypeVideoPhotoLibrary;
         
@@ -1215,11 +1200,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         
         // create the view controller
-        uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadDocumentPath:fullFilePath inFolder:self.displayFolder uploadFormType:contentFormType delegate:self];
+        uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadDocumentPath:renamedFilePath inFolder:self.displayFolder uploadFormType:contentFormType delegate:self];
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
             [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         }];
     }
@@ -1239,7 +1224,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [[LocationManager sharedManager] stopLocationUpdates];
     }
     
-    [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - DownloadPickerDelegate Functions
