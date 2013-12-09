@@ -144,9 +144,6 @@
 		73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */; };
 		73B350CB1851E9AA0037E3E3 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C01851E9AA0037E3E3 /* RNDecryptor.m */; };
 		73B350CC1851E9AA0037E3E3 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C21851E9AA0037E3E3 /* RNEncryptor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		73B350CD1851E9AA0037E3E3 /* RNOpenSSLCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C41851E9AA0037E3E3 /* RNOpenSSLCryptor.m */; };
-		73B350CE1851E9AA0037E3E3 /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C61851E9AA0037E3E3 /* RNOpenSSLDecryptor.m */; };
-		73B350CF1851E9AA0037E3E3 /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C81851E9AA0037E3E3 /* RNOpenSSLEncryptor.m */; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
 		73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D217A6750E0099FB84 /* ConnectivityManager.m */; };
@@ -634,12 +631,6 @@
 		73B350C01851E9AA0037E3E3 /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
 		73B350C11851E9AA0037E3E3 /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
 		73B350C21851E9AA0037E3E3 /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
-		73B350C31851E9AA0037E3E3 /* RNOpenSSLCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLCryptor.h; sourceTree = "<group>"; };
-		73B350C41851E9AA0037E3E3 /* RNOpenSSLCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLCryptor.m; sourceTree = "<group>"; };
-		73B350C51851E9AA0037E3E3 /* RNOpenSSLDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLDecryptor.h; sourceTree = "<group>"; };
-		73B350C61851E9AA0037E3E3 /* RNOpenSSLDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLDecryptor.m; sourceTree = "<group>"; };
-		73B350C71851E9AA0037E3E3 /* RNOpenSSLEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLEncryptor.h; sourceTree = "<group>"; };
-		73B350C81851E9AA0037E3E3 /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
 		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Supporting Files/Default-568h@2x.png"; sourceTree = "<group>"; };
 		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = "Supporting Files/Default.png"; sourceTree = "<group>"; };
@@ -1681,12 +1672,6 @@
 				73B350C01851E9AA0037E3E3 /* RNDecryptor.m */,
 				73B350C11851E9AA0037E3E3 /* RNEncryptor.h */,
 				73B350C21851E9AA0037E3E3 /* RNEncryptor.m */,
-				73B350C31851E9AA0037E3E3 /* RNOpenSSLCryptor.h */,
-				73B350C41851E9AA0037E3E3 /* RNOpenSSLCryptor.m */,
-				73B350C51851E9AA0037E3E3 /* RNOpenSSLDecryptor.h */,
-				73B350C61851E9AA0037E3E3 /* RNOpenSSLDecryptor.m */,
-				73B350C71851E9AA0037E3E3 /* RNOpenSSLEncryptor.h */,
-				73B350C81851E9AA0037E3E3 /* RNOpenSSLEncryptor.m */,
 			);
 			path = RNCryptor;
 			sourceTree = "<group>";
@@ -3101,7 +3086,6 @@
 				73B350CC1851E9AA0037E3E3 /* RNEncryptor.m in Sources */,
 				73F634D317E34A990065590E /* AlfrescoPagingUtils.m in Sources */,
 				73F634DA17E34A990065590E /* AlfrescoWorkflowUtils.m in Sources */,
-				73B350CE1851E9AA0037E3E3 /* RNOpenSSLDecryptor.m in Sources */,
 				73F634AC17E34A990065590E /* AlfrescoCloudTaggingService.m in Sources */,
 				73F6347C17E34A990065590E /* AlfrescoConstants.m in Sources */,
 				73F634AA17E34A990065590E /* AlfrescoCloudRatingService.m in Sources */,
@@ -3242,7 +3226,6 @@
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,
 				73F634B217E34A990065590E /* AlfrescoOnPremiseDocumentFolderService.m in Sources */,
-				73B350CD1851E9AA0037E3E3 /* RNOpenSSLCryptor.m in Sources */,
 				73B95AF417A68DF20099FB84 /* AddCommentViewController.m in Sources */,
 				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
@@ -3284,7 +3267,6 @@
 				73F634B717E34A990065590E /* AlfrescoOnPremiseTaggingService.m in Sources */,
 				73F634BC17E34A990065590E /* AlfrescoPlaceholderRatingService.m in Sources */,
 				73B95B0317A68DF20099FB84 /* SitesListViewController.m in Sources */,
-				73B350CF1851E9AA0037E3E3 /* RNOpenSSLEncryptor.m in Sources */,
 				73F6348317E34A990065590E /* AlfrescoActivityEntry.m in Sources */,
 				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
 				7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */,
