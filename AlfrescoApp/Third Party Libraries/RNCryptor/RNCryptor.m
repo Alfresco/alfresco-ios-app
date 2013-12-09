@@ -188,6 +188,11 @@ RN_CCKeyDerivationPBKDF( CCPBKDFAlgorithm algorithm, const char *password, size_
 		return -1; // out of bounds parameters
 
 	hlen = getPRFhlen(prf);
+    
+    if (hlen == 0)
+    {
+        return -1;
+    }
 
 	/*
 	 * FromSpec: Let l be the number of hLen-octet blocks in the derived key, rounding up,
