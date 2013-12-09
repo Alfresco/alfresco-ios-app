@@ -39,18 +39,6 @@
 
 #pragma mark -
 #pragma mark NSCoding
-- (id)init 
-{
-    // TODO static NSString objects
-    
-    self = [super init];
-    if(self) {
-        [self setSuccessTimestamp:[[NSDate date] timeIntervalSince1970]];
-        [self setAccountStatus:FDAccountStatusActive];
-    }
-    
-    return self;
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -66,84 +54,6 @@
 {
     [aCoder encodeObject:[NSNumber numberWithInt:_accountStatus] forKey:@"accountStatus"];
     [aCoder encodeObject:[NSNumber numberWithDouble:_successTimestamp] forKey:@"successTimestamp"];
-}
-
-
-- (NSString *)shortMessage
-{
-    if(self.accountStatus == FDAccountStatusAwaitingVerification)
-    {
-        return NSLocalizedString(@"account.awaiting.cell.subtitle", @"Awaiting for verification short message");
-    }
-    else if(self.accountStatus == FDAccountStatusInactive)
-    {
-        return NSLocalizedString(@"account.inactive.cell.subtitle", @"Inactive account short message");
-    }
-    else if(self.accountStatus == FDAccountStatusConnectionError)
-    {
-        return NSLocalizedString(@"account.connection-error.cell.subtitle", @"Connection error short message");
-    }
-    else if(self.accountStatus == FDAccountStatusInvalidCredentials)
-    {
-        return NSLocalizedString(@"account.invalid-credentials.cell.subtitle", @"Invalid credentials short messages");
-    }
-    else if(self.accountStatus == FDAccountStatusInvalidCertificate)
-    {
-        return NSLocalizedString(@"account.invalid-certificate.cell.subtitle", @"Invalid certificate short message");
-    }
-    return nil;
-}
-
-- (UIColor *)shortMessageTextColor
-{
-    if(self.accountStatus == FDAccountStatusInactive)
-    {
-        return [UIColor darkGrayColor];
-    }
-    else if([self isError])
-    {
-        return [UIColor redColor];
-    }
-    
-    return [UIColor darkGrayColor];
-}
-
-- (NSString *)detailedMessage
-{
-    if(self.accountStatus == FDAccountStatusConnectionError)
-    {
-        NSDate *lastSuccess = [NSDate dateWithTimeIntervalSince1970:self.successTimestamp];
-        return [NSString stringWithFormat:NSLocalizedString(@"accountdetails.fields.connection-error", @"Connection error message"), relativeDateFromDate(lastSuccess)];
-    }
-    else if(self.accountStatus == FDAccountStatusInvalidCredentials)
-    {
-        return NSLocalizedString(@"accountdetails.fields.invalid-credentials", @"Invalid credentials message");
-    }
-    else if(self.accountStatus == FDAccountStatusInvalidCertificate)
-    {
-        return NSLocalizedString(@"accountdetails.fields.invalid-certificate", @"Invalid Certificate message");
-    }
-    return nil;
-}
-
-- (BOOL)isError
-{
-    return self.accountStatus == FDAccountStatusConnectionError ||
-        self.accountStatus == FDAccountStatusInvalidCredentials ||
-        self.accountStatus == FDAccountStatusInvalidCertificate;
-}
-
-- (BOOL)isActive
-{
-    return self.accountStatus == FDAccountStatusActive || [self isError];
-}
-
-#pragma mark -
-#pragma mark K-V Compliance
-
-- (id)valueForUndefinedKey:(NSString *)key
-{
-    return nil;
 }
 
 @end

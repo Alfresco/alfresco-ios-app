@@ -44,22 +44,4 @@ typedef enum
 @property (nonatomic, assign) FDAccountStatus accountStatus;
 @property (nonatomic, assign) NSTimeInterval successTimestamp;
 
-/*
- A short message describing the current status of the account
- Used as a cell subtitle for an account (Manage Account)
- */
-- (NSString *)shortMessage;
-/*
- The color for the short message text
- */
-- (UIColor *)shortMessageTextColor;
-/*
- A detailed message for the account status.
- Used in the Account detail screen
- */
-- (NSString *)detailedMessage;
-
-- (BOOL)isError;
-- (BOOL)isActive;
-
 @end
