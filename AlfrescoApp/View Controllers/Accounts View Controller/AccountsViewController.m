@@ -202,10 +202,12 @@ static CGFloat const kDefaultFontSize = 18.0f;
         {
             [self showHUD];
             [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful) {
-                
                 [self hideHUD];
-                [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject];
-                [self updateAccountList];
+                if (successful)
+                {
+                    [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject];
+                    [self updateAccountList];
+                }
             }];
         }
         else

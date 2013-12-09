@@ -24,6 +24,7 @@
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
 @property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
+@property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success);
 @end
 
 @implementation LoginManager
@@ -112,14 +113,10 @@
 
 #pragma mark - Cloud authentication Methods
 
-- (void)authenticateCloudAccount:(UserAccount *)account
-                       networkId:(NSString *)networkId
-                temporarySession:(BOOL)temporarySession
-             navigationConroller:(UINavigationController *)navigationController
-                 completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
+- (void)authenticateCloudAccount:(UserAccount *)account networkId:(NSString *)networkId temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
 {
-    void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session)
-    {
+    self.authenticationCompletionBlock = authenticationCompletionBlock;
+    void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session) {
         if (!session)
         {
             if (authenticationCompletionBlock != NULL)
@@ -171,37 +168,33 @@
         }
     };
     
-    AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^ AlfrescoOAuthLoginViewController * (void)
-    {
+    AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthLoginViewController * (void) {
         NavigationViewController *oauthNavigationController = nil;
-        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY
-                                                                                                                 secretKey:ALFRESCO_CLOUD_OAUTH_SECRET
-                                                                                                           completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
-                                                                                                               
-                                                                                                               if (oauthData)
-                                                                                                               {
-                                                                                                                   account.oauthData = oauthData;
-                                                                                                                   
-                                                                                                                   [self connectWithOAuthData:oauthData
-                                                                                                                                    networkId:networkId
-                                                                                                                              completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                                                                                                                                  if (navigationController)
-                                                                                                                                  {
-                                                                                                                                      [navigationController popViewControllerAnimated:YES];
-                                                                                                                                  }
-                                                                                                                                  else
-                                                                                                                                  {
-                                                                                                                                      [self.loginController dismissViewControllerAnimated:YES completion:nil];
-                                                                                                                                  }
-                                                                                                                                  
-                                                                                                                                  authenticationComplete(session);
-                                                                                                                              }];
-                                                                                                               }
-                                                                                                               else
-                                                                                                               {
-                                                                                                                   authenticationComplete(nil);
-                                                                                                               }
-                                                                                                           }];
+        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY secretKey:ALFRESCO_CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
+            
+            if (oauthData)
+            {
+                account.oauthData = oauthData;
+                
+                [self connectWithOAuthData:oauthData networkId:networkId completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                    if (navigationController)
+                    {
+                        [navigationController popViewControllerAnimated:YES];
+                    }
+                    else
+                    {
+                        [self.loginController dismissViewControllerAnimated:YES completion:nil];
+                    }
+                    
+                    authenticationComplete(session);
+                }];
+            }
+            else
+            {
+                authenticationComplete(nil);
+            }
+        }];
+        
         if (navigationController)
         {
             [navigationController pushViewController:oauthLoginController animated:YES];
@@ -286,7 +279,12 @@
 
 - (void)cancelCloudAuthentication:(id)sender
 {
-    [self.loginController dismissViewControllerAnimated:YES completion:nil];
+    [self.loginController dismissViewControllerAnimated:YES completion:^{
+        if (self.authenticationCompletionBlock != NULL)
+        {
+            self.authenticationCompletionBlock(NO);
+        }
+    }];
 }
 
 #pragma mark - OAuth delegate

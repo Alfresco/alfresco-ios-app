@@ -104,13 +104,16 @@ static NSString * oldAppMigrationAbsoluteFilePath = nil;
     {
         account.accountType = UserAccountTypeCloud;
     }
-    account.username = oldAccount.username;
-    account.password = oldAccount.password;
+    else
+    {
+        account.username = oldAccount.username;
+        account.password = oldAccount.password;
+        account.serverAddress = oldAccount.hostname;
+        account.serverPort = oldAccount.port;
+        account.protocol = oldAccount.protocol;
+        account.serviceDocument = oldAccount.serviceDocumentRequestPath;
+    }
     account.accountDescription = oldAccount.description;
-    account.serverAddress = oldAccount.hostname;
-    account.serverPort = oldAccount.port;
-    account.protocol = oldAccount.protocol;
-    account.serviceDocument = oldAccount.serviceDocumentRequestPath;
     account.isSelectedAccount = NO;
     return account;
 }
