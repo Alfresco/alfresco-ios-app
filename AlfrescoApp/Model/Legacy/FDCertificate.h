@@ -32,6 +32,7 @@
 #import <Foundation/Foundation.h>
 
 @interface FDCertificate : NSObject
+
 @property (nonatomic, readonly) SecIdentityRef identityRef;
 @property (nonatomic, readonly) SecCertificateRef identityCertificateRef;
 @property (nonatomic, readonly) NSArray *certificateChain;
@@ -39,10 +40,5 @@
 @property (readonly) NSDate *expiresDate;
 @property (nonatomic, readonly) BOOL hasExpired;
 @property (readonly) NSString *issuer;
-
-/*
- Init for a FDCertificate with the provided identity data (PKCS12) and passcode.
- */
-- (id)initWithIdentityData:(NSData *)data andPasscode:(NSString *)passcode;
 
 @end

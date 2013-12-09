@@ -65,10 +65,4 @@ extern NSString * const kIsDefaultAccount;
 @property (nonatomic, retain) AccountStatus *accountStatusInfo;
 @property (nonatomic, readonly) FDCertificate *certificateWrapper;
 
-//- (BOOL)isMultitenant;
-///**
-// * Returns YES if the current Alfresco Cloud account is configured for the live (my.alfresco.com) service
-// */
-//- (BOOL)isLiveCloudEnvironment;
-
 @end
