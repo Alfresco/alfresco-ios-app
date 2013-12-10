@@ -49,6 +49,12 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
+    
+    [self loadWorkflowProcessesWithListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self hideHUD];
+        [self hidePullToRefreshView];
+        [self reloadTableViewWithPagingResult:pagingResult error:error];
+    }];
 }
 
 #pragma mark - Table view data source
