@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
     UserAccountStatusInvalidCredentials
 };
 
-@interface UserAccount : NSObject <NSCoding>
+@interface UserAccount : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong, readonly) NSString *accountIdentifier;
 @property (nonatomic, strong) NSString *username;

@@ -45,6 +45,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 @property (nonatomic, strong) UISwitch *protocolSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
+@property (nonatomic, strong) UserAccount *formBackupAccount;
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
 @end
@@ -58,13 +59,14 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     {
         if (account)
         {
-            self.account = account;
+            _account = account;
         }
         else
         {
-            self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
+            _account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
         }
-        self.activityType = activityType;
+        _activityType = activityType;
+        _formBackupAccount = [_account copy];
     }
     return self;
 }
@@ -72,12 +74,9 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     self.title = self.account.accountDescription;
     [self disablePullToRefresh];
-    
-    
     
     if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -114,22 +113,26 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidChange:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
+    if (self.activityType != AccountActivityTypeViewAccount)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textFieldDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWasShown:)
+                                                     name:UIKeyboardDidShowNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillBeHidden:)
+                                                     name:UIKeyboardWillHideNotification object:nil];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self updateFormBackupAccount];
 }
 
 -(void)saveButtonClicked:(id)sender
@@ -233,6 +236,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 {
     if (self.activityType != AccountActivityTypeViewAccount && indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
     {
+        [self.activeTextField resignFirstResponder];
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.account];
         [self.navigationController pushViewController:clientCertificate animated:YES];
     }
@@ -305,17 +309,14 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         
         certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        if (self.activityType == AccountActivityTypeEditAccount)
-        {
-            self.usernameTextField.text = self.account.username;
-            self.passwordTextField.text = self.account.password;
-            self.serverAddressTextField.text = self.account.serverAddress;
-            self.descriptionTextField.text = self.account.accountDescription;
-            BOOL isHTTPSOn = [self.account.protocol isEqualToString:kProtocolHTTP] ? NO : YES;
-            [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-            self.portTextField.text = self.account.serverPort;
-            self.serviceDocumentTextField.text = self.account.serviceDocument;
-        }
+        self.usernameTextField.text = self.formBackupAccount.username;
+        self.passwordTextField.text = self.formBackupAccount.password;
+        self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
+        self.descriptionTextField.text = self.formBackupAccount.accountDescription;
+        BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
+        [self.protocolSwitch setOn:isHTTPSOn animated:YES];
+        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
+        self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
         
         group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
         group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
@@ -358,22 +359,18 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 #pragma mark - private Methods
 
-- (UserAccount *)accountWithUserEnteredInfo
+- (void)updateFormBackupAccount
 {
-    UserAccount *temporaryAccount = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
-    
-    temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-    temporaryAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
     
-    temporaryAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
-    temporaryAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    return temporaryAccount;
+    self.formBackupAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
+    self.formBackupAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+    self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
 /**
@@ -400,7 +397,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
 {
-    UserAccount *temporaryAccount = [self accountWithUserEnteredInfo];
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
@@ -415,7 +411,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ((password == nil || [password isEqualToString:@""]))
     {
-        updateAccountInfo(temporaryAccount);
+        updateAccountInfo(self.formBackupAccount);
         completionBlock(YES);
     }
     else
@@ -423,12 +419,12 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
         
         [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:temporaryAccount password:temporaryAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
+        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
             
             [self hideHUD];
             if (successful)
             {
-                updateAccountInfo(temporaryAccount);
+                updateAccountInfo(self.formBackupAccount);
                 completionBlock(YES);
             }
             else

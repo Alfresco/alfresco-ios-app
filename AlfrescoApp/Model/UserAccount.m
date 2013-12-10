@@ -109,4 +109,24 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
     return self;
 }
 
+#pragma mark - NSCopying Method
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    UserAccount *account = [[self class] allocWithZone:zone];
+    
+    if (account)
+    {
+        account.username = self.username;
+        account.password = self.password;
+        account.accountDescription = self.accountDescription;
+        account.serverAddress = self.serverAddress;
+        account.serverPort = self.serverPort;
+        account.protocol = self.protocol;
+        account.serviceDocument = self.serviceDocument;
+        account.accountType = self.accountType;
+    }
+    return account;
+}
+
 @end
