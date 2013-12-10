@@ -35,16 +35,9 @@ static CGFloat const kTableViewCellHeight = 54.0f;
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    
-    [self constructTableGroups];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     
     [self constructTableGroups];
     [self.tableView reloadData];
