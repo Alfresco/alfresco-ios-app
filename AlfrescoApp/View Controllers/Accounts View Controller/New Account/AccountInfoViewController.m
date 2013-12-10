@@ -15,6 +15,8 @@
 #import "LabelCell.h"
 #import "CenterLabelCell.h"
 #import "NavigationViewController.h"
+#import "ClientCertificateViewController.h"
+#import "UniversalDevice.h"
 
 static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
@@ -28,6 +30,8 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
     AccountInfoTableSectionDelete
 };
 
+static NSInteger const kAccountInfoCertificateRow = 2;
+
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroups;
@@ -37,6 +41,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 @property (nonatomic, strong) UITextField *descriptionTextField;
 @property (nonatomic, strong) UITextField *portTextField;
 @property (nonatomic, strong) UITextField *serviceDocumentTextField;
+@property (nonatomic, strong) UILabel *certificateLabel;
 @property (nonatomic, strong) UISwitch *protocolSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
@@ -98,22 +103,33 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
                                                                                 target:self
                                                                                 action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = cancel;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textFieldDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWasShown:)
-                                                     name:UIKeyboardDidShowNotification object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillBeHidden:)
-                                                     name:UIKeyboardWillHideNotification object:nil];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [self constructTableCellsForAlfrescoServer];
     self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+    [self.tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)saveButtonClicked:(id)sender
@@ -215,15 +231,10 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == AccountInfoTableSectionBrowse)
+    if (self.activityType != AccountActivityTypeViewAccount && indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
     {
-        
-    }
-    else if (indexPath.section == AccountInfoTableSectionDelete)
-    {
-        AccountManager *accountManager = [AccountManager sharedManager];
-        [accountManager removeAccount:self.account];
-        
+        ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.account];
+        [self.navigationController pushViewController:clientCertificate animated:YES];
     }
     else
     {
@@ -236,6 +247,11 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 {
     NSArray *group1 = nil;
     NSArray *group2 = nil;
+    
+    LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+    certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
+    certificateCell.valueLabel.text = self.account.accountCertificate.summary;
+    
     if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
     {
         TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -287,6 +303,8 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         serviceDocumentCell.valueTextField.delegate = self;
         self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
         
+        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
         if (self.activityType == AccountActivityTypeEditAccount)
         {
             self.usernameTextField.text = self.account.username;
@@ -300,7 +318,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         }
         
         group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
+        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
     }
     else if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -333,7 +351,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
         
         group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
+        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
     }
     self.tableGroups = (self.account.accountType == UserAccountTypeOnPremise) ? @[group1, group2] : @[group1];
 }

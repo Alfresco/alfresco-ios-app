@@ -28,6 +28,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 @property (nonatomic) BOOL noDocumentsSaved;
 @property (nonatomic) float totalFilesSize;
 @property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, strong) id<DocumentFilter> documentFilter;
 
 @end
 
@@ -38,6 +39,16 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     self = [super initWithNibName:kDownloadsInterface andSession:nil];
     if (self)
     {
+    }
+    return self;
+}
+
+- (id)initWithDocumentFilter:(id<DocumentFilter>)documentFilter
+{
+    self = [self init];
+    if (self)
+    {
+        self.documentFilter = documentFilter;
     }
     return self;
 }
@@ -332,18 +343,23 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 - (void)refreshData
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSMutableArray *documentPaths = [[[DownloadManager sharedManager] downloadedDocumentPaths] mutableCopy];
+    NSArray *documentPaths = [[DownloadManager sharedManager] downloadedDocumentPaths];
+    NSMutableArray *filteredDocumentPaths = [NSMutableArray array];
     self.totalFilesSize = 0;
     
     for (NSString *documentPath in documentPaths)
     {
-        NSError *error = nil;
-        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:documentPath error:&error];
-        self.totalFilesSize += [[fileAttributes objectForKey:kAlfrescoFileSize] longValue];
+        if (!self.documentFilter || ![self.documentFilter filterDocumentWithExtension:documentPath.pathExtension])
+        {
+            [filteredDocumentPaths addObject:documentPath];
+            NSError *error = nil;
+            NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:documentPath error:&error];
+            self.totalFilesSize += [[fileAttributes objectForKey:kAlfrescoFileSize] longValue];
+        }
     }
     
-    self.noDocumentsSaved = documentPaths.count == 0;
-    self.tableViewData = documentPaths;
+    self.noDocumentsSaved = filteredDocumentPaths.count == 0;
+    self.tableViewData = filteredDocumentPaths;
     [self.tableView reloadData];
     [self updateBarButtonItems];
     [self selectIndexPathForAlfrescoNodeInDetailView:nil];

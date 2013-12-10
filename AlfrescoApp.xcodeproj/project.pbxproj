@@ -28,6 +28,15 @@
 		0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9DD183BB40B000A8984 /* green_selected_circle.png */; };
 		0808B9E0183BB40B000A8984 /* unselected_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9DE183BB40B000A8984 /* unselected_circle.png */; };
 		0808B9E2183D1083000A8984 /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9E1183D1083000A8984 /* empty_icon.png */; };
+		080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A81171855FE3A00B79306 /* ClientCertificateViewController.m */; };
+		080A811B18561CD800B79306 /* ClientCertificateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080A811A18561CD800B79306 /* ClientCertificateViewController.xib */; };
+		080A812118561E6D00B79306 /* certificate-add.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A811D18561E6D00B79306 /* certificate-add.png */; };
+		080A812218561E6D00B79306 /* certificate-add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A811E18561E6D00B79306 /* certificate-add@2x.png */; };
+		080A812318561E6D00B79306 /* certificate.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A811F18561E6D00B79306 /* certificate.png */; };
+		080A812418561E6D00B79306 /* certificate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A812018561E6D00B79306 /* certificate@2x.png */; };
+		080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */; };
+		080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */; };
+		080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A813018573CBC00B79306 /* CertificateDocumentFilter.m */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244F17F9823800EE6AA8 /* SyncViewController.m */; };
@@ -458,6 +467,19 @@
 		0808B9DD183BB40B000A8984 /* green_selected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_selected_circle.png; path = Accounts/green_selected_circle.png; sourceTree = "<group>"; };
 		0808B9DE183BB40B000A8984 /* unselected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_circle.png; path = Accounts/unselected_circle.png; sourceTree = "<group>"; };
 		0808B9E1183D1083000A8984 /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = empty_icon.png; path = Accounts/empty_icon.png; sourceTree = "<group>"; };
+		080A81161855FE3A00B79306 /* ClientCertificateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientCertificateViewController.h; path = "Accounts View Controller/Certificate/ClientCertificateViewController.h"; sourceTree = "<group>"; };
+		080A81171855FE3A00B79306 /* ClientCertificateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClientCertificateViewController.m; path = "Accounts View Controller/Certificate/ClientCertificateViewController.m"; sourceTree = "<group>"; };
+		080A811A18561CD800B79306 /* ClientCertificateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ClientCertificateViewController.xib; path = "Accounts View Controller/Certificate/ClientCertificateViewController.xib"; sourceTree = "<group>"; };
+		080A811D18561E6D00B79306 /* certificate-add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "certificate-add.png"; path = "Accounts/certificate-add.png"; sourceTree = "<group>"; };
+		080A811E18561E6D00B79306 /* certificate-add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "certificate-add@2x.png"; path = "Accounts/certificate-add@2x.png"; sourceTree = "<group>"; };
+		080A811F18561E6D00B79306 /* certificate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = certificate.png; path = Accounts/certificate.png; sourceTree = "<group>"; };
+		080A812018561E6D00B79306 /* certificate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "certificate@2x.png"; path = "Accounts/certificate@2x.png"; sourceTree = "<group>"; };
+		080A8125185628AE00B79306 /* ClientCertificateImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientCertificateImportViewController.h; path = "Accounts View Controller/Certificate/ClientCertificateImportViewController.h"; sourceTree = "<group>"; };
+		080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClientCertificateImportViewController.m; path = "Accounts View Controller/Certificate/ClientCertificateImportViewController.m"; sourceTree = "<group>"; };
+		080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ClientCertificateImportViewController.xib; path = "Accounts View Controller/Certificate/ClientCertificateImportViewController.xib"; sourceTree = "<group>"; };
+		080A812D18573AD700B79306 /* DocumentFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentFilter.h; sourceTree = "<group>"; };
+		080A812F18573CBC00B79306 /* CertificateDocumentFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CertificateDocumentFilter.h; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.h"; sourceTree = "<group>"; };
+		080A813018573CBC00B79306 /* CertificateDocumentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CertificateDocumentFilter.m; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.m"; sourceTree = "<group>"; };
 		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
 		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
 		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
@@ -1196,6 +1218,7 @@
 		0804DCA5181962A400E3ACC2 /* Accounts View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				080A81191855FE4C00B79306 /* CertificateViewControllers */,
 				0804DCB818197F0C00E3ACC2 /* New Account */,
 				0804DCA6181962E700E3ACC2 /* AccountsViewController.h */,
 				0804DCA7181962E700E3ACC2 /* AccountsViewController.m */,
@@ -1248,11 +1271,38 @@
 		0808B9DC183BB39C000A8984 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				080A811C18561E5500B79306 /* Certificates */,
 				0808B9DD183BB40B000A8984 /* green_selected_circle.png */,
 				0808B9DE183BB40B000A8984 /* unselected_circle.png */,
 				0808B9E1183D1083000A8984 /* empty_icon.png */,
 			);
 			name = Account;
+			sourceTree = "<group>";
+		};
+		080A81191855FE4C00B79306 /* CertificateViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				080A81161855FE3A00B79306 /* ClientCertificateViewController.h */,
+				080A81171855FE3A00B79306 /* ClientCertificateViewController.m */,
+				080A811A18561CD800B79306 /* ClientCertificateViewController.xib */,
+				080A8125185628AE00B79306 /* ClientCertificateImportViewController.h */,
+				080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */,
+				080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */,
+				080A812F18573CBC00B79306 /* CertificateDocumentFilter.h */,
+				080A813018573CBC00B79306 /* CertificateDocumentFilter.m */,
+			);
+			name = CertificateViewControllers;
+			sourceTree = "<group>";
+		};
+		080A811C18561E5500B79306 /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				080A811D18561E6D00B79306 /* certificate-add.png */,
+				080A811E18561E6D00B79306 /* certificate-add@2x.png */,
+				080A811F18561E6D00B79306 /* certificate.png */,
+				080A812018561E6D00B79306 /* certificate@2x.png */,
+			);
+			name = Certificates;
 			sourceTree = "<group>";
 		};
 		0833244D17F981EC00EE6AA8 /* Sync ViewController */ = {
@@ -1758,6 +1808,7 @@
 			isa = PBXGroup;
 			children = (
 				73B957E017A6750E0099FB84 /* ItemInDetailViewProtocol.h */,
+				080A812D18573AD700B79306 /* DocumentFilter.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2926,10 +2977,12 @@
 				73B95A7517A68B7E0099FB84 /* mime_pdf.png in Resources */,
 				73B95A7617A68B7E0099FB84 /* mime_pdf@2x.png in Resources */,
 				73B95A7717A68B7E0099FB84 /* mime_ppt.png in Resources */,
+				080A812418561E6D00B79306 /* certificate@2x.png in Resources */,
 				73B95A7817A68B7E0099FB84 /* mime_ppt@2x.png in Resources */,
 				73B95A7917A68B7E0099FB84 /* mime_txt.png in Resources */,
 				73B95A7A17A68B7E0099FB84 /* mime_txt@2x.png in Resources */,
 				73B95A7B17A68B7E0099FB84 /* mime_video.png in Resources */,
+				080A811B18561CD800B79306 /* ClientCertificateViewController.xib in Resources */,
 				73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */,
 				73B95A7C17A68B7E0099FB84 /* mime_video@2x.png in Resources */,
 				73B95A7D17A68B7E0099FB84 /* mime_xls.png in Resources */,
@@ -2944,6 +2997,7 @@
 				73B95A8117A68B7E0099FB84 /* mime_zip.png in Resources */,
 				73B95A8217A68B7E0099FB84 /* mime_zip@2x.png in Resources */,
 				73B95A8317A68B7E0099FB84 /* repository.png in Resources */,
+				080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */,
 				73B95A8417A68B7E0099FB84 /* repository@2x.png in Resources */,
 				73B95A8517A68B7E0099FB84 /* site.png in Resources */,
 				0833246417F98CED00EE6AA8 /* sync-status-failed.png in Resources */,
@@ -2974,6 +3028,7 @@
 				73B95A9117A68B7E0099FB84 /* authorisationLogo@2x.png in Resources */,
 				73B95A9217A68B7E0099FB84 /* collapse.png in Resources */,
 				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
+				080A812218561E6D00B79306 /* certificate-add@2x.png in Resources */,
 				73B95A9317A68B7E0099FB84 /* collapse@2x.png in Resources */,
 				73B95A9417A68B7E0099FB84 /* expand.png in Resources */,
 				0833247417FADFE600EE6AA8 /* stop-transfer.png in Resources */,
@@ -2997,6 +3052,7 @@
 				0808B9E2183D1083000A8984 /* empty_icon.png in Resources */,
 				73B95AA417A68B7E0099FB84 /* help-more.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
+				080A812318561E6D00B79306 /* certificate.png in Resources */,
 				0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */,
 				73B95AA517A68B7E0099FB84 /* help-more@2x.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
@@ -3043,6 +3099,7 @@
 				73B95AC017A68B7E0099FB84 /* comments@2x.png in Resources */,
 				73B95AC117A68B7E0099FB84 /* download.png in Resources */,
 				7319019F1843B614002C82C1 /* onboarding-grey.png in Resources */,
+				080A812118561E6D00B79306 /* certificate-add.png in Resources */,
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
 				73A26A8718364641006C1D81 /* download-main-menu.png in Resources */,
@@ -3119,6 +3176,7 @@
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				08E799B1182A57850030FD53 /* ButtonCell.m in Sources */,
+				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */,
 				73F634C517E34A990065590E /* AlfrescoBasicAuthenticationProvider.m in Sources */,
 				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
@@ -3155,6 +3213,7 @@
 				73F634AD17E34A990065590E /* AlfrescoWorkflowProcessDefinitionServiceOldAPI.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
+				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73F634A417E34A990065590E /* AlfrescoWorkflowProcessService.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
@@ -3261,6 +3320,7 @@
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
 				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
+				080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
 				73B95B0217A68DF20099FB84 /* MoreViewController.m in Sources */,
 				0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */,

@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class AccountCertificate;
+#import "AccountCertificate.h"
 
 typedef NS_ENUM(NSInteger, UserAccountType)
 {

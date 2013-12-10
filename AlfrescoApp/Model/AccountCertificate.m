@@ -19,7 +19,6 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
 @property (nonatomic, assign, readwrite) BOOL hasExpired;
 @property (nonatomic, strong, readwrite) NSString *certificateIssuer;
 
-@property (nonatomic, strong) NSDictionary *attributes;
 @property (nonatomic, strong) NSData *pkcsData;
 @property (nonatomic, copy) NSString *passcode;
 @property (nonatomic, assign) BOOL verifiedDate;
@@ -88,56 +87,9 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
     }
 }
 
-/*
- The only way to get an identity's attributes is to retrieve it from the keychain
- so we first have to add the identity to the keychain, retrieve the attributes
- and delete the identity from the keychain.
- */
-- (NSDictionary *)attributesForIdentity:(SecIdentityRef)identityRef
-{
-    NSDictionary *attributes = nil;
-    //Deleting all the identities in the keychain
-    SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass : (__bridge id)kSecClassIdentity});
-    
-    CFTypeRef persistent_ref = NULL;
-    const void *keys[] = {kSecReturnPersistentRef, kSecValueRef};
-    const void *values[] = {kCFBooleanTrue, identityRef};
-    CFDictionaryRef dictionary = CFDictionaryCreate(NULL, keys, values, 2, NULL, NULL);
-    
-    OSStatus status = SecItemAdd(dictionary, &persistent_ref);
-    if (dictionary)
-    {
-        CFRelease(dictionary);
-    }
-    
-    if (status == errSecSuccess)
-    {
-        NSDictionary *queryDictionary = @{(__bridge id)kSecValuePersistentRef : (__bridge id)persistent_ref,
-                                          (__bridge id)kSecReturnAttributes : (__bridge id)kCFBooleanTrue,
-                                          (__bridge id)kSecReturnRef : (__bridge id)kCFBooleanTrue};
-        
-        status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (void *)&attributes);
-        
-        if (status == errSecSuccess)
-        {
-            SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecValuePersistentRef : (__bridge id)persistent_ref});
-        }
-    }
-    return attributes;
-}
-
 - (NSString *)summary
 {
     return (__bridge NSString *)SecCertificateCopySubjectSummary(self.identityCertificateRef);
-}
-
-- (NSDictionary *)attributes
-{
-    if (!_attributes)
-    {
-        _attributes = [self attributesForIdentity:self.identityRef];
-    }
-    return _attributes;
 }
 
 - (BOOL)hasExpired
@@ -182,8 +134,6 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
 
 - (NSString *)certificateIssuer
 {
-    // The description of a SecCertificateRef prints out the summary and the issuer in the
-    // following form: <cert(0xad4b390) s: tmpalfrescozia1 i: wedcs231.edc.e>
     NSString *certificateDescription = [NSString stringWithFormat:@"%@", self.identityCertificateRef];
     NSError *error = NULL;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"i\\: (.+)>$" options:0 error:&error];
