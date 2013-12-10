@@ -278,6 +278,8 @@
 "upload.audio.cell.button.record" = "Record";
 "upload.audio.cell.button.play" = "Play";
 "upload.audio.cell.button.stop" = "Stop";
+"upload.audio.setting.disabled.title" = "Permissions";
+"upload.audio.setting.disabled.message" = "This app does not have permission to access the microphone.\n\nThis permission level can be toggled from Settings -> Privacy -> Microphone.";
 // confirmation
 "upload.confirm.dismissal.title" = "Unsaved Content";
 "upload.confirm.dismissal.message" = "Do you want to upload this content? Your content will be lost if you don't upload now.";

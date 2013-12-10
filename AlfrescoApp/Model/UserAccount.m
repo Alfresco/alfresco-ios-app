@@ -48,7 +48,7 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
 
 - (instancetype)initWithAccountType:(UserAccountType)accountType
 {
-    self = [super init];
+    self = [self init];
     if (self)
     {
         self.accountType = accountType;

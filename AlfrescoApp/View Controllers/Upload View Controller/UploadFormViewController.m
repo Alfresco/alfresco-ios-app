@@ -22,7 +22,7 @@ NS_ENUM(NSUInteger, UploadFormCellTypes)
     UploadFormCellTypePreview,
 };
 
-static const NSString * kAudioFileName = @"audio.m4a";
+static NSString * const kAudioFileName = @"audio.m4a";
 
 @interface UploadFormViewController()
 
@@ -394,65 +394,93 @@ static const NSString * kAudioFileName = @"audio.m4a";
 
 - (void)recordButtonPressed:(id)sender
 {
-    if (self.audioRecorder.isRecording)
-    {
-        [self.audioRecorder stop];
-        
-        NSError *sessionPlaybackError = nil;
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionPlaybackError];
-        
-        if (sessionPlaybackError)
+    // define the record block
+    void (^recordBlock)(void) = ^{
+        if (self.audioRecorder.isRecording)
         {
-            AlfrescoLogError(@"AVAudioSession setting back to Playback", [sessionPlaybackError localizedDescription]);
-        }
-        
-        [self updateButton:self.recordButton withText:NSLocalizedString(@"upload.audio.cell.button.record", @"Record Button") forControlState:UIControlStateNormal];
-        self.playButton.enabled = YES;
-    }
-    else
-    {
-        NSError *error = nil;
-        
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:&error];
-        
-        if (error)
-        {
-            AlfrescoLogError(@"Audio Session Error: %@", error.localizedDescription);
-            return;
-        }
-        
-        NSString *recordPath = [NSTemporaryDirectory() stringByAppendingPathComponent:(NSString *)kAudioFileName];
-        
-        NSDictionary *recordSettings = @{AVSampleRateKey : [NSNumber numberWithFloat:44100.0],
-                                         AVFormatIDKey : [NSNumber numberWithInt:kAudioFormatMPEG4AAC],
-                                         AVNumberOfChannelsKey : [NSNumber numberWithInt:1],
-                                         AVEncoderAudioQualityKey : [NSNumber numberWithInt:AVAudioQualityMax]};
-        
-        AVAudioRecorder *newRecorder = [[AVAudioRecorder alloc] initWithURL:[NSURL fileURLWithPath:recordPath] settings:recordSettings error:&error];
-        
-        self.audioRecorder = newRecorder;
-        
-        if (error)
-        {
-            AlfrescoLogError(@"Error trying to record audio: %@", error.description);
-            [[AVAudioSession sharedInstance] setActive:NO error:nil];
+            [self.audioRecorder stop];
+            
+            NSError *sessionPlaybackError = nil;
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionPlaybackError];
+            
+            if (sessionPlaybackError)
+            {
+                AlfrescoLogError(@"AVAudioSession setting back to Playback", [sessionPlaybackError localizedDescription]);
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateButton:self.recordButton withText:NSLocalizedString(@"upload.audio.cell.button.record", @"Record Button") forControlState:UIControlStateNormal];
+                self.playButton.enabled = YES;
+            });
         }
         else
         {
-            self.audioRecorder.delegate = self;
-            [self.audioRecorder prepareToRecord];
-            [self.audioRecorder record];
+            NSError *error = nil;
             
-            self.playButton.enabled = NO;
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:&error];
             
-            [self updateButton:self.recordButton withText:NSLocalizedString(@"upload.audio.cell.button.stop", @"Stop Recording") forControlState:UIControlStateNormal];
+            if (error)
+            {
+                AlfrescoLogError(@"Audio Session Error: %@", error.localizedDescription);
+                return;
+            }
+            
+            NSString *recordPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:kAudioFileName];
+            
+            NSDictionary *recordSettings = @{AVSampleRateKey : [NSNumber numberWithFloat:44100.0],
+                                             AVFormatIDKey : [NSNumber numberWithInt:kAudioFormatMPEG4AAC],
+                                             AVNumberOfChannelsKey : [NSNumber numberWithInt:1],
+                                             AVEncoderAudioQualityKey : [NSNumber numberWithInt:AVAudioQualityMax]};
+            
+            AVAudioRecorder *newRecorder = [[AVAudioRecorder alloc] initWithURL:[NSURL fileURLWithPath:recordPath] settings:recordSettings error:&error];
+            self.audioRecorder = newRecorder;
+            
+            if (error)
+            {
+                AlfrescoLogError(@"Error trying to record audio: %@", error.description);
+                [[AVAudioSession sharedInstance] setActive:NO error:nil];
+            }
+            else
+            {
+                self.audioRecorder.delegate = self;
+                [self.audioRecorder prepareToRecord];
+                [self.audioRecorder record];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.playButton.enabled = NO;
+                    [self updateButton:self.recordButton withText:NSLocalizedString(@"upload.audio.cell.button.stop", @"Stop Recording") forControlState:UIControlStateNormal];
+                });
+            }
         }
+    };
+    
+    if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission:)])
+    {
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            if (granted)
+            {
+                recordBlock();
+            }
+            else
+            {
+                UIAlertView *microphonePermissionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"upload.audio.setting.disabled.title", @"Permission Alert Title")
+                                                                                    message:NSLocalizedString(@"upload.audio.setting.disabled.message", @"Permission Alert Message")
+                                                                                   delegate:self
+                                                                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                                          otherButtonTitles:nil];
+                [microphonePermissionAlert show];
+            }
+        }];
+    }
+    else
+    {
+        recordBlock();
     }
 }
 
 - (void)playButtonPressed:(id)sender
 {
-    NSString *filePathString = [NSTemporaryDirectory() stringByAppendingPathComponent:(NSString *)kAudioFileName];
+    NSString *filePathString = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:kAudioFileName];
     
     if (self.audioPlayer.isPlaying)
     {
@@ -511,8 +539,8 @@ static const NSString * kAudioFileName = @"audio.m4a";
 
 - (void)removeAudioFileFromDefaultFileSystem
 {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *pathToFileOnDefaultFileSystem = [NSTemporaryDirectory() stringByAppendingPathComponent:(NSString *)kAudioFileName];
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    NSString *pathToFileOnDefaultFileSystem = [[fileManager temporaryDirectory] stringByAppendingPathComponent:kAudioFileName];
     
     if ([fileManager fileExistsAtPath:pathToFileOnDefaultFileSystem])
     {
@@ -557,94 +585,117 @@ static const NSString * kAudioFileName = @"audio.m4a";
 - (void)uploadDocument:(NSString *)name completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
 {
     __weak UploadFormViewController *weakSelf = self;
+    
+    // define the upload block
+    void (^uploadBlock)(void) = ^{
+        // name of the file to be uploaded
+        NSString *documentNameWithPathExtension = name;
+        // Default mimeType: binary
+        NSString *mimeType = @"application/octet-stream";
         
-    // name of the file to be uploaded
-    NSString *documentNameWithPathExtension = name;
-    // Default mimeType: binary
-    NSString *mimeType = @"application/octet-stream";
-    
-    if (weakSelf.fileExtension != nil && ![weakSelf.fileExtension isEqualToString:@""])
-    {
-        documentNameWithPathExtension = [NSString stringWithFormat:@"%@.%@", name, weakSelf.fileExtension];
-        mimeType = [Utility mimeTypeForFileExtension:weakSelf.fileExtension];
-    }
-    
-    // create the content file
-    AlfrescoContentFile *contentFile = nil;
-    
-    if (weakSelf.uploadFormType == UploadFormTypeImageCreated || weakSelf.uploadFormType == UploadFormTypeImagePhotoLibrary)
-    {
-        contentFile = [[AlfrescoContentFile alloc] initWithData:[weakSelf dataFromImage:weakSelf.imageToUpload metadata:weakSelf.metadata mimetype:mimeType] mimeType:mimeType];
-    }
-    else
-    {
-        contentFile = [[AlfrescoContentFile alloc] initWithUrl:weakSelf.documentURL];
-    }
-    
-    // create the read stream
-    NSString *pathToTempFile = [contentFile.fileUrl path];
-    NSInputStream *readStream = [[AlfrescoFileManager sharedManager] inputStreamWithFilePath:pathToTempFile];
-    
-    [weakSelf showHUD];
-    AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:readStream mimeType:mimeType length:contentFile.length];
-    
-    [weakSelf.documentService createDocumentWithName:documentNameWithPathExtension inParentFolder:weakSelf.uploadToFolder contentStream:contentStream properties:nil aspects:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-        if (document)
+        if (weakSelf.fileExtension != nil && ![weakSelf.fileExtension isEqualToString:@""])
         {
-            NSError *deleteAfterUploadError = nil;
-            [[AlfrescoFileManager sharedManager] removeItemAtPath:pathToTempFile error:&deleteAfterUploadError];
-            
-            if (deleteAfterUploadError)
-            {
-                AlfrescoLogError(@"Error deleting file after upload: %@", [ErrorDescriptions descriptionForError:error]);
-            }
-            
-            if (self.tagsToApplyToDocument)
-            {
-                [weakSelf showHUD];
-                [weakSelf.tagService addTags:weakSelf.tagsToApplyToDocument toNode:document completionBlock:^(BOOL succeeded, NSError *error) {
-                    [weakSelf hideHUD];
-                    if (succeeded)
-                    {
-                        [weakSelf dismissViewControllerAnimated:YES completion:^{
-                            [weakSelf.delegate didFinishUploadingNode:document];
-                        }];
-                    }
-                    else
-                    {
-                        // display error
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.addtags.failed", @"Adding tags failed"), [ErrorDescriptions descriptionForError:error]]);
-                    }
-                }];
-            }
-            else
-            {
-                [weakSelf dismissViewControllerAnimated:YES completion:^{
-                    [weakSelf.delegate didFinishUploadingNode:document];
-                }];
-            }
+            documentNameWithPathExtension = [NSString stringWithFormat:@"%@.%@", name, weakSelf.fileExtension];
+            mimeType = [Utility mimeTypeForFileExtension:weakSelf.fileExtension];
+        }
+        
+        // create the content file
+        AlfrescoContentFile *contentFile = nil;
+        
+        if (weakSelf.uploadFormType == UploadFormTypeImageCreated || weakSelf.uploadFormType == UploadFormTypeImagePhotoLibrary)
+        {
+            contentFile = [[AlfrescoContentFile alloc] initWithData:[weakSelf dataFromImage:weakSelf.imageToUpload metadata:weakSelf.metadata mimetype:mimeType] mimeType:mimeType];
         }
         else
         {
-            if ((error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists || error.code == kAlfrescoErrorCodeDocumentFolder) && completionBlock != NULL)
+            contentFile = [[AlfrescoContentFile alloc] initWithUrl:weakSelf.documentURL];
+        }
+        
+        // create the read stream
+        NSString *pathToTempFile = [contentFile.fileUrl path];
+        NSInputStream *readStream = [[AlfrescoFileManager sharedManager] inputStreamWithFilePath:pathToTempFile];
+        
+        [weakSelf showHUD];
+        AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:readStream mimeType:mimeType length:contentFile.length];
+        
+        [weakSelf.documentService createDocumentWithName:documentNameWithPathExtension inParentFolder:weakSelf.uploadToFolder contentStream:contentStream properties:nil aspects:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+            if (document)
             {
-                completionBlock(YES);
-                return;
+                NSError *deleteAfterUploadError = nil;
+                [[AlfrescoFileManager sharedManager] removeItemAtPath:pathToTempFile error:&deleteAfterUploadError];
+                
+                if (deleteAfterUploadError)
+                {
+                    AlfrescoLogError(@"Error deleting file after upload: %@", [ErrorDescriptions descriptionForError:error]);
+                }
+                
+                if (self.tagsToApplyToDocument)
+                {
+                    [weakSelf showHUD];
+                    [weakSelf.tagService addTags:weakSelf.tagsToApplyToDocument toNode:document completionBlock:^(BOOL succeeded, NSError *error) {
+                        [weakSelf hideHUD];
+                        if (succeeded)
+                        {
+                            [weakSelf dismissViewControllerAnimated:YES completion:^{
+                                [weakSelf.delegate didFinishUploadingNode:document];
+                            }];
+                        }
+                        else
+                        {
+                            // display error
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.addtags.failed", @"Adding tags failed"), [ErrorDescriptions descriptionForError:error]]);
+                        }
+                    }];
+                }
+                else
+                {
+                    [weakSelf dismissViewControllerAnimated:YES completion:^{
+                        [weakSelf.delegate didFinishUploadingNode:document];
+                    }];
+                }
             }
             else
             {
-                // display error
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+                if ((error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists || error.code == kAlfrescoErrorCodeDocumentFolder) && completionBlock != NULL)
+                {
+                    completionBlock(YES);
+                    return;
+                }
+                else
+                {
+                    // display error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+                }
             }
-        }
-        [weakSelf hideHUD];
-        if (completionBlock != NULL)
+            [weakSelf hideHUD];
+            if (completionBlock != NULL)
+            {
+                completionBlock(NO);
+            }
+        } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+            //
+        }];
+    };
+    
+    // if uploading audio, set the values required in order to upload the file
+    if (self.uploadFormType == UploadFormTypeAudio)
+    {
+        NSString *pathToTempAudioFile = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:kAudioFileName];
+        self.documentURL = [NSURL fileURLWithPath:pathToTempAudioFile];
+        self.fileExtension = [pathToTempAudioFile pathExtension];
+        
+        if (uploadBlock != NULL)
         {
-            completionBlock(NO);
+            uploadBlock();
         }
-    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        //
-    }];
+    }
+    else
+    {
+        if (uploadBlock != NULL)
+        {
+            uploadBlock();
+        }
+    }
 }
 
 - (void)uploadDocument:(id)sender
