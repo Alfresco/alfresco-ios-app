@@ -32,8 +32,8 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
     self = [super init];
     if (self)
     {
-        self.pkcsData = data;
-        self.passcode = passcode;
+        _pkcsData = data;
+        _passcode = passcode;
         [self configureCertificates];
     }
     return self;
@@ -43,8 +43,8 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
 {
     if (self = [super init])
     {
-        self.pkcsData = [aDecoder decodeObjectForKey:kCertificatePkcsData];
-        self.passcode = [aDecoder decodeObjectForKey:kCertificatePasscode];
+        _pkcsData = [aDecoder decodeObjectForKey:kCertificatePkcsData];
+        _passcode = [aDecoder decodeObjectForKey:kCertificatePasscode];
         [self configureCertificates];
     }
     return self;

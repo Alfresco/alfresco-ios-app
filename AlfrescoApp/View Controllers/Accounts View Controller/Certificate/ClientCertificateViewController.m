@@ -38,6 +38,8 @@ static CGFloat const kTableViewCellHeight = 54.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self constructTableGroups];
 }
 
 - (void)viewDidAppear:(BOOL)animated

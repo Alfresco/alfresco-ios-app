@@ -48,7 +48,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     self = [self init];
     if (self)
     {
-        self.documentFilter = documentFilter;
+        _documentFilter = documentFilter;
     }
     return self;
 }
