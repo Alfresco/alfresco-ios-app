@@ -26,7 +26,6 @@
 
 # import <Foundation/Foundation.h>
 #import "AccountStatus.h"
-#import "FDCertificate.h"
 
 extern NSString * const kServerAccountId;
 extern NSString * const kServerVendor;
@@ -63,6 +62,5 @@ extern NSString * const kIsDefaultAccount;
 @property (nonatomic, assign) BOOL isDefaultAccount;
 @property (nonatomic, assign) BOOL isQualifyingAccount;
 @property (nonatomic, retain) AccountStatus *accountStatusInfo;
-@property (nonatomic, readonly) FDCertificate *certificateWrapper;
 
 @end
