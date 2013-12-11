@@ -397,6 +397,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
 {
+    [self updateFormBackupAccount];
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
