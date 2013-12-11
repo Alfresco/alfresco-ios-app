@@ -10,6 +10,7 @@
 #import "KeychainUtils.h"
 #import "RequestHandler.h"
 #import "Constants.h"
+#import "AccountCertificate.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -125,6 +126,78 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 - (NSInteger)totalNumberOfAddedAccounts
 {
     return self.allAccounts.count;
+}
+
+#pragma mark - Certificate Import Methods
+
+- (ImportCertificateStatus)validatePKCS12:(NSData *)pkcs12Data withPasscode:(NSString *)passcode
+{
+    ImportCertificateStatus status = ImportCertificateStatusFailed;
+    CFArrayRef importedItems = NULL;
+    OSStatus importStatus = SecPKCS12Import((__bridge CFDataRef)pkcs12Data, (__bridge CFDictionaryRef)@{(__bridge id)kSecImportExportPassphrase : passcode}, &importedItems);
+    
+    if (importStatus == noErr)
+    {
+        status = ImportCertificateStatusSucceeded;
+    }
+    else if (importStatus == errSecAuthFailed)
+    {
+        status = ImportCertificateStatusCancelled;
+    }
+    
+    if (importedItems != NULL)
+    {
+        CFRelease(importedItems);
+    }
+    return status;
+}
+
+- (ImportCertificateStatus)saveCertificateIdentityData:(NSData *)identityData withPasscode:(NSString *)passcode forAccount:(UserAccount *)account
+{
+    OSStatus importStatus = noErr;
+    CFArrayRef importedItems = NULL;
+    NSDictionary *itemDictionary = NULL;
+    
+    ImportCertificateStatus status = ImportCertificateStatusFailed;
+    importStatus = SecPKCS12Import((__bridge CFDataRef)identityData, (__bridge CFDictionaryRef)@{(__bridge id)kSecImportExportPassphrase: passcode}, &importedItems);
+    
+    if (importStatus == noErr)
+    {
+        SecIdentityRef identity = NULL;
+        
+        // If there are multiple identities in the PKCS#12, we only use the first one
+        id item = ((__bridge id)importedItems)[0];
+        if ([item isKindOfClass:[NSDictionary class]])
+        {
+            itemDictionary = item;
+        }
+        identity = (__bridge SecIdentityRef)itemDictionary[(__bridge __strong id)(kSecImportItemIdentity)];
+        
+        // Making sure there's an actual identity in the imported items
+        if (CFGetTypeID(identity) == SecIdentityGetTypeID())
+        {
+            AccountCertificate *accountCertificate = [[AccountCertificate alloc] initWithIdentityData:identityData andPasscode:passcode];
+            account.accountCertificate = accountCertificate;
+            status = ImportCertificateStatusSucceeded;
+            [self saveAllAccountsToKeychain];
+        }
+        else
+        {
+            // Unknown error/wrong identity data
+            status = ImportCertificateStatusFailed;
+        }
+    }
+    else if (importStatus == errSecAuthFailed)
+    {
+        // The passcode is wrong
+        status = ImportCertificateStatusCancelled;
+    }
+    
+    if (importedItems != NULL)
+    {
+        CFRelease(importedItems);
+    }
+    return status;
 }
 
 #pragma mark - Private Functions

@@ -18,6 +18,7 @@ static NSString * const kAccountProtocol= @"kAccountProtocol";
 static NSString * const kAccountServiceDocument = @"kAccountServiceDocument";
 static NSString * const kAccountType = @"kAccountType";
 static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
+static NSString * const kAccountCertificate = @"kAccountCertificate";
 static NSString * const kAccountIsSelected = @"kAccountIsSelected";
 static NSString * const kAccountNetworks = @"kAccountNetworks";
 static NSString * const kSelectedNetworkId = @"kSelectedNetworkId";
@@ -71,6 +72,7 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
     [aCoder encodeObject:self.serviceDocument forKey:kAccountServiceDocument];
     [aCoder encodeInteger:self.accountType forKey:kAccountType];
     [aCoder encodeObject:self.oauthData forKey:kAlfrescoOAuthData];
+    [aCoder encodeObject:self.accountCertificate forKey:kAccountCertificate];
     [aCoder encodeInteger:self.isSelectedAccount forKey:kAccountIsSelected];
     [aCoder encodeObject:self.accountNetworks forKey:kAccountNetworks];
     [aCoder encodeObject:self.selectedNetworkId forKey:kSelectedNetworkId];
@@ -96,6 +98,7 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
         self.serviceDocument = [aDecoder decodeObjectForKey:kAccountServiceDocument];
         self.accountType = [aDecoder decodeIntegerForKey:kAccountType];
         self.oauthData = [aDecoder decodeObjectForKey:kAlfrescoOAuthData];
+        self.accountCertificate = [aDecoder decodeObjectForKey:kAccountCertificate];
         self.isSelectedAccount = [aDecoder decodeIntegerForKey:kAccountIsSelected];
         self.accountNetworks = [aDecoder decodeObjectForKey:kAccountNetworks];
         self.selectedNetworkId = [aDecoder decodeObjectForKey:kSelectedNetworkId];
@@ -104,6 +107,26 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
         self.cloudAccountKey = [aDecoder decodeObjectForKey:kCloudAccountKey];
     }
     return self;
+}
+
+#pragma mark - NSCopying Method
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    UserAccount *account = [[self class] allocWithZone:zone];
+    
+    if (account)
+    {
+        account.username = self.username;
+        account.password = self.password;
+        account.accountDescription = self.accountDescription;
+        account.serverAddress = self.serverAddress;
+        account.serverPort = self.serverPort;
+        account.protocol = self.protocol;
+        account.serviceDocument = self.serviceDocument;
+        account.accountType = self.accountType;
+    }
+    return account;
 }
 
 @end
