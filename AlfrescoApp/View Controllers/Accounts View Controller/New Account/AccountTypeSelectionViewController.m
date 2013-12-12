@@ -290,7 +290,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)accountInfoViewController:(AccountInfoViewController *)controller willDismissAfterAddingAccount:(UserAccount *)account
 {
-    BOOL accountAdded = (account) ? YES : NO;
+    BOOL accountAdded = (account != nil);
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
     {
         [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:accountAdded];
@@ -299,7 +299,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)accountInfoViewController:(AccountInfoViewController *)controller didDismissAfterAddingAccount:(UserAccount *)account
 {
-    BOOL accountAdded = (account) ? YES : NO;
+    BOOL accountAdded = (account != nil);
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
     {
         [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:accountAdded];
