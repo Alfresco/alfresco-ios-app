@@ -25,8 +25,6 @@
 #import <MessageUI/MessageUI.h>
 #import "ThemeUtil.h"
 
-static NSString * const kPreviewFolderName = @"DocumentPreviews";
-
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
     PagingScrollViewSegmentTypePreview = 0,
@@ -43,7 +41,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 @property (nonatomic, strong, readwrite) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong, readwrite) AlfrescoRatingService *ratingService;
 @property (nonatomic, strong, readwrite) MBProgressHUD *progressHUD;
-@property (nonatomic, strong, readwrite) NSString *previewFolderURLString;
+@property (nonatomic, strong, readwrite) NSString *previewImageFolderURLString;
 @property (nonatomic, weak, readwrite) IBOutlet ThumbnailImageView *documentThumbnail;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *shareMenuContainer;
 @property (nonatomic, weak, readwrite) IBOutlet PagedScrollView *pagingScrollView;
@@ -65,7 +63,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.session = session;
         self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
-        self.previewFolderURLString = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:kPreviewFolderName];
+        self.previewImageFolderURLString = [[AlfrescoFileManager sharedManager] thumbnailsImgPreviewFolderPath];
         self.pagingControllers = [NSMutableArray array];
     }
     return self;
@@ -103,7 +101,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     
     // setup the preview image
     NSString *uniqueIdentifier = uniqueFileNameForNode(self.document);
-    NSString *filePath = [[self.previewFolderURLString stringByAppendingPathComponent:uniqueIdentifier] stringByAppendingPathExtension:@"png"];
+    NSString *filePath = [[self.previewImageFolderURLString stringByAppendingPathComponent:uniqueIdentifier] stringByAppendingPathExtension:@"png"];
     
     if ([[AlfrescoFileManager sharedManager] fileExistsAtPath:filePath])
     {
@@ -116,7 +114,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.documentThumbnail.image = placeholderImage;
         
         __weak typeof(self) weakSelf = self;
-        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document toFolderAtPath:self.previewFolderURLString renditionType:@"imgpreview" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
+        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document toFolderAtPath:self.previewImageFolderURLString renditionType:@"imgpreview" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
             if (savedFileName)
             {
                 [weakSelf.documentThumbnail setImageAtSecurePath:savedFileName];
@@ -162,7 +160,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)previewDocument:(id)sender
 {
-    NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:self.document.name];
+    NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] documentPreviewDocumentFolderPath] stringByAppendingPathComponent:self.document.name];
     
     [self downloadContentOfDocumentToLocation:downloadDestinationPath completionBlock:^(NSString *fileLocation) {
         PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document documentPermissions:self.documentPermissions contentFilePath:fileLocation session:self.session displayOverlayCloseButton:YES];

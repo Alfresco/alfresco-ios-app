@@ -24,8 +24,8 @@ CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
 CGFloat kSegmentControllerHeight = 40.0f;
 
-static const NSString * kSitesFolderLocation = @"/Sites";
-static const NSString * kSitesPreviousSearchThumbnailMappingsFileName = @"SitesSearchMappings";
+static NSString * const kSitesFolderLocation = @"/Sites";
+static NSString * const kSitesPreviousSearchThumbnailMappingsFileName = @"SitesSearchMappings";
 
 static CGFloat kSearchCellHeight = 60.0f;
 
@@ -216,7 +216,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
             searchCell.nodeImageView.image = placeholderImage;
             
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode toFolderAtPath:[[AlfrescoFileManager sharedManager] temporaryDirectory] renditionType:@"doclib" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
+            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode toFolderAtPath:[[AlfrescoFileManager sharedManager] thumbnailsDocLibFolderPath] renditionType:@"doclib" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
                 if (!error)
                 {
                     [weakSelf.thumbnails setValue:savedFileName forKey:uniqueIdentifier];
@@ -593,7 +593,7 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)saveThumbnailMapping
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [[fileManager homeDirectory] stringByAppendingPathComponent:(NSString *)kThumbnailMappingFolder];
+    NSString *mappingsFolderPath = [fileManager thumbnailsMappingFolderPath];
     
     if (![fileManager fileExistsAtPath:mappingsFolderPath])
     {
@@ -607,7 +607,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     }
     
     NSError *dictionarySavingError = nil;
-    NSString *completeFilePath = [mappingsFolderPath stringByAppendingPathComponent:(NSString *)kSitesPreviousSearchThumbnailMappingsFileName];
+    NSString *completeFilePath = [mappingsFolderPath stringByAppendingPathComponent:kSitesPreviousSearchThumbnailMappingsFileName];
     NSData *thumbnailDictionaryData = [NSKeyedArchiver archivedDataWithRootObject:self.thumbnails];
     
     [fileManager createFileAtPath:completeFilePath contents:thumbnailDictionaryData error:&dictionarySavingError];
@@ -621,8 +621,8 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)loadThumbnailMappings
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [[fileManager homeDirectory] stringByAppendingPathComponent:(NSString *)kThumbnailMappingFolder];
-    NSURL *completeFilePathURL = [NSURL fileURLWithPath:[mappingsFolderPath stringByAppendingPathComponent:(NSString *)kSitesPreviousSearchThumbnailMappingsFileName]];
+    NSString *mappingsFolderPath = [fileManager thumbnailsMappingFolderPath];
+    NSURL *completeFilePathURL = [NSURL fileURLWithPath:[mappingsFolderPath stringByAppendingPathComponent:kSitesPreviousSearchThumbnailMappingsFileName]];
     NSData *thumbnailDictionaryData = [fileManager dataWithContentsOfURL:completeFilePathURL];
     
     if (thumbnailDictionaryData)
@@ -653,7 +653,7 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self showSearchProgressHUD];
-    [self.documentService retrieveNodeWithFolderPath:(NSString *)kSitesFolderLocation completionBlock:^(AlfrescoNode *node, NSError *error) {
+    [self.documentService retrieveNodeWithFolderPath:kSitesFolderLocation completionBlock:^(AlfrescoNode *node, NSError *error) {
         [self hideSearchProgressHUD];
         if (node)
         {

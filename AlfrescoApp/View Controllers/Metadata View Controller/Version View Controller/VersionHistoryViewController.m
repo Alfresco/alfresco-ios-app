@@ -238,7 +238,7 @@ static NSInteger kDownloadLatestVersionSectionRowCount = 1;
         // double check that this is the latest version
         if (latestVersionDocument.isLatestVersion)
         {
-            NSString *downloadPath = [[[DownloadManager sharedManager] downloadedDocumentsContentDirectory] stringByAppendingPathComponent:latestVersionDocument.name];
+            NSString *downloadPath = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:latestVersionDocument.name];
             [[DownloadManager sharedManager] downloadDocument:latestVersionDocument contentPath:downloadPath session:self.session];
         }
         else
