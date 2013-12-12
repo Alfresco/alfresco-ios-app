@@ -43,6 +43,11 @@ typedef NS_ENUM(NSUInteger, UploadFormType)
 - (id)initWithSession:(id<AlfrescoSession>)session uploadImage:(UIImage *)image fileExtension:(NSString *)extension metadata:(NSDictionary *)metadata inFolder:(AlfrescoFolder *)currentFolder uploadFormType:(UploadFormType)formType delegate:(id<UploadFormViewControllerDelegate>)delegate;
 
 /**
+ * Use this initialiser to upload an AlfrescoContentFile
+ */
+- (id)initWithSession:(id<AlfrescoSession>)session uploadContentFile:(AlfrescoContentFile *)contentFile inFolder:(AlfrescoFolder *)currentFolder uploadFormType:(UploadFormType)formType delegate:(id<UploadFormViewControllerDelegate>)delegate;
+
+/**
  * Use this initialiser to upload either a document or a video to a given folder
  */
 - (id)initWithSession:(id<AlfrescoSession>)session uploadDocumentPath:(NSString *)documentPath inFolder:(AlfrescoFolder *)currentFolder uploadFormType:(UploadFormType)formType delegate:(id<UploadFormViewControllerDelegate>)delegate;

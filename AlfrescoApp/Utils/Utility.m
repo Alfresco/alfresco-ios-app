@@ -412,6 +412,20 @@ NSString *fileNameAppendedWithDate(NSString *name)
     return mimeType;
 }
 
++ (NSString *)fileExtensionFromMimeType:(NSString *)mimeType
+{
+    CFStringRef MIMEType = (__bridge CFStringRef)mimeType;
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
+    NSString *fileExtension = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension);
+    
+    if (uti != NULL)
+    {
+        CFRelease(uti);
+    }
+    
+    return fileExtension;
+}
+
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account
 {
     return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];

@@ -19,6 +19,7 @@
 "Retry" = "Retry";
 "Upload" = "Upload";
 "Close" = "Close";
+"Next" = "Next";
 
 /**
  * Relative Dates
@@ -204,6 +205,7 @@
 "browser.actionsheet.upload.documents" = "Choose Document";
 "browser.actionsheet.takephoto" = "Take Photo";
 "browser.actionsheet.takephotovideo" = "Take Photo or Video";
+"browser.actionsheet.createfile" = "Create A File";
 
 "browser.alertview.addfolder.title" = "Create Folder";
 "browser.alertview.addfolder.message" = "Create folder with the name:";
@@ -395,6 +397,13 @@
 "version.history.comment.cell.text" = "Comment: %@";
 "version.history.current.version.cell.text" = "Current Version: %@";
 "version.history.download.latest.text" = "Download Latest Version";
+
+/**
+ * Text File View Controller
+ */
+"createtextfile.title" = "Create File";
+"createtextfile.dismiss.confirmation.title" = "Dismiss?";
+"createtextfile.dismiss.confirmation.message" = "Are you sure you want to cancel the creation of this text file?\n\nPlease not, all work will be discarded.";
 
 /**
  * Saveback
