@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AccountCertificate.h"
 
 typedef NS_ENUM(NSInteger, UserAccountType)
 {
@@ -22,7 +23,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
     UserAccountStatusInvalidCredentials
 };
 
-@interface UserAccount : NSObject <NSCoding>
+@interface UserAccount : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong, readonly) NSString *accountIdentifier;
 @property (nonatomic, strong) NSString *username;
@@ -34,6 +35,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *serviceDocument;
 @property (nonatomic, assign) UserAccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
+@property (nonatomic, strong) AccountCertificate *accountCertificate;
 @property (nonatomic, assign) BOOL isSelectedAccount;
 @property (nonatomic, strong) NSString *selectedNetworkId;
 @property (nonatomic, strong) NSArray *accountNetworks;

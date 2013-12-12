@@ -146,6 +146,7 @@
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service Document";
+"accountdetails.buttons.client-certificate" = "Client Certificate";
 "accountdetails.header.authentication" = "Account Authentication";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.buttons.browse" = "Browse Documents";
@@ -153,6 +154,23 @@
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "Failure to authenticate. Check your account settings with your system administrator.";
+
+/* Client Certificate */
+"certificate-manage.add-cell.label" = "Import Client Certificate";
+"certificate-import.tableHeader" = "PCKS 12 Passcode";
+"certificate-import.fields.passcode" = "Passcode";
+"certificate-import.tableFooter" = "Please enter the passcode for the PKCS 12 file";
+"certificate-import.button.import" = "Import";
+"certificate-import.error.title" = "Import Certificate";
+"certificate-import.error.authentication" = "The passcode provided for the certificate is invalid";
+"certificate-import.error.format" = "The certificate file is incorrect and cannot be imported";
+"certificate-details.title" = "Client Certificate";
+"certificate-details.issuer" = "Issuer: %@";
+"certificate-details.delete.title" = "Remove Client Certificate";
+"certificate-details.delete.message" = "Removing this client certificate cannot be undone. Are you sure you want to continue?";
+"certificate-details.importSuccess" = "The certificate was imported successfully";
+"certificate-details.buttons.delete" = "Remove Certificate";
+"certificate-details.delete.confirm" = "Remove";
 
 /**
  * Cloud Signup

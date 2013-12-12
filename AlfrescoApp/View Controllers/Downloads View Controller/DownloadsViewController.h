@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
 #import "MultiSelectActionsToolbar.h"
+#import "DocumentFilter.h"
 
 @protocol DownloadsPickerDelegate <NSObject>
 @optional
@@ -20,5 +21,7 @@
 
 @property (nonatomic) BOOL isDownloadPickerEnabled;
 @property (nonatomic, weak) id <DownloadsPickerDelegate> downloadPickerDelegate;
+
+- (id)initWithDocumentFilter:(id<DocumentFilter>)documentFilter;
 
 @end

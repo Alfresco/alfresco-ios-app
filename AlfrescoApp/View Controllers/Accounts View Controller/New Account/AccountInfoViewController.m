@@ -15,6 +15,8 @@
 #import "LabelCell.h"
 #import "CenterLabelCell.h"
 #import "NavigationViewController.h"
+#import "ClientCertificateViewController.h"
+#import "UniversalDevice.h"
 
 static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
@@ -28,6 +30,8 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
     AccountInfoTableSectionDelete
 };
 
+static NSInteger const kAccountInfoCertificateRow = 2;
+
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroups;
@@ -37,9 +41,11 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 @property (nonatomic, strong) UITextField *descriptionTextField;
 @property (nonatomic, strong) UITextField *portTextField;
 @property (nonatomic, strong) UITextField *serviceDocumentTextField;
+@property (nonatomic, strong) UILabel *certificateLabel;
 @property (nonatomic, strong) UISwitch *protocolSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
+@property (nonatomic, strong) UserAccount *formBackupAccount;
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
 @end
@@ -53,13 +59,14 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
     {
         if (account)
         {
-            self.account = account;
+            _account = account;
         }
         else
         {
-            self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
+            _account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
         }
-        self.activityType = activityType;
+        _activityType = activityType;
+        _formBackupAccount = [_account copy];
     }
     return self;
 }
@@ -67,12 +74,9 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     self.title = self.account.accountDescription;
     [self disablePullToRefresh];
-    
-    
     
     if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -98,7 +102,19 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
                                                                                 target:self
                                                                                 action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = cancel;
-        
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self constructTableCellsForAlfrescoServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+    [self.tableView reloadData];
+    
+    if (self.activityType != AccountActivityTypeViewAccount)
+    {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(textFieldDidChange:)
                                                      name:UITextFieldTextDidChangeNotification
@@ -111,9 +127,12 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
                                                  selector:@selector(keyboardWillBeHidden:)
                                                      name:UIKeyboardWillHideNotification object:nil];
     }
-    
-    [self constructTableCellsForAlfrescoServer];
-    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self updateFormBackupAccount];
 }
 
 -(void)saveButtonClicked:(id)sender
@@ -215,15 +234,11 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == AccountInfoTableSectionBrowse)
+    if (self.activityType != AccountActivityTypeViewAccount && indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
     {
-        
-    }
-    else if (indexPath.section == AccountInfoTableSectionDelete)
-    {
-        AccountManager *accountManager = [AccountManager sharedManager];
-        [accountManager removeAccount:self.account];
-        
+        [self.activeTextField resignFirstResponder];
+        ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.account];
+        [self.navigationController pushViewController:clientCertificate animated:YES];
     }
     else
     {
@@ -236,6 +251,11 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 {
     NSArray *group1 = nil;
     NSArray *group2 = nil;
+    
+    LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+    certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
+    certificateCell.valueLabel.text = self.account.accountCertificate.summary;
+    
     if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
     {
         TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -287,20 +307,19 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         serviceDocumentCell.valueTextField.delegate = self;
         self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
         
-        if (self.activityType == AccountActivityTypeEditAccount)
-        {
-            self.usernameTextField.text = self.account.username;
-            self.passwordTextField.text = self.account.password;
-            self.serverAddressTextField.text = self.account.serverAddress;
-            self.descriptionTextField.text = self.account.accountDescription;
-            BOOL isHTTPSOn = [self.account.protocol isEqualToString:kProtocolHTTP] ? NO : YES;
-            [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-            self.portTextField.text = self.account.serverPort;
-            self.serviceDocumentTextField.text = self.account.serviceDocument;
-        }
+        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        self.usernameTextField.text = self.formBackupAccount.username;
+        self.passwordTextField.text = self.formBackupAccount.password;
+        self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
+        self.descriptionTextField.text = self.formBackupAccount.accountDescription;
+        BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
+        [self.protocolSwitch setOn:isHTTPSOn animated:YES];
+        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
+        self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
         
         group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
+        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
     }
     else if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -333,29 +352,25 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
         
         group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell] : nil;
+        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
     }
     self.tableGroups = (self.account.accountType == UserAccountTypeOnPremise) ? @[group1, group2] : @[group1];
 }
 
 #pragma mark - private Methods
 
-- (UserAccount *)accountWithUserEnteredInfo
+- (void)updateFormBackupAccount
 {
-    UserAccount *temporaryAccount = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
-    
-    temporaryAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-    temporaryAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
     
-    temporaryAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    temporaryAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
-    temporaryAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    return temporaryAccount;
+    self.formBackupAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
+    self.formBackupAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+    self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
 /**
@@ -382,7 +397,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
 {
-    UserAccount *temporaryAccount = [self accountWithUserEnteredInfo];
+    [self updateFormBackupAccount];
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
@@ -397,7 +412,7 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ((password == nil || [password isEqualToString:@""]))
     {
-        updateAccountInfo(temporaryAccount);
+        updateAccountInfo(self.formBackupAccount);
         completionBlock(YES);
     }
     else
@@ -405,12 +420,12 @@ typedef NS_ENUM(NSInteger, AccountInfoTableSection)
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
         
         [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:temporaryAccount password:temporaryAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
+        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
             
             [self hideHUD];
             if (successful)
             {
-                updateAccountInfo(temporaryAccount);
+                updateAccountInfo(self.formBackupAccount);
                 completionBlock(YES);
             }
             else
