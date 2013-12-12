@@ -24,7 +24,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 static CGFloat const kAccountTypeFooterFontSize = 15.0f;
 static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
-@interface AccountTypeSelectionViewController ()
+@interface AccountTypeSelectionViewController () <AccountInfoViewControllerDelegate>
 
 @end
 
@@ -35,6 +35,16 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:nil];
     if (self)
     {
+    }
+    return self;
+}
+
+- (instancetype)initWithDelegate:(id<AccountTypeSelectionViewControllerDelegate>)delegate
+{
+    self = [self init];
+    if (self)
+    {
+        self.delegate = delegate;
     }
     return self;
 }
@@ -113,8 +123,18 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
                 {
                     [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject]];
                 }
+                
+                if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
+                {
+                    [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:YES];
+                }
+                
                 [self dismissViewControllerAnimated:YES completion:^{
                     [accountManager addAccount:account];
+                    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+                    {
+                        [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:YES];
+                    }
                 }];
             }
             else
@@ -130,6 +150,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     else
     {
         AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:nil accountActivityType:AccountActivityTypeNewAccount];
+        accountInfoController.delegate = self;
         [self.navigationController pushViewController:accountInfoController animated:YES];
     }
 }
@@ -160,7 +181,16 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:NO];
+    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+        {
+            [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:NO];
+        }
+    }];
 }
 
 - (UIView *)cloudAccountFooter
@@ -238,6 +268,42 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 {
     CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] initWithAccount:nil];
     [self.navigationController pushViewController:signUpController animated:YES];
+}
+
+#pragma mark - AccountInfoViewControllerDelegate Functions
+
+- (void)accountInfoViewControllerWillDismiss:(AccountInfoViewController *)controller
+{
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:NO];
+    }
+}
+
+- (void)accountInfoViewControllerDidDismiss:(AccountInfoViewController *)controller
+{
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:NO];
+    }
+}
+
+- (void)accountInfoViewController:(AccountInfoViewController *)controller willDismissAfterAddingAccount:(UserAccount *)account
+{
+    BOOL accountAdded = (account) ? YES : NO;
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:accountAdded];
+    }
+}
+
+- (void)accountInfoViewController:(AccountInfoViewController *)controller didDismissAfterAddingAccount:(UserAccount *)account
+{
+    BOOL accountAdded = (account) ? YES : NO;
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:accountAdded];
+    }
 }
 
 @end
