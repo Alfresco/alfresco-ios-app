@@ -11,10 +11,10 @@
 #import "UniversalDevice.h"
 #import "NavigationViewController.h"
 #import "CloudSignUpViewController.h"
-#import "AccountInfoViewController.h"
+#import "AccountTypeSelectionViewController.h"
 #import "RootRevealControllerViewController.h"
 
-@interface OnboardingViewController () <CloudSignUpViewControllerDelegate, AccountInfoViewControllerDelegate>
+@interface OnboardingViewController () <CloudSignUpViewControllerDelegate, AccountTypeSelectionViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *createCloudAccountButton;
 @property (nonatomic, weak) IBOutlet UIButton *useExistingAccountButton;
@@ -77,8 +77,7 @@
     UIButton *addAccountButton = (UIButton *)sender;
     addAccountButton.enabled = NO;
     
-    AccountInfoViewController *existingAccountViewController = [[AccountInfoViewController alloc] initWithAccount:nil accountActivityType:AccountActivityTypeNewAccount];
-    existingAccountViewController.delegate = self;
+    AccountTypeSelectionViewController *existingAccountViewController = [[AccountTypeSelectionViewController alloc] initWithDelegate:self];
     NavigationViewController *existingAccountNavController = [[NavigationViewController alloc] initWithRootViewController:existingAccountViewController];
     
     [Utility zoomAppLevelOutWithCompletionBlock:^{
@@ -99,17 +98,15 @@
     [Utility resetAppZoomLevelWithCompletionBlock:nil];
 }
 
-#pragma mark - AccountInfoViewControllerDelegate Functions
+#pragma mark - AccountTypeSelectionViewControllerDelegate Functions
 
-- (void)accountInfoViewControllerDidDismiss:(AccountInfoViewController *)controller
+- (void)accountTypeSelectionViewControllerDidDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded
 {
     [Utility resetAppZoomLevelWithCompletionBlock:nil];
-}
-
-- (void)accountInfoViewController:(AccountInfoViewController *)controller didDismissAfterAddingAccount:(UserAccount *)account
-{
-    [Utility resetAppZoomLevelWithCompletionBlock:nil];
-    [self removeControllerFromParentController];
+    if (accountAdded)
+    {
+        [self removeControllerFromParentController];
+    }
 }
 
 @end

@@ -10,6 +10,20 @@
 #import "ParentListViewController.h"
 #import "TTTAttributedLabel.h"
 
+@class AccountTypeSelectionViewController;
+
+@protocol AccountTypeSelectionViewControllerDelegate <NSObject>
+
+@optional
+- (void)accountTypeSelectionViewControllerWillDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded;
+- (void)accountTypeSelectionViewControllerDidDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded;
+
+@end
+
 @interface AccountTypeSelectionViewController : ParentListViewController <TTTAttributedLabelDelegate>
+
+@property (nonatomic, weak) id<AccountTypeSelectionViewControllerDelegate> delegate;
+
+- (instancetype)initWithDelegate:(id<AccountTypeSelectionViewControllerDelegate>)delegate;
 
 @end
