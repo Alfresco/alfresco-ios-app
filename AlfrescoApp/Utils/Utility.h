@@ -52,6 +52,7 @@ NSData *jsonDataFromDictionary(NSDictionary *dictionary);
 //+ (BOOL)isAudioOrVideoAndSupported:(NSString *)filePath;
 //+ (BOOL)isAudioOrVideoAndNotSupported:(NSString *)filePath;
 + (NSString *)mimeTypeForFileExtension:(NSString *)extension;
++ (NSString *)fileExtensionFromMimeType:(NSString *)mimeType;
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account;
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock;

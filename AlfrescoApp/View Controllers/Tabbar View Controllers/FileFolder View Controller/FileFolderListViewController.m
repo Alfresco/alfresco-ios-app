@@ -23,6 +23,7 @@
 #import "AccountManager.h"
 #import "ThemeUtil.h"
 #import "DocumentPreviewViewController.h"
+#import "TextFileViewController.h"
 
 static CGFloat kCellHeight = 60.0f;
 
@@ -368,6 +369,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (self.folderPermissions.canAddChildren)
     {
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File")];
         [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder")];
         [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.upload", @"Upload")];
         [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video")];
@@ -395,7 +397,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else
     {
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+        [actionSheet showInView:self.view];
     }
     
     self.actionSheetSender = (UIBarButtonItem *)sender;
@@ -995,7 +997,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.actionSheetSender.enabled = YES;
     }
     
-    if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder")])
+    if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File")])
+    {
+        TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:self.displayFolder session:self.session delegate:self];
+        NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
+        [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
+        self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
+    }
+    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder")])
     {
         // display the create folder UI
         UIAlertView *createFolderAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
