@@ -99,6 +99,10 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     {
         AlfrescoLogDebug(@"Error deleting all accounts from the keychain. Error: %@", deleteError.localizedDescription);
     }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
+    }
 }
 
 - (void)saveAccountsToKeychain

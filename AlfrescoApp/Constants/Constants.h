@@ -20,6 +20,9 @@ extern NSString * const kProtocolHTTPS;
 extern NSString * const kHTTPMethodPOST;
 extern NSString * const kHTTPMethodGET;
 
+// NSUserDefault Keys
+extern NSString * const kIsAppFirstLaunch;
+
 // Notificiations
 extern NSString * const kAlfrescoSessionReceivedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;
