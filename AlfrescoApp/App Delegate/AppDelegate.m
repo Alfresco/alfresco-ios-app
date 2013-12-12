@@ -76,6 +76,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     if (isFirstLaunch)
     {
         [accountManager removeAllAccounts];
+        [self updateAppFirstLaunchFlag];
     }
     else if (accountManager.selectedAccount)
     {
@@ -213,14 +214,14 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 - (BOOL)isAppFirstLaunch
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL isFirstLaunch = ([userDefaults objectForKey:kIsAppFirstLaunch] == nil);
-    
-    if (isFirstLaunch)
-    {
-        [userDefaults setObject:[NSNumber numberWithBool:NO] forKey:kIsAppFirstLaunch];
-        [userDefaults synchronize];
-    }
-    return isFirstLaunch;
+    return ([userDefaults objectForKey:kIsAppFirstLaunch] == nil);
+}
+
+- (void)updateAppFirstLaunchFlag
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:[NSNumber numberWithBool:NO] forKey:kIsAppFirstLaunch];
+    [userDefaults synchronize];
 }
 
 #pragma mark - Public Interface
