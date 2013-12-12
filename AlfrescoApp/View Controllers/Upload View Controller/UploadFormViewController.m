@@ -45,6 +45,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
 @property (nonatomic, strong) UIButton *recordButton;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, strong) NSDictionary *metadata;
+@property (nonatomic, strong) AlfrescoContentFile *contentFile;
 
 @end
 
@@ -57,6 +58,16 @@ static NSString * const kAudioFileName = @"audio.m4a";
     self.imageToUpload = image;
     self.fileExtension = [extension lowercaseString];
     self.metadata = metadata;
+    self.uploadFormType = formType;
+    
+    return self;
+}
+
+- (id)initWithSession:(id<AlfrescoSession>)session uploadContentFile:(AlfrescoContentFile *)contentFile inFolder:(AlfrescoFolder *)currentFolder uploadFormType:(UploadFormType)formType delegate:(id<UploadFormViewControllerDelegate>)delegate
+{
+    self = [self initWithSession:session folder:currentFolder delegate:delegate];
+    
+    self.contentFile = contentFile;
     self.uploadFormType = formType;
     
     return self;
@@ -297,11 +308,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
     [self.navigationItem setRightBarButtonItem:uploadButton];
     self.uploadButton = uploadButton;
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(closeUploadForm:)];
-    [self.navigationItem setLeftBarButtonItem:cancelButton];
+    if (!self.contentFile)
+    {
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:self
+                                                                        action:@selector(closeUploadForm:)];
+        [self.navigationItem setLeftBarButtonItem:cancelButton];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldDidChange:)
@@ -582,7 +596,75 @@ static NSString * const kAudioFileName = @"audio.m4a";
     return imageData;
 }
 
-- (void)uploadDocument:(NSString *)name completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
+- (void)uploadDocumentUsingContentFileWithName:(NSString *)name completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
+{
+    // if no file extention is given, append the correct file extension
+    if (!name.pathExtension || [name.pathExtension isEqualToString:@""])
+    {
+        name = [name stringByAppendingPathExtension:[Utility fileExtensionFromMimeType:self.contentFile.mimeType]];
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    [self.documentService createDocumentWithName:name inParentFolder:self.uploadToFolder contentFile:self.contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+        if (document)
+        {
+            NSError *deleteAfterUploadError = nil;
+            [[AlfrescoFileManager sharedManager] removeItemAtPath:weakSelf.contentFile.fileUrl.absoluteURL.path error:&deleteAfterUploadError];
+            
+            if (deleteAfterUploadError)
+            {
+                AlfrescoLogError(@"Error deleting file after upload: %@", [ErrorDescriptions descriptionForError:error]);
+            }
+            
+            if (weakSelf.tagsToApplyToDocument)
+            {
+                [weakSelf showHUD];
+                [weakSelf.tagService addTags:weakSelf.tagsToApplyToDocument toNode:document completionBlock:^(BOOL succeeded, NSError *error) {
+                    [weakSelf hideHUD];
+                    if (succeeded)
+                    {
+                        [weakSelf dismissViewControllerAnimated:YES completion:^{
+                            [weakSelf.delegate didFinishUploadingNode:document];
+                        }];
+                    }
+                    else
+                    {
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.addtags.failed", @"Adding tags failed"), [ErrorDescriptions descriptionForError:error]]);
+                    }
+                }];
+            }
+            else
+            {
+                [weakSelf dismissViewControllerAnimated:YES completion:^{
+                    [weakSelf.delegate didFinishUploadingNode:document];
+                }];
+            }
+        }
+        else
+        {
+            if ((error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists || error.code == kAlfrescoErrorCodeDocumentFolder) && completionBlock != NULL)
+            {
+                completionBlock(YES);
+                return;
+            }
+            else
+            {
+                // display error
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+            }
+        }
+        [weakSelf hideHUD];
+        if (completionBlock != NULL)
+        {
+            completionBlock(NO);
+        }
+    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+        //
+    }];
+}
+
+- (void)uploadDocumentUsingContentStreamWithName:(NSString *)name completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
 {
     __weak UploadFormViewController *weakSelf = self;
     
@@ -703,14 +785,24 @@ static NSString * const kAudioFileName = @"audio.m4a";
     UIBarButtonItem *uploadButton = (UIBarButtonItem *)sender;
     uploadButton.enabled = NO;
     __block NSString *documentName = [[self.nameTextField.text stringByDeletingPathExtension] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    [self uploadDocument:documentName completionBlock:^(BOOL filenameExistsInParentFolder) {
-        uploadButton.enabled = YES;
-        if (filenameExistsInParentFolder)
-        {
-            documentName = fileNameAppendedWithDate(documentName);
-            [self uploadDocument:documentName completionBlock:nil];
-        }
-    }];
+    
+    if (self.contentFile)
+    {
+        [self uploadDocumentUsingContentFileWithName:documentName completionBlock:^(BOOL filenameExistsInParentFolder) {
+            uploadButton.enabled = YES;
+        }];
+    }
+    else
+    {
+        [self uploadDocumentUsingContentStreamWithName:documentName completionBlock:^(BOOL filenameExistsInParentFolder) {
+            uploadButton.enabled = YES;
+            if (filenameExistsInParentFolder)
+            {
+                documentName = fileNameAppendedWithDate(documentName);
+                [self uploadDocumentUsingContentStreamWithName:documentName completionBlock:nil];
+            }
+        }];
+    }
 }
 
 - (void)dismissKeyboard

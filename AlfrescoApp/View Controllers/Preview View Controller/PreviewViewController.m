@@ -142,6 +142,7 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     webview.delegate = self;
     webview.scalesPageToFit = YES;
     webview.opaque = NO;
+    webview.backgroundColor = [UIColor whiteColor];
     webview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [view addSubview:webview];
     self.webView = webview;

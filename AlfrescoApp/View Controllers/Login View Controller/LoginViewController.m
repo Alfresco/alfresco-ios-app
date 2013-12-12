@@ -176,14 +176,16 @@
 {
     [super viewDidAppear:animated];
     
-    if (self.usernameTextField.text.length > 0)
-    {
-        [self.passwordTextField becomeFirstResponder];
-    }
-    else
-    {
-        [self.usernameTextField becomeFirstResponder];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.usernameTextField.text.length > 0)
+        {
+            [self.passwordTextField becomeFirstResponder];
+        }
+        else
+        {
+            [self.usernameTextField becomeFirstResponder];
+        }
+    });
 }
 
 #pragma mark - Public Functions
