@@ -812,7 +812,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
         UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForNode:documentNode withParentNode:self.displayFolder session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-           
                 [cell.nodeImageView setImageAtSecurePath:savedFileName];
         }];
         cell.nodeImageView.image = thumbnail;

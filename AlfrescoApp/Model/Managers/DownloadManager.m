@@ -10,9 +10,6 @@
 #import "Utility.h"
 #import "UIAlertView+ALF.h"
 
-static NSString *const kDownloadsInfoDirectory = @"downloads/info";
-static NSString *const kDownloadsContentDirectory = @"downloads/content";
-
 static NSUInteger const kOverwriteConfirmationOptionYes = 0;
 static NSUInteger const kOverwriteConfirmationOptionNo = 1;
 
@@ -206,7 +203,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 {
     NSString *fileName = [filePath lastPathComponent];
     NSError *error = nil;
-    NSString *downloadPath = [[self downloadedDocumentsContentDirectory] stringByAppendingPathComponent:fileName];
+    NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:fileName];
     
     [self.fileManager removeItemAtPath:downloadPath error:&error];
     
@@ -222,13 +219,13 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (BOOL)isDownloadedDocument:(NSString *)filePath
 {
-    NSString *downloadPath = [self.downloadedDocumentsContentDirectory stringByAppendingPathComponent:filePath.lastPathComponent];
+    NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:filePath.lastPathComponent];
     return [self.fileManager fileExistsAtPath:downloadPath];
 }
 
 - (AlfrescoDocument *)infoForDocument:(NSString *)documentName
 {
-    NSString *downloadInfoPath = [[self downloadedDocumentsInfoDirectory] stringByAppendingPathComponent:[documentName lastPathComponent]];
+    NSString *downloadInfoPath = [[[AlfrescoFileManager sharedManager] downloadsInfoContentPath] stringByAppendingPathComponent:[documentName lastPathComponent]];
     NSData *unarchivedDoc = [self.fileManager dataWithContentsOfURL:[NSURL fileURLWithPath:downloadInfoPath]];
     AlfrescoDocument *document = nil;
     
@@ -240,42 +237,12 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     return document;
 }
 
-- (NSString *)downloadedDocumentsInfoDirectory
-{
-    NSString *infoDirectory = [self.fileManager.homeDirectory stringByAppendingPathComponent:kDownloadsInfoDirectory];
-    BOOL isDirectory;
-    BOOL dirExists = [self.fileManager fileExistsAtPath:kDownloadsInfoDirectory isDirectory:&isDirectory];
-    NSError *error = nil;
-    
-    if (!dirExists)
-    {
-        [self.fileManager createDirectoryAtPath:infoDirectory withIntermediateDirectories:YES attributes:nil error:&error];
-    }
-    
-    return infoDirectory;
-}
-
-- (NSString *)downloadedDocumentsContentDirectory
-{
-    NSString *contentDirectory = [self.fileManager.homeDirectory stringByAppendingPathComponent:kDownloadsContentDirectory];
-    BOOL isDirectory;
-    BOOL dirExists = [self.fileManager fileExistsAtPath:contentDirectory isDirectory:&isDirectory];
-    NSError *error = nil;
-    
-    if (!dirExists)
-    {
-        [self.fileManager createDirectoryAtPath:contentDirectory withIntermediateDirectories:YES attributes:nil error:&error];
-    }
-    
-    return contentDirectory;
-}
-
 - (NSArray *)downloadedDocumentPaths
 {
     __block NSMutableArray *documents = [NSMutableArray array];
     NSError *enumeratorError = nil;
     
-    [self.fileManager enumerateThroughDirectory:self.downloadedDocumentsContentDirectory includingSubDirectories:NO withBlock:^(NSString *fullFilePath) {
+    [self.fileManager enumerateThroughDirectory:[self.fileManager downloadsContentFolderPath] includingSubDirectories:NO withBlock:^(NSString *fullFilePath) {
         BOOL isDirectory;
         [self.fileManager fileExistsAtPath:fullFilePath isDirectory:&isDirectory];
         
@@ -333,13 +300,13 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
         }
     }
 
-    return (copySucceeded ? [self.downloadedDocumentsContentDirectory stringByAppendingPathComponent:destinationFilename] : nil);
+    return (copySucceeded ? [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename] : nil);
 }
 
 - (void)downloadDocument:(AlfrescoDocument *)document
 {
     // TODO: Handle overwrite existing file case
-    NSString *downloadDestinationPath = [self.downloadedDocumentsContentDirectory stringByAppendingPathComponent:document.name];
+    NSString *downloadDestinationPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:document.name];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
     AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
     
@@ -363,7 +330,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (BOOL)copyDocumentFrom:(NSString *)filePath destinationFilename:(NSString *)destinationFilename error:(NSError **)error
 {
-    NSString *downloadPath = [self.downloadedDocumentsContentDirectory stringByAppendingPathComponent:destinationFilename];
+    NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
 
     [self.fileManager copyItemAtPath:filePath toPath:downloadPath error:error];
 
@@ -377,7 +344,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     NSString *destinationFilePath = nil;
     if (destinationFilename != nil)
     {
-        NSString *downloadPath = [self.downloadedDocumentsContentDirectory stringByAppendingPathComponent:destinationFilename];
+        NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
         NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadPath append:NO];
         
         if (outputStream)
@@ -415,7 +382,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
             {
                 [self saveDocumentInfo:nil forDocument:destinationFilename error:nil];
             }
-            destinationFilePath = [self.downloadedDocumentsContentDirectory stringByAppendingPathComponent:destinationFilename];
+            destinationFilePath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
             [Notifier postDocumentDownloadedNotificationWithUserInfo:@{kAlfrescoDocumentDownloadedIdentifierKey : destinationFilePath}];
         }
     }
@@ -425,7 +392,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (BOOL)saveDocumentInfo:(AlfrescoDocument *)document forDocument:(NSString *)documentName error:(NSError **)error
 {
-    NSString *downloadInfoPath = [self.downloadedDocumentsInfoDirectory stringByAppendingPathComponent:documentName.lastPathComponent];
+    NSString *downloadInfoPath = [[[AlfrescoFileManager sharedManager] downloadsInfoContentPath] stringByAppendingPathComponent:documentName.lastPathComponent];
     
     if (document != nil)
     {
@@ -443,7 +410,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (BOOL)removeDocumentInfo:(NSString *)documentName
 {
-    NSString *downloadInfoPath = [self.downloadedDocumentsInfoDirectory stringByAppendingPathComponent:documentName.lastPathComponent];
+    NSString *downloadInfoPath = [[[AlfrescoFileManager sharedManager] downloadsInfoContentPath] stringByAppendingPathComponent:documentName.lastPathComponent];
     NSError *error = nil;
 
     [self.fileManager removeItemAtPath:downloadInfoPath error:&error];

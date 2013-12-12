@@ -30,3 +30,4 @@
 #import "AlfrescoSDK.h"
 #import "Constants.h"
 #import "Notifier.h"
+#import "AlfrescoFileManager+Extensions.h"

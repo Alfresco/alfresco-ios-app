@@ -26,7 +26,4 @@ typedef void (^DownloadManagerFileSavedBlock)(NSString *filePath);
 - (AlfrescoDocument *)infoForDocument:(NSString *)documentName;
 - (NSString *)updateDownloadedDocument:(AlfrescoDocument *)document withContentsOfFileAtPath:(NSString *)filePath;
 
-- (NSString *)downloadedDocumentsInfoDirectory;
-- (NSString *)downloadedDocumentsContentDirectory;
-
 @end
