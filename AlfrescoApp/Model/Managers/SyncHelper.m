@@ -17,8 +17,6 @@ NSString * const kSyncNodeKey = @"node";
 NSString * const kSyncContentPathKey = @"contentPath";
 NSString * const kSyncReloadContentKey = @"reloadContent";
 
-static NSString * const kSyncContentDirectory = @"sync";
-
 @interface SyncHelper ()
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
 @end
@@ -182,7 +180,7 @@ static NSString * const kSyncContentDirectory = @"sync";
 
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId
 {
-    NSString *contentDirectory = [self.fileManager.documentsDirectory stringByAppendingPathComponent:kSyncContentDirectory];
+    NSString *contentDirectory = [self.fileManager syncFolderPath];
     if (accountId)
     {
         contentDirectory = [contentDirectory stringByAppendingPathComponent:accountId];
@@ -195,6 +193,7 @@ static NSString * const kSyncContentDirectory = @"sync";
     {
         [self.fileManager createDirectoryAtPath:contentDirectory withIntermediateDirectories:YES attributes:nil error:&error];
     }
+
     return contentDirectory;
 }
 

@@ -134,45 +134,49 @@ static NSUInteger const kRepositoryItemsSectionNumber = 1;
     // needs to carry out multiple dynamic behaviours.
     id<AlfrescoSession> session = (id<AlfrescoSession>)notification.object;
     
-    FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:session];
-    SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
-    ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
-    TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
-    SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:session];
+    if (!self.hasRepositorySpecificSection)
+    {
+        FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:session];
+        SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:session];
+        ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:session];
+        TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:session];
+        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:session];
+        
+        NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
+        NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
+        NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
+        NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
+        NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
+        
+        MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
+                                                                          imageName:@"activities-main-menu.png"
+                                                                  localizedTitleKey:@"activities.title"
+                                                                     viewController:activitiesNavigationController
+                                                                    displayInDetail:NO];
+        MainMenuItem *repositoryItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
+                                                                          imageName:@"repository-tabbar.png"
+                                                                  localizedTitleKey:@"companyHome.title"
+                                                                     viewController:companyHomeNavigationController
+                                                                    displayInDetail:NO];
+        MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
+                                                                     imageName:@"sites-main-menu.png"
+                                                             localizedTitleKey:@"sites.title"
+                                                                viewController:sitesListNavigationController
+                                                               displayInDetail:NO];
+        MainMenuItem *tasksItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
+                                                                     imageName:@"tasks-main-menu.png"
+                                                             localizedTitleKey:@"tasks.title"
+                                                                viewController:taskNavigationController
+                                                               displayInDetail:NO];
+        MainMenuItem *syncItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                                                                    imageName:@"favourites-main-menu.png"
+                                                            localizedTitleKey:@"sync.title"
+                                                               viewController:syncNavigationController
+                                                              displayInDetail:NO];
+        
+        [self addRepositoryItems:@[activitiesItem, repositoryItem, sitesItem, tasksItem, syncItem]];
+    }
     
-    NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
-    NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
-    NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
-    NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
-    NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
-    
-    MainMenuItem *activitiesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
-                                                                      imageName:@"activities-main-menu.png"
-                                                              localizedTitleKey:@"activities.title"
-                                                                 viewController:activitiesNavigationController
-                                                                displayInDetail:NO];
-    MainMenuItem *repositoryItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
-                                                                      imageName:@"repository-tabbar.png"
-                                                              localizedTitleKey:@"companyHome.title"
-                                                                 viewController:companyHomeNavigationController
-                                                                displayInDetail:NO];
-    MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
-                                                                 imageName:@"sites-main-menu.png"
-                                                         localizedTitleKey:@"sites.title"
-                                                            viewController:sitesListNavigationController
-                                                           displayInDetail:NO];
-    MainMenuItem *tasksItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
-                                                                 imageName:@"tasks-main-menu.png"
-                                                         localizedTitleKey:@"tasks.title"
-                                                            viewController:taskNavigationController
-                                                           displayInDetail:NO];
-    MainMenuItem *syncItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                imageName:@"favourites-main-menu.png"
-                                                        localizedTitleKey:@"sync.title"
-                                                           viewController:syncNavigationController
-                                                          displayInDetail:NO];
-    
-    [self addRepositoryItems:@[activitiesItem, repositoryItem, sitesItem, tasksItem, syncItem]];
     [self displayViewControllerWithType:NavigationControllerTypeSites];
 }
 

@@ -10,8 +10,10 @@
 #import "Utility.h"
 
 @interface ThumbnailManager ()
+
 @property (nonatomic, strong) NSMutableDictionary *thumbnails;
 @property (nonatomic, strong) NSString *repositoryId;
+
 @end
 
 @implementation ThumbnailManager
@@ -39,7 +41,7 @@
 - (void)saveThumbnailMappingForFolder:(AlfrescoNode *)folder
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [fileManager.documentsDirectory stringByAppendingPathComponent:(NSString *)kThumbnailMappingFolder];
+    NSString *mappingsFolderPath = [fileManager thumbnailsMappingFolderPath];
     
     if (![fileManager fileExistsAtPath:mappingsFolderPath])
     {
@@ -98,16 +100,13 @@
         // set a placeholder image
         thumbnailImage = imageForType([document.name pathExtension]);
         
-        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:document
-                                                       toFolderAtPath:[[AlfrescoFileManager sharedManager] temporaryDirectory]
-                                                        renditionType:@"doclib" session:session
-                                                      completionBlock:^(NSString *savedFileName, NSError *error) {
-                                                          if (!error)
-                                                          {
-                                                              [folderThumbnails setValue:savedFileName forKey:uniqueIdentifier];
-                                                              completionBlock(savedFileName, nil);
-                                                          }
-                                                      }];
+        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:document toFolderAtPath:[[AlfrescoFileManager sharedManager] thumbnailsDocLibFolderPath] renditionType:@"doclib" session:session completionBlock:^(NSString *savedFileName, NSError *error) {
+            if (!error)
+            {
+                [folderThumbnails setValue:savedFileName forKey:uniqueIdentifier];
+                completionBlock(savedFileName, nil);
+            }
+        }];
     }
     return thumbnailImage;
 }
@@ -120,7 +119,7 @@
     NSString *savedFileName = [uniqueFileNameForNode(document) stringByAppendingString:thumbnailsExtension];
     if (savedFileName)
     {
-        NSString *filePathToFile = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:savedFileName];
+        NSString *filePathToFile = [[[AlfrescoFileManager sharedManager] thumbnailsDocLibFolderPath] stringByAppendingPathComponent:savedFileName];
         NSURL *fileURL = [NSURL fileURLWithPath:filePathToFile];
         NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:fileURL];
         returnImage = [UIImage imageWithData:imageData];
@@ -153,7 +152,7 @@
         return;
     }
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [fileManager.documentsDirectory stringByAppendingPathComponent:(NSString *)kThumbnailMappingFolder];
+    NSString *mappingsFolderPath = [fileManager thumbnailsMappingFolderPath];
     NSString *fileNameForDisplayedFolder = uniqueFileNameForNode(folder);
     NSURL *completeFilePathURL = [NSURL fileURLWithPath:[mappingsFolderPath stringByAppendingPathComponent:fileNameForDisplayedFolder]];
     NSData *thumbnailDictionaryData = [fileManager dataWithContentsOfURL:completeFilePathURL];

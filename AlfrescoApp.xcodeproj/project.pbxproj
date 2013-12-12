@@ -139,6 +139,7 @@
 		7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
 		7384BE0F17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0E17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
+		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
 		73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */; };
 		73A26A8518364641006C1D81 /* account-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A7E18364641006C1D81 /* account-main-menu.png */; };
 		73A26A8618364641006C1D81 /* activities-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A7F18364641006C1D81 /* activities-main-menu.png */; };
@@ -631,6 +632,8 @@
 		7384BE0E17F5E8D500C6A54F /* AlfrescoWorkflowVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoWorkflowVariable.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
 		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
+		739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoFileManager+Extensions.h"; sourceTree = "<group>"; };
+		739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoFileManager+Extensions.m"; sourceTree = "<group>"; };
 		73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItemCell.h; path = "Main Menu View Controller/Cell/MainMenuItemCell.h"; sourceTree = "<group>"; };
 		73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItemCell.m; path = "Main Menu View Controller/Cell/MainMenuItemCell.m"; sourceTree = "<group>"; };
 		73A26A7E18364641006C1D81 /* account-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account-main-menu.png"; sourceTree = "<group>"; };
@@ -1918,6 +1921,8 @@
 				73B350B61851E8BF0037E3E3 /* NSData+Base64.m */,
 				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
 				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
+				739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */,
+				739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3195,6 +3200,7 @@
 				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
+				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				73E9E20017E352C900A198B4 /* AlfrescoCMISPassThroughAuthenticationProvider.m in Sources */,
 				73F634C317E34A990065590E /* AlfrescoWorkflowProcessServicePublicAPI.m in Sources */,
 				73F634CF17E34A990065590E /* AlfrescoDefaultNetworkProvider.m in Sources */,

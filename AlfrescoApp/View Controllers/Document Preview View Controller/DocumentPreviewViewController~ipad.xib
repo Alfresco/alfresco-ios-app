@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DocumentPreviewViewController">
             <connections>
                 <outlet property="documentThumbnail" destination="0zh-qj-0qe" id="UPP-ia-ay6"/>
-                <outlet property="pageControl" destination="1DA-mg-6M1" id="XHN-5c-taO"/>
                 <outlet property="pagingScrollView" destination="W5I-8h-eej" id="dkl-cr-jK3"/>
                 <outlet property="pagingSegmentControl" destination="Wf6-TO-B0e" id="Qfy-s5-U0V"/>
                 <outlet property="shareMenuContainer" destination="jWJ-GZ-Bv7" id="wer-Jk-nvB"/>
@@ -28,17 +27,17 @@
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5I-8h-eej" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="84" width="728" height="663"/>
+                    <rect key="frame" x="20" y="84" width="728" height="764"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="663" id="ZR9-Yf-zzE"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="764" id="ZR9-Yf-zzE"/>
                     </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="SX3-D9-vdJ"/>
                     </connections>
                 </scrollView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="261.00000882534079" y="27" width="247" height="29"/>
+                    <rect key="frame" x="261.00000351353697" y="27" width="247" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="qv4-4a-6Ij"/>
@@ -53,26 +52,18 @@
                         <action selector="segmentValueChanged:" destination="-1" eventType="valueChanged" id="Cj2-xg-Mip"/>
                     </connections>
                 </segmentedControl>
-                <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="1DA-mg-6M1">
-                    <rect key="frame" x="365" y="760" width="39" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="currentPageIndicatorTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                </pageControl>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Wf6-TO-B0e" firstAttribute="top" secondItem="1" secondAttribute="top" constant="27" id="4Sb-vb-7xL"/>
+                <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="top" secondItem="W5I-8h-eej" secondAttribute="bottom" constant="16" id="7oY-RJ-jeq"/>
                 <constraint firstAttribute="trailing" secondItem="jWJ-GZ-Bv7" secondAttribute="trailing" id="EpE-dK-mMi"/>
                 <constraint firstItem="W5I-8h-eej" firstAttribute="top" secondItem="Wf6-TO-B0e" secondAttribute="bottom" constant="29" id="G5m-oE-IqO"/>
                 <constraint firstAttribute="bottom" secondItem="jWJ-GZ-Bv7" secondAttribute="bottom" id="Jav-OD-dZY"/>
                 <constraint firstItem="W5I-8h-eej" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="Nfk-7l-5b1"/>
-                <constraint firstItem="1DA-mg-6M1" firstAttribute="top" secondItem="W5I-8h-eej" secondAttribute="bottom" constant="13" id="Y4t-d5-nLV"/>
                 <constraint firstAttribute="centerX" secondItem="Wf6-TO-B0e" secondAttribute="centerX" id="a9D-7J-mp8"/>
                 <constraint firstAttribute="bottom" secondItem="jWJ-GZ-Bv7" secondAttribute="bottom" id="jcV-qU-zqZ"/>
                 <constraint firstAttribute="trailing" secondItem="W5I-8h-eej" secondAttribute="trailing" constant="20" id="obA-RX-rHR"/>
-                <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="top" secondItem="1DA-mg-6M1" secondAttribute="bottom" constant="67" id="u6F-Wc-g5z"/>
-                <constraint firstItem="1DA-mg-6M1" firstAttribute="centerX" secondItem="jWJ-GZ-Bv7" secondAttribute="centerX" id="yGs-WC-V2l"/>
                 <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="z9T-Sf-JeI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

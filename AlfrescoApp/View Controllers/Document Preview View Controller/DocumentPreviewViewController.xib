@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DocumentPreviewViewController">
             <connections>
                 <outlet property="documentThumbnail" destination="ajv-mC-8Oc" id="yKS-EV-BsY"/>
-                <outlet property="pageControl" destination="lv0-Wx-J6D" id="ecV-vh-b00"/>
                 <outlet property="pagingScrollView" destination="aHo-93-a2B" id="Gx3-As-0Ck"/>
                 <outlet property="pagingSegmentControl" destination="Fa9-gb-l3D" id="0vw-Sa-2G4"/>
                 <outlet property="shareMenuContainer" destination="she-YW-fRt" id="Dvd-BJ-7Dl"/>
@@ -29,21 +28,15 @@
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHo-93-a2B" customClass="PagedScrollView">
-                    <rect key="frame" x="0.0" y="71" width="320" height="300"/>
+                    <rect key="frame" x="0.0" y="71" width="320" height="329"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="Xdr-cG-EuU"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="329" id="Xdr-cG-EuU"/>
                     </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="rjM-hQ-Wc6"/>
                     </connections>
                 </scrollView>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="lv0-Wx-J6D">
-                    <rect key="frame" x="133" y="369" width="55" height="37"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="currentPageIndicatorTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                </pageControl>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Fa9-gb-l3D">
                     <rect key="frame" x="37" y="20" width="247" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -64,8 +57,6 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Fa9-gb-l3D" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="0TY-LO-yZc"/>
-                <constraint firstItem="she-YW-fRt" firstAttribute="top" secondItem="lv0-Wx-J6D" secondAttribute="bottom" constant="2" id="AgG-Ks-fjj"/>
-                <constraint firstAttribute="centerX" secondItem="lv0-Wx-J6D" secondAttribute="centerX" id="B8u-Fc-E0s"/>
                 <constraint firstItem="she-YW-fRt" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Gkk-hf-qfW"/>
                 <constraint firstItem="Fa9-gb-l3D" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1" secondAttribute="leading" id="PJz-ig-J5p"/>
                 <constraint firstItem="aHo-93-a2B" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="WbI-2D-9Sd"/>
@@ -73,7 +64,7 @@
                 <constraint firstAttribute="centerX" secondItem="Fa9-gb-l3D" secondAttribute="centerX" id="ax3-R9-woU"/>
                 <constraint firstItem="aHo-93-a2B" firstAttribute="top" secondItem="Fa9-gb-l3D" secondAttribute="bottom" constant="23" id="k4B-Yr-EgZ"/>
                 <constraint firstAttribute="bottom" secondItem="she-YW-fRt" secondAttribute="bottom" id="lpV-tY-bBm"/>
-                <constraint firstItem="she-YW-fRt" firstAttribute="top" secondItem="aHo-93-a2B" secondAttribute="bottom" constant="37" id="mSK-uO-UgB"/>
+                <constraint firstItem="she-YW-fRt" firstAttribute="top" secondItem="aHo-93-a2B" secondAttribute="bottom" constant="8" id="mSK-uO-UgB"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Fa9-gb-l3D" secondAttribute="trailing" id="qNb-qw-dJJ"/>
                 <constraint firstAttribute="trailing" secondItem="aHo-93-a2B" secondAttribute="trailing" id="qzq-xK-7Dh"/>
             </constraints>
