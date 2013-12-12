@@ -45,7 +45,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 @property (nonatomic, weak, readwrite) IBOutlet ThumbnailImageView *documentThumbnail;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *shareMenuContainer;
 @property (nonatomic, weak, readwrite) IBOutlet PagedScrollView *pagingScrollView;
-@property (nonatomic, weak, readwrite) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *pagingSegmentControl;
 @property (nonatomic, strong, readwrite) NSMutableArray *pagingControllers;
 
@@ -214,7 +213,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     
     [self.pagingScrollView layoutSubviews];
-    self.pageControl.numberOfPages = self.pagingScrollView.subviews.count;
     self.pagingScrollView.layer.cornerRadius = 5.0f;
 }
 
@@ -358,7 +356,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     {
         [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
     }
-    self.pageControl.currentPage = viewIndex;
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate Functions
