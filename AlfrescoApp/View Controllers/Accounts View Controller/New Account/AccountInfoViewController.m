@@ -110,7 +110,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     [super viewWillAppear:animated];
     
     [self constructTableCellsForAlfrescoServer];
-    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     [self.tableView reloadData];
     
     if (self.activityType != AccountActivityTypeViewAccount)
@@ -160,6 +160,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
                 else
                 {
                     [accountManager saveAccountsToKeychain];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
@@ -377,22 +378,27 @@ static NSInteger const kAccountInfoCertificateRow = 2;
  validateAccountFieldsValues
  checks the validity of hostname, port and username in terms of characters entered.
  */
-- (BOOL)validateAccountFieldsValuesForStandardServer
+- (BOOL)validateAccountFieldsValuesForServer
 {
-    //User input validations
-    NSString *hostname = self.serverAddressTextField.text;
-    NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *serviceDoc = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
-    
-    BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
-    BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
-    BOOL usernameError = [username isEqualToString:@""];
-    BOOL serviceDocError = [serviceDoc isEqualToString:@""];
-    
-    return !hostnameError && !portIsInvalid && !usernameError && !serviceDocError;
+    BOOL isValid = YES;
+    if (self.account.accountType == UserAccountTypeOnPremise)
+    {
+        //User input validations
+        NSString *hostname = self.serverAddressTextField.text;
+        NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *serviceDoc = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
+        
+        BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
+        BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
+        BOOL usernameError = [username isEqualToString:@""];
+        BOOL serviceDocError = [serviceDoc isEqualToString:@""];
+        
+        isValid = !hostnameError && !portIsInvalid && !usernameError && !serviceDocError;
+    }
+    return isValid;
 }
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
@@ -473,7 +479,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     
     if (textField == self.usernameTextField)
     {
@@ -504,7 +510,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)textFieldDidChange:(NSNotification *)note
 {
-    self.saveButton.enabled = [self validateAccountFieldsValuesForStandardServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 #pragma mark - UIKeyboard Notifications
