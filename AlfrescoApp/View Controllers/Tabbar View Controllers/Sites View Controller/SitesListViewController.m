@@ -562,7 +562,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         [self hideSearchProgressHUD];
         if (node)
         {
-            MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node showingVersionHistoryOption:YES session:self.session];
+            MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node session:self.session];
             [UniversalDevice pushToDisplayViewController:metadataViewController usingNavigationController:self.navigationController animated:YES];
         }
         else

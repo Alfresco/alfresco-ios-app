@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
 
 @interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate>
 
-@property (nonatomic, weak) id<AccountInfoViewControllerDelegate> delegate;
+@property (nonatomic, strong) id<AccountInfoViewControllerDelegate> delegate;
 
 /**
  Only use this initialiser to init this view controller. Passing through nil for the account will display an empty controller

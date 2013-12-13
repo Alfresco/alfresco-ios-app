@@ -110,6 +110,8 @@
 		731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B1184770F5002C82C1 /* MigrationAssistant.m */; };
 		731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B518477E4E002C82C1 /* AccountInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B718477E4E002C82C1 /* AccountStatus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73299A21185B4B8F00F96AF5 /* MetadataHeaderView.m */; };
+		73299A25185B4BB000F96AF5 /* MetadataHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA6D181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
@@ -581,6 +583,9 @@
 		731901B518477E4E002C82C1 /* AccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfo.m; sourceTree = "<group>"; };
 		731901B618477E4E002C82C1 /* AccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatus.h; sourceTree = "<group>"; };
 		731901B718477E4E002C82C1 /* AccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStatus.m; sourceTree = "<group>"; };
+		73299A20185B4B8F00F96AF5 /* MetadataHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MetadataHeaderView.h; path = "Metadata Header View/MetadataHeaderView.h"; sourceTree = "<group>"; };
+		73299A21185B4B8F00F96AF5 /* MetadataHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MetadataHeaderView.m; path = "Metadata Header View/MetadataHeaderView.m"; sourceTree = "<group>"; };
+		73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MetadataHeaderView.xib; path = "Metadata Header View/MetadataHeaderView.xib"; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6C181EB4300091CA95 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -1470,6 +1475,16 @@
 			path = Legacy;
 			sourceTree = "<group>";
 		};
+		73299A23185B4B9400F96AF5 /* Metadata Header View */ = {
+			isa = PBXGroup;
+			children = (
+				73299A20185B4B8F00F96AF5 /* MetadataHeaderView.h */,
+				73299A21185B4B8F00F96AF5 /* MetadataHeaderView.m */,
+				73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */,
+			);
+			name = "Metadata Header View";
+			sourceTree = "<group>";
+		};
 		732F275117FAC57C00BAFDDE /* Detail Split View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2303,6 +2318,7 @@
 		73B95AD217A68DF20099FB84 /* Metadata View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				73299A23185B4B9400F96AF5 /* Metadata Header View */,
 				73B95AD317A68DF20099FB84 /* MetaDataViewController.h */,
 				73B95AD417A68DF20099FB84 /* MetaDataViewController.m */,
 				73B95AD517A68DF20099FB84 /* Version View Controller */,
@@ -3010,6 +3026,7 @@
 				73B95A8117A68B7E0099FB84 /* mime_zip.png in Resources */,
 				73B95A8217A68B7E0099FB84 /* mime_zip@2x.png in Resources */,
 				73B95A8317A68B7E0099FB84 /* repository.png in Resources */,
+				73299A25185B4BB000F96AF5 /* MetadataHeaderView.xib in Resources */,
 				080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */,
 				73B95A8417A68B7E0099FB84 /* repository@2x.png in Resources */,
 				73B95A8517A68B7E0099FB84 /* site.png in Resources */,
@@ -3220,6 +3237,7 @@
 				73F6349017E34A990065590E /* AlfrescoPerson.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
+				73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */,
 				73F6349E17E34A990065590E /* AlfrescoRatingService.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
 				73F634B517E34A990065590E /* AlfrescoOnPremiseRatingService.m in Sources */,

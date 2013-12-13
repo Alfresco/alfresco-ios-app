@@ -198,7 +198,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)setupPagingScrollView
 {
-    MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document showingVersionHistoryOption:NO session:self.session];
+    MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session];
     [self.pagingControllers addObject:metaDataController];

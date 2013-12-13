@@ -16,6 +16,6 @@
 
 @property (nonatomic, strong, readonly) AlfrescoNode *node;
 
-- (id)initWithAlfrescoNode:(AlfrescoNode *)node showingVersionHistoryOption:(BOOL)versionHistoryOption session:(id<AlfrescoSession>)session;
+- (id)initWithAlfrescoNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session;
 
 @end

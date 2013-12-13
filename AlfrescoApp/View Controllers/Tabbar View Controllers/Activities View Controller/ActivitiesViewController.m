@@ -272,7 +272,7 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
     
     if (activityController.activityDocument)
     {
-        MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:activityController.activityDocument showingVersionHistoryOption:YES session:self.session];
+        MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:activityController.activityDocument session:self.session];
         [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
     }
     else
@@ -292,7 +292,7 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
                     AlfrescoDocument *document = (AlfrescoDocument *)node;
                     activityController.activityDocument = document;
                     
-                    MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:activityController.activityDocument showingVersionHistoryOption:YES session:self.session];
+                    MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:activityController.activityDocument session:self.session];
                     [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
                 }
             }];

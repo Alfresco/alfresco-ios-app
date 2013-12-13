@@ -562,7 +562,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             [self hideSearchProgressHUD];
             if (node)
             {
-                MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node showingVersionHistoryOption:YES session:self.session];
+                MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node session:self.session];
                 [UniversalDevice pushToDisplayViewController:metadataViewController usingNavigationController:self.navigationController animated:YES];
             }
             else
@@ -575,7 +575,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else
     {
-        MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:selectedNode showingVersionHistoryOption:YES session:self.session];
+        MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:selectedNode session:self.session];
         [UniversalDevice pushToDisplayViewController:metadataViewController usingNavigationController:self.navigationController animated:YES];
     }
 }
