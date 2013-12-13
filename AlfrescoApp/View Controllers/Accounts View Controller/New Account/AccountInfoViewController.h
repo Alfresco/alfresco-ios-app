@@ -31,6 +31,15 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
 
 @interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate>
 
+/**
+ This delegate is being made strong to ensure that the callbacks to the delegate are invoked.
+ 
+ If this delegate is not retained, it will be nullified once the modal view is dismissed, therefore the the didDismiss
+ callback will not be fired.
+ 
+ By making this a strong reference, the controller is retained as long as this controller is on the heap, and nullified
+ once it is deallocated from memory, which then releases the delegate. Therefore this is not leaking any memory.
+ */
 @property (nonatomic, strong) id<AccountInfoViewControllerDelegate> delegate;
 
 /**
