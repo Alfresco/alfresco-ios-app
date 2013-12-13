@@ -8,8 +8,8 @@
 
 #import "MetaDataViewController.h"
 #import "MetadataCell.h"
-#import "VersionHistoryViewController.h"
 #import "ConnectivityManager.h"
+#import "MetadataHeaderView.h"
 
 static NSString * kMetadataToDisplayPlistName = @"MetadataDisplayList";
 static NSString * kDateFormat = @"d MMM yyyy HH:mm";
@@ -20,7 +20,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 @property (nonatomic, strong) NSDictionary *propertiesToDisplayWithValues;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, assign) BOOL showVersionHistoryOption;
 @property (nonatomic, strong, readwrite) AlfrescoNode *node;
 @property (nonatomic, strong) AlfrescoTaggingService *tagService;
 
@@ -28,17 +27,13 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 @implementation MetaDataViewController
 
-- (id)initWithAlfrescoNode:(AlfrescoNode *)node showingVersionHistoryOption:(BOOL)versionHistoryOption session:(id<AlfrescoSession>)session
+- (id)initWithAlfrescoNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.node = node;
         self.tagService = [[AlfrescoTaggingService alloc] initWithSession:session];
-        if ([node isKindOfClass:[AlfrescoDocument class]])
-        {
-            self.showVersionHistoryOption = versionHistoryOption;
-        }
         [self setupMetadataToDisplayWithNode:node];
     }
     return self;
@@ -49,9 +44,12 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // create and configure the table view
-    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [view addSubview:self.tableView];
     
@@ -118,10 +116,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.showVersionHistoryOption)
-    {
-        return self.tableViewData.count + 1;
-    }
     return self.tableViewData.count;
 }
 
@@ -134,42 +128,44 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     return [[self.tableViewData objectAtIndex:section] count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    return kMetadataHeaderViewHeight;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MetadataHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MetadataHeaderView class]) owner:self options:nil] lastObject];
+    
+    NSString *headerTitleText = nil;
     if (section < self.tableViewData.count)
     {
         switch (section)
         {
             case 0:
-                return NSLocalizedString(@"metadata.general.section.header.title", @"General Section Header");
-                
+                headerTitleText = NSLocalizedString(@"metadata.general.section.header.title", @"General Section Header");
+                break;
+
             case 1:
-                return NSLocalizedString(@"metadata.image.information.section.header.title", @"Image Section Header");
+                headerTitleText = NSLocalizedString(@"metadata.image.information.section.header.title", @"Image Section Header");
+                break;
         }
     }
     
-    return NSLocalizedString(@"metadata.version.history.section.header.title", @"Version Hsitory Section Header");
+    headerView.headerTitleTextLabel.text = headerTitleText;
+    
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *MetadataCellIdentifier = @"MetadataCell";
-    static NSString *VersionCellIdentifier = @"VersionCell";
     MetadataCell *metadataCell = [tableView dequeueReusableCellWithIdentifier:MetadataCellIdentifier];
-    UITableViewCell *versionCell = [tableView dequeueReusableCellWithIdentifier:VersionCellIdentifier];
-    
-    // cell to return
-    UITableViewCell *returnCell = nil;
     
     if (!metadataCell)
     {
         metadataCell = (MetadataCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MetadataCell class]) owner:self options:nil] lastObject];
         metadataCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    if (!versionCell)
-    {
-        versionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:VersionCellIdentifier];
     }
     
     // config the cell here...
@@ -181,9 +177,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     
     if (dataSourceArray)
     {
-        // set the return cell
-        returnCell = metadataCell;
-        
         NSString *currentPropertyKey = [dataSourceArray objectAtIndex:indexPath.row];
         id currentProperty = [self.propertiesToDisplayWithValues objectForKey:currentPropertyKey];
         id currentPropertyValue = nil;
@@ -290,14 +283,8 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
             }
         }
     }
-    else
-    {
-        returnCell = versionCell;
-        returnCell.textLabel.text = NSLocalizedString(@"metadata.version.history.cell", @"View Version History Cell");
-        returnCell.textLabel.textAlignment = NSTextAlignmentCenter;
-    }
     
-    return returnCell;
+    return metadataCell;
 }
 
 #pragma mark - Table view delegate
@@ -305,15 +292,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
-    {
-        if (indexPath.section == self.tableViewData.count)
-        {
-            VersionHistoryViewController *versionHistoryViewController = [[VersionHistoryViewController alloc] initWithDocument:(AlfrescoDocument *)self.node session:self.session];
-            [self.navigationController pushViewController:versionHistoryViewController animated:YES];
-        }
-    }
 }
 
 #pragma mark - DocumentInDetailView Protocol functions

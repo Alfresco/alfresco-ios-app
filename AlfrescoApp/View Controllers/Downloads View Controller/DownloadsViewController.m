@@ -284,7 +284,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     if (indexPath != nil)
     {
         AlfrescoDocument *documentInfo = [[DownloadManager sharedManager] infoForDocument:self.tableViewData[indexPath.row]];
-        MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:documentInfo showingVersionHistoryOption:YES session:self.session];
+        MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:documentInfo session:self.session];
 
         [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
     }

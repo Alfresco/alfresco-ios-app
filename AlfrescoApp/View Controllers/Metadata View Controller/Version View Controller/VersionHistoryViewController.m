@@ -118,7 +118,7 @@ static NSInteger kDownloadLatestVersionSectionRowCount = 1;
     
     AlfrescoDocument *selectedDocument = [self.tableViewData objectAtIndex:indexPathToSelectedCell.row];
     
-    MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:selectedDocument showingVersionHistoryOption:NO session:self.session];
+    MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:selectedDocument session:self.session];
     [self.navigationController pushViewController:metadataViewController animated:YES];
 }
 
