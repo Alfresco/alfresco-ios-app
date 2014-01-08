@@ -10,10 +10,10 @@
 
 @interface VersionHistoryCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel *versionLabel;
-@property (nonatomic, strong) IBOutlet UILabel *lastModifiedLabel;
-@property (nonatomic, strong) IBOutlet UILabel *lastModifiedByLabel;
-@property (nonatomic, strong) IBOutlet UILabel *commentLabel;
-@property (nonatomic, strong) IBOutlet UILabel *currentVersionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *versionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *lastModifiedLabel;
+@property (nonatomic, weak) IBOutlet UILabel *lastModifiedByLabel;
+@property (nonatomic, weak) IBOutlet UILabel *commentLabel;
+@property (nonatomic, weak) IBOutlet UILabel *currentVersionLabel;
 
 @end

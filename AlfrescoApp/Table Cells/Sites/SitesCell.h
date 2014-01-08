@@ -26,12 +26,12 @@ extern const CGFloat SitesCellExpandedHeight;
 @interface SitesCell : UITableViewCell
 
 @property (nonatomic, weak) id<SiteCellDelegate> delegate;
-@property (nonatomic, strong) IBOutlet UIImageView *siteImageView;
-@property (nonatomic, strong) IBOutlet UILabel *siteNameLabelView;
-@property (nonatomic, strong) IBOutlet UIButton *expandButton;
-@property (nonatomic, strong) IBOutlet UIButton *favoriteButton;
-@property (nonatomic, strong) IBOutlet UIButton *joinButton;
-@property (nonatomic, strong) IBOutlet UIView *siteOptionsContainerView;
+@property (nonatomic, weak) IBOutlet UIImageView *siteImageView;
+@property (nonatomic, weak) IBOutlet UILabel *siteNameLabelView;
+@property (nonatomic, weak) IBOutlet UIButton *expandButton;
+@property (nonatomic, weak) IBOutlet UIButton *favoriteButton;
+@property (nonatomic, weak) IBOutlet UIButton *joinButton;
+@property (nonatomic, weak) IBOutlet UIView *siteOptionsContainerView;
 
 // Public Functions
 - (void)updateCellStateWithSite:(AlfrescoSite *)site;

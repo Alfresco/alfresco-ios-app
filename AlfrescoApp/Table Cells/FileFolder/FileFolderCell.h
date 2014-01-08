@@ -11,8 +11,8 @@
 
 @interface FileFolderCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet ThumbnailImageView *nodeImageView;
-@property (nonatomic, strong) IBOutlet UILabel *nodeNameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *nodeDetailLabel;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *nodeImageView;
+@property (nonatomic, weak) IBOutlet UILabel *nodeNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *nodeDetailLabel;
 
 @end

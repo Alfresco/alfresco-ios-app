@@ -116,7 +116,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document toFolderAtPath:self.previewImageFolderURLString renditionType:@"imgpreview" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
             if (savedFileName)
             {
-                [weakSelf.documentThumbnail setImageAtSecurePath:savedFileName];
+                [weakSelf.documentThumbnail setImageAtPath:savedFileName withFade:YES];
             }
         }];
     }

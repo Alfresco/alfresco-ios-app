@@ -10,7 +10,7 @@
 
 @interface MetadataCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel *propertyNameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *propertyValueLabel;
+@property (nonatomic, weak) IBOutlet UILabel *propertyNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *propertyValueLabel;
 
 @end

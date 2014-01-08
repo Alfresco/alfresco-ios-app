@@ -9,12 +9,20 @@
 #import "CommentViewController.h"
 #import "Utility.h"
 #import "CommentCell.h"
+#import "AvatarManager.h"
+#import "AUIAutoGrowingTextView.h"
+
+static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
 @interface CommentViewController ()
 
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) AlfrescoPermissions *permissions;
 @property (nonatomic, strong) AlfrescoCommentService *commentService;
+@property (nonatomic, weak) IBOutlet UIView *addCommentContainerView;
+@property (nonatomic, weak) IBOutlet AUIAutoGrowingTextView *addCommentTextView;
+@property (nonatomic, weak) IBOutlet UIButton *postCommentButton;
+@property (nonatomic, strong) UILabel *sectionFooterLabel;
 
 @end
 
@@ -28,23 +36,14 @@
         self.node = node;
         self.permissions = permissions;
         [self createAlfrescoServicesWithSession:session];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     return self;
 }
 
-- (void)loadView
+- (void)dealloc
 {
-    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    // create and configure the table view
-    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [view addSubview:self.tableView];
-    
-    view.autoresizesSubviews = YES;
-    self.view = view;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -53,14 +52,16 @@
     
     self.title = NSLocalizedString(@"comments.title", @"Comments Title");
     
-    if (self.permissions.canComment)
+    if (!self.permissions.canComment)
     {
-        UIBarButtonItem *addCommentButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                          target:self
-                                                                                          action:@selector(addComment:)];
-        self.navigationItem.rightBarButtonItem = addCommentButton;
+        [self.view removeConstraints:self.view.constraints];
+        [self.addCommentContainerView removeFromSuperview];
+        UITableView *tableView = self.tableView;
+        NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|" options:NSLayoutFormatAlignAllTop | NSLayoutFormatAlignAllBottom metrics:nil views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
     }
-    
+
     [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (pagingResult)
         {
@@ -72,6 +73,10 @@
             [Notifier notifyWithAlfrescoError:error];
         }
     }];
+    
+    self.addCommentTextView.maxHeight = kMaxCommentTextViewHeight;
+    
+    [self localiseUI];
 }
 
 #pragma mark - Private Functions
@@ -91,12 +96,12 @@
     }
     
     [self showHUD];
-    [self.commentService retrieveCommentsForNode:self.node listingContext:requestListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+    [self.commentService retrieveCommentsForNode:self.node listingContext:requestListingContext latestFirst:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [self hideHUD];
         if (completionBlock != NULL)
         {
             completionBlock(pagingResult, error);
-            [self tableView:self.tableView titleForFooterInSection:0];
+            [self updateCommentCountFooter];
         }
     }];
 }
@@ -128,25 +133,15 @@
     }
 }
 
-- (CGFloat)heightForRowUsingCell:(UITableViewCell *)cell maxWidth:(CGFloat)maxWidth
+- (NSString *)placeholderText
 {
-    CommentCell *commentCell = (CommentCell *)cell;
-    CGFloat maxHeight = 4000;
-
-    CGSize cellSize = [commentCell.contentTextLabel.text sizeWithFont:commentCell.contentTextLabel.font
-                                                    constrainedToSize:CGSizeMake(maxWidth, maxHeight)
-                                                        lineBreakMode:NSLineBreakByWordWrapping];
-    
-    cellSize.height += commentCell.contentTextLabel.frame.origin.y + 10.0f;
-    
-    return cellSize.height;
+    return NSLocalizedString(@"comments.placeholder.text", @"Placeholder Text");
 }
 
-- (void)addComment:(id)sender
+- (void)localiseUI
 {
-    AddCommentViewController *addCommentViewController = [[AddCommentViewController alloc] initWithAlfrescoNode:self.node session:self.session delegate:self];
-    
-    [self.navigationController pushViewController:addCommentViewController animated:YES];
+    self.addCommentTextView.text = [self placeholderText];
+    [self.postCommentButton setTitle:NSLocalizedString(@"comments.post.button", @"Post Button") forState:UIControlStateNormal];
 }
 
 #pragma mark - Table view data source
@@ -166,12 +161,37 @@
         cell = (CommentCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CommentCell class]) owner:self options:nil] lastObject];
     }
     
-    // config the cell here...
     AlfrescoComment *currentComment = [self.tableViewData objectAtIndex:indexPath.row];
     
-    cell.authorTextLabel.text = currentComment.createdBy;
-    cell.timeTextLabel.text = relativeDateFromDate(currentComment.createdAt);
+    cell.authorTextLabel.text = [NSString stringWithFormat:@"%@, %@", currentComment.createdBy, relativeDateFromDate(currentComment.createdAt)];
     cell.contentTextLabel.text = stringByRemovingHTMLTagsFromString(currentComment.content);
+    
+    if ([currentComment.createdBy isEqualToString:self.session.personIdentifier])
+    {
+        cell.contentTextLabel.backgroundColor = [UIColor lightGrayColor];
+    }
+    else
+    {
+        cell.contentTextLabel.backgroundColor = [UIColor blueColor];
+    }
+    
+    AlfrescoContentFile *avatarContentFile = [[AvatarManager sharedManager] avatarForUsername:currentComment.createdBy];
+        
+    if (avatarContentFile)
+    {
+        [cell.avatarImageView setImageAtPath:avatarContentFile.fileUrl.path withFade:NO];
+    }
+    else
+    {
+        UIImage *placeholderImage = [UIImage imageNamed:@"stop-transfer.png"];
+        cell.avatarImageView.image = placeholderImage;
+        [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentComment.createdBy session:self.session completionBlock:^(AlfrescoContentFile *avatarContentFile, NSError *avatarError) {
+            if (avatarContentFile)
+            {
+                [cell.avatarImageView setImageAtPath:avatarContentFile.fileUrl.path withFade:YES];
+            }
+        }];
+    }
     
     return cell;
 }
@@ -209,32 +229,25 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UILabel *footer = [[UILabel alloc] init];
+    if (!self.sectionFooterLabel)
+    {
+        self.sectionFooterLabel = [[UILabel alloc] init];
+        self.sectionFooterLabel.font = [UIFont systemFontOfSize:14.0f];
+        self.sectionFooterLabel.backgroundColor = [UIColor whiteColor];
+        self.sectionFooterLabel.textAlignment = NSTextAlignmentCenter;
+        [self updateCommentCountFooter];
+    }
     
-    footer.text = [self tableView:tableView titleForFooterInSection:section];
-    footer.font = [UIFont systemFontOfSize:14.0f];
-    footer.backgroundColor = [UIColor whiteColor];
-    footer.textAlignment = NSTextAlignmentCenter;
-    
-    return footer;
+    return self.sectionFooterLabel;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (NSString *)titleForCommentsInSection:(NSInteger)section
 {
     NSString *footerText = nil;
     
-    switch (self.tableViewData.count)
+    if (self.tableViewData.count == 0)
     {
-        case 1:
-        {
-            footerText = NSLocalizedString(@"comments.footer.one.comment", @"1 Comment");
-            break;
-        }
-        default:
-        {
-            footerText = [NSString stringWithFormat:NSLocalizedString(@"comments.footer.multiple.comments", @"%i Comments"), self.tableViewData.count];
-            break;
-        }
+        footerText = [NSString stringWithFormat:NSLocalizedString(@"comments.footer.multiple.comments", @"%i Comments"), self.tableViewData.count];
     }
     
     return footerText;
@@ -244,7 +257,15 @@
 {
     CommentCell *cell = (CommentCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    return [self heightForRowUsingCell:cell maxWidth:tableView.frame.size.width];
+    // Get the actual height required for the cell
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    
+    return height;
+}
+
+- (void)updateCommentCountFooter
+{
+    self.sectionFooterLabel.text = [self titleForCommentsInSection:0];
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -266,14 +287,76 @@
     }];
 }
 
-#pragma mark - AddCommentViewControllerDelegate Functions
+#pragma mark - IBActions
 
-- (void)didSuccessfullyAddComment:(AlfrescoComment *)comment
+- (IBAction)postComment:(id)sender
 {
-    if (!self.moreItemsAvailable)
+    if (self.addCommentTextView.text.length > 0 && ![self.addCommentTextView.text isEqualToString:[self placeholderText]])
     {
-        [self.tableViewData addObject:comment];
-        [self.tableView reloadData];
+        [self.addCommentTextView resignFirstResponder];
+        
+        __block MBProgressHUD *postingCommentHUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:postingCommentHUD];
+        [postingCommentHUD show:YES];
+        
+        self.postCommentButton.enabled = NO;
+        __weak typeof(self) weakSelf = self;
+        [self.commentService addCommentToNode:self.node content:self.addCommentTextView.text title:nil completionBlock:^(AlfrescoComment *comment, NSError *error) {
+            [postingCommentHUD hide:YES];
+            postingCommentHUD = nil;
+            weakSelf.postCommentButton.enabled = YES;
+            
+            if (comment)
+            {
+                [weakSelf.tableViewData insertObject:comment atIndex:0];
+                NSIndexPath *insertIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                [weakSelf.tableView insertRowsAtIndexPaths:@[insertIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+                [weakSelf updateCommentCountFooter];
+                weakSelf.addCommentTextView.text = [weakSelf placeholderText];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.add.comment.failed", @"Adding Comment Failed"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+                [weakSelf.addCommentTextView becomeFirstResponder];
+            }
+        }];
+    }
+}
+
+- (IBAction)tappedView:(id)sender
+{
+    [self.addCommentTextView resignFirstResponder];
+}
+
+#pragma mark - UITextViewDelegate Functions
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:[self placeholderText]])
+    {
+        textView.text = @"";
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    NSString *trimmedText = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmedText.length > 0 && ![trimmedText isEqualToString:[self placeholderText]])
+    {
+        self.postCommentButton.enabled = YES;
+    }
+    else
+    {
+        self.postCommentButton.enabled = NO;
+    }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if (textView.text.length == 0)
+    {
+        textView.text = [self placeholderText];
     }
 }
 

@@ -210,7 +210,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         {
             thumbnail = [thumbnailManager thumbnailForNode:document withParentNode:self.parentNode session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
                 
-                [syncCell.image setImageAtSecurePath:savedFileName];
+                [syncCell.image setImageAtPath:savedFileName withFade:YES];
             }];
         }
         syncCell.image.image = thumbnail;
