@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ThumbnailImageView.h"
 
 @interface CommentCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel *authorTextLabel;
-@property (nonatomic, strong) IBOutlet UILabel *contentTextLabel;
-@property (nonatomic, strong) IBOutlet UILabel *timeTextLabel;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *avatarImageView;
+@property (nonatomic, weak) IBOutlet UILabel *authorTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *contentTextLabel;
 
 @end

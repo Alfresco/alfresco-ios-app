@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
-#import "AddCommentViewController.h"
 
 @class AlfrescoNode;
 @class AlfrescoPermissions;
 
-@interface CommentViewController : ParentListViewController <AddCommentViewControllerDelegate>
+@interface CommentViewController : ParentListViewController
 
 - (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
 

@@ -349,14 +349,9 @@
  * Comments View Controller
  */
 "comments.title" = "Comments";
-"comments.footer.one.comment" = "1 Comment";
 "comments.footer.multiple.comments" = "%i Comments";
-
-/**
- * Add Comments View Controller
- */
-"add.comments.title" = "Add Comment";
-"add.comments.post.button" = "Post";
+"comments.post.button" = "Post";
+"comments.placeholder.text" = "Add a comment ...";
 
 /**
  * Help

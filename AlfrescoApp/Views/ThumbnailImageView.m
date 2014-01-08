@@ -8,22 +8,30 @@
 
 #import "ThumbnailImageView.h"
 
+static NSTimeInterval const kFadeSpeed = 0.2;
+
 @implementation ThumbnailImageView
 
-- (void)setImageAtSecurePath:(NSString *)imagePath
+- (void)setImageAtPath:(NSString *)imagePath withFade:(BOOL)fadeAnimation;
 {
     NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:imagePath]];
     
-    NSTimeInterval fadeSpeed = 0.2;
-    [UIView animateWithDuration:fadeSpeed animations:^{
-        self.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        self.image = [UIImage imageWithData:imageData];
-        
-        [UIView animateWithDuration:fadeSpeed animations:^{
-            self.alpha = 1.0f;
+    if (fadeAnimation)
+    {
+        [UIView animateWithDuration:kFadeSpeed animations:^{
+            self.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            self.image = [UIImage imageWithData:imageData];
+            
+            [UIView animateWithDuration:kFadeSpeed animations:^{
+                self.alpha = 1.0f;
+            }];
         }];
-    }];
+    }
+    else
+    {
+        self.image = [UIImage imageWithData:imageData];
+    }
 }
 
 @end

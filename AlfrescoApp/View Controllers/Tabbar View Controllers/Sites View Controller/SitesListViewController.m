@@ -223,7 +223,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                     // update the image view
                     if (searchCell.nodeImageView.image == placeholderImage)
                     {
-                        [searchCell.nodeImageView setImageAtSecurePath:savedFileName];
+                        [searchCell.nodeImageView setImageAtPath:savedFileName withFade:YES];
                     }
                 }
             }];

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentViewController">
+            <connections>
+                <outlet property="addCommentContainerView" destination="Rag-u7-uCY" id="IfO-gP-a9L"/>
+                <outlet property="addCommentTextView" destination="RZv-md-4XZ" id="AuM-e0-aNg"/>
+                <outlet property="postCommentButton" destination="GJC-wF-92f" id="QCp-9g-AV0"/>
+                <outlet property="tableView" destination="27y-fM-wub" id="GlS-57-Vdr"/>
+                <outlet property="view" destination="1" id="z8F-TG-DcU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rag-u7-uCY">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comments.png" translatesAutoresizingMaskIntoConstraints="NO" id="4Nt-62-WkZ">
+                            <rect key="frame" x="9" y="10" width="20" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ENTER TEXT HERE" translatesAutoresizingMaskIntoConstraints="NO" id="RZv-md-4XZ" customClass="AUIAutoGrowingTextView">
+                            <rect key="frame" x="64" y="8" width="190" height="30"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="UdQ-po-Z7g"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="0Ua-Wp-ff8"/>
+                            </connections>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJC-wF-92f">
+                            <rect key="frame" x="269" y="10" width="41" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="POST">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="postComment:" destination="-1" eventType="touchUpInside" id="zgO-LK-Ad5"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="RZv-md-4XZ" firstAttribute="leading" secondItem="4Nt-62-WkZ" secondAttribute="trailing" constant="35" id="9Vw-Ab-mLc"/>
+                        <constraint firstItem="RZv-md-4XZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="8" id="C1T-IA-WZ8"/>
+                        <constraint firstAttribute="bottom" secondItem="GJC-wF-92f" secondAttribute="bottom" constant="10" id="EeQ-oX-dx3"/>
+                        <constraint firstAttribute="bottom" secondItem="4Nt-62-WkZ" secondAttribute="bottom" constant="10" id="K71-el-pVj"/>
+                        <constraint firstAttribute="trailing" secondItem="GJC-wF-92f" secondAttribute="trailing" constant="10" id="Mu1-H9-3LD"/>
+                        <constraint firstItem="GJC-wF-92f" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="10" id="VeZ-7o-t9e"/>
+                        <constraint firstItem="4Nt-62-WkZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="10" id="jZO-U6-IKB"/>
+                        <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" constant="15" id="l98-FR-SjL"/>
+                        <constraint firstItem="4Nt-62-WkZ" firstAttribute="leading" secondItem="Rag-u7-uCY" secondAttribute="leading" constant="9" id="qFq-lb-HZh"/>
+                        <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" constant="15" id="xZe-ak-hXn"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="27y-fM-wub">
+                    <rect key="frame" x="0.0" y="50" width="320" height="518"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="27y-fM-wub" secondAttribute="bottom" id="Ab4-8K-UqH"/>
+                <constraint firstItem="Rag-u7-uCY" firstAttribute="top" secondItem="1" secondAttribute="top" id="Cm1-SQ-kdq"/>
+                <constraint firstItem="27y-fM-wub" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="bottom" id="TVa-KA-XfD"/>
+                <constraint firstItem="27y-fM-wub" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="euX-z2-W3d"/>
+                <constraint firstAttribute="trailing" secondItem="27y-fM-wub" secondAttribute="trailing" id="i1P-rg-xxR"/>
+                <constraint firstAttribute="trailing" secondItem="Rag-u7-uCY" secondAttribute="trailing" id="idM-nR-O7A"/>
+                <constraint firstItem="Rag-u7-uCY" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="uJF-M1-yBR"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="r9F-c0-CO6" appends="YES" id="gaV-1E-H1Q"/>
+            </connections>
+        </view>
+        <tapGestureRecognizer id="r9F-c0-CO6">
+            <connections>
+                <action selector="tappedView:" destination="-1" id="vlJ-95-gjl"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="comments.png" width="20" height="20"/>
+    </resources>
+</document>

@@ -10,6 +10,6 @@
 
 @interface ThumbnailImageView : UIImageView
 
-- (void)setImageAtSecurePath:(NSString *)imagePath;
+- (void)setImageAtPath:(NSString *)imagePath withFade:(BOOL)fadeAnimation;
 
 @end

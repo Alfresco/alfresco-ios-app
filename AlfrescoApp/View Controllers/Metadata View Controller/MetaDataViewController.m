@@ -287,6 +287,15 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     return metadataCell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MetadataCell *cell = (MetadataCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    
+    return height;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

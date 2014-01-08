@@ -10,4 +10,12 @@
 
 @implementation CommentCell
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.contentView layoutSubviews];
+    self.contentTextLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.contentTextLabel.frame);
+}
+
 @end
