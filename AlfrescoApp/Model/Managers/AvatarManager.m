@@ -55,7 +55,6 @@
     id <AlfrescoSession> session = notification.object;
     self.session = session;
     
-    // update the document folder service
     self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
     
     [self clearAvatarCache];
