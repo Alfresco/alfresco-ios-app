@@ -79,12 +79,20 @@
 - (NSInteger)calculateHeaderHeightForSection:(NSInteger)section
 {
     NSString *key = [self keyForSection:section];
+    
+    NSUInteger returnHeight = 0;
+    
     if ([[self.errorDictionary objectForKey:key] count] != 0)
     {
         NSString *headerText = NSLocalizedString([self.sectionHeaders objectForKey:key], @"TableView Header Section Descriptions");
-        return [headerText sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:CGSizeMake(300, 2000) lineBreakMode:NSLineBreakByWordWrapping].height;
+        CGRect rect = [headerText boundingRectWithSize:CGSizeMake(300, 2000)
+                                               options:NSStringDrawingTruncatesLastVisibleLine
+                                            attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0f]}
+                                               context:nil];
+        returnHeight = rect.size.height;
     }
-    return 0;
+    
+    return returnHeight;
 }
 
 - (void)handleSyncObstacles

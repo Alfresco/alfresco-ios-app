@@ -52,12 +52,12 @@ static const CGFloat kMasterViewWidth = 300.0f;
     UIView *detailViewContainer = [[UIView alloc] initWithFrame:screenBounds];
     detailViewContainer.autoresizesSubviews = YES;
     detailViewContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    detailViewContainer.backgroundColor = [UIColor underPageBackgroundColor];
+    detailViewContainer.backgroundColor = [UIColor lightGrayColor];
     [view addSubview:detailViewContainer];
     self.detailViewContainer = detailViewContainer;
     
     [view bringSubviewToFront:detailViewContainer];
-    view.backgroundColor = [UIColor underPageBackgroundColor];
+    view.backgroundColor = [UIColor lightGrayColor];
     
     view.autoresizesSubviews = YES;
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

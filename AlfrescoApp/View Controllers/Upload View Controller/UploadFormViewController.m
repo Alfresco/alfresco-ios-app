@@ -212,10 +212,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
         
         previewCell.textLabel.text = previewCellLabelTitle;
         
-        CGSize documentNameSize  = [self.documentURL.lastPathComponent sizeWithFont:nameTextField.font];
+        CGSize documentNameSize  = [self.documentURL.lastPathComponent sizeWithAttributes:@{NSFontAttributeName : nameTextField.font}];
         CGSize previewCellSize = previewCell.frame.size;
         CGSize documentIconImageViewSize = CGSizeMake(documentIconWidth, documentIconHeight);
-        CGSize previewCellLabelSize = [previewCellLabelTitle sizeWithFont:nameTextField.font];
+        CGSize previewCellLabelSize = [previewCellLabelTitle sizeWithAttributes:@{NSFontAttributeName : nameTextField.font}];
         CGFloat nameFieldMaxWidth = tableView.frame.size.width - previewCellLabelSize.width - documentIconImageViewSize.width - indentation * 4;
 
         documentNameSize.width = fminf(documentNameSize.width, nameFieldMaxWidth);
