@@ -211,9 +211,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         UIViewController *currentController = self.pagingControllers[i];
         [self.pagingScrollView addSubview:currentController.view];
     }
-    
-    [self.pagingScrollView layoutSubviews];
-    self.pagingScrollView.layer.cornerRadius = 5.0f;
 }
 
 - (void)localiseUI

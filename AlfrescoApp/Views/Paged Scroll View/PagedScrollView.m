@@ -11,6 +11,7 @@
 @interface PagedScrollView () <UIScrollViewDelegate>
 
 @property (nonatomic, assign, readwrite) NSUInteger selectedPageIndex;
+@property (nonatomic, assign, readwrite) BOOL isScrollingToPosition;
 
 @end
 
@@ -39,6 +40,8 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+    
     for (int i = 0; i < self.subviews.count; i++)
     {
         UIView *subView = self.subviews[i];
@@ -50,18 +53,35 @@
         subViewFrame.size.height = scrollViewFrame.size.height;
         subView.frame = subViewFrame;
     }
+    
     self.contentSize = CGSizeMake((self.frame.size.width * self.subviews.count), self.frame.size.height);
+    
+    // triggered when resizing the view
+    if (!self.isDragging && !self.isScrollingToPosition)
+    {
+        [self scrollToDisplayViewAtIndex:self.selectedPageIndex animated:NO];
+    }
 }
 
 - (void)scrollToDisplayViewAtIndex:(NSInteger)index animated:(BOOL)animated
 {
     if (index >= 0 && index <= self.subviews.count)
     {
-        CGRect scrollToRect = CGRectMake((self.frame.size.width * index),
-                                         self.frame.origin.y,
-                                         self.frame.size.width,
-                                         self.frame.size.height);
-        [self scrollRectToVisible:scrollToRect animated:animated];
+        CGPoint updatedOffset = CGPointMake(self.frame.size.width * index, self.bounds.origin.y);
+        if (animated)
+        {
+            self.isScrollingToPosition = YES;
+            [UIView animateWithDuration:0.3 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                self.contentOffset = updatedOffset;
+            } completion:^(BOOL finished) {
+                self.isScrollingToPosition = NO;
+            }];
+        }
+        else
+        {
+            self.contentOffset = updatedOffset;
+        }
+        
         self.selectedPageIndex = index;
     }
 }
@@ -98,14 +118,5 @@
         self.selectedPageIndex = page;
     }
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end
