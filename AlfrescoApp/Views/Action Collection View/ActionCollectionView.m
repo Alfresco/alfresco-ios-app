@@ -80,6 +80,7 @@ static CGFloat const kMaxRowHeightPriority = 750.0f;
 {
     [self.collectionViews removeAllObjects];
     [self removeConstraints:self.constraints];
+    [self removeAllSubviews];
     [self setup];
 }
 
