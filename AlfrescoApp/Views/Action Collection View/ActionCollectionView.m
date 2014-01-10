@@ -8,15 +8,19 @@
 
 #import "ActionCollectionView.h"
 #import "ActionCollectionViewCell.h"
+#import "UICollectionView+AutoLayout.h"
+#import "Utility.h"
 
-static CGFloat const kCollectionCellWidth = 70.0f;
-static CGFloat const kCollectionViewHeight = 80.0f;
+static CGFloat const kActualSizePrority = 1000.0f;
+static CGFloat const kDefaultMinRowHeight = 40.0f;
+static CGFloat const kMinRowHeightPriority = 900.0f;
+static CGFloat const kDefaultMaxRowHeight = 200.0f;
+static CGFloat const kMaxRowHeightPriority = 750.0f;
 
 @interface ActionCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) NSArray *rows;
 @property (nonatomic, strong) NSMutableArray *collectionViews;
-
 @property (nonatomic, weak) id<ActionCollectionViewDelegate> delegate;
 
 @end
@@ -30,9 +34,9 @@ static CGFloat const kCollectionViewHeight = 80.0f;
     {
         self.rows = rows;
         self.delegate = delegate;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
         self.collectionViews = [NSMutableArray array];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
-        [self setup];
     }
     return self;
 }
@@ -44,16 +48,12 @@ static CGFloat const kCollectionViewHeight = 80.0f;
 
 - (void)setup
 {
-    CGFloat currentYPosition = 0;
     for (ActionCollectionRow *row in self.rows)
     {
         UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
         flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, currentYPosition, self.frame.size.width, kCollectionViewHeight)
-                                                              collectionViewLayout:flow];
-        collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        collectionView.autoresizesSubviews = YES;
+        UICollectionView *collectionView = [[UICollectionView alloc] initAutoLayoutWithCollectionViewLayout:flow];
         collectionView.delegate = self;
         collectionView.dataSource = self;
         collectionView.showsHorizontalScrollIndicator = NO;
@@ -63,22 +63,25 @@ static CGFloat const kCollectionViewHeight = 80.0f;
         
         UINib *nib = [UINib nibWithNibName:NSStringFromClass([ActionCollectionViewCell class]) bundle:[NSBundle mainBundle]];
         [collectionView registerNib:nib forCellWithReuseIdentifier:@"ActionCell"];
-        
-        currentYPosition += kCollectionViewHeight;
+
         [self.collectionViews addObject:collectionView];
+        
+        NSDictionary *dictionary = NSDictionaryOfVariableBindings(collectionView);
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:dictionary]];
     }
     
-    CGRect viewFrame = self.frame;
-    viewFrame.size.height = currentYPosition;
-    self.frame = viewFrame;
+    NSDictionary *viewBindings = dictionaryOfVariableBindingsWithArray(self.collectionViews);
+    NSString *verticalVisualFormatLanguage = [self buildVerticalConstraintsStringForBindingsOfCollectionViews:viewBindings];
     
-    self.autoresizesSubviews = YES;
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatLanguage options:NSLayoutFormatAlignAllCenterX metrics:nil views:viewBindings]];
 }
 
-- (void)willMoveToSuperview:(UIView *)newSuperview
+- (void)didMoveToSuperview
 {
-    self.frame = newSuperview.bounds;
+    [self.collectionViews removeAllObjects];
+    [self removeConstraints:self.constraints];
+    [self removeAllSubviews];
+    [self setup];
 }
 
 #pragma mark - Private Functions
@@ -88,6 +91,38 @@ static CGFloat const kCollectionViewHeight = 80.0f;
     for (UICollectionView *collectionView in self.collectionViews)
     {
         [collectionView reloadData];
+    }
+}
+
+- (NSString *)buildVerticalConstraintsStringForBindingsOfCollectionViews:(NSDictionary *)bindings
+{
+    NSArray *allViewKeys = [bindings allKeys];
+    NSMutableString *verticalConstraintsString = [[NSMutableString alloc] initWithString:@"V:"];
+    for (int i = 0; i  < allViewKeys.count; i++)
+    {
+        if (i == 0)
+        {
+            [verticalConstraintsString appendString:@"|"];
+        }
+        
+        NSString *currentViewKey = allViewKeys[i];
+        [verticalConstraintsString appendString:[NSString stringWithFormat:@"[%@(<=%f@%f,>=%f@%f,==%f@%f)]",
+                                          currentViewKey, kDefaultMaxRowHeight, kMaxRowHeightPriority, kDefaultMinRowHeight, kMinRowHeightPriority,
+                                          self.superview.bounds.size.height/self.collectionViews.count, kActualSizePrority]];
+        
+        if (i == (allViewKeys.count - 1))
+        {
+            [verticalConstraintsString appendString:@"|"];
+        }
+    }
+    return verticalConstraintsString;
+}
+
+- (void)removeAllSubviews
+{
+    for (UIView *subview in self.subviews)
+    {
+        [subview removeFromSuperview];
     }
 }
 
@@ -128,7 +163,7 @@ static CGFloat const kCollectionViewHeight = 80.0f;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(kCollectionCellWidth, kCollectionViewHeight);
+    return CGSizeMake(collectionView.frame.size.height, collectionView.frame.size.height);
 }
 
 @end

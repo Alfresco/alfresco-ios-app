@@ -134,15 +134,18 @@ static NSString * const kSource = @"mobile";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat returnHeight = kNormalRowHeight;
+    
     if ((self.account.accountStatus == UserAccountStatusAwaitingVerification) && (indexPath.section == kCloudAwaitingVerificationTextSection))
     {
-        return ceilf([self.awaitingVerificationText sizeWithFont:[UIFont systemFontOfSize:kAwaitingVerificationTextFontSize]
-                                               constrainedToSize:CGSizeMake(tableView.bounds.size.width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height);
+        CGRect rect = [self.awaitingVerificationText boundingRectWithSize:CGSizeMake(tableView.bounds.size.width, CGFLOAT_MAX)
+                                                                  options:NSStringDrawingTruncatesLastVisibleLine
+                                                               attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:kAwaitingVerificationTextFontSize]}
+                                                                  context:nil];
+        returnHeight = rect.size.height;
     }
-    else
-    {
-        return kNormalRowHeight;
-    }
+    
+    return returnHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

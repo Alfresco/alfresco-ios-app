@@ -273,16 +273,20 @@ static CGFloat const kBoldTextFontSize = 17;
         
         if (self.cellTitle && ![self.cellTitle isEqualToString:@""])
         {
-            titleSize = [self.cellTitle sizeWithFont:[UIFont boldSystemFontOfSize:CONST_textLabelFontSize]
-                               constrainedToSize:CGSizeMake(maxWidth, maxHeight)
-                                   lineBreakMode:NSLineBreakByWordWrapping];
+            CGRect rect = [self.cellTitle boundingRectWithSize:CGSizeMake(maxWidth, maxHeight)
+                                                       options:NSStringDrawingTruncatesLastVisibleLine
+                                                    attributes:@{NSFontAttributeName : [self cellTitleFont]}
+                                                       context:nil];
+            titleSize = rect.size;
         }
         
         if (self.cellSubTitle && ![self.cellSubTitle isEqualToString:@""])
         {
-            subtitleSize = [self.cellSubTitle sizeWithFont:[self cellSubTitleFont]
-                                     constrainedToSize:CGSizeMake(maxWidth, maxHeight)
-                                         lineBreakMode:NSLineBreakByWordWrapping];
+            CGRect rect = [self.cellTitle boundingRectWithSize:CGSizeMake(maxWidth, maxHeight)
+                                                       options:NSStringDrawingTruncatesLastVisibleLine
+                                                    attributes:@{NSFontAttributeName : [self cellSubTitleFont]}
+                                                       context:nil];
+            subtitleSize = rect.size;
         }
         
         int height = 25 + titleSize.height + subtitleSize.height;

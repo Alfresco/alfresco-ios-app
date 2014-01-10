@@ -70,7 +70,6 @@ static CGFloat kSearchCellHeight = 60.0f;
                                (view.frame.origin.y + (kSegmentVerticalPadding / 2)),
                                view.frame.size.width - kSegmentVerticalPadding,
                                kSegmentControllerHeight - kSegmentVerticalPadding);
-    segment.segmentedControlStyle = UISegmentedControlStyleBar;
     [ThemeUtil applyThemeToSegmentControl:segment];
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;

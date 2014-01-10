@@ -61,7 +61,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     UIView *detailViewContainer = [[UIView alloc] initWithFrame:screenBounds];
     detailViewContainer.autoresizesSubviews = YES;
     detailViewContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    detailViewContainer.backgroundColor = [UIColor underPageBackgroundColor];
+    detailViewContainer.backgroundColor = [UIColor lightGrayColor];
     [view addSubview:detailViewContainer];
     self.detailViewContainer = detailViewContainer;
     
@@ -78,7 +78,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     [self.detailViewContainer addGestureRecognizer:panGesture];
     
     [view bringSubviewToFront:detailViewContainer];
-    view.backgroundColor = [UIColor underPageBackgroundColor];
+    view.backgroundColor = [UIColor lightGrayColor];
     
     view.autoresizesSubviews = YES;
     view.clipsToBounds = YES;
