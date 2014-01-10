@@ -55,7 +55,7 @@ SystemNotice * displayInformationMessageWithTitle(NSString *message, NSString *t
     return [SystemNotice showInformationNoticeInView:activeView() message:message title:title];
 }
 
-UIView *activeView(void)
+UIView * activeView(void)
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     ContainerViewController *containerController = (ContainerViewController *)appDelegate.window.rootViewController;
@@ -73,7 +73,7 @@ UIView *activeView(void)
     return appDelegate.window.rootViewController.view;
 }
 
-UIImage *imageForType(NSString *type)
+UIImage * imageForType(NSString *type)
 {
     type = [type lowercaseString];
     
@@ -98,7 +98,7 @@ UIImage *imageForType(NSString *type)
  * @param image: image to be resized
  * @param size:  resizing size
  */
-UIImage *resizeImage(UIImage *image, CGSize size)
+UIImage * resizeImage(UIImage *image, CGSize size)
 {
     UIGraphicsBeginImageContext(size);
     [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
@@ -108,7 +108,7 @@ UIImage *resizeImage(UIImage *image, CGSize size)
 }
 
 
-NSString *relativeDateFromDate(NSDate *objDate)
+NSString * relativeDateFromDate(NSDate *objDate)
 {
     if (nil == objDate)
     {
@@ -149,7 +149,7 @@ NSString *relativeDateFromDate(NSDate *objDate)
     return [NSString stringWithFormat:NSLocalizedString(key, @"Localized relative date string"), diff];
 }
 
-NSString *stringForLongFileSize(unsigned long long size)
+NSString * stringForLongFileSize(unsigned long long size)
 {
 	double floatSize = size;
 	if (size < 1023)
@@ -174,7 +174,7 @@ NSString *stringForLongFileSize(unsigned long long size)
     return ([NSString stringWithFormat:@"%1.1f %@",floatSize, NSLocalizedString(@"file.size.gigabytes", @"Abbrevation for Gigabyte, used as follows: '1GB'")]);
 }
 
-NSString *stringByRemovingHTMLTagsFromString(NSString *htmlString)
+NSString * stringByRemovingHTMLTagsFromString(NSString *htmlString)
 {
     NSRange range;
     NSString *string = htmlString;
@@ -188,7 +188,7 @@ NSString *stringByRemovingHTMLTagsFromString(NSString *htmlString)
     return [string stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@" "];
 }
 
-NSString *uniqueFileNameForNode(AlfrescoNode *node)
+NSString * uniqueFileNameForNode(AlfrescoNode *node)
 {
     NSString *lastModificationDateString = [[Utility dateFormatter] stringFromDate:node.modifiedAt];
     NSString *nodeIdentifier = node.identifier;
@@ -207,7 +207,7 @@ NSString *uniqueFileNameForNode(AlfrescoNode *node)
     return fileNameString;
 }
 
-NSData *jsonDataFromDictionary(NSDictionary *dictionary)
+NSData * jsonDataFromDictionary(NSDictionary *dictionary)
 {
     NSData *jsonData = nil;
     
@@ -223,11 +223,31 @@ NSData *jsonDataFromDictionary(NSDictionary *dictionary)
     return jsonData;
 }
 
+NSDictionary * dictionaryOfVariableBindingsWithArray(NSArray *views)
+{
+    NSMutableDictionary *returnDictionary = nil;
+    
+    if (views)
+    {
+        returnDictionary = [NSMutableDictionary dictionaryWithCapacity:views.count];
+        
+        NSString *keyTemplateFormat = @"view%d";
+        for (int i = 0; i < views.count; i++)
+        {
+            UIView *currentView = views[i];
+            NSString *keyForCurrentView = [NSString stringWithFormat:keyTemplateFormat, i];
+            [returnDictionary setObject:currentView forKey:keyForCurrentView];
+        }
+    }
+    
+    return returnDictionary;
+}
+
 /*
  * appends current timestamp to name
  * @param name: current filename
  */
-NSString *fileNameAppendedWithDate(NSString *name)
+NSString * fileNameAppendedWithDate(NSString *name)
 {
     NSString *dateString = [[Utility dateFormatter] stringFromDate:[NSDate date]];
     NSString *fileName = [NSString stringWithFormat:@"%@_%@", name.stringByDeletingPathExtension, dateString];

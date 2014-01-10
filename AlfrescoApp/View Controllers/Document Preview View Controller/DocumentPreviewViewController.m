@@ -89,11 +89,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
                                                                                  [ActionCollectionItem openInItem]]];
     ActionCollectionView *actionView = [[ActionCollectionView alloc] initWithRows:@[alfrescoActions, shareRow] delegate:self];
     
-    CGRect actionViewFrame = self.shareMenuContainer.frame;
-    actionViewFrame.origin.y = self.view.frame.size.height - actionView.frame.size.height;
-    actionViewFrame.size.height = actionView.frame.size.height;
-    self.shareMenuContainer.frame = actionViewFrame;
     [self.shareMenuContainer addSubview:actionView];
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(actionView);
+    [self.shareMenuContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[actionView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
+    [self.shareMenuContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[actionView]|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
     
     // setup the paging view
     [self setupPagingScrollView];
