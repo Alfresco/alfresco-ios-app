@@ -63,8 +63,12 @@ static CGFloat const kDefaultFontSize = 18.0f;
                                                  name:kAlfrescoAccountRemovedNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountUpdated:)
+                                             selector:@selector(accountListUpdated:)
                                                  name:kAlfrescoAccountUpdatedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountListUpdated:)
+                                                 name:kAlfrescoAccountsListEmptyNotification
                                                object:nil];
 }
 
@@ -108,7 +112,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
     [self updateAccountList];
 }
 
-- (void)accountUpdated:(NSNotification *)notification
+- (void)accountListUpdated:(NSNotification *)notification
 {
     [self updateAccountList];
 }
