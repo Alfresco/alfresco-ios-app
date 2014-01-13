@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
     </dependencies>
     <objects>
@@ -15,30 +15,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Property" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                        <rect key="frame" x="12" y="3" width="133" height="22"/>
+                        <rect key="frame" x="8" y="3" width="142" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                        <rect key="frame" x="153" y="3" width="154" height="22"/>
+                        <rect key="frame" x="158" y="3" width="154" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="154" id="qg3-iW-lnL"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="7" firstAttribute="top" secondItem="9MK-3b-207" secondAttribute="top" constant="3" id="4hi-ps-gly"/>
-                    <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="13" id="8hl-ZM-za0"/>
+                    <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="8" id="8hl-ZM-za0"/>
                     <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" constant="3" id="GJd-eo-fQj"/>
                     <constraint firstItem="4" firstAttribute="top" secondItem="9MK-3b-207" secondAttribute="top" constant="3" id="h5H-qZ-vg1"/>
                     <constraint firstItem="7" firstAttribute="leading" secondItem="4" secondAttribute="trailing" constant="8" id="qG7-y5-QuW"/>
-                    <constraint firstItem="4" firstAttribute="leading" secondItem="9MK-3b-207" secondAttribute="leading" constant="12" id="v0U-Vb-BEg"/>
+                    <constraint firstItem="4" firstAttribute="leading" secondItem="9MK-3b-207" secondAttribute="leading" constant="8" id="v0U-Vb-BEg"/>
                     <constraint firstAttribute="bottom" secondItem="7" secondAttribute="bottom" constant="3" id="vFv-gW-zCR"/>
                 </constraints>
             </tableViewCellContentView>

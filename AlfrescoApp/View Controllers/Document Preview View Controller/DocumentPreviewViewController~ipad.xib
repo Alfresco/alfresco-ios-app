@@ -28,17 +28,17 @@
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5I-8h-eej" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="56" width="728" height="752"/>
+                    <rect key="frame" x="20" y="56" width="728" height="798"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="792" id="ZR9-Yf-zzE"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="792" id="ZR9-Yf-zzE"/>
                     </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="SX3-D9-vdJ"/>
                     </connections>
                 </scrollView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="261.00000351353697" y="14" width="247" height="29"/>
+                    <rect key="frame" x="261" y="14" width="247" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="qv4-4a-6Ij"/>
@@ -57,7 +57,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Wf6-TO-B0e" firstAttribute="top" secondItem="1" secondAttribute="top" constant="14" id="4Sb-vb-7xL"/>
-                <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="top" secondItem="W5I-8h-eej" secondAttribute="bottom" constant="56" id="99P-9X-niS"/>
+                <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="top" secondItem="W5I-8h-eej" secondAttribute="bottom" constant="10" id="99P-9X-niS"/>
                 <constraint firstAttribute="trailing" secondItem="jWJ-GZ-Bv7" secondAttribute="trailing" id="EpE-dK-mMi"/>
                 <constraint firstItem="W5I-8h-eej" firstAttribute="top" secondItem="Wf6-TO-B0e" secondAttribute="bottom" constant="14" id="G5m-oE-IqO"/>
                 <constraint firstAttribute="bottom" secondItem="jWJ-GZ-Bv7" secondAttribute="bottom" id="Jav-OD-dZY"/>

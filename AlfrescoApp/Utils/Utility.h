@@ -13,30 +13,30 @@
 @class UserAccount;
 
 /* System Notices */
-SystemNotice * displayErrorMessage(NSString *message);
-SystemNotice * displayErrorMessageWithTitle(NSString *message, NSString *title);
-SystemNotice * displayWarningMessageWithTitle(NSString *message, NSString *title);
-SystemNotice * displayInformationMessage(NSString *message);
-SystemNotice * displayInformationMessageWithTitle(NSString *message, NSString *title);
-UIView * activeView(void);
+SystemNotice *displayErrorMessage(NSString *message);
+SystemNotice *displayErrorMessageWithTitle(NSString *message, NSString *title);
+SystemNotice *displayWarningMessageWithTitle(NSString *message, NSString *title);
+SystemNotice *displayInformationMessage(NSString *message);
+SystemNotice *displayInformationMessageWithTitle(NSString *message, NSString *title);
+UIView *activeView(void);
 
-UIImage * imageForType(NSString *type);
+UIImage *imageForType(NSString *type);
 /*
  * resize image to a different size
  */
-UIImage * resizeImage(UIImage *image, CGSize size);
+UIImage *resizeImage(UIImage *image, CGSize size);
 
-NSString * relativeDateFromDate(NSDate *objDate);
-NSString * stringForLongFileSize(unsigned long long size);
+NSString *relativeDateFromDate(NSDate *objDate);
+NSString *stringForLongFileSize(unsigned long long size);
 
-NSString * stringByRemovingHTMLTagsFromString(NSString *htmlString);
+NSString *stringByRemovingHTMLTagsFromString(NSString *htmlString);
 
-NSString * uniqueFileNameForNode(AlfrescoNode *node);
-NSString * fileNameAppendedWithDate(NSString *name);
+NSString *uniqueFileNameForNode(AlfrescoNode *node);
+NSString *fileNameAppendedWithDate(NSString *name);
 
-NSData * jsonDataFromDictionary(NSDictionary *dictionary);
+NSData *jsonDataFromDictionary(NSDictionary *dictionary);
 
-NSDictionary * dictionaryOfVariableBindingsWithArray(NSArray *views);
+NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 
 //void clearOutdatedCacheFiles();
 
