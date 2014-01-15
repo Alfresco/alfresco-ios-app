@@ -2694,7 +2694,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				USER_HEADER_SEARCH_PATHS = "${TARGET_BUILD_DIR}/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/AlfrescoSDK/AlfrescoSDK/AlfrescoSDK\"/**";
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2811,7 +2811,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				USER_HEADER_SEARCH_PATHS = "${TARGET_BUILD_DIR}/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/AlfrescoSDK/AlfrescoSDK/AlfrescoSDK\"/**";
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2836,7 +2836,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				USER_HEADER_SEARCH_PATHS = "${TARGET_BUILD_DIR}/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/AlfrescoSDK/AlfrescoSDK/AlfrescoSDK\"/**";
 				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
