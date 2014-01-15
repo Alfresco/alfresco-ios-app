@@ -264,7 +264,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
                                      [ActionCollectionItem likeItem],
                                      [ActionCollectionItem downloadItem],
                                      nil];
-    NSMutableArray *secondRowItems = [NSMutableArray arrayWithObjects:[ActionCollectionItem openInItem], [ActionCollectionItem printItem], nil];
+    NSMutableArray *secondRowItems = [NSMutableArray arrayWithObjects:[ActionCollectionItem openInItem], nil];
     
     if (self.documentPermissions.canComment)
     {
@@ -274,6 +274,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     if ([MFMailComposeViewController canSendMail])
     {
         [secondRowItems addObject:[ActionCollectionItem emailItem]];
+    }
+    
+    if (![Utility isAudioOrVideo:self.document.name])
+    {
+        [secondRowItems addObject:[ActionCollectionItem printItem]];
     }
     
     ActionCollectionRow *alfrescoActions = [[ActionCollectionRow alloc] initWithItems:firstRowItems];
