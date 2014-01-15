@@ -56,6 +56,11 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
     [aCoder encodeObject:self.passcode forKey:kCertificatePasscode];
 }
 
+- (void)dealloc
+{
+    CFRelease(self.identityRef);
+}
+
 #pragma mark - private Methods
 
 - (void)configureCertificates
@@ -66,6 +71,7 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
     if (importStatus == errSecSuccess)
     {
         self.identityRef = (__bridge SecIdentityRef)[pkcs12[0] objectForKey:(__bridge id)kSecImportItemIdentity];
+        CFRetain(self.identityRef);
         self.certificateChain = [pkcs12[0] objectForKey:(__bridge id)kSecImportItemCertChain];
         
         SecCertificateRef certificateRef = NULL;

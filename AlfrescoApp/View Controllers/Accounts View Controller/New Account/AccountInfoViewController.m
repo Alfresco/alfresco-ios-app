@@ -238,7 +238,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     if (self.activityType != AccountActivityTypeViewAccount && indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
     {
         [self.activeTextField resignFirstResponder];
-        ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.account];
+        ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
         [self.navigationController pushViewController:clientCertificate animated:YES];
     }
     else
@@ -413,6 +413,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.account.serverPort = temporaryAccount.serverPort;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
+        self.account.accountCertificate = temporaryAccount.accountCertificate;
     };
     
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
