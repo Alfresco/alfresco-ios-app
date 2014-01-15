@@ -20,6 +20,9 @@ extern NSString * const kActionCollectionIdentifierUnlike;
 extern NSString * const kActionCollectionIdentifierFavourite;
 extern NSString * const kActionCollectionIdentifierUnfavourite;
 extern NSString * const kActionCollectionIdentifierComment;
+extern NSString * const kActionCollectionIdentifierDownload;
+extern NSString * const kActionCollectionIdentifierEmailAsLink;
+extern NSString * const kActionCollectionIdentifierPrint;
 
 @interface ActionCollectionItem : NSObject
 
@@ -28,10 +31,13 @@ extern NSString * const kActionCollectionIdentifierComment;
 @property (nonatomic, strong, readonly) NSString *itemTitle;
 
 + (instancetype)emailItem;
++ (instancetype)emailAsLinkItem;
 + (instancetype)openInItem;
 + (instancetype)likeItem;
 + (instancetype)favouriteItem;
 + (instancetype)commentItem;
++ (instancetype)downloadItem;
++ (instancetype)printItem;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

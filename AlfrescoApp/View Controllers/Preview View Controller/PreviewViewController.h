@@ -17,8 +17,9 @@
 
 @property (nonatomic, strong, readonly, getter = displayedDocument) AlfrescoDocument *document;
 
-- (id)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session displayOverlayCloseButton:(BOOL)displaycloseButton;
-- (id)initWithBundleDocument:(NSString *)document;
+- (instancetype)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session displayOverlayCloseButton:(BOOL)displaycloseButton;
+- (instancetype)initWithBundleDocument:(NSString *)document;
+- (instancetype)initWithFilePath:(NSString *)filePath finishedLoadingCompletionBlock:(void (^)(UIWebView *webView, BOOL loadedIntoWebView))finishedLoadingBlock;
 - (void)clearDisplayedDocument;
 
 @end

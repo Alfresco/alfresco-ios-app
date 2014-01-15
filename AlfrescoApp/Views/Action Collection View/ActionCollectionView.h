@@ -12,7 +12,7 @@
 
 @protocol ActionCollectionViewDelegate <NSObject>
 
-- (void)didPressActionItem:(ActionCollectionItem *)actionItem;
+- (void)didPressActionItem:(ActionCollectionItem *)actionItem cell:(UICollectionViewCell *)cell inView:(UICollectionView *)view;
 
 @end
 

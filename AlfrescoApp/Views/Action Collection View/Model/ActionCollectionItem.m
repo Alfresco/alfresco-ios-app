@@ -20,6 +20,9 @@ NSString * const kActionCollectionIdentifierUnlike = @"ActionCollectionIdentifie
 NSString * const kActionCollectionIdentifierFavourite = @"ActionCollectionIdentifierFavourite";
 NSString * const kActionCollectionIdentifierUnfavourite = @"ActionCollectionIdentifierUnfavourite";
 NSString * const kActionCollectionIdentifierComment = @"ActionCollectionIdentifierComment";
+NSString * const kActionCollectionIdentifierDownload = @"ActionCollectionIdentifierDownload";
+NSString * const kActionCollectionIdentifierEmailAsLink = @"ActionCollectionIdentifierEmailAsLink";
+NSString * const kActionCollectionIdentifierPrint = @"ActionCollectionIdentifierPrint";
 
 @interface ActionCollectionItem ()
 
@@ -34,6 +37,11 @@ NSString * const kActionCollectionIdentifierComment = @"ActionCollectionIdentifi
 + (instancetype)emailItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.email", @"Email") identifier:kActionCollectionIdentifierEmail];
+}
+
++ (instancetype)emailAsLinkItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.emailAsLink", @"Email As Link") identifier:kActionCollectionIdentifierEmailAsLink];
 }
 
 + (instancetype)openInItem
@@ -64,6 +72,16 @@ NSString * const kActionCollectionIdentifierComment = @"ActionCollectionIdentifi
 + (instancetype)commentItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.comment", @"Comment") identifier:kActionCollectionIdentifierComment];
+}
+
++ (instancetype)downloadItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.download", @"Download") identifier:kActionCollectionIdentifierDownload];
+}
+
++ (instancetype)printItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.print", @"Print") identifier:kActionCollectionIdentifierPrint];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

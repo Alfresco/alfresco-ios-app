@@ -15,5 +15,6 @@
 @interface CommentViewController : ParentListViewController
 
 - (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+- (void)focusCommentEntry;
 
 @end

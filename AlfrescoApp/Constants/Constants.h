@@ -88,23 +88,6 @@ extern NSString * const kFavouritesDidRemoveNodeNotification;
 // Cache
 extern NSInteger const kNumberOfDaysToKeepCachedData;
 
-// Good Services
-extern NSString * const kFileTransferServiceName;
-extern NSString * const kFileTransferServiceVersion;
-extern NSString * const kFileTransferServiceMethod;
-extern NSString * const kEditFileServiceName;
-extern NSString * const kEditFileServiceVersion;
-extern NSString * const kEditFileServiceMethod;
-extern NSString * const kSaveEditFileServiceName;
-extern NSString * const kSaveEditFileServiceVersion;
-extern NSString * const kSaveEditFileServiceSaveEditMethod;
-extern NSString * const kSaveEditFileServiceReleaseEditMethod;
-// keys to parameters passed to the editFile service
-extern NSString * const kEditFileServiceParameterKey; // defined by Good Service - DO NOT CHANGE VALUE
-extern NSString * const kEditFileServiceParameterAlfrescoDocument;
-extern NSString * const kEditFileServiceParameterAlfrescoDocumentIsDownloaded;
-extern NSString * const kEditFileServiceParameterDocumentFileName;
-
 extern NSString * const kAlfrescoOnPremiseServerURLTemplate;
 
 // Cloud Sign Up

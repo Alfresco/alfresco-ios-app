@@ -254,6 +254,14 @@ NSString *fileNameAppendedWithDate(NSString *name)
     return fileName;
 }
 
+NSString *filenameAppendedWithDateModififed(NSString *filenameOrPath, AlfrescoNode *node)
+{
+    NSString *dateString = [[Utility dateFormatter] stringFromDate:node.modifiedAt];
+    NSString *fileExtension = filenameOrPath.pathExtension;
+    NSString *filePathOrName = [[NSString stringWithFormat:@"%@%@", filenameOrPath.stringByDeletingPathExtension, dateString] stringByAppendingPathExtension:fileExtension];
+    return filePathOrName;
+}
+
 //void clearOutdatedCacheFiles()
 //{
 //    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
