@@ -2690,12 +2690,12 @@
 				"HEADER_SEARCH_PATHS[sdk=*]" = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"\"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/AlfrescoSDK\"",
+					"\"$(BUILD_DIR)/AdHoc$(EFFECTIVE_PLATFORM_NAME)/AlfrescoSDK\"",
 				);
 				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*]" = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"\"$(BUILD_DIR)/Release-iphonesimulator/AlfrescoSDK\"",
+					"\"$(BUILD_DIR)/AdHoc-iphonesimulator/AlfrescoSDK\"",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
