@@ -2706,6 +2706,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
+				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;
@@ -2836,6 +2837,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
+				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2871,6 +2873,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "";
+				WARNING_CFLAGS = "-Werror";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
