@@ -307,8 +307,18 @@
 
 - (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
 {
-    NSDictionary *sessionParameters = @{kAlfrescoMetadataExtraction : [NSNumber numberWithBool:YES],
-                                        kAlfrescoThumbnailCreation : [NSNumber numberWithBool:YES]};
+    NSDictionary *sessionParameters = [@{kAlfrescoMetadataExtraction : @YES,
+                                         kAlfrescoThumbnailCreation : @YES} mutableCopy];
+    if (account.accountCertificate)
+    {
+        NSURLCredential *certificateCredential = [NSURLCredential credentialWithIdentity:account.accountCertificate.identityRef
+                                                                            certificates:account.accountCertificate.certificateChain
+                                                                             persistence:NSURLCredentialPersistenceForSession];
+        sessionParameters = @{kAlfrescoMetadataExtraction : @YES,
+                              kAlfrescoThumbnailCreation : @YES,
+                              kAlfrescoConnectUsingClientSSLCertificate : @YES,
+                              kAlfrescoClientCertificateCredentials : certificateCredential};
+    }
     
     self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
     self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString]

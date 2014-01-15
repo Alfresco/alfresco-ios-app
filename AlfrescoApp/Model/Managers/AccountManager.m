@@ -183,7 +183,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
             AccountCertificate *accountCertificate = [[AccountCertificate alloc] initWithIdentityData:identityData andPasscode:passcode];
             account.accountCertificate = accountCertificate;
             status = ImportCertificateStatusSucceeded;
-            [self saveAllAccountsToKeychain];
         }
         else
         {
