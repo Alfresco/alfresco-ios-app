@@ -88,23 +88,6 @@ NSString * const kFavouritesDidRemoveNodeNotification = @"FavouritesDidRemoveNod
 // cache
 NSInteger const kNumberOfDaysToKeepCachedData = 7;
 
-// Good Services
-NSString * const kFileTransferServiceName = @"com.good.gdservice.transfer-file";
-NSString * const kFileTransferServiceVersion = @"1.0.0.0";
-NSString * const kFileTransferServiceMethod = @"transferFile";
-NSString * const kEditFileServiceName = @"com.good.gdservice.edit-file";
-NSString * const kEditFileServiceVersion = @"1.0.0.0";
-NSString * const kEditFileServiceMethod = @"editFile";
-NSString * const kSaveEditFileServiceName = @"com.good.gdservice.save-edited-file";
-NSString * const kSaveEditFileServiceVersion = @"1.0.0.1";
-NSString * const kSaveEditFileServiceSaveEditMethod = @"saveEdit";
-NSString * const kSaveEditFileServiceReleaseEditMethod = @"releaseEdit";
-// keys to parameters passed to the editFile service
-NSString * const kEditFileServiceParameterKey = @"identificationData"; // defined by Good Service - DO NOT CHANGE VALUE
-NSString * const kEditFileServiceParameterAlfrescoDocument = @"alfrescoDocumentNode";
-NSString * const kEditFileServiceParameterAlfrescoDocumentIsDownloaded = @"documentIsDownloaded";
-NSString * const kEditFileServiceParameterDocumentFileName = @"documentFileName";
-
 NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";
 
 // Cloud Sign Up

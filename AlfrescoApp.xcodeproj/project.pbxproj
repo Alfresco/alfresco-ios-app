@@ -96,6 +96,7 @@
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
+		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
 		7312B247187D90ED000CB44B /* AUIAutoGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7312B246187D90ED000CB44B /* AUIAutoGrowingTextView.m */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
@@ -303,7 +304,6 @@
 		73B95AF717A68DF20099FB84 /* LicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ACE17A68DF20099FB84 /* LicenseViewController.m */; };
 		73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD117A68DF20099FB84 /* LoginViewController.m */; };
 		73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD417A68DF20099FB84 /* MetaDataViewController.m */; };
-		73B95AFA17A68DF20099FB84 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD717A68DF20099FB84 /* VersionHistoryViewController.m */; };
 		73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */; };
 		73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ADC17A68DF20099FB84 /* PreviewViewController.m */; };
 		73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AE017A68DF20099FB84 /* AboutViewController.m */; };
@@ -566,6 +566,8 @@
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
+		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
+		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
 		7312B245187D90ED000CB44B /* AUIAutoGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUIAutoGrowingTextView.h; sourceTree = "<group>"; };
 		7312B246187D90ED000CB44B /* AUIAutoGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AUIAutoGrowingTextView.m; sourceTree = "<group>"; };
 		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
@@ -858,8 +860,6 @@
 		73B95AD117A68DF20099FB84 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		73B95AD317A68DF20099FB84 /* MetaDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaDataViewController.h; sourceTree = "<group>"; };
 		73B95AD417A68DF20099FB84 /* MetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaDataViewController.m; sourceTree = "<group>"; };
-		73B95AD617A68DF20099FB84 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
-		73B95AD717A68DF20099FB84 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
 		73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderViewController.h; sourceTree = "<group>"; };
 		73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderViewController.m; sourceTree = "<group>"; };
 		73B95ADB17A68DF20099FB84 /* PreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewViewController.h; sourceTree = "<group>"; };
@@ -1433,6 +1433,15 @@
 			name = DataModel;
 			sourceTree = "<group>";
 		};
+		7304DA7B1884348B00229809 /* Version View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7304DA7C1884348B00229809 /* VersionHistoryViewController.h */,
+				7304DA7D1884348B00229809 /* VersionHistoryViewController.m */,
+			);
+			path = "Version View Controller";
+			sourceTree = "<group>";
+		};
 		7312B244187D90ED000CB44B /* AutoGrowingTextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1997,6 +2006,7 @@
 				73B95ACC17A68DF20099FB84 /* License View Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
 				73B95AD217A68DF20099FB84 /* Metadata View Controller */,
+				7304DA7B1884348B00229809 /* Version View Controller */,
 				73B95AD817A68DF20099FB84 /* Preview View Controller */,
 				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
 				0833244D17F981EC00EE6AA8 /* Sync ViewController */,
@@ -2342,18 +2352,8 @@
 				73299A23185B4B9400F96AF5 /* Metadata Header View */,
 				73B95AD317A68DF20099FB84 /* MetaDataViewController.h */,
 				73B95AD417A68DF20099FB84 /* MetaDataViewController.m */,
-				73B95AD517A68DF20099FB84 /* Version View Controller */,
 			);
 			path = "Metadata View Controller";
-			sourceTree = "<group>";
-		};
-		73B95AD517A68DF20099FB84 /* Version View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				73B95AD617A68DF20099FB84 /* VersionHistoryViewController.h */,
-				73B95AD717A68DF20099FB84 /* VersionHistoryViewController.m */,
-			);
-			path = "Version View Controller";
 			sourceTree = "<group>";
 		};
 		73B95AD817A68DF20099FB84 /* Preview View Controller */ = {
@@ -3346,6 +3346,7 @@
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
 				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
+				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73F6347F17E34A990065590E /* AlfrescoWorkflowInternalConstants.m in Sources */,
 				73F634B217E34A990065590E /* AlfrescoOnPremiseDocumentFolderService.m in Sources */,
@@ -3361,7 +3362,6 @@
 				08948C601823C24D006D38F5 /* SwitchCell.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
 				73F6349417E34A990065590E /* AlfrescoSite.m in Sources */,
-				73B95AFA17A68DF20099FB84 /* VersionHistoryViewController.m in Sources */,
 				73E9E1FF17E352C900A198B4 /* AlfrescoCMISObjectConverter.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,

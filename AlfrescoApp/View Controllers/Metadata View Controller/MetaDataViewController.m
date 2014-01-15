@@ -152,7 +152,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
         }
     }
     
-    headerView.headerTitleTextLabel.text = headerTitleText;
+    headerView.headerTitleTextLabel.text = [headerTitleText uppercaseString];
     
     return headerView;
 }

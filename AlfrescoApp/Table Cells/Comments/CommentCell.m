@@ -16,6 +16,8 @@
     
     [self.contentView layoutSubviews];
     self.contentTextLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.contentTextLabel.frame);
+    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width/2;
+    self.avatarImageView.clipsToBounds = YES;
 }
 
 @end

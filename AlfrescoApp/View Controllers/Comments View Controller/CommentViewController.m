@@ -144,6 +144,13 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     [self.postCommentButton setTitle:NSLocalizedString(@"comments.post.button", @"Post Button") forState:UIControlStateNormal];
 }
 
+#pragma mark - Public Functions
+
+- (void)focusCommentEntry
+{
+    [self.addCommentTextView becomeFirstResponder];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

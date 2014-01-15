@@ -156,7 +156,9 @@ static CGFloat const kMaxRowHeightPriority = 750.0f;
     ActionCollectionRow *actionRow = [self.rows objectAtIndex:collectionViewIndexPath];
     ActionCollectionItem *itemSelected = [actionRow.rowItems objectAtIndex:indexPath.row];
     
-    [self.delegate didPressActionItem:itemSelected];
+    UICollectionViewCell *selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
+    
+    [self.delegate didPressActionItem:itemSelected cell:selectedCell inView:collectionView];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

@@ -462,5 +462,19 @@
 "onboarding.help.button.title" = "help";
 
 /**
+ * Action Sheet Actions
+ */
+"action.email" = "Email";
+"action.emailAsLink" = "Email Link";
+"action.open.in" = "Open In";
+"action.like" = "Like";
+"action.unlike" = "Unlike";
+"action.favourite" = "Favorite";
+"action.unfavourite" = "Unfavorite";
+"action.comment" = "Comment";
+"action.download" = "Download";
+"action.print" = "Print";
+
+/**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */

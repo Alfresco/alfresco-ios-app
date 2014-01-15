@@ -305,8 +305,21 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (void)downloadDocument:(AlfrescoDocument *)document
 {
-    // TODO: Handle overwrite existing file case
     NSString *downloadDestinationPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:document.name];
+    
+    if ([self.fileManager fileExistsAtPath:downloadDestinationPath])
+    {
+        NSError *suffixError = nil;
+        NSString *safeFilename = [self safeFilenameBySuffixing:downloadDestinationPath.lastPathComponent error:&suffixError];
+        
+        if (suffixError)
+        {
+            AlfrescoLogError(@"Unable to create safe filename suffix for downloads");
+        }
+        
+        downloadDestinationPath = [[downloadDestinationPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:safeFilename];
+    }
+    
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
     AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
     

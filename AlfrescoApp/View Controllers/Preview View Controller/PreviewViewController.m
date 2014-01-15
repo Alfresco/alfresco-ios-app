@@ -46,14 +46,15 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
 @property (nonatomic, weak) DocumentOverlayView *overlayView;
 @property (nonatomic, assign) BOOL displayOverlayCloseButton;
 @property (nonatomic, assign) BOOL fullScreenMode;
+@property (nonatomic, copy) void (^finishedLoadingBlock)(UIWebView *webView, BOOL loadedIntoWebView);
 
 @end
 
 @implementation PreviewViewController
 
-- (id)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session displayOverlayCloseButton:(BOOL)displaycloseButton
+- (instancetype)initWithDocument:(AlfrescoDocument *)document documentPermissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath session:(id<AlfrescoSession>)session displayOverlayCloseButton:(BOOL)displaycloseButton
 {
-    self = [super init];
+    self = [self init];
     if (self)
     {
         self.document = document;
@@ -80,14 +81,9 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
     return self;
 }
 
-- (void)dealloc
+- (instancetype)initWithBundleDocument:(NSString *)document
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (id)initWithBundleDocument:(NSString *)document
-{
-    self = [super init];
+    self = [self init];
     if (self)
     {
         self.contentFilePath = [[NSBundle mainBundle] pathForResource:[document stringByDeletingPathExtension] ofType:[document pathExtension]];
@@ -95,6 +91,23 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         self.shouldDisplayActions = NO;
     }
     return self;
+}
+
+- (instancetype)initWithFilePath:(NSString *)filePath finishedLoadingCompletionBlock:(void (^)(UIWebView *webView, BOOL loadedIntoWebView))finishedLoadingBlock
+{
+    self = [self init];
+    if (self)
+    {
+        self.contentFilePath = filePath;
+        self.documentUrl = [NSURL fileURLWithPath:filePath];
+        self.finishedLoadingBlock = finishedLoadingBlock;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
@@ -210,6 +223,11 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         {
             // update the state
             [self updatePreviewState:PreviewStateTypeAudioVideoEnabled];
+            
+            if (self.finishedLoadingBlock != NULL)
+            {
+                self.finishedLoadingBlock(nil, NO);
+            }
         }
         else
         {
@@ -469,6 +487,24 @@ typedef NS_ENUM(NSUInteger, PreviewStateType)
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
     }];
+}
+
+#pragma mark - UIWebViewDelegate Functions
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    if (self.finishedLoadingBlock != NULL)
+    {
+        self.finishedLoadingBlock(webView, YES);
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    if (self.finishedLoadingBlock != NULL)
+    {
+        self.finishedLoadingBlock(nil, NO);
+    }
 }
 
 @end

@@ -12,11 +12,6 @@
 #import "MetaDataViewController.h"
 #import "DownloadManager.h"
 
-static CGFloat kCellHeight = 100.0f;
-static CGFloat kStandardCellHeight = 44.0f;
-static NSInteger kDownloadLatestVersionSection = 1;
-static NSInteger kDownloadLatestVersionSectionRowCount = 1;
-
 @interface VersionHistoryViewController ()
 
 @property (nonatomic, strong) AlfrescoDocument *document;
@@ -42,10 +37,11 @@ static NSInteger kDownloadLatestVersionSectionRowCount = 1;
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // create and configure the table view
-    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [view addSubview:self.tableView];
     
     view.autoresizesSubviews = YES;
@@ -92,11 +88,6 @@ static NSInteger kDownloadLatestVersionSectionRowCount = 1;
     self.session = session;
     
     [self createAlfrescoServicesWithSession:session];
-    
-    if (self == [self.navigationController.viewControllers lastObject])
-    {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
 }
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
@@ -124,73 +115,43 @@ static NSInteger kDownloadLatestVersionSectionRowCount = 1;
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 2;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (section == kDownloadLatestVersionSection) ? kDownloadLatestVersionSectionRowCount : self.tableViewData.count;
+    return self.tableViewData.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section > 0)
-    {
-        return kStandardCellHeight;
-    }
-    return kCellHeight;
+    VersionHistoryCell *cell = (VersionHistoryCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *VersionHistoryCellIdentifier = @"VersionHistoryCell";
-    static NSString *DownloadLastestCellIdentifier = @"DownloadLatestVersionCell";
     VersionHistoryCell *versionHistoryCell = [tableView dequeueReusableCellWithIdentifier:VersionHistoryCellIdentifier];
-    UITableViewCell *downloadLatestVersionCell = [tableView dequeueReusableCellWithIdentifier:DownloadLastestCellIdentifier];
-    
-    // cell to return
-    UITableViewCell *returnCell = nil;
     
     if (!versionHistoryCell)
     {
         versionHistoryCell = (VersionHistoryCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VersionHistoryCell class]) owner:self options:nil] lastObject];
     }
     
-    if (!downloadLatestVersionCell)
-    {
-        downloadLatestVersionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DownloadLastestCellIdentifier];
-    }
-    
-    // config the cell here...
-    
-    if (indexPath.section == 0)
-    {
-        returnCell = versionHistoryCell;
+    AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPath.row];
         
-        AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPath.row];
-        
-        versionHistoryCell.versionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.version.cell.text", @"Version Text"), currentDocument.versionLabel];
-        NSString *lastModifiedString = relativeDateFromDate(currentDocument.modifiedAt);
-        versionHistoryCell.lastModifiedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.last.modified.cell.text", @"Last Modified Text"), lastModifiedString];
-        versionHistoryCell.lastModifiedByLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.last.modified.by.cell.text", @"Last Modified By Text"), currentDocument.modifiedBy];
-        versionHistoryCell.commentLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.comment.cell.text", @"Comment Text"), (currentDocument.versionComment) ? currentDocument.versionComment : @""];
-        NSString *currentVersionString = (currentDocument.isLatestVersion) ? NSLocalizedString(@"Yes", @"Yes") : NSLocalizedString(@"No", @"No") ;
-        versionHistoryCell.currentVersionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.current.version.cell.text", @"Current Version Text"), currentVersionString];
-        
-        // disclosure button
-        versionHistoryCell.accessoryType = UITableViewCellAccessoryNone;
-        versionHistoryCell.accessoryView = [self makeDetailDisclosureButton];
-    }
-    else
-    {
-        returnCell = downloadLatestVersionCell;
-        downloadLatestVersionCell.textLabel.text = NSLocalizedString(@"version.history.download.latest.text", @"Download Latest Version Text");
-        downloadLatestVersionCell.textLabel.textAlignment = NSTextAlignmentCenter;
-    }
+    versionHistoryCell.versionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.version.cell.text", @"Version Text"), currentDocument.versionLabel];
+    NSString *lastModifiedString = relativeDateFromDate(currentDocument.modifiedAt);
+    versionHistoryCell.lastModifiedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.last.modified.cell.text", @"Last Modified Text"), lastModifiedString];
+    versionHistoryCell.lastModifiedByLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.last.modified.by.cell.text", @"Last Modified By Text"), currentDocument.modifiedBy];
+    versionHistoryCell.commentLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.comment.cell.text", @"Comment Text"), (currentDocument.versionComment) ? currentDocument.versionComment : @""];
+    NSString *currentVersionString = (currentDocument.isLatestVersion) ? NSLocalizedString(@"Yes", @"Yes") : NSLocalizedString(@"No", @"No") ;
+    versionHistoryCell.currentVersionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.current.version.cell.text", @"Current Version Text"), currentVersionString];
     
-    return returnCell;
+    versionHistoryCell.accessoryType = UITableViewCellAccessoryNone;
+    
+    return versionHistoryCell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -230,22 +191,6 @@ static NSInteger kDownloadLatestVersionSectionRowCount = 1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if (indexPath.section == kDownloadLatestVersionSection && self.tableViewData.count > 0)
-    {
-        // latest version will always be returned first
-        AlfrescoDocument *latestVersionDocument = [self.tableViewData objectAtIndex:0];
-        // double check that this is the latest version
-        if (latestVersionDocument.isLatestVersion)
-        {
-            NSString *downloadPath = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:latestVersionDocument.name];
-            [[DownloadManager sharedManager] downloadDocument:latestVersionDocument contentPath:downloadPath session:self.session];
-        }
-        else
-        {
-            displayErrorMessage(NSLocalizedString(@"error.version.history.no.latest.version", @"Latest Version Not Found"));
-        }
-    }
 }
 
 @end
