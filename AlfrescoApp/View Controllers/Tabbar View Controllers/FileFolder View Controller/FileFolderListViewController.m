@@ -21,7 +21,6 @@
 #import <ImageIO/ImageIO.h>
 #import "ThumbnailManager.h"
 #import "AccountManager.h"
-#import "ThemeUtil.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
 
@@ -102,7 +101,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                                            view.frame.size.width,
                                                                            44.0f)];
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.tintColor = [ThemeUtil themeColour];
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.delegate = self;
     self.searchBar = searchBar;
@@ -119,7 +117,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [ThemeUtil applyThemeToTableView:tableView];
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
@@ -816,8 +813,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     cell.nodeNameLabel.text = currentNode.name;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    // FIXME: Consider for iOS 7 replacing this with native info button support
-    cell.accessoryView = [self makeDetailDisclosureButton];
     NSString *modifiedDateString = relativeDateFromDate(currentNode.modifiedAt);
     
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
@@ -825,6 +820,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.nodeImageView.image = imageForType(@"folder");
         cell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@", modifiedDateString];
+        // FIXME: Consider for iOS 7 replacing this with native info button support
+        cell.accessoryView = [self makeDetailDisclosureButton];
     }
     else
     {

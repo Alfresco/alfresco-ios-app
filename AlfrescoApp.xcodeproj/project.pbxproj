@@ -131,7 +131,6 @@
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
-		73783CD517FC5A9D00140181 /* ThemeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 73783CD417FC5A9D00140181 /* ThemeUtil.m */; };
 		7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDEA17F1A4A800C6A54F /* TaskViewController.m */; };
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
@@ -142,6 +141,9 @@
 		7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7384BE0117F3558900C6A54F /* SettingTextFieldCell.xib */; };
 		7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0417F42CA800C6A54F /* PreferenceManager.m */; };
 		7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
+		73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F52188831410052C75F /* UIView+DrawingUtils.m */; };
+		73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F5518883BE10052C75F /* UIColor+Custom.m */; };
+		73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73881F57188842D60052C75F /* MetaDataViewController.xib */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
@@ -542,8 +544,6 @@
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7373B4FC17A66E9400869949 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		73783CD317FC5A9D00140181 /* ThemeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeUtil.h; sourceTree = "<group>"; };
-		73783CD417FC5A9D00140181 /* ThemeUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeUtil.m; sourceTree = "<group>"; };
 		7384BDE917F1A4A800C6A54F /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewController.h; path = "Task View Controller/TaskViewController.h"; sourceTree = "<group>"; };
 		7384BDEA17F1A4A800C6A54F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewController.m; path = "Task View Controller/TaskViewController.m"; sourceTree = "<group>"; };
 		7384BDEF17F2F8C000C6A54F /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = "Settings View Controller/SettingsViewController.h"; sourceTree = "<group>"; };
@@ -562,6 +562,11 @@
 		7384BE0417F42CA800C6A54F /* PreferenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceManager.m; sourceTree = "<group>"; };
 		7384BE0617F57FEC00C6A54F /* SettingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingConstants.h; path = AlfrescoApp/Constants/SettingConstants.h; sourceTree = SOURCE_ROOT; };
 		7384BE0717F57FEC00C6A54F /* SettingConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingConstants.m; path = AlfrescoApp/Constants/SettingConstants.m; sourceTree = SOURCE_ROOT; };
+		73881F51188831410052C75F /* UIView+DrawingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DrawingUtils.h"; sourceTree = "<group>"; };
+		73881F52188831410052C75F /* UIView+DrawingUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DrawingUtils.m"; sourceTree = "<group>"; };
+		73881F5418883BE10052C75F /* UIColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Custom.h"; sourceTree = "<group>"; };
+		73881F5518883BE10052C75F /* UIColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Custom.m"; sourceTree = "<group>"; };
+		73881F57188842D60052C75F /* MetaDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetaDataViewController.xib; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
@@ -1577,8 +1582,6 @@
 				73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */,
 				73B957FD17A6750E0099FB84 /* Notifier.h */,
 				73B957FE17A6750E0099FB84 /* Notifier.m */,
-				73783CD317FC5A9D00140181 /* ThemeUtil.h */,
-				73783CD417FC5A9D00140181 /* ThemeUtil.m */,
 				73B957FF17A6750E0099FB84 /* UniversalDevice.h */,
 				73B9580017A6750E0099FB84 /* UniversalDevice.m */,
 				73B9580117A6750E0099FB84 /* Utility.h */,
@@ -1606,6 +1609,10 @@
 				739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */,
 				73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */,
 				73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */,
+				73881F51188831410052C75F /* UIView+DrawingUtils.h */,
+				73881F52188831410052C75F /* UIView+DrawingUtils.m */,
+				73881F5418883BE10052C75F /* UIColor+Custom.h */,
+				73881F5518883BE10052C75F /* UIColor+Custom.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1989,6 +1996,7 @@
 				73299A23185B4B9400F96AF5 /* Metadata Header View */,
 				73B95AD317A68DF20099FB84 /* MetaDataViewController.h */,
 				73B95AD417A68DF20099FB84 /* MetaDataViewController.m */,
+				73881F57188842D60052C75F /* MetaDataViewController.xib */,
 			);
 			path = "Metadata View Controller";
 			sourceTree = "<group>";
@@ -2351,6 +2359,7 @@
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
 				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
+				73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
@@ -2456,6 +2465,7 @@
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
+				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
@@ -2464,7 +2474,6 @@
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
-				73783CD517FC5A9D00140181 /* ThemeUtil.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* SyncCell.m in Sources */,
@@ -2495,6 +2504,7 @@
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
 				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
+				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,

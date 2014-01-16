@@ -7,23 +7,22 @@
 //
 
 #import "MetadataHeaderView.h"
+#import "UIView+DrawingUtils.h"
+#import "UIColor+Custom.h"
 
-static CGFloat const kStrokeWidth = 2.0f;
+static CGFloat const kStrokeWidth = 0.5f;
+static CGFloat const kSidePadding = 8.0f;
+static CGFloat const kBottomPadding = 2.0f;
 
 @implementation MetadataHeaderView
 
 - (void)drawRect:(CGRect)rect
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGPoint startPoint = CGPointMake(kSidePadding, self.frame.size.height - kBottomPadding - kStrokeWidth);
+    CGPoint endPoint = CGPointMake(self.frame.size.width - kSidePadding, self.frame.size.height - kBottomPadding - kStrokeWidth);
+    UIColor *blueColour = [UIColor themeBlueColor];
     
-    CGPoint startPoint = CGPointMake(0.0f, self.frame.size.height - kStrokeWidth);
-    CGPoint endPoint = CGPointMake(self.frame.size.width, self.frame.size.height - kStrokeWidth);
-    
-    CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
-    CGContextSetLineWidth(context, kStrokeWidth);
-    CGContextMoveToPoint(context, startPoint.x, startPoint.y);
-    CGContextAddLineToPoint(context, endPoint.x, endPoint.y);
-    CGContextDrawPath(context, kCGPathStroke);
+    [self drawLineFromPoint:startPoint toPoint:endPoint lineThickness:kStrokeWidth colour:blueColour];
 }
 
 @end

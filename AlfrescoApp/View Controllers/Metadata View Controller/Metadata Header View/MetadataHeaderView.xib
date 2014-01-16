@@ -12,7 +12,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section Header Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="066-gf-S1o">
-                    <rect key="frame" x="8" y="8" width="304" height="20"/>
+                    <rect key="frame" x="8" y="8" width="304" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -21,7 +21,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="066-gf-S1o" secondAttribute="bottom" constant="8" id="Jxk-M1-dH0"/>
+                <constraint firstAttribute="bottom" secondItem="066-gf-S1o" secondAttribute="bottom" constant="4" id="Jxk-M1-dH0"/>
                 <constraint firstAttribute="trailing" secondItem="066-gf-S1o" secondAttribute="trailing" constant="8" id="ToD-8u-XNZ"/>
                 <constraint firstItem="066-gf-S1o" firstAttribute="top" secondItem="5GE-bU-MR8" secondAttribute="top" constant="8" id="cbl-sz-hDr"/>
                 <constraint firstItem="066-gf-S1o" firstAttribute="leading" secondItem="5GE-bU-MR8" secondAttribute="leading" constant="8" id="dgP-MY-bvJ"/>

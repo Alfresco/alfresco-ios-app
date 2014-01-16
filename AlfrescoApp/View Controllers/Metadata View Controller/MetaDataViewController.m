@@ -10,6 +10,7 @@
 #import "MetadataCell.h"
 #import "ConnectivityManager.h"
 #import "MetadataHeaderView.h"
+#import "UIColor+Custom.h"
 
 static NSString * kMetadataToDisplayPlistName = @"MetadataDisplayList";
 static NSString * kDateFormat = @"d MMM yyyy HH:mm";
@@ -37,24 +38,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
         [self setupMetadataToDisplayWithNode:node];
     }
     return self;
-}
-
-- (void)loadView
-{
-    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    // create and configure the table view
-    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [view addSubview:self.tableView];
-    
-    view.autoresizesSubviews = YES;
-    self.view = view;
 }
 
 - (void)viewDidLoad
@@ -136,6 +119,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     MetadataHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MetadataHeaderView class]) owner:self options:nil] lastObject];
+    headerView.headerTitleTextLabel.textColor = [UIColor themeBlueColor];
     
     NSString *headerTitleText = nil;
     if (section < self.tableViewData.count)
@@ -291,7 +275,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 {
     MetadataCell *cell = (MetadataCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
     
     return height;
 }

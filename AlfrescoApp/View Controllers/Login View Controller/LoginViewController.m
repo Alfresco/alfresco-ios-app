@@ -10,7 +10,6 @@
 #import "MBProgressHUD.h"
 #import "UserAccount.h"
 #import "Utility.h"
-#import "ThemeUtil.h"
 
 @interface LoginViewController ()
 
@@ -72,7 +71,6 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [ThemeUtil themeColour];
     
     // table view
     UITableView *tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStyleGrouped];
