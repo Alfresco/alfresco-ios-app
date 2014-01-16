@@ -476,7 +476,7 @@
 "action.print" = "Print";
 "action.delete" = "Delete";
 "action.delete.confirmation.title" = "Delete Confirmation";
-"action.delete.confirmation.message" = "Are you sure you want to delete this document?\n\nPlease note, this action cannot be undone.";
+"action.delete.confirmation.message" = "Are you sure you want to delete this document?";
 "action.delete.success.title" = "Delete Successful";
 "action.delete.success.message" = "Successfully deleted %@.";
 "action.delete.failed.title" = "Failed to delete";
