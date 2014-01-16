@@ -17,6 +17,10 @@ NSString * const kImageMappingPlist = @"ImageMapping";
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 
+// App Configuration
+NSString * const kAppConfigurationFileLocationOnServer = @"/Data Dictionary/Mobile/configuration1.json";
+NSString * const kAlfrescoAppConfigurationUpdatedNotification = @"AlfrescoAppConfigurationUpdatedNotification";
+
 // Request Handler
 NSInteger const kRequestTimeOutInterval = 60;
 NSString * const kProtocolHTTP = @"http";

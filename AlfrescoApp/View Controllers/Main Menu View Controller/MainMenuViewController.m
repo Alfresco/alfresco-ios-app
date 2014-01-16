@@ -47,6 +47,7 @@ static NSUInteger const kRepositoryItemsSectionNumber = 1;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionUpdated:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appConfigurationUpdated:) name:kAlfrescoAppConfigurationUpdatedNotification object:nil];
     }
     return self;
 }
@@ -178,6 +179,11 @@ static NSUInteger const kRepositoryItemsSectionNumber = 1;
     }
     
     [self displayViewControllerWithType:NavigationControllerTypeSites];
+}
+
+- (void)appConfigurationUpdated:(NSNotification *)notification
+{
+    
 }
 
 - (void)accountRemoved:(NSNotification *)notification

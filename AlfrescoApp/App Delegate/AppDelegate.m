@@ -32,6 +32,7 @@
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
+#import "AppConfigurationManager.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -70,6 +71,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 //    [[AccountManager sharedManager] removeAllAccounts];
 #endif
 
+    [AppConfigurationManager sharedManager];
     AccountManager *accountManager = [AccountManager sharedManager];
     
     BOOL isFirstLaunch = [self isAppFirstLaunch];

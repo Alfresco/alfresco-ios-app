@@ -23,6 +23,10 @@ extern NSString * const kHTTPMethodGET;
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
 
+// App Configuration
+extern NSString * const kAppConfigurationFileLocationOnServer;
+extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;
+
 // Notificiations
 extern NSString * const kAlfrescoSessionReceivedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;
