@@ -25,6 +25,7 @@
 #import <MessageUI/MessageUI.h>
 #import "ThemeUtil.h"
 #import "DownloadManager.h"
+#import "UIAlertView+ALF.h"
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
@@ -271,6 +272,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [firstRowItems addObject:[ActionCollectionItem commentItem]];
     }
     
+    if (self.documentPermissions.canDelete)
+    {
+        [firstRowItems addObject:[ActionCollectionItem deleteItem]];
+    }
+    
     if ([MFMailComposeViewController canSendMail])
     {
         [secondRowItems addObject:[ActionCollectionItem emailItem]];
@@ -339,6 +345,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierOpenIn])
     {
         [self handlePressedOpenInActionItem:actionItem cell:cell inView:view];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
+    {
+        [self handlePressedDeleteActionItem:actionItem];
     }
 }
 
@@ -540,6 +550,38 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
             {
                 [self.documentInteractionController presentPreviewAnimated:YES];
             }
+        }
+    }];
+}
+
+- (void)handlePressedDeleteActionItem:(ActionCollectionItem *)actionItem
+{
+    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
+                                                              message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            [self showHUD];
+            __weak typeof(self) weakSelf = self;
+            [self.documentService deleteNode:self.document completionBlock:^(BOOL succeeded, NSError *error) {
+                [self hideHUD];
+                if (succeeded)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.document];
+                    [UniversalDevice clearDetailViewController];
+                    NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.document.name];
+                    displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                }
+                else
+                {
+                    NSString *failedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.failed.message", @"Delete Failed Message"), weakSelf.document.name];
+                    displayErrorMessageWithTitle(failedMessage, NSLocalizedString(@"action.delete.failed.title", @"Delete Failed Title"));
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
         }
     }];
 }

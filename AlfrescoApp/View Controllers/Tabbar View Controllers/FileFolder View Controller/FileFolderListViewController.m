@@ -84,6 +84,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                  selector:@selector(documentUpdated:)
                                                      name:kAlfrescoDocumentUpdatedOnServerNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentDeleted:)
+                                                     name:kAlfrescoDocumentDeletedOnServerNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -729,6 +733,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
+
+
+- (void)documentDeleted:(NSNotification *)notifictaion
+{
+    AlfrescoDocument *deletedDocument = notifictaion.object;
+    
+    if ([self.tableViewData containsObject:deletedDocument])
+    {
+        NSUInteger index = [self.tableViewData indexOfObject:deletedDocument];
+        [self.tableViewData removeObject:deletedDocument];
+        NSIndexPath *indexPathOfDeletedNode = [NSIndexPath indexPathForRow:index inSection:0];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPathOfDeletedNode] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
 
 - (NSDictionary *)metadataByAddingGPSToMetadata:(NSDictionary *)metadata
 {
