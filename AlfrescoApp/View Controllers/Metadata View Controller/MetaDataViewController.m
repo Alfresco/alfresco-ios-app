@@ -46,6 +46,8 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     
     [self disablePullToRefresh];
     
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     self.title = self.node.name;
     [self retrieveTagsForNode:self.node];
 }

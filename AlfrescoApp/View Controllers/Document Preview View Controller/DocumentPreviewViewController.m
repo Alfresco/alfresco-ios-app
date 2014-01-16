@@ -23,7 +23,6 @@
 #import "AlfrescoRatingService.h"
 #import "FavouriteManager.h"
 #import <MessageUI/MessageUI.h>
-#import "ThemeUtil.h"
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
 
