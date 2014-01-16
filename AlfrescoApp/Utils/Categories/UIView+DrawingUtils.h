@@ -10,6 +10,6 @@
 
 @interface UIView (DrawingUtils)
 
-- (void)drawLineFromPoint:(CGPoint)startPoint toPoint:(CGPoint)endPoint lineThickness:(CGFloat)lineThinkness colour:(UIColor *)lineColour;
+- (void)drawLineFromPoint:(CGPoint)startPoint toPoint:(CGPoint)endPoint lineThickness:(CGFloat)lineThickness colour:(UIColor *)lineColour;
 
 @end

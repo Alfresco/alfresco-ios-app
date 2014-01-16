@@ -730,11 +730,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-
-
-- (void)documentDeleted:(NSNotification *)notifictaion
+- (void)documentDeleted:(NSNotification *)notifictation
 {
-    AlfrescoDocument *deletedDocument = notifictaion.object;
+    AlfrescoDocument *deletedDocument = notifictation.object;
     
     if ([self.tableViewData containsObject:deletedDocument])
     {

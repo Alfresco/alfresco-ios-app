@@ -10,11 +10,11 @@
 
 @implementation UIView (DrawingUtils)
 
-- (void)drawLineFromPoint:(CGPoint)startPoint toPoint:(CGPoint)endPoint lineThickness:(CGFloat)lineThinkness colour:(UIColor *)lineColour
+- (void)drawLineFromPoint:(CGPoint)startPoint toPoint:(CGPoint)endPoint lineThickness:(CGFloat)lineThickness colour:(UIColor *)lineColour
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, [lineColour CGColor]);
-    CGContextSetLineWidth(context, lineThinkness);
+    CGContextSetLineWidth(context, lineThickness);
     CGContextMoveToPoint(context, startPoint.x, startPoint.y);
     CGContextAddLineToPoint(context, endPoint.x, endPoint.y);
     CGContextDrawPath(context, kCGPathStroke);
