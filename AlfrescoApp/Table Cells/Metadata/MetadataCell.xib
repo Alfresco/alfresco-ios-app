@@ -7,24 +7,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AFGMetadataCell" rowHeight="29" id="3" customClass="MetadataCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="29"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AFGMetadataCell" rowHeight="34" id="3" customClass="MetadataCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3" id="9MK-3b-207">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="33"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Property" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                        <rect key="frame" x="8" y="3" width="142" height="22"/>
+                        <rect key="frame" x="8" y="3" width="142" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="850" constant="20" id="kRZ-dl-zlb"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                        <rect key="frame" x="158" y="3" width="154" height="22"/>
+                        <rect key="frame" x="158" y="5" width="154" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                         <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="850" constant="20" id="pu6-Qy-HZ4"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="154" id="qg3-iW-lnL"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -33,13 +37,13 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="7" firstAttribute="top" secondItem="9MK-3b-207" secondAttribute="top" constant="3" id="4hi-ps-gly"/>
+                    <constraint firstItem="7" firstAttribute="top" secondItem="9MK-3b-207" secondAttribute="top" constant="5" id="4hi-ps-gly"/>
                     <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" constant="8" id="8hl-ZM-za0"/>
                     <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" constant="3" id="GJd-eo-fQj"/>
                     <constraint firstItem="4" firstAttribute="top" secondItem="9MK-3b-207" secondAttribute="top" constant="3" id="h5H-qZ-vg1"/>
                     <constraint firstItem="7" firstAttribute="leading" secondItem="4" secondAttribute="trailing" constant="8" id="qG7-y5-QuW"/>
                     <constraint firstItem="4" firstAttribute="leading" secondItem="9MK-3b-207" secondAttribute="leading" constant="8" id="v0U-Vb-BEg"/>
-                    <constraint firstAttribute="bottom" secondItem="7" secondAttribute="bottom" constant="3" id="vFv-gW-zCR"/>
+                    <constraint firstAttribute="bottom" secondItem="7" secondAttribute="bottom" constant="5" id="vFv-gW-zCR"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

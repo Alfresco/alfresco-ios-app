@@ -59,7 +59,6 @@ UIView *activeView(void)
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     ContainerViewController *containerController = (ContainerViewController *)appDelegate.window.rootViewController;
-    DetailSplitViewController *rootDetailController = (DetailSplitViewController *)[(RootRevealControllerViewController *)containerController.rootViewController detailViewController];
     
     if (appDelegate.window.rootViewController.presentedViewController)
     {
@@ -68,7 +67,7 @@ UIView *activeView(void)
     }
     else if (IS_IPAD)
     {
-        return rootDetailController.view;
+        return containerController.view;
     }
     return appDelegate.window.rootViewController.view;
 }

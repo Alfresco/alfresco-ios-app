@@ -103,17 +103,6 @@ CGFloat hiddenYOrigin;
     CGRect rotatedView = CGRectApplyAffineTransform(self.view.frame, self.view.transform);
     CGFloat viewWidth = rotatedView.size.width;
     
-    // Check the notice won't disappear behind the status bar
-    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-    CGRect rotatedAppFrame = CGRectApplyAffineTransform(appFrame, self.view.transform);
-    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-    CGRect rotatedStatusBarFrame = CGRectApplyAffineTransform(statusBarFrame, self.view.transform);
-
-    if (rotatedView.size.height > rotatedAppFrame.size.height)
-    {
-        self.offsetY += rotatedStatusBarFrame.size.height;
-    }
-    
     CGFloat messageLineHeight = 15.0;
     CGFloat originY = (self.message) ? 10.0 : 18.0;
     

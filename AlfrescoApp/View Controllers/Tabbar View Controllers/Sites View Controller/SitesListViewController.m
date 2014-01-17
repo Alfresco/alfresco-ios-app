@@ -18,7 +18,6 @@
 #import "MetaDataViewController.h"
 #import "ThumbnailDownloader.h"
 #import "AccountManager.h"
-#import "ThemeUtil.h"
 
 CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
@@ -60,7 +59,7 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)loadView
 {    
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [ThemeUtil themeColour];
+    view.backgroundColor = [UIColor whiteColor];
     
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[
                                    NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites"),
@@ -70,7 +69,6 @@ static CGFloat kSearchCellHeight = 60.0f;
                                (view.frame.origin.y + (kSegmentVerticalPadding / 2)),
                                view.frame.size.width - kSegmentVerticalPadding,
                                kSegmentControllerHeight - kSegmentVerticalPadding);
-    [ThemeUtil applyThemeToSegmentControl:segment];
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     segment.selectedSegmentIndex = SiteListTypeFavouriteSites;
@@ -87,7 +85,6 @@ static CGFloat kSearchCellHeight = 60.0f;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [ThemeUtil applyThemeToTableView:tableView];
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
@@ -97,7 +94,6 @@ static CGFloat kSearchCellHeight = 60.0f;
                                                                            view.frame.size.width,
                                                                            44.0f)];
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.tintColor = [ThemeUtil themeColour];
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.delegate = self;
     self.searchBar = searchBar;

@@ -23,6 +23,7 @@ extern NSString * const kActionCollectionIdentifierComment;
 extern NSString * const kActionCollectionIdentifierDownload;
 extern NSString * const kActionCollectionIdentifierEmailAsLink;
 extern NSString * const kActionCollectionIdentifierPrint;
+extern NSString * const kActionCollectionIdentifierDelete;
 
 @interface ActionCollectionItem : NSObject
 
@@ -38,6 +39,7 @@ extern NSString * const kActionCollectionIdentifierPrint;
 + (instancetype)commentItem;
 + (instancetype)downloadItem;
 + (instancetype)printItem;
++ (instancetype)deleteItem;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end
