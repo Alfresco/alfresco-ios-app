@@ -7,7 +7,6 @@
 //
 
 #import "AvatarManager.h"
-#import "AlfrescoPersonService.h"
 
 @interface AvatarManager ()
 
