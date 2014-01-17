@@ -105,3 +105,6 @@ extern NSString * const kCloudAccountStatusValuePath;
 extern NSString * const kAlfrescoCloudAPIAccountStatusUrl;
 extern NSString * const kAlfrescoCloudAPIAccountKey;
 extern NSString * const kAlfrescoCloudAPIAccountID;
+
+// Help/Documentation
+extern NSString * const kAlfrescoHelpURLString;

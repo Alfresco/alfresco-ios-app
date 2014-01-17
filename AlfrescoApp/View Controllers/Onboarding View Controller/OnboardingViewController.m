@@ -13,6 +13,7 @@
 #import "CloudSignUpViewController.h"
 #import "AccountTypeSelectionViewController.h"
 #import "RootRevealControllerViewController.h"
+#import "WebBrowserViewController.h"
 
 @interface OnboardingViewController () <CloudSignUpViewControllerDelegate, AccountTypeSelectionViewControllerDelegate>
 
@@ -88,7 +89,13 @@
 
 - (IBAction)helpButtonPressed:(id)sender
 {
+    NSString *errorWebPage = [[NSBundle mainBundle] pathForResource:@"HelpErrorPage" ofType:@"html" inDirectory:@"Help Error"];
+    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:kAlfrescoHelpURLString
+                                                                                          initialTitle:NSLocalizedString(@"help.view.title", @"Help Title")
+                                                                                 errorLoadingURLString:errorWebPage];
+    NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
+    [self presentViewController:helpNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - CloudSignUpViewControllerDelegate Functions

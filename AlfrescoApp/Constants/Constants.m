@@ -105,3 +105,6 @@ NSString * const kCloudAccountStatusValuePath = @"isActivated";
 NSString * const kAlfrescoCloudAPIAccountStatusUrl = @"https://a.alfresco.me/alfresco/a/-default-/internal/cloud/accounts/signupqueue/{AccountId}?key={AccountKey}";
 NSString * const kAlfrescoCloudAPIAccountKey = @"{AccountKey}";
 NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";
+
+// Help/Documentation
+NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";

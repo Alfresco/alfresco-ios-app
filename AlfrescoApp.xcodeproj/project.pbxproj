@@ -144,6 +144,14 @@
 		73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F52188831410052C75F /* UIView+DrawingUtils.m */; };
 		73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F5518883BE10052C75F /* UIColor+Custom.m */; };
 		73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73881F57188842D60052C75F /* MetaDataViewController.xib */; };
+		73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F6A188956390052C75F /* WebBrowserViewController.m */; };
+		73881F6E188956390052C75F /* WebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73881F6B188956390052C75F /* WebBrowserViewController.xib */; };
+		73881F6F188956390052C75F /* WebBrowserViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73881F6C188956390052C75F /* WebBrowserViewController~ipad.xib */; };
+		73881F731889800C0052C75F /* Help Error in Resources */ = {isa = PBXBuildFile; fileRef = 73881F721889800C0052C75F /* Help Error */; };
+		73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7718898B910052C75F /* ButtonBarArrowLeft.png */; };
+		73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */; };
+		73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7918898B910052C75F /* ButtonBarArrowRight.png */; };
+		73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
@@ -567,6 +575,15 @@
 		73881F5418883BE10052C75F /* UIColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Custom.h"; sourceTree = "<group>"; };
 		73881F5518883BE10052C75F /* UIColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Custom.m"; sourceTree = "<group>"; };
 		73881F57188842D60052C75F /* MetaDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetaDataViewController.xib; sourceTree = "<group>"; };
+		73881F69188956390052C75F /* WebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebBrowserViewController.h; path = "Web Browser View Controller/WebBrowserViewController.h"; sourceTree = "<group>"; };
+		73881F6A188956390052C75F /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebBrowserViewController.m; path = "Web Browser View Controller/WebBrowserViewController.m"; sourceTree = "<group>"; };
+		73881F6B188956390052C75F /* WebBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WebBrowserViewController.xib; path = "Web Browser View Controller/WebBrowserViewController.xib"; sourceTree = "<group>"; };
+		73881F6C188956390052C75F /* WebBrowserViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WebBrowserViewController~ipad.xib"; path = "Web Browser View Controller/WebBrowserViewController~ipad.xib"; sourceTree = "<group>"; };
+		73881F721889800C0052C75F /* Help Error */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Help Error"; path = "Supporting Files/Help Error"; sourceTree = "<group>"; };
+		73881F7718898B910052C75F /* ButtonBarArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowLeft.png; sourceTree = "<group>"; };
+		73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowLeft@2x.png"; sourceTree = "<group>"; };
+		73881F7918898B910052C75F /* ButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowRight.png; sourceTree = "<group>"; };
+		73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
@@ -1308,6 +1325,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73881F721889800C0052C75F /* Help Error */,
 				73FC470B1823BE7400864E80 /* Email Template */,
 				73B95B0617A68E770099FB84 /* Help Guides */,
 				73B959F117A68B7E0099FB84 /* Images */,
@@ -1363,6 +1381,28 @@
 				7384BDF617F3310700C6A54F /* SettingToggleCell.xib */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		73881F5E18893BB70052C75F /* Web Browser View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73881F69188956390052C75F /* WebBrowserViewController.h */,
+				73881F6A188956390052C75F /* WebBrowserViewController.m */,
+				73881F6B188956390052C75F /* WebBrowserViewController.xib */,
+				73881F6C188956390052C75F /* WebBrowserViewController~ipad.xib */,
+			);
+			name = "Web Browser View Controller";
+			sourceTree = "<group>";
+		};
+		73881F7618898B910052C75F /* Web Browser */ = {
+			isa = PBXGroup;
+			children = (
+				73881F7718898B910052C75F /* ButtonBarArrowLeft.png */,
+				73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */,
+				73881F7918898B910052C75F /* ButtonBarArrowRight.png */,
+				73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */,
+			);
+			path = "Web Browser";
 			sourceTree = "<group>";
 		};
 		7399A00117F9A720005B8648 /* Root Reveal Controller */ = {
@@ -1647,6 +1687,7 @@
 				73B95AC317A68DF20099FB84 /* Comments View Controller */,
 				73632ADF1802E574007172EE /* Document Preview Controller */,
 				73B95AC817A68DF20099FB84 /* Downloads View Controller */,
+				73881F5E18893BB70052C75F /* Web Browser View Controller */,
 				7319019218436504002C82C1 /* Onboarding View Controller */,
 				73B95ACC17A68DF20099FB84 /* License View Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
@@ -1752,6 +1793,7 @@
 				73B95A3817A68B7E0099FB84 /* Tabbar */,
 				73B95A4517A68B7E0099FB84 /* Table Cells */,
 				73B95A5A17A68B7E0099FB84 /* Toolbar Icons */,
+				73881F7618898B910052C75F /* Web Browser */,
 			);
 			name = Images;
 			path = "Supporting Files/Images";
@@ -2234,12 +2276,14 @@
 				0833246517F98CED00EE6AA8 /* sync-status-failed@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
+				73881F731889800C0052C75F /* Help Error in Resources */,
 				731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */,
 				73B95A6A17A68B7E0099FB84 /* folder@2x.png in Resources */,
 				73B95A6B17A68B7E0099FB84 /* generic.png in Resources */,
 				73A26A8918364641006C1D81 /* settings-main-menu.png in Resources */,
 				73B95A6C17A68B7E0099FB84 /* generic@2x.png in Resources */,
 				73B95A6D17A68B7E0099FB84 /* mime_audio.png in Resources */,
+				73881F6F188956390052C75F /* WebBrowserViewController~ipad.xib in Resources */,
 				73B95A6E17A68B7E0099FB84 /* mime_audio@2x.png in Resources */,
 				73B95A6F17A68B7E0099FB84 /* mime_doc.png in Resources */,
 				0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */,
@@ -2326,6 +2370,7 @@
 				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
+				73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */,
 				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
@@ -2342,6 +2387,7 @@
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				73A26A8518364641006C1D81 /* account-main-menu.png in Resources */,
 				73B95AA617A68B7E0099FB84 /* repository-tabbar.png in Resources */,
+				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
 				73B95AA717A68B7E0099FB84 /* repository-tabbar@2x.png in Resources */,
 				0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */,
 				73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */,
@@ -2365,11 +2411,13 @@
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
 				7319019E1843B614002C82C1 /* onboarding-blue.png in Resources */,
 				73B95AB517A68B7E0099FB84 /* site-action-join.png in Resources */,
+				73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */,
 				73B95AB617A68B7E0099FB84 /* site-action-join@2x.png in Resources */,
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
 				0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */,
+				73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */,
 				08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
 				73A26A8B18364641006C1D81 /* tasks-main-menu.png in Resources */,
@@ -2377,6 +2425,7 @@
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
+				73881F6E188956390052C75F /* WebBrowserViewController.xib in Resources */,
 				73B95ABE17A68B7E0099FB84 /* actionButton@2x.png in Resources */,
 				73B95ABF17A68B7E0099FB84 /* comments.png in Resources */,
 				0804DCC3181A6BAB00E3ACC2 /* cloud.png in Resources */,
@@ -2475,6 +2524,7 @@
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
+				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* SyncCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
