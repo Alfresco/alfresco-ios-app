@@ -19,9 +19,7 @@
 
 @property (nonatomic, weak) id<MainMenuViewControllerDelegate> delegate;
 
-- (instancetype)initWithAccountsSectionItems:(NSArray *)accountSectionItems localSectionItems:(NSArray *)localSectionItems;
+- (instancetype)initWithAccountsSectionItems:(NSArray *)accountSectionItems;
 - (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType;
-- (void)addRepositoryItems:(NSArray *)repositoryItems;
-- (void)removeAllRepositoryItems;
 
 @end
