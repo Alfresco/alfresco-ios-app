@@ -7,7 +7,6 @@
 //
 
 #import "FavouriteManager.h"
-#import "AlfrescoDocumentFolderService.h"
 #import "SyncManager.h"
 
 @interface FavouriteManager ()

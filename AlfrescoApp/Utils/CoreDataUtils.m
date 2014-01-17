@@ -7,7 +7,6 @@
 //
 
 #import "CoreDataUtils.h"
-#import "AlfrescoLog.h"
 #import "AppDelegate.h"
 
 static NSManagedObjectContext *managedObjectContext;

@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "AlfrescoDocumentFolderService.h"
-
 @interface SyncOperation : NSOperation
 
 - (id)initWithDocumentFolderService:(id)documentFolderService

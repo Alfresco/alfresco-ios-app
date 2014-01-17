@@ -20,7 +20,6 @@
 #import "PagedScrollView.h"
 #import "CommentViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AlfrescoRatingService.h"
 #import "FavouriteManager.h"
 #import <MessageUI/MessageUI.h>
 #import "DownloadManager.h"
