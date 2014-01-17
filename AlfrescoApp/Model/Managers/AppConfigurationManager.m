@@ -7,21 +7,17 @@
 //
 
 #import "AppConfigurationManager.h"
+#import "AccountManager.h"
 
 static NSString * const kConfigurationRootMenuKey = @"rootMenu";
-static NSString * const kConfigurationActivitiesKey = @"com.alfresco.activities";
-static NSString * const kConfigurationFavoritesKey = @"com.alfresco.favorites";
-static NSString * const kConfigurationLocalFilesKey = @"com.alfresco.localFiles";
-static NSString * const kConfigurationNotificationsKey = @"com.alfresco.notifications";
-static NSString * const kConfigurationRepositoryKey = @"com.alfresco.repository";
-static NSString * const kConfigurationSearchKey = @"com.alfresco.search";
-static NSString * const kConfigurationSitesKey = @"com.alfresco.sites";
-static NSString * const kConfigurationTasksKey = @"com.alfresco.tasks";
 static NSString * const kConfigurationItemVisibleKey = @"visible";
 
 @interface AppConfigurationManager ()
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) NSMutableDictionary *appConfigurations;
+@property (nonatomic, assign) BOOL useDefaultConfiguration;
+@property (nonatomic, assign, readwrite) BOOL showRepositorySpecificItems;
 
 @end
 
@@ -42,38 +38,160 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
     self = [super init];
     if (self)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(sessionReceived:)
-                                                     name:kAlfrescoSessionReceivedNotification
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
     }
     return self;
 }
 
 - (void)retrieveAppConfiguration
 {
-    [self.documentService retrieveNodeWithFolderPath:kAppConfigurationFileLocationOnServer completionBlock:^(AlfrescoNode *node, NSError *error) {
+    void (^processError)(NSError *) = ^(NSError *error)
+    {
+        if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+        {
+            [self updateAppUsingDefaultConfiguration];
+        }
+        else
+        {
+            [self checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
+        }
+    };
+    
+    [self.documentService retrieveNodeWithFolderPath:kAppConfigurationFileLocationOnServer completionBlock:^(AlfrescoNode *node, NSError *nodeRetrievalError) {
         
         if (node)
         {
-            [self.documentService retrieveContentOfDocument:(AlfrescoDocument *)node completionBlock:^(AlfrescoContentFile *contentFile, NSError *contentError) {
+            NSString *destinationPath = [self localConfigurationFilePathForSelectedAccount];
+            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
+            [self.documentService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *documentRetrievalError) {
                 
-                if (contentFile)
+                if (succeeded)
                 {
-                    [self updateAppConfigurationUsingFileURL:contentFile.fileUrl];
+                    self.useDefaultConfiguration = NO;
+                    self.showRepositorySpecificItems = YES;
+                    [self updateAppConfigurationUsingFileURL:[NSURL fileURLWithPath:destinationPath]];
+                }
+                else
+                {
+                    processError(documentRetrievalError);
                 }
             } progressBlock:nil];
         }
         else
         {
-            if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-            {
-            }
+            processError(nodeRetrievalError);
         }
     }];
 }
 
+- (BOOL)visibilityForMainMenuItemWithKey:(NSString *)menuItemKey
+{
+    BOOL visible = YES;
+    
+    if (!self.useDefaultConfiguration)
+    {
+        NSDictionary *menuItemConfiguration = [self.appConfigurations objectForKey:menuItemKey];
+        
+        if (menuItemConfiguration)
+        {
+            NSNumber *visibility = [menuItemConfiguration objectForKey:kConfigurationItemVisibleKey];
+            if (visibility)
+            {
+                visible = visibility.boolValue;
+            }
+        }
+    }
+    return visible;
+}
+
+- (void)checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration
+{
+    AccountManager *accountManager = [AccountManager sharedManager];
+    
+    if (accountManager.selectedAccount)
+    {
+        self.showRepositorySpecificItems = YES;
+        NSString *configurationFilePath = [self localConfigurationFilePathForSelectedAccount];
+        BOOL configurationFileExists = [[NSFileManager defaultManager] fileExistsAtPath:configurationFilePath];
+        if (configurationFileExists)
+        {
+            [self updateAppConfigurationUsingFileURL:[NSURL fileURLWithPath:configurationFilePath]];
+        }
+        else
+        {
+            [self updateAppUsingDefaultConfiguration];
+        }
+    }
+    else
+    {
+        self.showRepositorySpecificItems = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Notification Method
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    [self retrieveAppConfiguration];
+}
+
+- (void)accountRemoved:(NSNotification *)notification
+{
+    UserAccount *accountRemoved = (UserAccount *)notification.object;
+    
+    if ([[[AccountManager sharedManager] selectedAccount] isEqual:accountRemoved])
+    {
+        self.showRepositorySpecificItems = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+    }
+    
+    NSError *error = nil;
+    [[NSFileManager defaultManager] removeItemAtPath:[self localConfigurationFilePathForSelectedAccount] error:&error];
+    
+    if (error)
+    {
+        AlfrescoLogDebug(@"Could not remove config file", error);
+    }
+}
+
+- (void)noMoreAccounts:(NSNotification *)notification
+{
+    self.showRepositorySpecificItems = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+}
+
 #pragma mark - Private Methods
+
+- (NSString *)localConfigurationFilePathForSelectedAccount
+{
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    NSString *accountIdentifier = selectedAccount.accountIdentifier;
+    
+    if (selectedAccount.accountType == UserAccountTypeCloud)
+    {
+        accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, selectedAccount.selectedNetworkId];
+    }
+    
+    NSString *configurationFileName = [accountIdentifier stringByAppendingPathExtension:[kAppConfigurationFileLocationOnServer pathExtension]];
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:configurationFileName];
+}
+
+- (void)updateAppUsingDefaultConfiguration
+{
+    self.useDefaultConfiguration = YES;
+    self.showRepositorySpecificItems = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+}
 
 - (void)updateAppConfigurationUsingFileURL:(NSURL *)fileUrl
 {
@@ -87,66 +205,10 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
         NSDictionary *rootMenuConfiguration = [appConfiguration objectForKey:kConfigurationRootMenuKey];
         if (rootMenuConfiguration)
         {
-            NSDictionary *activitiesConfiguration = [rootMenuConfiguration objectForKey:kConfigurationActivitiesKey];
-            if (activitiesConfiguration)
-            {
-                self.showActivities = [[activitiesConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *favoritesConfiguration = [rootMenuConfiguration objectForKey:kConfigurationFavoritesKey];
-            if (favoritesConfiguration)
-            {
-                self.showFavorites = [[favoritesConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *localFilesConfiguration = [rootMenuConfiguration objectForKey:kConfigurationLocalFilesKey];
-            if (localFilesConfiguration)
-            {
-                self.showLocalFiles = [[localFilesConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *notificationConfiguration = [rootMenuConfiguration objectForKey:kConfigurationNotificationsKey];
-            if (notificationConfiguration)
-            {
-                self.showNotifications = [[notificationConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *repositoryConfiguration = [rootMenuConfiguration objectForKey:kConfigurationRepositoryKey];
-            if (repositoryConfiguration)
-            {
-                self.showRepository = [[repositoryConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *searchConfiguration = [rootMenuConfiguration objectForKey:kConfigurationSearchKey];
-            if (searchConfiguration)
-            {
-                self.showSearch = [[searchConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *sitesConfiguration = [rootMenuConfiguration objectForKey:kConfigurationSitesKey];
-            if (sitesConfiguration)
-            {
-                self.showSites = [[sitesConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
-            NSDictionary *tasksConfiguration = [rootMenuConfiguration objectForKey:kConfigurationTasksKey];
-            if (tasksConfiguration)
-            {
-                self.showTasks = [[tasksConfiguration objectForKey:kConfigurationItemVisibleKey] boolValue];
-            }
-            
+            self.appConfigurations = [rootMenuConfiguration mutableCopy];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
         }
     }
-}
-
-#pragma mark - Session Notification Method
-
-- (void)sessionReceived:(NSNotification *)notification
-{
-    id<AlfrescoSession> session = notification.object;
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    [self retrieveAppConfiguration];
 }
 
 @end

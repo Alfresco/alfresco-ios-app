@@ -10,14 +10,10 @@
 
 @interface AppConfigurationManager : NSObject
 
-@property (nonatomic, assign) BOOL showActivities;
-@property (nonatomic, assign) BOOL showRepository;
-@property (nonatomic, assign) BOOL showSites;
-@property (nonatomic, assign) BOOL showTasks;
-@property (nonatomic, assign) BOOL showFavorites;
-@property (nonatomic, assign) BOOL showSearch;
-@property (nonatomic, assign) BOOL showLocalFiles;
-@property (nonatomic, assign) BOOL showNotifications;
+@property (nonatomic, assign, readonly) BOOL showRepositorySpecificItems;
+
+- (void)checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration;
+- (BOOL)visibilityForMainMenuItemWithKey:(NSString *)menuItemKey;
 
 + (instancetype)sharedManager;
 
