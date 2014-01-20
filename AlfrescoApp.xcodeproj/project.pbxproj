@@ -152,6 +152,8 @@
 		73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */; };
 		73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7918898B910052C75F /* ButtonBarArrowRight.png */; };
 		73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */; };
+		73881F8D188D8AF20052C75F /* browser_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F8B188D8AF20052C75F /* browser_close.png */; };
+		73881F8E188D8AF20052C75F /* browser_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F8C188D8AF20052C75F /* browser_close@2x.png */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
@@ -585,6 +587,8 @@
 		73881F7918898B910052C75F /* ButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowRight.png; sourceTree = "<group>"; };
 		73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
 		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoApp.entitlements; sourceTree = "<group>"; };
+		73881F8B188D8AF20052C75F /* browser_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browser_close.png; sourceTree = "<group>"; };
+		73881F8C188D8AF20052C75F /* browser_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browser_close@2x.png"; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
@@ -1399,6 +1403,8 @@
 		73881F7618898B910052C75F /* Web Browser */ = {
 			isa = PBXGroup;
 			children = (
+				73881F8B188D8AF20052C75F /* browser_close.png */,
+				73881F8C188D8AF20052C75F /* browser_close@2x.png */,
 				73881F7718898B910052C75F /* ButtonBarArrowLeft.png */,
 				73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */,
 				73881F7918898B910052C75F /* ButtonBarArrowRight.png */,
@@ -2334,6 +2340,7 @@
 				73B95A8517A68B7E0099FB84 /* site.png in Resources */,
 				0833246417F98CED00EE6AA8 /* sync-status-failed.png in Resources */,
 				0833246017F98CED00EE6AA8 /* favorite-indicator.png in Resources */,
+				73881F8D188D8AF20052C75F /* browser_close.png in Resources */,
 				73B95A8617A68B7E0099FB84 /* site@2x.png in Resources */,
 				73B95A8717A68B7E0099FB84 /* Default-568h@2x.png in Resources */,
 				0833246A17F98CED00EE6AA8 /* sync-status-success.png in Resources */,
@@ -2344,6 +2351,7 @@
 				0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */,
 				08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */,
 				08E799B8182AA3EC0030FD53 /* LabelCell.xib in Resources */,
+				73881F8E188D8AF20052C75F /* browser_close@2x.png in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
 				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,

@@ -9,7 +9,7 @@
 #import "WebBrowserViewController.h"
 #import "ConnectivityManager.h"
 
-static CGFloat const kSpacingBetweenButtons = 5.0f;
+static CGFloat const kSpacingBetweenButtons = 10.0f;
 
 @interface WebBrowserViewController () <UIWebViewDelegate>
 
@@ -46,6 +46,8 @@ static CGFloat const kSpacingBetweenButtons = 5.0f;
 {
     [super viewDidLoad];
     
+    self.title = self.initalTitle;
+    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ButtonBarArrowLeft.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed:)];
     backButton.enabled = NO;
     UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -53,12 +55,18 @@ static CGFloat const kSpacingBetweenButtons = 5.0f;
     UIBarButtonItem *forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ButtonBarArrowRight.png"] style:UIBarButtonItemStylePlain target:self action:@selector(forwardButtonPressed:)];
     forwardButton.enabled = NO;
 
-    NSArray *webViewButtons = @[backButton, fixedSpace, forwardButton];
+    NSMutableArray *webViewButtons = [NSMutableArray arrayWithObjects:backButton, fixedSpace, forwardButton, nil];
     
-    self.title = self.initalTitle;
+    // dismiss button
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser_close.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissHelp:)];
     
     if (self.toolBar)
     {
+        // add spacer, followed by the dismiss button. Hmmm ...
+        UIBarButtonItem *flexibleSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [webViewButtons addObject:flexibleSpacer];
+        [webViewButtons addObject:closeButton];
+        
         self.toolBar.items = webViewButtons;
         
         self.backButton = self.toolBar.items[0];
@@ -70,12 +78,9 @@ static CGFloat const kSpacingBetweenButtons = 5.0f;
         
         self.backButton = self.navigationItem.leftBarButtonItems[0];
         self.forwardButton = self.navigationItem.leftBarButtonItems[2];
+        
+        self.navigationItem.rightBarButtonItem = closeButton;
     }
-    
-    // dismiss button
-//    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"green_selected_circle.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissHelp:)];
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:self action:@selector(dismissHelp:)];
-    self.navigationItem.rightBarButtonItem = closeButton;
     
     // make inital request
     [self makeInitialRequest];
