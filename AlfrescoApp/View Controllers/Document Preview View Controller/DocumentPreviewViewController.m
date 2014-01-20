@@ -24,6 +24,7 @@
 #import <MessageUI/MessageUI.h>
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
@@ -486,42 +487,74 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
         if (fileLocation)
         {
-            PreviewViewController *hiddenPreviewController = [[PreviewViewController alloc] initWithFilePath:fileLocation finishedLoadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
-                if (loadedIntoWebView)
+            // define a print block
+            void (^printBlock)(UIWebView *webView) = ^(UIWebView *webView) {
+                NSURL *fileURL = [NSURL fileURLWithPath:fileLocation];
+                
+                UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
+                
+                UIPrintInfo *printInfo = [UIPrintInfo printInfo];
+                printInfo.outputType = UIPrintInfoOutputGeneral;
+                printInfo.jobName = self.document.name;
+                
+                printController.printInfo = printInfo;
+                if (webView)
                 {
-                    NSURL *fileURL = [NSURL fileURLWithPath:fileLocation];
-                    
-                    UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
-                    
-                    UIPrintInfo *printInfo = [UIPrintInfo printInfo];
-                    printInfo.outputType = UIPrintInfoOutputGeneral;
-                    printInfo.jobName = self.document.name;
-                    
-                    printController.printInfo = printInfo;
                     printController.printFormatter = [webView viewPrintFormatter];
-                    printController.showsPageRange = YES;
-                    
-                    UIPrintInteractionCompletionHandler printCompletionHandler = ^(UIPrintInteractionController *printController, BOOL completed, NSError *printError) {
-                        if (!completed && printError)
-                        {
-                            AlfrescoLogError(@"Unable to print document %@ with error: %@", fileURL.path, printError.localizedDescription);
-                        }
-                    };
-                    
-                    if (IS_IPAD)
+                }
+                else
+                {
+                    printController.printingItem = fileURL;
+                }
+                printController.showsPageRange = YES;
+                
+                UIPrintInteractionCompletionHandler printCompletionHandler = ^(UIPrintInteractionController *printController, BOOL completed, NSError *printError) {
+                    if (!completed && printError)
                     {
-                        [printController presentFromRect:cell.frame inView:view animated:YES completionHandler:printCompletionHandler];
+                        AlfrescoLogError(@"Unable to print document %@ with error: %@", fileURL.path, printError.localizedDescription);
                     }
-                    else
-                    {
-                        [printController presentAnimated:YES completionHandler:printCompletionHandler];
-                    }
+                };
+                
+                if (IS_IPAD)
+                {
+                    [printController presentFromRect:cell.frame inView:view animated:YES completionHandler:printCompletionHandler];
+                }
+                else
+                {
+                    [printController presentAnimated:YES completionHandler:printCompletionHandler];
+                }
+            };
+            
+            // determine whether to use defult OS printing
+            NSSet *printableUTIs = [UIPrintInteractionController printableUTIs];
+            CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileLocation.pathExtension, NULL);
+            __block BOOL useNativePrinting = NO;
+            [printableUTIs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+                if (UTTypeConformsTo(UTI, (__bridge CFStringRef)obj))
+                {
+                    useNativePrinting = YES;
+                    *stop = YES;
                 }
             }];
-            hiddenPreviewController.view.hidden = YES;
-            [self addChildViewController:hiddenPreviewController];
-            [self.view addSubview:hiddenPreviewController.view];
-            [hiddenPreviewController didMoveToParentViewController:self];
+            CFRelease(UTI);
+            
+            if (useNativePrinting)
+            {
+                printBlock(nil);
+            }
+            else
+            {
+                PreviewViewController *hiddenPreviewController = [[PreviewViewController alloc] initWithFilePath:fileLocation finishedLoadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
+                    if (loadedIntoWebView)
+                    {
+                        printBlock(webView);
+                    }
+                }];
+                hiddenPreviewController.view.hidden = YES;
+                [self addChildViewController:hiddenPreviewController];
+                [self.view addSubview:hiddenPreviewController.view];
+                [hiddenPreviewController didMoveToParentViewController:self];
+            }
         }
     }];
 }
