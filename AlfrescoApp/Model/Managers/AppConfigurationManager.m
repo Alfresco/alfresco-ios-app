@@ -38,6 +38,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
     self = [super init];
     if (self)
     {
+        [self  checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
@@ -52,6 +53,14 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
         if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
         {
             [self updateAppUsingDefaultConfiguration];
+            
+            NSError *error = nil;
+            [[NSFileManager defaultManager] removeItemAtPath:[self localConfigurationFilePathForSelectedAccount] error:&error];
+            
+            if (error)
+            {
+                AlfrescoLogDebug(@"Could not remove config file", error);
+            }
         }
         else
         {
@@ -127,7 +136,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
     else
     {
         self.showRepositorySpecificItems = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
     }
 }
 
@@ -152,7 +161,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
     if ([[[AccountManager sharedManager] selectedAccount] isEqual:accountRemoved])
     {
         self.showRepositorySpecificItems = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
     }
     
     NSError *error = nil;
@@ -167,7 +176,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
 - (void)noMoreAccounts:(NSNotification *)notification
 {
     self.showRepositorySpecificItems = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
 }
 
 #pragma mark - Private Methods
@@ -190,7 +199,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
 {
     self.useDefaultConfiguration = YES;
     self.showRepositorySpecificItems = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
 }
 
 - (void)updateAppConfigurationUsingFileURL:(NSURL *)fileUrl
@@ -206,7 +215,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
         if (rootMenuConfiguration)
         {
             self.appConfigurations = [rootMenuConfiguration mutableCopy];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
         }
     }
 }

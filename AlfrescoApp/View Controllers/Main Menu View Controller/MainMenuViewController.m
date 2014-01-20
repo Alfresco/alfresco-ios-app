@@ -138,8 +138,9 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (void)appConfigurationUpdated:(NSNotification *)notification
 {
-    [self configureRepositoryMainMenuItems];
-    [self configureLocalMainMenuItems];
+    AppConfigurationManager *configurationManager = (AppConfigurationManager *)notification.object;
+    [self configureRepositoryMainMenuItems:configurationManager];
+    [self configureLocalMainMenuItems:configurationManager];
 }
 
 #pragma mark - Private Functions
@@ -178,10 +179,8 @@ static NSUInteger const kDownloadsRowNumber = 1;
     return [@[settingsMenuItem, aboutMenuItem, helpMenuItem] mutableCopy];
 }
 
-- (void)configureLocalMainMenuItems
+- (void)configureLocalMainMenuItems:(AppConfigurationManager *)configurationManager
 {
-    AppConfigurationManager *configurationManager = [AppConfigurationManager sharedManager];
-    
     NSMutableArray *localMenuItems = self.tableData.lastObject;
     BOOL localMenuItemsChanged = NO;
     
@@ -212,10 +211,8 @@ static NSUInteger const kDownloadsRowNumber = 1;
     }
 }
 
-- (void)configureRepositoryMainMenuItems
+- (void)configureRepositoryMainMenuItems:(AppConfigurationManager *)configurationManager
 {
-    AppConfigurationManager *configurationManager = [AppConfigurationManager sharedManager];
-    
     if (configurationManager.showRepositorySpecificItems)
     {
         NSMutableArray *repositoryMenuItems = self.hasRepositorySpecificSection ? self.tableData[kRepositoryItemsSectionNumber] : [NSMutableArray array];
@@ -376,7 +373,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
 - (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType
 {
     MainMenuItem *menuItem = [self existingMenuItemWithType:controllerType];
-    if (menuItem)
+    if (menuItem && [self.delegate respondsToSelector:@selector(didSelectMenuItem:)])
     {
         [self.delegate didSelectMenuItem:menuItem];
     }

@@ -62,7 +62,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 #endif
 
     AccountManager *accountManager = [AccountManager sharedManager];
-    [[AppConfigurationManager sharedManager] checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
+    [AppConfigurationManager sharedManager];
     
     BOOL isFirstLaunch = [self isAppFirstLaunch];
     if (isFirstLaunch)
