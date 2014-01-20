@@ -12,13 +12,11 @@
 #import "RNDecryptor.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
+#import "KeychainUtils.h"
 
-static NSString * const kOldAppMigrationFilePath = @"AppConfiguration/.migration.plist";
-static NSString * oldAppMigrationAbsoluteFilePath = nil;
+static NSString * const kOldAccountListIdentifier = @"AccountList";
 
 @interface MigrationAssistant ()
-
-+ (NSString *)oldAppMigrationAbsoluteFilePath;
 
 @end
 
@@ -34,34 +32,32 @@ static NSString * oldAppMigrationAbsoluteFilePath = nil;
     }
 }
 
-#pragma mark - Custom Setters
-
-+ (NSString *)oldAppMigrationAbsoluteFilePath
-{
-    if (!oldAppMigrationAbsoluteFilePath)
-    {
-        NSString *libraryPathString = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        oldAppMigrationAbsoluteFilePath = [libraryPathString stringByAppendingPathComponent:kOldAppMigrationFilePath];
-    }
-    
-    return oldAppMigrationAbsoluteFilePath;
-}
-
 #pragma mark - Private Functions
 
 + (BOOL)shouldStartMigration
 {
-    return [[AlfrescoFileManager sharedManager] fileExistsAtPath:[self oldAppMigrationAbsoluteFilePath]];
+    BOOL shouldMigrateAccounts = NO;
+    
+    NSError *oldAccountRetrieveError = nil;
+    NSArray *oldAccounts = [KeychainUtils savedAccountsForListIdentifier:kOldAccountListIdentifier error:&oldAccountRetrieveError];
+    
+    if ([[AccountManager sharedManager] totalNumberOfAddedAccounts] <= 0 && (oldAccounts && !oldAccountRetrieveError))
+    {
+        shouldMigrateAccounts = YES;
+    }
+    
+    return shouldMigrateAccounts;
 }
 
 + (void)migrateAccounts
 {
-    NSArray *oldAccounts = [NSKeyedUnarchiver unarchiveObjectWithFile:[self oldAppMigrationAbsoluteFilePath]];
+    NSError *oldAccountRetrieveError = nil;
+    NSArray *oldAccounts = [KeychainUtils savedAccountsForListIdentifier:kOldAccountListIdentifier error:&oldAccountRetrieveError];
+    
     NSMutableArray *migratedAccounts = [NSMutableArray arrayWithCapacity:oldAccounts.count];
     
     for (AccountInfo *oldAccount in oldAccounts)
     {
-        [self decryptPasswordOnOldAccount:oldAccount];
         UserAccount *account = [self createUserAccountFromOldAccount:oldAccount];
         [migratedAccounts addObject:account];
     }
@@ -73,28 +69,13 @@ static NSString * oldAppMigrationAbsoluteFilePath = nil;
 
 + (void)removeLegacyAccounts
 {
-    NSError *oldAccountPlistRemovalError = nil;
-    [[AlfrescoFileManager sharedManager] removeItemAtPath:[self oldAppMigrationAbsoluteFilePath] error:&oldAccountPlistRemovalError];
+    NSError *removalError = nil;
+    [KeychainUtils deleteSavedAccountsForListIdentifier:kOldAccountListIdentifier error:&removalError];
     
-    if (oldAccountPlistRemovalError)
+    if (removalError)
     {
-        AlfrescoLogError(@"Unable to remove the existing accounts plist file. Error: %@", oldAccountPlistRemovalError.localizedDescription);
+        AlfrescoLogError(@"Unable to remove old accounts. Error: %@", removalError.localizedDescription);
     }
-}
-
-+ (void)decryptPasswordOnOldAccount:(AccountInfo *)oldAccount
-{
-    NSData *encryptedPasswordData = [NSData dataFromBase64String:oldAccount.password];
-    
-    NSError *decryptionError = nil;
-    NSData *decryptedPasswordData = [RNDecryptor decryptData:encryptedPasswordData withPassword:DECRYPTION_KEY error:&decryptionError];
-    
-    if (decryptionError)
-    {
-        AlfrescoLogDebug(@"Error trying to decrypt password for %@. Error: %@", oldAccount.description, decryptionError.localizedDescription);
-    }
-    
-    oldAccount.password = [[NSString alloc] initWithData:decryptedPasswordData encoding:NSUTF8StringEncoding];
 }
 
 + (UserAccount *)createUserAccountFromOldAccount:(AccountInfo *)oldAccount
