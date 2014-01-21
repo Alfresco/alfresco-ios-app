@@ -33,6 +33,8 @@ extern NSString * const kAppConfigurationRepositoryKey;
 extern NSString * const kAppConfigurationSearchKey;
 extern NSString * const kAppConfigurationSitesKey;
 extern NSString * const kAppConfigurationTasksKey;
+extern NSString * const kAppConfigurationMyFilesKey;
+extern NSString * const kAppConfigurationSharedFilesKey;
 
 // App Configuration Notifications
 extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;

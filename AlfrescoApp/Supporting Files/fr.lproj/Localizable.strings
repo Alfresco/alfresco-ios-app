@@ -213,6 +213,16 @@
  */
 "companyHome.title" = "Repository";
 
+/** 
+ * Shared Files View Controller
+ */
+"sharedFiles.title" = "Shared Files";
+
+/**
+ * My Files View Controller
+ */
+"myFiles.title" = "My Files";
+
 /**
  * Folder/Document View Controller
  */

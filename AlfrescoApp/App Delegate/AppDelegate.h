@@ -19,6 +19,8 @@ typedef NS_ENUM(NSUInteger, MainMenuNavigationControllerType)
     NavigationControllerTypeSites,
     NavigationControllerTypeTasks,
     NavigationControllerTypeSync,
+    NavigationControllerTypeMyFiles,
+    NavigationControllerTypeSharedFiles,
     NavigationControllerTypeDownloads,
     NavigationControllerTypeSettings,
     NavigationControllerTypeAbout,
