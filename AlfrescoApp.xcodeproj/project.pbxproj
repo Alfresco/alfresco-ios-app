@@ -98,7 +98,6 @@
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		73036F331886E3E1002AF6DC /* libAlfrescoSDKv1.3.0-debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.0-debug.a */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
-		7312B247187D90ED000CB44B /* AUIAutoGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7312B246187D90ED000CB44B /* AUIAutoGrowingTextView.m */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
 		73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73190195184365AA002C82C1 /* OnboardingViewController.xib */; };
@@ -154,6 +153,7 @@
 		73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */; };
 		73881F8D188D8AF20052C75F /* browser_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F8B188D8AF20052C75F /* browser_close.png */; };
 		73881F8E188D8AF20052C75F /* browser_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881F8C188D8AF20052C75F /* browser_close@2x.png */; };
+		73881F95188E7E160052C75F /* TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F94188E7E160052C75F /* TextView.m */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
@@ -502,8 +502,6 @@
 		73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlfrescoSDK.xcodeproj; path = AlfrescoSDK/AlfrescoSDK/AlfrescoSDK.xcodeproj; sourceTree = SOURCE_ROOT; };
 		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
 		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
-		7312B245187D90ED000CB44B /* AUIAutoGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUIAutoGrowingTextView.h; sourceTree = "<group>"; };
-		7312B246187D90ED000CB44B /* AUIAutoGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AUIAutoGrowingTextView.m; sourceTree = "<group>"; };
 		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
 		73190190183CDF26002C82C1 /* DocumentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentOverlayView.m; path = "Document Overlay View/DocumentOverlayView.m"; sourceTree = "<group>"; };
 		73190193184365AA002C82C1 /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnboardingViewController.h; path = "Onboarding View Controller/OnboardingViewController.h"; sourceTree = "<group>"; };
@@ -589,6 +587,8 @@
 		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoApp.entitlements; sourceTree = "<group>"; };
 		73881F8B188D8AF20052C75F /* browser_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browser_close.png; sourceTree = "<group>"; };
 		73881F8C188D8AF20052C75F /* browser_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browser_close@2x.png"; sourceTree = "<group>"; };
+		73881F93188E7E160052C75F /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextView.h; path = "Text View/TextView.h"; sourceTree = "<group>"; };
+		73881F94188E7E160052C75F /* TextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextView.m; path = "Text View/TextView.m"; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
@@ -1107,15 +1107,6 @@
 			path = "Version View Controller";
 			sourceTree = "<group>";
 		};
-		7312B244187D90ED000CB44B /* AutoGrowingTextView */ = {
-			isa = PBXGroup;
-			children = (
-				7312B245187D90ED000CB44B /* AUIAutoGrowingTextView.h */,
-				7312B246187D90ED000CB44B /* AUIAutoGrowingTextView.m */,
-			);
-			path = AutoGrowingTextView;
-			sourceTree = "<group>";
-		};
 		7319018E183CDEE0002C82C1 /* Document Overlay View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1411,6 +1402,15 @@
 				73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */,
 			);
 			path = "Web Browser";
+			sourceTree = "<group>";
+		};
+		73881F91188E7DEA0052C75F /* Text View */ = {
+			isa = PBXGroup;
+			children = (
+				73881F93188E7E160052C75F /* TextView.h */,
+				73881F94188E7E160052C75F /* TextView.m */,
+			);
+			name = "Text View";
 			sourceTree = "<group>";
 		};
 		7399A00117F9A720005B8648 /* Root Reveal Controller */ = {
@@ -1714,6 +1714,7 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				73881F91188E7DEA0052C75F /* Text View */,
 				7319018E183CDEE0002C82C1 /* Document Overlay View */,
 				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
 				73632ACE1802C679007172EE /* Action Collection View */,
@@ -1746,7 +1747,6 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				7312B244187D90ED000CB44B /* AutoGrowingTextView */,
 				73B959D117A67A760099FB84 /* MBProgressHUD */,
 				73B959D417A67A760099FB84 /* Reachability */,
 				73B350B81851E9AA0037E3E3 /* RNCryptor */,
@@ -2496,7 +2496,6 @@
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
-				7312B247187D90ED000CB44B /* AUIAutoGrowingTextView.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
@@ -2536,6 +2535,7 @@
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
+				73881F95188E7E160052C75F /* TextView.m in Sources */,
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,

@@ -10,17 +10,18 @@
 #import "Utility.h"
 #import "CommentCell.h"
 #import "AvatarManager.h"
-#import "AUIAutoGrowingTextView.h"
+#import "TextView.h"
+#import "UIColor+Custom.h"
 
 static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
-@interface CommentViewController ()
+@interface CommentViewController () <TextViewDelegate>
 
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) AlfrescoPermissions *permissions;
 @property (nonatomic, strong) AlfrescoCommentService *commentService;
 @property (nonatomic, weak) IBOutlet UIView *addCommentContainerView;
-@property (nonatomic, weak) IBOutlet AUIAutoGrowingTextView *addCommentTextView;
+@property (nonatomic, weak) IBOutlet TextView *addCommentTextView;
 @property (nonatomic, weak) IBOutlet UIButton *postCommentButton;
 @property (nonatomic, strong) UILabel *sectionFooterLabel;
 
@@ -74,7 +75,10 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         }
     }];
     
-    self.addCommentTextView.maxHeight = kMaxCommentTextViewHeight;
+    self.addCommentTextView.maximumHeight = kMaxCommentTextViewHeight;
+    self.addCommentTextView.layer.cornerRadius = 10.0f;
+    self.addCommentTextView.layer.borderColor = [[UIColor lineSeparatorColor] CGColor];
+    self.addCommentTextView.layer.borderWidth = 0.5f;
     
     [self localiseUI];
 }
@@ -140,7 +144,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
 - (void)localiseUI
 {
-    self.addCommentTextView.text = [self placeholderText];
+    self.addCommentTextView.placeholderText = [self placeholderText];
     [self.postCommentButton setTitle:NSLocalizedString(@"comments.post.button", @"Post Button") forState:UIControlStateNormal];
 }
 
@@ -336,35 +340,11 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     [self.addCommentTextView resignFirstResponder];
 }
 
-#pragma mark - UITextViewDelegate Functions
+#pragma mark - TextViewDelegate Functions
 
-- (void)textViewDidBeginEditing:(UITextView *)textView
+- (void)textViewHeightDidChange:(TextView *)textView
 {
-    if ([textView.text isEqualToString:[self placeholderText]])
-    {
-        textView.text = @"";
-    }
-}
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    NSString *trimmedText = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (trimmedText.length > 0 && ![trimmedText isEqualToString:[self placeholderText]])
-    {
-        self.postCommentButton.enabled = YES;
-    }
-    else
-    {
-        self.postCommentButton.enabled = NO;
-    }
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    if (textView.text.length == 0)
-    {
-        textView.text = [self placeholderText];
-    }
+    [self.view sizeToFit];
 }
 
 @end

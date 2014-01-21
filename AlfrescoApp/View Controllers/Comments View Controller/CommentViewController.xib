@@ -20,15 +20,15 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rag-u7-uCY">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comments.png" translatesAutoresizingMaskIntoConstraints="NO" id="4Nt-62-WkZ">
-                            <rect key="frame" x="9" y="10" width="20" height="30"/>
+                            <rect key="frame" x="8" y="10" width="20" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ENTER TEXT HERE" translatesAutoresizingMaskIntoConstraints="NO" id="RZv-md-4XZ" customClass="AUIAutoGrowingTextView">
-                            <rect key="frame" x="64" y="8" width="190" height="30"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ENTER TEXT HERE" translatesAutoresizingMaskIntoConstraints="NO" id="RZv-md-4XZ" customClass="TextView">
+                            <rect key="frame" x="40" y="8" width="216" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -37,12 +37,15 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <connections>
-                                <outlet property="delegate" destination="-1" id="0Ua-Wp-ff8"/>
+                                <outlet property="textViewDelegate" destination="-1" id="Xek-pV-txb"/>
                             </connections>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJC-wF-92f">
-                            <rect key="frame" x="269" y="10" width="41" height="30"/>
+                            <rect key="frame" x="272" y="8" width="40" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="r1d-ZU-ab6"/>
+                            </constraints>
                             <state key="normal" title="POST">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -53,20 +56,21 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="RZv-md-4XZ" firstAttribute="leading" secondItem="4Nt-62-WkZ" secondAttribute="trailing" constant="35" id="9Vw-Ab-mLc"/>
+                        <constraint firstItem="RZv-md-4XZ" firstAttribute="leading" secondItem="4Nt-62-WkZ" secondAttribute="trailing" constant="12" id="9Vw-Ab-mLc"/>
                         <constraint firstItem="RZv-md-4XZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="8" id="C1T-IA-WZ8"/>
-                        <constraint firstAttribute="bottom" secondItem="GJC-wF-92f" secondAttribute="bottom" constant="10" id="EeQ-oX-dx3"/>
+                        <constraint firstAttribute="bottom" secondItem="GJC-wF-92f" secondAttribute="bottom" constant="8" id="EeQ-oX-dx3"/>
                         <constraint firstAttribute="bottom" secondItem="4Nt-62-WkZ" secondAttribute="bottom" constant="10" id="K71-el-pVj"/>
-                        <constraint firstAttribute="trailing" secondItem="GJC-wF-92f" secondAttribute="trailing" constant="10" id="Mu1-H9-3LD"/>
-                        <constraint firstItem="GJC-wF-92f" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="10" id="VeZ-7o-t9e"/>
+                        <constraint firstAttribute="trailing" secondItem="GJC-wF-92f" secondAttribute="trailing" constant="8" id="Mu1-H9-3LD"/>
+                        <constraint firstItem="GJC-wF-92f" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="8" id="VeZ-7o-t9e"/>
                         <constraint firstItem="4Nt-62-WkZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="10" id="jZO-U6-IKB"/>
-                        <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" priority="750" constant="15" id="l98-FR-SjL"/>
-                        <constraint firstItem="4Nt-62-WkZ" firstAttribute="leading" secondItem="Rag-u7-uCY" secondAttribute="leading" constant="9" id="qFq-lb-HZh"/>
-                        <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" priority="750" constant="15" id="xZe-ak-hXn"/>
+                        <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" constant="16" id="l98-FR-SjL"/>
+                        <constraint firstAttribute="bottom" secondItem="RZv-md-4XZ" secondAttribute="bottom" constant="8" id="ogi-G4-jzS"/>
+                        <constraint firstItem="4Nt-62-WkZ" firstAttribute="leading" secondItem="Rag-u7-uCY" secondAttribute="leading" constant="8" id="qFq-lb-HZh"/>
+                        <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" constant="16" id="xZe-ak-hXn"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="27y-fM-wub">
-                    <rect key="frame" x="0.0" y="50" width="320" height="518"/>
+                    <rect key="frame" x="0.0" y="46" width="320" height="522"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
