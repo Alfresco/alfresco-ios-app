@@ -103,6 +103,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.delegate = self;
+    searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    searchBar.backgroundColor = [UIColor whiteColor];
     self.searchBar = searchBar;
     
     // search controller

@@ -28,7 +28,7 @@
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHo-93-a2B" customClass="PagedScrollView">
-                    <rect key="frame" x="0.0" y="46" width="320" height="374"/>
+                    <rect key="frame" x="0.0" y="48" width="320" height="372"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="354" id="Xdr-cG-EuU"/>
@@ -62,7 +62,7 @@
                 <constraint firstItem="aHo-93-a2B" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="WbI-2D-9Sd"/>
                 <constraint firstAttribute="trailing" secondItem="she-YW-fRt" secondAttribute="trailing" id="afW-Sy-cLd"/>
                 <constraint firstAttribute="centerX" secondItem="Fa9-gb-l3D" secondAttribute="centerX" id="ax3-R9-woU"/>
-                <constraint firstItem="aHo-93-a2B" firstAttribute="top" secondItem="Fa9-gb-l3D" secondAttribute="bottom" constant="8" id="k4B-Yr-EgZ"/>
+                <constraint firstItem="aHo-93-a2B" firstAttribute="top" secondItem="Fa9-gb-l3D" secondAttribute="bottom" constant="10" id="k4B-Yr-EgZ"/>
                 <constraint firstAttribute="bottom" secondItem="she-YW-fRt" secondAttribute="bottom" id="lpV-tY-bBm"/>
                 <constraint firstItem="Fa9-gb-l3D" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="5" id="n9x-0t-Wo0"/>
                 <constraint firstItem="she-YW-fRt" firstAttribute="top" secondItem="aHo-93-a2B" secondAttribute="bottom" constant="8" id="qMn-yP-2VP"/>
