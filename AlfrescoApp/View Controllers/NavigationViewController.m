@@ -32,6 +32,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationBar.translucent = NO;
+    
     self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"expand.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
 }
 

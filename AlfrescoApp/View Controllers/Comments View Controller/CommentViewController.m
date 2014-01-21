@@ -79,6 +79,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     self.addCommentTextView.layer.cornerRadius = 10.0f;
     self.addCommentTextView.layer.borderColor = [[UIColor lineSeparatorColor] CGColor];
     self.addCommentTextView.layer.borderWidth = 0.5f;
+    self.addCommentTextView.font = [UIFont systemFontOfSize:12.0f];
     
     [self localiseUI];
 }

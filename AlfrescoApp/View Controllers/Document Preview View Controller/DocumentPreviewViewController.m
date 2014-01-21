@@ -76,11 +76,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
     [super viewDidLoad];
     
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-    {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
     self.title = self.document.name;
     
     UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewDocument:)];
