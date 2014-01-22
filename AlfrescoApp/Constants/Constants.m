@@ -18,7 +18,7 @@ NSString * const kImageMappingPlist = @"ImageMapping";
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 
 // App Configuration
-NSString * const kAppConfigurationFileLocationOnServer = @"/Data Dictionary/Mobile/configuration.json";
+NSString * const kAppConfigurationFileLocationOnServer = @"Mobile/configuration.json";
 NSString * const kAppConfigurationActivitiesKey = @"com.alfresco.activities";
 NSString * const kAppConfigurationFavoritesKey = @"com.alfresco.favorites";
 NSString * const kAppConfigurationLocalFilesKey = @"com.alfresco.localFiles";
