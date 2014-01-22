@@ -20,9 +20,15 @@ static NSUInteger const kRepositoryEnterpriseSupportedMinorVersion = 2;
 static NSString * const kRepositoryEditionEnterprise = @"Enterprise";
 static NSString * const kRepositoryEditionCommunity = @"Community";
 
+static NSString * const kRepositoryId = @"{RepositoryId}";
+static NSString * const kRepositoryDataDictionaryPathKey = @"com.alfresco.dataDictionary.{RepositoryId}";
+static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = @"repositoryDownloadedConfigurationFileLastUpdatedDate";
+
 @interface AppConfigurationManager ()
 
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) NSMutableDictionary *appConfigurations;
 @property (nonatomic, assign) BOOL useDefaultConfiguration;
 @property (nonatomic, assign, readwrite) BOOL showRepositorySpecificItems;
@@ -78,31 +84,59 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
         }
     };
     
-    AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
-    [documentService retrieveNodeWithFolderPath:kAppConfigurationFileLocationOnServer completionBlock:^(AlfrescoNode *node, NSError *nodeRetrievalError) {
+    [self appDataDictionaryPathWithCompletionBlock:^(NSString *dataDictionaryPath) {
         
-        if (node)
+        if (dataDictionaryPath)
         {
-            NSString *destinationPath = [self localConfigurationFilePathForSelectedAccount];
-            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
-            [documentService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *documentRetrievalError) {
+            [self.documentService retrieveNodeWithFolderPath:dataDictionaryPath completionBlock:^(AlfrescoNode *node, NSError *nodeRetrievalError) {
                 
-                if (succeeded)
+                if (node)
                 {
-                    self.useDefaultConfiguration = NO;
-                    self.showRepositorySpecificItems = YES;
-                    [self updateAppConfigurationUsingFileURL:[NSURL fileURLWithPath:destinationPath]];
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    NSString *destinationPath = [self localConfigurationFilePathForSelectedAccount];
+                    // if config file does not exist at destination clear last downloaded date in user defaults
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:destinationPath])
+                    {
+                        [userDefaults removeObjectForKey:kRepositoryDownloadedConfigurationFileLastUpdatedDate];
+                        [userDefaults synchronize];
+                    }
+                    NSDate *downloadedConfigurationFileLastModificationDate = [userDefaults objectForKey:kRepositoryDownloadedConfigurationFileLastUpdatedDate];
+                    
+                    BOOL downloadConfigurationFile = downloadedConfigurationFileLastModificationDate ? ([downloadedConfigurationFileLastModificationDate compare:node.modifiedAt] == NSOrderedAscending) : YES;
+                    if (downloadConfigurationFile)
+                    {
+                        NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
+                        [self.documentService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *documentRetrievalError) {
+                            
+                            if (succeeded)
+                            {
+                                [self updateAppConfigurationUsingFileURL:[NSURL fileURLWithPath:destinationPath]];
+                                [userDefaults setObject:node.modifiedAt forKey:kRepositoryDownloadedConfigurationFileLastUpdatedDate];
+                                [userDefaults synchronize];
+                            }
+                            else
+                            {
+                                processError(documentRetrievalError);
+                            }
+                            completionBlock();
+                        } progressBlock:nil];
+                    }
+                    else
+                    {
+                        [self checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
+                        completionBlock();
+                    }
                 }
                 else
                 {
-                    processError(documentRetrievalError);
+                    processError(nodeRetrievalError);
+                    completionBlock();
                 }
-                completionBlock();
-            } progressBlock:nil];
+            }];
         }
         else
         {
-            processError(nodeRetrievalError);
+            [self checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
             completionBlock();
         }
     }];
@@ -164,6 +198,8 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
     self.myFiles = nil;
     self.sharedFiles = nil;
     self.alfrescoSession = notification.object;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
+    self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
     
     [self retrieveAppConfigurationWithCompletionBlock:^{
         
@@ -182,10 +218,17 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
             if (isEnterpriseServerAndSupportsMyFilesSharedFiles || isCommunityServerAndSupportsMyFilesSharedFiles)
             {
                 __block NSInteger numberOfRetrievalsInProgress = 0;
-                
                 if (showMyFiles)
                 {
                     numberOfRetrievalsInProgress++;
+                }
+                if (showSharedFiles)
+                {
+                    numberOfRetrievalsInProgress++;
+                }
+                
+                if (showMyFiles)
+                {
                     [self retrieveMyFilesWithCompletionBlock:^{
                         
                         numberOfRetrievalsInProgress--;
@@ -197,7 +240,6 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
                 }
                 if (showSharedFiles)
                 {
-                    numberOfRetrievalsInProgress++;
                     [self retrieveSharedFilesWithCompletionBlock:^{
                         
                         numberOfRetrievalsInProgress--;
@@ -288,17 +330,58 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
         NSDictionary *rootMenuConfiguration = [appConfiguration objectForKey:kConfigurationRootMenuKey];
         if (rootMenuConfiguration)
         {
+            self.useDefaultConfiguration = NO;
+            self.showRepositorySpecificItems = YES;
             self.appConfigurations = [rootMenuConfiguration mutableCopy];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
         }
     }
 }
 
+- (void)appDataDictionaryPathWithCompletionBlock:(void (^)(NSString *dataDictionaryPath))completionBlock
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *dataDictionaryPathKey = [kRepositoryDataDictionaryPathKey stringByReplacingOccurrencesOfString:kRepositoryId withString:self.alfrescoSession.repositoryInfo.identifier];
+    NSString *dataDictionaryPath = [userDefaults objectForKey:dataDictionaryPathKey];
+    
+    if (dataDictionaryPath)
+    {
+        completionBlock(dataDictionaryPath);
+    }
+    else
+    {
+        NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:dictionary\"')";
+        [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+            
+            if (error)
+            {
+                AlfrescoLogDebug(@"Could not retrieve Data Dictionary: %@", error);
+                completionBlock(nil);
+            }
+            else
+            {
+                AlfrescoFolder *dataDictionaryFolder = [resultsArray firstObject];
+                if (dataDictionaryFolder)
+                {
+                    NSString *configurationFileLocationOnServer = [NSString stringWithFormat:@"/%@/%@", dataDictionaryFolder.name, kAppConfigurationFileLocationOnServer];
+                    [userDefaults setObject:configurationFileLocationOnServer forKey:dataDictionaryPathKey];
+                    [userDefaults synchronize];
+                    completionBlock(configurationFileLocationOnServer);
+                }
+                else
+                {
+                    completionBlock(nil);
+                }
+            }
+        }];
+    }
+}
+
 - (void)retrieveSharedFilesWithCompletionBlock:(void (^)())completionBlock
 {
     NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
-    AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
-    [searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+    [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
         
         if (error)
         {
@@ -319,8 +402,7 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
 - (void)retrieveMyFilesWithCompletionBlock:(void (^)())completionBlock
 {
     NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", self.alfrescoSession.personIdentifier];
-    AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
-    [searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+    [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
         
         if (error)
         {
