@@ -25,22 +25,12 @@
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
 static NSUInteger const kDownloadsRowNumber = 1;
 
-// repository version numbers supporting My Files and Shared Files
-static NSUInteger const kRepositorySupportedMajorVersion = 4;
-static NSUInteger const kRepositoryCommunitySupportedMinorVersion = 3;
-static NSUInteger const kRepositoryEnterpriseSupportedMinorVersion = 2;
-
-static NSString * const kRepositoryEditionEnterprise = @"Enterprise";
-static NSString * const kRepositoryEditionCommunity = @"Community";
-
 @interface MainMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
 @property (nonatomic, strong, readwrite) NSMutableArray *tableData;
 @property (nonatomic, weak, readwrite) UITableView *tableView;
 @property (nonatomic, assign, readwrite) BOOL hasRepositorySpecificSection;
-@property (nonatomic, strong) AlfrescoFolder *myFiles;
-@property (nonatomic, strong) AlfrescoFolder *sharedFiles;
 
 @end
 
@@ -143,49 +133,7 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
 
 - (void)sessionUpdated:(NSNotification *)notification
 {
-    self.myFiles = nil;
-    self.sharedFiles = nil;
     self.alfrescoSession = (id<AlfrescoSession>)notification.object;
-    AppConfigurationManager *configurationManager = [AppConfigurationManager sharedManager];
-    
-    BOOL retrieveMyFilesAndSharedFiles = NO;
-    NSString *repositoryEdition = self.alfrescoSession.repositoryInfo.edition;
-    NSInteger repositoryMajorVersion = [self.alfrescoSession.repositoryInfo.majorVersion intValue];
-    NSInteger repositoryMinorVersion = [self.alfrescoSession.repositoryInfo.minorVersion intValue];
-    
-    if (repositoryMajorVersion >= kRepositorySupportedMajorVersion)
-    {
-        BOOL isEnterpriseServerAndSupportsMyFilesSharedFiles = ([repositoryEdition isEqualToString:kRepositoryEditionEnterprise] && repositoryMinorVersion >= kRepositoryEnterpriseSupportedMinorVersion);
-        BOOL isCommunityServerAndSupportsMyFilesSharedFiles = ([repositoryEdition isEqualToString:kRepositoryEditionCommunity] && repositoryMinorVersion >= kRepositoryCommunitySupportedMinorVersion);
-        
-        if (isEnterpriseServerAndSupportsMyFilesSharedFiles || isCommunityServerAndSupportsMyFilesSharedFiles)
-        {
-            retrieveMyFilesAndSharedFiles = YES;
-        }
-    }
-    
-    if (retrieveMyFilesAndSharedFiles)
-    {
-        __block BOOL retrievingMyFilesComplete = NO;
-        __block BOOL retrievingSharedFilesComplete = NO;
-        
-        [self retrieveMyFilesWithCompletionBlock:^(BOOL completed) {
-            
-            retrievingMyFilesComplete = completed;
-            if (retrievingMyFilesComplete && retrievingSharedFilesComplete)
-            {
-                [self configureRepositoryMainMenuItems:configurationManager];
-            }
-        }];
-        [self retrieveSharedFilesWithCompletionBlock:^(BOOL completed) {
-            
-            retrievingSharedFilesComplete = completed;
-            if (retrievingMyFilesComplete && retrievingSharedFilesComplete)
-            {
-                [self configureRepositoryMainMenuItems:configurationManager];
-            }
-        }];
-    }
 }
 
 - (void)appConfigurationUpdated:(NSNotification *)notification
@@ -196,50 +144,6 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
 }
 
 #pragma mark - Private Functions
-
-- (void)retrieveSharedFilesWithCompletionBlock:(void (^)(BOOL completed))completionBlock
-{
-    NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
-    AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
-    [searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-        
-        if (error)
-        {
-            AlfrescoLogDebug(@"Could not retrieve Shared Files: %@", error);
-        }
-        else
-        {
-            self.sharedFiles = [resultsArray firstObject];
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock(YES);
-        }
-    }];
-}
-
-- (void)retrieveMyFilesWithCompletionBlock:(void (^)(BOOL completed))completionBlock
-{
-    NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", self.alfrescoSession.personIdentifier];
-    AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
-    [searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-        
-        if (error)
-        {
-            AlfrescoLogDebug(@"Could not retrieve My Files: %@", error);
-        }
-        else
-        {
-            self.myFiles = [resultsArray firstObject];
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock(YES);
-        }
-    }];
-}
 
 - (void)informDelegateMenuItemSelected:(MainMenuItem *)menuItem
 {
@@ -428,7 +332,7 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
         itemIndex = [repositoryMenuItems indexOfObject:favoritesMenuItem];
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
-        BOOL showSharedFiles = self.sharedFiles && [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSharedFilesKey];
+        BOOL showSharedFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSharedFilesKey];
         MainMenuItem *sharedFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSharedFiles];
         if (showSharedFiles)
         {
@@ -436,7 +340,7 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
             {
                 [repositoryMenuItems removeObject:sharedFilesMenuItem];
             }
-            FileFolderListViewController *sharedFilesViewController = [[FileFolderListViewController alloc] initWithFolder:self.sharedFiles
+            FileFolderListViewController *sharedFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.sharedFiles
                                                                                                          folderPermissions:nil
                                                                                                          folderDisplayName:NSLocalizedString(@"sharedFiles.title", @"Shared Files")
                                                                                                                    session:self.alfrescoSession];
@@ -457,7 +361,7 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
         itemIndex = [repositoryMenuItems indexOfObject:sharedFilesMenuItem];
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
-        BOOL showMyFiles = self.myFiles && [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
+        BOOL showMyFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
         MainMenuItem *myFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeMyFiles];
         if (showMyFiles)
         {
@@ -465,7 +369,7 @@ static NSString * const kRepositoryEditionCommunity = @"Community";
             {
                 [repositoryMenuItems removeObject:myFilesMenuItem];
             }
-            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:self.myFiles
+            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
                                                                                                      folderPermissions:nil
                                                                                                      folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
                                                                                                                session:self.alfrescoSession];

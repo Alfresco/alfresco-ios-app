@@ -12,12 +12,22 @@
 static NSString * const kConfigurationRootMenuKey = @"rootMenu";
 static NSString * const kConfigurationItemVisibleKey = @"visible";
 
+// repository version numbers supporting My Files and Shared Files
+static NSUInteger const kRepositorySupportedMajorVersion = 4;
+static NSUInteger const kRepositoryCommunitySupportedMinorVersion = 3;
+static NSUInteger const kRepositoryEnterpriseSupportedMinorVersion = 2;
+
+static NSString * const kRepositoryEditionEnterprise = @"Enterprise";
+static NSString * const kRepositoryEditionCommunity = @"Community";
+
 @interface AppConfigurationManager ()
 
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
 @property (nonatomic, strong) NSMutableDictionary *appConfigurations;
 @property (nonatomic, assign) BOOL useDefaultConfiguration;
 @property (nonatomic, assign, readwrite) BOOL showRepositorySpecificItems;
+@property (nonatomic, strong, readwrite) AlfrescoFolder *myFiles;
+@property (nonatomic, strong, readwrite) AlfrescoFolder *sharedFiles;
 
 @end
 
@@ -38,7 +48,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
     self = [super init];
     if (self)
     {
-        [self  checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
+        [self checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
@@ -46,7 +56,7 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
     return self;
 }
 
-- (void)retrieveAppConfiguration
+- (void)retrieveAppConfigurationWithCompletionBlock:(void (^)())completionBlock
 {
     void (^processError)(NSError *) = ^(NSError *error)
     {
@@ -68,13 +78,14 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
         }
     };
     
-    [self.documentService retrieveNodeWithFolderPath:kAppConfigurationFileLocationOnServer completionBlock:^(AlfrescoNode *node, NSError *nodeRetrievalError) {
+    AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
+    [documentService retrieveNodeWithFolderPath:kAppConfigurationFileLocationOnServer completionBlock:^(AlfrescoNode *node, NSError *nodeRetrievalError) {
         
         if (node)
         {
             NSString *destinationPath = [self localConfigurationFilePathForSelectedAccount];
             NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
-            [self.documentService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *documentRetrievalError) {
+            [documentService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *documentRetrievalError) {
                 
                 if (succeeded)
                 {
@@ -86,11 +97,13 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
                 {
                     processError(documentRetrievalError);
                 }
+                completionBlock();
             } progressBlock:nil];
         }
         else
         {
             processError(nodeRetrievalError);
+            completionBlock();
         }
     }];
 }
@@ -99,18 +112,17 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
 {
     BOOL visible = YES;
     
-    if (!self.useDefaultConfiguration)
+    if ([menuItemKey isEqualToString:kAppConfigurationSharedFilesKey])
     {
-        NSDictionary *menuItemConfiguration = [self.appConfigurations objectForKey:menuItemKey];
-        
-        if (menuItemConfiguration)
-        {
-            NSNumber *visibility = [menuItemConfiguration objectForKey:kConfigurationItemVisibleKey];
-            if (visibility)
-            {
-                visible = visibility.boolValue;
-            }
-        }
+        visible = self.sharedFiles != nil;
+    }
+    else if ([menuItemKey isEqualToString:kAppConfigurationMyFilesKey])
+    {
+        visible = self.myFiles != nil;
+    }
+    else if (!self.useDefaultConfiguration)
+    {
+        visible = [self visibilityInfoInAppConfigurationForMenuItem:menuItemKey];
     }
     return visible;
 }
@@ -149,9 +161,55 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
 
 - (void)sessionReceived:(NSNotification *)notification
 {
-    id<AlfrescoSession> session = notification.object;
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    [self retrieveAppConfiguration];
+    self.myFiles = nil;
+    self.sharedFiles = nil;
+    self.alfrescoSession = notification.object;
+    
+    [self retrieveAppConfigurationWithCompletionBlock:^{
+        
+        BOOL showMyFiles = [self visibilityInfoInAppConfigurationForMenuItem:kAppConfigurationMyFilesKey];
+        BOOL showSharedFiles = [self visibilityInfoInAppConfigurationForMenuItem:kAppConfigurationSharedFilesKey];
+        
+        NSString *repositoryEdition = self.alfrescoSession.repositoryInfo.edition;
+        NSInteger repositoryMajorVersion = [self.alfrescoSession.repositoryInfo.majorVersion intValue];
+        NSInteger repositoryMinorVersion = [self.alfrescoSession.repositoryInfo.minorVersion intValue];
+        
+        if ((showMyFiles || showSharedFiles) && repositoryMajorVersion >= kRepositorySupportedMajorVersion)
+        {
+            BOOL isEnterpriseServerAndSupportsMyFilesSharedFiles = ([repositoryEdition isEqualToString:kRepositoryEditionEnterprise] && repositoryMinorVersion >= kRepositoryEnterpriseSupportedMinorVersion);
+            BOOL isCommunityServerAndSupportsMyFilesSharedFiles = ([repositoryEdition isEqualToString:kRepositoryEditionCommunity] && repositoryMinorVersion >= kRepositoryCommunitySupportedMinorVersion);
+            
+            if (isEnterpriseServerAndSupportsMyFilesSharedFiles || isCommunityServerAndSupportsMyFilesSharedFiles)
+            {
+                __block NSInteger numberOfRetrievalsInProgress = 0;
+                
+                if (showMyFiles)
+                {
+                    numberOfRetrievalsInProgress++;
+                    [self retrieveMyFilesWithCompletionBlock:^{
+                        
+                        numberOfRetrievalsInProgress--;
+                        if (numberOfRetrievalsInProgress == 0)
+                        {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
+                        }
+                    }];
+                }
+                if (showSharedFiles)
+                {
+                    numberOfRetrievalsInProgress++;
+                    [self retrieveSharedFilesWithCompletionBlock:^{
+                        
+                        numberOfRetrievalsInProgress--;
+                        if (numberOfRetrievalsInProgress == 0)
+                        {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
+                        }
+                    }];
+                }
+            }
+        }
+    }];
 }
 
 - (void)accountRemoved:(NSNotification *)notification
@@ -180,6 +238,22 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
 }
 
 #pragma mark - Private Methods
+
+- (BOOL)visibilityInfoInAppConfigurationForMenuItem:(NSString *)menuItemKey
+{
+    BOOL visible = YES;
+    NSDictionary *menuItemConfiguration = [self.appConfigurations objectForKey:menuItemKey];
+    
+    if (menuItemConfiguration)
+    {
+        NSNumber *visibility = [menuItemConfiguration objectForKey:kConfigurationItemVisibleKey];
+        if (visibility)
+        {
+            visible = visibility.boolValue;
+        }
+    }
+    return visible;
+}
 
 - (NSString *)localConfigurationFilePathForSelectedAccount
 {
@@ -218,6 +292,50 @@ static NSString * const kConfigurationItemVisibleKey = @"visible";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
         }
     }
+}
+
+- (void)retrieveSharedFilesWithCompletionBlock:(void (^)())completionBlock
+{
+    NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
+    AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
+    [searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+        
+        if (error)
+        {
+            AlfrescoLogDebug(@"Could not retrieve Shared Files: %@", error);
+        }
+        else
+        {
+            self.sharedFiles = [resultsArray firstObject];
+        }
+        
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)retrieveMyFilesWithCompletionBlock:(void (^)())completionBlock
+{
+    NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", self.alfrescoSession.personIdentifier];
+    AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
+    [searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+        
+        if (error)
+        {
+            AlfrescoLogDebug(@"Could not retrieve My Files: %@", error);
+        }
+        else
+        {
+            self.myFiles = [resultsArray firstObject];
+        }
+        
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
 }
 
 @end
