@@ -147,7 +147,10 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (void)informDelegateMenuItemSelected:(MainMenuItem *)menuItem
 {
-    [self.delegate didSelectMenuItem:menuItem];
+    if ([self.delegate respondsToSelector:@selector(didSelectMenuItem:)])
+    {
+        [self.delegate didSelectMenuItem:menuItem];
+    }
 }
 
 - (NSMutableArray *)defaultMenuItems
@@ -324,6 +327,64 @@ static NSUInteger const kDownloadsRowNumber = 1;
         else if (!showFavorites && favoritesMenuItem)
         {
             [repositoryMenuItems removeObject:favoritesMenuItem];
+            repositoryMenuItemsChanged = YES;
+        }
+        itemIndex = [repositoryMenuItems indexOfObject:favoritesMenuItem];
+        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
+        
+        BOOL showSharedFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSharedFilesKey];
+        MainMenuItem *sharedFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSharedFiles];
+        if (showSharedFiles)
+        {
+            if (sharedFilesMenuItem)
+            {
+                [repositoryMenuItems removeObject:sharedFilesMenuItem];
+            }
+            FileFolderListViewController *sharedFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.sharedFiles
+                                                                                                         folderPermissions:nil
+                                                                                                         folderDisplayName:NSLocalizedString(@"sharedFiles.title", @"Shared Files")
+                                                                                                                   session:self.alfrescoSession];
+            NavigationViewController *sharedFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:sharedFilesViewController];
+            sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSharedFiles
+                                                                     imageName:@"site.png"
+                                                             localizedTitleKey:@"sharedFiles.title"
+                                                                viewController:sharedFilesNavigationController
+                                                               displayInDetail:NO];
+            [repositoryMenuItems insertObject:sharedFilesMenuItem atIndex:nextIndex];
+            repositoryMenuItemsChanged = YES;
+        }
+        else if (!showSharedFiles && sharedFilesMenuItem)
+        {
+            [repositoryMenuItems removeObject:sharedFilesMenuItem];
+            repositoryMenuItemsChanged = YES;
+        }
+        itemIndex = [repositoryMenuItems indexOfObject:sharedFilesMenuItem];
+        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
+        
+        BOOL showMyFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
+        MainMenuItem *myFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeMyFiles];
+        if (showMyFiles)
+        {
+            if (myFilesMenuItem)
+            {
+                [repositoryMenuItems removeObject:myFilesMenuItem];
+            }
+            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
+                                                                                                     folderPermissions:nil
+                                                                                                     folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
+                                                                                                               session:self.alfrescoSession];
+            NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
+            myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeMyFiles
+                                                                 imageName:@"folder.png"
+                                                         localizedTitleKey:@"myFiles.title"
+                                                            viewController:myFilesNavigationController
+                                                           displayInDetail:NO];
+            [repositoryMenuItems insertObject:myFilesMenuItem atIndex:nextIndex];
+            repositoryMenuItemsChanged = YES;
+        }
+        else if (!showMyFiles && myFilesMenuItem)
+        {
+            [repositoryMenuItems removeObject:myFilesMenuItem];
             repositoryMenuItemsChanged = YES;
         }
         
