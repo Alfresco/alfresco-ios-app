@@ -37,7 +37,7 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 
 + (instancetype)emailItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.email", @"Email") identifier:kActionCollectionIdentifierEmail];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-email.png"] title:NSLocalizedString(@"action.email", @"Email") identifier:kActionCollectionIdentifierEmail];
 }
 
 + (instancetype)emailAsLinkItem
@@ -47,47 +47,47 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 
 + (instancetype)openInItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"repository.png"] title:NSLocalizedString(@"action.open.in", @"Open In") identifier:kActionCollectionIdentifierOpenIn];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-openIn.png"] title:NSLocalizedString(@"action.open.in", @"Open In") identifier:kActionCollectionIdentifierOpenIn];
 }
 
 + (instancetype)likeItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.like", @"Like") identifier:kActionCollectionIdentifierLike];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unliked.png"] title:NSLocalizedString(@"action.like", @"Like") identifier:kActionCollectionIdentifierLike];
 }
 
 + (instancetype)unlikeItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.unlike", @"Unlike") identifier:kActionCollectionIdentifierUnlike];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-liked.png"] title:NSLocalizedString(@"action.unlike", @"Unlike") identifier:kActionCollectionIdentifierUnlike];
 }
 
 + (instancetype)favouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
 }
 
 + (instancetype)unfavouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
 }
 
 + (instancetype)commentItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.comment", @"Comment") identifier:kActionCollectionIdentifierComment];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-comments.png"] title:NSLocalizedString(@"action.comment", @"Comment") identifier:kActionCollectionIdentifierComment];
 }
 
 + (instancetype)downloadItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.download", @"Download") identifier:kActionCollectionIdentifierDownload];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-download.png"] title:NSLocalizedString(@"action.download", @"Download") identifier:kActionCollectionIdentifierDownload];
 }
 
 + (instancetype)printItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.print", @"Print") identifier:kActionCollectionIdentifierPrint];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-print.png"] title:NSLocalizedString(@"action.print", @"Print") identifier:kActionCollectionIdentifierPrint];
 }
 
 + (instancetype)deleteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.delete", @"Delete") identifier:kActionCollectionIdentifierDelete];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-delete.png"] title:NSLocalizedString(@"action.delete", @"Delete") identifier:kActionCollectionIdentifierDelete];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

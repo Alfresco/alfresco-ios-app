@@ -236,7 +236,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"repository.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
         }
     }];
@@ -247,7 +247,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"repository.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-liked.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
     }];
@@ -355,7 +355,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"repository.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-liked.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
     }];
@@ -368,7 +368,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierLike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.like", @"Like Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"sync-status-success.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unliked.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnlike userInfo:userInfo];
         }
     }];
@@ -381,7 +381,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"repository.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
         }
     }];
@@ -394,7 +394,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"sync-status-success.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavourited.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
         }
     }];
