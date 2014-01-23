@@ -235,7 +235,15 @@ static CGFloat const kExpandButtonRotationSpeed = 0.3f;
         }
         
         AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPathOfSelectedCell.row];
-        self.expandedCellMetadataController = [[MetaDataViewController alloc] initWithAlfrescoNode:currentDocument session:self.session];
+        
+        if (!self.expandedCellMetadataController)
+        {
+            self.expandedCellMetadataController = [[MetaDataViewController alloc] initWithAlfrescoNode:currentDocument session:self.session];
+        }
+        else
+        {
+            self.expandedCellMetadataController.node = currentDocument;
+        }
         
         cell.metadataTableview.delegate = self.expandedCellMetadataController;
         cell.metadataTableview.dataSource = self.expandedCellMetadataController;
