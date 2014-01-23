@@ -12,10 +12,14 @@
 #import "MetaDataViewController.h"
 #import "DownloadManager.h"
 
-@interface VersionHistoryViewController ()
+static CGFloat const kExpandButtonRotationSpeed = 0.3f;
+
+@interface VersionHistoryViewController () <VersionHistoryCellDelegate>
 
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) AlfrescoVersionService *versionService;
+@property (nonatomic, strong) MetaDataViewController *expandedCellMetadataController;
+@property (nonatomic, strong) NSIndexPath *expandedCellIndexPath;
 
 @end
 
@@ -42,6 +46,7 @@
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [view addSubview:self.tableView];
     
     view.autoresizesSubviews = YES;
@@ -113,6 +118,13 @@
     [self.navigationController pushViewController:metadataViewController animated:YES];
 }
 
+- (void)rotateView:(UIView *)view duration:(CGFloat)duration angle:(CGFloat)angle
+{
+    [UIView animateWithDuration:duration animations:^{
+        view.transform = CGAffineTransformMakeRotation(angle);
+    }];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -124,7 +136,16 @@
 {
     VersionHistoryCell *cell = (VersionHistoryCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGFloat height = 0;
+    
+    if ([indexPath isEqual:self.expandedCellIndexPath])
+    {
+        height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
+    }
+    else
+    {
+        height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    }
     
     return height;
 }
@@ -137,6 +158,7 @@
     if (!versionHistoryCell)
     {
         versionHistoryCell = (VersionHistoryCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VersionHistoryCell class]) owner:self options:nil] lastObject];
+        versionHistoryCell.delegate = self;
     }
     
     AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPath.row];
@@ -191,6 +213,41 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - VersionHistoryCellDelegate
+
+- (void)cell:(VersionHistoryCell *)cell didPressExpandButton:(UIButton *)button
+{
+    NSIndexPath *indexPathOfSelectedCell = [self.tableView indexPathForCell:cell];
+    
+    if ([indexPathOfSelectedCell isEqual:self.expandedCellIndexPath])
+    {
+        [self rotateView:button duration:kExpandButtonRotationSpeed angle:0.0f];
+        self.expandedCellIndexPath = nil;
+    }
+    else
+    {
+        if (self.expandedCellIndexPath)
+        {
+            VersionHistoryCell *previouslySelectedCell = (VersionHistoryCell *)[self.tableView cellForRowAtIndexPath:self.expandedCellIndexPath];
+            [self rotateView:previouslySelectedCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+        }
+        
+        AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPathOfSelectedCell.row];
+        self.expandedCellMetadataController = [[MetaDataViewController alloc] initWithAlfrescoNode:currentDocument session:self.session];
+        
+        cell.metadataTableview.delegate = self.expandedCellMetadataController;
+        cell.metadataTableview.dataSource = self.expandedCellMetadataController;
+        [cell.metadataTableview reloadData];
+        
+        [self rotateView:button duration:kExpandButtonRotationSpeed angle:M_PI];
+        
+        self.expandedCellIndexPath = indexPathOfSelectedCell;
+    }
+    
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 @end
