@@ -125,6 +125,7 @@ static NSString * const kCloudAccountKey = @"kCloudAccountKey";
         account.protocol = self.protocol;
         account.serviceDocument = self.serviceDocument;
         account.accountType = self.accountType;
+        account.accountCertificate = self.accountCertificate;
     }
     return account;
 }
