@@ -21,8 +21,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 @property (nonatomic, strong) NSDictionary *propertiesToDisplayWithValues;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, strong, readwrite) AlfrescoNode *node;
-@property (nonatomic, strong) AlfrescoTaggingService *tagService;
 
 @end
 
@@ -34,7 +32,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     if (self)
     {
         self.node = node;
-        self.tagService = [[AlfrescoTaggingService alloc] initWithSession:session];
         [self setupMetadataToDisplayWithNode:node];
     }
     return self;
@@ -49,23 +46,17 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     self.title = self.node.name;
-    [self retrieveTagsForNode:self.node];
+}
+
+#pragma mark - Custom Setters
+
+- (void)setNode:(AlfrescoNode *)node
+{
+    _node = node;
+    [self setupMetadataToDisplayWithNode:node];
 }
 
 #pragma mark - Private Functions
-
-- (void)retrieveTagsForNode:(AlfrescoNode *)node
-{
-    [self.tagService retrieveTagsForNode:node completionBlock:^(NSArray *array, NSError *error) {
-        if (array.count > 0 && self.tableViewData.count > 0)
-        {
-            NSString *tags = [[array valueForKeyPath:@"value"] componentsJoinedByString:@", "];
-            [self.propertiesToDisplayWithValues setValue:tags forKey:kNodeTagsKey];
-            [self.tableViewData[0] addObject:kNodeTagsKey];
-            [self.tableView reloadData];
-        }
-    }];
-}
 
 - (void)setupMetadataToDisplayWithNode:(AlfrescoNode *)node
 {

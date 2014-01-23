@@ -14,7 +14,7 @@
 
 @interface MetaDataViewController : ParentListViewController <ItemInDetailViewProtocol>
 
-@property (nonatomic, strong, readonly) AlfrescoNode *node;
+@property (nonatomic, strong) AlfrescoNode *node;
 
 - (id)initWithAlfrescoNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session;
 
