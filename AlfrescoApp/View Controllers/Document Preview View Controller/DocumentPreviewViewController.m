@@ -45,11 +45,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 @property (nonatomic, strong, readwrite) MBProgressHUD *progressHUD;
 @property (nonatomic, strong, readwrite) NSString *previewImageFolderURLString;
 @property (nonatomic, weak, readwrite) IBOutlet ThumbnailImageView *documentThumbnail;
-@property (nonatomic, weak, readwrite) IBOutlet UIView *shareMenuContainer;
+@property (nonatomic, weak, readwrite) IBOutlet ActionCollectionView *actionMenuView;
 @property (nonatomic, weak, readwrite) IBOutlet PagedScrollView *pagingScrollView;
 @property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *pagingSegmentControl;
 @property (nonatomic, strong, readwrite) NSMutableArray *pagingControllers;
-//@property (nonatomic, strong, readwrite) PreviewViewController *hiddenPreviewController;
 @property (nonatomic, strong, readwrite) UIDocumentInteractionController *documentInteractionController;
 
 @end
@@ -255,41 +254,36 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)createAndAddActionCollectionView
 {
-    NSMutableArray *firstRowItems = [NSMutableArray arrayWithObjects:[ActionCollectionItem favouriteItem],
-                                     [ActionCollectionItem likeItem],
-                                     [ActionCollectionItem downloadItem],
-                                     nil];
-    NSMutableArray *secondRowItems = [NSMutableArray arrayWithObjects:[ActionCollectionItem openInItem], nil];
+    NSMutableArray *items = [NSMutableArray array];
+    
+    [items addObject:[ActionCollectionItem favouriteItem]];
+    [items addObject:[ActionCollectionItem likeItem]];
+    [items addObject:[ActionCollectionItem downloadItem]];
+    
     
     if (self.documentPermissions.canComment)
     {
-        [firstRowItems addObject:[ActionCollectionItem commentItem]];
-    }
-    
-    if (self.documentPermissions.canDelete)
-    {
-        [firstRowItems addObject:[ActionCollectionItem deleteItem]];
+        [items addObject:[ActionCollectionItem commentItem]];
     }
     
     if ([MFMailComposeViewController canSendMail])
     {
-        [secondRowItems addObject:[ActionCollectionItem emailItem]];
+        [items addObject:[ActionCollectionItem emailItem]];
     }
     
     if (![Utility isAudioOrVideo:self.document.name])
     {
-        [secondRowItems addObject:[ActionCollectionItem printItem]];
+        [items addObject:[ActionCollectionItem printItem]];
     }
     
-    ActionCollectionRow *alfrescoActions = [[ActionCollectionRow alloc] initWithItems:firstRowItems];
-    ActionCollectionRow *shareRow = [[ActionCollectionRow alloc] initWithItems:secondRowItems];
-    ActionCollectionView *actionView = [[ActionCollectionView alloc] initWithRows:@[alfrescoActions, shareRow] delegate:self];
+    [items addObject:[ActionCollectionItem openInItem]];
     
-    [self.shareMenuContainer addSubview:actionView];
+    if (self.documentPermissions.canDelete)
+    {
+        [items addObject:[ActionCollectionItem deleteItem]];
+    }
     
-    NSDictionary *views = NSDictionaryOfVariableBindings(actionView);
-    [self.shareMenuContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[actionView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
-    [self.shareMenuContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[actionView]|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
+    self.actionMenuView.items = items;
 }
 
 #pragma mark - IBActions
@@ -568,14 +562,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
                 self.documentInteractionController = docController;
             }
             
-            if (IS_IPAD)
-            {
-                [self.documentInteractionController presentOpenInMenuFromRect:cell.frame inView:view animated:YES];
-            }
-            else
-            {
-                [self.documentInteractionController presentPreviewAnimated:YES];
-            }
+            [self.documentInteractionController presentOpenInMenuFromRect:cell.frame inView:view animated:YES];
         }
     }];
 }

@@ -7,10 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DocumentPreviewViewController">
             <connections>
+                <outlet property="actionMenuView" destination="she-YW-fRt" id="c6L-IM-UuZ"/>
                 <outlet property="documentThumbnail" destination="ajv-mC-8Oc" id="yKS-EV-BsY"/>
                 <outlet property="pagingScrollView" destination="aHo-93-a2B" id="Gx3-As-0Ck"/>
                 <outlet property="pagingSegmentControl" destination="Fa9-gb-l3D" id="0vw-Sa-2G4"/>
-                <outlet property="shareMenuContainer" destination="she-YW-fRt" id="Dvd-BJ-7Dl"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -19,16 +19,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="she-YW-fRt">
-                    <rect key="frame" x="0.0" y="428" width="320" height="140"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="she-YW-fRt" customClass="ActionCollectionView">
+                    <rect key="frame" x="0.0" y="468" width="320" height="100"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="140" id="Zdi-cE-VBX"/>
+                        <constraint firstAttribute="height" constant="100" id="Zdi-cE-VBX"/>
                     </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="cZT-qK-lhm"/>
+                    </connections>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHo-93-a2B" customClass="PagedScrollView">
-                    <rect key="frame" x="0.0" y="48" width="320" height="372"/>
+                    <rect key="frame" x="0.0" y="48" width="320" height="412"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="354" id="Xdr-cG-EuU"/>

@@ -11,32 +11,27 @@
 #import "UICollectionView+AutoLayout.h"
 #import "Utility.h"
 
-static CGFloat const kActualSizePrority = 1000.0f;
-static CGFloat const kDefaultMinRowHeight = 40.0f;
-static CGFloat const kMinRowHeightPriority = 900.0f;
-static CGFloat const kDefaultMaxRowHeight = 200.0f;
-static CGFloat const kMaxRowHeightPriority = 750.0f;
+static CGFloat const kSpacingBetweenCells = 5.0f;
+static CGFloat const kiPadCellWidth = 76.0f;
+static CGFloat const kiPhoneCellWidth = 76.0f;
 
 @interface ActionCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) NSArray *rows;
-@property (nonatomic, strong) NSMutableArray *collectionViews;
-@property (nonatomic, weak) id<ActionCollectionViewDelegate> delegate;
+@property (nonatomic, weak) UICollectionView *collectionView;
 
 @end
 
 @implementation ActionCollectionView
 
-- (instancetype)initWithRows:(NSArray *)rows delegate:(id<ActionCollectionViewDelegate>)delegate
+- (instancetype)initWithItems:(NSArray *)items delegate:(id<ActionCollectionViewDelegate>)delegate
 {
     self = [super init];
     if (self)
     {
-        self.rows = rows;
+        self.items = items;
         self.delegate = delegate;
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.collectionViews = [NSMutableArray array];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
+        [self setup];
     }
     return self;
 }
@@ -46,102 +41,63 @@ static CGFloat const kMaxRowHeightPriority = 750.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setup
+- (void)awakeFromNib
 {
-    for (ActionCollectionRow *row in self.rows)
-    {
-        UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
-        flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        
-        UICollectionView *collectionView = [[UICollectionView alloc] initAutoLayoutWithCollectionViewLayout:flow];
-        collectionView.delegate = self;
-        collectionView.dataSource = self;
-        collectionView.showsHorizontalScrollIndicator = NO;
-        collectionView.showsVerticalScrollIndicator = NO;
-        collectionView.backgroundColor = [UIColor lightTextColor];
-        [self addSubview:collectionView];
-        
-        UINib *nib = [UINib nibWithNibName:NSStringFromClass([ActionCollectionViewCell class]) bundle:[NSBundle mainBundle]];
-        [collectionView registerNib:nib forCellWithReuseIdentifier:@"ActionCell"];
-
-        [self.collectionViews addObject:collectionView];
-        
-        NSDictionary *dictionary = NSDictionaryOfVariableBindings(collectionView);
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:dictionary]];
-    }
-    
-    NSDictionary *viewBindings = dictionaryOfVariableBindingsWithArray(self.collectionViews);
-    NSString *verticalVisualFormatLanguage = [self buildVerticalConstraintsStringForBindingsOfCollectionViews:viewBindings];
-    
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatLanguage options:NSLayoutFormatAlignAllCenterX metrics:nil views:viewBindings]];
+    [self setup];
 }
 
-- (void)didMoveToSuperview
+- (void)setup
 {
-    [self.collectionViews removeAllObjects];
-    [self removeConstraints:self.constraints];
-    [self removeAllSubviews];
-    [self setup];
+    UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
+    flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    UICollectionView *collectionView = [[UICollectionView alloc] initAutoLayoutWithCollectionViewLayout:flow];
+    collectionView.delegate = self;
+    collectionView.dataSource = self;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.backgroundColor = [UIColor lightTextColor];
+    [self addSubview:collectionView];
+    self.collectionView = collectionView;
+    
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([ActionCollectionViewCell class]) bundle:[NSBundle mainBundle]];
+    [collectionView registerNib:nib forCellWithReuseIdentifier:@"ActionCell"];
+    
+    NSDictionary *viewBindings = NSDictionaryOfVariableBindings(collectionView);
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|" options:0 metrics:nil views:viewBindings]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|" options:0 metrics:nil views:viewBindings]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
+}
+
+#pragma mark - Custom Setters
+
+- (void)setItems:(NSArray *)items
+{
+    _items = items;
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Private Functions
 
 - (void)handleUpdateNotification:(NSNotification *)notification
 {
-    for (UICollectionView *collectionView in self.collectionViews)
-    {
-        [collectionView reloadData];
-    }
-}
-
-- (NSString *)buildVerticalConstraintsStringForBindingsOfCollectionViews:(NSDictionary *)bindings
-{
-    NSArray *allViewKeys = [bindings allKeys];
-    NSMutableString *verticalConstraintsString = [[NSMutableString alloc] initWithString:@"V:"];
-    for (int i = 0; i  < allViewKeys.count; i++)
-    {
-        if (i == 0)
-        {
-            [verticalConstraintsString appendString:@"|"];
-        }
-        
-        NSString *currentViewKey = allViewKeys[i];
-        [verticalConstraintsString appendString:[NSString stringWithFormat:@"[%@(<=%f@%f,>=%f@%f,==%f@%f)]",
-                                          currentViewKey, kDefaultMaxRowHeight, kMaxRowHeightPriority, kDefaultMinRowHeight, kMinRowHeightPriority,
-                                          self.superview.bounds.size.height/self.collectionViews.count, kActualSizePrority]];
-        
-        if (i == (allViewKeys.count - 1))
-        {
-            [verticalConstraintsString appendString:@"|"];
-        }
-    }
-    return verticalConstraintsString;
-}
-
-- (void)removeAllSubviews
-{
-    for (UIView *subview in self.subviews)
-    {
-        [subview removeFromSuperview];
-    }
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource Functions
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSUInteger collectionViewIndexPath = [self.collectionViews indexOfObject:collectionView];
-    ActionCollectionRow *rowLocation = [self.rows objectAtIndex:collectionViewIndexPath];
-    return rowLocation.rowItems.count;
+    return self.items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ActionCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ActionCell" forIndexPath:indexPath];
-    
-    NSUInteger collectionViewIndexPath = [self.collectionViews indexOfObject:collectionView];
-    ActionCollectionRow *actionRow = [self.rows objectAtIndex:collectionViewIndexPath];
-    ActionCollectionItem *itemSelected = [actionRow.rowItems objectAtIndex:indexPath.row];
+
+    ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
     cell.imageView.image = itemSelected.itemImage;
     cell.titleLabel.text = itemSelected.itemTitle;
     
@@ -152,9 +108,7 @@ static CGFloat const kMaxRowHeightPriority = 750.0f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSUInteger collectionViewIndexPath = [self.collectionViews indexOfObject:collectionView];
-    ActionCollectionRow *actionRow = [self.rows objectAtIndex:collectionViewIndexPath];
-    ActionCollectionItem *itemSelected = [actionRow.rowItems objectAtIndex:indexPath.row];
+    ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
     
     UICollectionViewCell *selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
     
@@ -165,7 +119,19 @@ static CGFloat const kMaxRowHeightPriority = 750.0f;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(collectionView.frame.size.height, collectionView.frame.size.height);
+    CGSize cellSize = CGSizeMake(kiPhoneCellWidth, collectionView.frame.size.height);
+    
+    if (IS_IPAD)
+    {
+        cellSize.width = kiPadCellWidth;
+    }
+    
+    return cellSize;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, kSpacingBetweenCells, 0, kSpacingBetweenCells);
 }
 
 @end
