@@ -82,7 +82,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     [self.documentThumbnail addGestureRecognizer:imageTap];
     
     // collection view
-    [self createAndAddActionCollectionView];
+    [self setupActionCollectionView];
     
     // setup the paging view
     [self setupPagingScrollView];
@@ -252,7 +252,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }];
 }
 
-- (void)createAndAddActionCollectionView
+- (void)setupActionCollectionView
 {
     NSMutableArray *items = [NSMutableArray array];
     
