@@ -18,6 +18,9 @@
 
 @interface ActionCollectionView : UIView
 
-- (instancetype)initWithRows:(NSArray *)rows delegate:(id<ActionCollectionViewDelegate>)delegate;
+@property (nonatomic, strong) NSArray *items;
+@property (nonatomic, weak) IBOutlet id<ActionCollectionViewDelegate> delegate;
+
+- (instancetype)initWithItems:(NSArray *)items delegate:(id<ActionCollectionViewDelegate>)delegate;
 
 @end

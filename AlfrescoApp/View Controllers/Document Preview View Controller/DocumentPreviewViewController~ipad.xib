@@ -7,10 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DocumentPreviewViewController">
             <connections>
+                <outlet property="actionMenuView" destination="jWJ-GZ-Bv7" id="vjt-iw-lL3"/>
                 <outlet property="documentThumbnail" destination="0zh-qj-0qe" id="UPP-ia-ay6"/>
                 <outlet property="pagingScrollView" destination="W5I-8h-eej" id="dkl-cr-jK3"/>
                 <outlet property="pagingSegmentControl" destination="Wf6-TO-B0e" id="Qfy-s5-U0V"/>
-                <outlet property="shareMenuContainer" destination="jWJ-GZ-Bv7" id="wer-Jk-nvB"/>
                 <outlet property="view" destination="1" id="zQc-V0-u7o"/>
             </connections>
         </placeholder>
@@ -19,16 +19,19 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWJ-GZ-Bv7">
-                    <rect key="frame" x="0.0" y="864" width="768" height="160"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWJ-GZ-Bv7" customClass="ActionCollectionView">
+                    <rect key="frame" x="0.0" y="924" width="768" height="100"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="160" id="EUy-o0-kGO"/>
+                        <constraint firstAttribute="height" constant="100" id="EUy-o0-kGO"/>
                     </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="AyZ-Ns-Et4"/>
+                    </connections>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5I-8h-eej" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="56" width="728" height="798"/>
+                    <rect key="frame" x="20" y="48" width="728" height="866"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="792" id="ZR9-Yf-zzE"/>
@@ -38,7 +41,7 @@
                     </connections>
                 </scrollView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="261" y="14" width="247" height="29"/>
+                    <rect key="frame" x="261.00000351353697" y="10" width="247" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="qv4-4a-6Ij"/>
@@ -56,10 +59,10 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Wf6-TO-B0e" firstAttribute="top" secondItem="1" secondAttribute="top" constant="14" id="4Sb-vb-7xL"/>
+                <constraint firstItem="Wf6-TO-B0e" firstAttribute="top" secondItem="1" secondAttribute="top" constant="10" id="4Sb-vb-7xL"/>
                 <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="top" secondItem="W5I-8h-eej" secondAttribute="bottom" constant="10" id="99P-9X-niS"/>
                 <constraint firstAttribute="trailing" secondItem="jWJ-GZ-Bv7" secondAttribute="trailing" id="EpE-dK-mMi"/>
-                <constraint firstItem="W5I-8h-eej" firstAttribute="top" secondItem="Wf6-TO-B0e" secondAttribute="bottom" constant="14" id="G5m-oE-IqO"/>
+                <constraint firstItem="W5I-8h-eej" firstAttribute="top" secondItem="Wf6-TO-B0e" secondAttribute="bottom" constant="10" id="G5m-oE-IqO"/>
                 <constraint firstAttribute="bottom" secondItem="jWJ-GZ-Bv7" secondAttribute="bottom" id="Jav-OD-dZY"/>
                 <constraint firstItem="W5I-8h-eej" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="Nfk-7l-5b1"/>
                 <constraint firstAttribute="centerX" secondItem="Wf6-TO-B0e" secondAttribute="centerX" id="a9D-7J-mp8"/>

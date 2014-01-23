@@ -66,7 +66,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                                    NSLocalizedString(@"sites.segmentControl.mysites", @"My Sites"),
                                    NSLocalizedString(@"sites.segmentControl.allsites", @"All Sites")]];
     segment.frame = CGRectMake((view.frame.origin.x + (kSegmentHorizontalPadding / 2)),
-                               (view.frame.origin.y + (kSegmentVerticalPadding / 2)),
+                               (view.frame.origin.y + kSegmentVerticalPadding),
                                view.frame.size.width - kSegmentVerticalPadding,
                                kSegmentControllerHeight - kSegmentVerticalPadding);
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
@@ -96,6 +96,8 @@ static CGFloat kSearchCellHeight = 60.0f;
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.delegate = self;
+    searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    searchBar.backgroundColor = [UIColor whiteColor];
     self.searchBar = searchBar;
     
     // search controller
