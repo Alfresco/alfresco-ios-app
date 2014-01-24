@@ -23,6 +23,22 @@ extern NSString * const kHTTPMethodGET;
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
 
+// App Configuration
+extern NSString * const kAppConfigurationFileLocationOnServer;
+extern NSString * const kAppConfigurationActivitiesKey;
+extern NSString * const kAppConfigurationFavoritesKey;
+extern NSString * const kAppConfigurationLocalFilesKey;
+extern NSString * const kAppConfigurationNotificationsKey;
+extern NSString * const kAppConfigurationRepositoryKey;
+extern NSString * const kAppConfigurationSearchKey;
+extern NSString * const kAppConfigurationSitesKey;
+extern NSString * const kAppConfigurationTasksKey;
+extern NSString * const kAppConfigurationMyFilesKey;
+extern NSString * const kAppConfigurationSharedFilesKey;
+
+// App Configuration Notifications
+extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;
+
 // Notificiations
 extern NSString * const kAlfrescoSessionReceivedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;

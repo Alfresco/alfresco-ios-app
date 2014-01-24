@@ -7,12 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "SitesListViewController.h"
-#import "FileFolderListViewController.h"
 #import "PlaceholderViewController.h"
-#import "ActivitiesViewController.h"
-#import "TaskViewController.h"
-#import "MoreViewController.h"
 #import "Utility.h"
 #import "LoginManager.h"
 #import "FileURLHandler.h"
@@ -23,15 +18,11 @@
 #import "DetailSplitViewController.h"
 #import "MainMenuViewController.h"
 #import "SwitchViewController.h"
-#import "PreviewViewController.h"
-#import "AboutViewController.h"
-#import "DownloadsViewController.h"
-#import "SyncViewController.h"
-#import "SettingsViewController.h"
 #import "AccountsViewController.h"
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
+#import "AppConfigurationManager.h"
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -71,6 +62,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 #endif
 
     AccountManager *accountManager = [AccountManager sharedManager];
+    [AppConfigurationManager sharedManager];
     
     BOOL isFirstLaunch = [self isAppFirstLaunch];
     if (isFirstLaunch)
@@ -138,50 +130,17 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 {
     RootRevealControllerViewController *rootRevealViewController = nil;
     
-    // View controllers
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
-    DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:session];
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:session];
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-    PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
-    
-    // Navigation controllers
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
-    NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
-    NavigationViewController *settingsNavigationController = [[NavigationViewController alloc] initWithRootViewController:settingsViewController];
-    NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
-    NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
-    
     MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAccounts
                                                                     imageName:@"account-main-menu.png"
                                                             localizedTitleKey:@"accounts.title"
                                                                viewController:accountsNavigationController
                                                               displayInDetail:NO];
     
-    MainMenuItem *downloadsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
-                                                                     imageName:@"download-main-menu.png"
-                                                             localizedTitleKey:@"Downloads"
-                                                                viewController:downloadsNavigationController
-                                                               displayInDetail:NO];
-    MainMenuItem *settingsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSettings
-                                                                    imageName:@"settings-main-menu.png"
-                                                            localizedTitleKey:@"settings.title"
-                                                               viewController:settingsNavigationController
-                                                            displayInDetail:YES];
-    MainMenuItem *aboutItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAbout
-                                                                 imageName:@"about-more.png"
-                                                         localizedTitleKey:@"about.title"
-                                                            viewController:aboutNavigationController
-                                                           displayInDetail:YES];
-    MainMenuItem *helpItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
-                                                                imageName:@"help-more.png"
-                                                        localizedTitleKey:@"Help"
-                                                           viewController:helpNavigationController
-                                                          displayInDetail:YES];
-
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
-    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithAccountsSectionItems:@[accountsItem] localSectionItems:@[settingsItem, downloadsItem, aboutItem, helpItem]];
+    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithAccountsSectionItems:@[accountsItem]];
     mainMenuController.delegate = switchController;
     
     rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];

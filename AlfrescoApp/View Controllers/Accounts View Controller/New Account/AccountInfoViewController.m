@@ -76,7 +76,9 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     [super viewDidLoad];
     
     self.title = self.account.accountDescription;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     [self disablePullToRefresh];
+    [self constructTableCellsForAlfrescoServer];
     
     if (self.activityType == AccountActivityTypeViewAccount)
     {
@@ -87,6 +89,8 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     }
     else
     {
+        [self.usernameTextField becomeFirstResponder];
+        
         if (self.activityType == AccountActivityTypeNewAccount)
         {
             self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
@@ -109,9 +113,8 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 {
     [super viewWillAppear:animated];
     
-    [self constructTableCellsForAlfrescoServer];
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
-    [self.tableView reloadData];
+    self.certificateLabel.text = self.formBackupAccount.accountCertificate.summary;
     
     if (self.activityType != AccountActivityTypeViewAccount)
     {
@@ -256,6 +259,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
     certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
     certificateCell.valueLabel.text = self.account.accountCertificate.summary;
+    self.certificateLabel = certificateCell.valueLabel;
     
     if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
     {

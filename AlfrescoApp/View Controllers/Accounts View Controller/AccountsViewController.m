@@ -224,6 +224,10 @@ static CGFloat const kDefaultFontSize = 18.0f;
             [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
         }
     }
+    else
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
