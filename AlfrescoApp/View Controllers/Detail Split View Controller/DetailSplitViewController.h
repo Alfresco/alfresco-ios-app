@@ -24,5 +24,7 @@
 
 - (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController;
 - (void)expandOrCollapse;
+- (void)expandViewController;
+- (void)collapseViewController;
 
 @end

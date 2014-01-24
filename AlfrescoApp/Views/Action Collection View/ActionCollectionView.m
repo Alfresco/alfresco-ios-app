@@ -10,10 +10,13 @@
 #import "ActionCollectionViewCell.h"
 #import "UICollectionView+AutoLayout.h"
 #import "Utility.h"
+#import "UIView+DrawingUtils.h"
 
 static CGFloat const kSpacingBetweenCells = 5.0f;
 static CGFloat const kiPadCellWidth = 76.0f;
 static CGFloat const kiPhoneCellWidth = 76.0f;
+static CGFloat const kLineButtonPadding = 10.0f;
+static CGFloat const kLineSeparatorThickness = 1.0f;
 
 @interface ActionCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -46,6 +49,15 @@ static CGFloat const kiPhoneCellWidth = 76.0f;
     [self setup];
 }
 
+- (void)drawRect:(CGRect)rect
+{
+    CGPoint startPoint = CGPointMake(0, 0);
+    CGPoint endPoint = CGPointMake(self.frame.size.width, 0);
+    UIColor *blackColour = [UIColor blackColor];
+    
+    [self drawLineFromPoint:startPoint toPoint:endPoint lineThickness:kLineSeparatorThickness colour:blackColour];
+}
+
 - (void)setup
 {
     UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
@@ -63,10 +75,12 @@ static CGFloat const kiPhoneCellWidth = 76.0f;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([ActionCollectionViewCell class]) bundle:[NSBundle mainBundle]];
     [collectionView registerNib:nib forCellWithReuseIdentifier:@"ActionCell"];
     
+    
     NSDictionary *viewBindings = NSDictionaryOfVariableBindings(collectionView);
+    NSDictionary *metrics = @{@"kLineButtonPadding" : [NSNumber numberWithFloat:kLineButtonPadding]};
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|" options:0 metrics:nil views:viewBindings]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|" options:0 metrics:nil views:viewBindings]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kLineButtonPadding-[collectionView]|" options:0 metrics:metrics views:viewBindings]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
 }

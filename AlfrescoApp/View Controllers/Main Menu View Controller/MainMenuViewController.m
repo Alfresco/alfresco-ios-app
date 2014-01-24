@@ -15,6 +15,8 @@
 #import "SyncViewController.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
+#import "UniversalDevice.h"
+#import "DetailSplitViewController.h"
 
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
@@ -119,6 +121,9 @@ static NSUInteger const kRepositoryItemsSectionNumber = 1;
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
     [self informDelegateMenuItemSelected:selectedMenuItem];
+    
+    DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
+    [detailSplitViewController expandViewController];
 }
 
 #pragma mark - Private Functions

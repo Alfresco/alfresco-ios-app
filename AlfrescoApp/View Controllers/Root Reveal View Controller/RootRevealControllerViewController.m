@@ -75,7 +75,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     panGesture.delegate = self;
     self.panGesture = panGesture;
-    [self.detailViewContainer addGestureRecognizer:panGesture];
+    [view addGestureRecognizer:panGesture];
     
     [view bringSubviewToFront:detailViewContainer];
     view.backgroundColor = [UIColor lightGrayColor];
