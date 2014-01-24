@@ -15,6 +15,8 @@
 #import "SyncViewController.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
+#import "UniversalDevice.h"
+#import "DetailSplitViewController.h"
 #import "AppConfigurationManager.h"
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
@@ -127,6 +129,9 @@ static NSUInteger const kDownloadsRowNumber = 1;
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
     [self informDelegateMenuItemSelected:selectedMenuItem];
+    
+    DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
+    [detailSplitViewController expandViewController];
 }
 
 #pragma mark - Notification Methods
