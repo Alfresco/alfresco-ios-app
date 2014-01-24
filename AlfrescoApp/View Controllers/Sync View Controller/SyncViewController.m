@@ -33,6 +33,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, strong) UILabel *tableViewFooter;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
+
 @end
 
 @implementation SyncViewController

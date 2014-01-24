@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 @interface AccountManager : NSObject
 
 @property (nonatomic, strong, readonly) UserAccount *selectedAccount;
-@property (nonatomic, strong, readonly) id<AlfrescoSession> alfrescoSessionForSelectedAccount;
 
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;

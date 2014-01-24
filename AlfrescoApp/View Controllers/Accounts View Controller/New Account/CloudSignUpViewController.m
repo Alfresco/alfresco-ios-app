@@ -301,8 +301,6 @@ static NSString * const kSource = @"mobile";
                 [accountManager saveAccountsToKeychain];
                 displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.verified", @"The Account is now..."));
                 
-                // Authenticate account and use temporary session if there are other accounts configured - if total number of accounts is 1 it means this is the only account
-                BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 1);
                 [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
                     
                     if (successful)
@@ -311,8 +309,7 @@ static NSString * const kSource = @"mobile";
                         // select this account as selected Account if this is the only account configured
                         if (accountManager.totalNumberOfAddedAccounts == 1)
                         {
-                            id<AlfrescoSession> session = useTemporarySession ? nil : alfrescoSession;
-                            [accountManager selectAccount:self.account selectNetwork:[self.account.accountNetworks firstObject] alfrescoSession:session];
+                            [accountManager selectAccount:self.account selectNetwork:[self.account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
                         }
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
                     }
