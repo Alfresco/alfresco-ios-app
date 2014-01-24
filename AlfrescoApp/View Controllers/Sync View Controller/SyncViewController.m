@@ -67,10 +67,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     self.tableViewFooter = [[UILabel alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(selectedAccountChanged:)
-                                                 name:kAlfrescoSelectedAccountChangedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(statusChanged:)
                                                  name:kSyncStatusChangeNotification
                                                object:nil];
@@ -116,11 +112,10 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     [self.tableView reloadData];
 }
 
-- (void)selectedAccountChanged:(NSNotification *)notification
+- (void)sessionReceived:(NSNotification *)notification
 {
-    NSDictionary *userInfo = notification.userInfo;
-    id session = [userInfo objectForKey:kAlfrescoSelectedAccountSession];
-    self.session = (session == [NSNull null]) ? nil :  session;
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])

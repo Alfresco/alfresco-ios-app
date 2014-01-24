@@ -15,10 +15,9 @@
 
 + (id)sharedManager;
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))loginCompletionBlock;
-- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock;
+- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock;
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
-                temporarySession:(BOOL)temporarySession
              navigationConroller:(UINavigationController *)navigationController
                  completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))authenticationCompletionBlock;
 

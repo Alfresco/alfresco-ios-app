@@ -72,7 +72,13 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     }
     else if (accountManager.selectedAccount)
     {
-        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:nil];
+        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+            
+            if (alfrescoSession)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+            }
+        }];
     }
     
     return YES;

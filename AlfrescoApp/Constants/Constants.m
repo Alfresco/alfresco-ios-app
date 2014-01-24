@@ -54,13 +54,10 @@ NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey = @"AlfrescoDocume
 NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDownloadedIdentifierKey";
 
 // Accounts
-NSString * const kAlfrescoSelectedAccount = @"AlfrescoSelectedAccount";
-NSString * const kAlfrescoSelectedAccountSession = @"kAlfrescoSelectedAccountSession";
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";
 NSString * const kAlfrescoAccountRemovedNotification = @"AlfrescoAccountRemovedNotification";
 NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedNotification";
 NSString * const kAlfrescoAccountsListEmptyNotification = @"AlfrescoAccountsListEmptyNotification";
-NSString * const kAlfrescoSelectedAccountChangedNotification = @"AlfrescoSelectedAccountChangedNotification";
 
 // Application policy constants
 NSString * const kApplicationPolicySettings = @"ApplicationPolicySettings";

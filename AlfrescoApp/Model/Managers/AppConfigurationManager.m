@@ -342,39 +342,46 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    NSString *dataDictionaryPathKey = [kRepositoryDataDictionaryPathKey stringByReplacingOccurrencesOfString:kRepositoryId withString:self.alfrescoSession.repositoryInfo.identifier];
-    NSString *dataDictionaryPath = [userDefaults objectForKey:dataDictionaryPathKey];
-    
-    if (dataDictionaryPath)
+    if (self.alfrescoSession)
     {
-        completionBlock(dataDictionaryPath);
-    }
-    else
-    {
-        NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:dictionary\"')";
-        [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-            
-            if (error)
-            {
-                AlfrescoLogDebug(@"Could not retrieve Data Dictionary: %@", error);
-                completionBlock(nil);
-            }
-            else
-            {
-                AlfrescoFolder *dataDictionaryFolder = [resultsArray firstObject];
-                if (dataDictionaryFolder)
+        NSString *dataDictionaryPathKey = [kRepositoryDataDictionaryPathKey stringByReplacingOccurrencesOfString:kRepositoryId withString:self.alfrescoSession.repositoryInfo.identifier];
+        NSString *dataDictionaryPath = [userDefaults objectForKey:dataDictionaryPathKey];
+        
+        if (dataDictionaryPath)
+        {
+            completionBlock(dataDictionaryPath);
+        }
+        else
+        {
+            NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:dictionary\"')";
+            [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+                
+                if (error)
                 {
-                    NSString *configurationFileLocationOnServer = [NSString stringWithFormat:@"/%@/%@", dataDictionaryFolder.name, kAppConfigurationFileLocationOnServer];
-                    [userDefaults setObject:configurationFileLocationOnServer forKey:dataDictionaryPathKey];
-                    [userDefaults synchronize];
-                    completionBlock(configurationFileLocationOnServer);
+                    AlfrescoLogDebug(@"Could not retrieve Data Dictionary: %@", error);
+                    completionBlock(nil);
                 }
                 else
                 {
-                    completionBlock(nil);
+                    AlfrescoFolder *dataDictionaryFolder = [resultsArray firstObject];
+                    if (dataDictionaryFolder)
+                    {
+                        NSString *configurationFileLocationOnServer = [NSString stringWithFormat:@"/%@/%@", dataDictionaryFolder.name, kAppConfigurationFileLocationOnServer];
+                        [userDefaults setObject:configurationFileLocationOnServer forKey:dataDictionaryPathKey];
+                        [userDefaults synchronize];
+                        completionBlock(configurationFileLocationOnServer);
+                    }
+                    else
+                    {
+                        completionBlock(nil);
+                    }
                 }
-            }
-        }];
+            }];
+        }
+    }
+    else
+    {
+        completionBlock(nil);
     }
 }
 

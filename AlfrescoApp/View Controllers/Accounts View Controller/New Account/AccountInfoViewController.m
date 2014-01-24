@@ -431,14 +431,13 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
         
         [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
             
             [self hideHUD];
             if (successful)
             {
                 updateAccountInfo(self.formBackupAccount);
                 useTemporarySession ? completionBlock(YES, nil) : completionBlock(YES, alfrescoSession);
-                
             }
             else
             {

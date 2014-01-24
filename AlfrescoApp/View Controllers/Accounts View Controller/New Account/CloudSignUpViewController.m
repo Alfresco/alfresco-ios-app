@@ -303,7 +303,7 @@ static NSString * const kSource = @"mobile";
                 
                 // Authenticate account and use temporary session if there are other accounts configured - if total number of accounts is 1 it means this is the only account
                 BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 1);
-                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil temporarySession:useTemporarySession navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
                     
                     if (successful)
                     {

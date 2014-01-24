@@ -81,7 +81,7 @@
             
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [self showHUDOnView:delegate.window];
-            [self authenticateOnPremiseAccount:account password:account.password temporarySession:NO completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+            [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
                 [self hideHUD];
                 if (!successful)
                 {
@@ -92,7 +92,7 @@
         }
         else
         {
-            [self authenticateCloudAccount:account networkId:networkId temporarySession:NO navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+            [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
                 
                 logInSuccessful(successful, session);
             }];
@@ -111,7 +111,6 @@
 
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
-                temporarySession:(BOOL)temporarySession
              navigationConroller:(UINavigationController *)navigationController
                  completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))authenticationCompletionBlock
 {
@@ -145,13 +144,6 @@
                         [sortedNetworks insertObject:network.identifier atIndex:index];
                     }
                     account.accountNetworks = sortedNetworks;
-                    
-                    if (!temporarySession)
-                    {
-                        [UniversalDevice clearDetailViewController];
-                        NSDictionary *userInfo = @{kAlfrescoSelectedAccount : account};
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:userInfo];
-                    }
                     
                     if (authenticationCompletionBlock != NULL)
                     {
@@ -306,7 +298,7 @@
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock
+- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock
 {
     NSDictionary *sessionParameters = [@{kAlfrescoMetadataExtraction : @YES,
                                          kAlfrescoThumbnailCreation : @YES} mutableCopy];
@@ -330,12 +322,6 @@
                                                              if (session)
                                                              {
                                                                  [UniversalDevice clearDetailViewController];
-                                                                 
-                                                                 if (!temporarySession)
-                                                                 {
-                                                                     NSDictionary *userInfo = @{kAlfrescoSelectedAccount : account};
-                                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:userInfo];
-                                                                 }
                                                                  
                                                                  self.currentLoginURLString = nil;
                                                                  self.currentLoginRequest = nil;
@@ -391,7 +377,7 @@
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self authenticateOnPremiseAccount:account password:(NSString *)password temporarySession:NO completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+    [self authenticateOnPremiseAccount:account password:(NSString *)password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
         [self hideHUD];
         if (successful)
         {
@@ -402,6 +388,7 @@
             [loginViewController updateUIForFailedLogin];
             displayErrorMessage(NSLocalizedString(@"error.login.failed", @"Login Failed Message"));
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
     }];
 }
 

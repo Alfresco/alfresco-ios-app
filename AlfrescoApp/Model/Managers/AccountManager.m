@@ -127,8 +127,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         selectedAccount.selectedNetworkId = networkIdentifier;
     }
     
-    NSDictionary *userInfo = self.alfrescoSessionForSelectedAccount ? @{kAlfrescoSelectedAccountSession : self.alfrescoSessionForSelectedAccount} : @{kAlfrescoSelectedAccountSession : [NSNull null]};
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSelectedAccountChangedNotification object:self.selectedAccount userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:self.alfrescoSessionForSelectedAccount userInfo:nil];
     [self saveAccountsToKeychain];
 }
 
