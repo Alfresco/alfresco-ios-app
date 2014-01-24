@@ -115,6 +115,36 @@ static const CGFloat kMasterViewWidth = 300.0f;
     }
 }
 
+- (void)expandViewController
+{
+    if (!self.isExpanded)
+    {
+        [UIView animateWithDuration:kAnimationSpeed animations:^{
+            CGRect detailFrame = self.detailViewContainer.frame;
+            detailFrame.origin.x = kMasterViewWidth;
+            detailFrame.size.width = detailFrame.size.width - kMasterViewWidth;
+            self.detailViewContainer.frame = detailFrame;
+        } completion:^(BOOL finished) {
+            self.isExpanded = YES;
+        }];
+    }
+}
+
+- (void)collapseViewController
+{
+    if (self.isExpanded)
+    {
+        [UIView animateWithDuration:kAnimationSpeed animations:^{
+            CGRect detailFrame = self.detailViewContainer.frame;
+            detailFrame.origin.x = 0;
+            detailFrame.size.width = detailFrame.size.width + kMasterViewWidth;
+            self.detailViewContainer.frame = detailFrame;
+        } completion:^(BOOL finished) {
+            self.isExpanded = NO;
+        }];
+    }
+}
+
 #pragma mark - Private Functions
 
 - (void)positionViewsWithOrientation:(UIInterfaceOrientation)orientation
@@ -147,36 +177,6 @@ static const CGFloat kMasterViewWidth = 300.0f;
     customButton.showsTouchWhenHighlighted = YES;
     
     return [[UIBarButtonItem alloc] initWithCustomView:customButton];
-}
-
-- (void)expandViewController
-{
-    if (!self.isExpanded)
-    {
-        [UIView animateWithDuration:kAnimationSpeed animations:^{
-            CGRect detailFrame = self.detailViewContainer.frame;
-            detailFrame.origin.x = kMasterViewWidth;
-            detailFrame.size.width = detailFrame.size.width - kMasterViewWidth;
-            self.detailViewContainer.frame = detailFrame;
-        } completion:^(BOOL finished) {
-            self.isExpanded = YES;
-        }];
-    }
-}
-
-- (void)collapseViewController
-{
-    if (self.isExpanded)
-    {
-        [UIView animateWithDuration:kAnimationSpeed animations:^{
-            CGRect detailFrame = self.detailViewContainer.frame;
-            detailFrame.origin.x = 0;
-            detailFrame.size.width = detailFrame.size.width + kMasterViewWidth;
-            self.detailViewContainer.frame = detailFrame;
-        } completion:^(BOOL finished) {
-            self.isExpanded = NO;
-        }];
-    }
 }
 
 - (void)addShadowToView:(UIView *)view
