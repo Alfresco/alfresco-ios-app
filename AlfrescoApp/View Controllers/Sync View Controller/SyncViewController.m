@@ -26,13 +26,13 @@ static CGFloat const kCellImageViewWidth = 32.0f;
 static CGFloat const kCellImageViewHeight = 32.0f;
 
 @interface SyncViewController ()
+
 @property (nonatomic) AlfrescoNode *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
-
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-
 @property (nonatomic, strong) UILabel *tableViewFooter;
+@property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
 @end
 
 @implementation SyncViewController
@@ -52,16 +52,24 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     [super viewDidLoad];
 	
-    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-    
-    if ([[SyncManager sharedManager] isFirstUse] || self.parentNode != nil)
+    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
+    }
+    
+    if (self.parentNode != nil)
+    {
+        [self disablePullToRefresh];
     }
     
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
     self.tableViewFooter = [[UILabel alloc] init];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(selectedAccountChanged:)
+                                                 name:kAlfrescoSelectedAccountChangedNotification
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(statusChanged:)
                                                  name:kSyncStatusChangeNotification
@@ -108,16 +116,18 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     [self.tableView reloadData];
 }
 
-- (void)sessionReceived:(NSNotification *)notification
+- (void)selectedAccountChanged:(NSNotification *)notification
 {
-    id<AlfrescoSession> session = notification.object;
-    self.session = session;
+    NSDictionary *userInfo = notification.userInfo;
+    id session = [userInfo objectForKey:kAlfrescoSelectedAccountSession];
+    self.session = (session == [NSNull null]) ? nil :  session;
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
+        self.didSyncAfterSessionRefresh = YES;
     }
 }
 

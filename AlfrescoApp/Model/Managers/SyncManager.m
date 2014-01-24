@@ -63,7 +63,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock
 {
-    if ([self selectedAccountIdentifier] && self.syncQueue.operationCount == 0)
+    if (self.syncQueue.operationCount == 0)
     {
         self.alfrescoSession = alfrescoSession;
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
@@ -649,11 +649,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (NSString *)selectedAccountIdentifier
 {
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
-    NSString *accountIdentifier = selectedAccount.accountIdentifier;
+    return [self accountIdentifierForAccount:selectedAccount];
+}
+
+- (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount
+{
+    NSString *accountIdentifier = userAccount.accountIdentifier;
     
-    if (selectedAccount.accountType == UserAccountTypeCloud)
+    if (userAccount.accountType == UserAccountTypeCloud)
     {
-        accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, selectedAccount.selectedNetworkId];
+        accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, userAccount.selectedNetworkId];
     }
     return accountIdentifier;
 }
