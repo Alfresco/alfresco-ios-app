@@ -113,7 +113,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
         account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
         
-        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil temporarySession:useTemporarySession navigationConroller:self.navigationController completionBlock:^(BOOL successful) {
+        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil temporarySession:useTemporarySession navigationConroller:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
             
             if (successful)
             {
@@ -121,7 +121,8 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
-                    [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject]];
+                    id<AlfrescoSession> session = useTemporarySession ? nil : alfrescoSession;
+                    [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject] alfrescoSession:session];
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])

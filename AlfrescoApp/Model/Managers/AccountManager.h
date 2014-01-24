@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 @interface AccountManager : NSObject
 
 @property (nonatomic, strong, readonly) UserAccount *selectedAccount;
+@property (nonatomic, strong, readonly) id<AlfrescoSession> alfrescoSessionForSelectedAccount;
 
 + (instancetype)sharedManager;
 - (NSArray *)allAccounts;
@@ -30,7 +31,7 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 - (void)removeAllAccounts;
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;
-- (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier;
+- (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier alfrescoSession:(id<AlfrescoSession>)alfrescoSession;
 - (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock;
 
 /*

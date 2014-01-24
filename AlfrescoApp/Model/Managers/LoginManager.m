@@ -24,7 +24,7 @@
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
 @property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
-@property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success);
+@property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession);
 @end
 
 @implementation LoginManager
@@ -58,13 +58,13 @@
     return self;
 }
 
-- (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(void (^)(BOOL successful))loginCompletionBlock
+- (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))loginCompletionBlock
 {
-    void (^logInSuccessful)(BOOL) = ^(BOOL successful)
+    void (^logInSuccessful)(BOOL, id<AlfrescoSession>) = ^(BOOL successful, id<AlfrescoSession> session)
     {
         if (loginCompletionBlock != NULL)
         {
-            loginCompletionBlock(successful);
+            loginCompletionBlock(successful, session);
         }
     };
     
@@ -75,30 +75,26 @@
             if (!account.password || [account.password isEqualToString:@""])
             {
                 [self displayLoginViewControllerWithAccount:account username:account.username];
-                logInSuccessful(NO);
+                logInSuccessful(NO, nil);
                 return;
             }
             
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [self showHUDOnView:delegate.window];
-            [self authenticateOnPremiseAccount:account password:account.password temporarySession:NO completionBlock:^(BOOL successful) {
+            [self authenticateOnPremiseAccount:account password:account.password temporarySession:NO completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
                 [self hideHUD];
                 if (!successful)
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
-                    logInSuccessful(NO);
                 }
-                else
-                {
-                    logInSuccessful(YES);
-                }
+                logInSuccessful(successful, session);
             }];
         }
         else
         {
-            [self authenticateCloudAccount:account networkId:networkId temporarySession:NO navigationConroller:nil completionBlock:^(BOOL successful) {
+            [self authenticateCloudAccount:account networkId:networkId temporarySession:NO navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
                 
-                logInSuccessful(successful);
+                logInSuccessful(successful, session);
             }];
         }
     }
@@ -107,13 +103,17 @@
         NSString *messageTitle = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Error Title");
         NSString *messageBody = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Error Message");
         displayErrorMessageWithTitle(messageBody, messageTitle);
-        logInSuccessful(NO);
+        logInSuccessful(NO, nil);
     }
 }
 
 #pragma mark - Cloud authentication Methods
 
-- (void)authenticateCloudAccount:(UserAccount *)account networkId:(NSString *)networkId temporarySession:(BOOL)temporarySession navigationConroller:(UINavigationController *)navigationController completionBlock:(void (^)(BOOL successful))authenticationCompletionBlock
+- (void)authenticateCloudAccount:(UserAccount *)account
+                       networkId:(NSString *)networkId
+                temporarySession:(BOOL)temporarySession
+             navigationConroller:(UINavigationController *)navigationController
+                 completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))authenticationCompletionBlock
 {
     self.authenticationCompletionBlock = authenticationCompletionBlock;
     void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session) {
@@ -121,7 +121,7 @@
         {
             if (authenticationCompletionBlock != NULL)
             {
-                authenticationCompletionBlock(NO);
+                authenticationCompletionBlock(NO, session);
             }
         }
         else
@@ -149,19 +149,20 @@
                     if (!temporarySession)
                     {
                         [UniversalDevice clearDetailViewController];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                        NSDictionary *userInfo = @{kAlfrescoSelectedAccount : account};
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:userInfo];
                     }
                     
                     if (authenticationCompletionBlock != NULL)
                     {
-                        authenticationCompletionBlock(YES);
+                        authenticationCompletionBlock(YES, session);
                     }
                 }
                 else
                 {
                     if (authenticationCompletionBlock != NULL)
                     {
-                        authenticationCompletionBlock(NO);
+                        authenticationCompletionBlock(NO, nil);
                     }
                 }
             }];
@@ -282,7 +283,7 @@
     [self.loginController dismissViewControllerAnimated:YES completion:^{
         if (self.authenticationCompletionBlock != NULL)
         {
-            self.authenticationCompletionBlock(NO);
+            self.authenticationCompletionBlock(NO, nil);
         }
     }];
 }
@@ -305,7 +306,7 @@
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful))completionBlock
+- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password temporarySession:(BOOL)temporarySession completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock
 {
     NSDictionary *sessionParameters = [@{kAlfrescoMetadataExtraction : @YES,
                                          kAlfrescoThumbnailCreation : @YES} mutableCopy];
@@ -332,7 +333,8 @@
                                                                  
                                                                  if (!temporarySession)
                                                                  {
-                                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                                                                     NSDictionary *userInfo = @{kAlfrescoSelectedAccount : account};
+                                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:userInfo];
                                                                  }
                                                                  
                                                                  self.currentLoginURLString = nil;
@@ -340,14 +342,14 @@
                                                                  
                                                                  if (completionBlock != NULL)
                                                                  {
-                                                                     completionBlock(YES);
+                                                                     completionBlock(YES, session);
                                                                  }
                                                              }
                                                              else
                                                              {
                                                                  if (completionBlock != NULL)
                                                                  {
-                                                                     completionBlock(NO);
+                                                                     completionBlock(NO, nil);
                                                                  }
                                                              }
                                                          }];
@@ -389,7 +391,7 @@
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self authenticateOnPremiseAccount:account password:(NSString *)password temporarySession:NO completionBlock:^(BOOL successful) {
+    [self authenticateOnPremiseAccount:account password:(NSString *)password temporarySession:NO completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
         [self hideHUD];
         if (successful)
         {
