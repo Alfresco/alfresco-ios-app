@@ -121,13 +121,16 @@
     id <AlfrescoSession> session = notification.object;
     self.session = session;
     
-    [self createWorkflowServicesWithSession:session];
-    
-    [self loadWorkflowProcessesWithListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self hideHUD];
-        [self hidePullToRefreshView];
-        [self reloadTableViewWithPagingResult:pagingResult error:error];
-    }];
+    if (self.session)
+    {
+        [self createWorkflowServicesWithSession:session];
+        
+        [self loadWorkflowProcessesWithListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            [self hidePullToRefreshView];
+            [self reloadTableViewWithPagingResult:pagingResult error:error];
+        }];
+    }
 }
 
 - (void)createWorkflowServicesWithSession:(id<AlfrescoSession>)session
