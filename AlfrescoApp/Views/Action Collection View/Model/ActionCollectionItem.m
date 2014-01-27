@@ -97,6 +97,7 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
     {
         self.itemIdentifier = itemIdentifier;
         self.itemImage = itemImage;
+        self.itemImage = [itemImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.itemTitle = itemTitle;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
     }
@@ -127,7 +128,7 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 - (void)updateToImageWithName:(NSString *)imageName title:(NSString *)localisedTitle identifier:(NSString *)identifer
 {
     self.itemIdentifier = identifer;
-    self.itemImage = [UIImage imageNamed:imageName];
+    self.itemImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.itemTitle = localisedTitle;
 }
 

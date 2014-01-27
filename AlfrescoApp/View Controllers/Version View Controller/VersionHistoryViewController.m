@@ -12,7 +12,7 @@
 #import "MetaDataViewController.h"
 #import "DownloadManager.h"
 
-static CGFloat const kExpandButtonRotationSpeed = 0.3f;
+static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 
 @interface VersionHistoryViewController () <VersionHistoryCellDelegate>
 
@@ -120,9 +120,9 @@ static CGFloat const kExpandButtonRotationSpeed = 0.3f;
 
 - (void)rotateView:(UIView *)view duration:(CGFloat)duration angle:(CGFloat)angle
 {
-    [UIView animateWithDuration:duration animations:^{
+    [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         view.transform = CGAffineTransformMakeRotation(angle);
-    }];
+    } completion:nil];
 }
 
 #pragma mark - Table view data source

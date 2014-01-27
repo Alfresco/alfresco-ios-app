@@ -12,7 +12,8 @@
 #import "Utility.h"
 #import "UIView+DrawingUtils.h"
 
-static CGFloat const kSpacingBetweenCells = 5.0f;
+static CGFloat const kSpacingBetweenSections = 8.0f;
+static CGFloat const kSpacingBetweenCells = 15.0f;
 static CGFloat const kiPadCellWidth = 76.0f;
 static CGFloat const kiPhoneCellWidth = 76.0f;
 static CGFloat const kLineButtonPadding = 10.0f;
@@ -112,6 +113,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     ActionCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ActionCell" forIndexPath:indexPath];
 
     ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
+    
     cell.imageView.image = itemSelected.itemImage;
     cell.titleLabel.text = itemSelected.itemTitle;
     
@@ -145,7 +147,12 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(0, kSpacingBetweenCells, 0, kSpacingBetweenCells);
+    return UIEdgeInsetsMake(0, kSpacingBetweenSections, 0, kSpacingBetweenSections);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return kSpacingBetweenCells;
 }
 
 @end
