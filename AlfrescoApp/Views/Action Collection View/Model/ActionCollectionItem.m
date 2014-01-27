@@ -62,12 +62,12 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 
 + (instancetype)favouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"]title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
 }
 
 + (instancetype)unfavouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"]  title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
 }
 
 + (instancetype)commentItem
