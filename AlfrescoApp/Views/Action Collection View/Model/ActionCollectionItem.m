@@ -62,12 +62,12 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 
 + (instancetype)favouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"]title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
 }
 
 + (instancetype)unfavouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"]  title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
 }
 
 + (instancetype)commentItem
@@ -97,6 +97,7 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
     {
         self.itemIdentifier = itemIdentifier;
         self.itemImage = itemImage;
+        self.itemImage = [itemImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.itemTitle = itemTitle;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
     }
@@ -127,7 +128,7 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 - (void)updateToImageWithName:(NSString *)imageName title:(NSString *)localisedTitle identifier:(NSString *)identifer
 {
     self.itemIdentifier = identifer;
-    self.itemImage = [UIImage imageNamed:imageName];
+    self.itemImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.itemTitle = localisedTitle;
 }
 
