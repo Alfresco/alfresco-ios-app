@@ -37,7 +37,7 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         self = (AlfrescoNodeCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil][0];
         
         static NSInteger const infoIconRightMargin = 8;
-        static NSInteger const infoIconTopMargin = 6;
+        static NSInteger const infoIconTopMargin = 4;
         static NSInteger const infoIconFrameWidth = 14;
         static NSInteger const infoIconFrameHeight = 14;
         static NSInteger const infoIconHorizontalSpace = 6;
@@ -249,7 +249,7 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         }
         else
         {
-            self.nodeDetails = @"un known";
+            self.nodeDetails = @"";
         }
     }
     else
@@ -258,6 +258,7 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         fileSizeString = (nodeStatus.totalSize > 0) ? stringForLongFileSize(nodeStatus.totalSize) : stringForLongFileSize(((AlfrescoDocument *)self.node).contentLength);
         self.nodeDetails = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, fileSizeString];
     }
+    
     [self updateSyncStatusDetails:nodeStatus];
 }
 
