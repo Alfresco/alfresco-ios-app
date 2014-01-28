@@ -97,6 +97,9 @@
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
+		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
+		27E17D4E1898198F0010FA99 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */; };
+		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27F054D31891832B00C2454C /* app-icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C61891832B00C2454C /* app-icon-100.png */; };
 		27F054D41891832B00C2454C /* app-icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C71891832B00C2454C /* app-icon-114.png */; };
 		27F054D51891832B00C2454C /* app-icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C81891832B00C2454C /* app-icon-120.png */; };
@@ -539,6 +542,9 @@
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
+		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		27F054C61891832B00C2454C /* app-icon-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-100.png"; sourceTree = "<group>"; };
 		27F054C71891832B00C2454C /* app-icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-114.png"; sourceTree = "<group>"; };
 		27F054C81891832B00C2454C /* app-icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-120.png"; sourceTree = "<group>"; };
@@ -944,20 +950,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
+				73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */,
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
-				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
-				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
-				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
-				73B959E917A684CE0099FB84 /* MediaPlayer.framework in Frameworks */,
+				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
 				73B959E717A684B10099FB84 /* CoreLocation.framework in Frameworks */,
 				73B959E517A6848C0099FB84 /* CoreText.framework in Frameworks */,
-				73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */,
-				73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */,
-				73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */,
-				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
 				7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */,
-				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
+				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
+				73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */,
+				73B959E917A684CE0099FB84 /* MediaPlayer.framework in Frameworks */,
+				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
+				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
+				73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */,
+				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
+				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
+				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,6 +1171,24 @@
 				0808B9D4183A5EE6000A8984 /* SyncError.m */,
 			);
 			name = DataModel;
+			sourceTree = "<group>";
+		};
+		27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				27E17D491898198F0010FA99 /* HockeySDK.framework */,
+				27E17D4A1898198F0010FA99 /* Resources */,
+			);
+			path = HockeySDK.embeddedframework;
+			sourceTree = "<group>";
+		};
+		27E17D4A1898198F0010FA99 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */,
+				27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		27F054C51891832B00C2454C /* App Icon */ = {
@@ -1885,6 +1910,7 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */,
 				73B959D117A67A760099FB84 /* MBProgressHUD */,
 				73B959D417A67A760099FB84 /* Reachability */,
 				73B350B81851E9AA0037E3E3 /* RNCryptor */,
@@ -2446,6 +2472,7 @@
 				73B95A6F17A68B7E0099FB84 /* mime_doc.png in Resources */,
 				0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */,
 				7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */,
+				27E17D4E1898198F0010FA99 /* HockeySDK.xcconfig in Resources */,
 				08E799B3182A579B0030FD53 /* ButtonCell.xib in Resources */,
 				0833246917F98CED00EE6AA8 /* sync-status-pending@2x.png in Resources */,
 				73B95A7017A68B7E0099FB84 /* mime_doc@2x.png in Resources */,
@@ -2537,6 +2564,7 @@
 				73881FD9188FF6B00052C75F /* actionsheet-unliked.png in Resources */,
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				73B95A9617A68B7E0099FB84 /* pull-to-refresh.png in Resources */,
+				27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */,
 				73B95A9717A68B7E0099FB84 /* pull-to-refresh@2x.png in Resources */,
 				73B95A9817A68B7E0099FB84 /* system_notice_error.png in Resources */,
 				73B95A9917A68B7E0099FB84 /* system_notice_error@2x.png in Resources */,
@@ -2932,6 +2960,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -3050,6 +3082,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -3077,6 +3113,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

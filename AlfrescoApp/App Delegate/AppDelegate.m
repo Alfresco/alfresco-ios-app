@@ -3,7 +3,7 @@
 //  AlfrescoApp
 //
 //  Created by Tauseef Mughal on 29/07/2013
-//  Copyright (c) 2013 Alfresco. All rights reserved.
+//  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -23,6 +23,7 @@
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
 #import "AppConfigurationManager.h"
+#import <HockeySDK/HockeySDK.h>
 
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoApp";
 static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
@@ -48,13 +49,11 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
     self.hasDeferredOpenURLToProcess = NO;
     
     [MigrationAssistant runMigrationAssistant];
     
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
-    
     [self.window makeKeyAndVisible];
     
 #ifdef DEBUG
@@ -77,7 +76,12 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
         }];
     }
-    
+
+    // HockeyApp SDK
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"50a2db26b7e3926dcca100aebc019fdd"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+
     return YES;
 }
 
