@@ -12,7 +12,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
 #import "Utility.h"
-#import "FileFolderCell.h"
+#import "AlfrescoNodeCell.h"
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
@@ -23,8 +23,10 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
+#import "SyncManager.h"
+#import "FavouriteManager.h"
 
-static CGFloat kCellHeight = 60.0f;
+static CGFloat kCellHeight = 74.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
@@ -525,38 +527,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return button;
 }
 
-- (void)accessoryButtonTapped:(UIButton *)accessoryButton withEvent:(UIEvent *)event
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    FileFolderCell *selectedCell = (FileFolderCell*)accessoryButton.superview;
-    
-    BOOL foundFileFolderCell = NO;
-    while (!foundFileFolderCell)
-    {
-        if (![selectedCell isKindOfClass:[UITableViewCell class]])
-        {
-            selectedCell = (FileFolderCell *)selectedCell.superview;
-        }
-        else
-        {
-            foundFileFolderCell = YES;
-        }
-    }
-    
-    NSIndexPath *indexPathToSelectedCell = nil;
-    
     AlfrescoNode *selectedNode = nil;
     if (self.searchController.searchResultsTableView.window)
     {
-        indexPathToSelectedCell = [self.searchController.searchResultsTableView indexPathForCell:selectedCell];
-        selectedNode = [self.searchResults objectAtIndex:indexPathToSelectedCell.row];
+        selectedNode = [self.searchResults objectAtIndex:indexPath.row];
     }
     else
     {
-        indexPathToSelectedCell = [self.tableView indexPathForCell:selectedCell];
-        selectedNode = [self.tableViewData objectAtIndex:indexPathToSelectedCell.row];
+        selectedNode = [self.tableViewData objectAtIndex:indexPath.row];
     }
     
-    [self.tableView selectRowAtIndexPath:indexPathToSelectedCell animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     
     if (self.searchController.searchResultsTableView && self.searchController.searchResultsTableView.window)
     {
@@ -792,12 +775,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"FileFolderCell";
-    __block FileFolderCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
     
     if (!cell)
     {
-        cell = (FileFolderCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([FileFolderCell class]) owner:self options:nil] lastObject];
+        cell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
     }
     
     // config the cell here...
@@ -811,27 +793,30 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         currentNode = [self.tableViewData objectAtIndex:indexPath.row];
     }
     
-    cell.nodeNameLabel.text = currentNode.name;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    NSString *modifiedDateString = relativeDateFromDate(currentNode.modifiedAt);
+    SyncManager *syncManager = [SyncManager sharedManager];
+    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    
+    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO];
+    
+    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        
+        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite];
+    }];
     
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
     {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.nodeImageView.image = imageForType(@"folder");
-        cell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@", modifiedDateString];
-        // FIXME: Consider for iOS 7 replacing this with native info button support
-        cell.accessoryView = [self makeDetailDisclosureButton];
+        cell.image.image = imageForType(@"folder");
     }
     else
     {
         AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
         UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForNode:documentNode withParentNode:self.displayFolder session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-                [cell.nodeImageView setImageAtPath:savedFileName withFade:YES];
+            [cell.image setImageAtPath:savedFileName withFade:YES];
         }];
-        cell.nodeImageView.image = thumbnail;
-        
-        cell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(documentNode.contentLength)];
+        cell.image.image = thumbnail;
     }
     
     return cell;
