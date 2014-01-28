@@ -35,7 +35,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     PagingScrollViewSegmentType_MAX
 };
 
-@interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIDocumentInteractionControllerDelegate>
+@interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIDocumentInteractionControllerDelegate, CommentViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) AlfrescoDocument *document;
 @property (nonatomic, strong, readwrite) AlfrescoPermissions *documentPermissions;
@@ -67,6 +67,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
         self.previewImageFolderURLString = [[AlfrescoFileManager sharedManager] thumbnailsImgPreviewFolderPath];
         self.pagingControllers = [NSMutableArray array];
+        
     }
     return self;
 }
@@ -197,7 +198,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
-    CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session];
+    CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
 
     for (int i = 0; i < PagingScrollViewSegmentType_MAX; i++)
     {
@@ -224,7 +225,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypePreview];
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.version.history.title", @"Version Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeVersionHistory];
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
 }
 
 - (void)updateActionButtons
@@ -635,6 +636,24 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 - (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
 {
     self.documentInteractionController = nil;
+}
+
+#pragma mark - CommentViewControllerDelegate Functions
+
+- (void)commentViewController:(CommentViewController *)controller didUpdateCommentCount:(NSUInteger)commentDisplayedCount hasMoreComments:(BOOL)hasMoreComments
+{
+    NSString *segmentCommentText = nil;
+    
+    if (hasMoreComments && commentDisplayedCount >= kMaxItemsPerListingRetrieve)
+    {
+        segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.hasmore.title", @"Comments Segment Title - Has More"), kMaxItemsPerListingRetrieve];
+    }
+    else if (commentDisplayedCount > 0)
+    {
+        segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
+    }
+    
+    [self.pagingSegmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
 }
 
 @end

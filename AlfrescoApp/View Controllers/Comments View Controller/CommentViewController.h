@@ -11,10 +11,19 @@
 
 @class AlfrescoNode;
 @class AlfrescoPermissions;
+@class CommentViewController;
+
+@protocol CommentViewControllerDelegate <NSObject>
+
+- (void)commentViewController:(CommentViewController *)controller didUpdateCommentCount:(NSUInteger)commentDisplayedCount hasMoreComments:(BOOL)hasMoreComments;
+
+@end
 
 @interface CommentViewController : ParentListViewController
 
-- (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+@property (nonatomic, weak, readonly) id<CommentViewControllerDelegate> delegate;
+
+- (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<CommentViewControllerDelegate>)delegate;
 - (void)focusCommentEntry;
 
 @end

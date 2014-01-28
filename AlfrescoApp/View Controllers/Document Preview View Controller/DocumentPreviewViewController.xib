@@ -44,6 +44,7 @@
                     <rect key="frame" x="5" y="10" width="310" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="310" id="K1z-GO-pVL"/>
                         <constraint firstAttribute="height" constant="28" id="sr6-Vm-NRo"/>
                     </constraints>
                     <segments>
