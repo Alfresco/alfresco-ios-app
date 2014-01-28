@@ -24,18 +24,20 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 @property (nonatomic, weak) IBOutlet TextView *addCommentTextView;
 @property (nonatomic, weak) IBOutlet UIButton *postCommentButton;
 @property (nonatomic, strong) UILabel *sectionFooterLabel;
+@property (nonatomic, weak, readwrite) id<CommentViewControllerDelegate> delegate;
 
 @end
 
 @implementation CommentViewController
 
-- (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session
+- (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<CommentViewControllerDelegate>)delegate
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.node = node;
         self.permissions = permissions;
+        self.delegate = delegate;
         [self createAlfrescoServicesWithSession:session];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
@@ -63,7 +65,9 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
     }
 
+    [self showHUD];
     [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self hideHUD];
         if (pagingResult)
         {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -100,9 +104,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         requestListingContext = self.defaultListingContext;
     }
     
-    [self showHUD];
     [self.commentService retrieveCommentsForNode:self.node listingContext:requestListingContext latestFirst:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self hideHUD];
         if (completionBlock != NULL)
         {
             completionBlock(pagingResult, error);
@@ -120,7 +122,9 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     
     if ([self shouldRefresh])
     {
+        [self showHUD];
         [self loadCommentsForNode:self.node listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
             if (pagingResult)
             {
                 [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -147,6 +151,24 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 {
     self.addCommentTextView.placeholderText = [self placeholderText];
     [self.postCommentButton setTitle:NSLocalizedString(@"comments.post.button", @"Post Button") forState:UIControlStateNormal];
+}
+
+- (NSString *)titleForCommentsInSection:(NSInteger)section
+{
+    NSString *footerText = nil;
+    
+    if (self.tableViewData.count == 0)
+    {
+        footerText = [NSString stringWithFormat:NSLocalizedString(@"comments.footer.multiple.comments", @"%i Comments"), self.tableViewData.count];
+    }
+    
+    return footerText;
+}
+
+- (void)updateCommentCountFooter
+{
+    self.sectionFooterLabel.text = [self titleForCommentsInSection:0];
+    [self.delegate commentViewController:self didUpdateCommentCount:self.tableViewData.count hasMoreComments:self.moreItemsAvailable];
 }
 
 #pragma mark - Public Functions
@@ -253,18 +275,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     return self.sectionFooterLabel;
 }
 
-- (NSString *)titleForCommentsInSection:(NSInteger)section
-{
-    NSString *footerText = nil;
-    
-    if (self.tableViewData.count == 0)
-    {
-        footerText = [NSString stringWithFormat:NSLocalizedString(@"comments.footer.multiple.comments", @"%i Comments"), self.tableViewData.count];
-    }
-    
-    return footerText;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CommentCell *cell = (CommentCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -273,11 +283,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     
     return height;
-}
-
-- (void)updateCommentCountFooter
-{
-    self.sectionFooterLabel.text = [self titleForCommentsInSection:0];
 }
 
 #pragma mark - UIRefreshControl Functions

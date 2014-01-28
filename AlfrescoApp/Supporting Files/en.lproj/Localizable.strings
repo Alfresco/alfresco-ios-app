@@ -313,7 +313,9 @@
 "document.segment.preview.title" = "Preview";
 "document.segment.metadata.title" = "Metadata";
 "document.segment.version.history.title" = "History";
-"document.segment.comments.title" = "Comments";
+"document.segment.nocomments.title" = "Comments";
+"document.segment.comments.title" = "Comments (%d)";
+"document.segment.comments.hasmore.title" = "Comments (%d+)";
 
 /**
  * Document Preview Controller
