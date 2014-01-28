@@ -140,14 +140,14 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 -(void)saveButtonClicked:(id)sender
 {
-    [self validateAccountOnServerWithCompletionBlock:^(BOOL successful) {
+    [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
         if (successful)
         {
             AccountManager *accountManager = [AccountManager sharedManager];
             
             if (accountManager.totalNumberOfAddedAccounts == 0)
             {
-                [accountManager selectAccount:self.account selectNetwork:nil];
+                [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
             }
             
             if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
@@ -405,7 +405,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     return isValid;
 }
 
-- (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful))completionBlock
+- (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session))completionBlock
 {
     [self updateFormBackupAccount];
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
@@ -424,20 +424,18 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     if ((password == nil || [password isEqualToString:@""]))
     {
         updateAccountInfo(self.formBackupAccount);
-        completionBlock(YES);
+        completionBlock(YES, nil);
     }
     else
     {
-        BOOL useTemporarySession = !([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0);
-        
         [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password temporarySession:useTemporarySession completionBlock:^(BOOL successful) {
+        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
             
             [self hideHUD];
             if (successful)
             {
                 updateAccountInfo(self.formBackupAccount);
-                completionBlock(YES);
+                completionBlock(successful, alfrescoSession);
             }
             else
             {

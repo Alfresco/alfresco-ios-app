@@ -26,13 +26,14 @@ static CGFloat const kCellImageViewWidth = 32.0f;
 static CGFloat const kCellImageViewHeight = 32.0f;
 
 @interface SyncViewController ()
+
 @property (nonatomic) AlfrescoNode *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
-
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-
 @property (nonatomic, strong) UILabel *tableViewFooter;
+@property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
+
 @end
 
 @implementation SyncViewController
@@ -52,11 +53,15 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 {
     [super viewDidLoad];
 	
-    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-    
-    if ([[SyncManager sharedManager] isFirstUse] || self.parentNode != nil)
+    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
+    }
+    
+    if (self.parentNode != nil)
+    {
+        [self disablePullToRefresh];
     }
     
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
@@ -118,6 +123,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
+        self.didSyncAfterSessionRefresh = YES;
     }
 }
 

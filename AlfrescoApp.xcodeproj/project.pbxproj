@@ -110,7 +110,6 @@
 		27F054DD1891832B00C2454C /* app-icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D01891832B00C2454C /* app-icon-72.png */; };
 		27F054DE1891832B00C2454C /* app-icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D11891832B00C2454C /* app-icon-76.png */; };
 		27F054DF1891832B00C2454C /* app-icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D21891832B00C2454C /* app-icon-80.png */; };
-		73036F331886E3E1002AF6DC /* libAlfrescoSDKv1.3.0-debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.0-debug.a */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
@@ -945,7 +944,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73036F331886E3E1002AF6DC /* libAlfrescoSDKv1.3.0-debug.a in Frameworks */,
 				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
@@ -2939,8 +2937,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)/**",
-					"$(BUILD_ROOT)/../InstallationBuildProductsLocation",
+					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -2950,6 +2947,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "";
@@ -3057,8 +3055,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)/**",
-					"$(BUILD_ROOT)/../InstallationBuildProductsLocation",
+					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3068,6 +3065,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0-debug.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "";
@@ -3084,8 +3082,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)/**",
-					"$(BUILD_ROOT)/../InstallationBuildProductsLocation",
+					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3095,6 +3092,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "";

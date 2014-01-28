@@ -205,11 +205,11 @@ static CGFloat const kDefaultFontSize = 18.0f;
         else if ((account.accountType == UserAccountTypeCloud) && (account.accountNetworks.count == 0))
         {
             [self showHUD];
-            [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful) {
+            [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
                 [self hideHUD];
                 if (successful)
                 {
-                    [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject];
+                    [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject alfrescoSession:alfrescoSession];
                     [self updateAccountList];
                 }
             }];
@@ -312,10 +312,15 @@ static CGFloat const kDefaultFontSize = 18.0f;
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
         [self showHUD];
-        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful) {
+        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
             
             [self hideHUD];
-            [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId];
+            
+            if (!successful)
+            {
+                self.session = nil;
+            }
+            [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
             [self.tableView reloadData];
         }];
     }
