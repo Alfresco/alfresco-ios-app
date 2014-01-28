@@ -14,21 +14,14 @@ extern NSString * const kSyncTableCellIdentifier;
 
 @interface SyncCell : UITableViewCell
 
-@property (nonatomic, strong) AlfrescoNode *node;
-@property (nonatomic, strong) NSString *nodeDetails;
-@property (nonatomic, assign) BOOL isFavorite;
-
 @property (nonatomic, strong) IBOutlet UILabel *filename;
-@property (nonatomic, strong) IBOutlet UIView *detailsView;
 @property (nonatomic, strong) IBOutlet UILabel *details;
-@property (nonatomic, strong) IBOutlet UILabel *serverName;
 @property (nonatomic, strong) IBOutlet ThumbnailImageView *image;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressBar;
-@property (nonatomic, strong) IBOutlet UIImageView *status;
-@property (nonatomic, strong) IBOutlet UIImageView *favoriteIcon;
+@property (nonatomic, strong) IBOutlet UIImageView *infoIcon1;
+@property (nonatomic, strong) IBOutlet UIImageView *infoIcon2;
 
-- (void)updateFavoriteState:(BOOL)isFavorite;
-- (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus;
-- (void)updateCellWithNodeStatus:(SyncNodeStatus *)nodeStatus propertyChanged:(NSString *)propertyChanged;
+- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
+- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite;
 
 @end

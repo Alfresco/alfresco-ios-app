@@ -20,7 +20,7 @@
 #import "ThumbnailManager.h"
 #import "Constants.h"
 
-static NSInteger const kCellHeight = 84;
+static NSInteger const kCellHeight = 74;
 static CGFloat const kFooterHeight = 32.0f;
 static CGFloat const kCellImageViewWidth = 32.0f;
 static CGFloat const kCellImageViewHeight = 32.0f;
@@ -169,38 +169,19 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //static NSString *cellIdentifier = kSyncTableCellIdentifier;
     SyncCell *syncCell = [tableView dequeueReusableCellWithIdentifier:kSyncTableCellIdentifier];
     if (nil == syncCell)
     {
-        NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil];
-        if (subViews.count > 0)
-        {
-            syncCell = (SyncCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil][0];
-            
-            static NSInteger const infoIconRightMargin = 5;
-            static NSInteger const infoIconTopMargin = 5;
-            static NSInteger const infoIconFrameWidth = 16;
-            static NSInteger const infoIconFrameHeight = 16;
-            
-            int infoIconsCurrentXPosition = self.tableView.frame.size.width - infoIconFrameWidth - infoIconRightMargin;
-            syncCell.status = [[UIImageView alloc] initWithFrame:CGRectMake(infoIconsCurrentXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
-            [syncCell addSubview:syncCell.status];
-        }
+        syncCell = [[SyncCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:syncCell
-                                             selector:@selector(statusChanged:)
-                                                 name:kSyncStatusChangeNotification
-                                               object:nil];
     
     SyncManager *syncManager = [SyncManager sharedManager];
     
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    syncCell.node = node;
-    syncCell.filename.text = node.name;
+    [syncCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
+    [syncCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite];
     
     if (node.isFolder)
     {
@@ -221,12 +202,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         }
         syncCell.image.image = thumbnail;
     }
-    
-    [syncCell updateFavoriteState:nodeStatus.isFavorite];
-    
-    [syncCell updateNodeDetails:nodeStatus];
-    [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:kSyncStatus];
-    
     return syncCell;
 }
 

@@ -11,27 +11,89 @@
 #import "Utility.h"
 
 NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
-static CGFloat const kFavoriteIconYPosition = 4.0f;
-static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
+
+@interface SyncCell()
+
+@property (nonatomic, strong) AlfrescoNode *node;
+@property (nonatomic, strong) SyncNodeStatus *nodeStatus;
+@property (nonatomic, assign) BOOL isFavorite;
+@property (nonatomic, assign) BOOL isSyncNode;
+@property (nonatomic, strong) NSString *nodeDetails;
+@property (nonatomic, strong) UIImageView *syncStatusImageView;
+@property (nonatomic, strong) UIImageView *favoriteStatusImageView;
+
+@end
 
 @implementation SyncCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self)
+    self = nil;
+    NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil];
+    if (subViews.count > 0)
     {
+        self = (SyncCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil][0];
         
+        static NSInteger const infoIconRightMargin = 8;
+        static NSInteger const infoIconTopMargin = 6;
+        static NSInteger const infoIconFrameWidth = 14;
+        static NSInteger const infoIconFrameHeight = 14;
+        static NSInteger const infoIconHorizontalSpace = 6;
+        
+        NSInteger iconXPosition = frame.size.width;
+        
+        iconXPosition = iconXPosition - infoIconFrameWidth - infoIconRightMargin;
+        _infoIcon1 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
+        [self addSubview:_infoIcon1];
+        
+        iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
+        _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
+        [self addSubview:_infoIcon2];
     }
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
 {
-    [super setSelected:selected animated:animated];
+    self.node = node;
+    self.nodeStatus = nodeStatus;
+    self.filename.text = node.name;
+    [self updateNodeDetails:nodeStatus];
     
-    // Configure the view for the selected state
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusChanged:)
+                                                 name:kSyncStatusChangeNotification
+                                               object:nil];
 }
+
+- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite
+{
+    self.isSyncNode = isSyncNode;
+    self.isFavorite = isFavorite;
+    
+    self.infoIcon1.image = nil;
+    self.infoIcon1.highlightedImage = nil;
+    self.infoIcon2.image = nil;
+    self.infoIcon2.highlightedImage = nil;
+    
+    UIImageView *nextInfoIconView = self.infoIcon1;
+    
+    if (self.isSyncNode)
+    {
+        self.syncStatusImageView = nextInfoIconView;
+        nextInfoIconView = self.infoIcon2;
+    }
+    if (self.isFavorite)
+    {
+        self.favoriteStatusImageView = nextInfoIconView;
+        self.favoriteStatusImageView.image = [UIImage imageNamed:@"favorite-indicator.png"];
+        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"selected-favorite-indicator.png"];
+    }
+    
+    [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
+}
+
+#pragma mark - Notification Methods
 
 - (void)statusChanged:(NSNotification *)notification
 {
@@ -39,6 +101,7 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
     if ([[info objectForKey:kSyncStatusNodeIdKey] isEqualToString:self.node.identifier])
     {
         SyncNodeStatus *nodeStatus = notification.object;
+        self.nodeStatus = nodeStatus;
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
@@ -46,12 +109,14 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
     }
 }
 
+#pragma mark - Private Methods
+
 - (void)updateCellWithNodeStatus:(SyncNodeStatus *)nodeStatus propertyChanged:(NSString *)propertyChanged
 {
     if ([propertyChanged isEqualToString:kSyncStatus])
     {
         [self setAccessoryViewForState:nodeStatus.status];
-        [self updateDetails:nodeStatus];
+        [self updateSyncStatusDetails:nodeStatus];
     }
     else if ([propertyChanged isEqualToString:kSyncTotalSize] || [propertyChanged isEqualToString:kSyncLocalModificationDate])
     {
@@ -59,7 +124,7 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
     }
     else if ([propertyChanged isEqualToString:kSyncIsFavorite])
     {
-        [self updateFavoriteState:nodeStatus.isFavorite];
+        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:nodeStatus.isFavorite];
     }
     
     [self updateStatusImageForSyncState:nodeStatus];
@@ -123,13 +188,16 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
         default:
             break;
     }
-    self.status.image = statusImage;
+    self.syncStatusImageView.image = statusImage;
 }
 
 - (void)setAccessoryViewForState:(SyncStatus)status
 {
     UIImage *buttonImage = nil;
     UIButton *button = nil;
+    
+    self.accessoryType = UITableViewCellAccessoryNone;
+    self.accessoryView = nil;
     
     switch (status)
     {
@@ -154,16 +222,10 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
         
         [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
     }
-    else
-    {
-        button = [UIButton buttonWithType:UIButtonTypeInfoDark];
-        [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-    }
     
     if (self.node.isFolder)
     {
-        self.accessoryView = nil;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        self.accessoryType = UITableViewCellAccessoryDetailButton;
     }
     else
     {
@@ -185,7 +247,7 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
         }
         else
         {
-            self.nodeDetails = @"";
+            self.nodeDetails = @"un known";
         }
     }
     else
@@ -194,10 +256,10 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
         fileSizeString = (nodeStatus.totalSize > 0) ? stringForLongFileSize(nodeStatus.totalSize) : stringForLongFileSize(((AlfrescoDocument *)self.node).contentLength);
         self.nodeDetails = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, fileSizeString];
     }
-    [self updateDetails:nodeStatus];
+    [self updateSyncStatusDetails:nodeStatus];
 }
 
-- (void)updateDetails:(SyncNodeStatus *)nodeStatus
+- (void)updateSyncStatusDetails:(SyncNodeStatus *)nodeStatus
 {
     if (nodeStatus.status == SyncStatusWaiting)
     {
@@ -210,33 +272,6 @@ static CGFloat const kFavoriteIconAndDetailsLabelGap = 7.0f;
     else
     {
         self.details.text = self.nodeDetails;
-    }
-}
-
-- (void)updateFavoriteState:(BOOL)isFavorite;
-{
-    self.isFavorite = isFavorite;
-    
-    CGRect detailsFrame = self.details.frame;
-    if (self.isFavorite)
-    {
-        CGRect favoriteIconFrame = self.favoriteIcon.frame;
-        favoriteIconFrame.origin.y = kFavoriteIconYPosition;
-        self.favoriteIcon.frame = favoriteIconFrame;
-        
-        [self.detailsView addSubview:self.favoriteIcon];
-        
-        detailsFrame.origin.x = self.favoriteIcon.frame.size.width + kFavoriteIconAndDetailsLabelGap;
-        self.details.frame = detailsFrame;
-        
-        [self.detailsView addSubview:self.details];
-    }
-    else
-    {
-        [self.detailsView addSubview:self.details];
-        
-        [self.favoriteIcon setImage:nil];
-        [self.favoriteIcon setHighlightedImage:nil];
     }
 }
 
