@@ -1,38 +1,40 @@
 //
-//  SyncCell.m
+//  AlfrescoNodeCell.m
 //  AlfrescoApp
 //
 //  Created by Mohamad Saeedi on 30/09/2013.
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import "SyncCell.h"
+#import "AlfrescoNodeCell.h"
 #import "SyncNodeStatus.h"
 #import "Utility.h"
 
-NSString * const kSyncTableCellIdentifier = @"SyncCellIdentifier";
+NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
-@interface SyncCell()
+@interface AlfrescoNodeCell()
 
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) SyncNodeStatus *nodeStatus;
 @property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, assign) BOOL isSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
+@property (nonatomic, strong) UIImageView *infoIcon1;
+@property (nonatomic, strong) UIImageView *infoIcon2;
 @property (nonatomic, strong) UIImageView *syncStatusImageView;
 @property (nonatomic, strong) UIImageView *favoriteStatusImageView;
 
 @end
 
-@implementation SyncCell
+@implementation AlfrescoNodeCell
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = nil;
-    NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil];
+    NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil];
     if (subViews.count > 0)
     {
-        self = (SyncCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil][0];
+        self = (AlfrescoNodeCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil][0];
         
         static NSInteger const infoIconRightMargin = 8;
         static NSInteger const infoIconTopMargin = 6;

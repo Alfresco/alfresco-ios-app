@@ -12,7 +12,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
 #import "Utility.h"
-#import "SyncCell.h"
+#import "AlfrescoNodeCell.h"
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
@@ -775,11 +775,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SyncCell *cell = [tableView dequeueReusableCellWithIdentifier:kSyncTableCellIdentifier];
+    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
     
     if (!cell)
     {
-        cell = [[SyncCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
+        cell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
     }
     
     // config the cell here...

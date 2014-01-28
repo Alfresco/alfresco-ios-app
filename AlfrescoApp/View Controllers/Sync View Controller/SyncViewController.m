@@ -8,7 +8,7 @@
 
 #import "SyncViewController.h"
 #import "SyncManager.h"
-#import "SyncCell.h"
+#import "AlfrescoNodeCell.h"
 #import "Utility.h"
 #import "PreviewViewController.h"
 #import "MetaDataViewController.h"
@@ -169,10 +169,10 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SyncCell *syncCell = [tableView dequeueReusableCellWithIdentifier:kSyncTableCellIdentifier];
-    if (nil == syncCell)
+    AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
+    if (nil == nodeCell)
     {
-        syncCell = [[SyncCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
+        nodeCell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
     }
     
     SyncManager *syncManager = [SyncManager sharedManager];
@@ -180,12 +180,12 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    [syncCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
-    [syncCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite];
+    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
+    [nodeCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite];
     
     if (node.isFolder)
     {
-        syncCell.image.image = imageForType(@"folder");
+        nodeCell.image.image = imageForType(@"folder");
     }
     else if (node.isDocument)
     {
@@ -197,12 +197,12 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         {
             thumbnail = [thumbnailManager thumbnailForNode:document withParentNode:self.parentNode session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
                 
-                [syncCell.image setImageAtPath:savedFileName withFade:YES];
+                [nodeCell.image setImageAtPath:savedFileName withFade:YES];
             }];
         }
-        syncCell.image.image = thumbnail;
+        nodeCell.image.image = thumbnail;
     }
-    return syncCell;
+    return nodeCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
