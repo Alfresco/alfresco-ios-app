@@ -77,10 +77,14 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
         }];
     }
 
-    // HockeyApp SDK
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"50a2db26b7e3926dcca100aebc019fdd"];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+    // HockeyApp SDK - only for non-dev builds to avoid update prompt
+    NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    if (![bundleVersion isEqualToString:@"dev"])
+    {
+        [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"50a2db26b7e3926dcca100aebc019fdd"];
+        [[BITHockeyManager sharedHockeyManager] startManager];
+        [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+    }
 
     return YES;
 }
