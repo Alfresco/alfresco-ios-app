@@ -14,7 +14,7 @@ static NSInteger const kMaxCounterValue = 100;
 static CGFloat const kDestructiveButtonHueValue = 0.0f;
 static CGFloat const kDestructiveButtonSaturationValue = 0.80f;
 static CGFloat const kDestructiveButtonBrightnessValue = 0.71f;
-static CGFloat const kDestructiveButtonAlphaValue = 0.0f;
+static CGFloat const kDestructiveButtonAlphaValue = 1.0f;
 
 @interface MultiSelectActionItem ()
 

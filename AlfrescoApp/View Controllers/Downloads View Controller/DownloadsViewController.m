@@ -27,8 +27,9 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 @property (nonatomic, strong) NSString *downloadsFooterTitle;
 @property (nonatomic) BOOL noDocumentsSaved;
 @property (nonatomic) float totalFilesSize;
-@property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, strong) id<DocumentFilter> documentFilter;
+@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @end
 
@@ -69,6 +70,9 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(performCancel:)];
     }
+    
+    self.multiSelectToolbar.multiSelectDelegate = self;
+    [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -83,15 +87,8 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     [self.tableView setAllowsMultipleSelectionDuringEditing:editing];
     [self.tableView setEditing:editing animated:animated];
     [self updateBarButtonItems];
-    
-    if (!self.multiSelectToolbar)
-    {
-        self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithParentViewController:self.tabBarController];
-        self.multiSelectToolbar.multiSelectDelegate = self;
-        [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
-    }
-    
-    editing ? [self.multiSelectToolbar enterMultiSelectMode] : [self.multiSelectToolbar leaveMultiSelectMode];
+
+    editing ? [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint] : [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
     if (editing)
@@ -319,7 +316,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                destructiveButtonTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete")
                                                     otherButtonTitles:nil];
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    [actionSheet showFromToolbar:self.multiSelectToolbar];
 }
 
 - (void)deleteMultiSelectedNodes
