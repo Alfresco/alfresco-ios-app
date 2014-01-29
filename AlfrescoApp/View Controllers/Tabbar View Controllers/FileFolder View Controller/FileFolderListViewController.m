@@ -163,8 +163,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.tableView setAllowsMultipleSelectionDuringEditing:editing];
     [self.tableView setEditing:editing animated:animated];
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
-    
-    editing ? [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint] : [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
     [UIView animateWithDuration:kSearchBarAnimationDuration animations:^{
@@ -177,10 +175,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
         [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
         [self disablePullToRefresh];
+        [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
     else
     {
         [self enablePullToRefresh];
+        [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
 }
 

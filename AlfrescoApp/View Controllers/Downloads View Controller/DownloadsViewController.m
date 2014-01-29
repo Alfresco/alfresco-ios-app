@@ -87,17 +87,17 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     [self.tableView setAllowsMultipleSelectionDuringEditing:editing];
     [self.tableView setEditing:editing animated:animated];
     [self updateBarButtonItems];
-
-    editing ? [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint] : [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
     if (editing)
     {
         [self disablePullToRefresh];
+        [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
     else
     {
         [self enablePullToRefresh];
+        [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
 }
 
