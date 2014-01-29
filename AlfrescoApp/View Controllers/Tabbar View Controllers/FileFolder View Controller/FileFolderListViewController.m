@@ -45,13 +45,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIBarButtonItem *actionSheetBarButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, assign) BOOL capturingMedia;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
+@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @end
 
@@ -74,7 +75,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [super initWithSession:session];
+    self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
@@ -93,8 +94,24 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
+    self.title = self.folderDisplayName;
+    self.nodePermissions = [[NSMutableDictionary alloc] init];
+    
+    if (!IS_IPAD)
+    {
+        // hide search bar initially
+        self.tableView.contentOffset = CGPointMake(0., 40.);
+    }
+    
+    if (self.session)
+    {
+        [self loadContentOfFolder];
+    }
+    
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // create searchBar
@@ -116,38 +133,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     searchController.delegate = self;
     self.searchController = searchController;
     
-    // create and configure the table view
-    UITableView *tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tableView = tableView;
-    [view addSubview:self.tableView];
-    
-    // add the searchBar to the tableview
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.tableView.tableHeaderView = self.searchBar;
     
-    view.autoresizesSubviews = YES;
-    self.view = view;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.title = self.folderDisplayName;
-    self.nodePermissions = [[NSMutableDictionary alloc] init];
-    
-    if (!IS_IPAD)
-    {
-        // hide search bar initially
-        self.tableView.contentOffset = CGPointMake(0., 40.);
-    }
-    
-    if (self.session)
-    {
-        [self loadContentOfFolder];
-    }
+    self.multiSelectToolbar.multiSelectDelegate = self;
+    [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -172,15 +163,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.tableView setAllowsMultipleSelectionDuringEditing:editing];
     [self.tableView setEditing:editing animated:animated];
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
-    
-    if (!self.multiSelectToolbar)
-    {
-        self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithParentViewController:self.tabBarController];
-        self.multiSelectToolbar.multiSelectDelegate = self;
-        [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
-    }
-    
-    editing ? [self.multiSelectToolbar enterMultiSelectMode] : [self.multiSelectToolbar leaveMultiSelectMode];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
     [UIView animateWithDuration:kSearchBarAnimationDuration animations:^{
@@ -193,10 +175,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
         [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
         [self disablePullToRefresh];
+        [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
     else
     {
         [self enablePullToRefresh];
+        [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
 }
 
@@ -667,7 +651,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                destructiveButtonTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete")
                                                     otherButtonTitles:nil];
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    [actionSheet showFromToolbar:self.multiSelectToolbar];
 }
 
 - (void)deleteMultiSelectedNodes

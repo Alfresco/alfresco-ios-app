@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FileFolderListViewController">
+            <connections>
+                <outlet property="multiSelectToolbar" destination="JPN-1b-mZW" id="5Ld-Lo-64r"/>
+                <outlet property="multiSelectToolbarHeightConstraint" destination="X5L-ED-P8M" id="vei-PH-IOz"/>
+                <outlet property="tableView" destination="ueO-yv-R85" id="yzu-vk-SXq"/>
+                <outlet property="view" destination="mwS-Ce-2SA" id="bNd-8X-CsS"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="mwS-Ce-2SA">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ueO-yv-R85">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JPN-1b-mZW" customClass="MultiSelectActionsToolbar">
+                    <rect key="frame" x="0.0" y="568" width="320" height="0.0"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" id="X5L-ED-P8M"/>
+                    </constraints>
+                    <items/>
+                    <color key="barTintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="ueO-yv-R85" firstAttribute="top" secondItem="mwS-Ce-2SA" secondAttribute="top" id="2GL-ls-X5u"/>
+                <constraint firstAttribute="trailing" secondItem="ueO-yv-R85" secondAttribute="trailing" id="8Vw-Av-wqf"/>
+                <constraint firstAttribute="bottom" secondItem="JPN-1b-mZW" secondAttribute="bottom" id="An8-0h-5Bb"/>
+                <constraint firstItem="ueO-yv-R85" firstAttribute="leading" secondItem="mwS-Ce-2SA" secondAttribute="leading" id="CTC-ug-KI0"/>
+                <constraint firstAttribute="trailing" secondItem="JPN-1b-mZW" secondAttribute="trailing" id="evb-Bt-pby"/>
+                <constraint firstItem="JPN-1b-mZW" firstAttribute="leading" secondItem="mwS-Ce-2SA" secondAttribute="leading" id="hBk-15-3i8"/>
+                <constraint firstItem="JPN-1b-mZW" firstAttribute="top" secondItem="ueO-yv-R85" secondAttribute="bottom" id="yiy-a8-0u8"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

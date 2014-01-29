@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DownloadsViewController">
             <connections>
+                <outlet property="multiSelectToolbar" destination="db4-Uy-o0p" id="0xU-tO-RHV"/>
+                <outlet property="multiSelectToolbarHeightConstraint" destination="p0x-Kc-xpN" id="EXA-yx-FNq"/>
                 <outlet property="tableView" destination="Sar-jf-Zwe" id="l0X-wh-IjH"/>
                 <outlet property="view" destination="bXu-hS-wzM" id="X9L-yE-Afs"/>
             </connections>
@@ -21,13 +23,24 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="db4-Uy-o0p" customClass="MultiSelectActionsToolbar">
+                    <rect key="frame" x="0.0" y="852" width="320" height="0.0"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" id="p0x-Kc-xpN"/>
+                    </constraints>
+                    <items/>
+                </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="db4-Uy-o0p" secondAttribute="trailing" id="8sp-bc-Xmw"/>
                 <constraint firstItem="Sar-jf-Zwe" firstAttribute="top" secondItem="bXu-hS-wzM" secondAttribute="top" id="BnM-eL-zkF"/>
                 <constraint firstAttribute="trailing" secondItem="Sar-jf-Zwe" secondAttribute="trailing" id="G2V-hX-vlT"/>
-                <constraint firstAttribute="bottom" secondItem="Sar-jf-Zwe" secondAttribute="bottom" id="NKH-FO-H6J"/>
                 <constraint firstItem="Sar-jf-Zwe" firstAttribute="leading" secondItem="bXu-hS-wzM" secondAttribute="leading" id="Tki-E6-dPZ"/>
+                <constraint firstItem="db4-Uy-o0p" firstAttribute="leading" secondItem="bXu-hS-wzM" secondAttribute="leading" id="XYL-k5-ghD"/>
+                <constraint firstAttribute="bottom" secondItem="db4-Uy-o0p" secondAttribute="bottom" id="dLo-aB-ZvI"/>
+                <constraint firstItem="db4-Uy-o0p" firstAttribute="top" secondItem="Sar-jf-Zwe" secondAttribute="bottom" id="qiC-F1-Ry0"/>
             </constraints>
             <splitViewMasterSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
