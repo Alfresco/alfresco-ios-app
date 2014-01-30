@@ -202,11 +202,15 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     
     if ([currentComment.createdBy isEqualToString:self.session.personIdentifier])
     {
-        cell.contentTextLabel.backgroundColor = [UIColor lightGrayColor];
+        UIImage *image = [[UIImage imageNamed:@"bubble_blue.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 15.0f, 7.0f, 15.0f)];
+        cell.speechBubbleImageView.image = image;
+        cell.contentTextLabel.textColor = [UIColor whiteColor];
     }
     else
     {
-        cell.contentTextLabel.backgroundColor = [UIColor blueColor];
+        UIImage *image = [[UIImage imageNamed:@"bubble_grey.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 15.0f, 7.0f, 15.0f)];
+        cell.speechBubbleImageView.image = image;
+        cell.contentTextLabel.textColor = [UIColor darkGrayColor];
     }
     
     AlfrescoContentFile *avatarContentFile = [[AvatarManager sharedManager] avatarForUsername:currentComment.createdBy];

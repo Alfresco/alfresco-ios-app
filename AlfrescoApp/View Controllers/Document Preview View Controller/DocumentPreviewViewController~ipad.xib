@@ -41,10 +41,10 @@
                     </connections>
                 </scrollView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="134.0000009903907" y="10" width="500" height="29"/>
+                    <rect key="frame" x="159" y="10" width="450" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="500" id="DdW-5m-2GS"/>
+                        <constraint firstAttribute="width" constant="450" id="DdW-5m-2GS"/>
                         <constraint firstAttribute="height" constant="28" id="qv4-4a-6Ij"/>
                     </constraints>
                     <segments>

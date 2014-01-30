@@ -652,6 +652,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     {
         segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
     }
+    else
+    {
+        segmentCommentText = [self.pagingSegmentControl titleForSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+    }
     
     [self.pagingSegmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
 }

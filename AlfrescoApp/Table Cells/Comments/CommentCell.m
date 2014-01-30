@@ -8,14 +8,21 @@
 
 #import "CommentCell.h"
 
+static CGFloat const kMaxiPhoneSpeechBubbleWidth = 200.0f;
+static CGFloat const kMaxiPadSpeechBubbleWidth = 350.0f;
+
 @implementation CommentCell
+
+- (void)awakeFromNib
+{
+    self.contentTextLabel.preferredMaxLayoutWidth = (IS_IPAD) ? kMaxiPadSpeechBubbleWidth : kMaxiPhoneSpeechBubbleWidth;
+}
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
     [self.contentView layoutSubviews];
-    self.contentTextLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.contentTextLabel.frame);
     self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width/2;
     self.avatarImageView.clipsToBounds = YES;
 }

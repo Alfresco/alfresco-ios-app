@@ -42,8 +42,6 @@
                     }
                     
                     [detailNavigationViewController resetRootViewControllerWithViewController:viewController];
-                    
-                    [self addExpandCollapseButtonToViewController:viewController];
                 }
             }
         }
@@ -119,39 +117,6 @@
     }
     
     return nil;
-}
-
-+ (void)addExpandCollapseButtonToViewController:(UIViewController *)viewController
-{
-//    UIImage *image = [UIImage imageNamed:@"download"];
-//    CGRect buttonFrame = CGRectMake(0, 0, image.size.width + 2, image.size.height);
-//    UIButton *customButton = [[UIButton alloc] initWithFrame:buttonFrame];
-//    [customButton setImage:image forState:UIControlStateNormal];
-//    [customButton addTarget:self action:@selector(expandCollapseButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    customButton.showsTouchWhenHighlighted = YES;
-//    
-//    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:customButton];
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"≡" style:UIBarButtonItemStylePlain target:self action:@selector(expandCollapseButtonAction:)];
-    
-    [viewController.navigationItem setLeftBarButtonItem:button];
-}
-
-+ (void)expandCollapseButtonAction:(UIBarButtonItem *)button
-{
-    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-    
-    if ([rootViewController isKindOfClass:[ContainerViewController class]])
-    {
-        ContainerViewController *containerViewController = (ContainerViewController *)rootViewController;
-        RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)containerViewController.rootViewController;
-        UIViewController *rootDetailController = splitViewController.detailViewController;
-        if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
-        {
-            DetailSplitViewController *rootDetailSplitViewController = (DetailSplitViewController *)rootDetailController;
-            [rootDetailSplitViewController.delegate didPressExpandCollapseButton:rootDetailSplitViewController button:button];
-        }
-    }
 }
 
 + (UIViewController *)containerViewController
