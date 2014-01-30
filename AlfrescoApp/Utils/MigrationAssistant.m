@@ -9,7 +9,6 @@
 #import "MigrationAssistant.h"
 #import "AccountInfo.h"
 #import "NSData+Base64.h"
-#import "RNDecryptor.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "KeychainUtils.h"
