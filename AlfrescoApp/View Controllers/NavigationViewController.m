@@ -11,7 +11,6 @@
 @interface NavigationViewController ()
 
 @property (nonatomic, strong) UIBarButtonItem *expandButton;
-@property (nonatomic, strong) UIBarButtonItem *showMasterButton;
 @property (nonatomic, assign) BOOL viewShownBefore;
 
 @end
@@ -34,7 +33,7 @@
     
     self.navigationBar.translucent = NO;
     
-    self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"expand.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
+    self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -56,10 +55,10 @@
 
 - (BOOL)isDetailViewController
 {
-    if ([self.parentViewController isKindOfClass:[UISplitViewController class]])
+    if ([self.parentViewController isKindOfClass:[DetailSplitViewController class]])
     {
-        UISplitViewController *splitViewController = (UISplitViewController *)self.parentViewController;
-        UIViewController *detailViewController = [splitViewController.viewControllers objectAtIndex:1];
+        DetailSplitViewController *splitViewController = (DetailSplitViewController *)self.parentViewController;
+        UIViewController *detailViewController = splitViewController.detailViewController;
         return detailViewController == self;
     }
     return NO;
@@ -85,41 +84,7 @@
 
 - (void)expandOrCollapseDetailView:(id)sender
 {
-    UISplitViewController *splitViewController = (UISplitViewController *)[self parentViewController];
-    
-    UIViewController *masterViewController = [splitViewController.viewControllers objectAtIndex:0];
-    UIViewController *detailViewController = [splitViewController.viewControllers objectAtIndex:1];
-    
-    float masterViewWidth = 320.0f;
-    
-    float delta = (self.isCurrentlyExpanded) ? -masterViewWidth : masterViewWidth;
-    
-    CGRect existingSplitFrame = splitViewController.view.frame;
-    CGRect existingMasterFrame = masterViewController.view.frame;
-    CGRect existingDetailFrame = detailViewController.view.frame;
-    
-    if (self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-    {
-        existingSplitFrame.origin.y -= delta;
-    }
-    
-    existingSplitFrame.size.height += delta;
-    existingMasterFrame.origin.x -= delta;
-    existingDetailFrame.size.width += delta;
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        splitViewController.view.frame = existingSplitFrame;
-        masterViewController.view.frame = existingMasterFrame;
-        detailViewController.view.frame = existingDetailFrame;
-    }
-    completion:^(BOOL finished) {
-        if (finished)
-        {
-            self.isCurrentlyExpanded = !self.isCurrentlyExpanded;
-            // these should be images, using text for now
-            self.expandButton.image = (self.isCurrentlyExpanded) ? [UIImage imageNamed:@"collapse.png"] : [UIImage imageNamed:@"expand.png"];;
-        }
-    }];
+    [(DetailSplitViewController *)self.parentViewController expandOrCollapse];
 }
 
 - (void)updateView
@@ -128,13 +93,18 @@
     {
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
         {
-            [self.rootViewController.navigationItem setLeftBarButtonItem:self.expandButton animated:NO];
+            [self.rootViewController.navigationItem setLeftBarButtonItem:nil animated:YES];
         }
         else
         {
-            [self.rootViewController.navigationItem setLeftBarButtonItem:self.showMasterButton animated:NO];
+            [self.rootViewController.navigationItem setLeftBarButtonItem:self.expandButton animated:YES];
         }
     }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self updateView];
 }
 
 #pragma mark - DetailSplitViewControllerDelegate

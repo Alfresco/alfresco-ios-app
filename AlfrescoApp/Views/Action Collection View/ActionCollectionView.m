@@ -54,7 +54,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 {
     CGPoint startPoint = CGPointMake(0, 0);
     CGPoint endPoint = CGPointMake(self.frame.size.width, 0);
-    UIColor *blackColour = [UIColor blackColor];
+    UIColor *blackColour = [UIColor darkGrayColor];
     
     [self drawLineFromPoint:startPoint toPoint:endPoint lineThickness:kLineSeparatorThickness colour:blackColour];
 }

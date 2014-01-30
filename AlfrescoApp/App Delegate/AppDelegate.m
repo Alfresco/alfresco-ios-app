@@ -154,7 +154,6 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
         NavigationViewController *detailNavigationController = [[NavigationViewController alloc] initWithRootViewController:placeholderViewController];
         
         DetailSplitViewController *splitViewController = [[DetailSplitViewController alloc] initWithMasterViewController:switchController detailViewController:detailNavigationController];
-        splitViewController.delegate = detailNavigationController;
         
         rootRevealViewController.masterViewController = mainMenuController;
         rootRevealViewController.detailViewController = splitViewController;

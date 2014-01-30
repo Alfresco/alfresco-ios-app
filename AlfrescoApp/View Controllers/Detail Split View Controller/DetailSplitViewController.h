@@ -10,17 +10,10 @@
 
 @class DetailSplitViewController;
 
-@protocol DetailSplitViewControllerDelegate <NSObject>
-
-- (void)didPressExpandCollapseButton:(DetailSplitViewController *)detailSplitViewController button:(UIBarButtonItem *)button;
-
-@end
-
 @interface DetailSplitViewController : UIViewController
 
 @property (nonatomic, strong, readonly) UIViewController *masterViewController;
 @property (nonatomic, strong, readonly) UIViewController *detailViewController;
-@property (nonatomic, weak) id<DetailSplitViewControllerDelegate> delegate;
 
 - (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController;
 - (void)expandOrCollapse;

@@ -14,5 +14,6 @@
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *avatarImageView;
 @property (nonatomic, weak) IBOutlet UILabel *authorTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *contentTextLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *speechBubbleImageView;
 
 @end

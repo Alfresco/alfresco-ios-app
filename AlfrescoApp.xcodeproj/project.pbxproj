@@ -130,6 +130,10 @@
 		73299A25185B4BB000F96AF5 /* MetadataHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
+		734293A11899218300BDFD35 /* bubble_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 7342939D1899218300BDFD35 /* bubble_grey.png */; };
+		734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7342939E1899218300BDFD35 /* bubble_grey@2x.png */; };
+		734BFE561899606A00692AB4 /* hamburger.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE541899606A00692AB4 /* hamburger.png */; };
+		734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE551899606A00692AB4 /* hamburger@2x.png */; };
 		73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD01802C679007172EE /* ActionCollectionView.m */; };
 		73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD31802C679007172EE /* ActionCollectionViewCell.m */; };
 		73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AD41802C679007172EE /* ActionCollectionViewCell.xib */; };
@@ -206,6 +210,8 @@
 		73A26A8A18364641006C1D81 /* sites-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8318364641006C1D81 /* sites-main-menu.png */; };
 		73A26A8B18364641006C1D81 /* tasks-main-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A26A8418364641006C1D81 /* tasks-main-menu.png */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
+		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
+		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
 		73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350B61851E8BF0037E3E3 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B350C91851E9AA0037E3E3 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BC1851E9AA0037E3E3 /* RNCryptor.m */; };
 		73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */; };
@@ -583,6 +589,10 @@
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6F181FBA500091CA95 /* PagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedScrollView.h; path = "Paged Scroll View/PagedScrollView.h"; sourceTree = "<group>"; };
 		7335AA70181FBA500091CA95 /* PagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedScrollView.m; path = "Paged Scroll View/PagedScrollView.m"; sourceTree = "<group>"; };
+		7342939D1899218300BDFD35 /* bubble_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_grey.png; sourceTree = "<group>"; };
+		7342939E1899218300BDFD35 /* bubble_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_grey@2x.png"; sourceTree = "<group>"; };
+		734BFE541899606A00692AB4 /* hamburger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hamburger.png; sourceTree = "<group>"; };
+		734BFE551899606A00692AB4 /* hamburger@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hamburger@2x.png"; sourceTree = "<group>"; };
 		73632ACF1802C679007172EE /* ActionCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionView.h; sourceTree = "<group>"; };
 		73632AD01802C679007172EE /* ActionCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionView.m; sourceTree = "<group>"; };
 		73632AD21802C679007172EE /* ActionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionViewCell.h; sourceTree = "<group>"; };
@@ -687,6 +697,8 @@
 		73A26A8418364641006C1D81 /* tasks-main-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tasks-main-menu.png"; sourceTree = "<group>"; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
+		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
+		73B0788C189A559400D02C43 /* bubble_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_blue@2x.png"; sourceTree = "<group>"; };
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		73B350B91851E9AA0037E3E3 /* RNCryptor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor+Private.h"; sourceTree = "<group>"; };
@@ -1280,6 +1292,17 @@
 				7335AA70181FBA500091CA95 /* PagedScrollView.m */,
 			);
 			name = "Paged Scroll View";
+			sourceTree = "<group>";
+		};
+		7342939A1899218300BDFD35 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				73B0788B189A559400D02C43 /* bubble_blue.png */,
+				73B0788C189A559400D02C43 /* bubble_blue@2x.png */,
+				7342939D1899218300BDFD35 /* bubble_grey.png */,
+				7342939E1899218300BDFD35 /* bubble_grey@2x.png */,
+			);
+			path = Comments;
 			sourceTree = "<group>";
 		};
 		73632ACE1802C679007172EE /* Action Collection View */ = {
@@ -1930,6 +1953,7 @@
 				73B959F217A68B7E0099FB84 /* About */,
 				73B959F717A68B7E0099FB84 /* Activities */,
 				73B959FA17A68B7E0099FB84 /* Buttons */,
+				7342939A1899218300BDFD35 /* Comments */,
 				73B959FD17A68B7E0099FB84 /* Icons */,
 				73B95A1C17A68B7E0099FB84 /* Launch Images */,
 				73B95A2417A68B7E0099FB84 /* Logo */,
@@ -1978,6 +2002,8 @@
 				0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */,
 				08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */,
 				08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */,
+				734BFE541899606A00692AB4 /* hamburger.png */,
+				734BFE551899606A00692AB4 /* hamburger@2x.png */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -2419,6 +2445,7 @@
 				73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */,
 				73B95A6117A68B7E0099FB84 /* AboutLogo.png in Resources */,
 				0808B9E0183BB40B000A8984 /* unselected_circle.png in Resources */,
+				73B0788D189A559400D02C43 /* bubble_blue.png in Resources */,
 				7390619B189676F600B1920C /* ButtonBarArrowDown.png in Resources */,
 				73B95A6217A68B7E0099FB84 /* AboutLogo@2x.png in Resources */,
 				73B95A6317A68B7E0099FB84 /* AboutLogo@2x~ipad.png in Resources */,
@@ -2480,6 +2507,7 @@
 				73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */,
 				73B95A7F17A68B7E0099FB84 /* mime_xml.png in Resources */,
 				73B95A8017A68B7E0099FB84 /* mime_xml@2x.png in Resources */,
+				734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */,
 				73A26A8618364641006C1D81 /* activities-main-menu.png in Resources */,
 				27F054D81891832B00C2454C /* app-icon-29.png in Resources */,
 				73B95A8117A68B7E0099FB84 /* mime_zip.png in Resources */,
@@ -2509,6 +2537,8 @@
 				73881FCB188FF6B00052C75F /* actionsheet-attachments@2x.png in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
 				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
+				734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */,
+				734293A11899218300BDFD35 /* bubble_grey.png in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
 				27F054DB1891832B00C2454C /* app-icon-57.png in Resources */,
@@ -2553,6 +2583,7 @@
 				73B95A9E17A68B7E0099FB84 /* about-more.png in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				73B95A9F17A68B7E0099FB84 /* about-more@2x.png in Resources */,
+				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
 				73A04F30187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib in Resources */,
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
 				0808B9E2183D1083000A8984 /* empty_icon.png in Resources */,
@@ -2629,6 +2660,7 @@
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
 				73A26A8718364641006C1D81 /* download-main-menu.png in Resources */,
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
+				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
 				73B95B0C17A6A83A0099FB84 /* ImageMapping.plist in Resources */,
 				73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */,

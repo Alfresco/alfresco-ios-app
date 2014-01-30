@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DetailSplitViewController.h"
 
-@interface NavigationViewController : UINavigationController <UISplitViewControllerDelegate, DetailSplitViewControllerDelegate>
+@interface NavigationViewController : UINavigationController
 
 @property (nonatomic, strong) UIViewController *rootViewController;
 @property (nonatomic, strong) UIPopoverController *masterPopoverController;
