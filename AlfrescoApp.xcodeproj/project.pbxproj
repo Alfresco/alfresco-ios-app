@@ -110,6 +110,7 @@
 		27F054DD1891832B00C2454C /* app-icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D01891832B00C2454C /* app-icon-72.png */; };
 		27F054DE1891832B00C2454C /* app-icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D11891832B00C2454C /* app-icon-76.png */; };
 		27F054DF1891832B00C2454C /* app-icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D21891832B00C2454C /* app-icon-80.png */; };
+		5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB5D92344964A91B3E95A3F /* libPods.a */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
@@ -212,11 +213,8 @@
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
+		73B0789A189AB1E600D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B07899189AB1E600D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350B61851E8BF0037E3E3 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		73B350C91851E9AA0037E3E3 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BC1851E9AA0037E3E3 /* RNCryptor.m */; };
-		73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */; };
-		73B350CB1851E9AA0037E3E3 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C01851E9AA0037E3E3 /* RNDecryptor.m */; };
-		73B350CC1851E9AA0037E3E3 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350C21851E9AA0037E3E3 /* RNEncryptor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
 		73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D217A6750E0099FB84 /* ConnectivityManager.m */; };
@@ -251,9 +249,6 @@
 		73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */; };
 		73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */; };
 		73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */; };
-		73B959DB17A67A760099FB84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D317A67A760099FB84 /* MBProgressHUD.m */; };
-		73B959DC17A67A760099FB84 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D617A67A760099FB84 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B959D917A67A760099FB84 /* TTTAttributedLabel.m */; };
 		73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959DE17A6844B0099FB84 /* QuartzCore.framework */; };
 		73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959E017A684550099FB84 /* AVFoundation.framework */; };
 		73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959E217A684690099FB84 /* ImageIO.framework */; };
@@ -699,18 +694,10 @@
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
 		73B0788C189A559400D02C43 /* bubble_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_blue@2x.png"; sourceTree = "<group>"; };
+		73B07898189AB1E600D02C43 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		73B07899189AB1E600D02C43 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
-		73B350B91851E9AA0037E3E3 /* RNCryptor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor+Private.h"; sourceTree = "<group>"; };
-		73B350BA1851E9AA0037E3E3 /* RNCryptor-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor-Prefix.pch"; sourceTree = "<group>"; };
-		73B350BB1851E9AA0037E3E3 /* RNCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
-		73B350BC1851E9AA0037E3E3 /* RNCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptor.m; sourceTree = "<group>"; };
-		73B350BD1851E9AA0037E3E3 /* RNCryptorEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptorEngine.h; sourceTree = "<group>"; };
-		73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptorEngine.m; sourceTree = "<group>"; };
-		73B350BF1851E9AA0037E3E3 /* RNDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDecryptor.h; sourceTree = "<group>"; };
-		73B350C01851E9AA0037E3E3 /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
-		73B350C11851E9AA0037E3E3 /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
-		73B350C21851E9AA0037E3E3 /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
 		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Supporting Files/Default-568h@2x.png"; sourceTree = "<group>"; };
 		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = "Supporting Files/Default.png"; sourceTree = "<group>"; };
@@ -781,12 +768,6 @@
 		73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionItem.m; sourceTree = "<group>"; };
 		73B9584017A6750F0099FB84 /* MultiSelectActionsToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionsToolbar.h; sourceTree = "<group>"; };
 		73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionsToolbar.m; sourceTree = "<group>"; };
-		73B959D217A67A760099FB84 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		73B959D317A67A760099FB84 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		73B959D517A67A760099FB84 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		73B959D617A67A760099FB84 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		73B959D817A67A760099FB84 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
-		73B959D917A67A760099FB84 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		73B959DE17A6844B0099FB84 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		73B959E017A684550099FB84 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		73B959E217A684690099FB84 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -939,6 +920,8 @@
 		73F628B6185779440050F437 /* TextFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextFileViewController.m; path = "Text File View Controller/TextFileViewController.m"; sourceTree = "<group>"; };
 		73FC470918227F1700864E80 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		73FC470B1823BE7400864E80 /* Email Template */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Email Template"; path = "Supporting Files/Email Template"; sourceTree = "<group>"; };
+		80764C79F17643929EEA92E8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		9DB5D92344964A91B3E95A3F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -970,6 +953,7 @@
 				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
 				7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */,
 				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
+				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1384,6 +1368,7 @@
 				08E89C9E17E7593B006936DF /* AlfrescoApp Tests */,
 				7373B4F717A66E9400869949 /* Frameworks */,
 				7373B4F617A66E9400869949 /* Products */,
+				80764C79F17643929EEA92E8 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1415,6 +1400,7 @@
 				7373B4FA17A66E9400869949 /* Foundation.framework */,
 				7373B4FC17A66E9400869949 /* CoreGraphics.framework */,
 				08E89C9A17E7593B006936DF /* XCTest.framework */,
+				9DB5D92344964A91B3E95A3F /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1604,21 +1590,13 @@
 			path = "Main Menu Icons";
 			sourceTree = "<group>";
 		};
-		73B350B81851E9AA0037E3E3 /* RNCryptor */ = {
+		73B07897189AB1E600D02C43 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				73B350B91851E9AA0037E3E3 /* RNCryptor+Private.h */,
-				73B350BA1851E9AA0037E3E3 /* RNCryptor-Prefix.pch */,
-				73B350BB1851E9AA0037E3E3 /* RNCryptor.h */,
-				73B350BC1851E9AA0037E3E3 /* RNCryptor.m */,
-				73B350BD1851E9AA0037E3E3 /* RNCryptorEngine.h */,
-				73B350BE1851E9AA0037E3E3 /* RNCryptorEngine.m */,
-				73B350BF1851E9AA0037E3E3 /* RNDecryptor.h */,
-				73B350C01851E9AA0037E3E3 /* RNDecryptor.m */,
-				73B350C11851E9AA0037E3E3 /* RNEncryptor.h */,
-				73B350C21851E9AA0037E3E3 /* RNEncryptor.m */,
+				73B07898189AB1E600D02C43 /* Reachability.h */,
+				73B07899189AB1E600D02C43 /* Reachability.m */,
 			);
-			path = RNCryptor;
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		73B957C717A673A90099FB84 /* App Delegate */ = {
@@ -1908,39 +1886,9 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				73B959D117A67A760099FB84 /* MBProgressHUD */,
-				73B959D417A67A760099FB84 /* Reachability */,
-				73B350B81851E9AA0037E3E3 /* RNCryptor */,
-				73B959D717A67A760099FB84 /* TTTAttributedLabel */,
+				73B07897189AB1E600D02C43 /* Reachability */,
 			);
 			path = "Third Party Libraries";
-			sourceTree = "<group>";
-		};
-		73B959D117A67A760099FB84 /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				73B959D217A67A760099FB84 /* MBProgressHUD.h */,
-				73B959D317A67A760099FB84 /* MBProgressHUD.m */,
-			);
-			path = MBProgressHUD;
-			sourceTree = "<group>";
-		};
-		73B959D417A67A760099FB84 /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				73B959D517A67A760099FB84 /* Reachability.h */,
-				73B959D617A67A760099FB84 /* Reachability.m */,
-			);
-			path = Reachability;
-			sourceTree = "<group>";
-		};
-		73B959D717A67A760099FB84 /* TTTAttributedLabel */ = {
-			isa = PBXGroup;
-			children = (
-				73B959D817A67A760099FB84 /* TTTAttributedLabel.h */,
-				73B959D917A67A760099FB84 /* TTTAttributedLabel.m */,
-			);
-			path = TTTAttributedLabel;
 			sourceTree = "<group>";
 		};
 		73B959F117A68B7E0099FB84 /* Images */ = {
@@ -2344,9 +2292,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7373B51217A66E9400869949 /* Build configuration list for PBXNativeTarget "AlfrescoApp" */;
 			buildPhases = (
+				04FED5E599354B4D859C6385 /* Check Pods Manifest.lock */,
 				7373B4F117A66E9400869949 /* Sources */,
 				7373B4F217A66E9400869949 /* Frameworks */,
 				7373B4F317A66E9400869949 /* Resources */,
+				05B92CA8B70C4731A2DDEA50 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2676,6 +2626,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		04FED5E599354B4D859C6385 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		05B92CA8B70C4731A2DDEA50 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		08E89C9517E7593B006936DF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2697,7 +2680,6 @@
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
-				73B350CC1851E9AA0037E3E3 /* RNEncryptor.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
@@ -2706,7 +2688,6 @@
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
-				73B350CA1851E9AA0037E3E3 /* RNCryptorEngine.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
@@ -2728,7 +2709,6 @@
 				73B9584E17A6750F0099FB84 /* MetadataCell.m in Sources */,
 				73B9585017A6750F0099FB84 /* SitesCell.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
-				73B350CB1851E9AA0037E3E3 /* RNDecryptor.m in Sources */,
 				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
@@ -2745,6 +2725,7 @@
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
+				73B0789A189AB1E600D02C43 /* Reachability.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
@@ -2757,7 +2738,6 @@
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
-				73B350C91851E9AA0037E3E3 /* RNCryptor.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
@@ -2772,9 +2752,6 @@
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
 				73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */,
-				73B959DB17A67A760099FB84 /* MBProgressHUD.m in Sources */,
-				73B959DC17A67A760099FB84 /* Reachability.m in Sources */,
-				73B959DD17A67A760099FB84 /* TTTAttributedLabel.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
@@ -2962,6 +2939,7 @@
 		};
 		277F715417FEB6FD00B2E958 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3080,6 +3058,7 @@
 		};
 		7373B51317A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3107,6 +3086,7 @@
 		};
 		7373B51417A66E9400869949 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
