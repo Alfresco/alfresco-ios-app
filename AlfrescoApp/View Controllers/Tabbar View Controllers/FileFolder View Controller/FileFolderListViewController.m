@@ -12,7 +12,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
 #import "Utility.h"
-#import "FileFolderCell.h"
+#import "AlfrescoNodeCell.h"
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
@@ -23,8 +23,10 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
+#import "SyncManager.h"
+#import "FavouriteManager.h"
 
-static CGFloat kCellHeight = 60.0f;
+static CGFloat const kCellHeight = 74.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
@@ -43,13 +45,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIBarButtonItem *actionSheetBarButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, assign) BOOL capturingMedia;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
+@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @end
 
@@ -72,7 +75,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [super initWithSession:session];
+    self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
@@ -91,8 +94,24 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
+    self.title = self.folderDisplayName;
+    self.nodePermissions = [[NSMutableDictionary alloc] init];
+    
+    if (!IS_IPAD)
+    {
+        // hide search bar initially
+        self.tableView.contentOffset = CGPointMake(0., 40.);
+    }
+    
+    if (self.session)
+    {
+        [self loadContentOfFolder];
+    }
+    
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // create searchBar
@@ -114,38 +133,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     searchController.delegate = self;
     self.searchController = searchController;
     
-    // create and configure the table view
-    UITableView *tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tableView = tableView;
-    [view addSubview:self.tableView];
-    
-    // add the searchBar to the tableview
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.tableView.tableHeaderView = self.searchBar;
     
-    view.autoresizesSubviews = YES;
-    self.view = view;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.title = self.folderDisplayName;
-    self.nodePermissions = [[NSMutableDictionary alloc] init];
-    
-    if (!IS_IPAD)
-    {
-        // hide search bar initially
-        self.tableView.contentOffset = CGPointMake(0., 40.);
-    }
-    
-    if (self.session)
-    {
-        [self loadContentOfFolder];
-    }
+    self.multiSelectToolbar.multiSelectDelegate = self;
+    [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -170,15 +163,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.tableView setAllowsMultipleSelectionDuringEditing:editing];
     [self.tableView setEditing:editing animated:animated];
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
-    
-    if (!self.multiSelectToolbar)
-    {
-        self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithParentViewController:self.tabBarController];
-        self.multiSelectToolbar.multiSelectDelegate = self;
-        [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
-    }
-    
-    editing ? [self.multiSelectToolbar enterMultiSelectMode] : [self.multiSelectToolbar leaveMultiSelectMode];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
     [UIView animateWithDuration:kSearchBarAnimationDuration animations:^{
@@ -191,10 +175,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
         [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
         [self disablePullToRefresh];
+        [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
     else
     {
         [self enablePullToRefresh];
+        [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
     }
 }
 
@@ -525,38 +511,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return button;
 }
 
-- (void)accessoryButtonTapped:(UIButton *)accessoryButton withEvent:(UIEvent *)event
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    FileFolderCell *selectedCell = (FileFolderCell*)accessoryButton.superview;
-    
-    BOOL foundFileFolderCell = NO;
-    while (!foundFileFolderCell)
-    {
-        if (![selectedCell isKindOfClass:[UITableViewCell class]])
-        {
-            selectedCell = (FileFolderCell *)selectedCell.superview;
-        }
-        else
-        {
-            foundFileFolderCell = YES;
-        }
-    }
-    
-    NSIndexPath *indexPathToSelectedCell = nil;
-    
     AlfrescoNode *selectedNode = nil;
     if (self.searchController.searchResultsTableView.window)
     {
-        indexPathToSelectedCell = [self.searchController.searchResultsTableView indexPathForCell:selectedCell];
-        selectedNode = [self.searchResults objectAtIndex:indexPathToSelectedCell.row];
+        selectedNode = [self.searchResults objectAtIndex:indexPath.row];
     }
     else
     {
-        indexPathToSelectedCell = [self.tableView indexPathForCell:selectedCell];
-        selectedNode = [self.tableViewData objectAtIndex:indexPathToSelectedCell.row];
+        selectedNode = [self.tableViewData objectAtIndex:indexPath.row];
     }
     
-    [self.tableView selectRowAtIndexPath:indexPathToSelectedCell animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     
     if (self.searchController.searchResultsTableView && self.searchController.searchResultsTableView.window)
     {
@@ -684,7 +651,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                destructiveButtonTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete")
                                                     otherButtonTitles:nil];
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    [actionSheet showFromToolbar:self.multiSelectToolbar];
 }
 
 - (void)deleteMultiSelectedNodes
@@ -792,12 +759,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"FileFolderCell";
-    __block FileFolderCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
     
     if (!cell)
     {
-        cell = (FileFolderCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([FileFolderCell class]) owner:self options:nil] lastObject];
+        cell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
     }
     
     // config the cell here...
@@ -811,27 +777,30 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         currentNode = [self.tableViewData objectAtIndex:indexPath.row];
     }
     
-    cell.nodeNameLabel.text = currentNode.name;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    NSString *modifiedDateString = relativeDateFromDate(currentNode.modifiedAt);
+    SyncManager *syncManager = [SyncManager sharedManager];
+    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    
+    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO];
+    
+    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        
+        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite];
+    }];
     
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
     {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.nodeImageView.image = imageForType(@"folder");
-        cell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@", modifiedDateString];
-        // FIXME: Consider for iOS 7 replacing this with native info button support
-        cell.accessoryView = [self makeDetailDisclosureButton];
+        cell.image.image = imageForType(@"folder");
     }
     else
     {
         AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
         UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForNode:documentNode withParentNode:self.displayFolder session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-                [cell.nodeImageView setImageAtPath:savedFileName withFade:YES];
+            [cell.image setImageAtPath:savedFileName withFade:YES];
         }];
-        cell.nodeImageView.image = thumbnail;
-        
-        cell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(documentNode.contentLength)];
+        cell.image.image = thumbnail;
     }
     
     return cell;

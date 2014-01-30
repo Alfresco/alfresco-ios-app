@@ -3,12 +3,12 @@
 //  AlfrescoApp
 //
 //  Created by Mohamad Saeedi on 30/09/2013.
-//  Copyright (c) 2013 Alfresco. All rights reserved.
+//  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
 #import "SyncViewController.h"
 #import "SyncManager.h"
-#import "SyncCell.h"
+#import "AlfrescoNodeCell.h"
 #import "Utility.h"
 #import "PreviewViewController.h"
 #import "MetaDataViewController.h"
@@ -20,7 +20,7 @@
 #import "ThumbnailManager.h"
 #import "Constants.h"
 
-static NSInteger const kCellHeight = 84;
+static CGFloat const kCellHeight = 74.0f;
 static CGFloat const kFooterHeight = 32.0f;
 static CGFloat const kCellImageViewWidth = 32.0f;
 static CGFloat const kCellImageViewHeight = 32.0f;
@@ -169,42 +169,23 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //static NSString *cellIdentifier = kSyncTableCellIdentifier;
-    SyncCell *syncCell = [tableView dequeueReusableCellWithIdentifier:kSyncTableCellIdentifier];
-    if (nil == syncCell)
+    AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
+    if (nil == nodeCell)
     {
-        NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil];
-        if (subViews.count > 0)
-        {
-            syncCell = (SyncCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SyncCell class]) owner:self options:nil][0];
-            
-            static NSInteger const infoIconRightMargin = 5;
-            static NSInteger const infoIconTopMargin = 5;
-            static NSInteger const infoIconFrameWidth = 16;
-            static NSInteger const infoIconFrameHeight = 16;
-            
-            int infoIconsCurrentXPosition = self.tableView.frame.size.width - infoIconFrameWidth - infoIconRightMargin;
-            syncCell.status = [[UIImageView alloc] initWithFrame:CGRectMake(infoIconsCurrentXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
-            [syncCell addSubview:syncCell.status];
-        }
+        nodeCell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:syncCell
-                                             selector:@selector(statusChanged:)
-                                                 name:kSyncStatusChangeNotification
-                                               object:nil];
     
     SyncManager *syncManager = [SyncManager sharedManager];
     
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    syncCell.node = node;
-    syncCell.filename.text = node.name;
+    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
+    [nodeCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite];
     
     if (node.isFolder)
     {
-        syncCell.image.image = imageForType(@"folder");
+        nodeCell.image.image = imageForType(@"folder");
     }
     else if (node.isDocument)
     {
@@ -216,18 +197,12 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         {
             thumbnail = [thumbnailManager thumbnailForNode:document withParentNode:self.parentNode session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
                 
-                [syncCell.image setImageAtPath:savedFileName withFade:YES];
+                [nodeCell.image setImageAtPath:savedFileName withFade:YES];
             }];
         }
-        syncCell.image.image = thumbnail;
+        nodeCell.image.image = thumbnail;
     }
-    
-    [syncCell updateFavoriteState:nodeStatus.isFavorite];
-    
-    [syncCell updateNodeDetails:nodeStatus];
-    [syncCell updateCellWithNodeStatus:nodeStatus propertyChanged:kSyncStatus];
-    
-    return syncCell;
+    return nodeCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

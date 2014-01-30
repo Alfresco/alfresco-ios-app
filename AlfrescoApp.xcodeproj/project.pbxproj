@@ -54,8 +54,8 @@
 		0833246917F98CED00EE6AA8 /* sync-status-pending@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833245D17F98CED00EE6AA8 /* sync-status-pending@2x.png */; };
 		0833246A17F98CED00EE6AA8 /* sync-status-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833245E17F98CED00EE6AA8 /* sync-status-success.png */; };
 		0833246B17F98CED00EE6AA8 /* sync-status-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833245F17F98CED00EE6AA8 /* sync-status-success@2x.png */; };
-		0833246F17F98FE700EE6AA8 /* SyncCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833246E17F98FE700EE6AA8 /* SyncCell.m */; };
-		0833247117F9900000EE6AA8 /* SyncCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247017F9900000EE6AA8 /* SyncCell.xib */; };
+		0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833246E17F98FE700EE6AA8 /* AlfrescoNodeCell.m */; };
+		0833247117F9900000EE6AA8 /* AlfrescoNodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247017F9900000EE6AA8 /* AlfrescoNodeCell.xib */; };
 		0833247417FADFE600EE6AA8 /* stop-transfer.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247217FADFE600EE6AA8 /* stop-transfer.png */; };
 		0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */; };
 		0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */; };
@@ -82,6 +82,7 @@
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
+		08CC861C18990E1800CDC524 /* FileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */; };
 		08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */; };
 		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
 		08E799B1182A57850030FD53 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B0182A57850030FD53 /* ButtonCell.m */; };
@@ -97,6 +98,8 @@
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
+		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
+		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27F054D31891832B00C2454C /* app-icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C61891832B00C2454C /* app-icon-100.png */; };
 		27F054D41891832B00C2454C /* app-icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C71891832B00C2454C /* app-icon-114.png */; };
 		27F054D51891832B00C2454C /* app-icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C81891832B00C2454C /* app-icon-120.png */; };
@@ -213,7 +216,7 @@
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
-		73B0789A189AB1E600D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B07899189AB1E600D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		73B078A0189AB4F800D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0789F189AB4F800D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350B61851E8BF0037E3E3 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
@@ -479,9 +482,9 @@
 		0833245D17F98CED00EE6AA8 /* sync-status-pending@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sync-status-pending@2x.png"; path = "Sync/sync-status-pending@2x.png"; sourceTree = "<group>"; };
 		0833245E17F98CED00EE6AA8 /* sync-status-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sync-status-success.png"; path = "Sync/sync-status-success.png"; sourceTree = "<group>"; };
 		0833245F17F98CED00EE6AA8 /* sync-status-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sync-status-success@2x.png"; path = "Sync/sync-status-success@2x.png"; sourceTree = "<group>"; };
-		0833246D17F98FE700EE6AA8 /* SyncCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncCell.h; path = Sync/SyncCell.h; sourceTree = "<group>"; };
-		0833246E17F98FE700EE6AA8 /* SyncCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncCell.m; path = Sync/SyncCell.m; sourceTree = "<group>"; };
-		0833247017F9900000EE6AA8 /* SyncCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncCell.xib; path = Sync/SyncCell.xib; sourceTree = "<group>"; };
+		0833246D17F98FE700EE6AA8 /* AlfrescoNodeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlfrescoNodeCell.h; path = Sync/AlfrescoNodeCell.h; sourceTree = "<group>"; };
+		0833246E17F98FE700EE6AA8 /* AlfrescoNodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlfrescoNodeCell.m; path = Sync/AlfrescoNodeCell.m; sourceTree = "<group>"; };
+		0833247017F9900000EE6AA8 /* AlfrescoNodeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlfrescoNodeCell.xib; path = Sync/AlfrescoNodeCell.xib; sourceTree = "<group>"; };
 		0833247217FADFE600EE6AA8 /* stop-transfer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stop-transfer.png"; path = "Sync/stop-transfer.png"; sourceTree = "<group>"; };
 		0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stop-transfer@2x.png"; path = "Sync/stop-transfer@2x.png"; sourceTree = "<group>"; };
 		0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ui-button-bar-badge-error.png"; path = "Sync/ui-button-bar-badge-error.png"; sourceTree = "<group>"; };
@@ -518,6 +521,7 @@
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
 		08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button@2x.png"; sourceTree = "<group>"; };
+		08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderListViewController.xib; sourceTree = "<group>"; };
 		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
 		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
 		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
@@ -540,6 +544,9 @@
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
+		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		27F054C61891832B00C2454C /* app-icon-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-100.png"; sourceTree = "<group>"; };
 		27F054C71891832B00C2454C /* app-icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-114.png"; sourceTree = "<group>"; };
 		27F054C81891832B00C2454C /* app-icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-120.png"; sourceTree = "<group>"; };
@@ -642,7 +649,7 @@
 		73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowLeft@2x.png"; sourceTree = "<group>"; };
 		73881F7918898B910052C75F /* ButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowRight.png; sourceTree = "<group>"; };
 		73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
-		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoApp.entitlements; sourceTree = "<group>"; };
+		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = AlfrescoApp.entitlements; path = "Supporting Files/AlfrescoApp.entitlements"; sourceTree = "<group>"; };
 		73881F8B188D8AF20052C75F /* browser_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browser_close.png; sourceTree = "<group>"; };
 		73881F8C188D8AF20052C75F /* browser_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browser_close@2x.png"; sourceTree = "<group>"; };
 		73881F93188E7E160052C75F /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextView.h; path = "Text View/TextView.h"; sourceTree = "<group>"; };
@@ -694,8 +701,8 @@
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
 		73B0788C189A559400D02C43 /* bubble_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_blue@2x.png"; sourceTree = "<group>"; };
-		73B07898189AB1E600D02C43 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		73B07899189AB1E600D02C43 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		73B0789E189AB4F800D02C43 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		73B0789F189AB4F800D02C43 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
@@ -939,17 +946,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
+				73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */,
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
-				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
-				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
-				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
-				73B959E917A684CE0099FB84 /* MediaPlayer.framework in Frameworks */,
+				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
 				73B959E717A684B10099FB84 /* CoreLocation.framework in Frameworks */,
 				73B959E517A6848C0099FB84 /* CoreText.framework in Frameworks */,
+				7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */,
+				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
 				73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */,
-				73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */,
+				73B959E917A684CE0099FB84 /* MediaPlayer.framework in Frameworks */,
+				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
+				73B959ED17A6850A0099FB84 /* MobileCoreServices.framework in Frameworks */,
 				73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */,
+				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
+				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
 				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
 				7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */,
 				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
@@ -1087,9 +1097,9 @@
 		0833246C17F98FAB00EE6AA8 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				0833246D17F98FE700EE6AA8 /* SyncCell.h */,
-				0833246E17F98FE700EE6AA8 /* SyncCell.m */,
-				0833247017F9900000EE6AA8 /* SyncCell.xib */,
+				0833246D17F98FE700EE6AA8 /* AlfrescoNodeCell.h */,
+				0833246E17F98FE700EE6AA8 /* AlfrescoNodeCell.m */,
+				0833247017F9900000EE6AA8 /* AlfrescoNodeCell.xib */,
 			);
 			name = Sync;
 			sourceTree = "<group>";
@@ -1160,6 +1170,24 @@
 				0808B9D4183A5EE6000A8984 /* SyncError.m */,
 			);
 			name = DataModel;
+			sourceTree = "<group>";
+		};
+		27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				27E17D491898198F0010FA99 /* HockeySDK.framework */,
+				27E17D4A1898198F0010FA99 /* Resources */,
+			);
+			path = HockeySDK.embeddedframework;
+			sourceTree = "<group>";
+		};
+		27E17D4A1898198F0010FA99 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */,
+				27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		27F054C51891832B00C2454C /* App Icon */ = {
@@ -1590,11 +1618,11 @@
 			path = "Main Menu Icons";
 			sourceTree = "<group>";
 		};
-		73B07897189AB1E600D02C43 /* Reachability */ = {
+		73B0789D189AB4F800D02C43 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				73B07898189AB1E600D02C43 /* Reachability.h */,
-				73B07899189AB1E600D02C43 /* Reachability.m */,
+				73B0789E189AB4F800D02C43 /* Reachability.h */,
+				73B0789F189AB4F800D02C43 /* Reachability.m */,
 			);
 			path = Reachability;
 			sourceTree = "<group>";
@@ -1886,7 +1914,8 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				73B07897189AB1E600D02C43 /* Reachability */,
+				73B0789D189AB4F800D02C43 /* Reachability */,
+				27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */,
 			);
 			path = "Third Party Libraries";
 			sourceTree = "<group>";
@@ -2216,6 +2245,7 @@
 			children = (
 				73B95AE717A68DF20099FB84 /* FileFolderListViewController.h */,
 				73B95AE817A68DF20099FB84 /* FileFolderListViewController.m */,
+				08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2400,7 +2430,7 @@
 				73B95A6217A68B7E0099FB84 /* AboutLogo@2x.png in Resources */,
 				73B95A6317A68B7E0099FB84 /* AboutLogo@2x~ipad.png in Resources */,
 				73B95A6417A68B7E0099FB84 /* AboutLogo~ipad.png in Resources */,
-				0833247117F9900000EE6AA8 /* SyncCell.xib in Resources */,
+				0833247117F9900000EE6AA8 /* AlfrescoNodeCell.xib in Resources */,
 				73B95A6517A68B7E0099FB84 /* avatar.png in Resources */,
 				73B95A6617A68B7E0099FB84 /* avatar@2x.png in Resources */,
 				73B95A6717A68B7E0099FB84 /* play-media.png in Resources */,
@@ -2475,6 +2505,7 @@
 				0833246A17F98CED00EE6AA8 /* sync-status-success.png in Resources */,
 				0804DCC6181A6BAB00E3ACC2 /* server@2x.png in Resources */,
 				0833246B17F98CED00EE6AA8 /* sync-status-success@2x.png in Resources */,
+				08CC861C18990E1800CDC524 /* FileFolderListViewController.xib in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
 				27F054D41891832B00C2454C /* app-icon-114.png in Resources */,
@@ -2517,6 +2548,7 @@
 				73881FD9188FF6B00052C75F /* actionsheet-unliked.png in Resources */,
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				73B95A9617A68B7E0099FB84 /* pull-to-refresh.png in Resources */,
+				27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */,
 				73B95A9717A68B7E0099FB84 /* pull-to-refresh@2x.png in Resources */,
 				73B95A9817A68B7E0099FB84 /* system_notice_error.png in Resources */,
 				73B95A9917A68B7E0099FB84 /* system_notice_error@2x.png in Resources */,
@@ -2693,6 +2725,7 @@
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
+				73B078A0189AB4F800D02C43 /* Reachability.m in Sources */,
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				08E799B1182A57850030FD53 /* ButtonCell.m in Sources */,
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
@@ -2725,7 +2758,6 @@
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
-				73B0789A189AB1E600D02C43 /* Reachability.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
@@ -2734,7 +2766,7 @@
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
-				0833246F17F98FE700EE6AA8 /* SyncCell.m in Sources */,
+				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
@@ -2941,13 +2973,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3060,13 +3096,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3088,13 +3128,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

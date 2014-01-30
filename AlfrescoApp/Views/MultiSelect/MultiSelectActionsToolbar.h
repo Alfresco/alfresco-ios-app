@@ -22,15 +22,13 @@
 @property (nonatomic, strong) NSMutableArray *selectedItems;
 @property (nonatomic, weak) id <MultiSelectActionsDelegate> multiSelectDelegate;
 
-- (void)enterMultiSelectMode;
-- (void)leaveMultiSelectMode;
+- (void)enterMultiSelectMode:(NSLayoutConstraint *)heightConstraint;
+- (void)leaveMultiSelectMode:(NSLayoutConstraint *)heightConstraint;
 
 - (void)userDidSelectItem:(id)item;
 - (void)userDidDeselectItem:(id)item;
 
 - (UIBarButtonItem *)createToolBarButtonForTitleKey:(NSString *)titleLocalizationKey actionId:(NSString *)actionId isDestructive:(BOOL)isDestructive;
 - (void)enableAction:(NSString *)actionId enable:(BOOL)enable;
-
-- (id)initWithParentViewController:(UITabBarController *)tabBar;
 
 @end

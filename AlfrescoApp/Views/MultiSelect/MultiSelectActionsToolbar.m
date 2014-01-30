@@ -11,64 +11,48 @@
 
 static CGFloat const kMultiSelectAnimationDuration = 0.2f;
 
+static CGFloat const kToolBarMaxHeightConstraintValue = 44.0f;
+static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
+
 @interface MultiSelectActionsToolbar ()
 
 @property (nonatomic, strong) NSMutableOrderedSet *actionItems;
-@property (nonatomic, strong) UITabBarController *fromController;
 
 @end
 
 @implementation MultiSelectActionsToolbar
 
-- (id)initWithParentViewController:(UITabBarController *)tabBarController
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super init];
+    self = [super initWithCoder:aDecoder];
     if (self)
     {
-        self.alpha = 0;
-        self.barStyle = UIBarStyleDefault;
-        self.fromController = tabBarController;
-        self.actionItems = [[NSMutableOrderedSet alloc] init];
-        self.selectedItems = [[NSMutableArray alloc] init];
-        
-        [self adjustFrame];
-        self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        _actionItems = [[NSMutableOrderedSet alloc] init];
+        _selectedItems = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
-- (void)adjustFrame
-{
-    CGFloat toolbarHeight = self.fromController.tabBar.frame.size.height;
-    CGRect rootViewFrame = self.fromController.view.bounds;
-    CGFloat rootViewHeight = CGRectGetHeight(rootViewFrame);
-    CGFloat rootViewWidth = CGRectGetWidth(rootViewFrame);
-    CGRect toolBarFrame = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
-    self.frame = toolBarFrame;
-}
-
-- (void)enterMultiSelectMode
+- (void)enterMultiSelectMode:(NSLayoutConstraint *)heightConstraint
 {
     [self.selectedItems removeAllObjects];
     [self updateToolBarButtonTitles];
-    [self adjustFrame];
-    [self.fromController.view addSubview:self];
+    self.items = [self.actionItems array];
     
+    heightConstraint.constant = kToolBarMaxHeightConstraintValue;
     [UIView animateWithDuration:kMultiSelectAnimationDuration animations:^{
-        self.fromController.tabBar.frame = CGRectOffset(self.fromController.tabBar.frame, 0, +self.fromController.tabBar.frame.size.height);
-        self.fromController.tabBar.alpha = 0;
-        self.alpha = 1;
+        self.alpha = 1.0f;
+        [self layoutIfNeeded];
     }];
 }
 
-- (void)leaveMultiSelectMode
+- (void)leaveMultiSelectMode:(NSLayoutConstraint *)heightConstraint
 {
+    self.items = nil;
+    heightConstraint.constant = kToolBarMinHeightConstraintValue;
     [UIView animateWithDuration:kMultiSelectAnimationDuration animations:^{
-        self.fromController.tabBar.frame = CGRectOffset(self.fromController.tabBar.frame, 0, -self.fromController.tabBar.frame.size.height);
-        self.fromController.tabBar.alpha = 1;
-        self.alpha = 0;
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
+        self.alpha = 0.0f;
+        [self layoutIfNeeded];
     }];
 }
 
@@ -93,13 +77,12 @@ static CGFloat const kMultiSelectAnimationDuration = 0.2f;
 - (UIBarButtonItem *)createToolBarButtonForTitleKey:(NSString *)titleLocalizationKey actionId:(NSString *)actionId isDestructive:(BOOL)isDestructive
 {
     MultiSelectActionItem *toolBarButton = [[MultiSelectActionItem alloc] initWithTitle:titleLocalizationKey
-                                                                                        style:UIBarButtonItemStyleBordered
-                                                                                     actionId:actionId
-                                                                                isDestructive:isDestructive
-                                                                                       target:self
-                                                                                       action:@selector(performToolBarButtonAction:)];
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                               actionId:actionId
+                                                                          isDestructive:isDestructive
+                                                                                 target:self
+                                                                                 action:@selector(performToolBarButtonAction:)];
     [self.actionItems addObject:toolBarButton];
-    self.items = [self.actionItems array];
     return toolBarButton;
 }
 
