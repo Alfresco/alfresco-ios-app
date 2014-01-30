@@ -51,8 +51,33 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
         _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
         [self addSubview:_infoIcon2];
+        
+        UIView *selectedBackgroundView = [[UIView alloc] init];
+        selectedBackgroundView.layer.masksToBounds = YES;
+        self.selectedBackgroundView = selectedBackgroundView;
     }
     return self;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    
+    if (self.isEditing)
+    {
+        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:(233.0/255.0f) green:(240.0/255.0f) blue:(251.0/255.0f) alpha:1.0f];
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+    
+    if (!self.isEditing)
+    {
+        self.tintColor = selected ? [UIColor whiteColor] : [UIColor colorWithRed:(76.0/255.0f) green:(161.0/255.0f) blue:(255.0/255.0f) alpha:1.0f];
+        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:(76.0/255.0f) green:(161.0/255.0f) blue:(255.0/255.0f) alpha:1.0f];
+    }
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
