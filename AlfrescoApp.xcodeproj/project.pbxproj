@@ -99,7 +99,6 @@
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
 		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
-		27E17D4E1898198F0010FA99 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27F054D31891832B00C2454C /* app-icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C61891832B00C2454C /* app-icon-100.png */; };
 		27F054D41891832B00C2454C /* app-icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C71891832B00C2454C /* app-icon-114.png */; };
@@ -655,7 +654,7 @@
 		73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowLeft@2x.png"; sourceTree = "<group>"; };
 		73881F7918898B910052C75F /* ButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowRight.png; sourceTree = "<group>"; };
 		73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
-		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoApp.entitlements; sourceTree = "<group>"; };
+		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = AlfrescoApp.entitlements; path = "Supporting Files/AlfrescoApp.entitlements"; sourceTree = "<group>"; };
 		73881F8B188D8AF20052C75F /* browser_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browser_close.png; sourceTree = "<group>"; };
 		73881F8C188D8AF20052C75F /* browser_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browser_close@2x.png"; sourceTree = "<group>"; };
 		73881F93188E7E160052C75F /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextView.h; path = "Text View/TextView.h"; sourceTree = "<group>"; };
@@ -2502,7 +2501,6 @@
 				73B95A6F17A68B7E0099FB84 /* mime_doc.png in Resources */,
 				0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */,
 				7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */,
-				27E17D4E1898198F0010FA99 /* HockeySDK.xcconfig in Resources */,
 				08E799B3182A579B0030FD53 /* ButtonCell.xib in Resources */,
 				0833246917F98CED00EE6AA8 /* sync-status-pending@2x.png in Resources */,
 				73B95A7017A68B7E0099FB84 /* mime_doc@2x.png in Resources */,
@@ -2995,7 +2993,7 @@
 		277F715417FEB6FD00B2E958 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
@@ -3005,7 +3003,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3117,7 +3115,7 @@
 		7373B51317A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
@@ -3127,7 +3125,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -3148,7 +3146,7 @@
 		7373B51417A66E9400869949 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = AlfrescoApp/AlfrescoApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
@@ -3158,7 +3156,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
