@@ -563,7 +563,14 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
                 self.documentInteractionController = docController;
             }
             
-            [self.documentInteractionController presentOpenInMenuFromRect:cell.frame inView:view animated:YES];
+            BOOL canOpenIn = [self.documentInteractionController presentOpenInMenuFromRect:cell.frame inView:view animated:YES];
+            
+            if (!canOpenIn)
+            {
+                NSString *cantOpenMessage = NSLocalizedString(@"document.open-in.noapps.message", @"No Apps Message");
+                NSString *cantOpenTitle = NSLocalizedString(@"document.open-in.noapps.title", @"No Apps Title");
+                displayInformationMessageWithTitle(cantOpenMessage, cantOpenTitle);
+            }
         }
     }];
 }
