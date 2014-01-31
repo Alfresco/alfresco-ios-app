@@ -323,6 +323,8 @@
 "document.video.not.supported" = "Playback is not available";
 "document.open-in.not.supported.title" = "Open in is not available";
 "document.open-in.not.supported.message" = "The Open in option is not available with this application.";
+"document.open-in.noapps.title" = "No apps supported";
+"document.open-in.noapps.message" = "There are no apps installed on this device that can open this file.";
 
 /**
  * Login View Controller
