@@ -53,13 +53,6 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     
     [MigrationAssistant runMigrationAssistant];
     
-    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
-    [self.window makeKeyAndVisible];
-    
-#ifdef DEBUG
-//    [[AccountManager sharedManager] removeAllAccounts];
-#endif
-
     AccountManager *accountManager = [AccountManager sharedManager];
     [AppConfigurationManager sharedManager];
     
@@ -76,6 +69,13 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
         }];
     }
+    
+    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
+    [self.window makeKeyAndVisible];
+    
+#ifdef DEBUG
+//    [[AccountManager sharedManager] removeAllAccounts];
+#endif
 
     // HockeyApp SDK - only for non-dev builds to avoid update prompt
     NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
