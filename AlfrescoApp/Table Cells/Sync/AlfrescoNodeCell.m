@@ -51,8 +51,33 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
         _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
         [self addSubview:_infoIcon2];
+        
+        UIView *selectedBackgroundView = [[UIView alloc] init];
+        selectedBackgroundView.layer.masksToBounds = YES;
+        self.selectedBackgroundView = selectedBackgroundView;
     }
     return self;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    
+    if (self.isEditing)
+    {
+        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:(233.0/255.0f) green:(240.0/255.0f) blue:(251.0/255.0f) alpha:1.0f];
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+    
+    if (!self.isEditing)
+    {
+        self.tintColor = selected ? [UIColor whiteColor] : [UIColor colorWithRed:(76.0/255.0f) green:(161.0/255.0f) blue:(255.0/255.0f) alpha:1.0f];
+        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:(76.0/255.0f) green:(161.0/255.0f) blue:(255.0/255.0f) alpha:1.0f];
+    }
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
@@ -88,8 +113,8 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
     if (self.isFavorite)
     {
         self.favoriteStatusImageView = nextInfoIconView;
-        self.favoriteStatusImageView.image = [UIImage imageNamed:@"favorite-indicator.png"];
-        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"selected-favorite-indicator.png"];
+        self.favoriteStatusImageView.image = [UIImage imageNamed:@"favourite"];
+        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"favourite_white"];
     }
     
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
@@ -106,6 +131,10 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         self.nodeStatus = nodeStatus;
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.isSyncNode)
+            {
+                [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite];
+            }
             [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
         });
     }
@@ -146,21 +175,25 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 - (void)updateStatusImageForSyncState:(SyncNodeStatus *)nodeStatus
 {
     UIImage *statusImage = nil;
+    UIImage *highlightedStatusImage = nil;
     switch (nodeStatus.status)
     {
         case SyncStatusFailed:
-            statusImage = [UIImage imageNamed:@"sync-status-failed"];
+            statusImage = [UIImage imageNamed:@"failed"];
+            highlightedStatusImage = [UIImage imageNamed:@"failed_white"];
             break;
             
         case SyncStatusLoading:
-            statusImage = [UIImage imageNamed:@"sync-status-loading"];
+            statusImage = [UIImage imageNamed:@"loading"];
+            highlightedStatusImage = [UIImage imageNamed:@"loading_white"];
             break;
             
         case SyncStatusOffline:
         {
             if (nodeStatus.activityType == SyncActivityTypeUpload)
             {
-                statusImage = [UIImage imageNamed:@"sync-status-pending"];
+                statusImage = [UIImage imageNamed:@"waiting"];
+                highlightedStatusImage = [UIImage imageNamed:@"waiting_white"];
             }
             else
             {
@@ -172,15 +205,18 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
             break;
         }
         case SyncStatusSuccessful:
-            statusImage = [UIImage imageNamed:@"sync-status-success"];
+            statusImage = [UIImage imageNamed:@"sync"];
+            highlightedStatusImage = [UIImage imageNamed:@"sync_white"];
             break;
             
         case SyncStatusCancelled:
-            statusImage = [UIImage imageNamed:@"sync-status-failed"];
+            statusImage = [UIImage imageNamed:@"failed"];
+            highlightedStatusImage = [UIImage imageNamed:@"failed_white"];
             break;
             
         case SyncStatusWaiting:
-            statusImage = [UIImage imageNamed:@"sync-status-pending"];
+            statusImage = [UIImage imageNamed:@"waiting"];
+            highlightedStatusImage = [UIImage imageNamed:@"waiting_white"];
             break;
             
         case SyncStatusDisabled:
@@ -190,7 +226,9 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         default:
             break;
     }
+    
     self.syncStatusImageView.image = statusImage;
+    self.syncStatusImageView.highlightedImage = highlightedStatusImage;
 }
 
 - (void)setAccessoryViewForState:(SyncStatus)status

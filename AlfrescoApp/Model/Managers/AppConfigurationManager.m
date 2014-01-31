@@ -201,8 +201,8 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
     self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.alfrescoSession];
     
-    [self retrieveAppConfigurationWithCompletionBlock:^{
-        
+    void (^retrieveMyFilesAndSharedFiles)(void) = ^(void)
+    {
         BOOL showMyFiles = [self visibilityInfoInAppConfigurationForMenuItem:kAppConfigurationMyFilesKey];
         BOOL showSharedFiles = [self visibilityInfoInAppConfigurationForMenuItem:kAppConfigurationSharedFilesKey];
         
@@ -251,7 +251,19 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
                 }
             }
         }
-    }];
+    };
+    
+    if ([self.alfrescoSession isKindOfClass:[AlfrescoCloudSession class]])
+    {
+        [self updateAppUsingDefaultConfiguration];
+        retrieveMyFilesAndSharedFiles();
+    }
+    else
+    {
+        [self retrieveAppConfigurationWithCompletionBlock:^{
+            retrieveMyFilesAndSharedFiles();
+        }];
+    }
 }
 
 - (void)accountRemoved:(NSNotification *)notification

@@ -10,7 +10,7 @@
 #import "SyncManager.h"
 #import "AlfrescoNodeCell.h"
 #import "Utility.h"
-#import "PreviewViewController.h"
+#import "DocumentPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
 #import "SyncObstaclesViewController.h"
@@ -221,7 +221,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
         if (filePath)
         {
-            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:nil contentFilePath:filePath session:self.session displayOverlayCloseButton:NO];
+            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:nil session:self.session];
+            previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
         else
@@ -240,7 +241,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                     [self hideHUD];
                     if (succeeded)
                     {
-                        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session displayOverlayCloseButton:NO];
+                        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:nil session:self.session];
+                        previewController.hidesBottomBarWhenPushed = YES;
                         [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                     }
                     else
