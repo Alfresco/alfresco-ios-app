@@ -409,7 +409,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
                 [emailController setSubject:weakSelf.document.name];
                 
                 // attachment
-                NSString *mimeType = [Utility mimeTypeForFileExtension:weakSelf.document.name];;
+                NSString *mimeType = [Utility mimeTypeForFileExtension:weakSelf.document.name];
                 if (!mimeType)
                 {
                     mimeType = @"application/octet-stream";
