@@ -12,6 +12,12 @@
 
 NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
+static CGFloat const infoIconRightMargin = 8.0f;
+static CGFloat const infoIconTopMargin = 4.0f;
+static CGFloat const infoIconHorizontalSpace = 8.0f;
+static CGFloat const infoIconFrameWidth = 14.0f;
+static CGFloat const infoIconFrameHeight = 14.0f;
+
 @interface AlfrescoNodeCell()
 
 @property (nonatomic, strong) AlfrescoNode *node;
@@ -28,31 +34,31 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
 @implementation AlfrescoNodeCell
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = nil;
-    NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil];
-    if (subViews.count > 0)
+    self = [super initWithCoder:aDecoder];
+    if (self)
     {
-        self = (AlfrescoNodeCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil][0];
+        _infoIcon1 = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self.contentView addSubview:_infoIcon1];
         
-        static CGFloat const infoIconRightMargin = 8.0f;
-        static CGFloat const infoIconTopMargin = 4.0f;
-        static CGFloat const infoIconFrameWidth = 14.0f;
-        static CGFloat const infoIconFrameHeight = 14.0f;
-        static CGFloat const infoIconHorizontalSpace = 6.0f;
-        
-        CGFloat iconXPosition = frame.size.width;
-        
-        iconXPosition = iconXPosition - infoIconFrameWidth - infoIconRightMargin;
-        _infoIcon1 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
-        [self addSubview:_infoIcon1];
-        
-        iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
-        _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
-        [self addSubview:_infoIcon2];
+        _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self.contentView addSubview:_infoIcon2];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGFloat iconXPosition = self.frame.size.width;
+    
+    iconXPosition = iconXPosition - infoIconFrameWidth - infoIconRightMargin;
+    self.infoIcon1.frame = CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight);
+    
+    iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
+    self.infoIcon2.frame = CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight);
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus

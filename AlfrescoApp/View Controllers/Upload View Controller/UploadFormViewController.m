@@ -239,7 +239,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
         [previewCell.contentView addSubview:documentTitleField];
         [previewCell.contentView addSubview:documentIconImageView];
     }
-    else if (self.uploadFormType == UploadFormTypeAudio)
+    else // if (self.uploadFormType == UploadFormTypeAudio)
     {
         CGFloat buttonStartPosition = 100.0f;
         CGFloat audioButtonHeight = 30.0f;

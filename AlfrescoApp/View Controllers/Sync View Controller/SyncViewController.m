@@ -67,6 +67,9 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
     self.tableViewFooter = [[UILabel alloc] init];
     
+    UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(statusChanged:)
                                                  name:kSyncStatusChangeNotification
@@ -170,10 +173,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
-    if (nil == nodeCell)
-    {
-        nodeCell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
-    }
     
     SyncManager *syncManager = [SyncManager sharedManager];
     

@@ -28,18 +28,25 @@
         }
         else
         {
-            *error = [NSError errorWithDomain:@"Error retrieving accounts. No Data found." code:-1 userInfo:nil];
+            if (error)
+            {
+                *error = [NSError errorWithDomain:@"Error retrieving accounts. No Data found." code:-1 userInfo:nil];
+            }
         }
     }
     else
     {
-        *error = [NSError errorWithDomain:@"Error retrieving accounts" code:status userInfo:nil];
+        if (error)
+        {
+            *error = [NSError errorWithDomain:@"Error retrieving accounts" code:status userInfo:nil];
+        }
     }
     return accountsArray;
 }
 
-+ (void)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError
++ (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError
 {
+    BOOL updateSucceeded = YES;
     if (accounts)
     {
         NSData *accountsArrayData = [NSKeyedArchiver archivedDataWithRootObject:accounts];
@@ -62,31 +69,38 @@
         else
         {
             status = SecItemUpdate((__bridge CFDictionaryRef)searchDictionary, (__bridge CFDictionaryRef)updateDictionary);
+            updateSucceeded = NO;
         }
         
-        if (status != noErr)
+        if (updateError && status != noErr)
         {
             *updateError = [NSError errorWithDomain:@"Error updating the accounts" code:status userInfo:nil];
+            updateSucceeded = NO;
         }
     }
-    else
+    else if (updateError)
     {
         *updateError = [NSError errorWithDomain:@"Nil account array" code:-1 userInfo:nil];
+        updateSucceeded = NO;
     }
+    return updateSucceeded;
 }
 
-+ (void)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError
++ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError
 {
+    BOOL deleteSucceeded = YES;
     NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrGeneric : (id)listIdentifier};
     
     OSStatus status = noErr;
     status = SecItemDelete((__bridge CFDictionaryRef)query);
     
-    if (status != noErr)
+    if (deleteError && status != noErr)
     {
         *deleteError = [NSError errorWithDomain:@"Error deleting accounts" code:status userInfo:nil];
+        deleteSucceeded = NO;
     }
+    return deleteSucceeded;
 }
 
 @end
