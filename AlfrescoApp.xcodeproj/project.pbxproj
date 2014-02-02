@@ -110,6 +110,8 @@
 		271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */; };
 		271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC762189C2D250059D1B2 /* status-sync-waiting.png */; };
 		271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */; };
+		274E61B6189DD22300202572 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
+		274E61B7189DD22300202572 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27F054D31891832B00C2454C /* app-icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054C61891832B00C2454C /* app-icon-100.png */; };
@@ -161,8 +163,6 @@
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
-		7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
-		7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
 		7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDEA17F1A4A800C6A54F /* TaskViewController.m */; };
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
@@ -385,7 +385,6 @@
 		73B95B0C17A6A83A0099FB84 /* ImageMapping.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0B17A6A83A0099FB84 /* ImageMapping.plist */; };
 		73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0D17A6A8D00099FB84 /* Activities.strings */; };
 		73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */; };
-		73B95B1717A6ADD40099FB84 /* AlfrescoApp-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1617A6ADD40099FB84 /* AlfrescoApp-Info.plist */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
 		73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
@@ -516,7 +515,7 @@
 		08948C5E1823C24D006D38F5 /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		08948C5F1823C24D006D38F5 /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		08948C611823C26E006D38F5 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
-		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = AlfrescoApp.xcconfig; path = "Supporting Files/AlfrescoApp.xcconfig"; sourceTree = "<group>"; };
+		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
@@ -568,6 +567,7 @@
 		271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC762189C2D250059D1B2 /* status-sync-waiting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting.png"; sourceTree = "<group>"; };
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
+		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -648,7 +648,7 @@
 		7384BDF217F330C600C6A54F /* SettingToggleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingToggleCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.h"; sourceTree = SOURCE_ROOT; };
 		7384BDF317F330C600C6A54F /* SettingToggleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingToggleCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.m"; sourceTree = SOURCE_ROOT; };
 		7384BDF617F3310700C6A54F /* SettingToggleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingToggleCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.xib"; sourceTree = SOURCE_ROOT; };
-		7384BDF817F3377A00C6A54F /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Settings.plist; path = "Supporting Files/Settings.plist"; sourceTree = "<group>"; };
+		7384BDF817F3377A00C6A54F /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		7384BDFA17F3509900C6A54F /* SettingsCellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsCellProtocol.h; path = AlfrescoApp/Protocols/SettingsCellProtocol.h; sourceTree = SOURCE_ROOT; };
 		7384BDFB17F3510E00C6A54F /* SettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingCell.h"; sourceTree = SOURCE_ROOT; };
 		7384BDFC17F3510E00C6A54F /* SettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingCell.m"; sourceTree = SOURCE_ROOT; };
@@ -668,12 +668,12 @@
 		73881F6A188956390052C75F /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebBrowserViewController.m; path = "Web Browser View Controller/WebBrowserViewController.m"; sourceTree = "<group>"; };
 		73881F6B188956390052C75F /* WebBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WebBrowserViewController.xib; path = "Web Browser View Controller/WebBrowserViewController.xib"; sourceTree = "<group>"; };
 		73881F6C188956390052C75F /* WebBrowserViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WebBrowserViewController~ipad.xib"; path = "Web Browser View Controller/WebBrowserViewController~ipad.xib"; sourceTree = "<group>"; };
-		73881F721889800C0052C75F /* Help Error */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Help Error"; path = "Supporting Files/Help Error"; sourceTree = "<group>"; };
+		73881F721889800C0052C75F /* Help Error */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Help Error"; sourceTree = "<group>"; };
 		73881F7718898B910052C75F /* ButtonBarArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowLeft.png; sourceTree = "<group>"; };
 		73881F7818898B910052C75F /* ButtonBarArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowLeft@2x.png"; sourceTree = "<group>"; };
 		73881F7918898B910052C75F /* ButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowRight.png; sourceTree = "<group>"; };
 		73881F7A18898B910052C75F /* ButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
-		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = AlfrescoApp.entitlements; path = "Supporting Files/AlfrescoApp.entitlements"; sourceTree = "<group>"; };
+		73881F87188D87220052C75F /* AlfrescoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoApp.entitlements; sourceTree = "<group>"; };
 		73881F8B188D8AF20052C75F /* browser_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browser_close.png; sourceTree = "<group>"; };
 		73881F8C188D8AF20052C75F /* browser_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browser_close@2x.png"; sourceTree = "<group>"; };
 		73881F93188E7E160052C75F /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextView.h; path = "Text View/TextView.h"; sourceTree = "<group>"; };
@@ -729,11 +729,11 @@
 		73B0789F189AB4F800D02C43 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
-		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AlfrescoApp-Prefix.pch"; path = "Supporting Files/AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
-		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Supporting Files/Default-568h@2x.png"; sourceTree = "<group>"; };
-		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = "Supporting Files/Default.png"; sourceTree = "<group>"; };
-		73B957C517A6728A0099FB84 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Supporting Files/Default@2x.png"; sourceTree = "<group>"; };
-		73B957C617A6728A0099FB84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
+		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
+		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		73B957C517A6728A0099FB84 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		73B957C617A6728A0099FB84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		73B957C817A673A90099FB84 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		73B957C917A673A90099FB84 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		73B957CB17A673A90099FB84 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -931,12 +931,11 @@
 		73B95AF317A68DF20099FB84 /* UploadFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFormViewController.m; sourceTree = "<group>"; };
 		73B95B0817A68E770099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = en; path = en.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		73B95B0917A68E770099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = fr; path = fr.lproj/UserGuide.pdf; sourceTree = "<group>"; };
-		73B95B0B17A6A83A0099FB84 /* ImageMapping.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ImageMapping.plist; path = "Supporting Files/ImageMapping.plist"; sourceTree = "<group>"; };
-		73B95B0D17A6A8D00099FB84 /* Activities.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Activities.strings; path = "Supporting Files/Activities.strings"; sourceTree = "<group>"; };
-		73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = MetadataDisplayList.plist; path = "Supporting Files/MetadataDisplayList.plist"; sourceTree = "<group>"; };
-		73B95B1617A6ADD40099FB84 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AlfrescoApp-Info.plist"; path = "Supporting Files/Images/AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
-		73B95B1917A6AE010099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "Supporting Files/en.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "Supporting Files/fr.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		73B95B0B17A6A83A0099FB84 /* ImageMapping.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ImageMapping.plist; sourceTree = "<group>"; };
+		73B95B0D17A6A8D00099FB84 /* Activities.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Activities.strings; sourceTree = "<group>"; };
+		73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MetadataDisplayList.plist; sourceTree = "<group>"; };
+		73B95B1917A6AE010099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "fr.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73B95B1F17A6AE860099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73E9E20B17E7394900A198B4 /* UserAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAccount.h; sourceTree = "<group>"; };
@@ -950,7 +949,7 @@
 		73F628B5185779440050F437 /* TextFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFileViewController.h; path = "Text File View Controller/TextFileViewController.h"; sourceTree = "<group>"; };
 		73F628B6185779440050F437 /* TextFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextFileViewController.m; path = "Text File View Controller/TextFileViewController.m"; sourceTree = "<group>"; };
 		73FC470918227F1700864E80 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		73FC470B1823BE7400864E80 /* Email Template */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Email Template"; path = "Supporting Files/Email Template"; sourceTree = "<group>"; };
+		73FC470B1823BE7400864E80 /* Email Template */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Email Template"; sourceTree = "<group>"; };
 		80764C79F17643929EEA92E8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		9DB5D92344964A91B3E95A3F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -972,10 +971,10 @@
 			files = (
 				73B959E117A684550099FB84 /* AVFoundation.framework in Frameworks */,
 				08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */,
-				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
+				274E61B6189DD22300202572 /* CoreGraphics.framework in Frameworks */,
 				73B959E717A684B10099FB84 /* CoreLocation.framework in Frameworks */,
 				73B959E517A6848C0099FB84 /* CoreText.framework in Frameworks */,
-				7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */,
+				274E61B7189DD22300202572 /* Foundation.framework in Frameworks */,
 				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
 				73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */,
 				73B959E917A684CE0099FB84 /* MediaPlayer.framework in Frameworks */,
@@ -985,8 +984,6 @@
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
 				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
 				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
-				7373B4FB17A66E9400869949 /* Foundation.framework in Frameworks */,
-				7373B4FD17A66E9400869949 /* CoreGraphics.framework in Frameworks */,
 				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1498,12 +1495,13 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */,
 				73881F87188D87220052C75F /* AlfrescoApp.entitlements */,
 				73881F721889800C0052C75F /* Help Error */,
 				73FC470B1823BE7400864E80 /* Email Template */,
 				73B95B0617A68E770099FB84 /* Help Guides */,
 				73B959F117A68B7E0099FB84 /* Images */,
-				73B95B1617A6ADD40099FB84 /* AlfrescoApp-Info.plist */,
+				271DC786189DCCA90059D1B2 /* License Files */,
 				73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */,
 				73B957C317A6728A0099FB84 /* Default-568h@2x.png */,
 				73B957C417A6728A0099FB84 /* Default.png */,
@@ -1517,7 +1515,7 @@
 				73B95B1817A6AE010099FB84 /* InfoPlist.strings */,
 				7384BDF817F3377A00C6A54F /* Settings.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		7384BDE817F1A46300C6A54F /* Tasks View Controller */ = {
@@ -1988,8 +1986,7 @@
 				73881F7618898B910052C75F /* Web Browser */,
 				73906193189670E200B1920C /* Version History */,
 			);
-			name = Images;
-			path = "Supporting Files/Images";
+			path = Images;
 			sourceTree = "<group>";
 		};
 		73B959F217A68B7E0099FB84 /* About */ = {
@@ -2328,8 +2325,7 @@
 			children = (
 				73B95B0717A68E770099FB84 /* UserGuide.pdf */,
 			);
-			name = "Help Guides";
-			path = "Supporting Files/Help Guides";
+			path = "Help Guides";
 			sourceTree = "<group>";
 		};
 		73F628B4185779050050F437 /* Text File View Controller */ = {
@@ -2707,7 +2703,6 @@
 				271DC778189C2D250059D1B2 /* status-sync-waiting-highlighted.png in Resources */,
 				73881FCF188FF6B00052C75F /* actionsheet-delete@2x.png in Resources */,
 				271DC76B189C2D250059D1B2 /* status-restricted@2x.png in Resources */,
-				73B95B1717A6ADD40099FB84 /* AlfrescoApp-Info.plist in Resources */,
 				73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */,
 				73881FD6188FF6B00052C75F /* actionsheet-openIn.png in Resources */,
 			);
@@ -2945,7 +2940,6 @@
 				73B95B1F17A6AE860099FB84 /* en */,
 			);
 			name = Localizable.strings;
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
