@@ -97,6 +97,18 @@ static NSString * const kSource = @"mobile";
     [self validateSignUpFields];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.firstNameTextField becomeFirstResponder];
+    });
+}
+
 - (void)cancel:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(cloudSignupControllerWillDismiss:)])

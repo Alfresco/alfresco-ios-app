@@ -89,8 +89,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     }
     else
     {
-        [self.usernameTextField becomeFirstResponder];
-        
         if (self.activityType == AccountActivityTypeNewAccount)
         {
             self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
@@ -129,6 +127,21 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillBeHidden:)
                                                      name:UIKeyboardWillHideNotification object:nil];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (self.activityType != AccountActivityTypeViewAccount)
+    {
+        // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.usernameTextField becomeFirstResponder];
+        });
     }
 }
 
