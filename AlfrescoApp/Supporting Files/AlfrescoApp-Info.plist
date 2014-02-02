@@ -86,5 +86,16 @@
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>2.0</string>
+	<key>thirdPartyLibraries</key>
+	<dict>
+		<key>TTTAttributedCell</key>
+		<string>TTTAttributedLabel.txt</string>
+		<key>MBProgressHUD</key>
+		<string>MBProgressHUD.txt</string>
+		<key>Reachability</key>
+		<string>Reachability.txt</string>
+		<key>Alfresco SDK</key>
+		<string>Alfresco SDK.txt</string>
+	</dict>
 </dict>
 </plist>
