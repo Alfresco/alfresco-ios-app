@@ -471,9 +471,9 @@
 /**
  * Onboarding View Controller
  */
-"onboarding.setup.cloud.button.title" = "Signup for Cloud";
-"onboarding.setup.existing.account.button.title" = "Use existing account";
-"onboarding.help.button.title" = "help";
+"onboarding.setup.cloud.button.title" = "Sign up for Alfresco Cloud";
+"onboarding.setup.existing.account.button.title" = "I already have an account";
+"onboarding.help.button.title" = "Help";
 
 /**
  * Action Sheet Actions

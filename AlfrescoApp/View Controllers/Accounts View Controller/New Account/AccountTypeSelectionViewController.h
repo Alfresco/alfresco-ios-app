@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
+#import "CloudSignUpViewController.h"
 #import "TTTAttributedLabel.h"
 
 @class AccountTypeSelectionViewController;
@@ -20,7 +21,7 @@
 
 @end
 
-@interface AccountTypeSelectionViewController : ParentListViewController <TTTAttributedLabelDelegate>
+@interface AccountTypeSelectionViewController : ParentListViewController <TTTAttributedLabelDelegate, CloudSignUpViewControllerDelegate>
 
 @property (nonatomic, weak) id<AccountTypeSelectionViewControllerDelegate> delegate;
 

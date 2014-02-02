@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,42 +14,41 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Version Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                        <rect key="frame" x="8" y="8" width="139" height="17"/>
+                        <rect key="frame" x="8" y="8" width="139" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Last Modified Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                        <rect key="frame" x="8" y="25" width="139" height="16"/>
+                        <rect key="frame" x="8" y="29" width="139" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Last Modified By Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6">
-                        <rect key="frame" x="8" y="41" width="139" height="16"/>
+                        <rect key="frame" x="8" y="45" width="139" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comment Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                        <rect key="frame" x="8" y="57" width="139" height="16"/>
+                        <rect key="frame" x="8" y="61" width="139" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Current Version Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8">
-                        <rect key="frame" x="8" y="73" width="139" height="16"/>
+                        <rect key="frame" x="8" y="77" width="139" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xDa-DD-V98">
-                        <rect key="frame" x="0.0" y="97" width="320" height="227"/>
+                        <rect key="frame" x="0.0" y="101" width="320" height="223"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -57,11 +56,12 @@
                         </constraints>
                         <inset key="separatorInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                     </tableView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Xu-XX-ft1">
-                        <rect key="frame" x="286" y="39" width="28" height="20"/>
+                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Xu-XX-ft1">
+                        <rect key="frame" x="270" y="26" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="28" id="or2-9k-pmp"/>
+                            <constraint firstAttribute="width" constant="44" id="LSN-2D-zoB"/>
+                            <constraint firstAttribute="height" constant="44" id="uAY-Yd-fnL"/>
                         </constraints>
                         <state key="normal" image="ButtonBarArrowDown.png"/>
                         <connections>
@@ -79,7 +79,6 @@
                     <constraint firstItem="5" firstAttribute="top" secondItem="4" secondAttribute="bottom" id="HLV-Uy-4gO"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="bottom" id="INL-3f-dHt"/>
                     <constraint firstAttribute="trailing" secondItem="4Xu-XX-ft1" secondAttribute="trailing" constant="6" id="JRh-8f-59E"/>
-                    <constraint firstItem="xDa-DD-V98" firstAttribute="top" secondItem="4Xu-XX-ft1" secondAttribute="bottom" constant="38" id="OPl-PO-GfY"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="bottom" id="OnG-RG-fDy"/>
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="5" secondAttribute="trailing" id="QLB-pI-oAI"/>
                     <constraint firstItem="4" firstAttribute="top" secondItem="jqh-eL-sGE" secondAttribute="top" constant="8" id="US1-Oi-4Ue"/>
@@ -89,7 +88,7 @@
                     <constraint firstItem="5" firstAttribute="leading" secondItem="jqh-eL-sGE" secondAttribute="leading" constant="8" id="gzv-iH-YU2"/>
                     <constraint firstItem="8" firstAttribute="leading" secondItem="jqh-eL-sGE" secondAttribute="leading" constant="8" id="lnM-Jb-ZlO"/>
                     <constraint firstItem="xDa-DD-V98" firstAttribute="leading" secondItem="jqh-eL-sGE" secondAttribute="leading" id="u10-pd-svh"/>
-                    <constraint firstItem="4Xu-XX-ft1" firstAttribute="top" secondItem="jqh-eL-sGE" secondAttribute="top" constant="39" id="udp-9T-QgU"/>
+                    <constraint firstItem="4Xu-XX-ft1" firstAttribute="top" secondItem="jqh-eL-sGE" secondAttribute="top" constant="26" id="udp-9T-QgU"/>
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="upH-Sf-GsM"/>
                     <constraint firstAttribute="trailing" secondItem="xDa-DD-V98" secondAttribute="trailing" id="wEu-Sm-tE0"/>
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="8" secondAttribute="trailing" id="zui-su-SzN"/>

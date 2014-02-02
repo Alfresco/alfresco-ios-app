@@ -95,7 +95,7 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
 
 - (NSString *)summary
 {
-    return (__bridge NSString *)SecCertificateCopySubjectSummary(self.identityCertificateRef);
+    return (__bridge_transfer NSString *)SecCertificateCopySubjectSummary(self.identityCertificateRef);
 }
 
 - (BOOL)hasExpired

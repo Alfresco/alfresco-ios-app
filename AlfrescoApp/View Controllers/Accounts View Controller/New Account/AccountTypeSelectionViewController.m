@@ -33,9 +33,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 - (id)init
 {
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:nil];
-    if (self)
-    {
-    }
     return self;
 }
 
@@ -61,12 +58,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
                                                                             target:self
                                                                             action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = cancel;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -113,7 +104,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
         account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         
         [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationConroller:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
-            
             if (successful)
             {
                 AccountManager *accountManager = [AccountManager sharedManager];
@@ -160,10 +150,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     {
         return [self cloudAccountFooter];
     }
-    else
-    {
-        return [self alfrescoServerAccountFooter];
-    }
+    return [self alfrescoServerAccountFooter];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -180,7 +167,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (void)cancel:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:)])
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
     {
         [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:NO];
     }
@@ -266,6 +253,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
     CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] initWithAccount:nil];
+    signUpController.delegate = self;
     [self.navigationController pushViewController:signUpController animated:YES];
 }
 
@@ -302,6 +290,24 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
     {
         [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:accountAdded];
+    }
+}
+
+#pragma mark - CloudSignUpViewControllerDelegate Functions
+
+- (void)cloudSignupControllerWillDismiss:(CloudSignUpViewController *)controller
+{
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:NO];
+    }
+}
+
+- (void)cloudSignupControllerDidDismiss:(CloudSignUpViewController *)controller
+{
+    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+    {
+        [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:NO];
     }
 }
 

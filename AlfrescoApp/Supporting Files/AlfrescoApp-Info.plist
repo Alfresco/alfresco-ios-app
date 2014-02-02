@@ -2,31 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>Alfresco</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key></key>
-			<string></string>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>CFBundleTypeName</key>
-			<string>Open In URL</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.item</string>
-				<string>public.content</string>
-				<string>public.data</string>
-				<string>public.image</string>
-				<string>public.text</string>
-			</array>
-		</dict>
-	</array>
-	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.alfresco.mobile</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -39,6 +20,20 @@
 			</array>
 		</dict>
 	</dict>
+	<key>CFBundleVersion</key>
+	<string>dev</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 	<key>CFBundleIcons~ipad</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -55,30 +50,33 @@
 			</array>
 		</dict>
 	</dict>
-	<key>CFBundleIdentifier</key>
-	<string>com.alfresco.mobile</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleDisplayName</key>
+	<string>Alfresco</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key></key>
+			<string></string>
+			<key>CFBundleTypeName</key>
+			<string>Open In URL</string>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.item</string>
+				<string>public.content</string>
+				<string>public.data</string>
+				<string>public.image</string>
+				<string>public.text</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>dev</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -86,5 +84,18 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
+	<key>thirdPartyLibraries</key>
+	<dict>
+		<key>TTTAttributedCell</key>
+		<string>TTTAttributedLabel.txt</string>
+		<key>MBProgressHUD</key>
+		<string>MBProgressHUD.txt</string>
+		<key>Reachability</key>
+		<string>Reachability.txt</string>
+		<key>Alfresco SDK</key>
+		<string>Alfresco SDK.txt</string>
+	</dict>
 </dict>
 </plist>
