@@ -21,6 +21,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *useExistingAccountButton;
 @property (nonatomic, weak) IBOutlet UIButton *closeWelcomeScreenButton;
 @property (nonatomic, weak) IBOutlet UIButton *helpButton;
+@property (nonatomic, assign) BOOL needsResetAppZoomLevel;
 
 @end
 
@@ -36,6 +37,16 @@
     [self localiseUI];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (self.needsResetAppZoomLevel)
+    {
+        self.needsResetAppZoomLevel = NO;
+        [Utility resetAppZoomLevelWithCompletionBlock:NULL];
+    }
+    [super viewWillAppear:animated];
+}
+
 #pragma mark - Private Functions
 
 - (void)removeControllerFromParentController
@@ -46,9 +57,9 @@
 
 - (void)localiseUI
 {
-    [self.createCloudAccountButton setTitle:NSLocalizedString(@"onboarding.setup.cloud.button.title", @"Signup for cloud") forState:UIControlStateNormal];
-    [self.useExistingAccountButton setTitle:NSLocalizedString(@"onboarding.setup.existing.account.button.title", @"Use existing account") forState:UIControlStateNormal];
-    [self.helpButton setTitle:NSLocalizedString(@"onboarding.help.button.title", @"Help button text") forState:UIControlStateNormal];
+    [self.createCloudAccountButton setTitle:NSLocalizedString(@"onboarding.setup.cloud.button.title", @"Sign up for Alfresco Cloud") forState:UIControlStateNormal];
+    [self.useExistingAccountButton setTitle:NSLocalizedString(@"onboarding.setup.existing.account.button.title", @"I already have an account") forState:UIControlStateNormal];
+    [self.helpButton setTitle:NSLocalizedString(@"onboarding.help.button.title", @"Help") forState:UIControlStateNormal];
 }
 
 #pragma mark - IBAction Functions
@@ -67,9 +78,9 @@
     cloudSignupViewController.delegate = self;
     NavigationViewController *cloudNavController = [[NavigationViewController alloc] initWithRootViewController:cloudSignupViewController];
     
+    [UniversalDevice displayModalViewController:cloudNavController onController:self withCompletionBlock:nil];
     [Utility zoomAppLevelOutWithCompletionBlock:^{
         createButton.enabled = YES;
-        [UniversalDevice displayModalViewController:cloudNavController onController:self withCompletionBlock:nil];
     }];
 }
 
@@ -81,9 +92,9 @@
     AccountTypeSelectionViewController *existingAccountViewController = [[AccountTypeSelectionViewController alloc] initWithDelegate:self];
     NavigationViewController *existingAccountNavController = [[NavigationViewController alloc] initWithRootViewController:existingAccountViewController];
     
+    [UniversalDevice displayModalViewController:existingAccountNavController onController:self withCompletionBlock:nil];
     [Utility zoomAppLevelOutWithCompletionBlock:^{
         addAccountButton.enabled = YES;
-        [UniversalDevice displayModalViewController:existingAccountNavController onController:self withCompletionBlock:nil];
     }];
 }
 
@@ -96,20 +107,23 @@
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
     [self presentViewController:helpNavigationController animated:YES completion:nil];
+    [Utility zoomAppLevelOutWithCompletionBlock:^{
+        self.needsResetAppZoomLevel = YES;
+    }];
 }
 
 #pragma mark - CloudSignUpViewControllerDelegate Functions
 
-- (void)cloudSignupControllerDidDismiss:(CloudSignUpViewController *)controller
+- (void)cloudSignupControllerWillDismiss:(CloudSignUpViewController *)controller
 {
-    [Utility resetAppZoomLevelWithCompletionBlock:nil];
+    [Utility resetAppZoomLevelWithCompletionBlock:NULL];
 }
 
 #pragma mark - AccountTypeSelectionViewControllerDelegate Functions
 
-- (void)accountTypeSelectionViewControllerDidDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded
+- (void)accountTypeSelectionViewControllerWillDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded
 {
-    [Utility resetAppZoomLevelWithCompletionBlock:nil];
+    [Utility resetAppZoomLevelWithCompletionBlock:NULL];
     if (accountAdded)
     {
         [self removeControllerFromParentController];

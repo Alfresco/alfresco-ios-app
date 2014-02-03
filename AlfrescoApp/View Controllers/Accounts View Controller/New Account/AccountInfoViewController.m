@@ -89,8 +89,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     }
     else
     {
-        [self.usernameTextField becomeFirstResponder];
-        
         if (self.activityType == AccountActivityTypeNewAccount)
         {
             self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
@@ -129,6 +127,21 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillBeHidden:)
                                                      name:UIKeyboardWillHideNotification object:nil];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (self.activityType != AccountActivityTypeViewAccount)
+    {
+        // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.usernameTextField becomeFirstResponder];
+        });
     }
 }
 
@@ -253,8 +266,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)constructTableCellsForAlfrescoServer
 {
-    NSArray *group1 = nil;
-    NSArray *group2 = nil;
+    NSArray *groups = nil;
     
     LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
     certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
@@ -263,103 +275,116 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     
     if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
     {
-        TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-        usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-        usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        usernameCell.valueTextField.delegate = self;
-        self.usernameTextField = usernameCell.valueTextField;
-        
-        TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-        passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
-        passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        passwordCell.valueTextField.secureTextEntry = YES;
-        passwordCell.valueTextField.delegate = self;
-        self.passwordTextField = passwordCell.valueTextField;
-        
         TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
         descriptionCell.valueTextField.delegate = self;
         descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
         descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
         self.descriptionTextField = descriptionCell.valueTextField;
-        
-        TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-        serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-        serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        serverAddressCell.valueTextField.delegate = self;
-        self.serverAddressTextField = serverAddressCell.valueTextField;
-        
-        SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
-        protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-        self.protocolSwitch = protocolCell.valueSwitch;
-        [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
-        
-        TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-        portCell.valueTextField.text = kDefaultHTTPPort;
-        portCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
-        portCell.valueTextField.delegate = self;
-        self.portTextField = portCell.valueTextField;
-        
-        TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-        serviceDocumentCell.valueTextField.text = kServiceDocument;
-        serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
-        serviceDocumentCell.valueTextField.delegate = self;
-        self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
-        
-        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        self.usernameTextField.text = self.formBackupAccount.username;
-        self.passwordTextField.text = self.formBackupAccount.password;
-        self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
         self.descriptionTextField.text = self.formBackupAccount.accountDescription;
-        BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
-        [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
-        self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
-        
-        group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
+
+        if (self.account.accountType == UserAccountTypeOnPremise)
+        {
+            TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
+            usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+            usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            usernameCell.valueTextField.delegate = self;
+            self.usernameTextField = usernameCell.valueTextField;
+            self.usernameTextField.text = self.formBackupAccount.username;
+            
+            TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
+            passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
+            passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            passwordCell.valueTextField.secureTextEntry = YES;
+            passwordCell.valueTextField.delegate = self;
+            self.passwordTextField = passwordCell.valueTextField;
+            self.passwordTextField.text = self.formBackupAccount.password;
+            
+            TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
+            serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+            serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            serverAddressCell.valueTextField.delegate = self;
+            self.serverAddressTextField = serverAddressCell.valueTextField;
+            self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
+            
+            SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+            protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
+            self.protocolSwitch = protocolCell.valueSwitch;
+            [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
+            BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
+            [self.protocolSwitch setOn:isHTTPSOn animated:YES];
+            
+            TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
+            portCell.valueTextField.text = kDefaultHTTPPort;
+            portCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
+            portCell.valueTextField.delegate = self;
+            self.portTextField = portCell.valueTextField;
+            self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
+            
+            TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
+            serviceDocumentCell.valueTextField.text = kServiceDocument;
+            serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
+            serviceDocumentCell.valueTextField.delegate = self;
+            self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
+            self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
+            
+            certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            groups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                        @[portCell, serviceDocumentCell, certificateCell] ];
+        }
+        else
+        {
+            groups = @[ @[descriptionCell] ];
+        }
     }
-    else if (self.activityType == AccountActivityTypeViewAccount)
+    else
     {
-        LabelCell *usernameCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-        usernameCell.valueLabel.text = self.account.username;
-        
-        LabelCell *passwordCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-        passwordCell.valueLabel.text = @"**************";
-        
         LabelCell *descriptionCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
         descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
         descriptionCell.valueLabel.text = self.account.accountDescription;
         
-        LabelCell *serverAddressCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-        serverAddressCell.valueLabel.text = self.account.serverAddress;
-        
-        LabelCell *protocolCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-        protocolCell.valueLabel.text = self.account.protocol;
-        
-        LabelCell *portCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-        portCell.valueLabel.text = self.account.serverPort;
-        
-        LabelCell *serviceDocumentCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-        serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
-        
-        group1 = (self.account.accountType == UserAccountTypeOnPremise) ? @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell] : @[descriptionCell];
-        group2 = (self.account.accountType == UserAccountTypeOnPremise) ? @[portCell, serviceDocumentCell, certificateCell] : nil;
+        if (self.account.accountType == UserAccountTypeOnPremise)
+        {
+            LabelCell *usernameCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
+            usernameCell.valueLabel.text = self.account.username;
+            
+            LabelCell *passwordCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
+            passwordCell.valueLabel.text = @"**************";
+            
+            LabelCell *serverAddressCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
+            serverAddressCell.valueLabel.text = self.account.serverAddress;
+            
+            LabelCell *protocolCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
+            protocolCell.valueLabel.text = self.account.protocol;
+            
+            LabelCell *portCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
+            portCell.valueLabel.text = self.account.serverPort;
+            
+            LabelCell *serviceDocumentCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
+            serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
+
+            groups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                        @[portCell, serviceDocumentCell, certificateCell] ];
+        }
+        else
+        {
+            groups = @[ @[descriptionCell] ];
+        }
     }
-    self.tableGroups = (self.account.accountType == UserAccountTypeOnPremise) ? @[group1, group2] : @[group1];
+    self.tableGroups = groups;
 }
 
 #pragma mark - private Methods

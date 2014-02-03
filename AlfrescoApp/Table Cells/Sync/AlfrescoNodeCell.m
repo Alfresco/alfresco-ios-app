@@ -12,6 +12,12 @@
 
 NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
+static CGFloat const infoIconRightMargin = 8.0f;
+static CGFloat const infoIconTopMargin = 4.0f;
+static CGFloat const infoIconHorizontalSpace = 8.0f;
+static CGFloat const infoIconFrameWidth = 14.0f;
+static CGFloat const infoIconFrameHeight = 14.0f;
+
 @interface AlfrescoNodeCell()
 
 @property (nonatomic, strong) AlfrescoNode *node;
@@ -28,31 +34,31 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
 @implementation AlfrescoNodeCell
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = nil;
-    NSArray *subViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil];
-    if (subViews.count > 0)
+    self = [super initWithCoder:aDecoder];
+    if (self)
     {
-        self = (AlfrescoNodeCell *)[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil][0];
+        _infoIcon1 = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self.contentView addSubview:_infoIcon1];
         
-        static CGFloat const infoIconRightMargin = 8.0f;
-        static CGFloat const infoIconTopMargin = 4.0f;
-        static CGFloat const infoIconFrameWidth = 14.0f;
-        static CGFloat const infoIconFrameHeight = 14.0f;
-        static CGFloat const infoIconHorizontalSpace = 6.0f;
-        
-        CGFloat iconXPosition = frame.size.width;
-        
-        iconXPosition = iconXPosition - infoIconFrameWidth - infoIconRightMargin;
-        _infoIcon1 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
-        [self addSubview:_infoIcon1];
-        
-        iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
-        _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight)];
-        [self addSubview:_infoIcon2];
+        _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self.contentView addSubview:_infoIcon2];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGFloat iconXPosition = self.frame.size.width;
+    
+    iconXPosition = iconXPosition - infoIconFrameWidth - infoIconRightMargin;
+    self.infoIcon1.frame = CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight);
+    
+    iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
+    self.infoIcon2.frame = CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight);
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
@@ -88,8 +94,8 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
     if (self.isFavorite)
     {
         self.favoriteStatusImageView = nextInfoIconView;
-        self.favoriteStatusImageView.image = [UIImage imageNamed:@"favorite-indicator.png"];
-        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"selected-favorite-indicator.png"];
+        self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
+        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
     }
     
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
@@ -106,6 +112,10 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
         self.nodeStatus = nodeStatus;
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.isSyncNode)
+            {
+                [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite];
+            }
             [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
         });
     }
@@ -145,52 +155,34 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
 - (void)updateStatusImageForSyncState:(SyncNodeStatus *)nodeStatus
 {
-    UIImage *statusImage = nil;
+    NSString *statusImageName = nil;
     switch (nodeStatus.status)
     {
+        case SyncStatusCancelled:
         case SyncStatusFailed:
-            statusImage = [UIImage imageNamed:@"sync-status-failed"];
+            statusImageName = @"status-sync-failed";
             break;
             
         case SyncStatusLoading:
-            statusImage = [UIImage imageNamed:@"sync-status-loading"];
+            statusImageName = @"status-sync-loading";
             break;
             
         case SyncStatusOffline:
-        {
-            if (nodeStatus.activityType == SyncActivityTypeUpload)
-            {
-                statusImage = [UIImage imageNamed:@"sync-status-pending"];
-            }
-            else
-            {
-                /**
-                 * NOTE: This image doesn't actually exist in the current codebase!
-                 */
-                statusImage = [UIImage imageNamed:@"sync-status-offline"];
-            }
-            break;
-        }
-        case SyncStatusSuccessful:
-            statusImage = [UIImage imageNamed:@"sync-status-success"];
-            break;
-            
-        case SyncStatusCancelled:
-            statusImage = [UIImage imageNamed:@"sync-status-failed"];
-            break;
-            
-        case SyncStatusWaiting:
-            statusImage = [UIImage imageNamed:@"sync-status-pending"];
-            break;
-            
         case SyncStatusDisabled:
-            statusImage = nil;
+        case SyncStatusWaiting:
+            statusImageName = @"status-sync-waiting";
+            break;
+
+        case SyncStatusSuccessful:
+            statusImageName = @"status-sync-synced";
             break;
             
         default:
             break;
     }
-    self.syncStatusImageView.image = statusImage;
+    
+    self.syncStatusImageView.image = [UIImage imageNamed:statusImageName];
+    self.syncStatusImageView.highlightedImage = [UIImage imageNamed:[statusImageName stringByAppendingString:@"-highlighted"]];
 }
 
 - (void)setAccessoryViewForState:(SyncStatus)status
@@ -204,7 +196,7 @@ NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
     switch (status)
     {
         case SyncStatusLoading:
-            buttonImage = [UIImage imageNamed:@"stop-transfer"];
+            buttonImage = [UIImage imageNamed:@"stop-transfer.png"];
             break;
             
         case SyncStatusFailed:

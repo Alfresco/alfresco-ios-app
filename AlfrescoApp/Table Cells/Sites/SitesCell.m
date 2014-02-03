@@ -51,7 +51,7 @@ const CGFloat SitesCellExpandedHeight = 86.0f;
     else
     {
         favoriteButtonImage = [UIImage imageNamed:@"site-action-favorite.png"];
-        favoriteButtonText = NSLocalizedString(@"sites.siteCell.favorite", @"Favorite");;
+        favoriteButtonText = NSLocalizedString(@"sites.siteCell.favorite", @"Favorite");
     }
     
     [self.favoriteButton setImage:favoriteButtonImage forState:UIControlStateNormal];
@@ -60,22 +60,22 @@ const CGFloat SitesCellExpandedHeight = 86.0f;
     if (site.isMember)
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-leave.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.leave", @"Leave");;
+        joinButtonText = NSLocalizedString(@"sites.siteCell.leave", @"Leave");
     }
     else if (site.isPendingMember)
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-cancelrequest.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.cancel.request", @"Cancel Request");;
+        joinButtonText = NSLocalizedString(@"sites.siteCell.cancel.request", @"Cancel Request");
     }
     else if (site.visibility == AlfrescoSiteVisibilityModerated)
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-requesttojoin.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.request.to.join", @"Request To Join");;
+        joinButtonText = NSLocalizedString(@"sites.siteCell.request.to.join", @"Request To Join");
     }
     else
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-join.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.join", @"Join");;
+        joinButtonText = NSLocalizedString(@"sites.siteCell.join", @"Join");
     }
     
     [self.joinButton setImage:joinButtonImage forState:UIControlStateNormal];

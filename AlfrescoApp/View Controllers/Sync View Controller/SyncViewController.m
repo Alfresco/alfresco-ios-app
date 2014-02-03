@@ -10,7 +10,7 @@
 #import "SyncManager.h"
 #import "AlfrescoNodeCell.h"
 #import "Utility.h"
-#import "PreviewViewController.h"
+#import "DocumentPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
 #import "SyncObstaclesViewController.h"
@@ -66,6 +66,9 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
     self.tableViewFooter = [[UILabel alloc] init];
+    
+    UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(statusChanged:)
@@ -170,10 +173,6 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
-    if (nil == nodeCell)
-    {
-        nodeCell = [[AlfrescoNodeCell alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kCellHeight)];
-    }
     
     SyncManager *syncManager = [SyncManager sharedManager];
     
@@ -221,7 +220,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
         if (filePath)
         {
-            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:nil contentFilePath:filePath session:self.session displayOverlayCloseButton:NO];
+            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:nil session:self.session];
+            previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
         else
@@ -240,7 +240,8 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                     [self hideHUD];
                     if (succeeded)
                     {
-                        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session displayOverlayCloseButton:NO];
+                        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:nil session:self.session];
+                        previewController.hidesBottomBarWhenPushed = YES;
                         [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                     }
                     else

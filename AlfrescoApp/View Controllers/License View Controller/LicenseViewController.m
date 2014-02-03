@@ -10,6 +10,7 @@
 
 @interface LicenseViewController ()
 @property (nonatomic, strong) NSString *libraryToDisplay;
+@property (nonatomic, strong) UITextView *licenseTextView;
 @end
 
 @implementation LicenseViewController
@@ -27,16 +28,19 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [UIColor blackColor];
+    view.backgroundColor = [UIColor whiteColor];
     
-    // title
+    // Title
     self.navigationItem.title = _libraryToDisplay;
     
+    // Text view
     UITextView *licenseTextView = [[UITextView alloc] initWithFrame:view.frame];
+    self.licenseTextView = licenseTextView;
     licenseTextView.editable = NO;
     licenseTextView.backgroundColor = [UIColor clearColor];
-    licenseTextView.textColor = [UIColor whiteColor];
-    // load the file content
+    licenseTextView.textColor = [UIColor darkTextColor];
+
+    // Load the licence file's content
     NSString *path = [self retrievePathForLibraryName:_libraryToDisplay];
     NSString *licenseText = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     licenseTextView.text = licenseText;
@@ -56,9 +60,9 @@
     self.navigationItem.rightBarButtonItem = doneButton;
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
+    [self.licenseTextView setContentOffset:CGPointMake(0, 0) animated:NO];
 }
 
 #pragma mark - Private Functions
@@ -73,7 +77,7 @@
 
 - (void)dismiss:(id)sender
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{}];
+    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end
