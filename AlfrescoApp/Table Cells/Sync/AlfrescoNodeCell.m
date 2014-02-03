@@ -83,6 +83,8 @@ static CGFloat const infoIconFrameHeight = 14.0f;
     self.infoIcon1.highlightedImage = nil;
     self.infoIcon2.image = nil;
     self.infoIcon2.highlightedImage = nil;
+    self.syncStatusImageView = nil;
+    self.favoriteStatusImageView = nil;
     
     UIImageView *nextInfoIconView = self.infoIcon1;
     

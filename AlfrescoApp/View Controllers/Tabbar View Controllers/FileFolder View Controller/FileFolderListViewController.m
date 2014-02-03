@@ -488,6 +488,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     id <AlfrescoSession> session = notification.object;
     self.session = session;
     self.displayFolder = nil;
+    self.tableView.tableHeaderView = nil;
     
     [self createAlfrescoServicesWithSession:session];
     
@@ -497,7 +498,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:NO];
     }
 }
 
