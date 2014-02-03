@@ -130,8 +130,12 @@ static NSUInteger const kDownloadsRowNumber = 1;
     
     [self informDelegateMenuItemSelected:selectedMenuItem];
     
-    DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
-    [detailSplitViewController expandViewController];
+    // expand the detail view controller for the iPad
+    if (IS_IPAD)
+    {
+        DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
+        [detailSplitViewController expandViewController];
+    }
 }
 
 #pragma mark - Notification Methods
