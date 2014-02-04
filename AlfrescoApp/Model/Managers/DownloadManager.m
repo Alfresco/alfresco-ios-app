@@ -237,6 +237,22 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     return document;
 }
 
+- (void)renameLocalDocument:(NSString *)documentLocalName toName:(NSString *)newName
+{
+    NSString *localDocumentExistingContentPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:documentLocalName];
+    NSString *localDocumentNewContentPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:newName];
+    
+    NSError *error = nil;
+    [self.fileManager moveItemAtPath:localDocumentExistingContentPath toPath:localDocumentNewContentPath error:&error];
+    
+    if (!error)
+    {
+        NSString *localDocumentExistingNodePath = [[self.fileManager downloadsInfoContentPath] stringByAppendingPathComponent:documentLocalName];
+        NSString *localDocumentNewNodePath = [[self.fileManager downloadsInfoContentPath] stringByAppendingPathComponent:newName];
+        [self.fileManager moveItemAtPath:localDocumentExistingNodePath toPath:localDocumentNewNodePath error:&error];
+    }
+}
+
 - (NSArray *)downloadedDocumentPaths
 {
     __block NSMutableArray *documents = [NSMutableArray array];

@@ -24,6 +24,7 @@ NSString * const kActionCollectionIdentifierDownload = @"ActionCollectionIdentif
 NSString * const kActionCollectionIdentifierEmailAsLink = @"ActionCollectionIdentifierEmailAsLink";
 NSString * const kActionCollectionIdentifierPrint = @"ActionCollectionIdentifierPrint";
 NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifierDelete";
+NSString * const kActionCollectionIdentifierRename = @"ActionCollectionIdentifierRename";
 
 @interface ActionCollectionItem ()
 
@@ -88,6 +89,11 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 + (instancetype)deleteItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-delete.png"] title:NSLocalizedString(@"action.delete", @"Delete") identifier:kActionCollectionIdentifierDelete];
+}
+
++ (instancetype)renameItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-delete.png"] title:NSLocalizedString(@"action.rename", @"Rename") identifier:kActionCollectionIdentifierRename];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

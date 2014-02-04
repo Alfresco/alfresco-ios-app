@@ -24,6 +24,7 @@ extern NSString * const kActionCollectionIdentifierDownload;
 extern NSString * const kActionCollectionIdentifierEmailAsLink;
 extern NSString * const kActionCollectionIdentifierPrint;
 extern NSString * const kActionCollectionIdentifierDelete;
+extern NSString * const kActionCollectionIdentifierRename;
 
 @interface ActionCollectionItem : NSObject
 
@@ -40,6 +41,7 @@ extern NSString * const kActionCollectionIdentifierDelete;
 + (instancetype)downloadItem;
 + (instancetype)printItem;
 + (instancetype)deleteItem;
++ (instancetype)renameItem;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

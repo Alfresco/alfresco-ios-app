@@ -220,7 +220,11 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
         if (filePath)
         {
-            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:nil session:self.session];
+            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                                                   permissions:nil
+                                                                                                               contentFilePath:filePath
+                                                                                                              documentLocation:InAppDocumentLocationSync
+                                                                                                                       session:self.session];
             previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
@@ -240,7 +244,11 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                     [self hideHUD];
                     if (succeeded)
                     {
-                        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:nil session:self.session];
+                        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                                                               permissions:nil
+                                                                                                                           contentFilePath:filePath
+                                                                                                                          documentLocation:InAppDocumentLocationSync
+                                                                                                                                   session:self.session];
                         previewController.hidesBottomBarWhenPushed = YES;
                         [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                     }
