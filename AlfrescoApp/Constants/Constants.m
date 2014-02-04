@@ -78,6 +78,11 @@ NSString * const kSyncOnCellular = @"SyncOnCellular";
 NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification";
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 
+// Local Files Notification
+NSString * const kAlfrescoLocalDocumentNewName = @"AlfrescoLocalDocumentNewName";
+NSString * const kAlfrescoDeleteLocalDocumentNotification = @"AlfrescoDeleteDocumentFileNotification";
+NSString * const kAlfrescoLocalDocumentRenamedNotification = @"AlfrescoLocalDocumentRenamedNotification";
+
 // Confirmation Options
 NSUInteger const kConfirmationOptionYes = 0;
 NSUInteger const kConfirmationOptionNo = 1;
