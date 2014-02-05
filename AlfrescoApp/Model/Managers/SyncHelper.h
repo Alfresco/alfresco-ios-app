@@ -33,6 +33,7 @@ extern NSString * const kSyncReloadContentKey;
 - (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo
                          forAccountWithId:(NSString *)accountId
                              preserveInfo:(NSDictionary *)info
+                              permissions:(NSDictionary *)permissions
                  refreshExistingSyncNodes:(BOOL)refreshExisting
                    inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 

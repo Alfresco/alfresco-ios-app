@@ -24,6 +24,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document;
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
+- (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock;

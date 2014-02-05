@@ -218,10 +218,11 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     else
     {
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
+        AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
         {
             DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                   permissions:nil
+                                                                                                                   permissions:syncNodePermissions
                                                                                                                contentFilePath:filePath
                                                                                                               documentLocation:InAppDocumentLocationSync
                                                                                                                        session:self.session];
@@ -245,7 +246,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                     if (succeeded)
                     {
                         DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                               permissions:nil
+                                                                                                                               permissions:permissions
                                                                                                                            contentFilePath:filePath
                                                                                                                           documentLocation:InAppDocumentLocationSync
                                                                                                                                    session:self.session];

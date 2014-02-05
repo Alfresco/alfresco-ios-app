@@ -45,6 +45,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 @property (nonatomic, strong) NSOperationQueue *syncQueue;
 @property (nonatomic, strong) NSMutableDictionary *syncOperations;
+@property (nonatomic, strong) NSMutableDictionary *permissions;
 @end
 
 @implementation SyncManager
@@ -135,6 +136,22 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return syncNodes;
 }
 
+- (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node
+{
+    AlfrescoPermissions *permissions = [self.permissions objectForKey:node.identifier];
+    
+    if (!permissions)
+    {
+        SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+        
+        if (nodeInfo.permissions)
+        {
+            permissions = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.permissions];
+        }
+    }
+    return permissions;
+}
+
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
 {
     SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:[CoreDataUtils managedObjectContext]];
@@ -193,27 +210,30 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         return NO;
     };
     
-    if (!hasFolder(nodes))
-    {
-        checkIfFirstUseAndSync();
-    }
-    else
-    {
-        // retrieve nodes for top level sync nodes
-        for (AlfrescoNode *node in nodes)
+    [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
+        
+        if (!hasFolder(nodes))
         {
-            if (node.isFolder)
+            checkIfFirstUseAndSync();
+        }
+        else
+        {
+            // retrieve nodes for top level sync nodes
+            for (AlfrescoNode *node in nodes)
             {
-                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                    
-                    if (self.nodeChildrenRequestsCount == 0)
-                    {
-                        checkIfFirstUseAndSync();
-                    }
-                }];
+                if (node.isFolder)
+                {
+                    [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                        
+                        if (self.nodeChildrenRequestsCount == 0)
+                        {
+                            checkIfFirstUseAndSync();
+                        }
+                    }];
+                }
             }
         }
-    }
+    }];
 }
 
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -226,17 +246,20 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             self.nodeChildrenRequestsCount--;
             // nodes for each folder are held in self.syncNodesInfo with keys folder identifiers
             [self.syncNodesInfo setValue:array forKey:node.identifier];
-            for (AlfrescoNode *node in array)
-            {
-                // recursive call to retrieve nodes hierarchies
-                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                    
-                    if (completionBlock != NULL)
-                    {
-                        completionBlock(YES);
-                    }
-                }];
-            }
+            [self retrievePermissionsForNodes:array withCompletionBlock:^{
+                
+                for (AlfrescoNode *node in array)
+                {
+                    // recursive call to retrieve nodes hierarchies
+                    [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                        
+                        if (completionBlock != NULL)
+                        {
+                            completionBlock(YES);
+                        }
+                    }];
+                }
+            }];
             if (completionBlock != NULL)
             {
                 completionBlock(YES);
@@ -372,9 +395,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             [[SyncHelper sharedHelper] updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
                                                         forAccountWithId:[self selectedAccountIdentifier]
                                                             preserveInfo:infoToBePreservedInNewNodes
+                                                             permissions:self.permissions
                                                 refreshExistingSyncNodes:includeExistingSyncNodes
                                                   inManagedObjectContext:privateManagedObjectContext];
             self.syncNodesInfo = nil;
+            self.permissions = nil;
             
             [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
             
@@ -691,38 +716,41 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             }
         };
         
-        if (isSyncNodesInfoInMemory)
-        {
-            NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccountIdentifier];
-            [topLevelSyncNodes addObject:node];
-        }
-        else
-        {
-            self.syncNodesInfo = [NSMutableDictionary dictionary];
-            [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
-        }
-        
-        if (node.isFolder)
-        {
-            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                if (self.nodeChildrenRequestsCount == 0)
-                {
-                    syncNode(node);
-                    if (completionBlock != NULL)
-                    {
-                        completionBlock(YES);
-                    }
-                }
-            }];
-        }
-        else
-        {
-            syncNode(node);
-            if (completionBlock != NULL)
+        [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
+            
+            if (isSyncNodesInfoInMemory)
             {
-                completionBlock(YES);
+                NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccountIdentifier];
+                [topLevelSyncNodes addObject:node];
             }
-        }
+            else
+            {
+                self.syncNodesInfo = [NSMutableDictionary dictionary];
+                [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
+            }
+            
+            if (node.isFolder)
+            {
+                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                    if (self.nodeChildrenRequestsCount == 0)
+                    {
+                        syncNode(node);
+                        if (completionBlock != NULL)
+                        {
+                            completionBlock(YES);
+                        }
+                    }
+                }];
+            }
+            else
+            {
+                syncNode(node);
+                if (completionBlock != NULL)
+                {
+                    completionBlock(YES);
+                }
+            }
+        }];
     }];
 }
 
@@ -773,6 +801,34 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
             }];
         }
+    }
+}
+
+- (void)retrievePermissionsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(void))completionBlock
+{
+    if (!self.permissions)
+    {
+        self.permissions = [NSMutableDictionary dictionary];
+    }
+    
+    __block NSInteger totalPermissionRequests = nodes.count;
+    
+    for (AlfrescoNode *node in nodes)
+    {
+        [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            
+            totalPermissionRequests--;
+            
+            if (permissions)
+            {
+                [self.permissions setObject:permissions forKey:node.identifier];
+            }
+            
+            if (totalPermissionRequests == 0 && completionBlock != NULL)
+            {
+                completionBlock();
+            }
+        }];
     }
 }
 
