@@ -29,7 +29,14 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock;
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+/*
+ * removes node from sync without deleting its content
+ */
 - (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+/*
+ * deletes node from sync completely including its content
+ */
+- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 
 - (void)cancelSyncForDocument:(AlfrescoDocument *)document;
 - (void)retrySyncForDocument: (AlfrescoDocument *)document;

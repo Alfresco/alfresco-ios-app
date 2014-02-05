@@ -781,6 +781,24 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
 }
 
+- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
+{
+    [self checkForObstaclesInRemovingDownloadForNode:node inManagedObjectContext:[CoreDataUtils managedObjectContext] completionBlock:^(BOOL encounteredObstacle) {
+        
+        if (node.isDocument && encounteredObstacle)
+        {
+            [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node];
+            completionBlock(YES);
+        }
+        else
+        {
+            SyncHelper *syncHelper = [SyncHelper sharedHelper];
+            [syncHelper deleteNodeFromSync:node inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:[CoreDataUtils managedObjectContext]];
+            completionBlock(NO);
+        }
+    }];
+}
+
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AlfrescoLogDebug(@"Files to download: %@", [nodes valueForKey:@"name"]);
