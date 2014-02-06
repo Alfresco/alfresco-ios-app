@@ -36,6 +36,7 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
 - (void)updateLocalSyncInfoWithRemoteInfo:(NSDictionary *)syncNodesInfo
                          forAccountWithId:(NSString *)accountId
                              preserveInfo:(NSDictionary *)info
+                              permissions:(NSDictionary *)permissions
                  refreshExistingSyncNodes:(BOOL)refreshExisting
                    inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
@@ -57,7 +58,7 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         
         NSArray *topLevelSyncItems = [syncNodesInfo objectForKey:accountId];
         
-        [self populateNodes:topLevelSyncItems inParentFolder:syncAccount.accountId forAccountWithId:accountId preserveInfo:info inManagedObjectContext:managedContext];
+        [self populateNodes:topLevelSyncItems inParentFolder:syncAccount.accountId forAccountWithId:accountId preserveInfo:info permissions:permissions inManagedObjectContext:managedContext];
         [syncNodesInfoKeys removeObject:accountId];
         
         for (NSString *syncFolderInfoKey in syncNodesInfoKeys)
@@ -66,7 +67,7 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
             
             if (nodesInFolder.count > 0)
             {
-                [self populateNodes:nodesInFolder inParentFolder:syncFolderInfoKey forAccountWithId:accountId preserveInfo:info inManagedObjectContext:managedContext];
+                [self populateNodes:nodesInFolder inParentFolder:syncFolderInfoKey forAccountWithId:accountId preserveInfo:info permissions:permissions inManagedObjectContext:managedContext];
             }
         }
         [CoreDataUtils saveContextForManagedObjectContext:managedContext];
@@ -90,7 +91,11 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     }
 }
 
-- (void)populateNodes:(NSArray *)nodes inParentFolder:(NSString *)folderId forAccountWithId:(NSString *)accountId preserveInfo:(NSDictionary *)info inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (void)populateNodes:(NSArray *)nodes
+       inParentFolder:(NSString *)folderId
+     forAccountWithId:(NSString *)accountId
+         preserveInfo:(NSDictionary *)info
+          permissions:(NSDictionary *)permissions inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     BOOL (^updateInfoWithExistingInfoForSyncNode)(SyncNodeInfo *) = ^ BOOL (SyncNodeInfo *nodeInfo)
     {
@@ -133,6 +138,12 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         // check if we already have object in managedContext for alfrescoNode
         SyncNodeInfo *syncNodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:alfrescoNode.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
         NSData *archivedNode = [NSKeyedArchiver archivedDataWithRootObject:alfrescoNode];
+        NSData *archivedPermissions = nil;
+        AlfrescoPermissions *nodePermissions = [permissions objectForKey:alfrescoNode.identifier];
+        if (nodePermissions)
+        {
+            archivedPermissions = [NSKeyedArchiver archivedDataWithRootObject:nodePermissions];
+        }
         
         // create new nodeInfo for node if it does not exist yet
         if (!syncNodeInfo)
@@ -145,6 +156,10 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         }
         syncNodeInfo.title = alfrescoNode.name;
         syncNodeInfo.node = archivedNode;
+        if (archivedPermissions)
+        {
+            syncNodeInfo.permissions = archivedPermissions;
+        }
         
         // update node info with existing info for documents (will set their new info once they are successfully downloaded) - for folders update their nodes
         if (!alfrescoNode.isFolder)

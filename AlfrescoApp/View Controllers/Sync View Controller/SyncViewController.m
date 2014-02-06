@@ -86,6 +86,10 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                                              selector:@selector(didRemoveNodeFromFavourites:)
                                                  name:kFavouritesDidRemoveNodeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(documentDeleted:)
+                                                 name:kAlfrescoDocumentDeletedOnServerNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -142,6 +146,19 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     NSIndexPath *index = [self indexPathForNodeWithIdentifier:nodeRemoved.identifier inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
     [self.tableViewData removeObjectAtIndex:index.row];
     [self.tableView deleteRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)documentDeleted:(NSNotification *)notifictation
+{
+    AlfrescoDocument *deletedDocument = notifictation.object;
+    
+    if ([self.tableViewData containsObject:deletedDocument])
+    {
+        NSUInteger index = [self.tableViewData indexOfObject:deletedDocument];
+        [self.tableViewData removeObject:deletedDocument];
+        NSIndexPath *indexPathOfDeletedNode = [NSIndexPath indexPathForRow:index inSection:0];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPathOfDeletedNode] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 #pragma mark - TableView Datasource
@@ -218,10 +235,11 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     else
     {
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
+        AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
         {
             DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                   permissions:nil
+                                                                                                                   permissions:syncNodePermissions
                                                                                                                contentFilePath:filePath
                                                                                                               documentLocation:InAppDocumentLocationSync
                                                                                                                        session:self.session];
@@ -245,7 +263,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                     if (succeeded)
                     {
                         DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                               permissions:nil
+                                                                                                                               permissions:permissions
                                                                                                                            contentFilePath:filePath
                                                                                                                           documentLocation:InAppDocumentLocationSync
                                                                                                                                    session:self.session];

@@ -23,6 +23,7 @@
 #import "FavouriteManager.h"
 #import <MessageUI/MessageUI.h>
 #import "DownloadManager.h"
+#import "SyncManager.h"
 #import "UIAlertView+ALF.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -83,7 +84,14 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
     [super viewDidLoad];
     
-    self.title = self.documentContentFilePath ? self.documentContentFilePath.lastPathComponent : self.document.name;
+    if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    {
+        self.title = self.documentContentFilePath.lastPathComponent;
+    }
+    else
+    {
+        self.title = self.document.name;
+    }
     
     UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewDocument:)];
     imageTap.numberOfTapsRequired = 1;
@@ -644,8 +652,29 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
                     {
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.document];
                         [UniversalDevice clearDetailViewController];
-                        NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.document.name];
-                        displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                        
+                        SyncManager *syncManager = [SyncManager sharedManager];
+                        if ([syncManager isNodeInSyncList:self.document])
+                        {
+                            [syncManager deleteNodeFromSync:self.document withCompletionBlock:^(BOOL savedLocally) {
+                                
+                                NSString *successMessage = @"";
+                                if (savedLocally)
+                                {
+                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.document.name];
+                                }
+                                else
+                                {
+                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.document.name];
+                                }
+                                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                            }];
+                        }
+                        else
+                        {
+                            NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.document.name];
+                            displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                        }
                     }
                     else
                     {

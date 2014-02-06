@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSNumber *isRemovedFromSyncHasLocalChanges;
 @property (nonatomic, retain) NSDate *lastDownloadedDate;
 @property (nonatomic, retain) NSData *node;
+@property (nonatomic, retain) NSData *permissions;
 @property (nonatomic, retain) NSNumber *reloadContent;
 @property (nonatomic, retain) NSString *syncContentPath;
 @property (nonatomic, retain) NSString *syncNodeInfoId;

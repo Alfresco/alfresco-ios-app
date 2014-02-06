@@ -19,6 +19,7 @@
 @dynamic isRemovedFromSyncHasLocalChanges;
 @dynamic lastDownloadedDate;
 @dynamic node;
+@dynamic permissions;
 @dynamic reloadContent;
 @dynamic syncContentPath;
 @dynamic syncNodeInfoId;
