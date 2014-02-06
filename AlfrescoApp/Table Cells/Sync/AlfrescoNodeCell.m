@@ -12,11 +12,10 @@
 
 NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
-static CGFloat const infoIconRightMargin = 8.0f;
-static CGFloat const infoIconTopMargin = 4.0f;
-static CGFloat const infoIconHorizontalSpace = 8.0f;
-static CGFloat const infoIconFrameWidth = 14.0f;
-static CGFloat const infoIconFrameHeight = 14.0f;
+static CGFloat const FavoriteIconWidth = 14.0f;
+static CGFloat const FavoriteIconRightSpace = 8.0f;
+static CGFloat const SyncIconWidth = 14.0f;
+static CGFloat const SyncIconRightSpace = 8.0f;
 
 @interface AlfrescoNodeCell()
 
@@ -25,10 +24,18 @@ static CGFloat const infoIconFrameHeight = 14.0f;
 @property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, assign) BOOL isSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
-@property (nonatomic, strong) UIImageView *infoIcon1;
-@property (nonatomic, strong) UIImageView *infoIcon2;
-@property (nonatomic, strong) UIImageView *syncStatusImageView;
-@property (nonatomic, strong) UIImageView *favoriteStatusImageView;
+
+@property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconWidthConstraint;
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconRightSpaceConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconRightSpaceConstraint;
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconTopSpaceConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconTopSpaceConstraint;
 
 @end
 
@@ -39,26 +46,9 @@ static CGFloat const infoIconFrameHeight = 14.0f;
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        _infoIcon1 = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [self.contentView addSubview:_infoIcon1];
         
-        _infoIcon2 = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [self.contentView addSubview:_infoIcon2];
     }
     return self;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    CGFloat iconXPosition = self.frame.size.width;
-    
-    iconXPosition = iconXPosition - infoIconFrameWidth - infoIconRightMargin;
-    self.infoIcon1.frame = CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight);
-    
-    iconXPosition = iconXPosition - infoIconFrameWidth - infoIconHorizontalSpace;
-    self.infoIcon2.frame = CGRectMake(iconXPosition, infoIconTopMargin, infoIconFrameWidth, infoIconFrameHeight);
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
@@ -79,25 +69,38 @@ static CGFloat const infoIconFrameHeight = 14.0f;
     self.isSyncNode = isSyncNode;
     self.isFavorite = isFavorite;
     
-    self.infoIcon1.image = nil;
-    self.infoIcon1.highlightedImage = nil;
-    self.infoIcon2.image = nil;
-    self.infoIcon2.highlightedImage = nil;
-    self.syncStatusImageView = nil;
-    self.favoriteStatusImageView = nil;
+    self.syncStatusImageView.image = nil;
+    self.syncStatusImageView.highlightedImage = nil;
+    self.favoriteStatusImageView.image = nil;
+    self.favoriteStatusImageView.highlightedImage = nil;
     
-    UIImageView *nextInfoIconView = self.infoIcon1;
+    if (self.isFavorite)
+    {
+        self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
+        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
+        
+        self.favoriteIconWidthConstraint.constant = FavoriteIconWidth;
+        self.favoriteIconRightSpaceConstraint.constant = FavoriteIconRightSpace;
+        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+    }
+    else
+    {
+        self.favoriteIconWidthConstraint.constant = 0;
+        self.favoriteIconRightSpaceConstraint.constant = 0;
+        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+    }
     
     if (self.isSyncNode)
     {
-        self.syncStatusImageView = nextInfoIconView;
-        nextInfoIconView = self.infoIcon2;
+        self.syncIconWidthConstraint.constant = SyncIconWidth;
+        self.syncIconRightSpaceConstraint.constant = SyncIconRightSpace;
+        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
     }
-    if (self.isFavorite)
+    else
     {
-        self.favoriteStatusImageView = nextInfoIconView;
-        self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
-        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
+        self.syncIconWidthConstraint.constant = 0;
+        self.syncIconRightSpaceConstraint.constant = 0;
+        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
     }
     
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
