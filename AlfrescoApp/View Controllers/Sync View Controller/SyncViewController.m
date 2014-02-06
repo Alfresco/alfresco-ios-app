@@ -20,7 +20,7 @@
 #import "ThumbnailManager.h"
 #import "Constants.h"
 
-static CGFloat const kCellHeight = 74.0f;
+static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kFooterHeight = 32.0f;
 static CGFloat const kCellImageViewWidth = 32.0f;
 static CGFloat const kCellImageViewHeight = 32.0f;

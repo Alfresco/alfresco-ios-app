@@ -26,7 +26,7 @@
 #import "SyncManager.h"
 #import "FavouriteManager.h"
 
-static CGFloat const kCellHeight = 74.0f;
+static CGFloat const kCellHeight = 64.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
