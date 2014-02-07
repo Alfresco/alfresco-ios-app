@@ -34,25 +34,28 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     return sharedObject;
 }
 
-- (void)downloadDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath session:(id<AlfrescoSession>)alfrescoSession
+- (AlfrescoRequest *)downloadDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath session:(id<AlfrescoSession>)alfrescoSession
 {
     if (!document)
     {
         AlfrescoLogError(@"Download operation attempted with nil AlfrescoDocument object");
-        return;
+        return nil;
     }
     
+    AlfrescoRequest *request = nil;
     // Check source content exists
     if (!contentPath || ![self.fileManager fileExistsAtPath:contentPath])
     {
         // No local source, so the content will need to be downloaded from the Repository
         self.alfrescoSession = alfrescoSession;
-        [self downloadDocument:document];
+        request = [self downloadDocument:document];
     }
     else
     {
         [self saveDocument:document contentPath:contentPath completionBlock:NULL];
     }
+    
+    return request;
 }
 
 - (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath completionBlock:(DownloadManagerFileSavedBlock)completionBlock
@@ -319,7 +322,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     return (copySucceeded ? [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename] : nil);
 }
 
-- (void)downloadDocument:(AlfrescoDocument *)document
+- (AlfrescoRequest *)downloadDocument:(AlfrescoDocument *)document
 {
     NSString *downloadDestinationPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:document.name];
     
@@ -339,7 +342,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
     AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
     
-    [documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+    return [documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
             // Note: we're assuming that there will be no problem saving the metadata if the content saves successfully

@@ -53,7 +53,6 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     
     [MigrationAssistant runMigrationAssistant];
     
-    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     AccountManager *accountManager = [AccountManager sharedManager];
     [AppConfigurationManager sharedManager];
     
@@ -70,6 +69,8 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
         }];
     }
+    
+    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     
     [self.window makeKeyAndVisible];
     

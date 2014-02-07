@@ -26,6 +26,7 @@
 #import "SyncManager.h"
 #import "UIAlertView+ALF.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "ActionViewHandler.h"
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
@@ -36,7 +37,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     PagingScrollViewSegmentType_MAX
 };
 
-@interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIDocumentInteractionControllerDelegate, CommentViewControllerDelegate>
+@interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, CommentViewControllerDelegate, ActionViewDelegate>
 
 @property (nonatomic, strong, readwrite) AlfrescoDocument *document;
 @property (nonatomic, strong, readwrite) AlfrescoPermissions *documentPermissions;
@@ -51,7 +52,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 @property (nonatomic, weak, readwrite) IBOutlet PagedScrollView *pagingScrollView;
 @property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *pagingSegmentControl;
 @property (nonatomic, strong, readwrite) NSMutableArray *pagingControllers;
-@property (nonatomic, strong, readwrite) UIDocumentInteractionController *documentInteractionController;
+@property (nonatomic, strong, readwrite) ActionViewHandler *actionHandler;
 @property (nonatomic, assign, readwrite) InAppDocumentLocation documentLocation;
 
 @end
@@ -76,6 +77,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
         self.previewImageFolderURLString = [[AlfrescoFileManager sharedManager] thumbnailsImgPreviewFolderPath];
         self.pagingControllers = [NSMutableArray array];
+        self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:document session:session controller:self];
     }
     return self;
 }
@@ -347,375 +349,63 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
     if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierLike])
     {
-        [self handlePressedLikeWithActionItem:actionItem];
+        [self.actionHandler pressedLikeActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUnlike])
     {
-        [self handlePressedUnlikeWithActionItem:actionItem];
+        [self.actionHandler pressedUnlikeActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierFavourite])
     {
-        [self handlePressedFavouriteWithActionItem:actionItem];
+        [self.actionHandler pressedFavouriteActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUnfavourite])
     {
-        [self handlePressedUnfavouriteWithActionItem:actionItem];
+        [self.actionHandler pressedUnfavouriteActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEmail])
     {
-        [self handlePressedEmailWithActionItem:actionItem];
+        [self.actionHandler pressedEmailActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDownload])
     {
-        [self handlePressedDownloadWithActionItem:actionItem];
+        [self.actionHandler pressedDownloadActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierComment])
     {
-        [self handlePressedCommentWithActionItem:actionItem];
+        self.pagingSegmentControl.selectedSegmentIndex = PagingScrollViewSegmentTypeComments;
+        [self.pagingScrollView scrollToDisplayViewAtIndex:PagingScrollViewSegmentTypeComments animated:YES];
+        CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentTypeComments];
+        [commentsViewController focusCommentEntry];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierPrint])
     {
-        [self handlePressedPrintWithActionItem:actionItem cell:cell inView:view];
+        [self.actionHandler pressedPrintActionItem:actionItem presentFromView:cell inView:view];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierOpenIn])
     {
-        [self handlePressedOpenInActionItem:actionItem cell:cell inView:view];
+        [self.actionHandler pressedOpenInActionItem:actionItem presentFromView:cell inView:view];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
     {
-        [self handlePressedDeleteActionItem:actionItem];
+        [self.actionHandler pressedDeleteActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierRename])
     {
-        [self handlePressedRenameActionItem:actionItem];
+        [self.actionHandler pressedRenameActionItem:actionItem atPath:self.documentContentFilePath];
     }
 }
 
-#pragma mark - Action Handler Functions
+#pragma mark - ActionViewHandlerDelegate Functions
 
-- (void)handlePressedLikeWithActionItem:(ActionCollectionItem *)actionItem
+- (void)displayProgressIndicator
 {
-    [self.ratingService likeNode:self.document completionBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
-        {
-            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
-                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-liked.png"};
-            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
-        }
-    }];
+    [self showHUD];
 }
 
-- (void)handlePressedUnlikeWithActionItem:(ActionCollectionItem *)actionItem
+- (void)hideProgressIndicator
 {
-    [self.ratingService unlikeNode:self.document completionBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
-        {
-            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierLike,
-                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.like", @"Like Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unliked.png"};
-            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnlike userInfo:userInfo];
-        }
-    }];
-}
-
-- (void)handlePressedFavouriteWithActionItem:(ActionCollectionItem *)actionItem
-{
-    [[FavouriteManager sharedManager] addFavorite:self.document session:self.session completionBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
-        {
-            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
-                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
-            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
-        }
-    }];
-}
-
-- (void)handlePressedUnfavouriteWithActionItem:(ActionCollectionItem *)actionItem
-{
-    [[FavouriteManager sharedManager] removeFavorite:self.document session:self.session completionBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
-        {
-            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
-                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavourited.png"};
-            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
-        }
-    }];
-}
-
-- (void)handlePressedEmailWithActionItem:(ActionCollectionItem *)actionItem
-{
-    if ([MFMailComposeViewController canSendMail])
-    {
-        __weak typeof(self) weakSelf = self;
-        
-        [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
-            if (fileLocation)
-            {
-                MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
-                emailController.mailComposeDelegate = weakSelf;
-                [emailController setSubject:weakSelf.document.name];
-                
-                // attachment
-                NSString *mimeType = [Utility mimeTypeForFileExtension:weakSelf.document.name];
-                if (!mimeType)
-                {
-                    mimeType = @"application/octet-stream";
-                }
-                NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:fileLocation]];
-                [emailController addAttachmentData:documentData mimeType:mimeType fileName:weakSelf.document.name];
-                
-                // content body template
-                NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"emailTemplate" ofType:@"html" inDirectory:@"Email Template"];
-                NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-                [emailController setMessageBody:htmlString isHTML:YES];
-                
-                [UniversalDevice displayModalViewController:emailController onController:weakSelf withCompletionBlock:nil];
-            }
-        }];
-    }
-}
-
-- (void)handlePressedDownloadWithActionItem:(ActionCollectionItem *)actionItem
-{
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *downloadPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:filenameAppendedWithDateModififed(self.document.name, self.document)];
-    
-    if ([fileManager fileExistsAtPath:downloadPath])
-    {
-        // rename the file to remove the date modified suffix, and then copy it to downloads
-        NSString *tempPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:self.document.name];
-        
-        NSError *tempFileError = nil;
-        [fileManager copyItemAtPath:downloadPath toPath:tempPath error:&tempFileError];
-        
-        if (tempFileError)
-        {
-            AlfrescoLogError(@"Unable to copy file from path: %@ to path: %@", downloadPath, tempPath);
-        }
-        else
-        {
-            [[DownloadManager sharedManager] downloadDocument:self.document contentPath:tempPath session:self.session];
-            
-            NSError *deleteError = nil;
-            [fileManager removeItemAtPath:tempPath error:&deleteError];
-            
-            if (deleteError)
-            {
-                AlfrescoLogError(@"Unable to delete file at path: %@", tempPath);
-            }
-        }
-    }
-    else
-    {
-        [[DownloadManager sharedManager] downloadDocument:self.document contentPath:nil session:self.session];
-    }
-}
-
-- (void)handlePressedCommentWithActionItem:(ActionCollectionItem *)actionItem
-{
-    self.pagingSegmentControl.selectedSegmentIndex = PagingScrollViewSegmentTypeComments;
-    [self.pagingScrollView scrollToDisplayViewAtIndex:PagingScrollViewSegmentTypeComments animated:YES];
-    CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentTypeComments];
-    [commentsViewController focusCommentEntry];
-}
-
-- (void)handlePressedPrintWithActionItem:(ActionCollectionItem *)actionItem cell:(UICollectionViewCell *)cell inView:(UICollectionView *)view
-{
-    [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
-        if (fileLocation)
-        {
-            // define a print block
-            void (^printBlock)(UIWebView *webView) = ^(UIWebView *webView) {
-                NSURL *fileURL = [NSURL fileURLWithPath:fileLocation];
-                
-                UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
-                
-                UIPrintInfo *printInfo = [UIPrintInfo printInfo];
-                printInfo.outputType = UIPrintInfoOutputGeneral;
-                printInfo.jobName = self.document.name;
-                
-                printController.printInfo = printInfo;
-                if (webView)
-                {
-                    printController.printFormatter = [webView viewPrintFormatter];
-                }
-                else
-                {
-                    printController.printingItem = fileURL;
-                }
-                printController.showsPageRange = YES;
-                
-                UIPrintInteractionCompletionHandler printCompletionHandler = ^(UIPrintInteractionController *printController, BOOL completed, NSError *printError) {
-                    if (!completed && printError)
-                    {
-                        AlfrescoLogError(@"Unable to print document %@ with error: %@", fileURL.path, printError.localizedDescription);
-                    }
-                };
-                
-                if (IS_IPAD)
-                {
-                    [printController presentFromRect:cell.frame inView:view animated:YES completionHandler:printCompletionHandler];
-                }
-                else
-                {
-                    [printController presentAnimated:YES completionHandler:printCompletionHandler];
-                }
-            };
-            
-            // determine whether to use defult OS printing
-            NSSet *printableUTIs = [UIPrintInteractionController printableUTIs];
-            CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileLocation.pathExtension, NULL);
-            __block BOOL useNativePrinting = NO;
-            [printableUTIs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                if (UTTypeConformsTo(UTI, (__bridge CFStringRef)obj))
-                {
-                    useNativePrinting = YES;
-                    *stop = YES;
-                }
-            }];
-            CFRelease(UTI);
-            
-            if (useNativePrinting)
-            {
-                printBlock(nil);
-            }
-            else
-            {
-                PreviewViewController *hiddenPreviewController = [[PreviewViewController alloc] initWithFilePath:fileLocation finishedLoadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
-                    if (loadedIntoWebView)
-                    {
-                        printBlock(webView);
-                    }
-                }];
-                hiddenPreviewController.view.hidden = YES;
-                [self addChildViewController:hiddenPreviewController];
-                [self.view addSubview:hiddenPreviewController.view];
-                [hiddenPreviewController didMoveToParentViewController:self];
-            }
-        }
-    }];
-}
-
-- (void)handlePressedOpenInActionItem:(ActionCollectionItem *)actionItem cell:(UICollectionViewCell *)cell inView:(UICollectionView *)view
-{
-    [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
-        if (fileLocation)
-        {
-            NSURL *fileURL = [NSURL fileURLWithPath:fileLocation];
-            
-            if (!self.documentInteractionController)
-            {
-                UIDocumentInteractionController *docController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
-                docController.delegate = self;
-                self.documentInteractionController = docController;
-            }
-            
-            BOOL canOpenIn = [self.documentInteractionController presentOpenInMenuFromRect:cell.frame inView:view animated:YES];
-            
-            if (!canOpenIn)
-            {
-                NSString *cantOpenMessage = NSLocalizedString(@"document.open-in.noapps.message", @"No Apps Message");
-                NSString *cantOpenTitle = NSLocalizedString(@"document.open-in.noapps.title", @"No Apps Title");
-                displayInformationMessageWithTitle(cantOpenMessage, cantOpenTitle);
-            }
-        }
-    }];
-}
-
-- (void)handlePressedDeleteActionItem:(ActionCollectionItem *)actionItem
-{
-    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
-                                                              message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            if (self.documentLocation == InAppDocumentLocationLocalFiles)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeleteLocalDocumentNotification object:self.documentContentFilePath];
-                [UniversalDevice clearDetailViewController];
-                NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), self.documentContentFilePath.lastPathComponent];
-                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
-            }
-            else
-            {
-                [self showHUD];
-                __weak typeof(self) weakSelf = self;
-                [self.documentService deleteNode:self.document completionBlock:^(BOOL succeeded, NSError *error) {
-                    [self hideHUD];
-                    if (succeeded)
-                    {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.document];
-                        [UniversalDevice clearDetailViewController];
-                        
-                        SyncManager *syncManager = [SyncManager sharedManager];
-                        if ([syncManager isNodeInSyncList:self.document])
-                        {
-                            [syncManager deleteNodeFromSync:self.document withCompletionBlock:^(BOOL savedLocally) {
-                                
-                                NSString *successMessage = @"";
-                                if (savedLocally)
-                                {
-                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.document.name];
-                                }
-                                else
-                                {
-                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.document.name];
-                                }
-                                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
-                            }];
-                        }
-                        else
-                        {
-                            NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.document.name];
-                            displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
-                        }
-                    }
-                    else
-                    {
-                        NSString *failedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.failed.message", @"Delete Failed Message"), weakSelf.document.name];
-                        displayErrorMessageWithTitle(failedMessage, NSLocalizedString(@"action.delete.failed.title", @"Delete Failed Title"));
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                }];
-            }
-        }
-    }];
-}
-
-- (void)handlePressedRenameActionItem:(ActionCollectionItem *)actionItem
-{
-    UIAlertView *renameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.rename.alert.title", @"Rename")
-                                                          message:NSLocalizedString(@"action.rename.alert.message", @"Rename document to, message")
-                                                         delegate:self
-                                                cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    renameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [renameAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            NSString *newName = [[renameAlert textFieldAtIndex:0] text];
-            
-            if (newName)
-            {
-                newName = [newName stringByAppendingPathExtension:self.documentContentFilePath.pathExtension];
-                NSString *newPath = [[self.documentContentFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:newName];
-                
-                [[DownloadManager sharedManager] renameLocalDocument:self.documentContentFilePath.lastPathComponent toName:newName];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoLocalDocumentRenamedNotification object:self.documentContentFilePath userInfo:@{kAlfrescoLocalDocumentNewName : newPath}];
-                
-                NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.rename.success.message", @"Rename Success Message"), self.documentContentFilePath.lastPathComponent, newName];
-                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.rename.success.title", @"Rename Success Title"));
-                self.title = newName;
-                self.documentContentFilePath = newPath;
-            }
-        }
-    }];
+    [self hideHUD];
 }
 
 #pragma mark - PagedScrollViewDelegate Functions
@@ -727,33 +417,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     {
         [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
     }
-}
-
-#pragma mark - MFMailComposeViewControllerDelegate Functions
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
-{
-    if (result != MFMailComposeResultFailed)
-    {
-        [controller dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
-#pragma mark - UIDocumentInteractionControllerDelegate Functions
-
-- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController
-{
-    return self;
-}
-
-- (void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
-{
-    // TODO: Saveback API's
-}
-
-- (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
-{
-    self.documentInteractionController = nil;
 }
 
 #pragma mark - CommentViewControllerDelegate Functions

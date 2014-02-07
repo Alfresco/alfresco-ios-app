@@ -23,6 +23,10 @@
     if (self)
     {
         self.selectedPageIndex = 0;
+        self.pagingEnabled = YES;
+        self.showsHorizontalScrollIndicator = NO;
+        self.showsVerticalScrollIndicator = NO;
+        self.clipsToBounds = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
