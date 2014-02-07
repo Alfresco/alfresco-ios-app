@@ -49,9 +49,12 @@ NSString * const kAlfrescoConnectivityChangedNotification = @"AlfrescoConnectivi
 NSString * const kAlfrescoDocumentUpdatedOnServerNotification = @"AlfrescoDocumentUpdatedOnServerNotification";
 NSString * const kAlfrescoDocumentUpdatedLocallyNotification = @"AlfrescoDocumentUpdatedLocallyNotification";
 NSString * const kAlfrescoDocumentDeletedOnServerNotification = @"AlfrescoDocumentDeletedOnServerNotification";
+NSString * const kAlfrescoFolderAddedOnServerNotification = @"AlfrescoFolderAddedOnServerNotification";
 NSString * const kAlfrescoDocumentUpdatedDocumentParameterKey = @"AlfrescoDocumentUpdatedDocumentParameterKey";
 NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey = @"AlfrescoDocumentUpdatedFilenameParameterKey";
 NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDownloadedIdentifierKey";
+NSString * const kAlfrescoFolderAddedOnServerParentFolderKey = @"AlfrescoFolderAddedOnServerParentFolderKey";
+NSString * const kAlfrescoFolderAddedOnServerSubFolderKey = @"AlfrescoFolderAddedOnServerSubFolderKey";
 
 // Accounts
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";

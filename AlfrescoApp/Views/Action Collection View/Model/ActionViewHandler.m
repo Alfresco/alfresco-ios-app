@@ -317,6 +317,40 @@
     return deleteRequest;
 }
 
+- (AlfrescoRequest *)pressedCreateSubFolder:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder
+{
+    __block AlfrescoRequest *createFolderRequest = nil;
+    UIAlertView *createFolderAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
+                                                                message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                      otherButtonTitles:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder"), nil];
+    createFolderAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [createFolderAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            NSString *desiredFolderName = [[createFolderAlert textFieldAtIndex:0] text];
+            createFolderRequest = [self.documentService createFolderWithName:desiredFolderName inParentFolder:folder properties:nil completionBlock:^(AlfrescoFolder *createdFolder, NSError *error) {
+                if (createdFolder)
+                {
+                    NSString *folderCreatedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.subfolder.success.message", @"Created Message"), desiredFolderName];
+                    displayInformationMessageWithTitle(folderCreatedMessage, NSLocalizedString(@"action.subfolder.success.title", @"Created Title"));
+                    
+                    NSDictionary *notificationObject = @{kAlfrescoFolderAddedOnServerParentFolderKey : folder, kAlfrescoFolderAddedOnServerSubFolderKey : createdFolder};
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoFolderAddedOnServerNotification object:notificationObject];
+                }
+                else
+                {
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"action.subfolder.failure.title", @"Creation Failed"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
+        }
+    }];
+    
+    return createFolderRequest;
+}
+
 - (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path
 {
     __block NSString *passedPath = path;
