@@ -27,7 +27,7 @@
 #import "FavouriteManager.h"
 #import "FolderPreviewViewController.h"
 
-static CGFloat const kCellHeight = 74.0f;
+static CGFloat const kCellHeight = 64.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
@@ -489,6 +489,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     id <AlfrescoSession> session = notification.object;
     self.session = session;
     self.displayFolder = nil;
+    self.tableView.tableHeaderView = nil;
     
     [self createAlfrescoServicesWithSession:session];
     
@@ -498,7 +499,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:NO];
     }
 }
 
@@ -897,7 +898,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
                 else
                 {
-                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode permissions:permissions session:self.session];
+                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                                                           permissions:permissions
+                                                                                                                       contentFilePath:nil
+                                                                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                                                               session:self.session];
                     previewController.hidesBottomBarWhenPushed = YES;
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                 }

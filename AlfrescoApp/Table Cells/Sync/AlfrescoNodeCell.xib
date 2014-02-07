@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AlfrescoNodeCellIdentifier" rowHeight="74" id="jwn-8k-eMK" customClass="AlfrescoNodeCell">
+        <tableViewCell clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AlfrescoNodeCellIdentifier" rowHeight="64" id="jwn-8k-eMK" customClass="AlfrescoNodeCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jwn-8k-eMK" id="DfA-ge-hh7">
@@ -26,34 +26,54 @@
                             <constraint firstAttribute="height" constant="40" id="lht-aI-gwM"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xfo-QY-TU0">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xfo-QY-TU0" userLabel="nodeContainer">
                         <rect key="frame" x="58" y="18" width="250" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Alfresco Node Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sCi-Md-GIM">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Alfresco Node Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sCi-Md-GIM" userLabel="nodeName">
                                 <rect key="frame" x="0.0" y="0.0" width="250" height="21"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Node Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="249" translatesAutoresizingMaskIntoConstraints="NO" id="ny7-iZ-qph">
-                                <rect key="frame" x="0.0" y="22" width="249" height="17"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Node Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="205" translatesAutoresizingMaskIntoConstraints="NO" id="ny7-iZ-qph" userLabel="nodeDetails">
+                                <rect key="frame" x="44" y="22" width="205" height="17"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1vb-3m-UJY" userLabel="favoriteIcon">
+                                <rect key="frame" x="0.0" y="24" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="14" id="CcV-cb-qO8"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eV4-7U-P9r" userLabel="syncIcon">
+                                <rect key="frame" x="22" y="24" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="14" id="jff-XO-iau"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="1vb-3m-UJY" secondAttribute="bottom" id="3Iq-QF-24M"/>
+                            <constraint firstItem="eV4-7U-P9r" firstAttribute="leading" secondItem="1vb-3m-UJY" secondAttribute="trailing" constant="8" id="5l5-at-YeL"/>
                             <constraint firstAttribute="trailing" secondItem="sCi-Md-GIM" secondAttribute="trailing" id="Dma-WB-koe"/>
                             <constraint firstItem="ny7-iZ-qph" firstAttribute="top" secondItem="sCi-Md-GIM" secondAttribute="bottom" constant="1" id="LBa-bM-gc3"/>
-                            <constraint firstItem="ny7-iZ-qph" firstAttribute="leading" secondItem="Xfo-QY-TU0" secondAttribute="leading" id="MAI-ax-B08"/>
+                            <constraint firstAttribute="bottom" secondItem="eV4-7U-P9r" secondAttribute="bottom" id="Okv-ID-OmX"/>
                             <constraint firstAttribute="centerY" secondItem="sCi-Md-GIM" secondAttribute="centerY" priority="687" id="U0u-rX-VQ3"/>
                             <constraint firstAttribute="bottom" secondItem="ny7-iZ-qph" secondAttribute="bottom" constant="-1" id="VmO-9U-NYS"/>
                             <constraint firstAttribute="trailing" secondItem="ny7-iZ-qph" secondAttribute="trailing" constant="1" id="XyT-AY-a3c"/>
+                            <constraint firstItem="eV4-7U-P9r" firstAttribute="top" secondItem="sCi-Md-GIM" secondAttribute="bottom" priority="750" constant="3" id="bn8-n3-iYZ"/>
                             <constraint firstAttribute="height" constant="38" id="eoO-ug-IUK"/>
+                            <constraint firstItem="1vb-3m-UJY" firstAttribute="leading" secondItem="Xfo-QY-TU0" secondAttribute="leading" id="fKM-zQ-R4Y"/>
+                            <constraint firstItem="1vb-3m-UJY" firstAttribute="top" secondItem="sCi-Md-GIM" secondAttribute="bottom" priority="750" constant="3" id="rlD-qJ-qGN"/>
+                            <constraint firstItem="ny7-iZ-qph" firstAttribute="leading" secondItem="eV4-7U-P9r" secondAttribute="trailing" constant="8" id="syO-MM-Dsn"/>
                             <constraint firstItem="sCi-Md-GIM" firstAttribute="leading" secondItem="Xfo-QY-TU0" secondAttribute="leading" id="uyY-y8-Vy7"/>
                         </constraints>
                     </view>
@@ -72,9 +92,17 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="details" destination="ny7-iZ-qph" id="nCr-o1-aCy"/>
+                <outlet property="favoriteIconRightSpaceConstraint" destination="5l5-at-YeL" id="wvg-Od-mcA"/>
+                <outlet property="favoriteIconTopSpaceConstraint" destination="rlD-qJ-qGN" id="a0i-kO-L7D"/>
+                <outlet property="favoriteIconWidthConstraint" destination="CcV-cb-qO8" id="4OW-eb-mpG"/>
+                <outlet property="favoriteStatusImageView" destination="1vb-3m-UJY" id="U6e-EA-GaE"/>
                 <outlet property="filename" destination="sCi-Md-GIM" id="MMF-f1-IYH"/>
                 <outlet property="image" destination="XfV-qb-eIj" id="tSr-fm-5pS"/>
                 <outlet property="progressBar" destination="xnk-Mu-sus" id="4jj-92-GGY"/>
+                <outlet property="syncIconRightSpaceConstraint" destination="syO-MM-Dsn" id="TpE-iH-oai"/>
+                <outlet property="syncIconTopSpaceConstraint" destination="bn8-n3-iYZ" id="CJy-G9-46v"/>
+                <outlet property="syncIconWidthConstraint" destination="jff-XO-iau" id="Wn3-4B-uq9"/>
+                <outlet property="syncStatusImageView" destination="eV4-7U-P9r" id="cKG-8i-LsO"/>
             </connections>
         </tableViewCell>
     </objects>

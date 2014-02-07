@@ -317,6 +317,37 @@
     return deleteRequest;
 }
 
+- (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path
+{
+    __block NSString *passedPath = path;
+    UIAlertView *renameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.rename.alert.title", @"Rename")
+                                                          message:NSLocalizedString(@"action.rename.alert.message", @"Rename document to, message")
+                                                         delegate:self
+                                                cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    renameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [renameAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            NSString *newName = [[renameAlert textFieldAtIndex:0] text];
+            
+            if (newName)
+            {
+                newName = [newName stringByAppendingPathExtension:path.pathExtension];
+                NSString *newPath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:newName];
+                
+                [[DownloadManager sharedManager] renameLocalDocument:path.lastPathComponent toName:newName];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoLocalDocumentRenamedNotification object:path userInfo:@{kAlfrescoLocalDocumentNewName : newPath}];
+                
+                NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.rename.success.message", @"Rename Success Message"), path.lastPathComponent, newName];
+                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.rename.success.title", @"Rename Success Title"));
+                self.controller.title = newName;
+                passedPath = newPath;
+            }
+        }
+    }];
+}
+
 #pragma mark - Private Functions
 
 - (AlfrescoRequest *)retrieveContentOfDocument:(AlfrescoDocument *)document completionBlock:(void (^)(NSString *fileLocation))completionBlock

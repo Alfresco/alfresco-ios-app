@@ -71,6 +71,7 @@ static NSString * const kAlfrescoAppDataStore = @"alfrescoApp.sqlite";
     }
     
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
+    
     [self.window makeKeyAndVisible];
     
 #ifdef DEBUG

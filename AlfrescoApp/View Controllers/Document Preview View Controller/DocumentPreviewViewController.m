@@ -23,6 +23,7 @@
 #import "FavouriteManager.h"
 #import <MessageUI/MessageUI.h>
 #import "DownloadManager.h"
+#import "SyncManager.h"
 #import "UIAlertView+ALF.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ActionViewHandler.h"
@@ -42,6 +43,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 @property (nonatomic, strong, readwrite) AlfrescoPermissions *documentPermissions;
 @property (nonatomic, strong, readwrite) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong, readwrite) NSString *documentContentFilePath;
 @property (nonatomic, strong, readwrite) AlfrescoRatingService *ratingService;
 @property (nonatomic, strong, readwrite) MBProgressHUD *progressHUD;
 @property (nonatomic, strong, readwrite) NSString *previewImageFolderURLString;
@@ -51,12 +53,17 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 @property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *pagingSegmentControl;
 @property (nonatomic, strong, readwrite) NSMutableArray *pagingControllers;
 @property (nonatomic, strong, readwrite) ActionViewHandler *actionHandler;
+@property (nonatomic, assign, readwrite) InAppDocumentLocation documentLocation;
 
 @end
 
 @implementation DocumentPreviewViewController
 
-- (instancetype)initWithAlfrescoDocument:(AlfrescoDocument *)document permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+- (instancetype)initWithAlfrescoDocument:(AlfrescoDocument *)document
+                             permissions:(AlfrescoPermissions *)permissions
+                         contentFilePath:(NSString *)contentFilePath
+                        documentLocation:(InAppDocumentLocation)documentLocation
+                                 session:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
@@ -64,6 +71,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.document = document;
         self.documentPermissions = permissions;
         self.session = session;
+        self.documentContentFilePath = contentFilePath;
+        self.documentLocation = documentLocation;
         self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
         self.previewImageFolderURLString = [[AlfrescoFileManager sharedManager] thumbnailsImgPreviewFolderPath];
@@ -77,7 +86,14 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
     [super viewDidLoad];
     
-    self.title = self.document.name;
+    if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    {
+        self.title = self.documentContentFilePath.lastPathComponent;
+    }
+    else
+    {
+        self.title = self.document.name;
+    }
     
     UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewDocument:)];
     imageTap.numberOfTapsRequired = 1;
@@ -150,14 +166,34 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)previewDocument:(id)sender
 {
-    [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
-        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document documentPermissions:self.documentPermissions contentFilePath:fileLocation session:self.session displayOverlayCloseButton:YES];
-        
+    void (^preparePreviewController)(PreviewViewController *) = ^(PreviewViewController *previewController)
+    {
         previewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         [self addChildViewController:previewController];
         [self.view addSubview:previewController.view];
         [previewController didMoveToParentViewController:self];
-    }];
+    };
+    
+    if (self.documentContentFilePath)
+    {
+        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document
+                                                                               documentPermissions:self.documentPermissions
+                                                                                   contentFilePath:self.documentContentFilePath
+                                                                                           session:self.session
+                                                                         displayOverlayCloseButton:YES];
+        preparePreviewController(previewController);
+    }
+    else
+    {
+        [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
+            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document
+                                                                                   documentPermissions:self.documentPermissions
+                                                                                       contentFilePath:fileLocation
+                                                                                               session:self.session
+                                                                             displayOverlayCloseButton:YES];
+            preparePreviewController(previewController);
+        }];
+    }
 }
 
 - (void)retrieveContentOfDocument:(AlfrescoDocument *)document completionBlock:(void (^)(NSString *fileLocation))completionBlock
@@ -200,7 +236,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
-
+    
     for (int i = 0; i < PagingScrollViewSegmentType_MAX; i++)
     {
         [self.pagingControllers addObject:[NSNull null]];
@@ -256,31 +292,42 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)setupActionCollectionView
 {
+    BOOL isRestricted = NO;
+    
     NSMutableArray *items = [NSMutableArray array];
     
-    [items addObject:[ActionCollectionItem favouriteItem]];
-    [items addObject:[ActionCollectionItem likeItem]];
-    [items addObject:[ActionCollectionItem downloadItem]];
-    
-    
-    if (self.documentPermissions.canComment)
+    if (self.documentLocation == InAppDocumentLocationLocalFiles)
     {
-        [items addObject:[ActionCollectionItem commentItem]];
+        [items addObject:[ActionCollectionItem renameItem]];
+    }
+    else
+    {
+        [items addObject:[ActionCollectionItem favouriteItem]];
+        [items addObject:[ActionCollectionItem likeItem]];
+        [items addObject:[ActionCollectionItem downloadItem]];
+        
+        if (self.documentPermissions.canComment)
+        {
+            [items addObject:[ActionCollectionItem commentItem]];
+        }
     }
     
-    if ([MFMailComposeViewController canSendMail])
+    if (!isRestricted)
     {
-        [items addObject:[ActionCollectionItem emailItem]];
+        if ([MFMailComposeViewController canSendMail])
+        {
+            [items addObject:[ActionCollectionItem emailItem]];
+        }
+        
+        if (![Utility isAudioOrVideo:self.document.name])
+        {
+            [items addObject:[ActionCollectionItem printItem]];
+        }
+        
+        [items addObject:[ActionCollectionItem openInItem]];
     }
     
-    if (![Utility isAudioOrVideo:self.document.name])
-    {
-        [items addObject:[ActionCollectionItem printItem]];
-    }
-    
-    [items addObject:[ActionCollectionItem openInItem]];
-    
-    if (self.documentPermissions.canDelete)
+    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentPermissions.canDelete)
     {
         [items addObject:[ActionCollectionItem deleteItem]];
     }
@@ -342,6 +389,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
     {
         [self.actionHandler pressedDeleteActionItem:actionItem];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierRename])
+    {
+        [self.actionHandler pressedRenameActionItem:actionItem atPath:self.documentContentFilePath];
     }
 }
 

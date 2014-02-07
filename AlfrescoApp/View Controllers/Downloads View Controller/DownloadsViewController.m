@@ -7,7 +7,7 @@
 //
 
 #import "DownloadsViewController.h"
-#import "PreviewViewController.h"
+#import "DocumentPreviewViewController.h"
 #import "UniversalDevice.h"
 #import "DownloadManager.h"
 #import "Utility.h"
@@ -65,6 +65,14 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(documentDownloaded:)
                                                  name:kAlfrescoDocumentDownloadedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deleteDocument:)
+                                                 name:kAlfrescoDeleteLocalDocumentNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(renamedDocument:)
+                                                 name:kAlfrescoLocalDocumentRenamedNotification
                                                object:nil];
     if (self.isDownloadPickerEnabled && !IS_IPAD)
     {
@@ -256,8 +264,12 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
             AlfrescoDocument *documentToDisplay = [[DownloadManager sharedManager] infoForDocument:contentFullPath];
             // Additional property added by category
             documentToDisplay.isDownloaded = YES;
-            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:documentToDisplay documentPermissions:nil contentFilePath:contentFullPath session:self.session displayOverlayCloseButton:NO];
-            
+            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:documentToDisplay
+                                                                                                                   permissions:nil
+                                                                                                               contentFilePath:contentFullPath
+                                                                                                              documentLocation:InAppDocumentLocationLocalFiles
+                                                                                                                       session:self.session];
+            previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
     }
@@ -494,6 +506,23 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     {
         [self deleteMultiSelectedNodes];
     }
+}
+
+#pragma mark - Notification Methods
+
+- (void)deleteDocument:(NSNotification *)notification
+{
+    [self deleteDocumentFromDownloads:notification.object];
+}
+
+- (void)renamedDocument:(NSNotification *)notification
+{
+    NSString *oldPath = notification.object;
+    NSString *newPath = [notification.userInfo objectForKey:kAlfrescoLocalDocumentNewName];
+    
+    NSIndexPath *indexPathForNode = [self indexPathForNodeWithIdentifier:oldPath inNodeIdentifiers:self.tableViewData];
+    [self.tableViewData replaceObjectAtIndex:indexPathForNode.row withObject:newPath];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 @end
