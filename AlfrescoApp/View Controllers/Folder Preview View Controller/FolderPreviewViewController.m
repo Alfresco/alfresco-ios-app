@@ -135,6 +135,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [items addObject:[ActionCollectionItem deleteItem]];
     }
     
+    if (self.permissions.canAddChildren)
+    {
+        [items addObject:[ActionCollectionItem subfolder]];
+    }
+    
     self.actionView.items = items;
 }
 
@@ -201,6 +206,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
     {
         [self.actionHandler pressedDeleteActionItem:actionItem];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierCreateSubfolder])
+    {
+        [self.actionHandler pressedCreateSubFolder:actionItem inFolder:self.folder];
     }
 }
 

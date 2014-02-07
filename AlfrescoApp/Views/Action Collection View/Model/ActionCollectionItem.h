@@ -25,6 +25,7 @@ extern NSString * const kActionCollectionIdentifierEmailAsLink;
 extern NSString * const kActionCollectionIdentifierPrint;
 extern NSString * const kActionCollectionIdentifierDelete;
 extern NSString * const kActionCollectionIdentifierRename;
+extern NSString * const kActionCollectionIdentifierCreateSubfolder;
 
 @interface ActionCollectionItem : NSObject
 
@@ -42,6 +43,7 @@ extern NSString * const kActionCollectionIdentifierRename;
 + (instancetype)printItem;
 + (instancetype)deleteItem;
 + (instancetype)renameItem;
++ (instancetype)subfolder;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

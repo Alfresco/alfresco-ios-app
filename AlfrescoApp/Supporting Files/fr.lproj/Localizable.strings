@@ -489,10 +489,15 @@
 "action.download" = "Download";
 "action.print" = "Print";
 "action.rename" = "Rename";
+"action.subfolder" = "Add Folder";
+// alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename document to:";
 "action.rename.success.title" = "Rename Successful";
 "action.rename.success.message" = "Successfully renamed %@ to %@.";
+"action.subfolder.success.title" = "Added Subfolder";
+"action.subfolder.success.message" = "%@ was successfully created.";
+"action.subfolder.failure.title" = "Unable to create subfolder";
 "action.delete" = "Delete";
 "action.delete.confirmation.title" = "Delete Confirmation";
 "action.delete.confirmation.message" = "Are you sure you want to delete this document?";

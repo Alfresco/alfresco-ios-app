@@ -28,6 +28,7 @@
 - (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;
 - (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem;
+- (AlfrescoRequest *)pressedCreateSubFolder:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder;
 - (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path;
 
 @end
