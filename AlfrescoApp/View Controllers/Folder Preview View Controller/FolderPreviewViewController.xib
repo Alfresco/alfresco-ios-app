@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FolderPreviewViewController">
+            <connections>
+                <outlet property="actionView" destination="RcP-UM-Kst" id="g7y-kQ-BPT"/>
+                <outlet property="pagedScrollView" destination="yvK-iX-rji" id="R5Z-oY-oSF"/>
+                <outlet property="segmentControl" destination="hJK-bj-wBv" id="hLW-XT-WgS"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RcP-UM-Kst" customClass="ActionCollectionView">
+                    <rect key="frame" x="0.0" y="458" width="320" height="110"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="110" id="gYk-fw-euE"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="r2K-xi-tg4"/>
+                    </connections>
+                </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hJK-bj-wBv">
+                    <rect key="frame" x="60" y="8" width="200" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="Nf1-A6-DRH"/>
+                    </constraints>
+                    <segments>
+                        <segment title="First"/>
+                        <segment title="Second"/>
+                    </segments>
+                    <connections>
+                        <action selector="segmentValueChanged:" destination="-1" eventType="valueChanged" id="Kng-pe-hGm"/>
+                    </connections>
+                </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yvK-iX-rji" customClass="PagedScrollView">
+                    <rect key="frame" x="0.0" y="50" width="320" height="400"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="673-l1-SQV"/>
+                    </connections>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="RcP-UM-Kst" firstAttribute="top" secondItem="yvK-iX-rji" secondAttribute="bottom" constant="8" id="KU0-vA-Iro"/>
+                <constraint firstAttribute="trailing" secondItem="yvK-iX-rji" secondAttribute="trailing" id="aKr-ue-Mn1"/>
+                <constraint firstItem="RcP-UM-Kst" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="cRW-Np-VbZ"/>
+                <constraint firstAttribute="bottom" secondItem="RcP-UM-Kst" secondAttribute="bottom" id="cac-uw-7ri"/>
+                <constraint firstAttribute="centerX" secondItem="hJK-bj-wBv" secondAttribute="centerX" id="gj4-nD-3Tx"/>
+                <constraint firstItem="yvK-iX-rji" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="knc-IW-y8f"/>
+                <constraint firstItem="yvK-iX-rji" firstAttribute="top" secondItem="hJK-bj-wBv" secondAttribute="bottom" constant="14" id="m08-fY-U9D"/>
+                <constraint firstItem="hJK-bj-wBv" firstAttribute="top" secondItem="1" secondAttribute="top" constant="8" id="qhj-do-Lh0"/>
+                <constraint firstAttribute="trailing" secondItem="RcP-UM-Kst" secondAttribute="trailing" id="wvM-ah-cU8"/>
+                <constraint firstItem="yvK-iX-rji" firstAttribute="top" secondItem="hJK-bj-wBv" secondAttribute="bottom" constant="14" id="zVj-Of-XcO"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

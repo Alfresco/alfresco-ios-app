@@ -64,7 +64,7 @@
 
 #pragma mark - Public Functions
 
-- (void)addFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock
+- (AlfrescoRequest *)addFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock
 {
     if (!self.session)
     {
@@ -72,7 +72,7 @@
         [self createServicesWithSession:session];
     }
     
-    [self.documentFolderService addFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
+    return [self.documentFolderService addFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
             SyncManager *syncManager = [SyncManager sharedManager];
@@ -94,7 +94,7 @@
     }];
 }
 
-- (void)removeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock
+- (AlfrescoRequest *)removeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock
 {
     if (!self.session)
     {
@@ -102,7 +102,7 @@
         [self createServicesWithSession:session];
     }
     
-    [self.documentFolderService removeFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
+    return [self.documentFolderService removeFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
             SyncManager *syncManager = [SyncManager sharedManager];
@@ -124,7 +124,7 @@
     }];
 }
 
-- (void)isNodeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL isFavorite, NSError *error))completionBlock
+- (AlfrescoRequest *)isNodeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL isFavorite, NSError *error))completionBlock
 {
     if (!self.session)
     {
@@ -132,7 +132,7 @@
         [self createServicesWithSession:session];
     }
     
-    [self.documentFolderService isFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
+    return [self.documentFolderService isFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         completionBlock(isFavorited, error);
     }];
 }

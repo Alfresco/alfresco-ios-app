@@ -18,7 +18,7 @@ typedef void (^DownloadManagerFileSavedBlock)(NSString *filePath);
 
 - (NSMutableArray *)downloadedDocumentPaths;
 
-- (void)downloadDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath session:(id<AlfrescoSession>)alfrescoSession;
+- (AlfrescoRequest *)downloadDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath session:(id<AlfrescoSession>)alfrescoSession;
 - (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath completionBlock:(DownloadManagerFileSavedBlock)completionBlock;
 - (void)moveFileIntoSecureContainer:(NSString *)absolutePath completionBlock:(DownloadManagerFileSavedBlock)completionBlock;
 - (void)removeFromDownloads:(NSString *)filePath;

@@ -25,6 +25,7 @@
 #import "TextFileViewController.h"
 #import "SyncManager.h"
 #import "FavouriteManager.h"
+#import "FolderPreviewViewController.h"
 
 static CGFloat const kCellHeight = 74.0f;
 
@@ -507,13 +508,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
 }
 
-- (UIButton *)makeDetailDisclosureButton
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *selectedNode = nil;
@@ -548,8 +542,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else
     {
-        MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:selectedNode session:self.session];
-        [UniversalDevice pushToDisplayViewController:metadataViewController usingNavigationController:self.navigationController animated:YES];
+        [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            if (permissions)
+            {
+                FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)selectedNode permissions:permissions session:self.session];
+                [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+            }
+            else
+            {
+                NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+                displayErrorMessage(permissionRetrievalErrorMessage);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
     }
 }
 
