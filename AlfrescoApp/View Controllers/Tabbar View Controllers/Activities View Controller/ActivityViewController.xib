@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1552" defaultVersion="1552" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <deployment version="1552" defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ActivitiesViewController">
             <connections>
-                <outlet property="tableView" destination="aUp-oW-Jqq" id="pvs-C0-oJn"/>
-                <outlet property="view" destination="x7Q-Qq-l3V" id="QIN-J8-uTi"/>
+                <outlet property="tableView" destination="aA8-Cn-2KZ" id="g2h-Pd-0qQ"/>
+                <outlet property="view" destination="6lI-Ii-G0e" id="VRu-uT-6Kp"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="x7Q-Qq-l3V">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="852"/>
+        <view contentMode="scaleToFill" id="6lI-Ii-G0e">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="521"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="aUp-oW-Jqq">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="852"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="aA8-Cn-2KZ">
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="521"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.15834578460000001" green="0.4462703495" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="aUp-oW-Jqq" secondAttribute="bottom" id="1rD-q4-Rr3"/>
-                <constraint firstItem="aUp-oW-Jqq" firstAttribute="leading" secondItem="x7Q-Qq-l3V" secondAttribute="leading" id="Fb6-f7-xUh"/>
-                <constraint firstAttribute="trailing" secondItem="aUp-oW-Jqq" secondAttribute="trailing" id="a6y-sx-xK5"/>
-                <constraint firstItem="aUp-oW-Jqq" firstAttribute="top" secondItem="x7Q-Qq-l3V" secondAttribute="top" id="dv3-D4-qLe"/>
+                <constraint firstItem="aA8-Cn-2KZ" firstAttribute="leading" secondItem="6lI-Ii-G0e" secondAttribute="leading" id="8nI-A2-fl5"/>
+                <constraint firstItem="aA8-Cn-2KZ" firstAttribute="top" secondItem="6lI-Ii-G0e" secondAttribute="top" id="BJe-bw-yuc"/>
+                <constraint firstAttribute="bottom" secondItem="aA8-Cn-2KZ" secondAttribute="bottom" id="eVC-ux-Apq"/>
+                <constraint firstAttribute="trailing" secondItem="aA8-Cn-2KZ" secondAttribute="trailing" id="gNq-S5-kCF"/>
             </constraints>
-            <splitViewMasterSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
 </document>

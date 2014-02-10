@@ -8,6 +8,7 @@
 
 #import "ActivitiesViewController.h"
 #import "ActivitiesTableViewCellController.h"
+#import "ActivityTableViewCell.h"
 #import "PreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
@@ -51,6 +52,9 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
     {
         [self loadActivities];
     }
+    
+    UINib *cellNib = [UINib nibWithNibName:@"ActivityTableViewCell" bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:kActivityCellIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -134,14 +138,8 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.tableSectionHeaders)
-    {
-        return [self.tableViewData [indexPath.section][indexPath.row] heightForCellAtIndexPath:indexPath inTableView:tableView];
-    }
-    else
-    {
-        return [self.tableViewData [indexPath.row] heightForCellAtIndexPath:indexPath inTableView:tableView];
-    }
+    ActivitiesTableViewCellController *cellController = self.tableSectionHeaders ? self.tableViewData[indexPath.section][indexPath.row] : self.tableViewData [indexPath.row];
+    return [cellController heightForCellAtIndexPath:indexPath inTableView:tableView withSections:self.tableSectionHeaders];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -332,7 +330,7 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
     [self showHUD];
     [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [self.tableViewData removeAllObjects];
-        [self.tableSectionHeaders removeAllObjects];
+        self.tableSectionHeaders = nil;
         [self.tableView reloadData];
         if (error || [pagingResult.objects count] == 0)
         {

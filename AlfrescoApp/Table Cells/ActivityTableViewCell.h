@@ -11,6 +11,8 @@
 
 @interface ActivityTableViewCell : UITableViewCell
 
-@property (nonatomic, retain) TTTAttributedLabel *summaryLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *avatar;
+@property (nonatomic, weak) IBOutlet UILabel *summaryLabel;
+@property (nonatomic, weak) IBOutlet UILabel *detailsLabel;
 
 @end

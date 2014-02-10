@@ -10,8 +10,11 @@
 @class AlfrescoActivityEntry;
 @class AlfrescoDocument;
 @class AlfrescoDocumentFolderService;
+@class ActivityTableViewCell;
+
 @protocol AlfrescoSession;
 
+NSString * const kActivityCellIdentifier;
 NSString * const kActivityNodeRef;
 
 @interface ActivitiesTableViewCellController : NSObject
@@ -21,9 +24,9 @@ NSString * const kActivityNodeRef;
 @property (nonatomic, assign) BOOL isActivityTypeDocument;
 @property (nonatomic, strong) AlfrescoDocument *activityDocument;
 
-- (UITableViewCell *)createActivityTableViewCellInTableView:(UITableView *)tableView;
+- (ActivityTableViewCell *)createActivityTableViewCellInTableView:(UITableView *)tableView;
 - (UITableViewCell *)createActivityErrorTableViewCellInTableView:(UITableView *)tableView;
-- (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
+- (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withSections:(NSArray *)sections;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 
