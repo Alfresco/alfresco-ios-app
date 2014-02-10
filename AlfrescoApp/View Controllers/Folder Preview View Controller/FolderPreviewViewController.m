@@ -130,14 +130,15 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [items addObject:[ActionCollectionItem commentItem]];
     }
     
+    if (self.permissions.canAddChildren)
+    {
+        [items addObject:[ActionCollectionItem subfolderItem]];
+        [items addObject:[ActionCollectionItem uploadItem]];
+    }
+    
     if (self.permissions.canDelete)
     {
         [items addObject:[ActionCollectionItem deleteItem]];
-    }
-    
-    if (self.permissions.canAddChildren)
-    {
-        [items addObject:[ActionCollectionItem subfolder]];
     }
     
     self.actionView.items = items;
@@ -209,7 +210,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierCreateSubfolder])
     {
-        [self.actionHandler pressedCreateSubFolder:actionItem inFolder:self.folder];
+        [self.actionHandler pressedCreateSubFolderActionItem:actionItem inFolder:self.folder];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUploadDocument])
+    {
+        [self.actionHandler pressedUploadActionItem:actionItem presentFromView:cell inView:view];
     }
 }
 
