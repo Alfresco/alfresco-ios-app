@@ -92,8 +92,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                      name:kAlfrescoDocumentDeletedOnServerNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(folderAdded:)
-                                                     name:kAlfrescoFolderAddedOnServerNotification
+                                                 selector:@selector(nodeAdded:)
+                                                     name:kAlfrescoNodeAddedOnServerNotification
                                                    object:nil];
     }
     return self;
@@ -725,16 +725,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void)folderAdded:(NSNotification *)notification
+- (void)nodeAdded:(NSNotification *)notification
 {
     NSDictionary *foldersDictionary = notification.object;
     
-    AlfrescoFolder *parentFolder = [foldersDictionary objectForKey:kAlfrescoFolderAddedOnServerParentFolderKey];
+    AlfrescoFolder *parentFolder = [foldersDictionary objectForKey:kAlfrescoNodeAddedOnServerParentFolderKey];
     
     if ([parentFolder isEqual:self.displayFolder])
     {
-        AlfrescoFolder *subFolder = [foldersDictionary objectForKey:kAlfrescoFolderAddedOnServerSubFolderKey];
-        [self addAlfrescoNodes:@[subFolder] withRowAnimation:UITableViewRowAnimationAutomatic];
+        AlfrescoNode *subnode = [foldersDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
+        [self addAlfrescoNodes:@[subnode] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 

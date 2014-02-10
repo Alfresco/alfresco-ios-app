@@ -624,7 +624,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
                     if (succeeded)
                     {
                         [weakSelf dismissViewControllerAnimated:YES completion:^{
-                            [weakSelf.delegate didFinishUploadingNode:document];
+                            if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                            {
+                                [weakSelf.delegate didFinishUploadingNode:document];
+                            }
                         }];
                     }
                     else
@@ -637,7 +640,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
             else
             {
                 [weakSelf dismissViewControllerAnimated:YES completion:^{
-                    [weakSelf.delegate didFinishUploadingNode:document];
+                    if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                    {
+                        [weakSelf.delegate didFinishUploadingNode:document];
+                    }
                 }];
             }
         }
@@ -719,7 +725,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
                         if (succeeded)
                         {
                             [weakSelf dismissViewControllerAnimated:YES completion:^{
-                                [weakSelf.delegate didFinishUploadingNode:document];
+                                if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                                {
+                                    [weakSelf.delegate didFinishUploadingNode:document];
+                                }
                             }];
                         }
                         else
@@ -732,7 +741,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
                 else
                 {
                     [weakSelf dismissViewControllerAnimated:YES completion:^{
-                        [weakSelf.delegate didFinishUploadingNode:document];
+                        if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                        {
+                            [weakSelf.delegate didFinishUploadingNode:document];
+                        }
                     }];
                 }
             }
@@ -823,7 +835,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
             if (isCancelButton)
             {
                 [self dismissViewControllerAnimated:YES completion:^{
-                    [self.delegate didCancelUpload];
+                    if ([self.delegate respondsToSelector:@selector(didCancelUpload)])
+                    {
+                         [self.delegate didCancelUpload];
+                    }
                 }];
             }
         }];
@@ -831,7 +846,10 @@ static NSString * const kAudioFileName = @"audio.m4a";
     else
     {
         [self dismissViewControllerAnimated:YES completion:^{
-            [self.delegate didCancelUpload];
+            if ([self.delegate respondsToSelector:@selector(didCancelUpload)])
+            {
+                [self.delegate didCancelUpload];
+            }
         }];
     }
 }

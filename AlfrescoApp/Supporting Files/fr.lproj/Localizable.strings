@@ -490,6 +490,7 @@
 "action.print" = "Print";
 "action.rename" = "Rename";
 "action.subfolder" = "Add Folder";
+"action.upload" = "Upload";
 // alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename document to:";

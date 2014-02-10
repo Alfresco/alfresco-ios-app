@@ -17,8 +17,11 @@
 #import "DownloadManager.h"
 #import "PreviewViewController.h"
 #import "UIAlertView+ALF.h"
+#import "DownloadsViewController.h"
+#import "NavigationViewController.h"
+#import "UploadFormViewController.h"
 
-@interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate>
+@interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
 @property (nonatomic, weak) UIViewController<ActionViewDelegate> *controller;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
@@ -26,6 +29,7 @@
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
@@ -317,7 +321,7 @@
     return deleteRequest;
 }
 
-- (AlfrescoRequest *)pressedCreateSubFolder:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder
+- (AlfrescoRequest *)pressedCreateSubFolderActionItem:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder
 {
     __block AlfrescoRequest *createFolderRequest = nil;
     UIAlertView *createFolderAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
@@ -336,8 +340,8 @@
                     NSString *folderCreatedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.subfolder.success.message", @"Created Message"), desiredFolderName];
                     displayInformationMessageWithTitle(folderCreatedMessage, NSLocalizedString(@"action.subfolder.success.title", @"Created Title"));
                     
-                    NSDictionary *notificationObject = @{kAlfrescoFolderAddedOnServerParentFolderKey : folder, kAlfrescoFolderAddedOnServerSubFolderKey : createdFolder};
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoFolderAddedOnServerNotification object:notificationObject];
+                    NSDictionary *notificationObject = @{kAlfrescoNodeAddedOnServerParentFolderKey : folder, kAlfrescoNodeAddedOnServerSubNodeKey : createdFolder};
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoNodeAddedOnServerNotification object:notificationObject];
                 }
                 else
                 {
@@ -380,6 +384,24 @@
             }
         }
     }];
+}
+
+- (void)pressedUploadActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView
+{
+    DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
+    downloadPicker.isDownloadPickerEnabled = YES;
+    downloadPicker.downloadPickerDelegate = self;
+    NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
+    
+    if (IS_IPAD)
+    {
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:downloadPickerNavigationController];
+        [self.popover presentPopoverFromRect:view.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else
+    {
+        [UniversalDevice displayModalViewController:downloadPickerNavigationController onController:self.controller withCompletionBlock:nil];
+    }
 }
 
 #pragma mark - Private Functions
@@ -453,6 +475,45 @@
 - (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
 {
     self.documentInteractionController = nil;
+}
+
+#pragma mark - DocumentPickerDelegate Functions
+
+- (void)downloadPicker:(id)picker didPickDocument:(NSString *)documentPath
+{
+    UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session
+                                                                                    uploadDocumentPath:documentPath
+                                                                                              inFolder:(AlfrescoFolder *)self.node
+                                                                                        uploadFormType:UploadFormTypeDocument
+                                                                                              delegate:self];
+    NavigationViewController *uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
+    
+    void (^displayUploadViewController)(void) = ^{
+        [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.controller withCompletionBlock:nil];
+    };
+    
+    if (IS_IPAD)
+    {
+        if (self.popover.isPopoverVisible)
+        {
+            [self.popover dismissPopoverAnimated:YES];
+            self.popover = nil;
+            displayUploadViewController();
+        }
+        
+    }
+    else
+    {
+        [self.controller dismissViewControllerAnimated:YES completion:displayUploadViewController];
+    }
+}
+
+#pragma mark - UploadFormViewControllerDelegate Functions
+
+- (void)didFinishUploadingNode:(AlfrescoNode *)node
+{
+    NSDictionary *notificationObject = @{kAlfrescoNodeAddedOnServerParentFolderKey : self.node, kAlfrescoNodeAddedOnServerSubNodeKey : node};
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoNodeAddedOnServerNotification object:notificationObject];
 }
 
 @end
