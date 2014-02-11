@@ -20,7 +20,7 @@
 		0804DCC6181A6BAB00E3ACC2 /* server@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCC2181A6BAB00E3ACC2 /* server@2x.png */; };
 		0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */; };
 		0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */; };
-		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
+		080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */; };
 		080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 080828A5184DEDCB000524A3 /* AccountCertificate.m */; };
 		0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D4183A5EE6000A8984 /* SyncError.m */; };
 		0808B9D8183A5EE7000A8984 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */; };
@@ -85,7 +85,7 @@
 		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
-		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
+		08E89CFB17EB39DB006936DF /* AlfrescoSync.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoSync.xcdatamodeld */; };
 		271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */; };
 		271DC765189C2D250059D1B2 /* status-favourite-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */; };
 		271DC766189C2D250059D1B2 /* status-favourite.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74E189C2D250059D1B2 /* status-favourite.png */; };
@@ -171,6 +171,7 @@
 		737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972EE18A39DBE007613B2 /* FolderPreviewViewController.xib */; };
 		737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972F318A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib */; };
 		737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972F918A3DCC3007613B2 /* ActionViewHandler.m */; };
+		7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */; };
 		7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDEA17F1A4A800C6A54F /* TaskViewController.m */; };
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
@@ -454,8 +455,8 @@
 		0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountInfoViewController.h; path = "Accounts View Controller/New Account/AccountInfoViewController.h"; sourceTree = "<group>"; };
 		0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountInfoViewController.m; path = "Accounts View Controller/New Account/AccountInfoViewController.m"; sourceTree = "<group>"; };
 		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "Accounts View Controller/New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
-		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
-		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
+		080675E917EC44AA004AF3A2 /* CoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataHelper.h; sourceTree = "<group>"; };
+		080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataHelper.m; sourceTree = "<group>"; };
 		080828A4184DEDCB000524A3 /* AccountCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCertificate.h; sourceTree = "<group>"; };
 		080828A5184DEDCB000524A3 /* AccountCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCertificate.m; sourceTree = "<group>"; };
 		0808B9D3183A5EE6000A8984 /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
@@ -550,7 +551,7 @@
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
+		08E89CFA17EB39DB006936DF /* AlfrescoSync.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoSync.xcdatamodel; sourceTree = "<group>"; };
 		271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted.png"; sourceTree = "<group>"; };
 		271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC74E189C2D250059D1B2 /* status-favourite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite.png"; sourceTree = "<group>"; };
@@ -659,6 +660,8 @@
 		737972F318A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "FolderPreviewViewController~ipad.xib"; path = "Folder Preview View Controller/FolderPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
 		737972F818A3DCC3007613B2 /* ActionViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionViewHandler.h; sourceTree = "<group>"; };
 		737972F918A3DCC3007613B2 /* ActionViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionViewHandler.m; sourceTree = "<group>"; };
+		7379730C18A9295B007613B2 /* CoreDataSyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataSyncHelper.h; sourceTree = "<group>"; };
+		7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataSyncHelper.m; sourceTree = "<group>"; };
 		7384BDE917F1A4A800C6A54F /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewController.h; path = "Task View Controller/TaskViewController.h"; sourceTree = "<group>"; };
 		7384BDEA17F1A4A800C6A54F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewController.m; path = "Task View Controller/TaskViewController.m"; sourceTree = "<group>"; };
 		7384BDEF17F2F8C000C6A54F /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = "Settings View Controller/SettingsViewController.h"; sourceTree = "<group>"; };
@@ -1188,7 +1191,7 @@
 		08E89CF817EB397C006936DF /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */,
+				08E89CF917EB39DB006936DF /* AlfrescoSync.xcdatamodeld */,
 				0808B9D9183A5EE7000A8984 /* SyncAccount.h */,
 				0808B9DA183A5EE7000A8984 /* SyncAccount.m */,
 				0808B9D6183A5EE7000A8984 /* SyncNodeInfo.h */,
@@ -1872,8 +1875,10 @@
 		73B957FA17A6750E0099FB84 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				080675E917EC44AA004AF3A2 /* CoreDataUtils.h */,
-				080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */,
+				080675E917EC44AA004AF3A2 /* CoreDataHelper.h */,
+				080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */,
+				7379730C18A9295B007613B2 /* CoreDataSyncHelper.h */,
+				7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */,
 				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
 				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
 				73B957FB17A6750E0099FB84 /* ErrorDescriptions.h */,
@@ -2883,6 +2888,7 @@
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
+				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
@@ -2905,7 +2911,7 @@
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
-				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
+				08E89CFB17EB39DB006936DF /* AlfrescoSync.xcdatamodeld in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
@@ -2923,7 +2929,7 @@
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
-				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
+				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
@@ -3308,14 +3314,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */ = {
+		08E89CF917EB39DB006936DF /* AlfrescoSync.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */,
+				08E89CFA17EB39DB006936DF /* AlfrescoSync.xcdatamodel */,
 			);
-			currentVersion = 08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */;
-			name = AlfrescoApp.xcdatamodeld;
-			path = DataModel/AlfrescoApp.xcdatamodeld;
+			currentVersion = 08E89CFA17EB39DB006936DF /* AlfrescoSync.xcdatamodel */;
+			name = AlfrescoSync.xcdatamodeld;
+			path = DataModel/AlfrescoSync.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
