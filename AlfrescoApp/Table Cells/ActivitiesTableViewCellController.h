@@ -16,13 +16,15 @@
 
 NSString * const kActivityCellIdentifier;
 NSString * const kActivityNodeRef;
+NSString * const kActivityObjectId;
 
 @interface ActivitiesTableViewCellController : NSObject
 
 @property (nonatomic, strong) AlfrescoActivityEntry *activity;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) BOOL isActivityTypeDocument;
-@property (nonatomic, strong) AlfrescoDocument *activityDocument;
+@property (nonatomic, assign) BOOL isActivityTypeFolder;
+@property (nonatomic, strong) AlfrescoNode *activityNode;
 
 - (ActivityTableViewCell *)createActivityTableViewCellInTableView:(UITableView *)tableView;
 - (UITableViewCell *)createActivityErrorTableViewCellInTableView:(UITableView *)tableView;

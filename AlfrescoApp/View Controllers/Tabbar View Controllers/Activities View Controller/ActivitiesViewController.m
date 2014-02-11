@@ -9,7 +9,8 @@
 #import "ActivitiesViewController.h"
 #import "ActivitiesTableViewCellController.h"
 #import "ActivityTableViewCell.h"
-#import "PreviewViewController.h"
+#import "DocumentPreviewViewController.h"
+#import "FolderPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
 #import "Utility.h"
@@ -87,7 +88,6 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
             [self.tableSectionHeaders addObject:sectionHeader];
             [tableSection addObject:activityController];
             [tableSections addObject:tableSection];
-            
         }
         else
         {
@@ -108,8 +108,6 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
     
     [self.tableViewData addObject:activityController];
     [self.tableView reloadData];
-    
-    [self.tableView setAllowsSelection:NO];
 }
 
 #pragma mark - Table view data source
@@ -201,16 +199,20 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
     ActivitiesTableViewCellController *activityController = self.tableViewData[indexPath.section][indexPath.row];
     AlfrescoActivityEntry *activity = activityController.activity;
     
-    if (activityController.isActivityTypeDocument && activity.data[kActivityNodeRef] != nil)
+    BOOL isFileOrFolder = (activityController.isActivityTypeDocument || activityController.isActivityTypeFolder);
+    BOOL nodeRefExists = (activity.data[kActivityNodeRef] != nil) || (activity.data[kActivityObjectId] != nil);
+    
+    if (isFileOrFolder && nodeRefExists)
     {
         [self showHUD];
-        if (activityController.activityDocument)
+        if (activityController.activityNode)
         {
-            [self displayDocument:activityController.activityDocument forActivityController:activityController];
+            [self displayDocument:activityController.activityNode forActivityController:activityController];
         }
         else
         {
-            [self.documentService retrieveNodeWithIdentifier:activity.data[kActivityNodeRef] completionBlock:^(AlfrescoNode *node, NSError *error) {
+            NSString *nodeIdentifier = activity.data[kActivityNodeRef] ? activity.data[kActivityNodeRef] : activity.data[kActivityObjectId];
+            [self.documentService retrieveNodeWithIdentifier:nodeIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
                 if (error)
                 {
                     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.alfresco.node.notfound", @"node not found"), [ErrorDescriptions descriptionForError:error]]);
@@ -219,82 +221,50 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
                 }
                 else
                 {
-                    AlfrescoDocument *document = (AlfrescoDocument *)node;
-                    activityController.activityDocument = document;
-                    
-                    [self displayDocument:document forActivityController:activityController];
+                    activityController.activityNode = node;
+                    [self displayDocument:node forActivityController:activityController];
                 }
             }];
         }
     }
 }
 
-- (void)displayDocument:(AlfrescoDocument *)document forActivityController:(ActivitiesTableViewCellController *)activityController
+- (void)displayDocument:(AlfrescoNode *)node forActivityController:(ActivitiesTableViewCellController *)activityController
 {
-    if (document)
+    if (node)
     {
-        NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:document.name];
-        NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
-        
-        [self.documentService retrievePermissionsOfNode:document completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-            [self.documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                [self hideHUD];
-                if (succeeded)
+        [self.documentService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            
+            [self hideHUD];
+            if (!error)
+            {
+                if (node.isDocument)
                 {
-                    PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:document documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session displayOverlayCloseButton:NO];
+                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)node
+                                                                                                                           permissions:permissions
+                                                                                                                       contentFilePath:nil
+                                                                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                                                               session:self.session];
+                    previewController.hidesBottomBarWhenPushed = YES;
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                 }
                 else
                 {
-                    // display an error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
+                    FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node permissions:permissions session:self.session];
+                    [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
                 }
-            } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                // progress indicator update
-            }];
+            }
+            else
+            {
+                // display an error
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
         }];
     }
     else
     {
         [self hideHUD];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-    
-    ActivitiesTableViewCellController *activityController = self.tableViewData[indexPath.section][indexPath.row];
-    AlfrescoActivityEntry *activity = activityController.activity;
-    
-    if (activityController.activityDocument)
-    {
-        MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:activityController.activityDocument session:self.session];
-        [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
-    }
-    else
-    {
-        if (activityController.isActivityTypeDocument && activity.data[kActivityNodeRef] != nil)
-        {
-            [self.documentService retrieveNodeWithIdentifier:activity.data[kActivityNodeRef] completionBlock:^(AlfrescoNode *node, NSError *error) {
-                
-                if (error)
-                {
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.alfresco.node.notfound", @"node not found"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                    [self hideHUD];
-                }
-                else
-                {
-                    AlfrescoDocument *document = (AlfrescoDocument *)node;
-                    activityController.activityDocument = document;
-                    
-                    MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:activityController.activityDocument session:self.session];
-                    [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
-                }
-            }];
-        }
     }
 }
 
@@ -335,6 +305,7 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
         if (error || [pagingResult.objects count] == 0)
         {
             [self constructErrorCellWithError:nil];
+            [self.tableView setAllowsSelection:NO];
             
             if (error)
             {
@@ -343,6 +314,7 @@ static NSString * const kActivitiesInterface = @"ActivityViewController";
         }
         else
         {
+            [self.tableView setAllowsSelection:YES];
             NSMutableArray *tableGroupsArray = [self constructTableGroups:pagingResult];
             [self reloadTableViewWithPagingResult:pagingResult data:tableGroupsArray error:error];
         }

@@ -14,6 +14,7 @@ NSString * const kActivityCellIdentifier = @"ActivityCell";
 
 NSString * const kActivityTitle = @"title";
 NSString * const kActivityNodeRef = @"nodeRef";
+NSString * const kActivityObjectId = @"objectId";
 NSString * const kActivityFirstName = @"firstName";
 NSString * const kActivityLastName = @"lastName";
 NSString * const kActivityUserFirstName = @"userFirstName";
@@ -74,13 +75,16 @@ static CGFloat const kFontSize = 17.0f;
     cell.detailsLabel.text = relativeDateFromDate(self.activity.createdAt);
     cell.detailsLabel.highlightedTextColor = [UIColor whiteColor];
     
-    self.isActivityTypeDocument = [[self activityDocumentType] containsObject:self.activity.type] && [self.activity.data[kActivityPage] hasPrefix:@"document-details"];
+    self.isActivityTypeDocument = [[self activityDocumentType] containsObject:self.activity.type];
+    self.isActivityTypeFolder = [self.activity.type hasPrefix:@"org.alfresco.documentlibrary.folder"];
     
     [self replaceActivityCellImageViewIconWithIcon:self.activityIcon];
     
-    cell.summaryLabel.highlightedTextColor = [UIColor whiteColor];
+    BOOL isFileOrFolder = (self.isActivityTypeDocument || self.isActivityTypeFolder);
+    BOOL nodeRefExists = (self.activity.data[kActivityNodeRef] != nil) || (self.activity.data[kActivityObjectId] != nil);
+    BOOL isNotDeleted = ![self.activity.type hasSuffix:@"-deleted"];
     
-    if (self.isActivityTypeDocument && self.activity.data[kActivityNodeRef] != nil && ![self.activity.type hasSuffix:@"-deleted"])
+    if (isFileOrFolder && nodeRefExists && isNotDeleted)
     {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -146,15 +150,6 @@ static CGFloat const kFontSize = 17.0f;
         height = size.height;
     }
     return height;
-}
-
-- (void)accessoryButtonTapped:(UIControl *)button withEvent:(UIEvent *)event
-{
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:button] anyObject] locationInView:self.tableView]];
-    if (indexPath != nil)
-    {
-        [self.tableView.delegate tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-    }
 }
 
 - (NSString *)activityText
@@ -253,6 +248,10 @@ static CGFloat const kFontSize = 17.0f;
         {
             self.activityIcon = imageForType([self.activity.data[kActivityTitle] pathExtension]);
             self.activityCell.avatar.image = self.activityIcon;
+        }
+        else if (self.isActivityTypeFolder)
+        {
+            self.activityIcon = [UIImage imageNamed:@"folder"];
         }
         else
         {
