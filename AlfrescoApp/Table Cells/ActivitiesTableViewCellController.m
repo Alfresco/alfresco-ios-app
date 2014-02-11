@@ -23,14 +23,8 @@ NSString * const kActivityRole = @"role";
 NSString * const kActivityStatus = @"status";
 NSString * const kActivityPage = @"page";
 
-static CGFloat const kBoldTextFontSize = 16;
-
-#define CONST_Cell_height 44.0f
-#define CONST_textLabelFontSize 16
-#define CONST_detailLabelFontSize 14
-#define CONST_Cell_imageView_width 32.0f
-#define CONST_Cell_imageView_height 32.0f
-#define CONST_Cell_titleMaxWidth 320.0f
+static CGFloat const kDefaultCellHeight = 44.0f;
+static CGFloat const kFontSize = 17.0f;
 
 @interface ActivitiesTableViewCellController ()
 
@@ -44,7 +38,6 @@ static CGFloat const kBoldTextFontSize = 16;
 @property (nonatomic, assign) UITableViewCellAccessoryType accesoryType;
 @property (nonatomic, strong) NSMutableAttributedString *mutableString;
 @property (nonatomic, strong) UIImage *activityIcon;
-@property (nonatomic, assign) CGFloat cellHeight;
 
 @end
 
@@ -71,7 +64,10 @@ static CGFloat const kBoldTextFontSize = 16;
 
 - (void)populateActivityCell:(ActivityTableViewCell *)cell
 {
-    self.attributedCellTitle = [self applyBoldAttributesToStrings:[self textReplacements] inText:self.cellTitle];
+    if (!self.attributedCellTitle)
+    {
+        self.attributedCellTitle = [self applyBoldAttributesToStrings:[self textReplacements] inText:self.cellTitle];
+    }
     cell.summaryLabel.attributedText = self.attributedCellTitle;
     cell.summaryLabel.highlightedTextColor = [UIColor whiteColor];
     
@@ -86,10 +82,6 @@ static CGFloat const kBoldTextFontSize = 16;
     
     if (self.isActivityTypeDocument && self.activity.data[kActivityNodeRef] != nil && ![self.activity.type hasSuffix:@"-deleted"])
     {
-        UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-        [infoButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-        
-        //cell.accessoryView = infoButton;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     }
@@ -113,11 +105,13 @@ static CGFloat const kBoldTextFontSize = 16;
 
 - (NSAttributedString *)applyBoldAttributesToStrings:(NSArray *)strings inText:(NSString *)text
 {
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text];
+    UIFont *normalFont = [UIFont systemFontOfSize:kFontSize];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:normalFont}];
     
     for (NSString *string in strings)
     {
-        UIFont *boldFont = [UIFont boldSystemFontOfSize:self.activityCell.summaryLabel.font.pointSize];
+        UIFont *boldFont = [UIFont boldSystemFontOfSize:kFontSize];
         
         NSRange rangeOfString = [text rangeOfString:string];
         [attributedText setAttributes:@{NSFontAttributeName:boldFont} range:rangeOfString];
@@ -137,14 +131,13 @@ static CGFloat const kBoldTextFontSize = 16;
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withSections:(NSArray *)sections
 {
-    CGFloat height = self.cellHeight;
+    CGFloat height = kDefaultCellHeight;
     if (sections)
     {
         ActivityTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kActivityCellIdentifier];
         [self populateActivityCell:cell];
-        cell.summaryLabel.text = self.cellTitle;
         
-        cell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(cell.bounds));
+        [cell.summaryLabel sizeThatFits:self.attributedCellTitle.size];
         
         [cell setNeedsLayout];
         [cell layoutIfNeeded];
@@ -211,34 +204,6 @@ static CGFloat const kBoldTextFontSize = 16;
     return @[self.title, user, role, @"", siteName, following, status];
 }
 
-- (NSMutableAttributedString *)boldReplacements:(NSArray *)replacements inString:(NSMutableAttributedString *)attributed
-{
-    if (!self.mutableString)
-    {
-        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kBoldTextFontSize];
-        CTFontRef boldFont = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
-        
-        for (NSInteger index = 0; index < replacements.count; index++)
-        {
-            NSString *replacement = replacements[index];
-            NSRange replacementRange = [attributed.string rangeOfString:replacement];
-            
-            if (replacementRange.length > 0 && boldFont)
-            {
-                [attributed addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)boldFont range:replacementRange];
-            }
-        }
-        
-        if (boldFont)
-        {
-            CFRelease(boldFont);
-        }
-        self.mutableString = attributed;
-    }
-    
-    return self.mutableString;
-}
-
 #pragma mark - private methods
 
 - (NSArray *)activityDocumentType
@@ -259,7 +224,7 @@ static CGFloat const kBoldTextFontSize = 16;
  */
 - (void)retrieveAvatar
 {
-    [self.personService retrievePersonWithIdentifier:self.activity.data[kActivityMemberUserName] completionBlock:^(AlfrescoPerson *person, NSError *error) {
+    [self.personService retrievePersonWithIdentifier:self.activity.createdBy completionBlock:^(AlfrescoPerson *person, NSError *error) {
         
         [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
             
@@ -267,9 +232,7 @@ static CGFloat const kBoldTextFontSize = 16;
             {
                 AlfrescoFileManager *shareManager = [AlfrescoFileManager sharedManager];
                 
-                UIImage *image = [UIImage imageWithData:[shareManager dataWithContentsOfURL:contentFile.fileUrl]];
-                
-                self.activityIcon = resizeImage(image, CGSizeMake(CONST_Cell_imageView_width, CONST_Cell_imageView_height));
+                self.activityIcon = [UIImage imageWithData:[shareManager dataWithContentsOfURL:contentFile.fileUrl]];
                 [self replaceActivityCellImageViewIconWithIcon:self.activityIcon];
             }
         }];
@@ -293,9 +256,9 @@ static CGFloat const kBoldTextFontSize = 16;
         }
         else
         {
-            NSString *memberUsername = self.activity.data[kActivityMemberUserName];
+            NSString *username = self.activity.createdBy;
             
-            if (memberUsername && ![memberUsername isEqualToString:@""])
+            if (username && ![username isEqualToString:@""])
             {
                 [self retrieveAvatar];
             }

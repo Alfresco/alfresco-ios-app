@@ -8,8 +8,6 @@
 
 #import "ActivityTableViewCell.h"
 
-static CGFloat const kSummaryTextFontSize = 16;
-
 @implementation ActivityTableViewCell
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -20,6 +18,13 @@ static CGFloat const kSummaryTextFontSize = 16;
         
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.avatar.layer.cornerRadius = self.avatar.frame.size.width / 2;
+    self.avatar.clipsToBounds = YES;
 }
 
 @end
