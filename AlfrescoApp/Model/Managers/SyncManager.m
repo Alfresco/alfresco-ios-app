@@ -729,6 +729,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
             }
             
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+            nodeStatus.isFavorite = YES;
+            
             if (node.isFolder)
             {
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
@@ -756,6 +759,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
+    SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+    nodeStatus.isFavorite = NO;
+    
     if (self.syncNodesInfo)
     {
         NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:[self selectedAccountIdentifier]];
@@ -771,6 +777,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         if (nodeInfo)
         {
             nodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:NO];
+            if (!nodeInfo.parentNode)
+            {
+                nodeStatus.status = SyncStatusRemoved;
+                [self.syncNodesStatus removeObjectForKey:node.identifier];
+            }
         }
         [CoreDataUtils saveContextForManagedObjectContext:[CoreDataUtils managedObjectContext]];
     }
@@ -1029,7 +1040,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         SyncNodeInfo *nodeInfo = [CoreDataUtils nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:[CoreDataUtils managedObjectContext]];
         if (nodeInfo)
         {
-            isInSyncList = YES;
+            if (nodeInfo.isTopLevelSyncNode.boolValue || nodeInfo.parentNode)
+            {
+                isInSyncList = YES;
+            }
         }
     }
     return isInSyncList;
