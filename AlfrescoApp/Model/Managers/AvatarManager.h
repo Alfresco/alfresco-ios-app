@@ -11,8 +11,7 @@
 @interface AvatarManager : NSObject
 
 + (instancetype)sharedManager;
-- (AlfrescoContentFile *)avatarForUsername:(NSString *)userIdentifier;
-- (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(AlfrescoContentFileCompletionBlock)completionBlock;
-- (void)clearAvatarCache;
+- (UIImage *)avatarForIdentifier:(NSString *)identifier;
+- (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock;
 
 @end

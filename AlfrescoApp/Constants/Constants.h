@@ -8,11 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
+
 extern NSInteger const kMaxItemsPerListingRetrieve;
 
 extern NSString * const kLicenseDictionaries;
 
 extern NSString * const kImageMappingPlist;
+
+extern NSString * const kRenditionImageDocLib;
+extern NSString * const kRenditionImageImagePreview;
 
 extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;

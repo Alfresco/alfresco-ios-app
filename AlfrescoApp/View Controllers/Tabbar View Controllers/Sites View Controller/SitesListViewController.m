@@ -39,7 +39,6 @@ static CGFloat kSearchCellHeight = 60.0f;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSIndexPath *expandedCellIndexPath;
 @property (nonatomic, assign) SiteListType selectedListType;
-@property (nonatomic, strong) __block NSMutableDictionary *thumbnails;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 
 @end
@@ -136,8 +135,6 @@ static CGFloat kSearchCellHeight = 60.0f;
          }];
     }
     
-    [self loadThumbnailMappings];
-    
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -194,33 +191,24 @@ static CGFloat kSearchCellHeight = 60.0f;
         searchCell.nodeNameLabel.text = documentNode.name;
         searchCell.nodeImageView.image = imageForType([documentNode.name pathExtension]);
         
-        // get unique identifier of the document - last modified date will be suffixed
-        NSString *uniqueIdentifier = uniqueFileNameForNode(documentNode);
+        UIImage *thumbnailImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
         
-        UIImage *thumbnailImage = [self thumbnailFromDiskForDocumentUniqueIdentifier:uniqueIdentifier];
-        
-        // file has been downloaded completely for this document
-        if ([self.thumbnails objectForKey:uniqueIdentifier] && thumbnailImage)
+        if (thumbnailImage)
         {
-            searchCell.nodeImageView.image = thumbnailImage;
+            [searchCell.nodeImageView setImage:thumbnailImage withFade:NO];
         }
-        else if (!thumbnailImage || ![[ThumbnailDownloader sharedManager] thumbnailHasBeenRequestedForDocument:documentNode])
+        else
         {
-            __weak SitesListViewController *weakSelf = self;
-            
-            // request the file to be downloaded, only if an existing request for this document hasn't been made.
             // set a placeholder image
             UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
             searchCell.nodeImageView.image = placeholderImage;
             
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode toFolderAtPath:[[AlfrescoFileManager sharedManager] thumbnailsDocLibFolderPath] renditionType:@"doclib" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-                if (!error)
+            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                if (image)
                 {
-                    [weakSelf.thumbnails setValue:savedFileName forKey:uniqueIdentifier];
-                    // update the image view
                     if (searchCell.nodeImageView.image == placeholderImage)
                     {
-                        [searchCell.nodeImageView setImageAtPath:savedFileName withFade:YES];
+                        [searchCell.nodeImageView setImage:image withFade:YES];
                     }
                 }
             }];
@@ -571,67 +559,6 @@ static CGFloat kSearchCellHeight = 60.0f;
     }];
 }
 
-- (UIImage *)thumbnailFromDiskForDocumentUniqueIdentifier:(NSString *)uniqueIdentifier
-{
-    UIImage *returnImage = nil;
-    
-    NSString *savedFileName = [self.thumbnails objectForKey:uniqueIdentifier];
-    if (savedFileName)
-    {
-        NSString *filePathToFile = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:savedFileName];
-        NSURL *fileURL = [NSURL fileURLWithPath:filePathToFile];
-        NSData *imageData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:fileURL];
-        
-        returnImage = [UIImage imageWithData:imageData];
-    }
-    return returnImage;
-}
-
-- (void)saveThumbnailMapping
-{
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [fileManager thumbnailsMappingFolderPath];
-    
-    if (![fileManager fileExistsAtPath:mappingsFolderPath])
-    {
-        NSError *folderCreationError = nil;
-        [fileManager createDirectoryAtPath:mappingsFolderPath withIntermediateDirectories:YES attributes:nil error:&folderCreationError];
-        
-        if (folderCreationError)
-        {
-            AlfrescoLogError([folderCreationError localizedDescription]);
-        }
-    }
-    
-    NSError *dictionarySavingError = nil;
-    NSString *completeFilePath = [mappingsFolderPath stringByAppendingPathComponent:kSitesPreviousSearchThumbnailMappingsFileName];
-    NSData *thumbnailDictionaryData = [NSKeyedArchiver archivedDataWithRootObject:self.thumbnails];
-    
-    [fileManager createFileAtPath:completeFilePath contents:thumbnailDictionaryData error:&dictionarySavingError];
-    
-    if (dictionarySavingError)
-    {
-        AlfrescoLogError([dictionarySavingError localizedDescription]);
-    }
-}
-
-- (void)loadThumbnailMappings
-{
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *mappingsFolderPath = [fileManager thumbnailsMappingFolderPath];
-    NSURL *completeFilePathURL = [NSURL fileURLWithPath:[mappingsFolderPath stringByAppendingPathComponent:kSitesPreviousSearchThumbnailMappingsFileName]];
-    NSData *thumbnailDictionaryData = [fileManager dataWithContentsOfURL:completeFilePathURL];
-    
-    if (thumbnailDictionaryData)
-    {
-        self.thumbnails = (NSMutableDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:thumbnailDictionaryData];
-    }
-    else
-    {
-        self.thumbnails = [NSMutableDictionary dictionary];
-    }
-}
-
 - (void)showSearchProgressHUD
 {
     self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
@@ -698,7 +625,6 @@ static CGFloat kSearchCellHeight = 60.0f;
     CGRect tableViewFrame = self.tableView.frame;
     tableViewFrame.origin.y += kSegmentControllerHeight;
     self.tableView.frame = tableViewFrame;
-    [self saveThumbnailMapping];
 }
 
 #pragma mark - UIRefreshControl Functions

@@ -35,38 +35,6 @@ static NSString * const kDownloadsContentFolder = @"content";
     return documentPreviewDocumentFolderPathString;
 }
 
-- (NSString *)thumbnailsFolderPath
-{
-    NSString *thumbnailsFolderPathString = [[self temporaryDirectory] stringByAppendingPathComponent:kThumbnailsFolder];
-    [self createFolderAtPathIfItDoesNotExist:thumbnailsFolderPathString];
-    
-    return thumbnailsFolderPathString;
-}
-
-- (NSString *)thumbnailsMappingFolderPath
-{
-    NSString *thumbnailsMappingFolderPathString = [[self thumbnailsFolderPath] stringByAppendingPathComponent:kThumbnailsMappingFolder];
-    [self createFolderAtPathIfItDoesNotExist:thumbnailsMappingFolderPathString];
-    
-    return thumbnailsMappingFolderPathString;
-}
-
-- (NSString *)thumbnailsDocLibFolderPath
-{
-    NSString *thumbnailsDocLibFolderPathString = [[self thumbnailsFolderPath] stringByAppendingPathComponent:kThumbnailDocLibFolder];
-    [self createFolderAtPathIfItDoesNotExist:thumbnailsDocLibFolderPathString];
-    
-    return thumbnailsDocLibFolderPathString;
-}
-
-- (NSString *)thumbnailsImgPreviewFolderPath
-{
-    NSString *documentPreviewImageFolderPathString = [[self thumbnailsFolderPath] stringByAppendingPathComponent:kThumbnailImagePreviewFolder];
-    [self createFolderAtPathIfItDoesNotExist:documentPreviewImageFolderPathString];
-    
-    return documentPreviewImageFolderPathString;
-}
-
 - (NSString *)syncFolderPath
 {
     NSString *syncFolderPathString = [[self documentsDirectory] stringByAppendingPathComponent:kSyncFolder];

@@ -75,7 +75,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.documentLocation = documentLocation;
         self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
-        self.previewImageFolderURLString = [[AlfrescoFileManager sharedManager] thumbnailsImgPreviewFolderPath];
         self.pagingControllers = [NSMutableArray array];
         self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:document session:session controller:self];
     }
@@ -105,14 +104,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     // setup the paging view
     [self setupPagingScrollView];
     
-    // setup the preview image
-    NSString *uniqueIdentifier = uniqueFileNameForNode(self.document);
-    NSString *filePath = [[self.previewImageFolderURLString stringByAppendingPathComponent:uniqueIdentifier] stringByAppendingPathExtension:@"png"];
+    UIImage *thumbnailImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];
     
-    if ([[AlfrescoFileManager sharedManager] fileExistsAtPath:filePath])
+    if (thumbnailImage)
     {
-        UIImage *documentPreviewImage = [UIImage imageWithContentsOfFile:filePath];
-        self.documentThumbnail.image = documentPreviewImage;
+        [self.documentThumbnail setImage:thumbnailImage withFade:NO];
     }
     else
     {
@@ -120,10 +116,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.documentThumbnail.image = placeholderImage;
         
         __weak typeof(self) weakSelf = self;
-        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document toFolderAtPath:self.previewImageFolderURLString renditionType:@"imgpreview" session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-            if (savedFileName)
+        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document renditionType:kRenditionImageImagePreview session:self.session completionBlock:^(UIImage *image, NSError *error) {
+            if (image)
             {
-                [weakSelf.documentThumbnail setImageAtPath:savedFileName withFade:YES];
+                [weakSelf.documentThumbnail setImage:image withFade:YES];
             }
         }];
     }
