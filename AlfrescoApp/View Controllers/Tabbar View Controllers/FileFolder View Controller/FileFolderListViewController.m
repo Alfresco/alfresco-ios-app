@@ -1071,7 +1071,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         else
         {
-            [uploadActionSheet showFromTabBar:self.tabBarController.tabBar];
+            [uploadActionSheet showInView:self.view];
         }
         
         [self.actionSheetSender setEnabled:NO];
@@ -1191,7 +1191,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
             [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         }];
     }
@@ -1233,7 +1233,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
             [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         }];
     }
