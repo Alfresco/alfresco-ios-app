@@ -17,6 +17,8 @@ static CGFloat const FavoriteIconRightSpace = 8.0f;
 static CGFloat const SyncIconWidth = 14.0f;
 static CGFloat const SyncIconRightSpace = 8.0f;
 
+static CGFloat const kStatusIconsAnimationDuration = 0.2f;
+
 @interface AlfrescoNodeCell()
 
 @property (nonatomic, strong) AlfrescoNode *node;
@@ -64,7 +66,7 @@ static CGFloat const SyncIconRightSpace = 8.0f;
                                                object:nil];
 }
 
-- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite
+- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate
 {
     self.isSyncNode = isSyncNode;
     self.isFavorite = isFavorite;
@@ -74,33 +76,48 @@ static CGFloat const SyncIconRightSpace = 8.0f;
     self.favoriteStatusImageView.image = nil;
     self.favoriteStatusImageView.highlightedImage = nil;
     
-    if (self.isFavorite)
-    {
-        self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
-        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
+    void (^updateStatusIcons)(void) = ^{
         
-        self.favoriteIconWidthConstraint.constant = FavoriteIconWidth;
-        self.favoriteIconRightSpaceConstraint.constant = FavoriteIconRightSpace;
-        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
-    }
-    else
-    {
-        self.favoriteIconWidthConstraint.constant = 0;
-        self.favoriteIconRightSpaceConstraint.constant = 0;
-        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
-    }
+        if (self.isFavorite)
+        {
+            self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
+            self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
+            
+            self.favoriteIconWidthConstraint.constant = FavoriteIconWidth;
+            self.favoriteIconRightSpaceConstraint.constant = FavoriteIconRightSpace;
+            self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+        }
+        else
+        {
+            self.favoriteIconWidthConstraint.constant = 0;
+            self.favoriteIconRightSpaceConstraint.constant = 0;
+            self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+        }
+        
+        if (self.isSyncNode)
+        {
+            self.syncIconWidthConstraint.constant = SyncIconWidth;
+            self.syncIconRightSpaceConstraint.constant = SyncIconRightSpace;
+            self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+        }
+        else
+        {
+            self.syncIconWidthConstraint.constant = 0;
+            self.syncIconRightSpaceConstraint.constant = 0;
+            self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+        }
+        [self layoutIfNeeded];
+    };
     
-    if (self.isSyncNode)
+    if (animate)
     {
-        self.syncIconWidthConstraint.constant = SyncIconWidth;
-        self.syncIconRightSpaceConstraint.constant = SyncIconRightSpace;
-        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+        [UIView animateWithDuration:kStatusIconsAnimationDuration animations:^{
+            updateStatusIcons();
+        }];
     }
     else
     {
-        self.syncIconWidthConstraint.constant = 0;
-        self.syncIconRightSpaceConstraint.constant = 0;
-        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+        updateStatusIcons();
     }
     
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
@@ -119,7 +136,12 @@ static CGFloat const SyncIconRightSpace = 8.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isSyncNode)
             {
-                [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite];
+                [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite animate:YES];
+            }
+            if (nodeStatus.status == SyncStatusRemoved)
+            {
+                self.nodeStatus = nil;
+                [self updateStatusIconsIsSyncNode:NO isFavoriteNode:nodeStatus.isFavorite animate:YES];
             }
             [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
         });
@@ -141,7 +163,7 @@ static CGFloat const SyncIconRightSpace = 8.0f;
     }
     else if ([propertyChanged isEqualToString:kSyncIsFavorite])
     {
-        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:nodeStatus.isFavorite];
+        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:nodeStatus.isFavorite animate:YES];
     }
     
     [self updateStatusImageForSyncState:nodeStatus];

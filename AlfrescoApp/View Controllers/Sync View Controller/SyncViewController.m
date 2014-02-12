@@ -136,16 +136,25 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 
 - (void)didAddNodeToFavourites:(NSNotification *)notification
 {
-    AlfrescoNode *nodeAdded = (AlfrescoNode *)notification.object;
-    [self addAlfrescoNodes:@[nodeAdded] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if (!self.parentNode)
+    {
+        AlfrescoNode *nodeAdded = (AlfrescoNode *)notification.object;
+        [self addAlfrescoNodes:@[nodeAdded] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 - (void)didRemoveNodeFromFavourites:(NSNotification *)notification
 {
-    AlfrescoNode *nodeRemoved = (AlfrescoNode *)notification.object;
-    NSIndexPath *index = [self indexPathForNodeWithIdentifier:nodeRemoved.identifier inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
-    [self.tableViewData removeObjectAtIndex:index.row];
-    [self.tableView deleteRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if (!self.parentNode)
+    {
+        AlfrescoNode *nodeRemoved = (AlfrescoNode *)notification.object;
+        NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeRemoved.identifier inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
+        if (indexPath)
+        {
+            [self.tableViewData removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
 }
 
 - (void)documentDeleted:(NSNotification *)notifictation
@@ -197,7 +206,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
-    [nodeCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite];
+    [nodeCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite animate:NO];
     
     if (node.isFolder)
     {
