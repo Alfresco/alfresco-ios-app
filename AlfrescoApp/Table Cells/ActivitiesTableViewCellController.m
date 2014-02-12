@@ -14,6 +14,7 @@ NSString * const kActivityCellIdentifier = @"ActivityCell";
 
 NSString * const kActivityTitle = @"title";
 NSString * const kActivityNodeRef = @"nodeRef";
+NSString * const kActivityObjectId = @"objectId";
 NSString * const kActivityFirstName = @"firstName";
 NSString * const kActivityLastName = @"lastName";
 NSString * const kActivityUserFirstName = @"userFirstName";
@@ -23,14 +24,8 @@ NSString * const kActivityRole = @"role";
 NSString * const kActivityStatus = @"status";
 NSString * const kActivityPage = @"page";
 
-static CGFloat const kBoldTextFontSize = 17;
-
-#define CONST_Cell_height 44.0f
-#define CONST_textLabelFontSize 17
-#define CONST_detailLabelFontSize 14
-#define CONST_Cell_imageView_width 32.0f
-#define CONST_Cell_imageView_height 32.0f
-#define CONST_Cell_titleMaxWidth 320.0f
+static CGFloat const kDefaultCellHeight = 44.0f;
+static CGFloat const kFontSize = 17.0f;
 
 @interface ActivitiesTableViewCellController ()
 
@@ -38,12 +33,12 @@ static CGFloat const kBoldTextFontSize = 17;
 @property (nonatomic, strong) ActivityTableViewCell *activityCell;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *cellTitle;
+@property (nonatomic, strong) NSAttributedString *attributedCellTitle;
 @property (nonatomic, strong) NSString *cellSubTitle;
 @property (nonatomic, strong) NSString *replacedActivityText;
 @property (nonatomic, assign) UITableViewCellAccessoryType accesoryType;
 @property (nonatomic, strong) NSMutableAttributedString *mutableString;
 @property (nonatomic, strong) UIImage *activityIcon;
-@property (nonatomic, assign) CGFloat cellHeight;
 
 @end
 
@@ -55,19 +50,9 @@ static CGFloat const kBoldTextFontSize = 17;
     
     if (self)
     {
-        self.personService = [[AlfrescoPersonService alloc] initWithSession:session];        
+        self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
     }
     return self;
-}
-
-- (UIFont *)cellSubTitleFont
-{
-	return [UIFont italicSystemFontOfSize:CONST_detailLabelFontSize];
-}
-
-- (UIFont *)cellTitleFont
-{
-	return [UIFont boldSystemFontOfSize:CONST_textLabelFontSize];
 }
 
 - (void)setActivity:(AlfrescoActivityEntry *)activity
@@ -78,35 +63,27 @@ static CGFloat const kBoldTextFontSize = 17;
     self.cellSubTitle = [NSString stringWithFormat:@"%@", self.activity.createdAt];
 }
 
-- (ActivityTableViewCell *)createActivityCell
-{
-    ActivityTableViewCell *cell = [[ActivityTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kActivityCellIdentifier];
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.font = [self cellTitleFont];
-    
-    cell.detailTextLabel.numberOfLines = 0;
-    cell.detailTextLabel.font = [self cellSubTitleFont];
-    
-    return cell;
-}
-
 - (void)populateActivityCell:(ActivityTableViewCell *)cell
 {
-    cell.textLabel.text = self.cellTitle;
-    cell.textLabel.highlightedTextColor = [UIColor whiteColor];
-	cell.detailTextLabel.text = relativeDateFromDate(self.activity.createdAt);
-    cell.detailTextLabel.highlightedTextColor = [UIColor whiteColor];
+    if (!self.attributedCellTitle)
+    {
+        self.attributedCellTitle = [self applyBoldAttributesToStrings:[self textReplacements] inText:self.cellTitle];
+    }
+    cell.summaryLabel.attributedText = self.attributedCellTitle;
+    cell.detailsLabel.text = relativeDateFromDate(self.activity.createdAt);
+    
+    self.isActivityTypeDocument = [[self activityDocumentType] containsObject:self.activity.type];
+    self.isActivityTypeFolder = [self.activity.type hasPrefix:@"org.alfresco.documentlibrary.folder"];
     
     [self replaceActivityCellImageViewIconWithIcon:self.activityIcon];
     
-    cell.summaryLabel.highlightedTextColor = [UIColor whiteColor];
+    BOOL isFileOrFolder = (self.isActivityTypeDocument || self.isActivityTypeFolder);
+    BOOL nodeRefExists = (self.activity.data[kActivityNodeRef] != nil) || (self.activity.data[kActivityObjectId] != nil);
+    BOOL isDeleted = [self.activity.type hasSuffix:@"-deleted"];
     
-    if (self.isActivityTypeDocument && self.activity.data[kActivityNodeRef] != nil && ![self.activity.type hasSuffix:@"-deleted"])
+    if (isFileOrFolder && nodeRefExists && !isDeleted)
     {
-        UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-        [infoButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-        
-        cell.accessoryView = infoButton;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     }
     else
@@ -117,30 +94,32 @@ static CGFloat const kBoldTextFontSize = 17;
     }
 }
 
-- (UITableViewCell *)createActivityTableViewCellInTableView:(UITableView *)tableView
+- (ActivityTableViewCell *)createActivityTableViewCellInTableView:(UITableView *)tableView
 {
     ActivityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kActivityCellIdentifier];
-	if (cell == nil)
-	{
-		cell = [self createActivityCell];
-	}
     
     self.activityCell = cell;
-    
-    [cell.summaryLabel setText:self.cellTitle afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString)
-    {
-        mutableAttributedString = [self boldReplacements:[self textReplacements] inString:mutableAttributedString];
-        return mutableAttributedString;
-    }];
-    
-    self.isActivityTypeDocument = [[self activityDocumentType] containsObject:self.activity.type] && [self.activity.data[kActivityPage] hasPrefix:@"document-details"];
-    
     [self populateActivityCell:cell];
     
     return cell;
 }
 
-- (UITableViewCell *)createActivityErrorTableViewCellInTableView:(UITableView *)tableView 
+- (NSAttributedString *)applyBoldAttributesToStrings:(NSArray *)strings inText:(NSString *)text
+{
+    UIFont *normalFont = [UIFont systemFontOfSize:kFontSize];
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:kFontSize];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:normalFont}];
+    
+    for (NSString *string in strings)
+    {
+        NSRange rangeOfString = [text rangeOfString:string];
+        [attributedText setAttributes:@{NSFontAttributeName:boldFont} range:rangeOfString];
+    }
+    return attributedText;
+}
+
+- (UITableViewCell *)createActivityErrorTableViewCellInTableView:(UITableView *)tableView
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ErrorCell"];
     
@@ -150,18 +129,23 @@ static CGFloat const kBoldTextFontSize = 17;
     return cell;
 }
 
-- (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+- (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withSections:(NSArray *)sections
 {
-    return [self heightForCellWithMaxWidth:CONST_Cell_titleMaxWidth];
-}
-
-- (void)accessoryButtonTapped:(UIControl *)button withEvent:(UIEvent *)event
-{
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:button] anyObject] locationInView:self.tableView]];
-    if (indexPath != nil)
+    CGFloat height = kDefaultCellHeight;
+    if (sections)
     {
-        [self.tableView.delegate tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+        ActivityTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kActivityCellIdentifier];
+        [self populateActivityCell:cell];
+        
+        [cell.summaryLabel sizeThatFits:self.attributedCellTitle.size];
+        
+        [cell setNeedsLayout];
+        [cell layoutIfNeeded];
+        
+        CGSize size = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
+        height = size.height;
     }
+    return height;
 }
 
 - (NSString *)activityText
@@ -211,34 +195,6 @@ static CGFloat const kBoldTextFontSize = 17;
     return @[self.title, user, role, @"", siteName, following, status];
 }
 
-- (NSMutableAttributedString *)boldReplacements:(NSArray *)replacements inString:(NSMutableAttributedString *)attributed
-{
-    if (!self.mutableString)
-    {
-        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kBoldTextFontSize];
-        CTFontRef boldFont = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
-        
-        for (NSInteger index = 0; index < replacements.count; index++)
-        {
-            NSString *replacement = replacements[index];
-            NSRange replacementRange = [attributed.string rangeOfString:replacement];
-            
-            if (replacementRange.length > 0 && boldFont)
-            {
-                [attributed addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)boldFont range:replacementRange];
-            }
-        }
-        
-        if (boldFont)
-        {
-            CFRelease(boldFont);
-        }
-        self.mutableString = attributed;
-    }
-    
-    return self.mutableString;
-}
-
 #pragma mark - private methods
 
 - (NSArray *)activityDocumentType
@@ -254,60 +210,12 @@ static CGFloat const kBoldTextFontSize = 17;
              ];
 }
 
-- (CGFloat)heightForCellWithMaxWidth:(CGFloat)maxWidth
-{
-    if (self.cellHeight < CONST_Cell_height)
-    {
-        CGFloat maxHeight = 4000;
-        
-        //Remove padding, etc
-        maxWidth -= 80.0f;
-        
-        CGSize titleSize    = {0.0f, 0.0f};
-        CGSize subtitleSize = {0.0f, 0.0f};
-        
-        if (self.accesoryType != UITableViewCellAccessoryNone)
-        {
-            maxWidth -= 20.0f;
-        }
-        
-        if (self.cellTitle && ![self.cellTitle isEqualToString:@""])
-        {
-            CGRect rect = [self.cellTitle boundingRectWithSize:CGSizeMake(maxWidth, maxHeight)
-                                                       options:NSStringDrawingTruncatesLastVisibleLine
-                                                    attributes:@{NSFontAttributeName : [self cellTitleFont]}
-                                                       context:nil];
-            titleSize = rect.size;
-        }
-        
-        if (self.cellSubTitle && ![self.cellSubTitle isEqualToString:@""])
-        {
-            CGRect rect = [self.cellTitle boundingRectWithSize:CGSizeMake(maxWidth, maxHeight)
-                                                       options:NSStringDrawingTruncatesLastVisibleLine
-                                                    attributes:@{NSFontAttributeName : [self cellSubTitleFont]}
-                                                       context:nil];
-            subtitleSize = rect.size;
-        }
-        
-        int height = 25 + titleSize.height + subtitleSize.height;
-        CGFloat myCellHeight = (height < CONST_Cell_height ? CONST_Cell_height : height);
-
-        self.cellHeight = myCellHeight;
-        
-        return myCellHeight;
-    }
-    else
-    {
-        return self.cellHeight;
-    }
-}
-
 /*
  * Retrieve and Set Avatar For Person
  */
 - (void)retrieveAvatar
 {
-    [self.personService retrievePersonWithIdentifier:self.activity.data[kActivityMemberUserName] completionBlock:^(AlfrescoPerson *person, NSError *error) {
+    [self.personService retrievePersonWithIdentifier:self.activity.createdBy completionBlock:^(AlfrescoPerson *person, NSError *error) {
         
         [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
             
@@ -315,9 +223,7 @@ static CGFloat const kBoldTextFontSize = 17;
             {
                 AlfrescoFileManager *shareManager = [AlfrescoFileManager sharedManager];
                 
-                UIImage *image = [UIImage imageWithData:[shareManager dataWithContentsOfURL:contentFile.fileUrl]];
-                
-                self.activityIcon = resizeImage(image, CGSizeMake(CONST_Cell_imageView_width, CONST_Cell_imageView_height));
+                self.activityIcon = [UIImage imageWithData:[shareManager dataWithContentsOfURL:contentFile.fileUrl]];
                 [self replaceActivityCellImageViewIconWithIcon:self.activityIcon];
             }
         }];
@@ -328,22 +234,26 @@ static CGFloat const kBoldTextFontSize = 17;
 {
     if (icon)
     {
-        self.activityCell.imageView.image = icon;
+        self.activityCell.avatar.image = icon;
     }
     else
     {
-        self.activityCell.imageView.image = [UIImage imageNamed:@"avatar.png"];
+        self.activityCell.avatar.image = [UIImage imageNamed:@"avatar.png"];
         
         if (self.isActivityTypeDocument)
         {
             self.activityIcon = imageForType([self.activity.data[kActivityTitle] pathExtension]);
-            self.activityCell.imageView.image = self.activityIcon;
+            self.activityCell.avatar.image = self.activityIcon;
+        }
+        else if (self.isActivityTypeFolder)
+        {
+            self.activityIcon = [UIImage imageNamed:@"folder"];
         }
         else
         {
-            NSString *memberUsername = self.activity.data[kActivityMemberUserName];
+            NSString *username = self.activity.createdBy;
             
-            if (memberUsername && ![memberUsername isEqualToString:@""])
+            if (username && ![username isEqualToString:@""])
             {
                 [self retrieveAvatar];
             }

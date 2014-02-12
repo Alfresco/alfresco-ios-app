@@ -63,6 +63,7 @@
 		08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C5C1823B62E006D38F5 /* TextFieldCell.xib */; };
 		08948C601823C24D006D38F5 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C5F1823C24D006D38F5 /* SwitchCell.m */; };
 		08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C611823C26E006D38F5 /* SwitchCell.xib */; };
+		08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
@@ -521,6 +522,7 @@
 		08948C5F1823C24D006D38F5 /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		08948C611823C26E006D38F5 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
+		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
@@ -1841,6 +1843,7 @@
 				73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */,
 				73B957E417A6750E0099FB84 /* ActivityTableViewCell.h */,
 				73B957E517A6750E0099FB84 /* ActivityTableViewCell.m */,
+				08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */,
 				088228651843B180006E58A4 /* AttributedLabelCell.h */,
 				088228661843B180006E58A4 /* AttributedLabelCell.m */,
 				088228681843B1B7006E58A4 /* AttributedLabelCell.xib */,
@@ -2561,6 +2564,7 @@
 				73881FE4188FF9680052C75F /* actionsheet-favourited@2x.png in Resources */,
 				73881FD4188FF6B00052C75F /* actionsheet-liked.png in Resources */,
 				7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */,
+				08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */,
 				0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73B95A6917A68B7E0099FB84 /* folder.png in Resources */,
