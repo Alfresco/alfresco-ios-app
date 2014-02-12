@@ -181,7 +181,7 @@
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
 		7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7384BDF617F3310700C6A54F /* SettingToggleCell.xib */; };
-		7384BDF917F3377A00C6A54F /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7384BDF817F3377A00C6A54F /* Settings.plist */; };
+		7384BDF917F3377A00C6A54F /* UserPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7384BDF817F3377A00C6A54F /* UserPreferences.plist */; };
 		7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDFC17F3510E00C6A54F /* SettingCell.m */; };
 		7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDFF17F3556900C6A54F /* SettingTextFieldCell.m */; };
 		7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7384BE0117F3558900C6A54F /* SettingTextFieldCell.xib */; };
@@ -682,7 +682,7 @@
 		7384BDF217F330C600C6A54F /* SettingToggleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingToggleCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.h"; sourceTree = SOURCE_ROOT; };
 		7384BDF317F330C600C6A54F /* SettingToggleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingToggleCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.m"; sourceTree = SOURCE_ROOT; };
 		7384BDF617F3310700C6A54F /* SettingToggleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingToggleCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.xib"; sourceTree = SOURCE_ROOT; };
-		7384BDF817F3377A00C6A54F /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
+		7384BDF817F3377A00C6A54F /* UserPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserPreferences.plist; sourceTree = "<group>"; };
 		7384BDFA17F3509900C6A54F /* SettingsCellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsCellProtocol.h; path = AlfrescoApp/Protocols/SettingsCellProtocol.h; sourceTree = SOURCE_ROOT; };
 		7384BDFB17F3510E00C6A54F /* SettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingCell.h"; sourceTree = SOURCE_ROOT; };
 		7384BDFC17F3510E00C6A54F /* SettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingCell.m"; sourceTree = SOURCE_ROOT; };
@@ -1546,7 +1546,7 @@
 				73B95B0B17A6A83A0099FB84 /* ImageMapping.plist */,
 				73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */,
 				73B95B1817A6AE010099FB84 /* InfoPlist.strings */,
-				7384BDF817F3377A00C6A54F /* Settings.plist */,
+				7384BDF817F3377A00C6A54F /* UserPreferences.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -2615,7 +2615,7 @@
 				73A26A8A18364641006C1D81 /* sites-main-menu.png in Resources */,
 				73B95A7E17A68B7E0099FB84 /* mime_xls@2x.png in Resources */,
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
-				7384BDF917F3377A00C6A54F /* Settings.plist in Resources */,
+				7384BDF917F3377A00C6A54F /* UserPreferences.plist in Resources */,
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
 				73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */,
 				73B95A7F17A68B7E0099FB84 /* mime_xml.png in Resources */,
