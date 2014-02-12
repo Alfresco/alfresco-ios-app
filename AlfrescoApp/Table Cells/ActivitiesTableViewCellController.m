@@ -70,10 +70,7 @@ static CGFloat const kFontSize = 17.0f;
         self.attributedCellTitle = [self applyBoldAttributesToStrings:[self textReplacements] inText:self.cellTitle];
     }
     cell.summaryLabel.attributedText = self.attributedCellTitle;
-    cell.summaryLabel.highlightedTextColor = [UIColor whiteColor];
-    
     cell.detailsLabel.text = relativeDateFromDate(self.activity.createdAt);
-    cell.detailsLabel.highlightedTextColor = [UIColor whiteColor];
     
     self.isActivityTypeDocument = [[self activityDocumentType] containsObject:self.activity.type];
     self.isActivityTypeFolder = [self.activity.type hasPrefix:@"org.alfresco.documentlibrary.folder"];
@@ -82,9 +79,9 @@ static CGFloat const kFontSize = 17.0f;
     
     BOOL isFileOrFolder = (self.isActivityTypeDocument || self.isActivityTypeFolder);
     BOOL nodeRefExists = (self.activity.data[kActivityNodeRef] != nil) || (self.activity.data[kActivityObjectId] != nil);
-    BOOL isNotDeleted = ![self.activity.type hasSuffix:@"-deleted"];
+    BOOL isDeleted = [self.activity.type hasSuffix:@"-deleted"];
     
-    if (isFileOrFolder && nodeRefExists && isNotDeleted)
+    if (isFileOrFolder && nodeRefExists && !isDeleted)
     {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -110,13 +107,12 @@ static CGFloat const kFontSize = 17.0f;
 - (NSAttributedString *)applyBoldAttributesToStrings:(NSArray *)strings inText:(NSString *)text
 {
     UIFont *normalFont = [UIFont systemFontOfSize:kFontSize];
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:kFontSize];
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:normalFont}];
     
     for (NSString *string in strings)
     {
-        UIFont *boldFont = [UIFont boldSystemFontOfSize:kFontSize];
-        
         NSRange rangeOfString = [text rangeOfString:string];
         [attributedText setAttributes:@{NSFontAttributeName:boldFont} range:rangeOfString];
     }
