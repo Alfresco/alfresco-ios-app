@@ -19,7 +19,7 @@
 #import "UIAlertView+ALF.h"
 #import "LocationManager.h"
 #import <ImageIO/ImageIO.h>
-#import "ThumbnailManager.h"
+#import "ThumbnailDownloader.h"
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
@@ -194,7 +194,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)dealloc
 {
-    [[ThumbnailManager sharedManager] saveThumbnailMappingForFolder:self.displayFolder];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -818,10 +817,23 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     else
     {
         AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-        UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForNode:documentNode withParentNode:self.displayFolder session:self.session completionBlock:^(NSString *savedFileName, NSError *error) {
-            [cell.image setImageAtPath:savedFileName withFade:YES];
-        }];
-        cell.image.image = thumbnail;
+        
+        UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+        if (thumbnail)
+        {
+            [cell.image setImage:thumbnail withFade:NO];
+        }
+        else
+        {
+            UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
+            cell.image.image = placeholderImage;
+            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                if (image)
+                {
+                    [cell.image setImage:image withFade:YES];
+                }
+            }];
+        }
     }
     
     return cell;

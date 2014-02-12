@@ -12,7 +12,7 @@ static NSManagedObjectContext *syncManagedObjectContext;
 static NSManagedObjectModel *syncManagedObjectModel;
 static NSPersistentStoreCoordinator *syncPersistenceStoreCoordinator;
 
-static NSString * const kAlfrescoAppDataStore = @"AlfrescoSync.sqlite";
+static NSString * const kAlfrescoAppDataStore = @".AlfrescoSync.sqlite";
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoSync";
 
 NSString * const kSyncAccountManagedObject = @"SyncAccount";
@@ -61,6 +61,11 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 - (SyncNodeInfo *)nodeInfoForObjectWithNodeId:(NSString *)nodeId inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@ && syncNodeInfoId == %@", accountId, nodeId];
     NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
     if (nodes.count > 0)
@@ -72,6 +77,11 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 - (SyncAccount *)accountObjectForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
     NSArray *nodes = [self retrieveRecordsForTable:kSyncAccountManagedObject withPredicate:[NSPredicate predicateWithFormat:@"accountId == %@", accountId] inManagedObjectContext:managedContext];
     if (nodes.count > 0)
     {
@@ -82,6 +92,11 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 - (SyncError *)errorObjectForNodeWithId:(NSString *)nodeId inAccountWithId:(NSString *)accountId ifNotExistsCreateNew:(BOOL)createNew inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
     SyncError *syncError = nil;
     
     if (nodeId)
@@ -100,6 +115,11 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 - (NSArray *)topLevelSyncNodesInfoForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@ && isTopLevelSyncNode == YES", accountId];
     NSSortDescriptor *titleSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor] inManagedObjectContext:managedContext];
@@ -108,6 +128,11 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 - (NSArray *)syncNodesInfoForFolderWithId:(NSString *)folderId inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@ && parentNode.syncNodeInfoId == %@", accountId, folderId];
     NSSortDescriptor *titleSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate sortDescriptors:@[titleSortDescriptor] inManagedObjectContext:managedContext];
@@ -116,6 +141,11 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 - (BOOL)isTopLevelSyncNode:(NSString *)nodeId inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@ && syncNodeInfoId == %@ && isTopLevelSyncNode == YES", accountId, nodeId];
     NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
     return nodes.count > 0;

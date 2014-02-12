@@ -135,14 +135,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSArray *nodesInfo = nil;
         if (folder)
         {
-            nodesInfo = [self.syncCoreDataHelper syncNodesInfoForFolderWithId:folder.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            nodesInfo = [self.syncCoreDataHelper syncNodesInfoForFolderWithId:folder.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
         }
         else
         {
-            SyncAccount *syncAccount = [self.syncCoreDataHelper accountObjectForAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            SyncAccount *syncAccount = [self.syncCoreDataHelper accountObjectForAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
             if (syncAccount)
             {
-                nodesInfo = [self.syncCoreDataHelper topLevelSyncNodesInfoForAccountWithId:syncAccount.accountId inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                nodesInfo = [self.syncCoreDataHelper topLevelSyncNodesInfoForAccountWithId:syncAccount.accountId inManagedObjectContext:nil];
             }
         }
         
@@ -175,7 +175,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     
     if (!permissions)
     {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
         
         if (nodeInfo.permissions)
         {
@@ -187,7 +187,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
 {
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
     return nodeInfo.syncContentPath;
 }
 
@@ -200,7 +200,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
 {
-    SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:node.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:NO inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:node.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:NO inManagedObjectContext:nil];
     return syncError.errorDescription;
 }
 
@@ -364,7 +364,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSMutableArray *nodesToDownload = [[NSMutableArray alloc] init];
         
         NSMutableDictionary *infoToBePreservedInNewNodes = [NSMutableDictionary dictionary];
-        NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createPrivateManagedObjectContext];
+        NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
         
         for (int i=0; i < nodes.count; i++)
         {
@@ -800,7 +800,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
         if (nodeInfo)
         {
             nodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:NO];
@@ -888,7 +888,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     SyncHelper *syncHelper = [SyncHelper sharedHelper];
     NSString *syncNameForNode = [syncHelper syncNameForNode:document inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
     SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:document.identifier inSyncNodesStatus:self.syncNodesStatus];
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
     nodeStatus.status = SyncStatusLoading;
     
     NSString *destinationPath = [[syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode];
@@ -905,7 +905,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeInfo.syncContentPath = destinationPath;
             nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
             
-            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:NO inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:NO inManagedObjectContext:nil];
             [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
         }
         else
@@ -913,7 +913,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeStatus.status = SyncStatusFailed;
             nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
             
-            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:YES inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:YES inManagedObjectContext:nil];
             syncError.errorCode = [NSNumber numberWithInt:error.code];
             syncError.errorDescription = [error localizedDescription];
             
@@ -959,7 +959,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSString *syncNameForNode = [syncHelper syncNameForNode:document inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
     NSString *nodeExtension = [document.name pathExtension];
     SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:document.identifier inSyncNodesStatus:self.syncNodesStatus];
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode];
     NSString *mimeType = @"application/octet-stream";
@@ -989,7 +989,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier
                                                                                                                            inAccountWithId:[self selectedAccountIdentifier]
                                                                                                                       ifNotExistsCreateNew:NO
-                                                                                                                    inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                                                                                                                    inManagedObjectContext:nil];
                                                                             [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
                                                                         }
                                                                         else
@@ -999,7 +999,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier
                                                                                                                            inAccountWithId:[self selectedAccountIdentifier]
                                                                                                                       ifNotExistsCreateNew:YES
-                                                                                                                    inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                                                                                                                    inManagedObjectContext:nil];
                                                                             syncError.errorCode = [NSNumber numberWithInt:error.code];
                                                                             syncError.errorDescription = [error localizedDescription];
                                                                             
@@ -1059,7 +1059,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
         if (nodeInfo)
         {
             isInSyncList = YES;
@@ -1137,7 +1137,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     if (updateFolderSizes)
     {
-        NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createPrivateManagedObjectContext];
+        NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
         NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"isFolder == NO && account.accountId == %@", [self selectedAccountIdentifier]];
         NSArray *documentsInfo = [self.syncCoreDataHelper retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:privateManagedObjectContext];
         
@@ -1167,7 +1167,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)statusChanged:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
-    NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createPrivateManagedObjectContext];
+    NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
     
     SyncNodeStatus *nodeStatus = notification.object;
     NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];

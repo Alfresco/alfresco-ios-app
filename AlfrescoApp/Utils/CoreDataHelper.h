@@ -20,6 +20,6 @@
 - (void)deleteAllRecordsInTable:(NSString *)table inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (void)saveContextForManagedObjectContext:(NSManagedObjectContext *)managedContext;
-- (NSManagedObjectContext *)createPrivateManagedObjectContext;
+- (NSManagedObjectContext *)createChildManagedObjectContext;
 
 @end

@@ -11,12 +11,6 @@
 // preview documents
 - (NSString *)documentPreviewDocumentFolderPath;
 
-// thumbnails
-- (NSString *)thumbnailsFolderPath;
-- (NSString *)thumbnailsMappingFolderPath;
-- (NSString *)thumbnailsDocLibFolderPath;
-- (NSString *)thumbnailsImgPreviewFolderPath;
-
 // sync
 - (NSString *)syncFolderPath;
 

@@ -48,7 +48,7 @@
 	return records;
 }
 
-- (NSManagedObjectContext *)createPrivateManagedObjectContext
+- (NSManagedObjectContext *)createChildManagedObjectContext
 {
     NSManagedObjectContext *privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     privateContext.parentContext = self.managedObjectContext;
