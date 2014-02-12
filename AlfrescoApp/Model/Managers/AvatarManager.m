@@ -7,6 +7,7 @@
 //
 
 #import "AvatarManager.h"
+#import "CoreDataCacheHelper.h"
 
 @interface AvatarManager ()
 
@@ -14,6 +15,7 @@
 @property (nonatomic, strong) NSMutableDictionary *requestedUsernamesAndCompletionBlocks;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
+@property (nonatomic, strong) CoreDataCacheHelper *coreDataCacheHelper;
 
 @end
 
@@ -36,6 +38,7 @@
     {
         self.avatars = [NSMutableDictionary dictionary];
         self.requestedUsernamesAndCompletionBlocks = [NSMutableDictionary dictionary];
+        self.coreDataCacheHelper = [[CoreDataCacheHelper alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     return self;
@@ -61,12 +64,13 @@
 
 #pragma mark - Public Functions
 
-- (AlfrescoContentFile *)avatarForUsername:(NSString *)userIdentifier
+- (UIImage *)avatarForIdentifier:(NSString *)identifier
 {
-    return [self.avatars objectForKey:userIdentifier];
+    AvatarImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveAvatarForIdentifier:identifier inManagedObjectContext:nil];
+    return [retrievedImageCacheObject avatarImage];
 }
 
-- (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(AlfrescoContentFileCompletionBlock)completionBlock
+- (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock
 {
     if (!self.session)
     {
@@ -74,11 +78,11 @@
         self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
     }
     
-    AlfrescoContentFile *avatar = [self.avatars valueForKey:identifier];
+    UIImage *retrievedImage = [self avatarForIdentifier:identifier];
     
-    if (avatar)
+    if (retrievedImage)
     {
-        completionBlock(avatar, nil);
+        completionBlock(retrievedImage, nil);
     }
     else
     {
@@ -92,18 +96,33 @@
                     [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *contentError) {
                         if (contentFile)
                         {
-                            [self.avatars setObject:contentFile forKey:identifier];
-                            [self runAllCompletionBlocksForIdentifier:identifier contentFile:contentFile error:contentError];
+                            NSManagedObjectContext *childManagedObjectContext = [self.coreDataCacheHelper createChildManagedObjectContext];
+                            AvatarImageCache *imageCache = [self.coreDataCacheHelper createAvatarObjectInManagedObjectContext:childManagedObjectContext];
+                            imageCache.identifier = identifier;
+                            imageCache.avatarImageData = [NSData dataWithContentsOfURL:contentFile.fileUrl];
+                            imageCache.dateAdded = [NSDate date];
+                            [self.coreDataCacheHelper saveContextForManagedObjectContext:childManagedObjectContext];
+                            
+                            // remove the temp file
+                            NSError *removalError = nil;
+                            [[AlfrescoFileManager sharedManager] removeItemAtPath:contentFile.fileUrl.path error:&removalError];
+                            
+                            if (removalError)
+                            {
+                                AlfrescoLogError(@"Error removing file at path %@", contentFile.fileUrl.path);
+                            }
+                            
+                            [self runAllCompletionBlocksForIdentifier:identifier avatarImage:[imageCache avatarImage] error:contentError];
                         }
                         else
                         {
-                            [self runAllCompletionBlocksForIdentifier:identifier contentFile:nil error:contentError];
+                            [self runAllCompletionBlocksForIdentifier:identifier avatarImage:nil error:contentError];
                         }
                     }];
                 }
                 else
                 {
-                    [self runAllCompletionBlocksForIdentifier:identifier contentFile:nil error:identifierError];
+                    [self runAllCompletionBlocksForIdentifier:identifier avatarImage:nil error:identifierError];
                 }
             }];
         }
@@ -114,15 +133,9 @@
     }
 }
 
-- (void)clearAvatarCache
-{
-    [self.avatars removeAllObjects];
-    [self.requestedUsernamesAndCompletionBlocks removeAllObjects];
-}
-
 #pragma mark - Private Functions
 
-- (void)addCompletionBlock:(AlfrescoContentFileCompletionBlock)completionBlock forKey:(NSString *)personIdentifier
+- (void)addCompletionBlock:(ImageCompletionBlock)completionBlock forKey:(NSString *)personIdentifier
 {
     AlfrescoContentFileCompletionBlock retainedBlock = [completionBlock copy];
     if ([[self.requestedUsernamesAndCompletionBlocks allKeys] containsObject:personIdentifier])
@@ -137,13 +150,12 @@
     }
 }
 
-- (void)runAllCompletionBlocksForIdentifier:(NSString *)personIdentifier contentFile:(AlfrescoContentFile *)contentFile error:(NSError *)error
+- (void)runAllCompletionBlocksForIdentifier:(NSString *)personIdentifier avatarImage:(UIImage *)avatarImage error:(NSError *)error
 {
     NSArray *blocks = [self.requestedUsernamesAndCompletionBlocks objectForKey:personIdentifier];
     [blocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        AlfrescoContentFile *avatarContentFile = [self.avatars objectForKey:personIdentifier];
-        AlfrescoContentFileCompletionBlock currentBlock = (AlfrescoContentFileCompletionBlock)obj;
-        currentBlock(avatarContentFile, nil);
+        ImageCompletionBlock currentBlock = (ImageCompletionBlock)obj;
+        currentBlock(avatarImage, nil);
     }];
     [self removeAllCompletionBlocksForPersonIdentifier:personIdentifier];
 }
@@ -151,6 +163,11 @@
 - (void)removeAllCompletionBlocksForPersonIdentifier:(NSString *)personIdentifier
 {
     [self.requestedUsernamesAndCompletionBlocks removeObjectForKey:personIdentifier];
+}
+
+- (void)clearAvatarCache
+{
+    [self.requestedUsernamesAndCompletionBlocks removeAllObjects];
 }
 
 @end

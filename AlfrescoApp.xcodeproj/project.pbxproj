@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */; };
 		0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA7181962E700E3ACC2 /* AccountsViewController.m */; };
 		0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCA91819634000E3ACC2 /* AccountsViewController.xib */; };
 		0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCB41819680E00E3ACC2 /* AccountCell.m */; };
@@ -20,11 +19,8 @@
 		0804DCC6181A6BAB00E3ACC2 /* server@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCC2181A6BAB00E3ACC2 /* server@2x.png */; };
 		0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */; };
 		0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */; };
-		080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */; };
+		080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */; };
 		080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 080828A5184DEDCB000524A3 /* AccountCertificate.m */; };
-		0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D4183A5EE6000A8984 /* SyncError.m */; };
-		0808B9D8183A5EE7000A8984 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */; };
-		0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0808B9DA183A5EE7000A8984 /* SyncAccount.m */; };
 		0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9DD183BB40B000A8984 /* green_selected_circle.png */; };
 		0808B9E0183BB40B000A8984 /* unselected_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9DE183BB40B000A8984 /* unselected_circle.png */; };
 		0808B9E2183D1083000A8984 /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9E1183D1083000A8984 /* empty_icon.png */; };
@@ -86,7 +82,6 @@
 		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
-		08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */; };
 		271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */; };
 		271DC765189C2D250059D1B2 /* status-favourite-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */; };
 		271DC766189C2D250059D1B2 /* status-favourite.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74E189C2D250059D1B2 /* status-favourite.png */; };
@@ -172,6 +167,16 @@
 		737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972EE18A39DBE007613B2 /* FolderPreviewViewController.xib */; };
 		737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972F318A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib */; };
 		737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972F918A3DCC3007613B2 /* ActionViewHandler.m */; };
+		7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */; };
+		7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */; };
+		7379733218AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */; };
+		7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732418AA8E9B007613B2 /* AvatarImageCache.m */; };
+		7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732618AA8E9B007613B2 /* DocLibImageCache.m */; };
+		7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732818AA8E9B007613B2 /* DocumentPreviewImageCache.m */; };
+		7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7379732A18AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld */; };
+		7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732D18AA8E9B007613B2 /* SyncAccount.m */; };
+		7379733818AA8E9B007613B2 /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732F18AA8E9B007613B2 /* SyncError.m */; };
+		7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379733118AA8E9B007613B2 /* SyncNodeInfo.m */; };
 		7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDEA17F1A4A800C6A54F /* TaskViewController.m */; };
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
@@ -437,8 +442,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0804DCA218180D8B00E3ACC2 /* ThumbnailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailManager.h; sourceTree = "<group>"; };
-		0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailManager.m; sourceTree = "<group>"; };
 		0804DCA6181962E700E3ACC2 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountsViewController.h; path = "Accounts View Controller/AccountsViewController.h"; sourceTree = "<group>"; };
 		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountsViewController.m; path = "Accounts View Controller/AccountsViewController.m"; sourceTree = "<group>"; };
 		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountsViewController.xib; path = "Accounts View Controller/AccountsViewController.xib"; sourceTree = "<group>"; };
@@ -455,16 +458,10 @@
 		0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountInfoViewController.h; path = "Accounts View Controller/New Account/AccountInfoViewController.h"; sourceTree = "<group>"; };
 		0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountInfoViewController.m; path = "Accounts View Controller/New Account/AccountInfoViewController.m"; sourceTree = "<group>"; };
 		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "Accounts View Controller/New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
-		080675E917EC44AA004AF3A2 /* CoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataUtils.h; sourceTree = "<group>"; };
-		080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataUtils.m; sourceTree = "<group>"; };
+		080675E917EC44AA004AF3A2 /* CoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataHelper.h; sourceTree = "<group>"; };
+		080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataHelper.m; sourceTree = "<group>"; };
 		080828A4184DEDCB000524A3 /* AccountCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCertificate.h; sourceTree = "<group>"; };
 		080828A5184DEDCB000524A3 /* AccountCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCertificate.m; sourceTree = "<group>"; };
-		0808B9D3183A5EE6000A8984 /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncError.h; path = DataModel/SyncError.h; sourceTree = "<group>"; };
-		0808B9D4183A5EE6000A8984 /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncError.m; path = DataModel/SyncError.m; sourceTree = "<group>"; };
-		0808B9D6183A5EE7000A8984 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncNodeInfo.h; path = DataModel/SyncNodeInfo.h; sourceTree = "<group>"; };
-		0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncNodeInfo.m; path = DataModel/SyncNodeInfo.m; sourceTree = "<group>"; };
-		0808B9D9183A5EE7000A8984 /* SyncAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncAccount.h; path = DataModel/SyncAccount.h; sourceTree = "<group>"; };
-		0808B9DA183A5EE7000A8984 /* SyncAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncAccount.m; path = DataModel/SyncAccount.m; sourceTree = "<group>"; };
 		0808B9DD183BB40B000A8984 /* green_selected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_selected_circle.png; path = Accounts/green_selected_circle.png; sourceTree = "<group>"; };
 		0808B9DE183BB40B000A8984 /* unselected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_circle.png; path = Accounts/unselected_circle.png; sourceTree = "<group>"; };
 		0808B9E1183D1083000A8984 /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = empty_icon.png; path = Accounts/empty_icon.png; sourceTree = "<group>"; };
@@ -552,7 +549,6 @@
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoApp.xcdatamodel; sourceTree = "<group>"; };
 		271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted.png"; sourceTree = "<group>"; };
 		271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC74E189C2D250059D1B2 /* status-favourite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite.png"; sourceTree = "<group>"; };
@@ -661,6 +657,24 @@
 		737972F318A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "FolderPreviewViewController~ipad.xib"; path = "Folder Preview View Controller/FolderPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
 		737972F818A3DCC3007613B2 /* ActionViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionViewHandler.h; sourceTree = "<group>"; };
 		737972F918A3DCC3007613B2 /* ActionViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionViewHandler.m; sourceTree = "<group>"; };
+		7379730C18A9295B007613B2 /* CoreDataSyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataSyncHelper.h; sourceTree = "<group>"; };
+		7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataSyncHelper.m; sourceTree = "<group>"; };
+		7379731018AA2E55007613B2 /* CoreDataCacheHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataCacheHelper.h; sourceTree = "<group>"; };
+		7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataCacheHelper.m; sourceTree = "<group>"; };
+		7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoCache.xcdatamodel; sourceTree = "<group>"; };
+		7379732318AA8E9B007613B2 /* AvatarImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarImageCache.h; sourceTree = "<group>"; };
+		7379732418AA8E9B007613B2 /* AvatarImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarImageCache.m; sourceTree = "<group>"; };
+		7379732518AA8E9B007613B2 /* DocLibImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocLibImageCache.h; sourceTree = "<group>"; };
+		7379732618AA8E9B007613B2 /* DocLibImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocLibImageCache.m; sourceTree = "<group>"; };
+		7379732718AA8E9B007613B2 /* DocumentPreviewImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreviewImageCache.h; sourceTree = "<group>"; };
+		7379732818AA8E9B007613B2 /* DocumentPreviewImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreviewImageCache.m; sourceTree = "<group>"; };
+		7379732B18AA8E9B007613B2 /* AlfrescoSync.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoSync.xcdatamodel; sourceTree = "<group>"; };
+		7379732C18AA8E9B007613B2 /* SyncAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncAccount.h; sourceTree = "<group>"; };
+		7379732D18AA8E9B007613B2 /* SyncAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncAccount.m; sourceTree = "<group>"; };
+		7379732E18AA8E9B007613B2 /* SyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncError.h; sourceTree = "<group>"; };
+		7379732F18AA8E9B007613B2 /* SyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncError.m; sourceTree = "<group>"; };
+		7379733018AA8E9B007613B2 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeInfo.h; sourceTree = "<group>"; };
+		7379733118AA8E9B007613B2 /* SyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNodeInfo.m; sourceTree = "<group>"; };
 		7384BDE917F1A4A800C6A54F /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewController.h; path = "Task View Controller/TaskViewController.h"; sourceTree = "<group>"; };
 		7384BDEA17F1A4A800C6A54F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewController.m; path = "Task View Controller/TaskViewController.m"; sourceTree = "<group>"; };
 		7384BDEF17F2F8C000C6A54F /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = "Settings View Controller/SettingsViewController.h"; sourceTree = "<group>"; };
@@ -1187,20 +1201,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		08E89CF817EB397C006936DF /* DataModel */ = {
-			isa = PBXGroup;
-			children = (
-				08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */,
-				0808B9D9183A5EE7000A8984 /* SyncAccount.h */,
-				0808B9DA183A5EE7000A8984 /* SyncAccount.m */,
-				0808B9D6183A5EE7000A8984 /* SyncNodeInfo.h */,
-				0808B9D7183A5EE7000A8984 /* SyncNodeInfo.m */,
-				0808B9D3183A5EE6000A8984 /* SyncError.h */,
-				0808B9D4183A5EE6000A8984 /* SyncError.m */,
-			);
-			name = DataModel;
-			sourceTree = "<group>";
-		};
 		271DC74B189C2D250059D1B2 /* Node Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1511,7 +1511,7 @@
 			children = (
 				73B957C717A673A90099FB84 /* App Delegate */,
 				73B957CA17A673A90099FB84 /* Constants */,
-				08E89CF817EB397C006936DF /* DataModel */,
+				7379731F18AA8E9B007613B2 /* Data Models */,
 				73B957CF17A6750E0099FB84 /* Model */,
 				73B957DF17A6750E0099FB84 /* Protocols */,
 				73B957E117A6750E0099FB84 /* Table Cells */,
@@ -1560,6 +1560,43 @@
 				737972F318A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib */,
 			);
 			name = "Folder Preview Controller";
+			sourceTree = "<group>";
+		};
+		7379731F18AA8E9B007613B2 /* Data Models */ = {
+			isa = PBXGroup;
+			children = (
+				7379732018AA8E9B007613B2 /* Cache */,
+				7379732918AA8E9B007613B2 /* Sync */,
+			);
+			path = "Data Models";
+			sourceTree = "<group>";
+		};
+		7379732018AA8E9B007613B2 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */,
+				7379732318AA8E9B007613B2 /* AvatarImageCache.h */,
+				7379732418AA8E9B007613B2 /* AvatarImageCache.m */,
+				7379732518AA8E9B007613B2 /* DocLibImageCache.h */,
+				7379732618AA8E9B007613B2 /* DocLibImageCache.m */,
+				7379732718AA8E9B007613B2 /* DocumentPreviewImageCache.h */,
+				7379732818AA8E9B007613B2 /* DocumentPreviewImageCache.m */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		7379732918AA8E9B007613B2 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				7379732A18AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld */,
+				7379732C18AA8E9B007613B2 /* SyncAccount.h */,
+				7379732D18AA8E9B007613B2 /* SyncAccount.m */,
+				7379732E18AA8E9B007613B2 /* SyncError.h */,
+				7379732F18AA8E9B007613B2 /* SyncError.m */,
+				7379733018AA8E9B007613B2 /* SyncNodeInfo.h */,
+				7379733118AA8E9B007613B2 /* SyncNodeInfo.m */,
+			);
+			path = Sync;
 			sourceTree = "<group>";
 		};
 		7384BDE817F1A46300C6A54F /* Tasks View Controller */ = {
@@ -1761,8 +1798,6 @@
 				73B957D817A6750E0099FB84 /* LoginManager.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */,
-				0804DCA218180D8B00E3ACC2 /* ThumbnailManager.h */,
-				0804DCA318180D8B00E3ACC2 /* ThumbnailManager.m */,
 				73E9E21017E854ED00A198B4 /* AccountManager.h */,
 				73E9E21117E854ED00A198B4 /* AccountManager.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
@@ -1875,8 +1910,12 @@
 		73B957FA17A6750E0099FB84 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				080675E917EC44AA004AF3A2 /* CoreDataUtils.h */,
-				080675EA17EC44AA004AF3A2 /* CoreDataUtils.m */,
+				080675E917EC44AA004AF3A2 /* CoreDataHelper.h */,
+				080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */,
+				7379730C18A9295B007613B2 /* CoreDataSyncHelper.h */,
+				7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */,
+				7379731018AA2E55007613B2 /* CoreDataCacheHelper.h */,
+				7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */,
 				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
 				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
 				73B957FB17A6750E0099FB84 /* ErrorDescriptions.h */,
@@ -2826,7 +2865,6 @@
 			files = (
 				73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */,
 				731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */,
-				0804DCA418180D8B00E3ACC2 /* ThumbnailManager.m in Sources */,
 				731901A21844B490002C82C1 /* ContainerViewController.m in Sources */,
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
@@ -2836,6 +2874,7 @@
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
 				08E799B6182AA3CF0030FD53 /* LabelCell.m in Sources */,
+				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
@@ -2864,12 +2903,16 @@
 				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
+				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
+				7379733218AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld in Sources */,
+				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
+				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
@@ -2884,12 +2927,15 @@
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
+				7379733818AA8E9B007613B2 /* SyncError.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
+				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
+				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
@@ -2901,15 +2947,14 @@
 				73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
-				0808B9D8183A5EE7000A8984 /* SyncNodeInfo.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
+				7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */,
 				73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
-				08E89CFB17EB39DB006936DF /* AlfrescoApp.xcdatamodeld in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
@@ -2923,11 +2968,12 @@
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
+				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
-				080675EB17EC44AA004AF3A2 /* CoreDataUtils.m in Sources */,
+				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
@@ -2935,13 +2981,11 @@
 				080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */,
 				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
 				73B95B0217A68DF20099FB84 /* MoreViewController.m in Sources */,
-				0808B9DB183A5EE7000A8984 /* SyncAccount.m in Sources */,
 				73B95B0317A68DF20099FB84 /* SitesListViewController.m in Sources */,
 				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
 				7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
 				088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */,
-				0808B9D5183A5EE6000A8984 /* SyncError.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3312,14 +3356,23 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		08E89CF917EB39DB006936DF /* AlfrescoApp.xcdatamodeld */ = {
+		7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */,
+				7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */,
 			);
-			currentVersion = 08E89CFA17EB39DB006936DF /* AlfrescoApp.xcdatamodel */;
-			name = AlfrescoApp.xcdatamodeld;
-			path = DataModel/AlfrescoApp.xcdatamodeld;
+			currentVersion = 7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */;
+			path = AlfrescoCache.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		7379732A18AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7379732B18AA8E9B007613B2 /* AlfrescoSync.xcdatamodel */,
+			);
+			currentVersion = 7379732B18AA8E9B007613B2 /* AlfrescoSync.xcdatamodel */;
+			path = AlfrescoSync.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

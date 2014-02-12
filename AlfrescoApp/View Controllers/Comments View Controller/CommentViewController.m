@@ -213,20 +213,19 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         cell.contentTextLabel.textColor = [UIColor darkGrayColor];
     }
     
-    AlfrescoContentFile *avatarContentFile = [[AvatarManager sharedManager] avatarForUsername:currentComment.createdBy];
-        
-    if (avatarContentFile)
+    UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:currentComment.createdBy];
+    if (avatar)
     {
-        [cell.avatarImageView setImageAtPath:avatarContentFile.fileUrl.path withFade:NO];
+        [cell.avatarImageView setImage:avatar withFade:NO];
     }
     else
     {
         UIImage *placeholderImage = [UIImage imageNamed:@"stop-transfer.png"];
         cell.avatarImageView.image = placeholderImage;
-        [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentComment.createdBy session:self.session completionBlock:^(AlfrescoContentFile *avatarContentFile, NSError *avatarError) {
-            if (avatarContentFile)
+        [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentComment.createdBy session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+            if (avatarImage)
             {
-                [cell.avatarImageView setImageAtPath:avatarContentFile.fileUrl.path withFade:YES];
+                [cell.avatarImageView setImage:avatarImage withFade:YES];
             }
         }];
     }

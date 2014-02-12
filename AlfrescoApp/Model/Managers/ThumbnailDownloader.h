@@ -6,17 +6,13 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @class AlfrescoDocument;
 @protocol AlfrescoSession;
-
-typedef void (^ThumbnailCompletionBlock) (NSString *savedFileName, NSError *error);
 
 @interface ThumbnailDownloader : NSObject
 
 + (id)sharedManager;
-- (void)retrieveImageForDocument:(AlfrescoDocument *)document toFolderAtPath:(NSString *)folderPath renditionType:(NSString *)renditionType session:(id<AlfrescoSession>)session completionBlock:(ThumbnailCompletionBlock)completionBlock;
-- (BOOL)thumbnailHasBeenRequestedForDocument:(AlfrescoDocument *)document;
+- (UIImage *)thumbnailForDocument:(AlfrescoDocument *)document renditionType:(NSString *)renditionType;
+- (void)retrieveImageForDocument:(AlfrescoDocument *)document renditionType:(NSString *)renditionType session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock;
 
 @end

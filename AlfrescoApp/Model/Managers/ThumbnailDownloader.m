@@ -8,12 +8,21 @@
 
 #import "ThumbnailDownloader.h"
 #import "Utility.h"
+#import "CoreDataCacheHelper.h"
+
+typedef NS_ENUM(NSUInteger, RenditionType)
+{
+    RenditionTypeUnknown = 0,
+    RenditionTypeDocLib,
+    RenditionTypeImgPreview
+};
 
 @interface ThumbnailDownloader ()
 
 @property (nonatomic, strong, readwrite) AlfrescoDocumentFolderService *thumbnailService;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) __block NSMutableDictionary *requestedThumbnailCompletionBlocks;
+@property (nonatomic, strong) CoreDataCacheHelper *coreDataCacheHelper;
 
 @end
 
@@ -36,6 +45,7 @@
     {
         self.requestedThumbnailCompletionBlocks = [NSMutableDictionary dictionary];
         self.thumbnailService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+        self.coreDataCacheHelper = [[CoreDataCacheHelper alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(sessionReceived:)
                                                      name:kAlfrescoSessionReceivedNotification
@@ -44,63 +54,70 @@
     return self;
 }
 
-- (void)retrieveImageForDocument:(AlfrescoDocument *)document toFolderAtPath:(NSString *)folderPath renditionType:(NSString *)renditionType session:(id<AlfrescoSession>)session completionBlock:(ThumbnailCompletionBlock)completionBlock
+- (void)retrieveImageForDocument:(AlfrescoDocument *)document renditionType:(NSString *)rendition session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock
 {
     if (!self.session)
     {
         self.thumbnailService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         self.session = session;
     }
-       
-    NSString *fileName = [uniqueFileNameForNode(document) stringByAppendingString:@".png"];
     
-    // if the folder doesn't exist ... create it
-    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:folderPath])
+    NSString *identifier = [self identifierForDocument:document];
+    UIImage *retrievedImage = [self thumbnailForDocument:document renditionType:rendition];
+    
+    if (retrievedImage)
     {
-        NSError *creationError = nil;
-        [[AlfrescoFileManager sharedManager] createDirectoryAtPath:folderPath withIntermediateDirectories:YES attributes:Nil error:&creationError];
-        
-        if (creationError)
+        completionBlock(retrievedImage, nil);
+    }
+    else
+    {
+        if (![[self.requestedThumbnailCompletionBlocks allKeys] containsObject:identifier])
         {
-            AlfrescoLogError(@"Error creating previews folder. Error: %@", creationError.localizedDescription);
+            [self.thumbnailService retrieveRenditionOfNode:document renditionName:rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+                if (contentFile)
+                {
+                    NSManagedObjectContext *childManagedObjectContext = [self.coreDataCacheHelper createChildManagedObjectContext];
+                    
+                    UIImage *thumbnailImage = nil;
+                    RenditionType renditionType = [self renditionTypeFromRenditionString:rendition];
+                    if (renditionType == RenditionTypeDocLib)
+                    {
+                        DocLibImageCache *docLibImageObject = [self.coreDataCacheHelper createDocLibObjectInManagedObjectContext:childManagedObjectContext];
+                        docLibImageObject.identifier = identifier;
+                        docLibImageObject.docLibImageData = [NSData dataWithContentsOfURL:contentFile.fileUrl];
+                        docLibImageObject.dateAdded = [NSDate date];
+                        thumbnailImage = [docLibImageObject docLibImage];
+                    }
+                    else if (renditionType == RenditionTypeImgPreview)
+                    {
+                        DocumentPreviewImageCache *documentPreviewObject = [self.coreDataCacheHelper createDocumentPreviewObjectInManagedObjectContext:childManagedObjectContext];
+                        documentPreviewObject.identifier = identifier;
+                        documentPreviewObject.documentPreviewImageData = [NSData dataWithContentsOfURL:contentFile.fileUrl];
+                        documentPreviewObject.dateAdded = [NSDate date];
+                        thumbnailImage = [documentPreviewObject documentPreviewImage];
+                    }
+                    
+                    // remove the temp file
+                    NSError *removalError = nil;
+                    [[AlfrescoFileManager sharedManager] removeItemAtPath:contentFile.fileUrl.path error:&removalError];
+                    
+                    if (removalError)
+                    {
+                        AlfrescoLogError(@"Error removing file at path %@", contentFile.fileUrl.path);
+                    }
+                    
+                    [self runAllCompletionBlocksForIdentifier:identifier thumbnailImage:thumbnailImage error:error];
+                    
+                    [self.coreDataCacheHelper saveContextForManagedObjectContext:childManagedObjectContext];
+                }
+                else
+                {
+                    [self runAllCompletionBlocksForIdentifier:identifier thumbnailImage:nil error:error];
+                }
+            }];
         }
+        [self addCompletionBlock:completionBlock forKey:identifier];
     }
-    
-    NSString *filePathForFileInContainer = [folderPath stringByAppendingPathComponent:fileName];
-    NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:filePathForFileInContainer append:NO];
-    
-    __weak ThumbnailDownloader *weakSelf = self;
-    
-    if (![self thumbnailHasBeenRequestedForDocument:document])
-    {
-        [self.thumbnailService retrieveRenditionOfNode:document renditionName:renditionType outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded)
-            {
-                NSArray *completionBlocks = [weakSelf.requestedThumbnailCompletionBlocks objectForKey:fileName];
-                
-                [completionBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    ThumbnailCompletionBlock block = (ThumbnailCompletionBlock)obj;
-                    block(filePathForFileInContainer, error);
-                }];
-                
-                [weakSelf removeAllCompletionBlocksForKey:fileName];
-            }
-        }];
-    }
-    
-    [self addCompletionBlock:completionBlock forKey:fileName];
-}
-
-- (BOOL)thumbnailHasBeenRequestedForDocument:(AlfrescoDocument *)document
-{
-    BOOL hasRequestHasBeenMade = NO;
-    NSString *fileName = [uniqueFileNameForNode(document) stringByAppendingString:@".png"];
-    
-    if ([[self.requestedThumbnailCompletionBlocks allKeys] containsObject:fileName])
-    {
-        hasRequestHasBeenMade = YES;
-    }
-    return hasRequestHasBeenMade;
 }
 
 #pragma mark - Private Functions
@@ -114,10 +131,10 @@
     self.thumbnailService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
 }
 
-- (void)addCompletionBlock:(void (^)(NSString *savedFileName, NSError *error))completionBlock forKey:(NSString *)key
+- (void)addCompletionBlock:(ImageCompletionBlock)completionBlock forKey:(NSString *)key
 {
     NSMutableArray *completionBlocksForRequest = [self.requestedThumbnailCompletionBlocks objectForKey:key];
-    ThumbnailCompletionBlock retainedBlock = [completionBlock copy];
+    ImageCompletionBlock retainedBlock = [completionBlock copy];
     
     if (!completionBlocksForRequest)
     {
@@ -131,9 +148,68 @@
     }
 }
 
+- (void)runAllCompletionBlocksForIdentifier:(NSString *)identifier thumbnailImage:(UIImage *)thumbnail error:(NSError *)error
+{
+    NSArray *completionBlocks = [self.requestedThumbnailCompletionBlocks objectForKey:identifier];
+    [completionBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ImageCompletionBlock block = (ImageCompletionBlock)obj;
+        block(thumbnail, error);
+    }];
+    [self removeAllCompletionBlocksForKey:identifier];
+}
+
 - (void)removeAllCompletionBlocksForKey:(NSString *)key
 {
     [self.requestedThumbnailCompletionBlocks removeObjectForKey:key];
+}
+
+- (NSString *)identifierForDocument:(AlfrescoDocument *)document
+{
+    return filenameAppendedWithDateModififed(document.identifier, document);
+}
+
+- (UIImage *)thumbnailForDocument:(AlfrescoDocument *)document renditionType:(NSString *)rendition
+{
+    UIImage *returnedImage = nil;
+    RenditionType renditionType = [self renditionTypeFromRenditionString:rendition];
+    
+    switch (renditionType)
+    {
+        case RenditionTypeDocLib:
+        {
+            DocLibImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocLibForIdentifier:[self identifierForDocument:document] inManagedObjectContext:nil];
+            returnedImage = [retrievedImageCacheObject docLibImage];
+        }
+        break;
+            
+        case RenditionTypeImgPreview:
+        {
+            DocumentPreviewImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocumentPreviewForIdentifier:[self identifierForDocument:document] inManagedObjectContext:nil];
+            returnedImage = [retrievedImageCacheObject documentPreviewImage];
+        }
+        break;
+            
+        default:
+            break;
+    }
+    
+    return returnedImage;
+}
+
+- (RenditionType)renditionTypeFromRenditionString:(NSString *)rendition
+{
+    RenditionType renditionType = RenditionTypeUnknown;
+    
+    if ([rendition isEqualToString:kRenditionImageDocLib])
+    {
+        renditionType = RenditionTypeDocLib;
+    }
+    else if ([rendition isEqualToString:kRenditionImageImagePreview])
+    {
+        renditionType = RenditionTypeImgPreview;
+    }
+    
+    return renditionType;
 }
 
 @end

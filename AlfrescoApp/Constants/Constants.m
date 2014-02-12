@@ -14,6 +14,9 @@ NSString * const kLicenseDictionaries = @"thirdPartyLibraries";
 
 NSString * const kImageMappingPlist = @"ImageMapping";
 
+NSString * const kRenditionImageDocLib = @"doclib";
+NSString * const kRenditionImageImagePreview = @"imgpreview";
+
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 
