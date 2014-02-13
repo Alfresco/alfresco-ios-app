@@ -75,11 +75,11 @@
     return [self.documentFolderService addFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kFavouritesDidAddNodeNotification object:node];
             SyncManager *syncManager = [SyncManager sharedManager];
             [syncManager addNodeToSync:node withCompletionBlock:^(BOOL completed) {
                 if (completionBlock != NULL)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kFavouritesDidAddNodeNotification object:node];
                     completionBlock(isFavorited, error);
                 }
             }];
@@ -105,11 +105,11 @@
     return [self.documentFolderService removeFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kFavouritesDidRemoveNodeNotification object:node];
             SyncManager *syncManager = [SyncManager sharedManager];
             [syncManager removeNodeFromSync:node withCompletionBlock:^(BOOL succeeded) {
                 if (completionBlock != NULL)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kFavouritesDidRemoveNodeNotification object:node];
                     completionBlock(succeeded, error);
                 }
             }];
