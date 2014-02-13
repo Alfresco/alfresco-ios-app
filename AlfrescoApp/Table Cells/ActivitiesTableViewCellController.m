@@ -242,7 +242,7 @@ static CGFloat const kFontSize = 17.0f;
         
         if (self.isActivityTypeDocument)
         {
-            self.activityIcon = imageForType([self.activity.data[kActivityTitle] pathExtension]);
+            self.activityIcon = smallImageForType([self.activity.data[kActivityTitle] pathExtension]);
             self.activityCell.avatar.image = self.activityIcon;
         }
         else if (self.isActivityTypeFolder)

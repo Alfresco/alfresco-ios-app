@@ -234,7 +234,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
                                                                                            documentIconImageViewSize.width,
                                                                                            documentIconImageViewSize.height)];
         documentIconImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        documentIconImageView.image = imageForType(self.documentURL.pathExtension);
+        documentIconImageView.image = smallImageForType(self.documentURL.pathExtension);
         
         [previewCell.contentView addSubview:documentTitleField];
         [previewCell.contentView addSubview:documentIconImageView];

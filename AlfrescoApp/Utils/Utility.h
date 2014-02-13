@@ -20,7 +20,9 @@ SystemNotice *displayInformationMessage(NSString *message);
 SystemNotice *displayInformationMessageWithTitle(NSString *message, NSString *title);
 UIView *activeView(void);
 
-UIImage *imageForType(NSString *type);
+UIImage *smallImageForType(NSString *type);
+UIImage *largeImageForType(NSString *type);
+
 /*
  * resize image to a different size
  */

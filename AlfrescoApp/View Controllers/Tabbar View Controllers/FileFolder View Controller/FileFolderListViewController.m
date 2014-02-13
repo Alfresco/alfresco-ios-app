@@ -812,7 +812,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
     {
-        cell.image.image = imageForType(@"folder");
+        cell.image.image = smallImageForType(@"folder");
     }
     else
     {
@@ -825,7 +825,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         else
         {
-            UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
+            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
             cell.image.image = placeholderImage;
             [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
