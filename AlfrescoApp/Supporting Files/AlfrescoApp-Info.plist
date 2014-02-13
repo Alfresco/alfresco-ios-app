@@ -24,8 +24,8 @@
 	</dict>
 	<key>CFBundleVersion</key>
 	<string>dev</string>
-	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -84,7 +84,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleName</key>
-	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+    <key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackOpaque</string>
 </dict>
 </plist>

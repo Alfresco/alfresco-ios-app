@@ -7,9 +7,14 @@
 //
 
 #import "ContainerViewController.h"
+#import "UIColor+Custom.h"
+
+static NSUInteger const kStatusBarViewHeight = 20.0f;
+//static CGFloat const kStatusBarTransparency = 0.9f;
 
 @interface ContainerViewController ()
 
+@property (nonatomic, weak, readwrite) UIView *statusBarBackgroundView;
 @property (nonatomic, strong, readwrite) UIViewController *rootViewController;
 
 @end
@@ -28,7 +33,32 @@
 
 - (void)loadView
 {
-    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    CGRect screenFrame = [[UIScreen mainScreen] bounds];
+    UIView *view = [[UIView alloc] initWithFrame:screenFrame];
+    
+    // DECISION STILL TO BE MADE
+//    UIView *statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenFrame.size.width, kStatusBarViewHeight)];
+//    statusBarBackgroundView.backgroundColor = [UIColor whiteColor];
+//    statusBarBackgroundView.alpha = kStatusBarTransparency;
+//    statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    
+//    UIColor *startColour = [UIColor colorWithRed:0 green:0 blue:0 alpha:kStatusBarTransparency];
+//    UIColor *endColour = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+//    
+//    CAGradientLayer *gradiantLayer = [CAGradientLayer layer];
+//    gradiantLayer.frame = statusBarBackgroundView.bounds;
+//    gradiantLayer.colors = [NSArray arrayWithObjects: (id)startColour.CGColor, (id)endColour.CGColor, nil];
+//    statusBarBackgroundView.layer.mask = gradiantLayer;
+//    
+//    [view addSubview:statusBarBackgroundView];
+//    self.statusBarBackgroundView = statusBarBackgroundView;
+    
+    UIView *statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenFrame.size.width, kStatusBarViewHeight)];
+    statusBarBackgroundView.backgroundColor = [UIColor mainMenuBackgroundColor];
+    statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [view addSubview:statusBarBackgroundView];
+    self.statusBarBackgroundView = statusBarBackgroundView;
+    
     self.view = view;
 }
 
@@ -40,6 +70,8 @@
     [self addChildViewController:self.rootViewController];
     [self.view addSubview:self.rootViewController.view];
     [self.rootViewController didMoveToParentViewController:self];
+    
+    [self.view bringSubviewToFront:self.statusBarBackgroundView];
 }
 
 @end

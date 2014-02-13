@@ -11,7 +11,8 @@
 @interface UIColor (Custom)
 
 + (UIColor *)lineSeparatorColor;
-
 + (UIColor *)themeBlueColor;
++ (UIColor *)mainMenuBackgroundColor;
++ (UIColor *)mainMenuLabelColor;
 
 @end

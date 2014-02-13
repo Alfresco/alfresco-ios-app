@@ -44,6 +44,7 @@
 /**
  * Sync
  */
+"favourites.title" = "Favorites";
 "sync.title" = "Sync";
 "sync.downloadsize.prompt.title" = "";
 "sync.downloadsize.prompt.message" = "Sync download size %@ exceeds the maximum size allowed %@. Do you want to proceed?";

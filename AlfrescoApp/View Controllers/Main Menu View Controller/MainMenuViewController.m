@@ -15,6 +15,7 @@
 #import "SyncViewController.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
+#import "SyncManager.h"
 #import "UniversalDevice.h"
 #import "DetailSplitViewController.h"
 #import "AppConfigurationManager.h"
@@ -22,6 +23,7 @@
 #import "AboutViewController.h"
 #import "PreviewViewController.h"
 #import "DownloadsViewController.h"
+#import "UIColor+Custom.h"
 
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
@@ -79,6 +81,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    tableView.backgroundColor = [UIColor mainMenuBackgroundColor];
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
@@ -112,6 +115,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
     cell.textLabel.text = NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") ;
+    cell.textLabel.textColor = [UIColor mainMenuLabelColor];
     cell.imageView.image = [UIImage imageNamed:currentItem.imageName];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -163,7 +167,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
         DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
         NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
         downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
-                                                               imageName:@"download-main-menu.png"
+                                                               imageName:@"mainmenu-localfiles.png"
                                                        localizedTitleKey:@"Downloads"
                                                           viewController:downloadsNavigationController
                                                          displayInDetail:NO];
@@ -189,7 +193,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:self.alfrescoSession];
     NavigationViewController *settingsNavigationController = [[NavigationViewController alloc] initWithRootViewController:settingsViewController];
     MainMenuItem *settingsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSettings
-                                                                        imageName:@"settings-main-menu.png"
+                                                                        imageName:@"mainmenu-settings.png"
                                                                 localizedTitleKey:@"settings.title"
                                                                    viewController:settingsNavigationController
                                                                   displayInDetail:YES];
@@ -197,7 +201,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     AboutViewController *aboutViewController = [[AboutViewController alloc] init];
     NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
     MainMenuItem *aboutMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAbout
-                                                                     imageName:@"about-more.png"
+                                                                     imageName:@"mainmenu-about.png"
                                                              localizedTitleKey:@"about.title"
                                                                 viewController:aboutNavigationController
                                                                displayInDetail:YES];
@@ -205,7 +209,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
-                                                                    imageName:@"help-more.png"
+                                                                    imageName:@"mainmenu-help.png"
                                                             localizedTitleKey:@"Help"
                                                                viewController:helpNavigationController
                                                               displayInDetail:YES];
@@ -213,7 +217,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
     NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
     MainMenuItem *downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
-                                                           imageName:@"download-main-menu.png"
+                                                           imageName:@"mainmenu-localfiles.png"
                                                    localizedTitleKey:@"Downloads"
                                                       viewController:downloadsNavigationController
                                                      displayInDetail:NO];
@@ -233,7 +237,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
         DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
         NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
         downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
-                                                               imageName:@"download-main-menu.png"
+                                                               imageName:@"mainmenu-localfiles.png"
                                                        localizedTitleKey:@"Downloads"
                                                           viewController:downloadsNavigationController
                                                          displayInDetail:NO];
@@ -268,7 +272,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
             ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:self.alfrescoSession];
             NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
             activitiesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
-                                                                    imageName:@"activities-main-menu.png"
+                                                                    imageName:@"mainmenu-activities.png"
                                                             localizedTitleKey:@"activities.title"
                                                                viewController:activitiesNavigationController
                                                               displayInDetail:NO];
@@ -290,7 +294,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
             FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:self.alfrescoSession];
             NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
             companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
-                                                                     imageName:@"repository-tabbar.png"
+                                                                     imageName:@"mainmenu-repository.png"
                                                              localizedTitleKey:@"companyHome.title"
                                                                 viewController:companyHomeNavigationController
                                                                displayInDetail:NO];
@@ -312,7 +316,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
             SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.alfrescoSession];
             NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
             sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
-                                                               imageName:@"sites-main-menu.png"
+                                                               imageName:@"mainmenu-sites.png"
                                                        localizedTitleKey:@"sites.title"
                                                           viewController:sitesListNavigationController
                                                          displayInDetail:NO];
@@ -334,7 +338,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
             TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:self.alfrescoSession];
             NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
             tasksMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
-                                                               imageName:@"tasks-main-menu.png"
+                                                               imageName:@"mainmenu-tasks.png"
                                                        localizedTitleKey:@"tasks.title"
                                                           viewController:taskNavigationController
                                                          displayInDetail:NO];
@@ -353,11 +357,13 @@ static NSUInteger const kDownloadsRowNumber = 1;
         MainMenuItem *favoritesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSync];
         if (showFavorites && !favoritesMenuItem)
         {
+            BOOL isSyncEnabled = [[SyncManager sharedManager] isSyncEnabled];
+            
             SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.alfrescoSession];
             NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
             favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                   imageName:@"favourites-main-menu.png"
-                                                           localizedTitleKey:@"sync.title"
+                                                                   imageName:isSyncEnabled ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
+                                                           localizedTitleKey:isSyncEnabled ? @"sync.title" : @"favourites.title"
                                                               viewController:syncNavigationController
                                                              displayInDetail:NO];
             [repositoryMenuItems insertObject:favoritesMenuItem atIndex:nextIndex];
@@ -385,7 +391,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
                                                                                                                    session:self.alfrescoSession];
             NavigationViewController *sharedFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:sharedFilesViewController];
             sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSharedFiles
-                                                                     imageName:@"site.png"
+                                                                     imageName:@"mainmenu-sharedfiles.png"
                                                              localizedTitleKey:@"sharedFiles.title"
                                                                 viewController:sharedFilesNavigationController
                                                                displayInDetail:NO];
@@ -414,7 +420,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
                                                                                                                session:self.alfrescoSession];
             NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
             myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeMyFiles
-                                                                 imageName:@"folder.png"
+                                                                 imageName:@"mainmenu-myfiles.png"
                                                          localizedTitleKey:@"myFiles.title"
                                                             viewController:myFilesNavigationController
                                                            displayInDetail:NO];

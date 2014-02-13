@@ -85,42 +85,6 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if (self.hasDeferredOpenURLToProcess)
-    {
-        // If we've already deferred an openURL request, then tell iOS that we won't handle another one
-        return NO;
-    }
-
-//    NSArray *urlHandlers = @[
-//                             // Handler for "Open In..." links from other apps
-//                             [[FileURLHandler alloc] init]
-//                             ];
-
-//    // Loop through handlers for the first one that claims to support the inbound url
-//    for (id<URLHandlerProtocol>handler in urlHandlers)
-//    {
-//        if ([handler canHandleURL:url])
-//        {
-//            if (self.isGDiOSAuthorised)
-//            {
-//                // User is authorised with GD, so we can access the secure storage
-//                return [handler handleURL:url sourceApplication:sourceApplication annotation:annotation];
-//            }
-//            else
-//            {
-//                // We'll need to defer handling the inbound request until the user is authorised
-//                self.hasDeferredOpenURLToProcess = YES;
-//                self.deferredHandler = handler;
-//                self.deferredURL = url;
-//                self.deferredSourceApplication = sourceApplication;
-//                self.deferredAnnotation = annotation;
-//                
-//                // Return YES to indicate to iOS we'll be handling the Open In... request.
-//                return YES;
-//            }
-//        }
-//    }
-    
     return NO;
 }
 
@@ -138,7 +102,7 @@
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
     MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAccounts
-                                                                    imageName:@"account-main-menu.png"
+                                                                    imageName:@"mainmenu-accounts.png"
                                                             localizedTitleKey:@"accounts.title"
                                                                viewController:accountsNavigationController
                                                               displayInDetail:NO];
