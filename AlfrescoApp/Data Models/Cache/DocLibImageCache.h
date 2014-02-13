@@ -6,15 +6,11 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
-
-
 @interface DocLibImageCache : NSManagedObject
 
-@property (nonatomic, retain) NSData * docLibImageData;
-@property (nonatomic, retain) NSDate * dateAdded;
-@property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, retain) NSData *docLibImageData;
+@property (nonatomic, retain) NSDate *dateAdded;
+@property (nonatomic, retain) NSString *identifier;
 
 - (UIImage *)docLibImage;
 

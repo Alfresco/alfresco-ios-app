@@ -20,6 +20,6 @@ extern NSString * const kAlfrescoNodeCellIdentifier;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressBar;
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
-- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite;
+- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
 
 @end

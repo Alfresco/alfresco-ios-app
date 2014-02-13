@@ -175,12 +175,14 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
 - (NSManagedObjectContext *)syncManagedObjectContext
 {
-    if (syncManagedObjectContext != nil) {
+    if (syncManagedObjectContext != nil)
+    {
         return syncManagedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self syncPersistenceStoreCoordinator];
-    if (coordinator != nil) {
+    if (coordinator != nil)
+    {
         syncManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         [syncManagedObjectContext setPersistentStoreCoordinator:coordinator];
     }
@@ -191,7 +193,8 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 // If the model doesn't already exist, it is created from the application's model.
 - (NSManagedObjectModel *)syncManagedObjectModel
 {
-    if (syncManagedObjectModel != nil) {
+    if (syncManagedObjectModel != nil)
+    {
         return syncManagedObjectModel;
     }
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:kAlfrescoAppDataModel withExtension:@"momd"];
@@ -203,7 +206,8 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 // If the coordinator doesn't already exist, it is created and the application's store added to it.
 - (NSPersistentStoreCoordinator *)syncPersistenceStoreCoordinator
 {
-    if (syncPersistenceStoreCoordinator != nil) {
+    if (syncPersistenceStoreCoordinator != nil)
+    {
         return syncPersistenceStoreCoordinator;
     }
     
@@ -212,7 +216,8 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     
     NSError *error = nil;
     syncPersistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self syncManagedObjectModel]];
-    if (![syncPersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![syncPersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    {
         /*
          Replace this implementation with code to handle the error appropriately.
          

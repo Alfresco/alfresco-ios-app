@@ -108,12 +108,14 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 
 - (NSManagedObjectContext *)cacheManagedObjectContext
 {
-    if (cacheManagedObjectContext != nil) {
+    if (cacheManagedObjectContext != nil)
+    {
         return cacheManagedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self cachePersistenceStoreCoordinator];
-    if (coordinator != nil) {
+    if (coordinator != nil)
+    {
         cacheManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         [cacheManagedObjectContext setPersistentStoreCoordinator:coordinator];
     }
@@ -122,7 +124,8 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 
 - (NSManagedObjectModel *)cacheManagedObjectModel
 {
-    if (cacheManagedObjectModel != nil) {
+    if (cacheManagedObjectModel != nil)
+    {
         return cacheManagedObjectModel;
     }
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:kAlfrescoAppDataModel withExtension:@"momd"];
@@ -132,7 +135,8 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 
 - (NSPersistentStoreCoordinator *)cachePersistenceStoreCoordinator
 {
-    if (cachePersistenceStoreCoordinator != nil) {
+    if (cachePersistenceStoreCoordinator != nil)
+    {
         return cachePersistenceStoreCoordinator;
     }
     
@@ -141,7 +145,8 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     
     NSError *error = nil;
     cachePersistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self cacheManagedObjectModel]];
-    if (![cachePersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![cachePersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    {
         /*
          Replace this implementation with code to handle the error appropriately.
          

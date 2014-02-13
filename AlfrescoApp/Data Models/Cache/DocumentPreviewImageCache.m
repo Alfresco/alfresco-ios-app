@@ -8,7 +8,6 @@
 
 #import "DocumentPreviewImageCache.h"
 
-
 @implementation DocumentPreviewImageCache
 
 @dynamic documentPreviewImageData;

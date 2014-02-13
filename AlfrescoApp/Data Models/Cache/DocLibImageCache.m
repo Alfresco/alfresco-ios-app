@@ -8,7 +8,6 @@
 
 #import "DocLibImageCache.h"
 
-
 @implementation DocLibImageCache
 
 @dynamic docLibImageData;

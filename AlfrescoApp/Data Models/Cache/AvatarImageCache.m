@@ -8,7 +8,6 @@
 
 #import "AvatarImageCache.h"
 
-
 @implementation AvatarImageCache
 
 @dynamic identifier;

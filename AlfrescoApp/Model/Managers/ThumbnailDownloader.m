@@ -10,7 +10,8 @@
 #import "Utility.h"
 #import "CoreDataCacheHelper.h"
 
-typedef NS_ENUM(NSUInteger, RenditionType) {
+typedef NS_ENUM(NSUInteger, RenditionType)
+{
     RenditionTypeUnknown = 0,
     RenditionTypeDocLib,
     RenditionTypeImgPreview

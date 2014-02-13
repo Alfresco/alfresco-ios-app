@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, SyncStatus)
     SyncStatusOffline,
     SyncStatusCancelled,
     SyncStatusDisabled,
+    SyncStatusRemoved
 };
 
 typedef NS_ENUM(NSInteger, SyncActivityType)

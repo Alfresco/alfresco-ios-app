@@ -255,8 +255,7 @@
  * About View Controller
  */
 "about.title" = "About";
-"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco for Good was designed and developed by Alfresco Software Ltd. and is built on the Good Dynamics™ mobile app security platform. It provides a secure connection to Alfresco Enterprise and your corporate documents on the go.";
-"about.libraries.used" = "Libraries used:";
+"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the cloud and Alfresco on premise servers (3.4.8 and above) to provide safe access to your corporate documents on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
 "about.version.number" = "Version: %@ (%@)";
 "about.build.date.time" = "Build Date: %s %s";
 
