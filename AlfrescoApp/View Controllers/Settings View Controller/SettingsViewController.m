@@ -39,7 +39,7 @@
     
     [self disablePullToRefresh];
 	
-    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"plist"];
+    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
     
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
     self.tableViewData = [dictionary objectForKey:kSettingsTableViewData];

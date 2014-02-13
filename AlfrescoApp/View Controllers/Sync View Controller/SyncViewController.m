@@ -210,7 +210,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     
     if (node.isFolder)
     {
-        nodeCell.image.image = imageForType(@"folder");
+        nodeCell.image.image = smallImageForType(@"folder");
     }
     else if (node.isDocument)
     {
@@ -218,10 +218,19 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         ThumbnailDownloader *thumbnailManager = [ThumbnailDownloader sharedManager];
         UIImage *thumbnail = [thumbnailManager thumbnailForDocument:document renditionType:kRenditionImageDocLib];
         
-        if (!thumbnail)
+        if (thumbnail)
         {
+            [nodeCell.image setImage:thumbnail withFade:NO];
+        }
+        else
+        {
+            UIImage *placeholderImage = smallImageForType([document.name pathExtension]);
+            nodeCell.image.image = placeholderImage;
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                [nodeCell.image setImage:image withFade:YES];
+                if (image)
+                {
+                    [nodeCell.image setImage:image withFade:YES];
+                }
             }];
         }
     }

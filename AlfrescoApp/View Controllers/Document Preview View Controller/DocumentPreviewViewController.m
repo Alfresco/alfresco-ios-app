@@ -112,7 +112,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     else
     {
-        UIImage *placeholderImage = imageForType([self.document.name pathExtension]);
+        UIImage *placeholderImage = largeImageForType([self.document.name pathExtension]);
         self.documentThumbnail.image = placeholderImage;
         
         __weak typeof(self) weakSelf = self;

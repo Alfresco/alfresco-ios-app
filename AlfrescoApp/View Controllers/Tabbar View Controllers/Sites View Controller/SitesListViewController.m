@@ -179,7 +179,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         
         AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
         siteCell.siteNameLabelView.text = currentSite.title;
-        siteCell.siteImageView.image = imageForType(@"site");
+        siteCell.siteImageView.image = smallImageForType(@"site");
         
         [siteCell updateCellStateWithSite:currentSite];
     }
@@ -189,7 +189,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         
         AlfrescoDocument *documentNode = [self.searchResults objectAtIndex:indexPath.row];
         searchCell.nodeNameLabel.text = documentNode.name;
-        searchCell.nodeImageView.image = imageForType([documentNode.name pathExtension]);
+        searchCell.nodeImageView.image = smallImageForType([documentNode.name pathExtension]);
         
         UIImage *thumbnailImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
         
@@ -200,7 +200,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         else
         {
             // set a placeholder image
-            UIImage *placeholderImage = imageForType([documentNode.name pathExtension]);
+            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
             searchCell.nodeImageView.image = placeholderImage;
             
             [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {

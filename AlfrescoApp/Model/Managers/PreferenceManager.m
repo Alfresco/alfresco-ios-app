@@ -64,7 +64,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     }
     else
     {
-        NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"plist"];
+        NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
         NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
         
         NSArray *allSettings = [dictionary objectForKey:kSettingsTableViewData];

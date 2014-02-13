@@ -17,7 +17,8 @@
 #import "UniversalDevice.h"
 #import "ContainerViewController.h"
 
-static NSDictionary *iconMappings;
+static NSDictionary *smallIconMappings;
+static NSDictionary *largeIconMappings;
 static NSDateFormatter *dateFormatter;
 static CGFloat const kZoomAnimationSpeed = 0.2f;
 
@@ -72,17 +73,37 @@ UIView *activeView(void)
     return appDelegate.window.rootViewController.view;
 }
 
-UIImage *imageForType(NSString *type)
+UIImage *smallImageForType(NSString *type)
 {
     type = [type lowercaseString];
     
-    if (!iconMappings)
+    if (!smallIconMappings)
     {
-        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kImageMappingPlist ofType:@"plist"];
-        iconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kSmallThumbnailImageMappingPlist ofType:@"plist"];
+        smallIconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     }
     
-    NSString *imageName = [iconMappings objectForKey:type];
+    NSString *imageName = [smallIconMappings objectForKey:type];
+    
+    if (!imageName)
+    {
+        imageName = @"generic.png";
+    }
+    
+    return [UIImage imageNamed:imageName];
+}
+
+UIImage *largeImageForType(NSString *type)
+{
+    type = [type lowercaseString];
+    
+    if (!largeIconMappings)
+    {
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kLargeThumbnailImageMappingPlist ofType:@"plist"];
+        largeIconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    }
+    
+    NSString *imageName = [largeIconMappings objectForKey:type];
     
     if (!imageName)
     {
