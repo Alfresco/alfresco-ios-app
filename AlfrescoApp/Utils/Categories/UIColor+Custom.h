@@ -11,7 +11,7 @@
 @interface UIColor (Custom)
 
 + (UIColor *)lineSeparatorColor;
-
 + (UIColor *)themeBlueColor;
++ (UIColor *)mainManuBackgroundColor;
 
 @end
