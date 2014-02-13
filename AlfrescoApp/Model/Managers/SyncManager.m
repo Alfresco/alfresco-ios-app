@@ -812,8 +812,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:NO];
             if (!nodeInfo.parentNode)
             {
+                nodeStatus.totalSize = 0;
                 nodeStatus.status = SyncStatusRemoved;
                 [self.syncNodesStatus removeObjectForKey:node.identifier];
+            }
+            else
+            {
+                // this is to trigger notification so the sync root view updates its total count
+                nodeStatus.totalSize = nodeStatus.totalSize;
             }
         }
         [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
@@ -827,6 +833,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
 {
+    SyncNodeStatus *syncNodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+    syncNodeStatus.totalSize = 0;
+    
     [self checkForObstaclesInRemovingDownloadForNode:node inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext completionBlock:^(BOOL encounteredObstacle) {
         
         if (node.isDocument && encounteredObstacle)
@@ -1166,7 +1175,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:privateManagedObjectContext];
                 if (isModifiedLocally)
                 {
-                    nodeStatus.status = SyncStatusOffline;
+                    nodeStatus.status = SyncStatusWaiting;
                     nodeStatus.activityType = SyncActivityTypeUpload;
                 }
             }

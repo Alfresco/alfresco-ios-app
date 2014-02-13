@@ -151,12 +151,13 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         {
             syncNodeInfo = [self.syncCoreDataHelper createSyncNodeInfoMangedObjectInManagedObjectContext:managedContext];
             syncNodeInfo.syncNodeInfoId = alfrescoNode.identifier;
-            syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
             syncNodeInfo.isFolder = [NSNumber numberWithBool:alfrescoNode.isFolder];
             syncNodeInfo.account = syncAccount;
         }
         syncNodeInfo.title = alfrescoNode.name;
         syncNodeInfo.node = archivedNode;
+        syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
+        
         if (archivedPermissions)
         {
             syncNodeInfo.permissions = archivedPermissions;

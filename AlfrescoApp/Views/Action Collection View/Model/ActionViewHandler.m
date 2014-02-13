@@ -20,6 +20,7 @@
 #import "DownloadsViewController.h"
 #import "NavigationViewController.h"
 #import "UploadFormViewController.h"
+#import "SyncManager.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -305,8 +306,28 @@
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.node];
                     [UniversalDevice clearDetailViewController];
-                    NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
-                    displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                    SyncManager *syncManager = [SyncManager sharedManager];
+                    if ([syncManager isNodeInSyncList:weakSelf.node])
+                    {
+                        [syncManager deleteNodeFromSync:weakSelf.node withCompletionBlock:^(BOOL savedLocally) {
+                            
+                            NSString *successMessage = @"";
+                            if (savedLocally)
+                            {
+                                successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.node.name];
+                            }
+                            else
+                            {
+                                successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
+                            }
+                            displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                        }];
+                    }
+                    else
+                    {
+                        NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
+                        displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                    }
                 }
                 else
                 {

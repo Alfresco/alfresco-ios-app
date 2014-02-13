@@ -395,7 +395,9 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     {
         if (!self.parentNode || [self.parentNode.identifier isEqualToString:notificationNodeId])
         {
-            self.tableViewFooter.text = [self tableFooterText];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.tableViewFooter.text = [self tableFooterText];
+            });
         }
     }
 }
