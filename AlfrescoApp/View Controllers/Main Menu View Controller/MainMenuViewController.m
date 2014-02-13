@@ -22,6 +22,7 @@
 #import "AboutViewController.h"
 #import "PreviewViewController.h"
 #import "DownloadsViewController.h"
+#import "UIColor+Custom.h"
 
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
@@ -79,6 +80,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    tableView.backgroundColor = [UIColor mainManuBackgroundColor];
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
