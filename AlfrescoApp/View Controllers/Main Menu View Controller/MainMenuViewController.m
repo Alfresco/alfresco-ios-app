@@ -105,23 +105,33 @@ static NSUInteger const kDownloadsRowNumber = 1;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell)
     {
-        cell = [[MainMenuItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = (MainMenuItemCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MainMenuItemCell class]) owner:self options:nil] lastObject];
     }
     
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") ;
-    cell.textLabel.textColor = [UIColor mainMenuLabelColor];
-    cell.imageView.image = [UIImage imageNamed:currentItem.imageName];
+    cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
+    cell.menuTextLabel.textColor = [UIColor mainMenuLabelColor];
+    cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MainMenuItemCell *cell = (MainMenuItemCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    // Get the actual height required for the cell
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    
+    return height;
 }
 
 #pragma mark - Table view delegate

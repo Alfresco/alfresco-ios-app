@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ThumbnailImageView.h"
 
 @interface MainMenuItemCell : UITableViewCell
+
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *menuImageView;
+@property (nonatomic, weak) IBOutlet UILabel *menuTextLabel;
 
 @end

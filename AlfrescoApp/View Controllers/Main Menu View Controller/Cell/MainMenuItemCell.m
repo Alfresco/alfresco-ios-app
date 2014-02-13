@@ -13,7 +13,10 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.imageView.center = CGPointMake(25.0f, self.imageView.center.y);
+    
+    [self.contentView layoutSubviews];
+    self.menuImageView.layer.cornerRadius = self.menuImageView.frame.size.width/2;
+    self.menuImageView.clipsToBounds = YES;
 }
 
 @end
