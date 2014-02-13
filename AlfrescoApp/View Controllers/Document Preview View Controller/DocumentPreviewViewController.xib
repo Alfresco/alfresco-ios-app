@@ -74,7 +74,7 @@
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mime_doc.png" id="ajv-mC-8Oc" customClass="ThumbnailImageView">
+        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mime_doc.png" id="ajv-mC-8Oc" customClass="ThumbnailImageView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="174"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
         </imageView>

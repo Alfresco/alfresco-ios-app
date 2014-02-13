@@ -163,7 +163,7 @@
         standardCell.selectionStyle = UITableViewCellSelectionStyleNone;
         standardCell.textLabel.font = [UIFont systemFontOfSize:17.0f];
         standardCell.textLabel.text = document.name;
-        standardCell.imageView.image = imageForType([document.name pathExtension]);
+        standardCell.imageView.image = smallImageForType([document.name pathExtension]);
         
         cell = standardCell;
     }
@@ -184,7 +184,7 @@
         
         syncErrorCell.selectionStyle = UITableViewCellSelectionStyleNone;
         syncErrorCell.fileNameTextLabel.text = document.name;
-        syncErrorCell.imageView.image = imageForType([document.name pathExtension]);
+        syncErrorCell.imageView.image = smallImageForType([document.name pathExtension]);
         
         cell = syncErrorCell;
     }

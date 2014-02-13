@@ -19,6 +19,7 @@ static NSTimeInterval const kFadeSpeed = 0.2;
         [UIView animateWithDuration:kFadeSpeed animations:^{
             self.alpha = 0.0f;
         } completion:^(BOOL finished) {
+            self.contentMode = UIViewContentModeScaleAspectFit;
             self.image = image;
             
             [UIView animateWithDuration:kFadeSpeed animations:^{
@@ -28,6 +29,7 @@ static NSTimeInterval const kFadeSpeed = 0.2;
     }
     else
     {
+        self.contentMode = UIViewContentModeScaleAspectFit;
         self.image = image;
     }
 }
@@ -41,6 +43,7 @@ static NSTimeInterval const kFadeSpeed = 0.2;
         [UIView animateWithDuration:kFadeSpeed animations:^{
             self.alpha = 0.0f;
         } completion:^(BOOL finished) {
+            self.contentMode = UIViewContentModeScaleAspectFit;
             self.image = [UIImage imageWithData:imageData];
             
             [UIView animateWithDuration:kFadeSpeed animations:^{
@@ -50,6 +53,7 @@ static NSTimeInterval const kFadeSpeed = 0.2;
     }
     else
     {
+        self.contentMode = UIViewContentModeScaleAspectFit;
         self.image = [UIImage imageWithData:imageData];
     }
 }

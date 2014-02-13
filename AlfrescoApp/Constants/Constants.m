@@ -12,7 +12,8 @@ NSInteger const kMaxItemsPerListingRetrieve = 25;
 
 NSString * const kLicenseDictionaries = @"thirdPartyLibraries";
 
-NSString * const kImageMappingPlist = @"ImageMapping";
+NSString * const kSmallThumbnailImageMappingPlist = @"SmallThumbnailImageMapping";
+NSString * const kLargeThumbnailImageMappingPlist = @"LargeThumbnailImageMapping";
 
 NSString * const kRenditionImageDocLib = @"doclib";
 NSString * const kRenditionImageImagePreview = @"imgpreview";

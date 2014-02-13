@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>generic</key>
+	<string>large_blank_document.png</string>
+	<key>doc</key>
+	<string>large_word.png</string>
+	<key>docx</key>
+	<string>large_word.png</string>
+	<key>pdf</key>
+	<string>large_pdf.png</string>
+	<key>jpg</key>
+	<string>large_image.png</string>
+	<key>jpeg</key>
+	<string>large_image.png</string>
+	<key>tiff</key>
+	<string>large_image.png</string>
+	<key>bmp</key>
+	<string>large_image.png</string>
+	<key>png</key>
+	<string>large_image.png</string>
+	<key>ppt</key>
+	<string>large_powerpoint.png</string>
+	<key>pptx</key>
+	<string>large_powerpoint.png</string>
+	<key>txt</key>
+	<string>large_notes.png</string>
+	<key>mp3</key>
+	<string>large_audio.png</string>
+	<key>m4a</key>
+	<string>large_audio.png</string>
+	<key>wav</key>
+	<string>large_audio.png</string>
+	<key>aiff</key>
+	<string>large_audio.png</string>
+	<key>mp4</key>
+	<string>large_audio.png</string>
+	<key>mov</key>
+	<string>large_video.png</string>
+	<key>m4v</key>
+	<string>large_video.png</string>
+	<key>xls</key>
+	<string>large_excel.png</string>
+	<key>xlsx</key>
+	<string>large_excel.png</string>
+	<key>xml</key>
+	<string>large_xml.png</string>
+	<key>zip</key>
+	<string>large_zip.png</string>
+</dict>
+</plist>

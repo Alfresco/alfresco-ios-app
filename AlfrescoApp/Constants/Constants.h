@@ -14,7 +14,8 @@ extern NSInteger const kMaxItemsPerListingRetrieve;
 
 extern NSString * const kLicenseDictionaries;
 
-extern NSString * const kImageMappingPlist;
+extern NSString * const kSmallThumbnailImageMappingPlist;
+extern NSString * const kLargeThumbnailImageMappingPlist;
 
 extern NSString * const kRenditionImageDocLib;
 extern NSString * const kRenditionImageImagePreview;

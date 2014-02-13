@@ -210,7 +210,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     
     if (node.isFolder)
     {
-        nodeCell.image.image = imageForType(@"folder");
+        nodeCell.image.image = smallImageForType(@"folder");
     }
     else if (node.isDocument)
     {

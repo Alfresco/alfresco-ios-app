@@ -147,7 +147,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         AlfrescoDocument *currentDocument = [[DownloadManager sharedManager] infoForDocument:pathToCurrentDocument];
         
         UIImage *thumbnail = [self thumbnailFromDiskForDocument:currentDocument];
-        iconImage = thumbnail ? thumbnail : imageForType([fileURLString pathExtension]);
+        iconImage = thumbnail ? thumbnail : smallImageForType([fileURLString pathExtension]);
 
         // Removed rendering of the accessory view as part of MOBILE-1709
 //        if (!self.isDownloadPickerEnabled && currentDocument)
