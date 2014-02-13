@@ -164,7 +164,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
         
         cell.textLabel.font = [UIFont systemFontOfSize:kDefaultFontSize];
         cell.textLabel.text = account.accountDescription;
-        cell.imageView.image = (account.accountType == UserAccountTypeOnPremise) ? [UIImage imageNamed:@"server.png"] : [UIImage imageNamed:@"cloud.png"];
+        cell.imageView.image = (account.accountType == UserAccountTypeOnPremise) ? [UIImage imageNamed:@"accounttype-onpremise.png"] : [UIImage imageNamed:@"accounttype-cloud.png"];
         
         if (account.accountType != UserAccountTypeCloud)
         {

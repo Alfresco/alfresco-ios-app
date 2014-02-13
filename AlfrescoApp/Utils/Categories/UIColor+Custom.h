@@ -12,6 +12,7 @@
 
 + (UIColor *)lineSeparatorColor;
 + (UIColor *)themeBlueColor;
-+ (UIColor *)mainManuBackgroundColor;
++ (UIColor *)mainMenuBackgroundColor;
++ (UIColor *)mainMenuLabelColor;
 
 @end

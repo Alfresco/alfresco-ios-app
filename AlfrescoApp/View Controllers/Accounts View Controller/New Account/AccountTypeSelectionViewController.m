@@ -84,12 +84,12 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     cell.textLabel.font = [UIFont boldSystemFontOfSize:kAccountTypeTitleFontSize];
     if (indexPath.section == 0)
     {
-        cell.imageView.image = [UIImage imageNamed:@"cloud.png"];
+        cell.imageView.image = [UIImage imageNamed:@"accounttype-cloud.png"];
         cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
     }
     else
     {
-        cell.imageView.image = [UIImage imageNamed:@"server.png"];
+        cell.imageView.image = [UIImage imageNamed:@"accounttype-onpremise.png"];
         cell.textLabel.text = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
     }
     
