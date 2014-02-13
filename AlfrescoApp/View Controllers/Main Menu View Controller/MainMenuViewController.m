@@ -57,6 +57,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionUpdated:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appConfigurationUpdated:) name:kAlfrescoAppConfigurationUpdatedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListEmpty:) name:kAlfrescoAccountsListEmptyNotification object:nil];
     }
     return self;
 }
@@ -152,6 +153,27 @@ static NSUInteger const kDownloadsRowNumber = 1;
     [self configureLocalMainMenuItems:configurationManager];
 }
 
+- (void)accountListEmpty:(NSNotification *)notification
+{
+    MainMenuItem *downloadsMenuItem = [self existingMenuItemWithType:NavigationControllerTypeDownloads];
+    
+    if (!downloadsMenuItem)
+    {
+        NSMutableArray *localMenuItems = self.tableData.lastObject;
+        DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
+        NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
+        downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
+                                                               imageName:@"download-main-menu.png"
+                                                       localizedTitleKey:@"Downloads"
+                                                          viewController:downloadsNavigationController
+                                                         displayInDetail:NO];
+        [localMenuItems insertObject:downloadsMenuItem atIndex:kDownloadsRowNumber];
+        
+        NSInteger localMainMenuItemsSectionIndex = [self.tableData indexOfObject:localMenuItems];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:localMainMenuItemsSectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 #pragma mark - Private Functions
 
 - (void)informDelegateMenuItemSelected:(MainMenuItem *)menuItem
@@ -188,7 +210,15 @@ static NSUInteger const kDownloadsRowNumber = 1;
                                                                viewController:helpNavigationController
                                                               displayInDetail:YES];
     
-    return [@[settingsMenuItem, aboutMenuItem, helpMenuItem] mutableCopy];
+    DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
+    NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
+    MainMenuItem *downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
+                                                           imageName:@"download-main-menu.png"
+                                                   localizedTitleKey:@"Downloads"
+                                                      viewController:downloadsNavigationController
+                                                     displayInDetail:NO];
+    
+    return [@[settingsMenuItem, downloadsMenuItem, aboutMenuItem, helpMenuItem] mutableCopy];
 }
 
 - (void)configureLocalMainMenuItems:(AppConfigurationManager *)configurationManager
