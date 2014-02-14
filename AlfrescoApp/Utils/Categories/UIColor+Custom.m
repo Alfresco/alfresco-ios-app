@@ -15,9 +15,9 @@
     return [UIColor colorWithRed:(CGFloat)212.0/255.0 green:(CGFloat)212.0/255.0 blue:212.0/255.0 alpha:1.0f];
 }
 
-+ (UIColor *)themeBlueColor
++ (UIColor *)themeHeaderTextColor
 {
-    return [UIColor colorWithRed:(CGFloat)0.0/255.0 green:(CGFloat)91.0/255.0 blue:(CGFloat)255.0/255.0 alpha:1.0];
+    return [UIColor colorWithRed:(CGFloat)53.0/255.0 green:(CGFloat)53.0/255.0 blue:(CGFloat)55.0/255.0 alpha:1.0];
 }
 
 + (UIColor *)mainMenuBackgroundColor
@@ -28,6 +28,11 @@
 + (UIColor *)mainMenuLabelColor
 {
     return [UIColor whiteColor];
+}
+
++ (UIColor *)appTintColor
+{
+    return [UIColor colorWithRed:(CGFloat)53.0/255.0 green:(CGFloat)53.0/255.0 blue:(CGFloat)55.0/255.0 alpha:1.0];
 }
 
 @end

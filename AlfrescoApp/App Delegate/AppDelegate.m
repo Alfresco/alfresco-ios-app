@@ -23,6 +23,8 @@
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
 #import "AppConfigurationManager.h"
+#import "UIColor+Custom.h"
+
 #import <HockeySDK/HockeySDK.h>
 
 @interface AppDelegate()
@@ -64,7 +66,7 @@
     }
     
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
-    
+    self.window.tintColor = [UIColor appTintColor];
     [self.window makeKeyAndVisible];
     
 #ifdef DEBUG
