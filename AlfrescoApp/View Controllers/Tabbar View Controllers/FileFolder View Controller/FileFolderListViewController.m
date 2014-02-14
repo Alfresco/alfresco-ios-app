@@ -800,7 +800,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     SyncManager *syncManager = [SyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
     
-    BOOL isSyncNode = [syncManager isSyncPreferenceOn] && [syncManager isNodeInSyncList:currentNode];
+    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
     [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
     [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];

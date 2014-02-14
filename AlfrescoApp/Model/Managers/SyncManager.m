@@ -160,7 +160,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             }
         }
     }
-
+    
     return syncNodes;
 }
 
@@ -209,23 +209,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         [self.syncNodesInfo setValue:[nodes mutableCopy] forKey:[self selectedAccountIdentifier]];
     }
     
-    void (^checkIfFirstUseAndSync)(void) = ^ (void)
-    {
-        if ([self isFirstUse])
-        {
-            [self showSyncAlertIfFirstUseWithCompletionBlock:^(BOOL completed) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    
-                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
-                });
-            }];
-        }
-        else
-        {
-            [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
-        }
-    };
-    
     BOOL (^hasFolder)(NSArray *) = ^ BOOL (NSArray *nodesArray)
     {
         for (AlfrescoNode *alfrescoNode in nodesArray)
@@ -238,30 +221,48 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         return NO;
     };
     
-    [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
+    void (^retrievePermissionsAndNodeHierarchies)(void) = ^{
         
-        if (!hasFolder(nodes))
-        {
-            checkIfFirstUseAndSync();
-        }
-        else
-        {
-            // retrieve nodes for top level sync nodes
-            for (AlfrescoNode *node in nodes)
+        [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
+            
+            if (!hasFolder(nodes))
             {
-                if (node.isFolder)
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                });
+            }
+            else
+            {
+                // retrieve nodes for top level sync nodes
+                for (AlfrescoNode *node in nodes)
                 {
-                    [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                        
-                        if (self.nodeChildrenRequestsCount == 0)
-                        {
-                            checkIfFirstUseAndSync();
-                        }
-                    }];
+                    if (node.isFolder)
+                    {
+                        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                            
+                            if (self.nodeChildrenRequestsCount == 0)
+                            {
+                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                                });
+                            }
+                        }];
+                    }
                 }
             }
-        }
-    }];
+        }];
+    };
+    
+    if ([self isFirstUse])
+    {
+        [self showSyncAlertIfFirstUseWithCompletionBlock:^(BOOL completed) {
+            retrievePermissionsAndNodeHierarchies();
+        }];
+    }
+    else
+    {
+        retrievePermissionsAndNodeHierarchies();
+    }
 }
 
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -998,9 +999,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
                                                                             
                                                                             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier
-                                                                                                                           inAccountWithId:[self selectedAccountIdentifier]
-                                                                                                                      ifNotExistsCreateNew:NO
-                                                                                                                    inManagedObjectContext:nil];
+                                                                                                                                     inAccountWithId:[self selectedAccountIdentifier]
+                                                                                                                                ifNotExistsCreateNew:NO
+                                                                                                                              inManagedObjectContext:nil];
                                                                             [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
                                                                         }
                                                                         else
@@ -1008,9 +1009,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             nodeStatus.status = SyncStatusFailed;
                                                                             
                                                                             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier
-                                                                                                                           inAccountWithId:[self selectedAccountIdentifier]
-                                                                                                                      ifNotExistsCreateNew:YES
-                                                                                                                    inManagedObjectContext:nil];
+                                                                                                                                     inAccountWithId:[self selectedAccountIdentifier]
+                                                                                                                                ifNotExistsCreateNew:YES
+                                                                                                                              inManagedObjectContext:nil];
                                                                             syncError.errorCode = [NSNumber numberWithInt:error.code];
                                                                             syncError.errorDescription = [error localizedDescription];
                                                                             
@@ -1060,23 +1061,12 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node
 {
     BOOL isInSyncList = NO;
-    if (self.syncNodesInfo)
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
+    if (nodeInfo)
     {
-        NSArray *allNodes = [[self allRemoteSyncDocuments] valueForKey:@"identifier"];
-        if ([allNodes containsObject:node.identifier])
+        if (nodeInfo.isTopLevelSyncNode.boolValue || nodeInfo.parentNode)
         {
             isInSyncList = YES;
-        }
-    }
-    else
-    {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
-        if (nodeInfo)
-        {
-            if (nodeInfo.isTopLevelSyncNode.boolValue || nodeInfo.parentNode)
-            {
-                isInSyncList = YES;
-            }
         }
     }
     return isInSyncList;

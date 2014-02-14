@@ -208,7 +208,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
-    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
+    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
     [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
     [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
@@ -277,32 +277,27 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 return;
             }
-            NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:selectedNode.name];
-            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
-            
             [self showHUD];
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                [self.documentFolderService retrieveContentOfDocument:(AlfrescoDocument *)selectedNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                    [self hideHUD];
-                    if (succeeded)
-                    {
-                        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                               permissions:permissions
-                                                                                                                           contentFilePath:filePath
-                                                                                                                          documentLocation:InAppDocumentLocationSync
-                                                                                                                                   session:self.session];
-                        previewController.hidesBottomBarWhenPushed = YES;
-                        [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
-                    }
-                    else
-                    {
-                        // display an error
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                    // progress indicator update
-                }];
+                
+                [self hideHUD];
+                if (!error)
+                {
+                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                                                           permissions:permissions
+                                                                                                                       contentFilePath:filePath
+                                                                                                                      documentLocation:InAppDocumentLocationSync
+                                                                                                                               session:self.session];
+                    previewController.hidesBottomBarWhenPushed = YES;
+                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                }
+                else
+                {
+                    // display an error
+                    NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+                    displayErrorMessage(permissionRetrievalErrorMessage);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
             }];
         }
     }
