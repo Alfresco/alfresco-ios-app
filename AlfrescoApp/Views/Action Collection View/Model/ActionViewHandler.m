@@ -529,6 +529,11 @@
     }
 }
 
+- (void)downloadPickerDidCancel
+{
+    [self.controller dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - UploadFormViewControllerDelegate Functions
 
 - (void)didFinishUploadingNode:(AlfrescoNode *)node

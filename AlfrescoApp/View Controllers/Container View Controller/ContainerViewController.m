@@ -10,7 +10,7 @@
 #import "UIColor+Custom.h"
 
 static NSUInteger const kStatusBarViewHeight = 20.0f;
-//static CGFloat const kStatusBarTransparency = 0.9f;
+static CGFloat const kStatusBarTransparency = 0.9f;
 
 @interface ContainerViewController ()
 
@@ -55,6 +55,7 @@ static NSUInteger const kStatusBarViewHeight = 20.0f;
     
     UIView *statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenFrame.size.width, kStatusBarViewHeight)];
     statusBarBackgroundView.backgroundColor = [UIColor mainMenuBackgroundColor];
+    statusBarBackgroundView.alpha = kStatusBarTransparency;
     statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [view addSubview:statusBarBackgroundView];
     self.statusBarBackgroundView = statusBarBackgroundView;
