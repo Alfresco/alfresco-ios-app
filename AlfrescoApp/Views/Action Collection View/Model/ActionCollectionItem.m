@@ -100,7 +100,7 @@ NSString * const kActionCollectionIdentifierUploadDocument = @"ActionCollectionI
 
 + (instancetype)subfolderItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-delete.png"] title:NSLocalizedString(@"action.subfolder", @"subfolder") identifier:kActionCollectionIdentifierCreateSubfolder];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-add-folder.png"] title:NSLocalizedString(@"action.subfolder", @"subfolder") identifier:kActionCollectionIdentifierCreateSubfolder];
 }
 
 + (instancetype)uploadItem

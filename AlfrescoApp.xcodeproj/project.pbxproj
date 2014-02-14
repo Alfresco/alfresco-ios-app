@@ -408,6 +408,9 @@
 		73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
+		73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73D6491F18AD803F00333266 /* MainMenuItemCell.xib */; };
+		73D6492418AD855D00333266 /* actionsheet-add-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492218AD855D00333266 /* actionsheet-add-folder.png */; };
+		73D6492518AD855D00333266 /* actionsheet-add-folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */; };
 		73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
 		73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E9E20E17E7446400A198B4 /* Security.framework */; };
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
@@ -1008,6 +1011,9 @@
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73B95B1F17A6AE860099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		73D6491F18AD803F00333266 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuItemCell.xib; path = "Main Menu View Controller/Cell/MainMenuItemCell.xib"; sourceTree = "<group>"; };
+		73D6492218AD855D00333266 /* actionsheet-add-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-add-folder.png"; sourceTree = "<group>"; };
+		73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-add-folder@2x.png"; sourceTree = "<group>"; };
 		73E9E20B17E7394900A198B4 /* UserAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAccount.h; sourceTree = "<group>"; };
 		73E9E20C17E7394900A198B4 /* UserAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserAccount.m; sourceTree = "<group>"; };
 		73E9E20E17E7446400A198B4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1784,6 +1790,8 @@
 		73881F96188FF4CB0052C75F /* Action Sheet */ = {
 			isa = PBXGroup;
 			children = (
+				73D6492218AD855D00333266 /* actionsheet-add-folder.png */,
+				73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */,
 				73881FB9188FF6B00052C75F /* actionsheet-attachments.png */,
 				73881FBA188FF6B00052C75F /* actionsheet-attachments@2x.png */,
 				73881FBB188FF6B00052C75F /* actionsheet-comments.png */,
@@ -1834,6 +1842,7 @@
 			children = (
 				73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */,
 				73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */,
+				73D6491F18AD803F00333266 /* MainMenuItemCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2636,6 +2645,7 @@
 				0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */,
 				73FF558B18ACE2370009CA56 /* large_xml.png in Resources */,
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
+				73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */,
 				73881F731889800C0052C75F /* Help Error in Resources */,
 				731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */,
 				271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */,
@@ -2731,6 +2741,7 @@
 				73B95A9017A68B7E0099FB84 /* authorisationLogo.png in Resources */,
 				7379737118ABA3AF007613B2 /* mime_ppt.png in Resources */,
 				73B95A9117A68B7E0099FB84 /* authorisationLogo@2x.png in Resources */,
+				73D6492418AD855D00333266 /* actionsheet-add-folder.png in Resources */,
 				73B95A9217A68B7E0099FB84 /* collapse.png in Resources */,
 				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
 				27F054D51891832B00C2454C /* app-icon-120.png in Resources */,
@@ -2775,6 +2786,7 @@
 				27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */,
 				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				73FF558118ACE2370009CA56 /* large_notes.png in Resources */,
+				73D6492518AD855D00333266 /* actionsheet-add-folder@2x.png in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
