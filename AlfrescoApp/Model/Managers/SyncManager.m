@@ -19,6 +19,7 @@
 #import "AccountManager.h"
 #import "UserAccount.h"
 #import "SyncOperation.h"
+#import "ConnectivityManager.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
 
@@ -85,6 +86,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(statusChanged:)
                                                      name:kSyncStatusChangeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reachabilityChanged:)
+                                                     name:kAlfrescoConnectivityChangedNotification
                                                    object:nil];
     }
     return self;
@@ -155,17 +160,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             }
         }
     }
-    
-    // if folder is nil - means top level sync nodes are being returned
-    if (!folder)
-    {
-        for (AlfrescoNode *node in syncNodes)
-        {
-            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
-            nodeStatus.isFavorite = YES;
-        }
-    }
-    
+
     return syncNodes;
 }
 
@@ -762,9 +757,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
             }
             
-            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
-            nodeStatus.isFavorite = YES;
-            
             if (node.isFolder)
             {
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
@@ -793,7 +785,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
-    nodeStatus.isFavorite = NO;
     
     if (self.syncNodesInfo)
     {
@@ -1144,6 +1135,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return NO;
 }
 
+- (BOOL)isSyncPreferenceOn
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kSyncPreference];
+}
+
 #pragma mark - UIAlertview Methods
 
 - (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
@@ -1264,6 +1260,19 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     [privateManagedObjectContext reset];
     privateManagedObjectContext = nil;
+}
+
+#pragma mark - Reachibility Changed Notification
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    if (!hasInternetConnection)
+    {
+        self.alfrescoSession = nil;
+        self.documentFolderService = nil;
+        [self syncDocumentsAndFoldersForSession:nil withCompletionBlock:nil];
+    }
 }
 
 @end

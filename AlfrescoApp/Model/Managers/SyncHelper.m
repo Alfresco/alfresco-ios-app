@@ -156,8 +156,11 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         }
         syncNodeInfo.title = alfrescoNode.name;
         syncNodeInfo.node = archivedNode;
-        syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
         
+        if (isTopLevelSyncNode)
+        {
+            syncNodeInfo.isTopLevelSyncNode = [NSNumber numberWithBool:isTopLevelSyncNode];
+        }
         if (archivedPermissions)
         {
             syncNodeInfo.permissions = archivedPermissions;
