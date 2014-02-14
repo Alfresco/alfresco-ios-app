@@ -102,7 +102,7 @@
 {
     NSString *errorWebPage = [[NSBundle mainBundle] pathForResource:@"HelpErrorPage" ofType:@"html" inDirectory:@"Help Error"];
     WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:kAlfrescoHelpURLString
-                                                                                          initialTitle:NSLocalizedString(@"help.view.title", @"Help Title")
+                                                                                          initialTitle:NSLocalizedString(@"help.title", @"Help Title")
                                                                                  errorLoadingURLString:errorWebPage];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     

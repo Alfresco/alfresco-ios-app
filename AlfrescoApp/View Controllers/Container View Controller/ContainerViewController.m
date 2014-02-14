@@ -54,7 +54,7 @@ static NSUInteger const kStatusBarViewHeight = 20.0f;
 //    self.statusBarBackgroundView = statusBarBackgroundView;
     
     UIView *statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenFrame.size.width, kStatusBarViewHeight)];
-    statusBarBackgroundView.backgroundColor = [UIColor mainMenuBackgroundColor];
+    statusBarBackgroundView.backgroundColor = [UIColor blackColor];
     statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [view addSubview:statusBarBackgroundView];
     self.statusBarBackgroundView = statusBarBackgroundView;
