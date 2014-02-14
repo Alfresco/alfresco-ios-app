@@ -48,6 +48,9 @@
     
     [MigrationAssistant runMigrationAssistant];
     
+    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
+    self.window.tintColor = [UIColor appTintColor];
+
     AccountManager *accountManager = [AccountManager sharedManager];
     [AppConfigurationManager sharedManager];
     
@@ -65,8 +68,6 @@
         }];
     }
     
-    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
-    self.window.tintColor = [UIColor appTintColor];
     [self.window makeKeyAndVisible];
     
 #ifdef DEBUG
