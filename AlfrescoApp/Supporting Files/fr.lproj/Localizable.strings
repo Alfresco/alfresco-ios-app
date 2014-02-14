@@ -57,9 +57,9 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Sync Errors";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following documents have been unfavorited on the server but have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Downloads\"";
-"sync-errors.deleted-on-server-with-local-changes.header" = "The following documents have been deleted on the server but copies have been saved to the \"Downloads\" section";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following documents are pending sync and have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Downloads\"";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following documents have been unfavorited on the server but have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Local Files\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "The following documents have been deleted on the server but copies have been saved to your \"Local Files\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following documents are pending sync and have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Local Files\"";
 "sync-errors.button.sync" = "Sync";
 "sync-errors.button.save" = "Save";
 
@@ -249,8 +249,8 @@
 "multiselect.button.delete.counter" = "Delete (%u)";
 "multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 item from the server?";
 "multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d items from the server?";
-"multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 item from downloads?";
-"multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d items from downloads?";
+"multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 item from local files?";
+"multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d items from local files?";
 
 /**
  * About View Controller
@@ -340,24 +340,19 @@
 /**
  * Download View Controller
  */
-"downloads.title" = "Downloads";
+"downloads.title" = "Local Files";
 "downloadview.footer.one-document" = "1 Document";
 "downloadview.footer.multiple-documents" = "%d Documents";
-"downloadview.footer.no-documents" = "No Downloaded Documents";
+"downloadview.footer.no-documents" = "No Local Files";
 
 /**
  * DownloadManager
  */
 "download.overwrite.prompt.title" = "";
-"download.overwrite.prompt.message" = "There is already a downloaded document with the same name. Do you want to overwrite the existing document?";
+"download.overwrite.prompt.message" = "There is already a local file with the same name. Do you want to overwrite the existing one?";
 "download.success.message" = "Document Saved";
 "download.success-as.message" = "Document Saved as %@";
 "download.failure.message" = "Failed to save the document";
-
-/**
- * More View Controller
- */
-"more.view.title" = "More";
 
 /**
  * Comments View Controller
@@ -370,7 +365,7 @@
 /**
  * Help
  */
-"help.view.title" = "Help";
+"help.title" = "Help";
 
 /**
  * Metadata View Controller

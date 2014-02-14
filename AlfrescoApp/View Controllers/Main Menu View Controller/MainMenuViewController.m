@@ -25,6 +25,9 @@
 #import "DownloadsViewController.h"
 #import "UIColor+Custom.h"
 
+NSString * const kMainMenuItemCellIdentifier = @"MainMenuItemCellIdentifier";
+static CGFloat const kMainMenuItemCellHeight = 48.0f;
+
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
 static NSUInteger const kDownloadsRowNumber = 1;
@@ -74,8 +77,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStyleGrouped];
-    tableView.bounces = NO;
-    tableView.backgroundView = nil;
+    tableView.alwaysBounceVertical = NO;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.separatorColor = [UIColor clearColor];
     tableView.delegate = self;
@@ -87,6 +89,9 @@ static NSUInteger const kDownloadsRowNumber = 1;
     
     view.autoresizesSubviews = YES;
     self.view = view;
+
+    UINib *cellNib = [UINib nibWithNibName:@"MainMenuItemCell" bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:kMainMenuItemCellIdentifier];
 }
 
 #pragma mark - Table view data source
@@ -104,14 +109,8 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell)
-    {
-        cell = (MainMenuItemCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MainMenuItemCell class]) owner:self options:nil] lastObject];
-    }
-    
+    MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:kMainMenuItemCellIdentifier];
+
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
     cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
@@ -126,12 +125,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainMenuItemCell *cell = (MainMenuItemCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    
-    // Get the actual height required for the cell
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    
-    return height;
+    return kMainMenuItemCellHeight;
 }
 
 #pragma mark - Table view delegate
@@ -178,7 +172,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
         NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
         downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
                                                                imageName:@"mainmenu-localfiles.png"
-                                                       localizedTitleKey:@"Downloads"
+                                                       localizedTitleKey:@"downloads.title"
                                                           viewController:downloadsNavigationController
                                                          displayInDetail:NO];
         [localMenuItems insertObject:downloadsMenuItem atIndex:kDownloadsRowNumber];
@@ -220,7 +214,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
                                                                     imageName:@"mainmenu-help.png"
-                                                            localizedTitleKey:@"Help"
+                                                            localizedTitleKey:@"help.title"
                                                                viewController:helpNavigationController
                                                               displayInDetail:YES];
     
@@ -228,7 +222,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
     NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
     MainMenuItem *downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
                                                            imageName:@"mainmenu-localfiles.png"
-                                                   localizedTitleKey:@"Downloads"
+                                                   localizedTitleKey:@"downloads.title"
                                                       viewController:downloadsNavigationController
                                                      displayInDetail:NO];
     
@@ -248,7 +242,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
         NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
         downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
                                                                imageName:@"mainmenu-localfiles.png"
-                                                       localizedTitleKey:@"Downloads"
+                                                       localizedTitleKey:@"downloads.title"
                                                           viewController:downloadsNavigationController
                                                          displayInDetail:NO];
         [localMenuItems insertObject:downloadsMenuItem atIndex:kDownloadsRowNumber];

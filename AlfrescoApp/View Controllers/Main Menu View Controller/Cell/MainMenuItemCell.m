@@ -15,7 +15,7 @@
     [super layoutSubviews];
     
     [self.contentView layoutSubviews];
-    self.menuImageView.layer.cornerRadius = self.menuImageView.frame.size.width/2;
+    self.menuImageView.layer.cornerRadius = self.menuImageView.frame.size.width / 2;
     self.menuImageView.clipsToBounds = YES;
 }
 
