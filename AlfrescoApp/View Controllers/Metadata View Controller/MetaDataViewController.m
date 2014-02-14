@@ -112,7 +112,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     MetadataHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MetadataHeaderView class]) owner:self options:nil] lastObject];
-    headerView.headerTitleTextLabel.textColor = [UIColor themeBlueColor];
+    headerView.headerTitleTextLabel.textColor = [UIColor themeHeaderTextColor];
     
     NSString *headerTitleText = nil;
     if (section < self.tableViewData.count)
