@@ -123,6 +123,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
             self.isExpanded = YES;
+            self.detailViewController.view.userInteractionEnabled = NO;
         }];
     }
 }
@@ -144,6 +145,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
             self.isExpanded = NO;
+            self.detailViewController.view.userInteractionEnabled = YES;
         }];
     }
 }
