@@ -185,6 +185,7 @@
 		73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEB1806F5D2007172EE /* SwitchViewController.m */; };
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
+		73697A8318B22D9700021B02 /* UIViewController+Swizzed.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A8218B22D9700021B02 /* UIViewController+Swizzed.m */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972ED18A39DBE007613B2 /* FolderPreviewViewController.m */; };
 		737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972EE18A39DBE007613B2 /* FolderPreviewViewController.xib */; };
@@ -704,6 +705,8 @@
 		73632AEF1806F674007172EE /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuViewController.m; path = "Main Menu View Controller/MainMenuViewController.m"; sourceTree = "<group>"; };
 		73632AF318080E7C007172EE /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItem.h; path = "Main Menu View Controller/Model/MainMenuItem.h"; sourceTree = "<group>"; };
 		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
+		73697A8118B22D9700021B02 /* UIViewController+Swizzed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Swizzed.h"; sourceTree = "<group>"; };
+		73697A8218B22D9700021B02 /* UIViewController+Swizzed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Swizzed.m"; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -2093,6 +2096,8 @@
 				73881F52188831410052C75F /* UIView+DrawingUtils.m */,
 				73881F5418883BE10052C75F /* UIColor+Custom.h */,
 				73881F5518883BE10052C75F /* UIColor+Custom.m */,
+				73697A8118B22D9700021B02 /* UIViewController+Swizzed.h */,
+				73697A8218B22D9700021B02 /* UIViewController+Swizzed.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2992,6 +2997,7 @@
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
+				73697A8318B22D9700021B02 /* UIViewController+Swizzed.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
 				73B078A0189AB4F800D02C43 /* Reachability.m in Sources */,
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
