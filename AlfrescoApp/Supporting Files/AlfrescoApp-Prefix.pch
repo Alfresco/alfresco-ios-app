@@ -31,4 +31,4 @@
 #import "Constants.h"
 #import "Notifier.h"
 #import "AlfrescoFileManager+Extensions.h"
-#import "UIViewController+Swizzed.h"
+#import "UIViewController+Swizzled.h"

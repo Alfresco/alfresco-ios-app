@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import "UIViewController+Swizzed.h"
+#import "UIViewController+Swizzled.h"
 #import <objc/objc-runtime.h>
 
-@implementation UIViewController (Swizzed)
+@implementation UIViewController (Swizzled)
 
 - (void)presentViewController_swizzled:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
