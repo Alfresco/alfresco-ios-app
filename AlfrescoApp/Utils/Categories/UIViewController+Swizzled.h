@@ -1,5 +1,5 @@
 //
-//  UIViewController+Swizzed.h
+//  UIViewController+Swizzled.h
 //  AlfrescoApp
 //
 //  Created by Tauseef Mughal on 17/02/2014.
