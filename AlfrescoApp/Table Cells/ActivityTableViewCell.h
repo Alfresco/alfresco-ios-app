@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TTTAttributedLabel.h"
 
 @interface ActivityTableViewCell : UITableViewCell
 

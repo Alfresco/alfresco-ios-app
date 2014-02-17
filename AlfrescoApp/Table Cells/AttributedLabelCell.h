@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TTTAttributedLabel;
 
 @interface AttributedLabelCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel *attributedLabel;
+@property (nonatomic, weak) IBOutlet UILabel *attributedLabel;
 
 @end

@@ -202,6 +202,7 @@
 "awaitingverification.title" = "Alfresco in the cloud";
 "awaitingverification.buttons.refresh" = "Refresh";
 "awaitingverification.buttons.resendEmail" = "Resend Email";
+"awaitingverification.buttons.customercare" = "Customer Care";
 "awaitingverification.alerts.title" = "Alfresco in the cloud";
 "awaitingverification.alert.resendEmail.title" = "Successfully Resent Email";
 "awaitingverification.alert.resendEmail.success" = "Not receiving our emails? Please check you entered the email address correctly and remember to look in your spam folders.";
