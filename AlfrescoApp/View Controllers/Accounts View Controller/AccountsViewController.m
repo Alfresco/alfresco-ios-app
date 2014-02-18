@@ -216,26 +216,20 @@ static CGFloat const kDefaultFontSize = 18.0f;
         }
         else
         {
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
+            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount];
         }
         
         if (viewController)
         {
-            [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:self.navigationController animated:YES];
+            NavigationViewController *accountInfoNavigationController = [[NavigationViewController alloc] initWithRootViewController:viewController];
+            accountInfoNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentViewController:accountInfoNavigationController animated:YES completion:nil];
         }
     }
     else
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
-    
-    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeViewAccount];
-    [UniversalDevice pushToDisplayViewController:accountInfoController usingNavigationController:self.navigationController animated:YES];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
