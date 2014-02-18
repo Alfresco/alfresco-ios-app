@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+Swizzled.h"
-#import <objc/objc-runtime.h>
+#import <objc/runtime.h>
 
 @implementation UIViewController (Swizzled)
 
@@ -34,8 +34,8 @@
 + (void)load
 {
     Method defaultPresentViewControllerMethod = class_getInstanceMethod(self, @selector(presentViewController:animated:completion:));
-    Method swizzedPresentViewControllerMethod = class_getInstanceMethod(self, @selector(presentViewController_swizzled:animated:completion:));
-    method_exchangeImplementations(defaultPresentViewControllerMethod, swizzedPresentViewControllerMethod);
+    Method swizzledPresentViewControllerMethod = class_getInstanceMethod(self, @selector(presentViewController_swizzled:animated:completion:));
+    method_exchangeImplementations(defaultPresentViewControllerMethod, swizzledPresentViewControllerMethod);
     
     Method defaultDismissViewControllerAnimatedMethod = class_getInstanceMethod(self, @selector(dismissViewControllerAnimated:completion:));
     Method swizzledDismissViewControllerAnimatedMethod = class_getInstanceMethod(self, @selector(dismissViewControllerAnimated_swizzled:completion:));
