@@ -24,9 +24,6 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 static CGFloat const kAccountTypeFooterFontSize = 15.0f;
 static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
-static NSInteger const kSignUpButtonWidth = 84;
-static NSInteger const kSignUpButtongHeight = 24;
-
 @interface AccountTypeSelectionViewController () <AccountInfoViewControllerDelegate>
 
 @end
@@ -256,8 +253,11 @@ static NSInteger const kSignUpButtongHeight = 24;
 
 - (UIButton *)createCloudSignUpButton
 {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kSignUpButtonWidth, kSignUpButtongHeight)];
-    [button setTitle:NSLocalizedString(@"accounttype.footer.signuplink.linktext", @"Sign up") forState:UIControlStateNormal];
+    NSString *signUpButtonText = NSLocalizedString(@"cloudsignup.button.signup", @"Sign up");
+    CGSize signUpSize = [signUpButtonText sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:kAccountTypeTitleFontSize]}];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, signUpSize.width, signUpSize.height)];
+    [button setTitle:signUpButtonText forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     return button;
