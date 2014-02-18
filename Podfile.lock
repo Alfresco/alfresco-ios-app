@@ -1,13 +1,10 @@
 PODS:
   - MBProgressHUD (0.8)
-  - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
   - MBProgressHUD (~> 0.8)
-  - TTTAttributedLabel (~> 1.8.1)
 
 SPEC CHECKSUMS:
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
-  TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
 
 COCOAPODS: 0.29.0

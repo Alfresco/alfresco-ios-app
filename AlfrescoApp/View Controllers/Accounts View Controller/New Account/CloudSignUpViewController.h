@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
-#import "TTTAttributedLabel.h"
 
 @class UserAccount;
 @class CloudSignUpViewController;
@@ -21,7 +20,7 @@
 
 @end
 
-@interface CloudSignUpViewController : ParentListViewController <UITextFieldDelegate, TTTAttributedLabelDelegate>
+@interface CloudSignUpViewController : ParentListViewController <UITextFieldDelegate>
 
 /*
  * Initializer with account for which information is displayed or pass nil for account if signing up for new cloud account
