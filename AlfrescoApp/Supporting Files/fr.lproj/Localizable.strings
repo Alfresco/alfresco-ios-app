@@ -136,7 +136,6 @@
 "accounttype.footer.alfrescoServer" = "Connect to an Alfresco Server";
 "accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account";
 "accounttype.footer.signuplink" = "New to Alfresco? Sign up for a free account";
-"accounttype.footer.signuplink.linktext" = "Sign up";
 
 "accountdetails.placeholder.required" = "Required";
 "accountdetails.placeholder.optional" = "Optional";

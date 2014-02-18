@@ -257,6 +257,9 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     CGSize signUpSize = [signUpButtonText sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:kAccountTypeTitleFontSize]}];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, signUpSize.width, signUpSize.height)];
+    button.titleLabel.numberOfLines = 0;
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    
     [button setTitle:signUpButtonText forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
