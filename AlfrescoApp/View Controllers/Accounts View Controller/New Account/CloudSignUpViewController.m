@@ -77,11 +77,6 @@ static NSString * const kSource = @"mobile";
     {
         self.title = NSLocalizedString(@"cloudsignup.title", @"New Account");
         
-        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                target:self
-                                                                                action:@selector(cancel:)];
-        self.navigationItem.leftBarButtonItem = cancel;
-        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(textFieldDidChange:)
                                                      name:UITextFieldTextDidChangeNotification
@@ -96,6 +91,11 @@ static NSString * const kSource = @"mobile";
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
     }
+    
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                            target:self
+                                                                            action:@selector(cancel:)];
+    self.navigationItem.leftBarButtonItem = cancel;
     
     [self disablePullToRefresh];
     [self constructTableCells];

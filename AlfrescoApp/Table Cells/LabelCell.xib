@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0lY-qV-5Ph">
-                        <rect key="frame" x="12" y="11" width="45" height="21"/>
+                        <rect key="frame" x="12" y="11" width="234" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
@@ -30,7 +30,7 @@
                 <constraints>
                     <constraint firstItem="0lY-qV-5Ph" firstAttribute="leading" secondItem="Owg-Vk-fpL" secondAttribute="leading" constant="12" id="Ful-KB-71P"/>
                     <constraint firstAttribute="centerY" secondItem="0lY-qV-5Ph" secondAttribute="centerY" id="KGs-p7-Zah"/>
-                    <constraint firstItem="1Tz-dG-seZ" firstAttribute="leading" secondItem="0lY-qV-5Ph" secondAttribute="trailing" constant="209" id="Siz-Kt-DZb"/>
+                    <constraint firstItem="1Tz-dG-seZ" firstAttribute="leading" secondItem="0lY-qV-5Ph" secondAttribute="trailing" constant="20" id="Siz-Kt-DZb"/>
                     <constraint firstAttribute="trailing" secondItem="1Tz-dG-seZ" secondAttribute="trailing" constant="12" id="tR3-oD-clK"/>
                     <constraint firstAttribute="centerY" secondItem="1Tz-dG-seZ" secondAttribute="centerY" id="wTF-dL-iZg"/>
                 </constraints>

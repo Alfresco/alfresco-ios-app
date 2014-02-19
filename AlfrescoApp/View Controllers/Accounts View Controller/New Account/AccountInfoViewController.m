@@ -80,31 +80,21 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     [self disablePullToRefresh];
     [self constructTableCellsForAlfrescoServer];
     
-    if (self.activityType == AccountActivityTypeViewAccount)
+    if (self.activityType == AccountActivityTypeNewAccount)
     {
-        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                    target:self
-                                                                                    action:@selector(editButtonClicked:)];
-        [self.navigationItem setRightBarButtonItem:editButton];
+        self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
     }
-    else
-    {
-        if (self.activityType == AccountActivityTypeNewAccount)
-        {
-            self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
-        }
-        
-        self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                        target:self
-                                                                        action:@selector(saveButtonClicked:)];
-        [self.navigationItem setRightBarButtonItem:self.saveButton];
-        self.saveButton.enabled = NO;
-        
-        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                target:self
-                                                                                action:@selector(cancel:)];
-        self.navigationItem.leftBarButtonItem = cancel;
-    }
+    
+    self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                    target:self
+                                                                    action:@selector(saveButtonClicked:)];
+    [self.navigationItem setRightBarButtonItem:self.saveButton];
+    self.saveButton.enabled = NO;
+    
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                            target:self
+                                                                            action:@selector(cancel:)];
+    self.navigationItem.leftBarButtonItem = cancel;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -114,27 +104,24 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     self.certificateLabel.text = self.formBackupAccount.accountCertificate.summary;
     
-    if (self.activityType != AccountActivityTypeViewAccount)
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textFieldDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWasShown:)
-                                                     name:UIKeyboardDidShowNotification object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillBeHidden:)
-                                                     name:UIKeyboardWillHideNotification object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    if (self.activityType != AccountActivityTypeViewAccount)
+    
+    if (self.activityType != AccountActivityTypeEditAccount)
     {
         // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
         double delayInSeconds = 0.1;
@@ -187,14 +174,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         }
         
     }];
-}
-
--(void)editButtonClicked:(id)sender
-{
-    AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:self.account accountActivityType:AccountActivityTypeEditAccount];
-    NavigationViewController *editAccountNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountInfoController];
-    editAccountNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:editAccountNavigationController animated:YES completion:nil];
 }
 
 - (void)cancel:(id)sender
@@ -251,7 +230,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.activityType != AccountActivityTypeViewAccount && indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
+    if (indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
     {
         [self.activeTextField resignFirstResponder];
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
@@ -268,121 +247,78 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 {
     NSArray *groups = nil;
     
-    LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-    certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
-    certificateCell.valueLabel.text = self.account.accountCertificate.summary;
-    self.certificateLabel = certificateCell.valueLabel;
+    TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
+    descriptionCell.valueTextField.delegate = self;
+    descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+    descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    self.descriptionTextField = descriptionCell.valueTextField;
+    self.descriptionTextField.text = self.formBackupAccount.accountDescription;
     
-    if (self.activityType == AccountActivityTypeNewAccount || self.activityType == AccountActivityTypeEditAccount)
+    if (self.account.accountType == UserAccountTypeOnPremise)
     {
-        TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
-        descriptionCell.valueTextField.delegate = self;
-        descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-        descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        self.descriptionTextField = descriptionCell.valueTextField;
-        self.descriptionTextField.text = self.formBackupAccount.accountDescription;
-
-        if (self.account.accountType == UserAccountTypeOnPremise)
-        {
-            TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-            usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-            usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            usernameCell.valueTextField.delegate = self;
-            self.usernameTextField = usernameCell.valueTextField;
-            self.usernameTextField.text = self.formBackupAccount.username;
-            
-            TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-            passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
-            passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            passwordCell.valueTextField.secureTextEntry = YES;
-            passwordCell.valueTextField.delegate = self;
-            self.passwordTextField = passwordCell.valueTextField;
-            self.passwordTextField.text = self.formBackupAccount.password;
-            
-            TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-            serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-            serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            serverAddressCell.valueTextField.delegate = self;
-            self.serverAddressTextField = serverAddressCell.valueTextField;
-            self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
-            
-            SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
-            protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-            self.protocolSwitch = protocolCell.valueSwitch;
-            [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
-            BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
-            [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-            
-            TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-            portCell.valueTextField.text = kDefaultHTTPPort;
-            portCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
-            portCell.valueTextField.delegate = self;
-            self.portTextField = portCell.valueTextField;
-            self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
-            
-            TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-            serviceDocumentCell.valueTextField.text = kServiceDocument;
-            serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
-            serviceDocumentCell.valueTextField.delegate = self;
-            self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
-            self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
-            
-            certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            groups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                        @[portCell, serviceDocumentCell, certificateCell] ];
-        }
-        else
-        {
-            groups = @[ @[descriptionCell] ];
-        }
+        TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
+        usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+        usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        usernameCell.valueTextField.delegate = self;
+        self.usernameTextField = usernameCell.valueTextField;
+        self.usernameTextField.text = self.formBackupAccount.username;
+        
+        TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
+        passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
+        passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        passwordCell.valueTextField.secureTextEntry = YES;
+        passwordCell.valueTextField.delegate = self;
+        self.passwordTextField = passwordCell.valueTextField;
+        self.passwordTextField.text = self.formBackupAccount.password;
+        
+        TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
+        serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+        serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        serverAddressCell.valueTextField.delegate = self;
+        self.serverAddressTextField = serverAddressCell.valueTextField;
+        self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
+        
+        SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+        protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
+        self.protocolSwitch = protocolCell.valueSwitch;
+        [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
+        BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
+        [self.protocolSwitch setOn:isHTTPSOn animated:YES];
+        
+        TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
+        portCell.valueTextField.text = kDefaultHTTPPort;
+        portCell.valueTextField.returnKeyType = UIReturnKeyNext;
+        portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
+        portCell.valueTextField.delegate = self;
+        self.portTextField = portCell.valueTextField;
+        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
+        
+        TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
+        serviceDocumentCell.valueTextField.text = kServiceDocument;
+        serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
+        serviceDocumentCell.valueTextField.delegate = self;
+        self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
+        self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
+        
+        LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
+        certificateCell.valueLabel.text = self.account.accountCertificate.summary;
+        self.certificateLabel = certificateCell.valueLabel;
+        
+        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        groups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                    @[portCell, serviceDocumentCell, certificateCell] ];
     }
     else
     {
-        LabelCell *descriptionCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
-        descriptionCell.valueLabel.text = self.account.accountDescription;
-        
-        if (self.account.accountType == UserAccountTypeOnPremise)
-        {
-            LabelCell *usernameCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-            usernameCell.valueLabel.text = self.account.username;
-            
-            LabelCell *passwordCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-            passwordCell.valueLabel.text = @"**************";
-            
-            LabelCell *serverAddressCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-            serverAddressCell.valueLabel.text = self.account.serverAddress;
-            
-            LabelCell *protocolCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-            protocolCell.valueLabel.text = self.account.protocol;
-            
-            LabelCell *portCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-            portCell.valueLabel.text = self.account.serverPort;
-            
-            LabelCell *serviceDocumentCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-            serviceDocumentCell.valueLabel.text = self.account.serviceDocument;
-
-            groups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                        @[portCell, serviceDocumentCell, certificateCell] ];
-        }
-        else
-        {
-            groups = @[ @[descriptionCell] ];
-        }
+        groups = @[ @[descriptionCell] ];
     }
     self.tableGroups = groups;
 }
@@ -409,7 +345,9 @@ static NSInteger const kAccountInfoCertificateRow = 2;
  */
 - (BOOL)validateAccountFieldsValuesForServer
 {
-    BOOL isValid = YES;
+    BOOL didChangeAndIsValid = YES;
+    BOOL hasAccountPropertiesChanged = NO;
+    
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
         //User input validations
@@ -425,9 +363,56 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         BOOL usernameError = [username isEqualToString:@""];
         BOOL serviceDocError = [serviceDoc isEqualToString:@""];
         
-        isValid = !hostnameError && !portIsInvalid && !usernameError && !serviceDocError;
+        didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !serviceDocError;
+        
+        if (self.activityType == AccountActivityTypeEditAccount && didChangeAndIsValid)
+        {
+            if (![self.formBackupAccount.username isEqualToString:self.usernameTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.password isEqualToString:self.passwordTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.serverAddress isEqualToString:self.serverAddressTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.serverPort isEqualToString:self.portTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.serviceDocument isEqualToString:self.serviceDocumentTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
+            NSString *protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+            if (![self.formBackupAccount.protocol isEqualToString:protocol])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
+            NSString *certificateSummary = self.formBackupAccount.accountCertificate.summary ? self.formBackupAccount.accountCertificate.summary : @"";
+            NSString *certificateLabelText = self.certificateLabel.text ? self.certificateLabel.text : @"";
+            if (![certificateSummary isEqualToString:certificateLabelText])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
+            didChangeAndIsValid = hasAccountPropertiesChanged;
+        }
     }
-    return isValid;
+    else
+    {
+        didChangeAndIsValid = ![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text];
+    }
+    return didChangeAndIsValid;
 }
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session))completionBlock
@@ -491,6 +476,8 @@ static NSInteger const kAccountInfoCertificateRow = 2;
             self.portTextField.text = kDefaultHTTPPort;
         }
     }
+    
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
