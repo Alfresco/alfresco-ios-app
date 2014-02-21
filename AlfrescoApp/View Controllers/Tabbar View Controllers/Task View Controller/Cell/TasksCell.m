@@ -26,11 +26,11 @@ static CGFloat const kMinimumCellHeight = 70.0f;
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    UIColor *test = self.taskPriorityView.backgroundColor;
+    UIColor *taskPriorityColour = self.taskPriorityView.backgroundColor;
     
     [super setSelected:selected animated:animated];
     
-    self.taskPriorityView.backgroundColor = test;
+    self.taskPriorityView.backgroundColor = taskPriorityColour;
 }
 
 - (void)layoutSubviews
