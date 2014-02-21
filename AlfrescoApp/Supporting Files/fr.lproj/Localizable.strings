@@ -457,6 +457,8 @@
  */
 "tasks.title" = "Tasks";
 "tasks.process.unnamed" = "Unnamed Process";
+"tasks.title.mytasks" = "My Tasks";
+"tasks.title.taskistarted" = "Tasks I Started";
 
 /**
  * Settings

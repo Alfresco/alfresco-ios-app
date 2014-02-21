@@ -35,4 +35,19 @@
     return [UIColor colorWithRed:(CGFloat)53.0/255.0 green:(CGFloat)53.0/255.0 blue:(CGFloat)55.0/255.0 alpha:1.0];
 }
 
++ (UIColor *)highWorkflowPriorityColor
+{
+    return [UIColor redColor];
+}
+
++ (UIColor *)mediumWorkflowPriorityColor
+{
+    return [UIColor orangeColor];
+}
+
++ (UIColor *)lowWorkflowPriorityColor
+{
+    return [UIColor blueColor];
+}
+
 @end
