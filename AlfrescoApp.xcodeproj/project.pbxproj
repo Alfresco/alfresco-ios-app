@@ -186,6 +186,10 @@
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
 		73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */; };
+		73697A8B18B26B0700021B02 /* TasksCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A8A18B26B0700021B02 /* TasksCell.m */; };
+		73697A8D18B26B1800021B02 /* TasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697A8C18B26B1800021B02 /* TasksCell.xib */; };
+		73697A8F18B2758A00021B02 /* TaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697A8E18B2758A00021B02 /* TaskViewController.xib */; };
+		73697A9518B7A47700021B02 /* TaskGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A9418B7A47700021B02 /* TaskGroupItem.m */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972ED18A39DBE007613B2 /* FolderPreviewViewController.m */; };
 		737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972EE18A39DBE007613B2 /* FolderPreviewViewController.xib */; };
@@ -707,6 +711,12 @@
 		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
 		73697A8118B22D9700021B02 /* UIViewController+Swizzled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Swizzled.h"; sourceTree = "<group>"; };
 		73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Swizzled.m"; sourceTree = "<group>"; };
+		73697A8918B26B0700021B02 /* TasksCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksCell.h; path = "Task View Controller/Cell/TasksCell.h"; sourceTree = "<group>"; };
+		73697A8A18B26B0700021B02 /* TasksCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksCell.m; path = "Task View Controller/Cell/TasksCell.m"; sourceTree = "<group>"; };
+		73697A8C18B26B1800021B02 /* TasksCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TasksCell.xib; path = "Task View Controller/Cell/TasksCell.xib"; sourceTree = "<group>"; };
+		73697A8E18B2758A00021B02 /* TaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TaskViewController.xib; path = "Task View Controller/TaskViewController.xib"; sourceTree = "<group>"; };
+		73697A9318B7A47700021B02 /* TaskGroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskGroupItem.h; path = "Task View Controller/Model/TaskGroupItem.h"; sourceTree = "<group>"; };
+		73697A9418B7A47700021B02 /* TaskGroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskGroupItem.m; path = "Task View Controller/Model/TaskGroupItem.m"; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1516,6 +1526,25 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		73697A8818B26A9F00021B02 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				73697A8918B26B0700021B02 /* TasksCell.h */,
+				73697A8A18B26B0700021B02 /* TasksCell.m */,
+				73697A8C18B26B1800021B02 /* TasksCell.xib */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		73697A9718B7A48000021B02 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				73697A9318B7A47700021B02 /* TaskGroupItem.h */,
+				73697A9418B7A47700021B02 /* TaskGroupItem.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -1723,8 +1752,11 @@
 		7384BDE817F1A46300C6A54F /* Tasks View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				73697A9718B7A48000021B02 /* Model */,
+				73697A8818B26A9F00021B02 /* Cell */,
 				7384BDE917F1A4A800C6A54F /* TaskViewController.h */,
 				7384BDEA17F1A4A800C6A54F /* TaskViewController.m */,
+				73697A8E18B2758A00021B02 /* TaskViewController.xib */,
 			);
 			name = "Tasks View Controller";
 			sourceTree = "<group>";
@@ -2645,6 +2677,7 @@
 				73B95A6717A68B7E0099FB84 /* play-media.png in Resources */,
 				73881FE4188FF9680052C75F /* actionsheet-favourited@2x.png in Resources */,
 				73881FD4188FF6B00052C75F /* actionsheet-liked.png in Resources */,
+				73697A8D18B26B1800021B02 /* TasksCell.xib in Resources */,
 				7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */,
 				08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */,
 				0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */,
@@ -2873,6 +2906,7 @@
 				27F054D71891832B00C2454C /* app-icon-152.png in Resources */,
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
+				73697A8F18B2758A00021B02 /* TaskViewController.xib in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
 				7379737F18ABA3AF007613B2 /* site.png in Resources */,
@@ -3082,12 +3116,14 @@
 				08948C601823C24D006D38F5 /* SwitchCell.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
+				73697A8B18B26B0700021B02 /* TasksCell.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
+				73697A9518B7A47700021B02 /* TaskGroupItem.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
