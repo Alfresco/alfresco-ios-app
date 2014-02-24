@@ -33,6 +33,9 @@ static CGFloat const kMainMenuItemCellHeight = 48.0f;
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
 static NSUInteger const kDownloadsRowNumber = 1;
 
+static NSUInteger const kAccountsSectionNumber = 0;
+static NSUInteger const kAccountsRowNumber = 0;
+
 @interface MainMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
@@ -458,14 +461,29 @@ static NSUInteger const kDownloadsRowNumber = 1;
         }
         
         // select Sites tab if exists otherwise default to Accounts
+        NSInteger indexOfItemDisplayed = NSNotFound;
+        
         if ([self existingMenuItemWithType:NavigationControllerTypeSites])
         {
             [self displayViewControllerWithType:NavigationControllerTypeSites];
+            indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];
         }
         else
         {
             [self displayViewControllerWithType:NavigationControllerTypeAccounts];
         }
+        
+        // select cell for displayed menu item
+        NSIndexPath *selectedItemIndexPath = nil;
+        if (indexOfItemDisplayed != NSNotFound)
+        {
+            selectedItemIndexPath = [NSIndexPath indexPathForRow:indexOfItemDisplayed inSection:kRepositoryItemsSectionNumber];
+        }
+        else
+        {
+            selectedItemIndexPath = [NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber];
+        }
+        [self.tableView selectRowAtIndexPath:selectedItemIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
     else
     {

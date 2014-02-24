@@ -11,6 +11,7 @@
 #import "UICollectionView+AutoLayout.h"
 #import "Utility.h"
 #import "UIView+DrawingUtils.h"
+#import "UIColor+Custom.h"
 
 static CGFloat const kSpacingBetweenSections = 8.0f;
 static CGFloat const kSpacingBetweenCells = 15.0f;
@@ -116,6 +117,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     
     cell.imageView.image = itemSelected.itemImage;
     cell.titleLabel.text = itemSelected.itemTitle;
+    cell.imageView.tintColor = [UIColor documentActionsTintColor];
     
     return cell;
 }

@@ -15,6 +15,7 @@
 + (UIColor *)mainMenuBackgroundColor;
 + (UIColor *)mainMenuLabelColor;
 + (UIColor *)appTintColor;
++ (UIColor *)documentActionsTintColor;
 + (UIColor *)highWorkflowPriorityColor;
 + (UIColor *)mediumWorkflowPriorityColor;
 + (UIColor *)lowWorkflowPriorityColor;
