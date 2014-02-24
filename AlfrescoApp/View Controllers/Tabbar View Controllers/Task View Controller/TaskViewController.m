@@ -66,12 +66,15 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self.navigationItem setRightBarButtonItem:filterButton];
     self.filterButton = filterButton;
     
-    [self showHUD];
-    [self loadTasksForTaskType:self.displayedTaskType listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self hideHUD];
-        [self hidePullToRefreshView];
-        [self reloadTableViewWithPagingResult:pagingResult error:error];
-    }];
+    if (self.session)
+    {
+        [self showHUD];
+        [self loadTasksForTaskType:self.displayedTaskType listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            [self hidePullToRefreshView];
+            [self reloadTableViewWithPagingResult:pagingResult error:error];
+        }];
+    }
 }
 
 #pragma mark - Private Functions
