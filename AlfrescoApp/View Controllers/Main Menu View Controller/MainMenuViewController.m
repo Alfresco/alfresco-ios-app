@@ -22,6 +22,7 @@
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
 #import "PreviewViewController.h"
+#import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
 #import "UIColor+Custom.h"
 
@@ -137,13 +138,21 @@ static NSUInteger const kDownloadsRowNumber = 1;
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
-    [self informDelegateMenuItemSelected:selectedMenuItem];
-    
-    // expand the detail view controller for the iPad
-    if (IS_IPAD)
+    if (selectedMenuItem.controllerType == NavigationControllerTypeHelp)
     {
-        DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
-        [detailSplitViewController expandViewController];
+        selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationPageSheet;
+        [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
+    }
+    else
+    {
+        [self informDelegateMenuItemSelected:selectedMenuItem];
+        
+        // expand the detail view controller for the iPad
+        if (IS_IPAD)
+        {
+            DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
+            [detailSplitViewController expandViewController];
+        }
     }
 }
 
@@ -210,7 +219,8 @@ static NSUInteger const kDownloadsRowNumber = 1;
                                                                 viewController:aboutNavigationController
                                                                displayInDetail:YES];
     
-    PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
+    NSURL *userGuidUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"UserGuide" ofType:@"pdf"]];
+    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:userGuidUrl initialTitle:NSLocalizedString(@"help.title", @"Help") errorLoadingURL:nil];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
                                                                     imageName:@"mainmenu-help.png"
