@@ -33,6 +33,9 @@ static CGFloat const kMainMenuItemCellHeight = 48.0f;
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
 static NSUInteger const kDownloadsRowNumber = 1;
 
+static NSUInteger const kAccountsSectionNumber = 0;
+static NSUInteger const kAccountsRowNumber = 0;
+
 @interface MainMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
@@ -111,16 +114,14 @@ static NSUInteger const kDownloadsRowNumber = 1;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:kMainMenuItemCellIdentifier];
-
+    
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
     cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
     cell.menuTextLabel.textColor = [UIColor mainMenuLabelColor];
     cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
-    
     return cell;
 }
 
@@ -133,14 +134,17 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
     if (selectedMenuItem.controllerType == NavigationControllerTypeHelp)
     {
         selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationPageSheet;
+        [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
+    }
+    else if (selectedMenuItem.controllerType == NavigationControllerTypeSettings)
+    {
+        selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
     }
     else
@@ -457,14 +461,29 @@ static NSUInteger const kDownloadsRowNumber = 1;
         }
         
         // select Sites tab if exists otherwise default to Accounts
+        NSInteger indexOfItemDisplayed = NSNotFound;
+        
         if ([self existingMenuItemWithType:NavigationControllerTypeSites])
         {
             [self displayViewControllerWithType:NavigationControllerTypeSites];
+            indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];
         }
         else
         {
             [self displayViewControllerWithType:NavigationControllerTypeAccounts];
         }
+        
+        // select cell for displayed menu item
+        NSIndexPath *selectedItemIndexPath = nil;
+        if (indexOfItemDisplayed != NSNotFound)
+        {
+            selectedItemIndexPath = [NSIndexPath indexPathForRow:indexOfItemDisplayed inSection:kRepositoryItemsSectionNumber];
+        }
+        else
+        {
+            selectedItemIndexPath = [NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber];
+        }
+        [self.tableView selectRowAtIndexPath:selectedItemIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
     else
     {

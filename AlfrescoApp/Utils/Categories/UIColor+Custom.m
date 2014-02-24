@@ -32,6 +32,11 @@
 
 + (UIColor *)appTintColor
 {
+    return [UIColor colorWithRed:(CGFloat)81.0/255.0 green:(CGFloat)185.0/255.0 blue:(CGFloat)219.0/255.0 alpha:1.0];
+}
+
++ (UIColor *)documentActionsTintColor
+{
     return [UIColor colorWithRed:(CGFloat)53.0/255.0 green:(CGFloat)53.0/255.0 blue:(CGFloat)55.0/255.0 alpha:1.0];
 }
 

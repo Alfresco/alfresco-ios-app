@@ -19,6 +19,7 @@ static NSInteger const kCloudSectionNumber = 0;
 static NSInteger const kOnPremiseSectionNumber = 1;
 
 static CGFloat const kAccountTypeTitleFontSize = 20.0f;
+static CGFloat const kAccountTypeInlineButtonFontSize = 14.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
 static CGFloat const kAccountTypeFooterFontSize = 15.0f;
@@ -253,15 +254,23 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (UIButton *)createCloudSignUpButton
 {
-    NSString *signUpButtonText = NSLocalizedString(@"cloudsignup.button.signup", @"Sign up");
-    CGSize signUpSize = [signUpButtonText sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:kAccountTypeTitleFontSize]}];
+    NSString *signUpButtonText = [NSLocalizedString(@"cloudsignup.button.signup", @"Sign up") uppercaseString];
+    UIFont *signUpFont = [UIFont systemFontOfSize:kAccountTypeInlineButtonFontSize];
+    CGSize signUpSize = [signUpButtonText sizeWithAttributes:@{NSFontAttributeName:signUpFont}];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, signUpSize.width, signUpSize.height)];
     button.titleLabel.numberOfLines = 0;
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    button.titleLabel.font = signUpFont;
     
     [button setTitle:signUpButtonText forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+
+    [button setFrame:CGRectInset(button.frame, -8.0f, -4.0f)];
+    button.layer.cornerRadius = 4.0f;
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = button.titleLabel.textColor.CGColor;
+    
     [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
