@@ -143,6 +143,11 @@ static NSUInteger const kDownloadsRowNumber = 1;
         selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationPageSheet;
         [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
     }
+    else if (selectedMenuItem.controllerType == NavigationControllerTypeSettings)
+    {
+        selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
+    }
     else
     {
         [self informDelegateMenuItemSelected:selectedMenuItem];

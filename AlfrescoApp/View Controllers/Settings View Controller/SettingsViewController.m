@@ -45,9 +45,19 @@
     self.tableViewData = [dictionary objectForKey:kSettingsTableViewData];
     
     self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                target:self
+                                                                                action:@selector(doneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 #pragma mark - Private Functions
+
+- (void)doneButtonPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (Class)determineTableViewCellClassFromCellInfo:(NSDictionary *)cellInfo
 {
