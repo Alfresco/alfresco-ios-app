@@ -8,8 +8,8 @@
 
 #import "SitesCell.h"
 
-const CGFloat SitesCellDefaultHeight = 46.0f;
-const CGFloat SitesCellExpandedHeight = 86.0f;
+const CGFloat SitesCellDefaultHeight = 64.0f;
+const CGFloat SitesCellExpandedHeight = 134.0f;
 
 @implementation SitesCell
 
@@ -19,18 +19,7 @@ const CGFloat SitesCellExpandedHeight = 86.0f;
     siteOptionViewFrame.origin.y = self.contentView.frame.size.height;
     self.siteOptionsContainerView.frame = siteOptionViewFrame;
     
-    UIImage *blackButtonImage = [[UIImage imageNamed:@"black-cell-action-button.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5];
-    [self.favoriteButton setBackgroundImage:blackButtonImage forState:UIControlStateNormal];
-    [self.joinButton setBackgroundImage:blackButtonImage forState:UIControlStateNormal];
-    
-    UIImage *backgroundImage = [[UIImage imageNamed:@"cell-actions-inner-shadow.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-    backgroundView.alpha = 0.6;
-    backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    backgroundView.frame = CGRectMake(0, 0, self.siteOptionsContainerView.frame.size.width, self.siteOptionsContainerView.frame.size.height);
-    [self.siteOptionsContainerView addSubview:backgroundView];
-    [self.siteOptionsContainerView sendSubviewToBack:backgroundView];
-    
+    self.siteOptionsContainerView.backgroundColor = [UIColor colorWithRed:234/255.0f green:235/255.0f blue:237/255.0f alpha:1.0f];
     [self.contentView addSubview:self.siteOptionsContainerView];
 }
 
@@ -39,47 +28,47 @@ const CGFloat SitesCellExpandedHeight = 86.0f;
 - (void)updateCellStateWithSite:(AlfrescoSite *)site
 {
     UIImage *favoriteButtonImage = nil;
-    NSString *favoriteButtonText = nil;
+    NSString *favoriteLabelText = nil;
     UIImage *joinButtonImage = nil;
-    NSString *joinButtonText = nil;
+    NSString *joinLabelText = nil;
     
     if (site.isFavorite)
     {
         favoriteButtonImage = [UIImage imageNamed:@"site-action-unfavorite.png"];
-        favoriteButtonText = NSLocalizedString(@"sites.siteCell.unfavorite", @"Unfavorite");
+        favoriteLabelText = NSLocalizedString(@"sites.siteCell.unfavorite", @"Unfavorite");
     }
     else
     {
         favoriteButtonImage = [UIImage imageNamed:@"site-action-favorite.png"];
-        favoriteButtonText = NSLocalizedString(@"sites.siteCell.favorite", @"Favorite");
+        favoriteLabelText = NSLocalizedString(@"sites.siteCell.favorite", @"Favorite");
     }
     
     [self.favoriteButton setImage:favoriteButtonImage forState:UIControlStateNormal];
-    [self.favoriteButton setTitle:favoriteButtonText forState:UIControlStateNormal];
+    self.favoriteLabel.text = favoriteLabelText;
     
     if (site.isMember)
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-leave.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.leave", @"Leave");
+        joinLabelText = NSLocalizedString(@"sites.siteCell.leave", @"Leave");
     }
     else if (site.isPendingMember)
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-cancelrequest.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.cancel.request", @"Cancel Request");
+        joinLabelText = NSLocalizedString(@"sites.siteCell.cancel.request", @"Cancel Request");
     }
     else if (site.visibility == AlfrescoSiteVisibilityModerated)
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-requesttojoin.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.request.to.join", @"Request To Join");
+        joinLabelText = NSLocalizedString(@"sites.siteCell.request.to.join", @"Request To Join");
     }
     else
     {
         joinButtonImage = [UIImage imageNamed:@"site-action-join.png"];
-        joinButtonText = NSLocalizedString(@"sites.siteCell.join", @"Join");
+        joinLabelText = NSLocalizedString(@"sites.siteCell.join", @"Join");
     }
     
     [self.joinButton setImage:joinButtonImage forState:UIControlStateNormal];
-    [self.joinButton setTitle:joinButtonText forState:UIControlStateNormal];
+    self.joinLabel.text = joinLabelText;
 }
 
 #pragma mark - IBActions Functions
