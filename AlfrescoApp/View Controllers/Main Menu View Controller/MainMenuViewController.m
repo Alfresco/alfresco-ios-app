@@ -111,16 +111,14 @@ static NSUInteger const kDownloadsRowNumber = 1;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:kMainMenuItemCellIdentifier];
-
+    
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
     cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
     cell.menuTextLabel.textColor = [UIColor mainMenuLabelColor];
     cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
-    
     return cell;
 }
 
@@ -133,8 +131,6 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
