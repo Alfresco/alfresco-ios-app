@@ -8,6 +8,23 @@
 	<array>
 		<dict>
 			<key>GroupHeaderLocalizedKey</key>
+			<string>settings.about.section.title</string>
+			<key>GroupCells</key>
+			<array>
+				<dict>
+					<key>PreferenceIdentifier</key>
+					<string>about.identifier</string>
+					<key>Type</key>
+					<string>AlfrescoSettingsLabel</string>
+					<key>Value</key>
+					<string>NO</string>
+					<key>LocalizedCellTitleKey</key>
+					<string>about.title</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>GroupHeaderLocalizedKey</key>
 			<string>Group Header</string>
 			<key>GroupCells</key>
 			<array>
