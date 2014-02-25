@@ -20,7 +20,6 @@
 #import "DetailSplitViewController.h"
 #import "AppConfigurationManager.h"
 #import "SettingsViewController.h"
-#import "AboutViewController.h"
 #import "PreviewViewController.h"
 #import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
@@ -215,14 +214,6 @@ static NSUInteger const kAccountsRowNumber = 0;
                                                                    viewController:settingsNavigationController
                                                                   displayInDetail:YES];
     
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-    NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
-    MainMenuItem *aboutMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAbout
-                                                                     imageName:@"mainmenu-about.png"
-                                                             localizedTitleKey:@"about.title"
-                                                                viewController:aboutNavigationController
-                                                               displayInDetail:YES];
-    
     NSURL *userGuidUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"UserGuide" ofType:@"pdf"]];
     WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:userGuidUrl initialTitle:NSLocalizedString(@"help.title", @"Help") errorLoadingURL:nil];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
@@ -240,7 +231,7 @@ static NSUInteger const kAccountsRowNumber = 0;
                                                       viewController:downloadsNavigationController
                                                      displayInDetail:NO];
     
-    return [@[settingsMenuItem, downloadsMenuItem, aboutMenuItem, helpMenuItem] mutableCopy];
+    return [@[settingsMenuItem, downloadsMenuItem, helpMenuItem] mutableCopy];
 }
 
 - (void)configureLocalMainMenuItems:(AppConfigurationManager *)configurationManager

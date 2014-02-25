@@ -21,7 +21,9 @@ extern NSString * const kSettingsCellLocalizedTitleKey;
 // cell types
 extern NSString * const kSettingsToggleCell;
 extern NSString * const kSettingsTextFieldCell;
+extern NSString * const kSettingsLabelCell;
 
 // cell reuse identifers
 extern NSString * const kSettingsToggleCellReuseIdentifier;
 extern NSString * const kSettingsTextFieldCellReuseIdentifier;
+extern NSString * const kSettingsLabelCellReuseIdentifier;

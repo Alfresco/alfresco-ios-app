@@ -53,6 +53,8 @@
 		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
 		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
 		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
+		08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */; };
+		08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */; };
 		0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */; };
 		0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */; };
 		08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C581823B5EC006D38F5 /* TextFieldCell.m */; };
@@ -540,6 +542,9 @@
 		088228681843B1B7006E58A4 /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
 		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
 		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
+		08885FEC18BCB3DD008CBE66 /* SettingLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingLabelCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.h"; sourceTree = SOURCE_ROOT; };
+		08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingLabelCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.m"; sourceTree = SOURCE_ROOT; };
+		08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingLabelCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.xib"; sourceTree = SOURCE_ROOT; };
 		0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
 		0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterLabelCell.m; sourceTree = "<group>"; };
 		0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterLabelCell.xib; sourceTree = "<group>"; };
@@ -1771,6 +1776,9 @@
 				7384BDF217F330C600C6A54F /* SettingToggleCell.h */,
 				7384BDF317F330C600C6A54F /* SettingToggleCell.m */,
 				7384BDF617F3310700C6A54F /* SettingToggleCell.xib */,
+				08885FEC18BCB3DD008CBE66 /* SettingLabelCell.h */,
+				08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */,
+				08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2841,6 +2849,7 @@
 				08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73FF557918ACE2370009CA56 /* large_blank_document.png in Resources */,
+				08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */,
 				27E84E7F18AD53510024B658 /* mainmenu-help@2x.png in Resources */,
 				27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
@@ -3053,6 +3062,7 @@
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
+				08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */,
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
