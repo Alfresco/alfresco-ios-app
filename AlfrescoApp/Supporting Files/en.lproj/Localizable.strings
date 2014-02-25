@@ -464,6 +464,7 @@
  * Settings
  */
 "settings.title" = "Settings";
+"settings.about.section.title" = "General";
 
 /**
  * Onboarding View Controller

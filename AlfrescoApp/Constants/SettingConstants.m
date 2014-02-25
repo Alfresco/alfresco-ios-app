@@ -21,7 +21,9 @@ NSString * const kSettingsCellLocalizedTitleKey = @"LocalizedCellTitleKey";
 // cell types
 NSString * const kSettingsToggleCell = @"AlfrescoSettingsToggle";
 NSString * const kSettingsTextFieldCell = @"AlfrescoSettingsTextField";
+NSString * const kSettingsLabelCell = @"AlfrescoSettingsLabel";
 
 // reuse identifers
 NSString * const kSettingsToggleCellReuseIdentifier = @"ToggleCell";
 NSString * const kSettingsTextFieldCellReuseIdentifier = @"TextFieldCell";
+NSString * const kSettingsLabelCellReuseIdentifier = @"LabelCell";
