@@ -542,7 +542,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     [syncObstableDeleted removeAllObjects];
     [syncObstacleRemovedFromSync removeAllObjects];
     
-    __block int totalChecksForObstacles = missingSyncDocumentsInRemote.count;
+    __block NSInteger totalChecksForObstacles = missingSyncDocumentsInRemote.count;
     if (totalChecksForObstacles > 0)
     {
         for (NSString *nodeId in missingSyncDocumentsInRemote)

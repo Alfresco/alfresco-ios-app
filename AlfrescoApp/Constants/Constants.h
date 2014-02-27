@@ -10,7 +10,7 @@
 
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 
-extern NSInteger const kMaxItemsPerListingRetrieve;
+extern int const kMaxItemsPerListingRetrieve;
 
 extern NSString * const kLicenseDictionaries;
 

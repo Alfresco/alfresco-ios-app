@@ -633,13 +633,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)deleteNodes:(NSArray *)nodes completionBlock:(void (^)(BOOL success))completionBlock
 {
-    __block int numberOfDocumentsToBeDeleted = nodes.count;
+    __block NSInteger numberOfDocumentsToBeDeleted = nodes.count;
     __block int numberOfSuccessfulDeletes = 0;
     
     for (AlfrescoNode *node in nodes)
     {
         [self deleteNode:node completionBlock:^(BOOL success) {
-            
             if (success)
             {
                 numberOfSuccessfulDeletes++;
@@ -957,7 +956,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:self.tableViewData.count];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
