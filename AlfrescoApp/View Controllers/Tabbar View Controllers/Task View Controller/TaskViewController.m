@@ -321,7 +321,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         case TaskTypeTasksIStarted:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
-            NSString *processTitle = (currentProcess.title) ? currentProcess.title : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
+            NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
             cell.taskNameTextLabel.text = processTitle;
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentProcess.dueAt];
             [cell setPriorityLevel:currentProcess.priority];

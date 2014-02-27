@@ -111,7 +111,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
         if (self.documentFolderService)
         {
-            [self.documentFolderService clearFavoritesCache];
+            [self.documentFolderService clear];
             [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
                 
                 if (array)
