@@ -20,9 +20,8 @@ static CGFloat const kBottomPadding = 2.0f;
 {
     CGPoint startPoint = CGPointMake(kSidePadding, self.frame.size.height - kBottomPadding - kStrokeWidth);
     CGPoint endPoint = CGPointMake(self.frame.size.width - kSidePadding, self.frame.size.height - kBottomPadding - kStrokeWidth);
-    UIColor *blueColour = [UIColor themeHeaderTextColor];
     
-    [self drawLineFromPoint:startPoint toPoint:endPoint lineThickness:kStrokeWidth colour:blueColour];
+    [self drawLineFromPoint:startPoint toPoint:endPoint lineThickness:kStrokeWidth colour:[UIColor appTintColor]];
 }
 
 @end

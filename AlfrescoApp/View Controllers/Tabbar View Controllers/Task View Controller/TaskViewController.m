@@ -11,6 +11,8 @@
 #import "AccountManager.h"
 #import "TasksCell.h"
 #import "TaskGroupItem.h"
+#import "UIColor+Custom.h"
+#import "Utility.h"
 
 static NSString * const kDateFormat = @"dd MMM";
 static NSString * const kActivitiReview = @"activitiReview";
@@ -227,6 +229,9 @@ typedef NS_ENUM(NSUInteger, TaskType)
         [actionSheet showInView:self.view];
     }
     
+    // UIActionSheet button titles don't pick up the global tint color by default
+    [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
+
     self.filterButton.enabled = NO;
 }
 
