@@ -25,8 +25,11 @@
 - (void)enterMultiSelectMode:(NSLayoutConstraint *)heightConstraint;
 - (void)leaveMultiSelectMode:(NSLayoutConstraint *)heightConstraint;
 
+- (void)replaceSelectedItemsWithItems:(NSArray *)items;
+
 - (void)userDidSelectItem:(id)item;
 - (void)userDidDeselectItem:(id)item;
+- (void)userDidDeselectAllItems;
 
 - (UIBarButtonItem *)createToolBarButtonForTitleKey:(NSString *)titleLocalizationKey actionId:(NSString *)actionId isDestructive:(BOOL)isDestructive;
 - (void)enableAction:(NSString *)actionId enable:(BOOL)enable;

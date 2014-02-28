@@ -33,6 +33,17 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        _actionItems = [[NSMutableOrderedSet alloc] init];
+        _selectedItems = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 - (void)enterMultiSelectMode:(NSLayoutConstraint *)heightConstraint
 {
     [self.selectedItems removeAllObjects];
@@ -96,6 +107,21 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
 - (void)userDidDeselectItem:(id)item
 {
     [self.selectedItems removeObject:item];
+    [self updateToolBarButtonTitles];
+    [self notifyDelegateItemsDidChange];
+}
+
+- (void)userDidDeselectAllItems
+{
+    [self.selectedItems removeAllObjects];
+    [self updateToolBarButtonTitles];
+    [self notifyDelegateItemsDidChange];
+}
+
+- (void)replaceSelectedItemsWithItems:(NSArray *)items
+{
+    [self.selectedItems removeAllObjects];
+    [self.selectedItems addObjectsFromArray:items];
     [self updateToolBarButtonTitles];
     [self notifyDelegateItemsDidChange];
 }

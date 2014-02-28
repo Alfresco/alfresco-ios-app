@@ -41,8 +41,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
 @property (nonatomic, strong) NSString *folderDisplayName;
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
-@property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
@@ -76,7 +74,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
+    self = [super initWithNibName:@"FileFolderListViewController" andSession:session];
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
@@ -140,6 +138,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
+    [self.searchController.searchResultsTableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

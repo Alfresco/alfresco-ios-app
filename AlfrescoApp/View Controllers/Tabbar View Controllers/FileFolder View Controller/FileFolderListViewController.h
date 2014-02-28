@@ -27,6 +27,9 @@
     UISearchBarDelegate,
     UISearchDisplayDelegate>
 
+@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) NSMutableArray *searchResults;
+
 /**
  Providing nil to the folder parameter will result in the root folder (Company Home) being displayed.
  
@@ -48,5 +51,7 @@
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
 
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+
+- (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated;
 
 @end
