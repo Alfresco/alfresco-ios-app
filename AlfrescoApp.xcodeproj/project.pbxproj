@@ -1367,7 +1367,7 @@
 			isa = PBXGroup;
 			children = (
 				73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.0-debug.a */,
-				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.octest */,
+				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2646,10 +2646,10 @@
 			remoteRef = 73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73036F301886E3CC002AF6DC /* AlfrescoSDKTests.octest */ = {
+		73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = AlfrescoSDKTests.octest;
+			path = AlfrescoSDKTests.xctest;
 			remoteRef = 73036F2F1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3272,6 +3272,7 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3362,6 +3363,7 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3395,6 +3397,7 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
