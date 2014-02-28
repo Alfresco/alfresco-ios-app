@@ -164,7 +164,7 @@ static CGFloat const kFontSize = 17.0f;
 {
     for (NSInteger index = 0; index < replacements.count; index++)
     {
-        NSString *indexPoint = [NSString stringWithFormat:@"{%d}", index];
+        NSString *indexPoint = [NSString stringWithFormat:@"{%@}", @(index)];
         string = [string stringByReplacingOccurrencesOfString:indexPoint withString:replacements[index]];
     }
     

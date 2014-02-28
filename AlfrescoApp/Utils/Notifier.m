@@ -12,7 +12,7 @@
 
 + (void)notifyWithAlfrescoError:(NSError *)alfrescoError
 {
-    int errorCode = [alfrescoError code];
+    NSInteger errorCode = [alfrescoError code];
     
     switch (errorCode)
     {

@@ -10,8 +10,6 @@
 
 @interface UIColor (Custom)
 
-+ (UIColor *)lineSeparatorColor;
-+ (UIColor *)themeHeaderTextColor;
 + (UIColor *)mainMenuBackgroundColor;
 + (UIColor *)mainMenuLabelColor;
 + (UIColor *)appTintColor;

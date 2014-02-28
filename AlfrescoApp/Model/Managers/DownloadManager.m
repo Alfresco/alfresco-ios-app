@@ -476,14 +476,14 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     {
         while ([existingFiles containsObject:safeFilename] && (++suffix < kFileSuffixMaxAttempts))
         {
-            safeFilename = [NSString stringWithFormat:@"%@-%u.%@", filenameWithoutExtension, suffix, fileExtension];
+            safeFilename = [NSString stringWithFormat:@"%@-%@.%@", filenameWithoutExtension, @(suffix), fileExtension];
         }
     }
     else
     {
         while ([existingFiles containsObject:safeFilename] && (++suffix < kFileSuffixMaxAttempts))
         {
-            safeFilename = [NSString stringWithFormat:@"%@-%u", filenameWithoutExtension, suffix];
+            safeFilename = [NSString stringWithFormat:@"%@-%@", filenameWithoutExtension, @(suffix)];
         }
     }
     

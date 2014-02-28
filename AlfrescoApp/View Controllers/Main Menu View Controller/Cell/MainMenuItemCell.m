@@ -7,6 +7,7 @@
 //
 
 #import "MainMenuItemCell.h"
+#import "UIColor+Custom.h"
 
 @implementation MainMenuItemCell
 
@@ -16,7 +17,7 @@
     if (self)
     {
         UIView *bgColorView = [[UIView alloc] init];
-        bgColorView.backgroundColor = [UIColor colorWithRed:(81.0/255.0f) green:(185.0/255.0f) blue:(219.0/255.0f) alpha:1.0f];
+        bgColorView.backgroundColor = [UIColor appTintColor];
         bgColorView.layer.masksToBounds = YES;
         self.selectedBackgroundView = bgColorView;
     }

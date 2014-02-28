@@ -11,6 +11,8 @@
 #import "AccountManager.h"
 #import "TasksCell.h"
 #import "TaskGroupItem.h"
+#import "UIColor+Custom.h"
+#import "Utility.h"
 
 static NSString * const kDateFormat = @"dd MMM";
 static NSString * const kActivitiReview = @"activitiReview";
@@ -227,6 +229,9 @@ typedef NS_ENUM(NSUInteger, TaskType)
         [actionSheet showInView:self.view];
     }
     
+    // UIActionSheet button titles don't pick up the global tint color by default
+    [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
+
     self.filterButton.enabled = NO;
 }
 
@@ -321,7 +326,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         case TaskTypeTasksIStarted:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
-            NSString *processTitle = (currentProcess.title) ? currentProcess.title : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
+            NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
             cell.taskNameTextLabel.text = processTitle;
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentProcess.dueAt];
             [cell setPriorityLevel:currentProcess.priority];
@@ -342,7 +347,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:currentTaskGroup.numberOfTasks];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(currentTaskGroup.numberOfTasks) intValue]];
         if ([currentTaskGroup hasMoreItems])
         {
             // show more items are loading ...

@@ -232,7 +232,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:self.tableViewData.count];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
