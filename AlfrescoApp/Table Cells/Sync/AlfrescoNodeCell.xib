@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -83,10 +83,12 @@
                     <constraint firstAttribute="centerY" secondItem="Xfo-QY-TU0" secondAttribute="centerY" id="4QK-e0-Kmu"/>
                     <constraint firstAttribute="trailing" secondItem="xnk-Mu-sus" secondAttribute="trailing" id="AhQ-Lt-v3m"/>
                     <constraint firstAttribute="trailing" secondItem="Xfo-QY-TU0" secondAttribute="trailing" constant="12" id="CZp-aX-asW"/>
+                    <constraint firstItem="xnk-Mu-sus" firstAttribute="top" secondItem="Xfo-QY-TU0" secondAttribute="bottom" priority="750" constant="15" id="Sa1-kV-xrW"/>
                     <constraint firstItem="Xfo-QY-TU0" firstAttribute="leading" secondItem="XfV-qb-eIj" secondAttribute="trailing" constant="10" id="bvL-YC-nMB"/>
                     <constraint firstAttribute="centerY" secondItem="XfV-qb-eIj" secondAttribute="centerY" id="iS7-1V-esc"/>
                     <constraint firstAttribute="bottom" secondItem="xnk-Mu-sus" secondAttribute="bottom" id="koI-hl-nV2"/>
                     <constraint firstItem="XfV-qb-eIj" firstAttribute="leading" secondItem="DfA-ge-hh7" secondAttribute="leading" constant="8" id="rZ8-sd-wmF"/>
+                    <constraint firstItem="Xfo-QY-TU0" firstAttribute="top" secondItem="DfA-ge-hh7" secondAttribute="top" priority="750" constant="18" id="uYT-1W-N1G"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>

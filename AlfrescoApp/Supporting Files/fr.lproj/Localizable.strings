@@ -459,6 +459,9 @@
 "tasks.process.unnamed" = "Unnamed Process";
 "tasks.title.mytasks" = "My Tasks";
 "tasks.title.taskistarted" = "Tasks I Started";
+"tasks.priority.high" = "High Priority";
+"tasks.priority.medium" = "Medium Priority";
+"tasks.priority.low" = "Low Priority";
 
 /**
  * Settings

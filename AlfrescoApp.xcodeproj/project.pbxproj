@@ -190,6 +190,11 @@
 		73697A8D18B26B1800021B02 /* TasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697A8C18B26B1800021B02 /* TasksCell.xib */; };
 		73697A8F18B2758A00021B02 /* TaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697A8E18B2758A00021B02 /* TaskViewController.xib */; };
 		73697A9518B7A47700021B02 /* TaskGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A9418B7A47700021B02 /* TaskGroupItem.m */; };
+		73697AA218BB649C00021B02 /* TaskDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697AA018BB649C00021B02 /* TaskDetailsViewController.m */; };
+		73697AA318BB649C00021B02 /* TaskDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697AA118BB649C00021B02 /* TaskDetailsViewController.xib */; };
+		73697AA718BB65C400021B02 /* TaskHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697AA618BB65C400021B02 /* TaskHeaderView.m */; };
+		73697AA918BB65DB00021B02 /* TaskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697AA818BB65DB00021B02 /* TaskHeaderView.xib */; };
+		73697AAF18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73697AAE18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib */; };
 		7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4F817A66E9400869949 /* UIKit.framework */; };
 		737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972ED18A39DBE007613B2 /* FolderPreviewViewController.m */; };
 		737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972EE18A39DBE007613B2 /* FolderPreviewViewController.xib */; };
@@ -717,6 +722,13 @@
 		73697A8E18B2758A00021B02 /* TaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TaskViewController.xib; path = "Task View Controller/TaskViewController.xib"; sourceTree = "<group>"; };
 		73697A9318B7A47700021B02 /* TaskGroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskGroupItem.h; path = "Task View Controller/Model/TaskGroupItem.h"; sourceTree = "<group>"; };
 		73697A9418B7A47700021B02 /* TaskGroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskGroupItem.m; path = "Task View Controller/Model/TaskGroupItem.m"; sourceTree = "<group>"; };
+		73697A9F18BB649C00021B02 /* TaskDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskDetailsViewController.h; path = "Task Details View Controller/TaskDetailsViewController.h"; sourceTree = "<group>"; };
+		73697AA018BB649C00021B02 /* TaskDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskDetailsViewController.m; path = "Task Details View Controller/TaskDetailsViewController.m"; sourceTree = "<group>"; };
+		73697AA118BB649C00021B02 /* TaskDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TaskDetailsViewController.xib; path = "Task Details View Controller/TaskDetailsViewController.xib"; sourceTree = "<group>"; };
+		73697AA518BB65C400021B02 /* TaskHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskHeaderView.h; path = "Task Details View Controller/Header View/TaskHeaderView.h"; sourceTree = "<group>"; };
+		73697AA618BB65C400021B02 /* TaskHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskHeaderView.m; path = "Task Details View Controller/Header View/TaskHeaderView.m"; sourceTree = "<group>"; };
+		73697AA818BB65DB00021B02 /* TaskHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TaskHeaderView.xib; path = "Task Details View Controller/Header View/TaskHeaderView.xib"; sourceTree = "<group>"; };
+		73697AAE18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "TaskDetailsViewController~ipad.xib"; path = "Task Details View Controller/TaskDetailsViewController~ipad.xib"; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7373B4F817A66E9400869949 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7373B4FA17A66E9400869949 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1545,6 +1557,28 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		73697A9D18BB645A00021B02 /* Task Details View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73697AA418BB654B00021B02 /* Header View */,
+				73697A9F18BB649C00021B02 /* TaskDetailsViewController.h */,
+				73697AA018BB649C00021B02 /* TaskDetailsViewController.m */,
+				73697AA118BB649C00021B02 /* TaskDetailsViewController.xib */,
+				73697AAE18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib */,
+			);
+			name = "Task Details View Controller";
+			sourceTree = "<group>";
+		};
+		73697AA418BB654B00021B02 /* Header View */ = {
+			isa = PBXGroup;
+			children = (
+				73697AA518BB65C400021B02 /* TaskHeaderView.h */,
+				73697AA618BB65C400021B02 /* TaskHeaderView.m */,
+				73697AA818BB65DB00021B02 /* TaskHeaderView.xib */,
+			);
+			name = "Header View";
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -2150,6 +2184,7 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				73697A9D18BB645A00021B02 /* Task Details View Controller */,
 				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
 				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
 				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
@@ -2816,6 +2851,7 @@
 				73881FE0188FF9290052C75F /* actionsheet-unfavourited.png in Resources */,
 				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
+				73697AAF18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
@@ -2844,6 +2880,7 @@
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
+				73697AA918BB65DB00021B02 /* TaskHeaderView.xib in Resources */,
 				0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */,
 				7379736618ABA3AF007613B2 /* generic@2x.png in Resources */,
 				73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */,
@@ -2891,6 +2928,7 @@
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				73881FD1188FF6B00052C75F /* actionsheet-download@2x.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
+				73697AA318BB649C00021B02 /* TaskDetailsViewController.xib in Resources */,
 				0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */,
 				271DC775189C2D250059D1B2 /* status-sync-synced-highlighted@2x.png in Resources */,
 				73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */,
@@ -3045,6 +3083,7 @@
 				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
+				73697AA718BB65C400021B02 /* TaskHeaderView.m in Sources */,
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				73B9584C17A6750F0099FB84 /* FileFolderCell.m in Sources */,
 				73B9584E17A6750F0099FB84 /* MetadataCell.m in Sources */,
@@ -3110,6 +3149,7 @@
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
+				73697AA218BB649C00021B02 /* TaskDetailsViewController.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,

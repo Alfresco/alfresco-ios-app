@@ -11,14 +11,15 @@
 #import "AccountManager.h"
 #import "TasksCell.h"
 #import "TaskGroupItem.h"
+#import "TaskDetailsViewController.h"
+#import "UniversalDevice.h"
 
 static NSString * const kDateFormat = @"dd MMM";
 static NSString * const kActivitiReview = @"activitiReview";
 static NSString * const kActivitiParallelReview = @"activitiParallelReview";
 static NSString * const kActivitiToDo = @"activitiAdhoc";
 
-static NSString * const kSupportedTasksPredicateFormat = @"(processDefinitionIdentifier like %@) OR (processDefinitionIdentifier like %@) OR (processDefinitionIdentifier like %@)";
-static NSString * const kSupportedWorkflowsPredicateFormat = @"(processDefinitionKey like %@) OR (processDefinitionKey like %@) OR (processDefinitionKey like %@)";
+static NSString * const kSupportedTasksPredicateFormat = @"(processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@)";
 static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername like %@";
 
 typedef NS_ENUM(NSUInteger, TaskType)
@@ -51,6 +52,10 @@ typedef NS_ENUM(NSUInteger, TaskType)
         [self.dateFormatter setDateFormat:kDateFormat];
         self.myTasks = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")];
         self.tasksIStarted = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(sessionReceived:)
+                                                     name:kAlfrescoSessionReceivedNotification
+                                                   object:nil];
         [self createWorkflowServicesWithSession:session];
     }
     return self;
@@ -236,12 +241,6 @@ typedef NS_ENUM(NSUInteger, TaskType)
     return [unfilteredArray filteredArrayUsingPredicate:supportedPredicate];
 }
 
-- (NSArray *)supportedWorkflowsFromArray:(NSArray *)unfilteredArray
-{
-    NSPredicate *supportedPredicate = [NSPredicate predicateWithFormat:kSupportedWorkflowsPredicateFormat, kActivitiReview, kActivitiToDo, kActivitiParallelReview];
-    return [unfilteredArray filteredArrayUsingPredicate:supportedPredicate];
-}
-
 - (NSArray *)initiatedWorkflowsFromArray:(NSArray *)unfilteredArray
 {
     NSPredicate *startedByMePredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
@@ -266,7 +265,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
                 
             case TaskTypeTasksIStarted:
             {
-                NSMutableArray *startedWorkflows = [[self initiatedWorkflowsFromArray:[self supportedWorkflowsFromArray:pagingResult.objects]] mutableCopy];
+                NSMutableArray *startedWorkflows = [[self initiatedWorkflowsFromArray:[self supportedTasksFromArray:pagingResult.objects]] mutableCopy];
                 [self.tasksIStarted addTasks:startedWorkflows];
                 [self.tasksIStarted setHasMoreItems:pagingResult.hasMoreItems];
                 self.tableViewData = self.tasksIStarted.tasks;
@@ -311,7 +310,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         case TaskTypeMyTasks:
         {
             AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
-            NSString *taskTitle = (currentTask.taskDescription) ? currentTask.taskDescription : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
+            NSString *taskTitle = (currentTask.name) ? currentTask.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
             cell.taskNameTextLabel.text = taskTitle;
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentTask.dueAt];
             [cell setPriorityLevel:currentTask.priority];
@@ -321,7 +320,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         case TaskTypeTasksIStarted:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
-            NSString *processTitle = (currentProcess.title) ? currentProcess.title : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
+            NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
             cell.taskNameTextLabel.text = processTitle;
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentProcess.dueAt];
             [cell setPriorityLevel:currentProcess.priority];
@@ -362,7 +361,18 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO
+    id selectedObject = [self.tableViewData objectAtIndex:indexPath.row];
+    
+    if (self.displayedTaskType == TaskTypeMyTasks)
+    {
+        TaskDetailsViewController *taskDetailsViewController = [[TaskDetailsViewController alloc] initWithTask:(AlfrescoWorkflowTask *)selectedObject session:self.session];
+        [UniversalDevice pushToDisplayViewController:taskDetailsViewController usingNavigationController:self.navigationController animated:YES];
+    }
+    else if (self.displayedTaskType == TaskTypeTasksIStarted)
+    {
+        
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

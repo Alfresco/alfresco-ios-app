@@ -10,4 +10,6 @@
 
 @interface TaskDetailsViewController : UIViewController
 
+- (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session;
+
 @end

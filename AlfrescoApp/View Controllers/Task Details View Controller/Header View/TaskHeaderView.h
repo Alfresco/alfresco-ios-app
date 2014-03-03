@@ -10,4 +10,8 @@
 
 @interface TaskHeaderView : UIView
 
+- (void)updateTaskTypeLabelToString:(NSString *)taskTypeString;
+- (void)configureViewForProcess:(AlfrescoWorkflowProcess *)process;
+- (void)configureViewForTask:(AlfrescoWorkflowTask *)task;
+
 @end
