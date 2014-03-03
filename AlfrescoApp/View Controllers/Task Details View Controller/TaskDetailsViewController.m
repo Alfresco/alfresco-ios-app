@@ -43,8 +43,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 @property (nonatomic, strong) NSArray *attachmentNodes;
 // Services
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
-@property (nonatomic, strong) AlfrescoWorkflowTaskService *taskService;
-@property (nonatomic, strong) AlfrescoWorkflowProcessDefinitionService *processDefinitionService;
+@property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
 //// Views ////
 // Header
@@ -163,9 +162,8 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)createServicesWithSession:(id<AlfrescoSession>)session
 {
-    self.taskService = [[AlfrescoWorkflowTaskService alloc] initWithSession:session];
+    self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    self.processDefinitionService = [[AlfrescoWorkflowProcessDefinitionService alloc] initWithSession:session];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -235,7 +233,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)retrieveProcessDefinitionNameForIdentifier:(NSString *)identifier
 {
-    [self.processDefinitionService retrieveProcessDefinitionWithIdentifier:identifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
+    [self.workflowService retrieveProcessDefinitionWithIdentifier:identifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
         if (processDefinition)
         {
             [self.taskHeaderView updateTaskTypeLabelToString:processDefinition.name];
@@ -247,7 +245,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 {
     if (self.taskType == TaskTypeTask)
     {
-        [self.taskService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
+        [self.workflowService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
     }
     else if (self.taskType == TaskTypeWorkflow)
     {
@@ -266,7 +264,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
-    [self.taskService completeTask:self.task properties:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
+    [self.workflowService completeTask:self.task properties:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
         weakSelf.approveButton.enabled = YES;

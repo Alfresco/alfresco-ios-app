@@ -30,8 +30,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 @interface TaskViewController () <UIActionSheetDelegate>
 
-@property (nonatomic, strong) AlfrescoWorkflowProcessService *processService;
-@property (nonatomic, strong) AlfrescoWorkflowTaskService *taskService;
+@property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, assign) TaskType displayedTaskType;
 @property (nonatomic, strong) TaskGroupItem *myTasks;
@@ -106,8 +105,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)createWorkflowServicesWithSession:(id<AlfrescoSession>)session
 {
-    self.processService = [[AlfrescoWorkflowProcessService alloc] initWithSession:session];
-    self.taskService = [[AlfrescoWorkflowTaskService alloc] initWithSession:session];
+    self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
 }
 
 - (TaskGroupItem *)taskGroupItemForType:(TaskType)taskType
@@ -178,7 +176,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         listingContext = self.defaultListingContext;
     }
     
-    [self.processService retrieveProcessesInState:kAlfrescoWorkflowProcessStateActive listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+    [self.workflowService retrieveProcessesInState:kAlfrescoWorkflowProcessStateActive listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (error)
         {
             AlfrescoLogError(@"Error: %@", error.localizedDescription);
@@ -200,7 +198,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         listingContext = self.defaultListingContext;
     }
     
-    [self.taskService retrieveTasksWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+    [self.workflowService retrieveTasksWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (error)
         {
             AlfrescoLogError(@"Error: %@", error.localizedDescription);
