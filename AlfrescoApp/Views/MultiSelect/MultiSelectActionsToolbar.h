@@ -33,5 +33,7 @@
 
 - (UIBarButtonItem *)createToolBarButtonForTitleKey:(NSString *)titleLocalizationKey actionId:(NSString *)actionId isDestructive:(BOOL)isDestructive;
 - (void)enableAction:(NSString *)actionId enable:(BOOL)enable;
+- (void)removeToolBarButtons;
+- (void)refreshToolBarButtons;
 
 @end

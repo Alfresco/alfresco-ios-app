@@ -7,7 +7,7 @@
 //
 
 #import "FileFolderListViewController.h"
-#import "AlfrescoAppPicker.h"
+#import "NodePicker.h"
 
 @interface NodePickerFileFolderListViewController : FileFolderListViewController
 
@@ -15,6 +15,6 @@
              folderPermissions:(AlfrescoPermissions *)permissions
              folderDisplayName:(NSString *)displayName
                        session:(id<AlfrescoSession>)session
-          nodePickerController:(AlfrescoAppPicker *)nodePicker;
+          nodePickerController:(NodePicker *)nodePicker;
 
 @end

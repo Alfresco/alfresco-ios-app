@@ -7,10 +7,10 @@
 //
 
 #import "SitesListViewController.h"
-#import "AlfrescoAppPicker.h"
+#import "NodePicker.h"
 
 @interface NodePickerSitesViewController : SitesListViewController
 
-- (instancetype)initWithSession:(id<AlfrescoSession>)session nodePickerController:(AlfrescoAppPicker *)nodePicker;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session nodePickerController:(NodePicker *)nodePicker;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  AlfrescoAppPickerItemsListViewController.m
+//  NodePickerListViewController.m
 //  AlfrescoApp
 //
 //  Created by Mohamad Saeedi on 27/02/2014.
@@ -12,31 +12,30 @@ static NSInteger const kNumberOfTableViewSections = 2;
 static NSInteger const kListSectionNumber = 1;
 static NSInteger const kDefaultNumberOfRows = 1;
 
-#import "AlfrescoAppPickerItemsListViewController.h"
+#import "NodePickerListViewController.h"
 #import "ThumbnailDownloader.h"
 #import "Utility.h"
 #import "NodePickerSitesViewController.h"
+#import "PeoplePickerViewController.h"
 
-@interface AlfrescoAppPickerItemsListViewController ()
+@interface NodePickerListViewController ()
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic, assign) AlfrescoAppPickerItemsListType listType;
-@property (nonatomic, strong) AlfrescoAppPicker *nodePicker;
+@property (nonatomic, strong) id picker;
 
 @end
 
-@implementation AlfrescoAppPickerItemsListViewController
+@implementation NodePickerListViewController
 
-- (instancetype)initWithSession:(id<AlfrescoSession>)session pickerListType:(AlfrescoAppPickerItemsListType)listType items:(NSMutableArray *)items nodePickerController:(AlfrescoAppPicker *)nodePicker
+- (instancetype)initWithSession:(id<AlfrescoSession>)session items:(NSMutableArray *)items nodePickerController:(id)picker
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
         _session = session;
         _items = items;
-        _listType = listType;
-        _nodePicker = nodePicker;
+        _picker = picker;
     }
     return self;
 }
@@ -45,24 +44,28 @@ static NSInteger const kDefaultNumberOfRows = 1;
 {
     [super viewDidLoad];
     
-    if (self.listType == PickerItemsListTypeNodesMultiSelection)
-    {
-        self.title = NSLocalizedString(@"picker.multiSelect.list.title", @"Multi Select List title");
-    }
-    else
-    {
-        
-    }
+    self.title = NSLocalizedString(@"nodes.picker.list.title", @"Attachements");
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellReuseIdentifier];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deselectAllSelectedNodes:)
+                                                 name:kAlfrescoPickerDeselectAllNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.nodePicker hideMultiSelectToolBar];
+    [self.picker updateMultiSelectToolBarActionsForListView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.picker hideMultiSelectToolBar];
 }
 
 - (void)editButtonPressed:(id)sender
@@ -73,6 +76,12 @@ static NSInteger const kDefaultNumberOfRows = 1;
 - (void)refreshListWithItems:(NSArray *)items
 {
     self.items = [items mutableCopy];
+    [self.tableView reloadData];
+}
+
+- (void)deselectAllSelectedNodes:(id)sender
+{
+    [self.items removeAllObjects];
     [self.tableView reloadData];
 }
 
@@ -104,16 +113,23 @@ static NSInteger const kDefaultNumberOfRows = 1;
     
     if (indexPath.section == kListSectionNumber)
     {
-        AlfrescoNode *node = self.items[indexPath.row];
-        cell.textLabel.text = node.name;
-        cell.imageView.image = smallImageForType([node.name pathExtension]);
+        id item = self.items[indexPath.row];
+        
+        if ([item isKindOfClass:[AlfrescoNode class]])
+        {
+            AlfrescoNode *node = (AlfrescoNode *)item;
+            cell.textLabel.text = node.name;
+            cell.imageView.image = smallImageForType([node.name pathExtension]);
+        }
+        else if ([item isKindOfClass:[AlfrescoPerson class]])
+        {
+            AlfrescoPerson *person = (AlfrescoPerson *)item;
+            cell.textLabel.text = person.fullName;
+        }
     }
     else
     {
-        if (self.listType == PickerItemsListTypeNodesMultiSelection)
-        {
-            cell.textLabel.text = NSLocalizedString(@"picker.multiSelect.attachments.select", @"");
-        }
+        cell.textLabel.text = NSLocalizedString(@"nodes.picker.attachments.select", @"");
     }
     
     return cell;
@@ -123,9 +139,9 @@ static NSInteger const kDefaultNumberOfRows = 1;
 {
     if (indexPath.section != kListSectionNumber)
     {
-        [self.nodePicker replaceSelectedItemsWithItems:self.items];
-        NodePickerSitesViewController *sitescontroller = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self.nodePicker];
-        [self.navigationController pushViewController:sitescontroller animated:YES];
+        [self.picker replaceSelectedNodesWithNodes:self.items];
+        NodePickerSitesViewController *sitesPickerController = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self.picker];
+        [self.navigationController pushViewController:sitesPickerController animated:YES];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
@@ -142,10 +158,9 @@ static NSInteger const kDefaultNumberOfRows = 1;
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         AlfrescoNode *node = self.items[indexPath.row];
-        
         [self.items removeObjectAtIndex:indexPath.row];
+        [self.picker deselectNode:node];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [self.nodePicker deselectItem:node];
     }
 }
 

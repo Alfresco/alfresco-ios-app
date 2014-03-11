@@ -109,11 +109,11 @@ CGFloat const kUploadJPEGCompressionQuality = 1.0f;
 
 // MultiSelect Actions
 NSString * const kMultiSelectDelete = @"deleteAction";
-NSString * const kMultiSelectAttach = @"attachAction";
-NSString * const kMultiSelectDeSelectAll = @"deSelectAllAction";
-NSString * const kSingleSelection = @"singleSelection";
 
 // Picker
+NSString * const kNodePickerSelectDocuments = @"nodePickerSelectDocuments";
+NSString * const kNodePickerDeSelectAll = @"nodePickerDeSelectAll";
+NSString * const kNodePickerSelectFolder = @"nodePickerSelectFolder";
 NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDeselectAllNotification";
 
 // Favourites notifications

@@ -11,13 +11,13 @@
 
 @interface NodePickerSitesViewController ()
 
-@property (nonatomic, strong) AlfrescoAppPicker *nodePicker;
+@property (nonatomic, strong) NodePicker *nodePicker;
 
 @end
 
 @implementation NodePickerSitesViewController
 
-- (instancetype)initWithSession:(id<AlfrescoSession>)session nodePickerController:(AlfrescoAppPicker *)nodePicker
+- (instancetype)initWithSession:(id<AlfrescoSession>)session nodePickerController:(NodePicker *)nodePicker
 {
     self = [super initWithSession:session];
     if (self)
@@ -51,14 +51,19 @@
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.nodePicker cancelPicker];
+    [self.nodePicker cancelNodePicker];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;
-    [self.nodePicker showMultiSelectToolBar];
+    [self.nodePicker updateMultiSelectToolBarActions];
+    
+    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    {
+        [self.nodePicker deselectAllNodes];
+    }
 }
 
 #pragma mark - Notification Methods
@@ -84,7 +89,7 @@
     if (tableView == self.searchController.searchResultsTableView)
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
-        if ([self.nodePicker isItemSelected:selectedNode])
+        if ([self.nodePicker isNodeSelected:selectedNode])
         {
             [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
@@ -98,7 +103,7 @@
     if (tableView == self.searchController.searchResultsTableView)
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
-        [self.nodePicker selectItem:selectedNode];
+        [self.nodePicker selectNode:selectedNode];
     }
     else
     {
@@ -129,7 +134,7 @@
     if (tableView == self.searchController.searchResultsTableView)
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
-        [self.nodePicker deselectItem:selectedNode];
+        [self.nodePicker deselectNode:selectedNode];
     }
 }
 

@@ -48,10 +48,15 @@
 		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		085CC81518BD02A500E43C98 /* NodePickerSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81418BD02A500E43C98 /* NodePickerSitesViewController.m */; };
-		085CC81818BDEC3300E43C98 /* AlfrescoAppPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81718BDEC3300E43C98 /* AlfrescoAppPicker.m */; };
+		085CC81818BDEC3300E43C98 /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81718BDEC3300E43C98 /* NodePicker.m */; };
 		085CC81B18BDEED400E43C98 /* NodePickerFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81A18BDEED400E43C98 /* NodePickerFileFolderListViewController.m */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
+		08735D3318C748A80010334A /* PeoplePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3218C748A80010334A /* PeoplePicker.m */; };
+		08735D3718C74DD30010334A /* PeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3518C74DD30010334A /* PeoplePickerViewController.m */; };
+		08735D3818C74DD30010334A /* PeoplePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08735D3618C74DD30010334A /* PeoplePickerViewController.xib */; };
+		08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3B18C9DBAE0010334A /* PersonCell.m */; };
+		08735D3E18C9DBDC0010334A /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08735D3D18C9DBDC0010334A /* PersonCell.xib */; };
 		088228641843722B006E58A4 /* RequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228631843722B006E58A4 /* RequestHandler.m */; };
 		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
 		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
@@ -64,12 +69,12 @@
 		08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C5C1823B62E006D38F5 /* TextFieldCell.xib */; };
 		08948C601823C24D006D38F5 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C5F1823C24D006D38F5 /* SwitchCell.m */; };
 		08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C611823C26E006D38F5 /* SwitchCell.xib */; };
+		089FAFDC18CE19BC00AB4613 /* NodePickerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FAFDB18CE19BC00AB4613 /* NodePickerListViewController.m */; };
 		08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
 		08CC861C18990E1800CDC524 /* FileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */; };
-		08D6AA4218BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D6AA4118BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.m */; };
 		08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */; };
 		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
 		08E799B1182A57850030FD53 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B0182A57850030FD53 /* ButtonCell.m */; };
@@ -539,12 +544,20 @@
 		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		085CC81318BD02A500E43C98 /* NodePickerSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerSitesViewController.h; path = "Node Picker ViewController/NodePickerSitesViewController.h"; sourceTree = "<group>"; };
 		085CC81418BD02A500E43C98 /* NodePickerSitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerSitesViewController.m; path = "Node Picker ViewController/NodePickerSitesViewController.m"; sourceTree = "<group>"; };
-		085CC81618BDEC3300E43C98 /* AlfrescoAppPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlfrescoAppPicker.h; path = "Node Picker ViewController/AlfrescoAppPicker.h"; sourceTree = "<group>"; };
-		085CC81718BDEC3300E43C98 /* AlfrescoAppPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlfrescoAppPicker.m; path = "Node Picker ViewController/AlfrescoAppPicker.m"; sourceTree = "<group>"; };
+		085CC81618BDEC3300E43C98 /* NodePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePicker.h; path = "Node Picker ViewController/NodePicker.h"; sourceTree = "<group>"; };
+		085CC81718BDEC3300E43C98 /* NodePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePicker.m; path = "Node Picker ViewController/NodePicker.m"; sourceTree = "<group>"; };
 		085CC81918BDEED400E43C98 /* NodePickerFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerFileFolderListViewController.h; path = "Node Picker ViewController/NodePickerFileFolderListViewController.h"; sourceTree = "<group>"; };
 		085CC81A18BDEED400E43C98 /* NodePickerFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerFileFolderListViewController.m; path = "Node Picker ViewController/NodePickerFileFolderListViewController.m"; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
+		08735D3118C748A80010334A /* PeoplePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PeoplePicker.h; path = PeoplePicker/PeoplePicker.h; sourceTree = "<group>"; };
+		08735D3218C748A80010334A /* PeoplePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PeoplePicker.m; path = PeoplePicker/PeoplePicker.m; sourceTree = "<group>"; };
+		08735D3418C74DD30010334A /* PeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PeoplePickerViewController.h; path = PeoplePicker/PeoplePickerViewController.h; sourceTree = "<group>"; };
+		08735D3518C74DD30010334A /* PeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PeoplePickerViewController.m; path = PeoplePicker/PeoplePickerViewController.m; sourceTree = "<group>"; };
+		08735D3618C74DD30010334A /* PeoplePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PeoplePickerViewController.xib; path = PeoplePicker/PeoplePickerViewController.xib; sourceTree = "<group>"; };
+		08735D3A18C9DBAE0010334A /* PersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonCell.h; path = PersonCell/PersonCell.h; sourceTree = "<group>"; };
+		08735D3B18C9DBAE0010334A /* PersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonCell.m; path = PersonCell/PersonCell.m; sourceTree = "<group>"; };
+		08735D3D18C9DBDC0010334A /* PersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PersonCell.xib; path = PersonCell/PersonCell.xib; sourceTree = "<group>"; };
 		088228621843722B006E58A4 /* RequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestHandler.h; sourceTree = "<group>"; };
 		088228631843722B006E58A4 /* RequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestHandler.m; sourceTree = "<group>"; };
 		088228651843B180006E58A4 /* AttributedLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedLabelCell.h; sourceTree = "<group>"; };
@@ -564,6 +577,8 @@
 		08948C5E1823C24D006D38F5 /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		08948C5F1823C24D006D38F5 /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		08948C611823C26E006D38F5 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
+		089FAFDA18CE19BC00AB4613 /* NodePickerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerListViewController.h; path = "Node Picker ViewController/NodePickerListViewController.h"; sourceTree = "<group>"; };
+		089FAFDB18CE19BC00AB4613 /* NodePickerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerListViewController.m; path = "Node Picker ViewController/NodePickerListViewController.m"; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
 		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
@@ -571,8 +586,6 @@
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
 		08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button@2x.png"; sourceTree = "<group>"; };
 		08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderListViewController.xib; sourceTree = "<group>"; };
-		08D6AA4018BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlfrescoAppPickerItemsListViewController.h; path = "Node Picker ViewController/AlfrescoAppPickerItemsListViewController.h"; sourceTree = "<group>"; };
-		08D6AA4118BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlfrescoAppPickerItemsListViewController.m; path = "Node Picker ViewController/AlfrescoAppPickerItemsListViewController.m"; sourceTree = "<group>"; };
 		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
 		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
 		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
@@ -1251,16 +1264,38 @@
 		085CC80C18BCFE4100E43C98 /* NodePickerViewController */ = {
 			isa = PBXGroup;
 			children = (
-				085CC81618BDEC3300E43C98 /* AlfrescoAppPicker.h */,
-				085CC81718BDEC3300E43C98 /* AlfrescoAppPicker.m */,
-				08D6AA4018BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.h */,
-				08D6AA4118BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.m */,
+				085CC81618BDEC3300E43C98 /* NodePicker.h */,
+				085CC81718BDEC3300E43C98 /* NodePicker.m */,
+				089FAFDA18CE19BC00AB4613 /* NodePickerListViewController.h */,
+				089FAFDB18CE19BC00AB4613 /* NodePickerListViewController.m */,
 				085CC81318BD02A500E43C98 /* NodePickerSitesViewController.h */,
 				085CC81418BD02A500E43C98 /* NodePickerSitesViewController.m */,
 				085CC81918BDEED400E43C98 /* NodePickerFileFolderListViewController.h */,
 				085CC81A18BDEED400E43C98 /* NodePickerFileFolderListViewController.m */,
 			);
 			name = NodePickerViewController;
+			sourceTree = "<group>";
+		};
+		08735D3018C7483B0010334A /* PeoplePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				08735D3118C748A80010334A /* PeoplePicker.h */,
+				08735D3218C748A80010334A /* PeoplePicker.m */,
+				08735D3418C74DD30010334A /* PeoplePickerViewController.h */,
+				08735D3518C74DD30010334A /* PeoplePickerViewController.m */,
+				08735D3618C74DD30010334A /* PeoplePickerViewController.xib */,
+			);
+			name = PeoplePickerViewController;
+			sourceTree = "<group>";
+		};
+		08735D3918C9DB7B0010334A /* PersonCell */ = {
+			isa = PBXGroup;
+			children = (
+				08735D3A18C9DBAE0010334A /* PersonCell.h */,
+				08735D3B18C9DBAE0010334A /* PersonCell.m */,
+				08735D3D18C9DBDC0010334A /* PersonCell.xib */,
+			);
+			name = PersonCell;
 			sourceTree = "<group>";
 		};
 		08B61F9B1804076800C827EA /* Custom Popovers */ = {
@@ -2034,6 +2069,7 @@
 		73B957E117A6750E0099FB84 /* Table Cells */ = {
 			isa = PBXGroup;
 			children = (
+				08735D3918C9DB7B0010334A /* PersonCell */,
 				0804DCB2181967EE00E3ACC2 /* AccountCell */,
 				73B957E217A6750E0099FB84 /* ActivitiesTableViewCellController.h */,
 				73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */,
@@ -2195,6 +2231,7 @@
 				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
 				0833244D17F981EC00EE6AA8 /* Sync ViewController */,
 				085CC80C18BCFE4100E43C98 /* NodePickerViewController */,
+				08735D3018C7483B0010334A /* PeoplePickerViewController */,
 				73B95ADD17A68DF20099FB84 /* Tabbar View Controllers */,
 				73F628B4185779050050F437 /* Text File View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
@@ -2836,10 +2873,12 @@
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
 				73FF557718ACE2370009CA56 /* large_audio.png in Resources */,
 				73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */,
+				08735D3E18C9DBDC0010334A /* PersonCell.xib in Resources */,
 				27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */,
 				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				73FF558118ACE2370009CA56 /* large_notes.png in Resources */,
 				73D6492518AD855D00333266 /* actionsheet-add-folder@2x.png in Resources */,
+				08735D3818C74DD30010334A /* PeoplePickerViewController.xib in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
@@ -3052,6 +3091,7 @@
 				73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */,
+				08735D3718C74DD30010334A /* PeoplePickerViewController.m in Sources */,
 				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
@@ -3061,7 +3101,7 @@
 				73B9585017A6750F0099FB84 /* SitesCell.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
-				085CC81818BDEC3300E43C98 /* AlfrescoAppPicker.m in Sources */,
+				085CC81818BDEC3300E43C98 /* NodePicker.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
@@ -3080,6 +3120,7 @@
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
+				08735D3318C748A80010334A /* PeoplePicker.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
@@ -3097,6 +3138,7 @@
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
+				089FAFDC18CE19BC00AB4613 /* NodePickerListViewController.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
@@ -3124,6 +3166,7 @@
 				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
+				08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */,
 				0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
 				08948C601823C24D006D38F5 /* SwitchCell.m in Sources */,
@@ -3131,7 +3174,6 @@
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				73697A8B18B26B0700021B02 /* TasksCell.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
-				08D6AA4218BF8FD5007FB028 /* AlfrescoAppPickerItemsListViewController.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,

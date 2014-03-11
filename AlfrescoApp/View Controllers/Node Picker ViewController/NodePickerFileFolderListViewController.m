@@ -13,7 +13,8 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
 
 @interface NodePickerFileFolderListViewController ()
 
-@property (nonatomic, strong) AlfrescoAppPicker *nodePicker;
+@property (nonatomic, strong) NodePicker *nodePicker;
+@property (nonatomic, strong) AlfrescoFolder *displayFolder;
 
 @end
 
@@ -23,12 +24,13 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
              folderPermissions:(AlfrescoPermissions *)permissions
              folderDisplayName:(NSString *)displayName
                        session:(id<AlfrescoSession>)session
-          nodePickerController:(AlfrescoAppPicker *)nodePicker
+          nodePickerController:(NodePicker *)nodePicker
 {
     self = [super initWithFolder:folder folderPermissions:permissions folderDisplayName:displayName session:session];
     if (self)
     {
         _nodePicker = nodePicker;
+        _displayFolder = folder;
     }
     return self;
 }
@@ -39,8 +41,11 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
 	
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
     
-    [self.tableView setEditing:YES];
-    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
+    if (self.nodePicker.nodePickerMode == NodePickerModeMultiSelect)
+    {
+        [self.tableView setEditing:YES];
+        [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
+    }
     
     UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kMultiSelectToolBarHeight, 0.0);
     self.tableView.contentInset = edgeInset;
@@ -48,6 +53,14 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
     
     [self.searchController.searchResultsTableView setEditing:YES];
     [self.searchController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
+    
+    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    {
+        if (self.displayFolder)
+        {
+            [self.nodePicker replaceSelectedNodesWithNodes:@[self.displayFolder]];
+        }
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deselectAllSelectedNodes:)
@@ -63,7 +76,7 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.nodePicker cancelPicker];
+    [self.nodePicker cancelNodePicker];
 }
 
 - (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated
@@ -76,7 +89,7 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.nodePicker isSelectionEnabledForItem:self.tableViewData[indexPath.row]];
+    return [self.nodePicker isSelectionEnabledForNode:self.tableViewData[indexPath.row]];
 }
 
 #pragma mark - Notification Methods
@@ -104,19 +117,9 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
         selectedNode = self.tableViewData[indexPath.row];
     }
     
-    if ([self.nodePicker isItemSelected:selectedNode])
+    if ([self.nodePicker isNodeSelected:selectedNode])
     {
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
-    
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    if (self.nodePicker.pickerType == PickerTypeNodesSingleSelection && selectedNode.isFolder && ![self.nodePicker isItemSelected:selectedNode])
-    {
-        cell.editingAccessoryView = [self createFolderSelectionButton];
-    }
-    else
-    {
-        cell.editingAccessoryView = nil;
     }
     
     return cell;
@@ -136,30 +139,24 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
     
     if (selectedNode.isFolder)
     {
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        if (self.nodePicker.pickerType == PickerTypeNodesSingleSelection && [self.nodePicker numberOfSelectedItems] > 0)
-        {
-            
-        }
-        else
-        {
-            NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
-                                                                                                                         folderPermissions:nil
-                                                                                                                         folderDisplayName:selectedNode.title
-                                                                                                                                   session:self.session
-                                                                                                                      nodePickerController:self.nodePicker];
-            [self.navigationController pushViewController:browserViewController animated:YES];
-        }
+        NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
+                                                                                                                     folderPermissions:nil
+                                                                                                                     folderDisplayName:selectedNode.title
+                                                                                                                               session:self.session
+                                                                                                                  nodePickerController:self.nodePicker];
+        [self.navigationController pushViewController:browserViewController animated:YES];
     }
     else
     {
-        if (self.nodePicker.pickerType == PickerTypeNodesSingleSelection)
+        if (self.nodePicker.nodePickerType == NodePickerTypeDocuments && self.nodePicker.nodePickerMode == NodePickerModeSingleSelect)
         {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self.nodePicker deselectAllNodes];
+            [self.nodePicker selectNode:selectedNode];
+            [self.nodePicker pickingNodesComplete];
         }
         else
         {
-            [self.nodePicker selectItem:selectedNode];
+            [self.nodePicker selectNode:selectedNode];
         }
     }
 }
@@ -176,39 +173,7 @@ static NSInteger const kFolderSelectionButtongHeight = 32;
         selectedNode = self.tableViewData[indexPath.row];
     }
     
-    [self.nodePicker deselectItem:selectedNode];
-    [self.tableView reloadData];
-}
-
-- (UIButton *)createFolderSelectionButton
-{
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kFolderSelectionButtonWidth, kFolderSelectionButtongHeight)];
-    [button addTarget:self action:@selector(selectFolderButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [button setBackgroundImage:[UIImage imageNamed:@"unselected_circle"] forState:UIControlStateNormal];
-    return button;
-}
-
-- (void)selectFolderButtonClicked:(UIButton *)sender
-{
-    UITableViewCell *selectedCell = (UITableViewCell *)sender.superview;
-    
-    BOOL foundNodeCell = NO;
-    while (!foundNodeCell)
-    {
-        if (![selectedCell isKindOfClass:[UITableViewCell class]])
-        {
-            selectedCell = (UITableViewCell *)selectedCell.superview;
-        }
-        else
-        {
-            foundNodeCell = YES;
-        }
-    }
-    NSIndexPath *indexPathForSelectedCell = [self.tableView indexPathForCell:selectedCell];
-    
-    AlfrescoNode *selectedNode = self.tableViewData[indexPathForSelectedCell.row];
-    [self.nodePicker deselectAllItems];
-    [self.nodePicker selectItem:selectedNode];
+    [self.nodePicker deselectNode:selectedNode];
     [self.tableView reloadData];
 }
 

@@ -247,22 +247,31 @@
  */
 "multiselect.button.delete" = "Delete";
 "multiselect.button.delete.counter" = "Delete (%u)";
-"multiselect.button.attach" = "Attach";
-"multiselect.button.attach.counter" = "Attach (%u) Documents";
-"multiselect.button.deselectAll" = "Deselect All";
-"multiselect.button.deselectAll.counter" = "Deselect All";
-"multiselect.button.select" = "Select";
-"multiselect.button.select.counter" = "Select";
 "multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 item from the server?";
 "multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d items from the server?";
 "multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 item from local files?";
 "multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d items from local files?";
 
 /**
- * Alfresco App Picker
+ * Node Picker
  **/
-"picker.multiSelect.attachments.select" = "Select attachments...";
-"picker.multiSelect.list.title" = "Attachments";
+"nodes.picker.attachments.select" = "Select attachments...";
+"nodes.picker.list.title" = "Attachments";
+"nodes.picker.button.select.documents" = "Select Document(s)";
+"nodes.picker.button.select.documents.counter" = "Select (%u) Document(s)";
+"nodes.picker.button.deselectAll" = "Deselect All";
+"nodes.picker.button.deselectAll.counter" = "Deselect All";
+"nodes.picker.button.select.folder" = "Select this folder";
+"nodes.picker.button.select.folder.counter" = "Select this folder";
+
+/**
+ * People Picker
+ */
+"people.picker.title" = "Choose assignee";
+"people.picker.list.title" = "";
+"people.picker.assignees.select" = "Select assignees...";
+"people.picker.assignee.select" = "Select assignee...";
+"people.picker.list.title" = "Assignees";
 
 /**
  * About View Controller

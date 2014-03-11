@@ -97,6 +97,17 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
     return toolBarButton;
 }
 
+- (void)removeToolBarButtons
+{
+    [self.actionItems removeAllObjects];
+}
+
+- (void)refreshToolBarButtons
+{
+    self.items = [self.actionItems array];
+    [self updateToolBarButtonTitles];
+}
+
 - (void)userDidSelectItem:(id)item
 {
     [self.selectedItems addObject:item];
