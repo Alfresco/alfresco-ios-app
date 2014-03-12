@@ -20,8 +20,8 @@
 #import "DetailSplitViewController.h"
 #import "AppConfigurationManager.h"
 #import "SettingsViewController.h"
-#import "AboutViewController.h"
 #import "PreviewViewController.h"
+#import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
 #import "UIColor+Custom.h"
 
@@ -31,6 +31,9 @@ static CGFloat const kMainMenuItemCellHeight = 48.0f;
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
 static NSUInteger const kDownloadsRowNumber = 1;
+
+static NSUInteger const kAccountsSectionNumber = 0;
+static NSUInteger const kAccountsRowNumber = 0;
 
 @interface MainMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -110,16 +113,14 @@ static NSUInteger const kDownloadsRowNumber = 1;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:kMainMenuItemCellIdentifier];
-
+    
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
     cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
     cell.menuTextLabel.textColor = [UIColor mainMenuLabelColor];
     cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
-    
     return cell;
 }
 
@@ -132,18 +133,29 @@ static NSUInteger const kDownloadsRowNumber = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
-    [self informDelegateMenuItemSelected:selectedMenuItem];
-    
-    // expand the detail view controller for the iPad
-    if (IS_IPAD)
+    if (selectedMenuItem.controllerType == NavigationControllerTypeHelp)
     {
-        DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
-        [detailSplitViewController expandViewController];
+        selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationPageSheet;
+        [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
+    }
+    else if (selectedMenuItem.controllerType == NavigationControllerTypeSettings)
+    {
+        selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
+    }
+    else
+    {
+        [self informDelegateMenuItemSelected:selectedMenuItem];
+        
+        // expand the detail view controller for the iPad
+        if (IS_IPAD)
+        {
+            DetailSplitViewController *detailSplitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
+            [detailSplitViewController expandViewController];
+        }
     }
 }
 
@@ -202,15 +214,8 @@ static NSUInteger const kDownloadsRowNumber = 1;
                                                                    viewController:settingsNavigationController
                                                                   displayInDetail:YES];
     
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-    NavigationViewController *aboutNavigationController = [[NavigationViewController alloc] initWithRootViewController:aboutViewController];
-    MainMenuItem *aboutMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAbout
-                                                                     imageName:@"mainmenu-about.png"
-                                                             localizedTitleKey:@"about.title"
-                                                                viewController:aboutNavigationController
-                                                               displayInDetail:YES];
-    
-    PreviewViewController *helpViewController = [[PreviewViewController alloc] initWithBundleDocument:@"UserGuide.pdf"];
+    NSURL *userGuidUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"UserGuide" ofType:@"pdf"]];
+    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:userGuidUrl initialTitle:NSLocalizedString(@"help.title", @"Help") errorLoadingURL:nil];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
                                                                     imageName:@"mainmenu-help.png"
@@ -226,7 +231,7 @@ static NSUInteger const kDownloadsRowNumber = 1;
                                                       viewController:downloadsNavigationController
                                                      displayInDetail:NO];
     
-    return [@[settingsMenuItem, downloadsMenuItem, aboutMenuItem, helpMenuItem] mutableCopy];
+    return [@[settingsMenuItem, downloadsMenuItem, helpMenuItem] mutableCopy];
 }
 
 - (void)configureLocalMainMenuItems:(AppConfigurationManager *)configurationManager
@@ -447,14 +452,29 @@ static NSUInteger const kDownloadsRowNumber = 1;
         }
         
         // select Sites tab if exists otherwise default to Accounts
+        NSInteger indexOfItemDisplayed = NSNotFound;
+        
         if ([self existingMenuItemWithType:NavigationControllerTypeSites])
         {
             [self displayViewControllerWithType:NavigationControllerTypeSites];
+            indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];
         }
         else
         {
             [self displayViewControllerWithType:NavigationControllerTypeAccounts];
         }
+        
+        // select cell for displayed menu item
+        NSIndexPath *selectedItemIndexPath = nil;
+        if (indexOfItemDisplayed != NSNotFound)
+        {
+            selectedItemIndexPath = [NSIndexPath indexPathForRow:indexOfItemDisplayed inSection:kRepositoryItemsSectionNumber];
+        }
+        else
+        {
+            selectedItemIndexPath = [NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber];
+        }
+        [self.tableView selectRowAtIndexPath:selectedItemIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     }
     else
     {

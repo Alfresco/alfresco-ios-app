@@ -11,6 +11,10 @@
 #import "SettingToggleCell.h"
 #import "SettingTextFieldCell.h"
 #import "SettingConstants.h"
+#import "SettingLabelCell.h"
+#import "AboutViewController.h"
+
+static NSString * const kAboutIdentifier = @"about.identifier";
 
 @interface SettingsViewController () <SettingsCellProtocol>
 
@@ -45,9 +49,19 @@
     self.tableViewData = [dictionary objectForKey:kSettingsTableViewData];
     
     self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                target:self
+                                                                                action:@selector(doneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 #pragma mark - Private Functions
+
+- (void)doneButtonPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (Class)determineTableViewCellClassFromCellInfo:(NSDictionary *)cellInfo
 {
@@ -62,6 +76,10 @@
     else if ([cellPreferenceType isEqualToString:kSettingsTextFieldCell])
     {
         returnClass = [SettingTextFieldCell class];
+    }
+    else if ([cellPreferenceType isEqualToString:kSettingsLabelCell])
+    {
+        returnClass = [SettingLabelCell class];
     }
     
     return returnClass;
@@ -80,6 +98,10 @@
     else if ([cellPreferenceType isEqualToString:kSettingsTextFieldCell])
     {
         reuseIdentifier = kSettingsTextFieldCellReuseIdentifier;
+    }
+    else if ([cellPreferenceType isEqualToString:kSettingsLabelCell])
+    {
+        reuseIdentifier = kSettingsLabelCellReuseIdentifier;
     }
     
     return reuseIdentifier;
@@ -101,7 +123,7 @@
 {
     NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:section];
     NSString *groupHeaderTitle = [groupInfoDictionary objectForKey:kSettingsGroupHeaderLocalizedKey];
-    return groupHeaderTitle;
+    return NSLocalizedString(groupHeaderTitle, @"Section header title");
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -131,7 +153,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    SettingCell *cell = (SettingCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ([cell.preferenceIdentifier isEqualToString:kAboutIdentifier])
+    {
+        AboutViewController *aboutViewController = [[AboutViewController alloc] init];
+        [self.navigationController pushViewController:aboutViewController animated:YES];
+    }
+    else
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 #pragma mark - SettingsCellProtocol Functions

@@ -7,8 +7,22 @@
 //
 
 #import "MainMenuItemCell.h"
+#import "UIColor+Custom.h"
 
 @implementation MainMenuItemCell
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        UIView *bgColorView = [[UIView alloc] init];
+        bgColorView.backgroundColor = [UIColor appTintColor];
+        bgColorView.layer.masksToBounds = YES;
+        self.selectedBackgroundView = bgColorView;
+    }
+    return self;
+}
 
 - (void)layoutSubviews
 {

@@ -11,6 +11,8 @@
 #import "AccountManager.h"
 #import "TasksCell.h"
 #import "TaskGroupItem.h"
+#import "UIColor+Custom.h"
+#import "Utility.h"
 #import "TaskDetailsViewController.h"
 #import "UniversalDevice.h"
 
@@ -49,12 +51,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
         
-        NSPredicate *myTasksPredicate = [NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, kActivitiReview, kActivitiParallelReview, kActivitiToDo];
-        NSPredicate *tasksIStartedPredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
-        self.myTasks = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")
-                                         filteringPredicate:myTasksPredicate];
-        self.tasksIStarted = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")
-                                               filteringPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[myTasksPredicate, tasksIStartedPredicate]]];
+        
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(sessionReceived:)
@@ -111,6 +108,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
 - (void)createWorkflowServicesWithSession:(id<AlfrescoSession>)session
 {
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
+    
+    NSPredicate *myTasksPredicate = [NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, kActivitiReview, kActivitiParallelReview, kActivitiToDo];
+    NSPredicate *tasksIStartedPredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
+    self.myTasks = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")
+                                     filteringPredicate:myTasksPredicate];
+    self.tasksIStarted = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")
+                                           filteringPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[myTasksPredicate, tasksIStartedPredicate]]];
 }
 
 - (TaskGroupItem *)taskGroupItemForType:(TaskType)taskType
@@ -227,6 +231,9 @@ typedef NS_ENUM(NSUInteger, TaskType)
         [actionSheet showInView:self.view];
     }
     
+    // UIActionSheet button titles don't pick up the global tint color by default
+    [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
+
     self.filterButton.enabled = NO;
 }
 

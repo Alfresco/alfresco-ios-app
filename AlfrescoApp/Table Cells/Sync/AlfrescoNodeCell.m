@@ -64,6 +64,14 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
                                              selector:@selector(statusChanged:)
                                                  name:kSyncStatusChangeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didAddNodeToFavorites:)
+                                                 name:kFavouritesDidAddNodeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRemoveNodeFromFavorites:)
+                                                 name:kFavouritesDidRemoveNodeNotification
+                                               object:nil];
 }
 
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate
@@ -146,10 +154,29 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
             if (nodeStatus.status == SyncStatusRemoved)
             {
                 self.nodeStatus = nil;
-                [self updateStatusIconsIsSyncNode:NO isFavoriteNode:nodeStatus.isFavorite animate:YES];
+                [self updateStatusIconsIsSyncNode:NO isFavoriteNode:self.isFavorite animate:YES];
             }
             [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
         });
+    }
+}
+
+- (void)didAddNodeToFavorites:(NSNotification *)notification
+{
+    AlfrescoNode *nodeFavorited = (AlfrescoNode *)notification.object;
+    if ([nodeFavorited.identifier isEqualToString:self.node.identifier])
+    {
+        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:YES animate:YES];
+    }
+}
+
+- (void)didRemoveNodeFromFavorites:(NSNotification *)notification
+{
+    AlfrescoNode *nodeUnFavorited = (AlfrescoNode *)notification.object;
+    if ([nodeUnFavorited.identifier isEqualToString:self.node.identifier])
+    {
+        self.isFavorite = NO;
+        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:NO animate:YES];
     }
 }
 
@@ -165,10 +192,6 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     else if ([propertyChanged isEqualToString:kSyncTotalSize] || [propertyChanged isEqualToString:kSyncLocalModificationDate])
     {
         [self updateNodeDetails:nodeStatus];
-    }
-    else if ([propertyChanged isEqualToString:kSyncIsFavorite])
-    {
-        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:nodeStatus.isFavorite animate:YES];
     }
     
     [self updateStatusImageForSyncState:nodeStatus];

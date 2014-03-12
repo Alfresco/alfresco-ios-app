@@ -19,9 +19,14 @@
 #import "LoginManager.h"
 
 static NSInteger const kCloudAwaitingVerificationTextSection = 0;
-static NSInteger const kCloudSignUpActionSection = 1;
 static NSInteger const kCloudRefreshSection = 1;
 static NSInteger const kCloudReEmailSection = 2;
+static NSInteger const kCloudCustomerCareSection = 3;
+
+static NSInteger const kCloudTermsAndPolicySection = 1;
+static NSInteger const kCloudTermsOfServiceRow = 0;
+static NSInteger const kCloudPrivacyPolicyRow = 1;
+static NSInteger const kCloudSignUpActionSection = 2;
 
 static CGFloat const kAwaitingVerificationTextFontSize = 20.0f;
 
@@ -45,7 +50,7 @@ static NSString * const kSource = @"mobile";
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, strong) UIButton *signUpButton;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
-@property (nonatomic, strong) NSString *awaitingVerificationText;
+@property (nonatomic, strong) AttributedLabelCell *awaitingVerificationCell;
 @end
 
 @implementation CloudSignUpViewController
@@ -72,11 +77,6 @@ static NSString * const kSource = @"mobile";
     {
         self.title = NSLocalizedString(@"cloudsignup.title", @"New Account");
         
-        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                target:self
-                                                                                action:@selector(cancel:)];
-        self.navigationItem.leftBarButtonItem = cancel;
-        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(textFieldDidChange:)
                                                      name:UITextFieldTextDidChangeNotification
@@ -91,6 +91,11 @@ static NSString * const kSource = @"mobile";
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
     }
+    
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                            target:self
+                                                                            action:@selector(cancel:)];
+    self.navigationItem.leftBarButtonItem = cancel;
     
     [self disablePullToRefresh];
     [self constructTableCells];
@@ -150,13 +155,10 @@ static NSString * const kSource = @"mobile";
     
     if ((self.account.accountStatus == UserAccountStatusAwaitingVerification) && (indexPath.section == kCloudAwaitingVerificationTextSection))
     {
-        CGRect rect = [self.awaitingVerificationText boundingRectWithSize:CGSizeMake(tableView.bounds.size.width, CGFLOAT_MAX)
-                                                                  options:NSStringDrawingTruncatesLastVisibleLine
-                                                               attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:kAwaitingVerificationTextFontSize]}
-                                                                  context:nil];
-        returnHeight = rect.size.height;
+        AttributedLabelCell *awaitingVerificationCell = [self awaitingVerificationCell];
+        CGSize size = [awaitingVerificationCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        returnHeight = size.height;
     }
-    
     return returnHeight;
 }
 
@@ -177,6 +179,22 @@ static NSString * const kSource = @"mobile";
         {
             [self resendCloudSignupEmail];
         }
+        else if (indexPath.section == kCloudCustomerCareSection)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kAlfrescoCloudCustomerCareUrl]];
+        }
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    else if (indexPath.section == kCloudTermsAndPolicySection)
+    {
+        if (indexPath.row == kCloudTermsOfServiceRow)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kAlfrescoCloudTermOfServiceUrl]];
+        }
+        else if (indexPath.row == kCloudPrivacyPolicyRow)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kAlfrescoCloudPrivacyPolicyUrl]];
+        }
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     else
@@ -191,6 +209,7 @@ static NSString * const kSource = @"mobile";
     NSArray *group1 = nil;
     NSArray *group2 = nil;
     NSArray *group3 = nil;
+    NSArray *group4 = nil;
     if (self.account == nil)
     {
         TextFieldCell *firstNameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -233,6 +252,12 @@ static NSString * const kSource = @"mobile";
         confirmPasswordCell.valueTextField.delegate = self;
         self.confirmPasswordTextField = confirmPasswordCell.valueTextField;
         
+        CenterLabelCell *termsCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        termsCell.titleLabel.text = NSLocalizedString(@"cloudsignup.footer.termsOfService", @"");
+        
+        CenterLabelCell *policyCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        policyCell.titleLabel.text = NSLocalizedString(@"cloudsignup.footer.privacyPolicy", @"");
+        
         ButtonCell *signUpCell = (ButtonCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([ButtonCell class]) owner:self options:nil] lastObject];
         [signUpCell.button setTitle:NSLocalizedString(@"cloudsignup.button.signup", @"Sign Up") forState:UIControlStateNormal];
         [signUpCell.button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
@@ -240,8 +265,9 @@ static NSString * const kSource = @"mobile";
         self.signUpButton = signUpCell.button;
         
         group1 = @[firstNameCell, lastNameCell, emailCell, passwordCell, confirmPasswordCell];
-        group2 = @[signUpCell];
-        self.tableGroups = @[group1, group2];
+        group2 = @[termsCell, policyCell];
+        group3 = @[signUpCell];
+        self.tableGroups = @[group1, group2, group3];
     }
     else if (self.account.accountStatus == UserAccountStatusAwaitingVerification)
     {
@@ -251,45 +277,38 @@ static NSString * const kSource = @"mobile";
         CenterLabelCell *resendEmailCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
         resendEmailCell.titleLabel.text = NSLocalizedString(@"awaitingverification.buttons.resendEmail", @"Browse Documents");
         
+        CenterLabelCell *customerCare = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+        customerCare.titleLabel.text = NSLocalizedString(@"awaitingverification.buttons.customercare", @"Customer Care");
+        
         group1 = @[[self awaitingVerificationCell]];
         group2 = @[refreshCell];
         group3 = @[resendEmailCell];
-        self.tableGroups = @[group1, group2, group3];
+        group4 = @[customerCare];
+        self.tableGroups = @[group1, group2, group3, group4];
     }
 }
 
 - (AttributedLabelCell *)awaitingVerificationCell
 {
-    AttributedLabelCell *attributedLabelCell = (AttributedLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AttributedLabelCell class]) owner:self options:nil] lastObject];
-    TTTAttributedLabel *label = attributedLabelCell.attributedLabel;
-    
-    label.textAlignment = NSTextAlignmentLeft;
-    self.awaitingVerificationText = [NSString stringWithFormat:NSLocalizedString(@"awaitingverification.description", @"Account Awaiting Email Verification..."), self.account.username];
-    
-    [label setText:self.awaitingVerificationText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-        
-        NSRange titleRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.title", @"email verification")];
-        NSRange helpRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"awaitingverification.description.subtitle", @"having trouble activating")];
-        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kAwaitingVerificationTextFontSize];
-        CTFontRef font = CTFontCreateWithName((CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
-        if (font)
-        {
-            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:titleRange];
-            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:helpRange];
-            CFRelease(font);
-        }
-        return mutableAttributedString;
-    }];
-    [label sizeToFit];
-    
-    NSString *customerCareUrl = kAlfrescoCloudCustomerCareUrl;
-    NSRange textRange = [label.text rangeOfString:NSLocalizedString(@"awaitingverification.description.customerCare", @"customer care url") options:NSBackwardsSearch];
-    if (textRange.length > 0)
+    if (!_awaitingVerificationCell)
     {
-        [label addLinkToURL:[NSURL URLWithString:customerCareUrl] withRange:textRange];
-        [label setDelegate:self];
+        _awaitingVerificationCell = (AttributedLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AttributedLabelCell class]) owner:self options:nil] lastObject];
+        NSMutableAttributedString *awaitingVerificationText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"awaitingverification.description", @"Account Awaiting Email Verification..."), self.account.username]];
+        
+        NSRange titleRange = [[awaitingVerificationText string] rangeOfString:NSLocalizedString(@"awaitingverification.description.title", @"email verification")];
+        NSRange helpRange = [[awaitingVerificationText string] rangeOfString:NSLocalizedString(@"awaitingverification.description.subtitle", @"having trouble activating")];
+        
+        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:kAwaitingVerificationTextFontSize];
+        
+        [awaitingVerificationText setAttributes:@{NSFontAttributeName:boldSystemFont} range:titleRange];
+        [awaitingVerificationText setAttributes:@{NSFontAttributeName:boldSystemFont} range:helpRange];
+        
+        _awaitingVerificationCell.attributedLabel.attributedText = awaitingVerificationText;
+        [_awaitingVerificationCell.attributedLabel sizeThatFits:awaitingVerificationText.size];
+        [_awaitingVerificationCell setNeedsLayout];
+        [_awaitingVerificationCell layoutIfNeeded];
     }
-    return attributedLabelCell;
+    return _awaitingVerificationCell;
 }
 
 #pragma mark - private methods
@@ -367,12 +386,6 @@ static NSString * const kSource = @"mobile";
             [alert show];
         }
     }];
-}
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    AlfrescoLogDebug(@"link selected: %@", url.path);
-    [[UIApplication sharedApplication] openURL:url];
 }
 
 - (void)signUp:(id)sender
@@ -463,24 +476,15 @@ static NSString * const kSource = @"mobile";
     footerTextFrame.size.width = footerWidth;
     footerTextView.frame = footerTextFrame;
     
-    TTTAttributedLabel *signupLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, footerTextView.frame.size.height, footerWidth, 0)];
+    UILabel *signupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, footerTextView.frame.size.height, footerWidth, 0)];
     signupLabel.backgroundColor = [UIColor clearColor];
     signupLabel.numberOfLines = 0;
     signupLabel.textAlignment = NSTextAlignmentCenter;
     signupLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
     signupLabel.font = [UIFont systemFontOfSize:15];
     signupLabel.userInteractionEnabled = YES;
-    signupLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-    signupLabel.delegate = self;
     signupLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [signupLabel setText:signupText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-        return mutableAttributedString;
-    }];
-    
-    [self addLink:[NSURL URLWithString:kAlfrescoCloudTermOfServiceUrl] toText:NSLocalizedString(@"cloudsignup.footer.termsOfService", @"") inString:signupText label:signupLabel];
-    [self addLink:[NSURL URLWithString:kAlfrescoCloudPrivacyPolicyUrl] toText:NSLocalizedString(@"cloudsignup.footer.privacyPolicy", @"") inString:signupText label:signupLabel];
-    
+    signupLabel.text = signupText;
     [signupLabel sizeToFit];
     
     CGRect signupFrame = signupLabel.frame;
@@ -490,16 +494,6 @@ static NSString * const kSource = @"mobile";
     [footerView addSubview:footerTextView];
     [footerView addSubview:signupLabel];
     return footerView;
-}
-
-- (void)addLink:(NSURL *)url toText:(NSString *)text inString:(NSString *)completeString label:(TTTAttributedLabel *)label
-{
-    NSRange textRange = [completeString rangeOfString:text];
-    if (textRange.length > 0)
-    {
-        [label addLinkToURL:url withRange:textRange];
-        [label setDelegate:self];
-    }
 }
 
 - (BOOL)validateSignUpFields

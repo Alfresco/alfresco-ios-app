@@ -81,7 +81,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     
     self.addCommentTextView.maximumHeight = kMaxCommentTextViewHeight;
     self.addCommentTextView.layer.cornerRadius = 10.0f;
-    self.addCommentTextView.layer.borderColor = [[UIColor lineSeparatorColor] CGColor];
+    self.addCommentTextView.layer.borderColor = [[UIColor borderGreyColor] CGColor];
     self.addCommentTextView.layer.borderWidth = 0.5f;
     self.addCommentTextView.font = [UIFont systemFontOfSize:12.0f];
     
@@ -241,7 +241,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     // if the last cell is about to be drawn, check if there are more comments
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:self.tableViewData.count];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
         if (self.moreItemsAvailable)
         {
             // show more comments are loading ...

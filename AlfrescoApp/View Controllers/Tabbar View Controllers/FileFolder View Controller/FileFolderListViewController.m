@@ -26,6 +26,7 @@
 #import "SyncManager.h"
 #import "FavouriteManager.h"
 #import "FolderPreviewViewController.h"
+#import "UIColor+Custom.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -378,24 +379,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (IS_IPAD)
     {
         [actionSheet setActionSheetStyle:UIActionSheetStyleDefault];
-        
-        if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-        {
-            [actionSheet showFromBarButtonItem:sender animated:YES];
-        }
-        else
-        {
-            // iOS 5.1 bug workaround
-            CGRect actionButtonRect = [(UIView *)[event.allTouches.anyObject view] frame];
-            CGRect convertedRect = [self.navigationController.view convertRect:actionButtonRect toView:nil];
-            [actionSheet showFromRect:convertedRect inView:self.view.window animated:YES];
-        }
+        [actionSheet showFromBarButtonItem:sender animated:YES];
     }
     else
     {
         [actionSheet showInView:self.view];
     }
-    
+
+    // UIActionSheet button titles don't pick up the global tint color by default
+    [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
+
     self.actionSheetSender = (UIBarButtonItem *)sender;
     self.actionSheetSender.enabled = NO;
     self.actionSheet = actionSheet;
@@ -633,13 +626,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)deleteNodes:(NSArray *)nodes completionBlock:(void (^)(BOOL success))completionBlock
 {
-    __block int numberOfDocumentsToBeDeleted = nodes.count;
+    __block NSInteger numberOfDocumentsToBeDeleted = nodes.count;
     __block int numberOfSuccessfulDeletes = 0;
     
     for (AlfrescoNode *node in nodes)
     {
         [self deleteNode:node completionBlock:^(BOOL success) {
-            
             if (success)
             {
                 numberOfSuccessfulDeletes++;
@@ -957,7 +949,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:self.tableViewData.count];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
@@ -1074,6 +1066,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             [uploadActionSheet showInView:self.view];
         }
         
+        // UIActionSheet button titles don't pick up the global tint color by default
+        [Utility colorButtonsForActionSheet:uploadActionSheet tintColor:[UIColor appTintColor]];
+
         [self.actionSheetSender setEnabled:NO];
         [self setActionSheet:uploadActionSheet];
     }

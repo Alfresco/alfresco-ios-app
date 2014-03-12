@@ -195,7 +195,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     // setup the comments text view
     self.textView.maximumHeight = kMaxCommentTextViewHeight;
     self.textView.layer.cornerRadius = 5.0f;
-    self.textView.layer.borderColor = [[UIColor lineSeparatorColor] CGColor];
+    self.textView.layer.borderColor = [[UIColor borderGreyColor] CGColor];
     self.textView.layer.borderWidth = 0.5f;
     self.textView.font = [UIFont systemFontOfSize:12.0f];
 }

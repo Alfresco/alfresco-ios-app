@@ -8,6 +8,7 @@
 
 #import "SyncViewController.h"
 #import "SyncManager.h"
+#import "FavouriteManager.h"
 #import "AlfrescoNodeCell.h"
 #import "Utility.h"
 #import "DocumentPreviewViewController.h"
@@ -201,12 +202,19 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     SyncManager *syncManager = [SyncManager sharedManager];
+    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
     
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
-    [nodeCell updateStatusIconsIsSyncNode:YES isFavoriteNode:nodeStatus.isFavorite animate:NO];
+    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
+    
+    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
+    [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        
+        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
+    }];
     
     if (node.isFolder)
     {
@@ -269,32 +277,27 @@ static CGFloat const kCellImageViewHeight = 32.0f;
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 return;
             }
-            NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:selectedNode.name];
-            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
-            
             [self showHUD];
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                [self.documentFolderService retrieveContentOfDocument:(AlfrescoDocument *)selectedNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                    [self hideHUD];
-                    if (succeeded)
-                    {
-                        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                               permissions:permissions
-                                                                                                                           contentFilePath:filePath
-                                                                                                                          documentLocation:InAppDocumentLocationSync
-                                                                                                                                   session:self.session];
-                        previewController.hidesBottomBarWhenPushed = YES;
-                        [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
-                    }
-                    else
-                    {
-                        // display an error
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                    // progress indicator update
-                }];
+                
+                [self hideHUD];
+                if (!error)
+                {
+                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                                                           permissions:permissions
+                                                                                                                       contentFilePath:filePath
+                                                                                                                      documentLocation:InAppDocumentLocationSync
+                                                                                                                               session:self.session];
+                    previewController.hidesBottomBarWhenPushed = YES;
+                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                }
+                else
+                {
+                    // display an error
+                    NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+                    displayErrorMessage(permissionRetrievalErrorMessage);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
             }];
         }
     }
@@ -425,38 +428,43 @@ static CGFloat const kCellImageViewHeight = 32.0f;
 
 - (NSString *)tableFooterText
 {
-    SyncNodeStatus *nodeStatus = nil;
-    if (!self.parentNode)
-    {
-        NSString *selectedAccountIdentifier = [[[AccountManager sharedManager] selectedAccount] accountIdentifier];
-        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:selectedAccountIdentifier];
-    }
-    else
-    {
-        nodeStatus = [[SyncManager sharedManager] syncStatusForNodeWithId:self.parentNode.identifier];
-    }
-    
+    SyncManager *syncManager = [SyncManager sharedManager];
+    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
     NSString *footerText = @"";
     
-    if (self.tableViewData.count > 0)
+    if (isSyncOn)
     {
-        NSString *documentsText = @"";
-        
-        switch (self.tableViewData.count)
+        SyncNodeStatus *nodeStatus = nil;
+        if (!self.parentNode)
         {
-            case 1:
-            {
-                documentsText = NSLocalizedString(@"downloadview.footer.one-document", @"1 Document");
-                break;
-            }
-            default:
-            {
-                documentsText = [NSString stringWithFormat:NSLocalizedString(@"downloadview.footer.multiple-documents", @"%d Documents"), self.tableViewData.count];
-                break;
-            }
+            NSString *selectedAccountIdentifier = [[[AccountManager sharedManager] selectedAccount] accountIdentifier];
+            nodeStatus = [syncManager syncStatusForNodeWithId:selectedAccountIdentifier];
+        }
+        else
+        {
+            nodeStatus = [syncManager syncStatusForNodeWithId:self.parentNode.identifier];
         }
         
-        footerText = [NSString stringWithFormat:@"%@ %@", documentsText, stringForLongFileSize(nodeStatus.totalSize)];
+        if (self.tableViewData.count > 0)
+        {
+            NSString *documentsText = @"";
+            
+            switch (self.tableViewData.count)
+            {
+                case 1:
+                {
+                    documentsText = NSLocalizedString(@"downloadview.footer.one-document", @"1 Document");
+                    break;
+                }
+                default:
+                {
+                    documentsText = [NSString stringWithFormat:NSLocalizedString(@"downloadview.footer.multiple-documents", @"%d Documents"), self.tableViewData.count];
+                    break;
+                }
+            }
+            
+            footerText = [NSString stringWithFormat:@"%@ %@", documentsText, stringForLongFileSize(nodeStatus.totalSize)];
+        }
     }
     return footerText;
 }

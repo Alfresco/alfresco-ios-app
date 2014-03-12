@@ -8,7 +8,7 @@
 
 #import "Constants.h"
 
-NSInteger const kMaxItemsPerListingRetrieve = 25;
+int const kMaxItemsPerListingRetrieve = 25;
 
 NSString * const kLicenseDictionaries = @"thirdPartyLibraries";
 

@@ -53,6 +53,8 @@
 		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
 		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
 		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
+		08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */; };
+		08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */; };
 		0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */; };
 		0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */; };
 		08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C581823B5EC006D38F5 /* TextFieldCell.m */; };
@@ -105,6 +107,8 @@
 		2744022018AA83C400DF23DD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2744021F18AA83C400DF23DD /* Settings.bundle */; };
 		274E61B6189DD22300202572 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
 		274E61B7189DD22300202572 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
+		2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */; };
+		2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27E84E2018AD4CE50024B658 /* accounttype-cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E1E18AD4CE50024B658 /* accounttype-cloud.png */; };
@@ -387,13 +391,6 @@
 		73B95A9B17A68B7E0099FB84 /* system_notice_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3517A68B7E0099FB84 /* system_notice_info@2x.png */; };
 		73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3617A68B7E0099FB84 /* system_notice_warning.png */; };
 		73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A3717A68B7E0099FB84 /* system_notice_warning@2x.png */; };
-		73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4717A68B7E0099FB84 /* black-cell-action-button.png */; };
-		73B95AAB17A68B7E0099FB84 /* black-cell-action-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4817A68B7E0099FB84 /* black-cell-action-button@2x.png */; };
-		73B95AAC17A68B7E0099FB84 /* cell-actions-inner-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4917A68B7E0099FB84 /* cell-actions-inner-shadow.png */; };
-		73B95AAD17A68B7E0099FB84 /* grey-accessory-down.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4A17A68B7E0099FB84 /* grey-accessory-down.png */; };
-		73B95AAE17A68B7E0099FB84 /* grey-accessory-down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4B17A68B7E0099FB84 /* grey-accessory-down@2x.png */; };
-		73B95AAF17A68B7E0099FB84 /* grey-accessory-up.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4C17A68B7E0099FB84 /* grey-accessory-up.png */; };
-		73B95AB017A68B7E0099FB84 /* grey-accessory-up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4D17A68B7E0099FB84 /* grey-accessory-up@2x.png */; };
 		73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4E17A68B7E0099FB84 /* site-action-cancelrequest.png */; };
 		73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A4F17A68B7E0099FB84 /* site-action-cancelrequest@2x.png */; };
 		73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B95A5017A68B7E0099FB84 /* site-action-favorite.png */; };
@@ -566,6 +563,9 @@
 		088228681843B1B7006E58A4 /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
 		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
 		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
+		08885FEC18BCB3DD008CBE66 /* SettingLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingLabelCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.h"; sourceTree = SOURCE_ROOT; };
+		08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingLabelCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.m"; sourceTree = SOURCE_ROOT; };
+		08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingLabelCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.xib"; sourceTree = SOURCE_ROOT; };
 		0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
 		0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterLabelCell.m; sourceTree = "<group>"; };
 		0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterLabelCell.xib; sourceTree = "<group>"; };
@@ -629,6 +629,8 @@
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
 		2744021F18AA83C400DF23DD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
+		2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload.png"; sourceTree = "<group>"; };
+		2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload@2x.png"; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -1006,13 +1008,6 @@
 		73B95A3517A68B7E0099FB84 /* system_notice_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "system_notice_info@2x.png"; sourceTree = "<group>"; };
 		73B95A3617A68B7E0099FB84 /* system_notice_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = system_notice_warning.png; sourceTree = "<group>"; };
 		73B95A3717A68B7E0099FB84 /* system_notice_warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "system_notice_warning@2x.png"; sourceTree = "<group>"; };
-		73B95A4717A68B7E0099FB84 /* black-cell-action-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-cell-action-button.png"; sourceTree = "<group>"; };
-		73B95A4817A68B7E0099FB84 /* black-cell-action-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black-cell-action-button@2x.png"; sourceTree = "<group>"; };
-		73B95A4917A68B7E0099FB84 /* cell-actions-inner-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-actions-inner-shadow.png"; sourceTree = "<group>"; };
-		73B95A4A17A68B7E0099FB84 /* grey-accessory-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-accessory-down.png"; sourceTree = "<group>"; };
-		73B95A4B17A68B7E0099FB84 /* grey-accessory-down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-accessory-down@2x.png"; sourceTree = "<group>"; };
-		73B95A4C17A68B7E0099FB84 /* grey-accessory-up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-accessory-up.png"; sourceTree = "<group>"; };
-		73B95A4D17A68B7E0099FB84 /* grey-accessory-up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-accessory-up@2x.png"; sourceTree = "<group>"; };
 		73B95A4E17A68B7E0099FB84 /* site-action-cancelrequest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-cancelrequest.png"; sourceTree = "<group>"; };
 		73B95A4F17A68B7E0099FB84 /* site-action-cancelrequest@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-cancelrequest@2x.png"; sourceTree = "<group>"; };
 		73B95A5017A68B7E0099FB84 /* site-action-favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-favorite.png"; sourceTree = "<group>"; };
@@ -1839,6 +1834,9 @@
 				7384BDF217F330C600C6A54F /* SettingToggleCell.h */,
 				7384BDF317F330C600C6A54F /* SettingToggleCell.m */,
 				7384BDF617F3310700C6A54F /* SettingToggleCell.xib */,
+				08885FEC18BCB3DD008CBE66 /* SettingLabelCell.h */,
+				08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */,
+				08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1904,6 +1902,8 @@
 				73881FC7188FF6B00052C75F /* actionsheet-tasks@2x.png */,
 				73881FC8188FF6B00052C75F /* actionsheet-unliked.png */,
 				73881FC9188FF6B00052C75F /* actionsheet-unliked@2x.png */,
+				2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */,
+				2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */,
 			);
 			path = "Action Sheet";
 			sourceTree = "<group>";
@@ -2472,13 +2472,6 @@
 		73B95A4617A68B7E0099FB84 /* Sites Cell */ = {
 			isa = PBXGroup;
 			children = (
-				73B95A4717A68B7E0099FB84 /* black-cell-action-button.png */,
-				73B95A4817A68B7E0099FB84 /* black-cell-action-button@2x.png */,
-				73B95A4917A68B7E0099FB84 /* cell-actions-inner-shadow.png */,
-				73B95A4A17A68B7E0099FB84 /* grey-accessory-down.png */,
-				73B95A4B17A68B7E0099FB84 /* grey-accessory-down@2x.png */,
-				73B95A4C17A68B7E0099FB84 /* grey-accessory-up.png */,
-				73B95A4D17A68B7E0099FB84 /* grey-accessory-up@2x.png */,
 				73B95A4E17A68B7E0099FB84 /* site-action-cancelrequest.png */,
 				73B95A4F17A68B7E0099FB84 /* site-action-cancelrequest@2x.png */,
 				73B95A5017A68B7E0099FB84 /* site-action-favorite.png */,
@@ -2872,6 +2865,7 @@
 				7379736F18ABA3AF007613B2 /* mime_pdf.png in Resources */,
 				734293A11899218300BDFD35 /* bubble_grey.png in Resources */,
 				73B95A8A17A68B7E0099FB84 /* Default-Portrait@2x~ipad.png in Resources */,
+				2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */,
 				73B95A8B17A68B7E0099FB84 /* Default-Portrait~ipad.png in Resources */,
 				27F054DB1891832B00C2454C /* app-icon-57.png in Resources */,
 				27E84E7918AD53510024B658 /* mainmenu-accounts@2x.png in Resources */,
@@ -2962,29 +2956,23 @@
 				73697AA918BB65DB00021B02 /* TaskHeaderView.xib in Resources */,
 				0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */,
 				7379736618ABA3AF007613B2 /* generic@2x.png in Resources */,
-				73B95AAA17A68B7E0099FB84 /* black-cell-action-button.png in Resources */,
 				73FF557D18ACE2370009CA56 /* large_excel.png in Resources */,
 				73FF558918ACE2370009CA56 /* large_word.png in Resources */,
 				0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */,
 				27E84E8B18AD53510024B658 /* mainmenu-sites@2x.png in Resources */,
-				73B95AAB17A68B7E0099FB84 /* black-cell-action-button@2x.png in Resources */,
 				27E84E8918AD53510024B658 /* mainmenu-sharedfiles@2x.png in Resources */,
 				27F054D91891832B00C2454C /* app-icon-40.png in Resources */,
 				73881FE1188FF9290052C75F /* actionsheet-unfavourited@2x.png in Resources */,
-				73B95AAC17A68B7E0099FB84 /* cell-actions-inner-shadow.png in Resources */,
 				7379737818ABA3AF007613B2 /* mime_xls@2x.png in Resources */,
 				27E84E7A18AD53510024B658 /* mainmenu-activities.png in Resources */,
 				73881FD3188FF6B00052C75F /* actionsheet-email@2x.png in Resources */,
-				73B95AAD17A68B7E0099FB84 /* grey-accessory-down.png in Resources */,
 				2744022018AA83C400DF23DD /* Settings.bundle in Resources */,
-				73B95AAE17A68B7E0099FB84 /* grey-accessory-down@2x.png in Resources */,
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
-				73B95AAF17A68B7E0099FB84 /* grey-accessory-up.png in Resources */,
 				271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */,
 				08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */,
-				73B95AB017A68B7E0099FB84 /* grey-accessory-up@2x.png in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73FF557918ACE2370009CA56 /* large_blank_document.png in Resources */,
+				08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */,
 				27E84E7F18AD53510024B658 /* mainmenu-help@2x.png in Resources */,
 				27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
@@ -3053,6 +3041,7 @@
 				73A7665A18C8E2980087E38F /* task_reject_button_selected.png in Resources */,
 				7379737518ABA3AF007613B2 /* mime_video.png in Resources */,
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
+				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
@@ -3204,6 +3193,7 @@
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
+				08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */,
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
@@ -3382,6 +3372,7 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3472,6 +3463,7 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3505,6 +3497,7 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;

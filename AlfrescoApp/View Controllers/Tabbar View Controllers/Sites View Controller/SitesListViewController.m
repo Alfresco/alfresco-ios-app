@@ -23,6 +23,8 @@ CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
 CGFloat kSegmentControllerHeight = 40.0f;
 
+static CGFloat const kExpandButtonRotationSpeed = 0.2f;
+
 static NSString * const kSitesFolderLocation = @"/Sites";
 static NSString * const kSitesPreviousSearchThumbnailMappingsFileName = @"SitesSearchMappings";
 
@@ -230,7 +232,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:self.tableViewData.count];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
@@ -344,48 +346,17 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)setExpandedCellIndexPath:(NSIndexPath *)expandedCellIndexPath
 {
     SitesCell *siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:_expandedCellIndexPath];
-    [siteCell.expandButton setImage:[UIImage imageNamed:@"grey-accessory-down.png"] forState:UIControlStateNormal];
+    [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
     
     _expandedCellIndexPath = expandedCellIndexPath;
     
     siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:expandedCellIndexPath];
     if (siteCell)
     {
-        [siteCell.expandButton setImage:[UIImage imageNamed:@"grey-accessory-up.png"] forState:UIControlStateNormal];
+        [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:M_PI];
     }
-    
-    // Save the contentOffset (iOS 5.1 scrolling issue, see MOBILE-1621 for details)
-    CGPoint contentOffset = self.tableView.contentOffset;
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
-    self.tableView.contentOffset = contentOffset;
-    
-    // If an image with a consistant shadow can be produced, then the rotation of the button can be used.
-    // for more information, please refer to MOBILE-1600 ( https://issues.alfresco.com/jira/browse/MOBILE-1600 )
-//    void (^rotateExpandButton)(SitesCell *siteCell, CGFloat angle) = ^(SitesCell *siteCell, CGFloat angle) {
-//        [UIView animateWithDuration:0.3 animations:^{
-//            siteCell.expandButton.transform = CGAffineTransformMakeRotation(angle);
-//        }];
-//    };
-//    
-//    CGFloat rotationAngle = 0.0f;
-//    
-//    // get previous cell and and reset the expand view
-//    SitesCell *siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:_expandedCellIndexPath];
-//    rotateExpandButton(siteCell, rotationAngle);
-//    
-//    // update the expanded cell index path
-//    _expandedCellIndexPath = expandedCellIndexPath;
-//    
-//    rotationAngle = M_PI;
-//    siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:_expandedCellIndexPath];
-//    if (siteCell)
-//    {
-//        rotateExpandButton(siteCell, rotationAngle);
-//    }
-//    
-//    [self.tableView beginUpdates];
-//    [self.tableView endUpdates];
 }
 
 #pragma mark - Private Functions
@@ -570,6 +541,13 @@ static CGFloat kSearchCellHeight = 60.0f;
 {
     [self.searchProgressHUD hide:YES];
     self.searchProgressHUD = nil;
+}
+
+- (void)rotateView:(UIView *)view duration:(CGFloat)duration angle:(CGFloat)angle
+{
+    [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        view.transform = CGAffineTransformMakeRotation(angle);
+    } completion:nil];
 }
 
 #pragma mark - UISearchBarDelegate Functions

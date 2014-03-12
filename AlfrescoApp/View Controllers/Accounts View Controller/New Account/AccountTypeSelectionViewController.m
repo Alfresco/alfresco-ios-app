@@ -19,6 +19,7 @@ static NSInteger const kCloudSectionNumber = 0;
 static NSInteger const kOnPremiseSectionNumber = 1;
 
 static CGFloat const kAccountTypeTitleFontSize = 20.0f;
+static CGFloat const kAccountTypeInlineButtonFontSize = 14.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
 static CGFloat const kAccountTypeFooterFontSize = 15.0f;
@@ -86,11 +87,13 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     {
         cell.imageView.image = [UIImage imageNamed:@"accounttype-cloud.png"];
         cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
+        cell.accessoryView = [self createCloudSignUpButton];
     }
     else
     {
         cell.imageView.image = [UIImage imageNamed:@"accounttype-onpremise.png"];
         cell.textLabel.text = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+        cell.accessoryView = nil;
     }
     
     return cell;
@@ -198,7 +201,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     [footerLabel sizeToFit];
     [footerLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
     
-    TTTAttributedLabel *signupLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    UILabel *signupLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     CGRect signUpLabelFrame = signupLabel.frame;
     signUpLabelFrame.size.width = footerView.frame.size.width;
     signUpLabelFrame.origin.y = footerLabel.frame.size.height;
@@ -214,14 +217,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     signupLabel.text = signupText;
     [signupLabel sizeToFit];
     [signupLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-    
-    NSString *signUpLink = NSLocalizedString(@"accounttype.footer.signuplink.linktext", @"Sign up");
-    NSRange signupRange = [signupText rangeOfString:signUpLink];
-    if (signupRange.length > 0)
-    {
-        [signupLabel addLinkToURL:[NSURL URLWithString:signUpLink] withRange:signupRange];
-        [signupLabel setDelegate:self];
-    }
     
     [footerView addSubview:footerLabel];
     [footerView addSubview:signupLabel];
@@ -250,11 +245,34 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     return footerView;
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+- (void)signUpButtonClicked:(id)sender
 {
     CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] initWithAccount:nil];
     signUpController.delegate = self;
     [self.navigationController pushViewController:signUpController animated:YES];
+}
+
+- (UIButton *)createCloudSignUpButton
+{
+    NSString *signUpButtonText = [NSLocalizedString(@"cloudsignup.button.signup", @"Sign up") uppercaseString];
+    UIFont *signUpFont = [UIFont systemFontOfSize:kAccountTypeInlineButtonFontSize];
+    CGSize signUpSize = [signUpButtonText sizeWithAttributes:@{NSFontAttributeName:signUpFont}];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, signUpSize.width, signUpSize.height)];
+    button.titleLabel.numberOfLines = 0;
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    button.titleLabel.font = signUpFont;
+    
+    [button setTitle:signUpButtonText forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+
+    [button setFrame:CGRectInset(button.frame, -8.0f, -4.0f)];
+    button.layer.cornerRadius = 4.0f;
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = button.titleLabel.textColor.CGColor;
+    
+    [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
 #pragma mark - AccountInfoViewControllerDelegate Functions

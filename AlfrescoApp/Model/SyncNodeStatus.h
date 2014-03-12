@@ -45,7 +45,6 @@ typedef NS_ENUM(NSInteger, SyncActivityType)
 @property (nonatomic, strong) NSString *nodeId;
 @property (nonatomic, assign) SyncStatus status;
 @property (nonatomic, assign) SyncActivityType activityType;
-@property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, assign) unsigned long long bytesTransfered;
 @property (nonatomic, assign) unsigned long long totalBytesToTransfer;
 

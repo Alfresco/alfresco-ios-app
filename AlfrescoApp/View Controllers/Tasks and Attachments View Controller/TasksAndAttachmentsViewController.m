@@ -239,7 +239,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     TableviewUnderlinedHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TableviewUnderlinedHeaderView class]) owner:self options:nil] lastObject];
-    headerView.headerTitleTextLabel.textColor = [UIColor themeHeaderTextColor];
+    headerView.headerTitleTextLabel.textColor = [UIColor appTintColor];
     
     NSArray *currentArray = [self currentArrayForSection:section];
     
