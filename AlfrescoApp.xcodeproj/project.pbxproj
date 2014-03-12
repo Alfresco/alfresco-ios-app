@@ -126,6 +126,8 @@
 		274E61B7189DD22300202572 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
 		2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */; };
 		2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */; };
+		2764ABD518CE09EE003FFBF9 /* actionsheet-edit-properties.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */; };
+		2764ABD618CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27E84E2018AD4CE50024B658 /* accounttype-cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E1E18AD4CE50024B658 /* accounttype-cloud.png */; };
@@ -683,6 +685,8 @@
 		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
 		2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload.png"; sourceTree = "<group>"; };
 		2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload@2x.png"; sourceTree = "<group>"; };
+		2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties.png"; sourceTree = "<group>"; };
+		2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties@2x.png"; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -2000,6 +2004,8 @@
 				73881FBE188FF6B00052C75F /* actionsheet-delete@2x.png */,
 				73881FBF188FF6B00052C75F /* actionsheet-download.png */,
 				73881FC0188FF6B00052C75F /* actionsheet-download@2x.png */,
+				2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */,
+				2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */,
 				73881FC1188FF6B00052C75F /* actionsheet-email.png */,
 				73881FC2188FF6B00052C75F /* actionsheet-email@2x.png */,
 				73881FDB188FF9290052C75F /* actionsheet-favourited.png */,
@@ -3005,6 +3011,7 @@
 				27E84E7918AD53510024B658 /* mainmenu-accounts@2x.png in Resources */,
 				08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
+				2764ABD618CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png in Resources */,
 				0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */,
 				27F054DA1891832B00C2454C /* app-icon-50.png in Resources */,
 				73B95A8D17A68B7E0099FB84 /* Default@2x.png in Resources */,
@@ -3179,6 +3186,7 @@
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
 				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
+				2764ABD518CE09EE003FFBF9 /* actionsheet-edit-properties.png in Resources */,
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,

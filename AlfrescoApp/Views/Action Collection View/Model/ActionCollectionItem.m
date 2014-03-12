@@ -95,7 +95,7 @@ NSString * const kActionCollectionIdentifierUploadDocument = @"ActionCollectionI
 
 + (instancetype)renameItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-delete.png"] title:NSLocalizedString(@"action.rename", @"Rename") identifier:kActionCollectionIdentifierRename];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit-properties.png"] title:NSLocalizedString(@"action.rename", @"Rename") identifier:kActionCollectionIdentifierRename];
 }
 
 + (instancetype)subfolderItem
