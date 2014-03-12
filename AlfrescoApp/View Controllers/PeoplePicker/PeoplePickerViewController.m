@@ -16,7 +16,7 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
-@property (nonatomic, strong) PeoplePicker *peoplePicker;
+@property (nonatomic, weak) PeoplePicker *peoplePicker;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 

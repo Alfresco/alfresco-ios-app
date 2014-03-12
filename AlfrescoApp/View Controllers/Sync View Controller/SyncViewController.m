@@ -207,7 +207,7 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
+    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus registerForNotifications:YES];
     BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
     [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];

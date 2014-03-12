@@ -11,7 +11,7 @@
 
 @interface NodePickerSitesViewController ()
 
-@property (nonatomic, strong) NodePicker *nodePicker;
+@property (nonatomic, weak) NodePicker *nodePicker;
 
 @end
 
@@ -57,9 +57,8 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.hidesBackButton = YES;
-    [self.nodePicker updateMultiSelectToolBarActions];
     
+    [self.nodePicker updateMultiSelectToolBarActions];
     if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
     {
         [self.nodePicker deselectAllNodes];
@@ -114,7 +113,7 @@
             [self hideHUD];
             if (folder)
             {
-                NodePickerFileFolderListViewController *browserListViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:folder folderPermissions:nil folderDisplayName:selectedSite.title session:self.session nodePickerController:self.nodePicker];
+                NodePickerFileFolderListViewController *browserListViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:folder folderDisplayName:selectedSite.title session:self.session nodePickerController:self.nodePicker];
                 [self.navigationController pushViewController:browserListViewController animated:YES];
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
             }

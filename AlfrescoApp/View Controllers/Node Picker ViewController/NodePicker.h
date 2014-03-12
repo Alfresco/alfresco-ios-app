@@ -14,8 +14,7 @@ extern CGFloat const kMultiSelectToolBarHeight;
 typedef NS_ENUM(NSInteger, NodePickerType)
 {
     NodePickerTypeFolders,
-    NodePickerTypeDocuments,
-    NodePickerTypeAll
+    NodePickerTypeDocuments
 };
 
 typedef NS_ENUM(NSInteger, NodePickerMode)

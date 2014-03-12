@@ -14,8 +14,7 @@ extern CGFloat const kMultiSelectToolBarHeight;
 typedef NS_ENUM(NSInteger, PeoplePickerMode)
 {
     PeoplePickerModeMultiSelect,
-    PeoplePickerModeSingleSelect,
-    
+    PeoplePickerModeSingleSelect
 };
 
 @protocol PeoplePickerDelegate <NSObject>

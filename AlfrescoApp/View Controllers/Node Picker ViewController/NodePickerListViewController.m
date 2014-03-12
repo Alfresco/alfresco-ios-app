@@ -15,14 +15,13 @@ static NSInteger const kDefaultNumberOfRows = 1;
 #import "NodePickerListViewController.h"
 #import "ThumbnailDownloader.h"
 #import "Utility.h"
-#import "NodePickerSitesViewController.h"
-#import "PeoplePickerViewController.h"
+#import "NodePickerScopeViewController.h"
 
 @interface NodePickerListViewController ()
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic, strong) id picker;
+@property (nonatomic, weak) NodePicker *picker;
 
 @end
 
@@ -113,18 +112,33 @@ static NSInteger const kDefaultNumberOfRows = 1;
     
     if (indexPath.section == kListSectionNumber)
     {
-        id item = self.items[indexPath.row];
+        AlfrescoNode *node = self.items[indexPath.row];
         
-        if ([item isKindOfClass:[AlfrescoNode class]])
+        cell.textLabel.text = node.name;
+        cell.imageView.image = smallImageForType([node.name pathExtension]);
+        
+        if (node.isDocument)
         {
-            AlfrescoNode *node = (AlfrescoNode *)item;
-            cell.textLabel.text = node.name;
-            cell.imageView.image = smallImageForType([node.name pathExtension]);
+            UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib];
+            if (thumbnail)
+            {
+                cell.imageView.image = thumbnail;
+            }
+            else
+            {
+                UIImage *placeholderImage = smallImageForType([node.name pathExtension]);
+                cell.imageView.image = placeholderImage;
+                [[ThumbnailDownloader sharedManager] retrieveImageForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                    if (image)
+                    {
+                        cell.imageView.image = image;
+                    }
+                }];
+            }
         }
-        else if ([item isKindOfClass:[AlfrescoPerson class]])
+        else
         {
-            AlfrescoPerson *person = (AlfrescoPerson *)item;
-            cell.textLabel.text = person.fullName;
+            cell.imageView.image = smallImageForType(@"folder");
         }
     }
     else
@@ -140,8 +154,8 @@ static NSInteger const kDefaultNumberOfRows = 1;
     if (indexPath.section != kListSectionNumber)
     {
         [self.picker replaceSelectedNodesWithNodes:self.items];
-        NodePickerSitesViewController *sitesPickerController = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self.picker];
-        [self.navigationController pushViewController:sitesPickerController animated:YES];
+        NodePickerScopeViewController *scopeController = [[NodePickerScopeViewController alloc] initWithSession:self.session nodePickerController:self.picker];
+        [self.navigationController pushViewController:scopeController animated:YES];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }

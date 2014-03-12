@@ -263,6 +263,7 @@
 "nodes.picker.button.deselectAll.counter" = "Deselect All";
 "nodes.picker.button.select.folder" = "Select this folder";
 "nodes.picker.button.select.folder.counter" = "Select this folder";
+"nodes.picker.scope.title" = "Nodes Picker Scope";
 
 /**
  * People Picker

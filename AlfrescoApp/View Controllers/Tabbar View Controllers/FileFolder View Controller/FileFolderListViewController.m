@@ -42,6 +42,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
 @property (nonatomic, strong) NSString *folderDisplayName;
 @property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
@@ -793,7 +795,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus registerForNotifications:YES];
     [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
     
     [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {

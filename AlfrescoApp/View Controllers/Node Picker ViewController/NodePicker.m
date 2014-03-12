@@ -7,7 +7,7 @@
 //
 
 #import "NodePicker.h"
-#import "NodePickerSitesViewController.h"
+#import "NodePickerScopeViewController.h"
 #import "NodePickerListViewController.h"
 
 CGFloat const kMultiSelectToolBarHeight = 44.0f;
@@ -40,19 +40,38 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
 
 - (void)startNodePickerWithNodes:(NSMutableArray *)nodes
                   nodePickerType:(NodePickerType)nodePickerType
-                       nodePickerMode:(NodePickerMode)nodePickerMode
+                  nodePickerMode:(NodePickerMode)nodePickerMode
 {
     self.nodePickerType = nodePickerType;
     self.nodePickerMode = nodePickerMode;
-    self.nodesAlreadySelected = nodes;
     
-    if (self.nodePickerType == NodePickerTypeDocuments && self.nodePickerMode == NodePickerModeMultiSelect && self.nodesAlreadySelected.count > 0)
+    // search to get AlfrescoNodes if passed array holds nodes identifiers
+    if ([nodes.firstObject isKindOfClass:[NSString class]])
+    {
+        AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+        NSString *searchStatement = [self cmisSearchQueryWithNodes:nodes];
+        
+        [searchService searchWithStatement:searchStatement language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
+            
+            self.nodesAlreadySelected = [resultsArray mutableCopy];
+            if ([self.nextController isKindOfClass:[NodePickerListViewController class]])
+            {
+                [(NodePickerListViewController *)self.nextController refreshListWithItems:self.nodesAlreadySelected];
+            }
+        }];
+    }
+    else
+    {
+        self.nodesAlreadySelected = nodes;
+    }
+    
+    if (self.nodePickerType == NodePickerTypeDocuments && self.nodePickerMode == NodePickerModeMultiSelect && nodes.count > 0)
     {
         self.nextController = [[NodePickerListViewController alloc] initWithSession:self.session items:self.nodesAlreadySelected nodePickerController:self];
     }
     else
     {
-        self.nextController = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self];
+        self.nextController = [[NodePickerScopeViewController alloc] initWithSession:self.session nodePickerController:self];
     }
     
     if (self.nextController)
@@ -202,7 +221,7 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
         
         if ([node.identifier isEqualToString:selectedNode.identifier])
         {
-            existingNode = node;
+            existingNode = selectedNode;
             *stop = YES;
         }
     }];
@@ -270,6 +289,16 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
             [self.delegate nodePickerUserDidSelectNodes:selectedItems nodePickerType:self.nodePickerType nodePickerMode:self.nodePickerMode];
         }
     }
+}
+
+#pragma mark - private Methods
+
+- (NSString *)cmisSearchQueryWithNodes:(NSArray *)nodes
+{
+    NSString *pattern = [NSString stringWithFormat:@"(cmis:objectId='%@')", [nodes componentsJoinedByString:@"' OR cmis:objectId='"]];
+    NSString *nodeType = (self.nodePickerType == NodePickerTypeDocuments) ? @"document" : @"folder";
+    
+    return [NSString stringWithFormat:@"SELECT * FROM cmis:%@ WHERE %@", nodeType, pattern];
 }
 
 @end
