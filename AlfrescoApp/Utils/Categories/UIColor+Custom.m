@@ -37,17 +37,17 @@
 
 + (UIColor *)highWorkflowPriorityColor
 {
-    return [UIColor redColor];
+    return [UIColor colorWithRed:(CGFloat)253.0/255.0 green:(CGFloat)137.0/255.0 blue:(CGFloat)156.0/255.0 alpha:1.0];
 }
 
 + (UIColor *)mediumWorkflowPriorityColor
 {
-    return [UIColor orangeColor];
+    return [UIColor colorWithRed:(CGFloat)56.0/255.0 green:(CGFloat)170.0/255.0 blue:(CGFloat)218.0/255.0 alpha:1.0];
 }
 
 + (UIColor *)lowWorkflowPriorityColor
 {
-    return [UIColor blueColor];
+    return [UIColor colorWithRed:(CGFloat)193.0/255.0 green:(CGFloat)192.0/255.0 blue:(CGFloat)192.0/255.0 alpha:1.0];
 }
 
 @end

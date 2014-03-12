@@ -7,17 +7,18 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskDetailsViewController">
             <connections>
                 <outlet property="approveButton" destination="fJO-Dk-RIK" id="syQ-a3-gks"/>
-                <outlet property="attachmentContainerView" destination="qOO-Pa-AcX" id="v0A-Sd-WhE"/>
-                <outlet property="attachmentsTableView" destination="LSh-Sn-7w8" id="4BO-lx-rpn"/>
+                <outlet property="approveButtonWidthConstraint" destination="Tp3-HJ-Cfb" id="FPP-R6-eYq"/>
                 <outlet property="bottomSpacingOfTextViewContainerConstraint" destination="59w-B3-odL" id="J4n-EG-ak4"/>
-                <outlet property="declineButton" destination="e1A-fd-lfJ" id="yjv-VE-sRj"/>
-                <outlet property="noAttachmentLabel" destination="m6a-IA-liA" id="Qre-AC-9F3"/>
-                <outlet property="pagedScrollView" destination="xCK-YW-VFh" id="Wxd-TG-XpW"/>
-                <outlet property="pagingSegmentControl" destination="BaL-TY-oMs" id="XgX-8F-8Ij"/>
-                <outlet property="pagingSegmentControlContainer" destination="uRh-vM-smm" id="MnD-XK-S4c"/>
-                <outlet property="pagingSegmentControlContainerHeightConstraint" destination="fUu-bB-Uj9" id="pkF-kE-47X"/>
+                <outlet property="detailsContainerView" destination="Xs0-dY-vPN" id="MsC-3k-fS0"/>
+                <outlet property="doneButton" destination="1JN-dD-qp9" id="AjK-re-lP8"/>
+                <outlet property="doneButtonWidthConstraint" destination="6jt-QO-HdF" id="elr-4E-1mL"/>
+                <outlet property="reassignButton" destination="UIe-w9-Iin" id="iQb-LE-qfl"/>
+                <outlet property="reassignButtonWidthConstraint" destination="Eag-Og-10t" id="bon-bw-q9W"/>
+                <outlet property="rejectButton" destination="e1A-fd-lfJ" id="zmF-t4-Wdp"/>
+                <outlet property="rejectButtonWidthConstraint" destination="Nya-r7-T1Q" id="e5C-B8-Z9O"/>
                 <outlet property="taskHeaderViewContainer" destination="IaX-5e-dWJ" id="z34-Vk-ONk"/>
                 <outlet property="textView" destination="7Ct-FG-PHJ" id="Y4g-1o-b0v"/>
+                <outlet property="textViewContainerHeightConstraint" destination="NCR-oh-o7O" id="Alj-ri-c28"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -34,39 +35,17 @@
                         <constraint firstAttribute="height" constant="85" id="JhH-aS-ok8"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCK-YW-VFh" customClass="PagedScrollView">
-                    <rect key="frame" x="0.0" y="135" width="320" height="383"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xs0-dY-vPN" userLabel="Main Container">
+                    <rect key="frame" x="0.0" y="101" width="320" height="467"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.11372549830000001" green="0.94117653369999998" blue="0.94117653369999998" alpha="1" colorSpace="deviceRGB"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="xTG-w5-oyh"/>
-                    </connections>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRh-vM-smm" userLabel="Segment Control Container">
-                    <rect key="frame" x="0.0" y="93" width="320" height="42"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="BaL-TY-oMs">
-                            <rect key="frame" x="99" y="7" width="123" height="29"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="First"/>
-                                <segment title="Second"/>
-                            </segments>
-                        </segmentedControl>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="42" id="fUu-bB-Uj9"/>
-                    </constraints>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U8a-gk-Zub">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U8a-gk-Zub" userLabel="Comments Container">
                     <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ADD COMMENT" translatesAutoresizingMaskIntoConstraints="NO" id="7Ct-FG-PHJ" customClass="TextView">
-                            <rect key="frame" x="8" y="10" width="248" height="30"/>
+                            <rect key="frame" x="8" y="10" width="144" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -79,25 +58,57 @@
                                 <outlet property="textViewDelegate" destination="-1" id="Xnf-zc-0X5"/>
                             </connections>
                         </textView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1A-fd-lfJ">
-                            <rect key="frame" x="292" y="15" width="20" height="20"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1A-fd-lfJ" userLabel="Reject Button">
+                            <rect key="frame" x="240" y="9" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="20" id="Nya-r7-T1Q"/>
-                                <constraint firstAttribute="width" constant="20" id="bi7-Hq-6Zo"/>
+                                <constraint firstAttribute="height" constant="32" id="Nya-r7-T1Q"/>
+                                <constraint firstAttribute="width" constant="32" id="bi7-Hq-6Zo"/>
                             </constraints>
-                            <state key="normal" image="ButtonBarArrowDown.png">
+                            <state key="normal" image="task_reject_button.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" image="task_reject_button_selected.png"/>
+                            <connections>
+                                <action selector="pressedRejectButton:" destination="-1" eventType="touchUpInside" id="Fe3-iS-HqE"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJO-Dk-RIK" userLabel="Approve Button">
+                            <rect key="frame" x="200" y="9" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="8HU-BM-3aj"/>
+                                <constraint firstAttribute="width" constant="32" id="Tp3-HJ-Cfb"/>
+                            </constraints>
+                            <state key="normal" image="task_approve_button.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" image="task_approve_button_selected.png"/>
+                            <connections>
+                                <action selector="pressedApproveButton:" destination="-1" eventType="touchUpInside" id="yL7-zp-xhr"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1JN-dD-qp9" userLabel="Done Button">
+                            <rect key="frame" x="160" y="9" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="6jt-QO-HdF"/>
+                                <constraint firstAttribute="height" constant="32" id="yER-6V-5DR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="D">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJO-Dk-RIK">
-                            <rect key="frame" x="264" y="15" width="20" height="20"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIe-w9-Iin" userLabel="Reassign Button">
+                            <rect key="frame" x="280" y="9" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="20" id="8HU-BM-3aj"/>
-                                <constraint firstAttribute="width" constant="20" id="Tp3-HJ-Cfb"/>
+                                <constraint firstAttribute="width" constant="32" id="Eag-Og-10t"/>
+                                <constraint firstAttribute="height" constant="32" id="obQ-yU-NJO"/>
                             </constraints>
-                            <state key="normal" image="ButtonBarArrowDown.png">
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="R-A">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
@@ -105,28 +116,31 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="7Ct-FG-PHJ" firstAttribute="top" secondItem="U8a-gk-Zub" secondAttribute="top" constant="10" id="0oW-pk-Pmg"/>
-                        <constraint firstItem="7Ct-FG-PHJ" firstAttribute="leading" secondItem="U8a-gk-Zub" secondAttribute="leading" constant="8" id="ISg-j6-Jpy"/>
-                        <constraint firstItem="e1A-fd-lfJ" firstAttribute="leading" secondItem="fJO-Dk-RIK" secondAttribute="trailing" constant="8" id="T8U-30-fwO"/>
+                        <constraint firstItem="fJO-Dk-RIK" firstAttribute="leading" secondItem="1JN-dD-qp9" secondAttribute="trailing" constant="8" id="6TY-aK-2kx"/>
+                        <constraint firstItem="1JN-dD-qp9" firstAttribute="leading" secondItem="7Ct-FG-PHJ" secondAttribute="trailing" constant="8" id="Is3-Qw-wnN"/>
+                        <constraint firstItem="7Ct-FG-PHJ" firstAttribute="leading" secondItem="U8a-gk-Zub" secondAttribute="leading" constant="8" id="LsE-AA-xll"/>
+                        <constraint firstAttribute="height" constant="50" id="NCR-oh-o7O"/>
                         <constraint firstAttribute="centerY" secondItem="fJO-Dk-RIK" secondAttribute="centerY" id="Tiw-Lo-Cqe"/>
+                        <constraint firstAttribute="trailing" secondItem="UIe-w9-Iin" secondAttribute="trailing" constant="8" id="Vr1-i7-uNH"/>
                         <constraint firstAttribute="centerY" secondItem="e1A-fd-lfJ" secondAttribute="centerY" id="d13-yQ-DW0"/>
                         <constraint firstAttribute="bottom" secondItem="7Ct-FG-PHJ" secondAttribute="bottom" constant="10" id="diU-x7-1ik"/>
-                        <constraint firstAttribute="trailing" secondItem="e1A-fd-lfJ" secondAttribute="trailing" constant="8" id="qbF-NA-JfK"/>
-                        <constraint firstItem="fJO-Dk-RIK" firstAttribute="leading" secondItem="7Ct-FG-PHJ" secondAttribute="trailing" constant="8" id="v8X-oa-gSm"/>
+                        <constraint firstItem="e1A-fd-lfJ" firstAttribute="leading" secondItem="fJO-Dk-RIK" secondAttribute="trailing" constant="8" id="iX4-vF-sSR"/>
+                        <constraint firstAttribute="centerY" secondItem="UIe-w9-Iin" secondAttribute="centerY" id="jiM-d1-iIR"/>
+                        <constraint firstAttribute="centerY" secondItem="1JN-dD-qp9" secondAttribute="centerY" id="loI-Pn-ONc"/>
+                        <constraint firstItem="UIe-w9-Iin" firstAttribute="leading" secondItem="e1A-fd-lfJ" secondAttribute="trailing" constant="8" id="qrZ-hD-xPG"/>
                         <constraint firstAttribute="centerY" secondItem="e1A-fd-lfJ" secondAttribute="centerY" id="zPc-8U-rZ5"/>
+                        <constraint firstItem="1JN-dD-qp9" firstAttribute="leading" secondItem="7Ct-FG-PHJ" secondAttribute="trailing" constant="8" id="zdx-iA-soQ"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="U8a-gk-Zub" secondAttribute="bottom" id="59w-B3-odL"/>
-                <constraint firstAttribute="trailing" secondItem="uRh-vM-smm" secondAttribute="trailing" id="5Il-QC-L5m"/>
-                <constraint firstAttribute="trailing" secondItem="xCK-YW-VFh" secondAttribute="trailing" id="Lmn-DB-Ff0"/>
-                <constraint firstItem="uRh-vM-smm" firstAttribute="top" secondItem="IaX-5e-dWJ" secondAttribute="bottom" id="crN-Jq-qoV"/>
-                <constraint firstItem="xCK-YW-VFh" firstAttribute="top" secondItem="uRh-vM-smm" secondAttribute="bottom" id="djo-mC-q7p"/>
+                <constraint firstAttribute="trailing" secondItem="Xs0-dY-vPN" secondAttribute="trailing" id="FfE-MU-rX4"/>
+                <constraint firstItem="Xs0-dY-vPN" firstAttribute="top" secondItem="IaX-5e-dWJ" secondAttribute="bottom" constant="8" id="NQU-AJ-yjM"/>
+                <constraint firstItem="Xs0-dY-vPN" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Neh-Mh-JJh"/>
                 <constraint firstItem="IaX-5e-dWJ" firstAttribute="top" secondItem="1" secondAttribute="top" constant="8" id="eVb-X4-A4r"/>
-                <constraint firstItem="xCK-YW-VFh" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="j5I-DG-HUw"/>
-                <constraint firstItem="uRh-vM-smm" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="pc2-EE-w7e"/>
-                <constraint firstAttribute="bottom" secondItem="xCK-YW-VFh" secondAttribute="bottom" constant="50" id="qcd-8Q-KpU"/>
+                <constraint firstAttribute="bottom" secondItem="Xs0-dY-vPN" secondAttribute="bottom" id="jRT-tW-xdd"/>
                 <constraint firstAttribute="trailing" secondItem="U8a-gk-Zub" secondAttribute="trailing" id="raQ-Ua-ehJ"/>
                 <constraint firstItem="IaX-5e-dWJ" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="wO9-dX-cVa"/>
                 <constraint firstAttribute="trailing" secondItem="IaX-5e-dWJ" secondAttribute="trailing" constant="8" id="yeI-XJ-Vt7"/>
@@ -134,69 +148,11 @@
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <view contentMode="scaleToFill" id="qOO-Pa-AcX" userLabel="Attachments View">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Id-WJ-tIJ" userLabel="No Attachments Container">
-                    <rect key="frame" x="20" y="154" width="280" height="259"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="large_blank_document.png" translatesAutoresizingMaskIntoConstraints="NO" id="CQc-qN-1h2">
-                            <rect key="frame" x="59" y="20" width="163" height="160"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="160" id="Hne-nI-fjG"/>
-                                <constraint firstAttribute="width" constant="163" id="XNR-UI-mWP"/>
-                            </constraints>
-                        </imageView>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO ATTACHMENTS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m6a-IA-liA">
-                            <rect key="frame" x="64" y="211" width="153" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="centerX" secondItem="CQc-qN-1h2" secondAttribute="centerX" id="6dI-1P-q0D"/>
-                        <constraint firstItem="m6a-IA-liA" firstAttribute="leading" secondItem="6Id-WJ-tIJ" secondAttribute="leading" constant="64" id="Bcn-ya-Bjz"/>
-                        <constraint firstItem="m6a-IA-liA" firstAttribute="top" secondItem="CQc-qN-1h2" secondAttribute="bottom" constant="31" id="Gvt-oK-nAG"/>
-                        <constraint firstAttribute="centerX" secondItem="m6a-IA-liA" secondAttribute="centerX" id="OBQ-Nb-wII"/>
-                        <constraint firstItem="CQc-qN-1h2" firstAttribute="top" secondItem="6Id-WJ-tIJ" secondAttribute="top" constant="20" id="T6Y-Km-RYl"/>
-                        <constraint firstAttribute="centerX" secondItem="m6a-IA-liA" secondAttribute="centerX" id="YEB-aW-cPh"/>
-                        <constraint firstAttribute="width" constant="280" id="aRB-9T-wiY"/>
-                        <constraint firstAttribute="centerX" secondItem="CQc-qN-1h2" secondAttribute="centerX" id="gvN-oE-tfL"/>
-                        <constraint firstAttribute="height" constant="259" id="iby-Y5-G9T"/>
-                    </constraints>
-                </view>
-                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="LSh-Sn-7w8">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="n8F-zF-XDJ"/>
-                        <outlet property="delegate" destination="-1" id="ihE-ff-yIf"/>
-                    </connections>
-                </tableView>
-            </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="LSh-Sn-7w8" firstAttribute="leading" secondItem="qOO-Pa-AcX" secondAttribute="leading" id="ED9-PM-rHa"/>
-                <constraint firstItem="LSh-Sn-7w8" firstAttribute="top" secondItem="qOO-Pa-AcX" secondAttribute="top" id="Gv3-d3-1as"/>
-                <constraint firstAttribute="trailing" secondItem="LSh-Sn-7w8" secondAttribute="trailing" id="b4i-cl-26k"/>
-                <constraint firstAttribute="bottom" secondItem="LSh-Sn-7w8" secondAttribute="bottom" id="g36-Nk-3EW"/>
-                <constraint firstAttribute="centerX" secondItem="6Id-WJ-tIJ" secondAttribute="centerX" id="oYk-wZ-Csk"/>
-                <constraint firstAttribute="centerY" secondItem="6Id-WJ-tIJ" secondAttribute="centerY" id="uDi-wi-ROx"/>
-            </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-        </view>
     </objects>
     <resources>
-        <image name="ButtonBarArrowDown.png" width="21" height="12"/>
-        <image name="large_blank_document.png" width="400" height="370"/>
+        <image name="task_approve_button.png" width="32" height="32"/>
+        <image name="task_approve_button_selected.png" width="32" height="32"/>
+        <image name="task_reject_button.png" width="32" height="32"/>
+        <image name="task_reject_button_selected.png" width="32" height="32"/>
     </resources>
 </document>

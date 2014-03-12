@@ -7,11 +7,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iX3-1y-ysm" customClass="TaskHeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="449" height="104"/>
+            <rect key="frame" x="0.0" y="0.0" width="449" height="130"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Yp-w3-DEt">
-                    <rect key="frame" x="93" y="8" width="348" height="88"/>
+                    <rect key="frame" x="95" y="21" width="346" height="88"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QUp-en-YjS">
@@ -72,20 +72,20 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-AQ-15f">
-                    <rect key="frame" x="0.0" y="10" width="85" height="85"/>
+                    <rect key="frame" x="0.0" y="23" width="85" height="85"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="MMMMM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dsj-8O-USu">
-                            <rect key="frame" x="5" y="8" width="75" height="21"/>
+                            <rect key="frame" x="8" y="8" width="69" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ffe-D3-KzW">
-                            <rect key="frame" x="18" y="29" width="49" height="48"/>
+                            <rect key="frame" x="19" y="29" width="47" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="35"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -94,9 +94,11 @@
                         <constraint firstItem="Ffe-D3-KzW" firstAttribute="top" secondItem="Dsj-8O-USu" secondAttribute="bottom" id="3AY-oQ-zHD"/>
                         <constraint firstAttribute="width" constant="85" id="6Hr-jA-5qC"/>
                         <constraint firstAttribute="height" constant="85" id="Fwv-RS-YTR"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Dsj-8O-USu" secondAttribute="trailing" constant="5" id="LKd-uf-wsC"/>
                         <constraint firstAttribute="centerX" secondItem="Dsj-8O-USu" secondAttribute="centerX" id="bs5-FZ-ydb"/>
                         <constraint firstAttribute="bottom" secondItem="Ffe-D3-KzW" secondAttribute="bottom" constant="8" id="ha5-9s-LlH"/>
                         <constraint firstAttribute="centerX" secondItem="Ffe-D3-KzW" secondAttribute="centerX" id="rjJ-qB-v52"/>
+                        <constraint firstItem="Dsj-8O-USu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vyE-AQ-15f" secondAttribute="leading" constant="5" id="tTi-Wz-0sB"/>
                         <constraint firstItem="Dsj-8O-USu" firstAttribute="top" secondItem="vyE-AQ-15f" secondAttribute="top" constant="8" id="v1s-Et-oty"/>
                     </constraints>
                 </view>
@@ -107,9 +109,9 @@
                 <constraint firstAttribute="trailing" secondItem="6Yp-w3-DEt" secondAttribute="trailing" constant="8" id="KzH-4l-MUj"/>
                 <constraint firstAttribute="centerY" secondItem="vyE-AQ-15f" secondAttribute="centerY" id="MFn-hH-6fR"/>
                 <constraint firstAttribute="centerY" secondItem="6Yp-w3-DEt" secondAttribute="centerY" id="ZmG-JT-bNz"/>
-                <constraint firstItem="vyE-AQ-15f" firstAttribute="top" secondItem="iX3-1y-ysm" secondAttribute="top" priority="750" id="flJ-mP-rci"/>
-                <constraint firstAttribute="bottom" secondItem="vyE-AQ-15f" secondAttribute="bottom" priority="750" id="i1c-I3-ha0"/>
-                <constraint firstItem="6Yp-w3-DEt" firstAttribute="leading" secondItem="vyE-AQ-15f" secondAttribute="trailing" constant="8" id="w5B-KK-4LN"/>
+                <constraint firstItem="vyE-AQ-15f" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iX3-1y-ysm" secondAttribute="top" priority="750" id="flJ-mP-rci"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="vyE-AQ-15f" secondAttribute="bottom" priority="750" id="i1c-I3-ha0"/>
+                <constraint firstItem="6Yp-w3-DEt" firstAttribute="leading" secondItem="vyE-AQ-15f" secondAttribute="trailing" constant="10" id="w5B-KK-4LN"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

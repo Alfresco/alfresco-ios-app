@@ -167,8 +167,6 @@
 		731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B518477E4E002C82C1 /* AccountInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B718477E4E002C82C1 /* AccountStatus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73217436187AC0CC008B330D /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73217435187AC0CC008B330D /* CommentViewController.xib */; };
-		73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73299A21185B4B8F00F96AF5 /* MetadataHeaderView.m */; };
-		73299A25185B4BB000F96AF5 /* MetadataHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
 		734293A11899218300BDFD35 /* bubble_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 7342939D1899218300BDFD35 /* bubble_grey.png */; };
@@ -290,11 +288,27 @@
 		7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
+		739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */; };
+		739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */; };
+		739B0A3E18CF7E2500239584 /* ProcessTasksCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739B0A3918CF7E2500239584 /* ProcessTasksCell.m */; };
+		739B0A3F18CF7E2500239584 /* ProcessTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B0A3A18CF7E2500239584 /* ProcessTasksCell.xib */; };
+		739B0A4018CF7E2500239584 /* TasksAndAttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739B0A3C18CF7E2500239584 /* TasksAndAttachmentsViewController.m */; };
+		739B0A4118CF7E2500239584 /* TasksAndAttachmentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B0A3D18CF7E2500239584 /* TasksAndAttachmentsViewController.xib */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
 		73A04F30187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A04F2F187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib */; };
 		73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */; };
 		73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
+		73A6861318C87A9100FF18E0 /* task_approve_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A6860F18C87A9100FF18E0 /* task_approve_button.png */; };
+		73A6861418C87A9100FF18E0 /* task_approve_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A6861018C87A9100FF18E0 /* task_approve_button@2x.png */; };
+		73A6861518C87A9100FF18E0 /* task_reject_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A6861118C87A9100FF18E0 /* task_reject_button.png */; };
+		73A6861618C87A9100FF18E0 /* task_reject_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A6861218C87A9100FF18E0 /* task_reject_button@2x.png */; };
+		73A7665818C8E2980087E38F /* task_approve_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665418C8E2980087E38F /* task_approve_button_selected.png */; };
+		73A7665918C8E2980087E38F /* task_approve_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665518C8E2980087E38F /* task_approve_button_selected@2x.png */; };
+		73A7665A18C8E2980087E38F /* task_reject_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665618C8E2980087E38F /* task_reject_button_selected.png */; };
+		73A7665B18C8E2980087E38F /* task_reject_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */; };
+		73A7665E18C8E4A40087E38F /* tasks_filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665C18C8E4A40087E38F /* tasks_filter.png */; };
+		73A7665F18C8E4A40087E38F /* tasks_filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665D18C8E4A40087E38F /* tasks_filter@2x.png */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
 		73B078A0189AB4F800D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0789F189AB4F800D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -685,9 +699,6 @@
 		731901B618477E4E002C82C1 /* AccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatus.h; sourceTree = "<group>"; };
 		731901B718477E4E002C82C1 /* AccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStatus.m; sourceTree = "<group>"; };
 		73217435187AC0CC008B330D /* CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
-		73299A20185B4B8F00F96AF5 /* MetadataHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MetadataHeaderView.h; path = "Metadata Header View/MetadataHeaderView.h"; sourceTree = "<group>"; };
-		73299A21185B4B8F00F96AF5 /* MetadataHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MetadataHeaderView.m; path = "Metadata Header View/MetadataHeaderView.m"; sourceTree = "<group>"; };
-		73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MetadataHeaderView.xib; path = "Metadata Header View/MetadataHeaderView.xib"; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		7335AA6F181FBA500091CA95 /* PagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedScrollView.h; path = "Paged Scroll View/PagedScrollView.h"; sourceTree = "<group>"; };
@@ -852,6 +863,15 @@
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
 		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
+		739B0A2B18CF7C9B00239584 /* TableviewUnderlinedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableviewUnderlinedHeaderView.h; sourceTree = "<group>"; };
+		739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableviewUnderlinedHeaderView.m; sourceTree = "<group>"; };
+		739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableviewUnderlinedHeaderView.xib; sourceTree = "<group>"; };
+		739B0A3818CF7E2500239584 /* ProcessTasksCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessTasksCell.h; sourceTree = "<group>"; };
+		739B0A3918CF7E2500239584 /* ProcessTasksCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcessTasksCell.m; sourceTree = "<group>"; };
+		739B0A3A18CF7E2500239584 /* ProcessTasksCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessTasksCell.xib; sourceTree = "<group>"; };
+		739B0A3B18CF7E2500239584 /* TasksAndAttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksAndAttachmentsViewController.h; sourceTree = "<group>"; };
+		739B0A3C18CF7E2500239584 /* TasksAndAttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksAndAttachmentsViewController.m; sourceTree = "<group>"; };
+		739B0A3D18CF7E2500239584 /* TasksAndAttachmentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TasksAndAttachmentsViewController.xib; sourceTree = "<group>"; };
 		739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoFileManager+Extensions.h"; sourceTree = "<group>"; };
 		739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoFileManager+Extensions.m"; sourceTree = "<group>"; };
 		73A04F2F187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -861,6 +881,16 @@
 		73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItemCell.m; path = "Main Menu View Controller/Cell/MainMenuItemCell.m"; sourceTree = "<group>"; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
+		73A6860F18C87A9100FF18E0 /* task_approve_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_approve_button.png; sourceTree = "<group>"; };
+		73A6861018C87A9100FF18E0 /* task_approve_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_approve_button@2x.png"; sourceTree = "<group>"; };
+		73A6861118C87A9100FF18E0 /* task_reject_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_reject_button.png; sourceTree = "<group>"; };
+		73A6861218C87A9100FF18E0 /* task_reject_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_reject_button@2x.png"; sourceTree = "<group>"; };
+		73A7665418C8E2980087E38F /* task_approve_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_approve_button_selected.png; sourceTree = "<group>"; };
+		73A7665518C8E2980087E38F /* task_approve_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_approve_button_selected@2x.png"; sourceTree = "<group>"; };
+		73A7665618C8E2980087E38F /* task_reject_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_reject_button_selected.png; sourceTree = "<group>"; };
+		73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_reject_button_selected@2x.png"; sourceTree = "<group>"; };
+		73A7665C18C8E4A40087E38F /* tasks_filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tasks_filter.png; sourceTree = "<group>"; };
+		73A7665D18C8E4A40087E38F /* tasks_filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tasks_filter@2x.png"; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
 		73B0788C189A559400D02C43 /* bubble_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_blue@2x.png"; sourceTree = "<group>"; };
 		73B0789E189AB4F800D02C43 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1361,7 +1391,7 @@
 			isa = PBXGroup;
 			children = (
 				73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.0-debug.a */,
-				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.octest */,
+				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1423,16 +1453,6 @@
 				731901B718477E4E002C82C1 /* AccountStatus.m */,
 			);
 			path = Legacy;
-			sourceTree = "<group>";
-		};
-		73299A23185B4B9400F96AF5 /* Metadata Header View */ = {
-			isa = PBXGroup;
-			children = (
-				73299A20185B4B8F00F96AF5 /* MetadataHeaderView.h */,
-				73299A21185B4B8F00F96AF5 /* MetadataHeaderView.m */,
-				73299A24185B4BAF00F96AF5 /* MetadataHeaderView.xib */,
-			);
-			name = "Metadata Header View";
 			sourceTree = "<group>";
 		};
 		732F275117FAC57C00BAFDDE /* Detail Split View Controller */ = {
@@ -1906,6 +1926,37 @@
 			name = "Root Reveal Controller";
 			sourceTree = "<group>";
 		};
+		739B0A2A18CF7C9B00239584 /* Tableview Underlined Header View */ = {
+			isa = PBXGroup;
+			children = (
+				739B0A2B18CF7C9B00239584 /* TableviewUnderlinedHeaderView.h */,
+				739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */,
+				739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */,
+			);
+			path = "Tableview Underlined Header View";
+			sourceTree = "<group>";
+		};
+		739B0A3618CF7E2500239584 /* Tasks and Attachments View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				739B0A3718CF7E2500239584 /* Cell */,
+				739B0A3B18CF7E2500239584 /* TasksAndAttachmentsViewController.h */,
+				739B0A3C18CF7E2500239584 /* TasksAndAttachmentsViewController.m */,
+				739B0A3D18CF7E2500239584 /* TasksAndAttachmentsViewController.xib */,
+			);
+			path = "Tasks and Attachments View Controller";
+			sourceTree = "<group>";
+		};
+		739B0A3718CF7E2500239584 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				739B0A3818CF7E2500239584 /* ProcessTasksCell.h */,
+				739B0A3918CF7E2500239584 /* ProcessTasksCell.m */,
+				739B0A3A18CF7E2500239584 /* ProcessTasksCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		73A26A6B183532D6006C1D81 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1947,6 +1998,23 @@
 				27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */,
 			);
 			path = "Main Menu Icons";
+			sourceTree = "<group>";
+		};
+		73A6860E18C87A9100FF18E0 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				73A6860F18C87A9100FF18E0 /* task_approve_button.png */,
+				73A6861018C87A9100FF18E0 /* task_approve_button@2x.png */,
+				73A6861118C87A9100FF18E0 /* task_reject_button.png */,
+				73A6861218C87A9100FF18E0 /* task_reject_button@2x.png */,
+				73A7665418C8E2980087E38F /* task_approve_button_selected.png */,
+				73A7665518C8E2980087E38F /* task_approve_button_selected@2x.png */,
+				73A7665618C8E2980087E38F /* task_reject_button_selected.png */,
+				73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */,
+				73A7665C18C8E4A40087E38F /* tasks_filter.png */,
+				73A7665D18C8E4A40087E38F /* tasks_filter@2x.png */,
+			);
+			path = Tasks;
 			sourceTree = "<group>";
 		};
 		73B0789D189AB4F800D02C43 /* Reachability */ = {
@@ -2184,7 +2252,6 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				73697A9D18BB645A00021B02 /* Task Details View Controller */,
 				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
 				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
 				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
@@ -2211,6 +2278,8 @@
 				73B95ADD17A68DF20099FB84 /* Tabbar View Controllers */,
 				73F628B4185779050050F437 /* Text File View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
+				73697A9D18BB645A00021B02 /* Task Details View Controller */,
+				739B0A3618CF7E2500239584 /* Tasks and Attachments View Controller */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -2218,6 +2287,7 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				739B0A2A18CF7C9B00239584 /* Tableview Underlined Header View */,
 				73881F91188E7DEA0052C75F /* Text View */,
 				7319018E183CDEE0002C82C1 /* Document Overlay View */,
 				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
@@ -2277,6 +2347,7 @@
 				0833245317F98CC700EE6AA8 /* Sync */,
 				73B95A3117A68B7E0099FB84 /* System Notification */,
 				73B95A4517A68B7E0099FB84 /* Table Cells */,
+				73A6860E18C87A9100FF18E0 /* Tasks */,
 				73B95A5A17A68B7E0099FB84 /* Toolbar Icons */,
 				73906193189670E200B1920C /* Version History */,
 				73881F7618898B910052C75F /* Web Browser */,
@@ -2469,7 +2540,6 @@
 		73B95AD217A68DF20099FB84 /* Metadata View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				73299A23185B4B9400F96AF5 /* Metadata Header View */,
 				73B95AD317A68DF20099FB84 /* MetaDataViewController.h */,
 				73B95AD417A68DF20099FB84 /* MetaDataViewController.m */,
 				73881F57188842D60052C75F /* MetaDataViewController.xib */,
@@ -2666,10 +2736,10 @@
 			remoteRef = 73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73036F301886E3CC002AF6DC /* AlfrescoSDKTests.octest */ = {
+		73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = AlfrescoSDKTests.octest;
+			path = AlfrescoSDKTests.xctest;
 			remoteRef = 73036F2F1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2696,6 +2766,7 @@
 				73B9584D17A6750F0099FB84 /* FileFolderCell.xib in Resources */,
 				73B9584F17A6750F0099FB84 /* MetadataCell.xib in Resources */,
 				73B9585117A6750F0099FB84 /* SitesCell.xib in Resources */,
+				73A6861418C87A9100FF18E0 /* task_approve_button@2x.png in Resources */,
 				73B9585317A6750F0099FB84 /* VersionHistoryCell.xib in Resources */,
 				73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */,
 				73B95A6117A68B7E0099FB84 /* AboutLogo.png in Resources */,
@@ -2708,6 +2779,7 @@
 				73B95A6417A68B7E0099FB84 /* AboutLogo~ipad.png in Resources */,
 				0833247117F9900000EE6AA8 /* AlfrescoNodeCell.xib in Resources */,
 				73B95A6517A68B7E0099FB84 /* avatar.png in Resources */,
+				73A7665B18C8E2980087E38F /* task_reject_button_selected@2x.png in Resources */,
 				73B95A6617A68B7E0099FB84 /* avatar@2x.png in Resources */,
 				73B95A6717A68B7E0099FB84 /* play-media.png in Resources */,
 				73881FE4188FF9680052C75F /* actionsheet-favourited@2x.png in Resources */,
@@ -2742,6 +2814,8 @@
 				737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */,
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				271DC772189C2D250059D1B2 /* status-sync-loading.png in Resources */,
+				739B0A3F18CF7E2500239584 /* ProcessTasksCell.xib in Resources */,
+				73A7665E18C8E4A40087E38F /* tasks_filter.png in Resources */,
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
 				7379736B18ABA3AF007613B2 /* mime_img.png in Resources */,
 				27F054D61891832B00C2454C /* app-icon-144.png in Resources */,
@@ -2761,7 +2835,6 @@
 				27F054D81891832B00C2454C /* app-icon-29.png in Resources */,
 				271DC766189C2D250059D1B2 /* status-favourite.png in Resources */,
 				737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */,
-				73299A25185B4BB000F96AF5 /* MetadataHeaderView.xib in Resources */,
 				080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */,
 				73FF558A18ACE2370009CA56 /* large_word@2x.png in Resources */,
 				271DC76D189C2D250059D1B2 /* status-sync-failed-highlighted@2x.png in Resources */,
@@ -2772,6 +2845,7 @@
 				73B95A8717A68B7E0099FB84 /* Default-568h@2x.png in Resources */,
 				271DC774189C2D250059D1B2 /* status-sync-synced-highlighted.png in Resources */,
 				08CC861C18990E1800CDC524 /* FileFolderListViewController.xib in Resources */,
+				73A7665818C8E2980087E38F /* task_approve_button_selected.png in Resources */,
 				7379737218ABA3AF007613B2 /* mime_ppt@2x.png in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */,
@@ -2786,6 +2860,7 @@
 				08E799B8182AA3EC0030FD53 /* LabelCell.xib in Resources */,
 				73881F8E188D8AF20052C75F /* browser_close@2x.png in Resources */,
 				27F054DE1891832B00C2454C /* app-icon-76.png in Resources */,
+				739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */,
 				73881FCB188FF6B00052C75F /* actionsheet-attachments@2x.png in Resources */,
 				271DC776189C2D250059D1B2 /* status-sync-synced.png in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
@@ -2819,6 +2894,7 @@
 				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
 				27F054D51891832B00C2454C /* app-icon-120.png in Resources */,
 				73217436187AC0CC008B330D /* CommentViewController.xib in Resources */,
+				73A6861518C87A9100FF18E0 /* task_reject_button.png in Resources */,
 				27E84E8118AD53510024B658 /* mainmenu-localfiles@2x.png in Resources */,
 				080A812218561E6D00B79306 /* certificate-add@2x.png in Resources */,
 				27E84E7818AD53510024B658 /* mainmenu-accounts.png in Resources */,
@@ -2829,6 +2905,7 @@
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
 				7379737418ABA3AF007613B2 /* mime_txt@2x.png in Resources */,
 				0833247417FADFE600EE6AA8 /* stop-transfer.png in Resources */,
+				73A6861618C87A9100FF18E0 /* task_reject_button@2x.png in Resources */,
 				27E84E8618AD53510024B658 /* mainmenu-settings.png in Resources */,
 				27E84E2518AD4D3E0024B658 /* accounttype-onpremise@2x.png in Resources */,
 				73B95A9517A68B7E0099FB84 /* expand@2x.png in Resources */,
@@ -2837,6 +2914,7 @@
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				73B95A9617A68B7E0099FB84 /* pull-to-refresh.png in Resources */,
 				27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */,
+				73A7665F18C8E4A40087E38F /* tasks_filter@2x.png in Resources */,
 				27E84E7B18AD53510024B658 /* mainmenu-activities@2x.png in Resources */,
 				73B95A9717A68B7E0099FB84 /* pull-to-refresh@2x.png in Resources */,
 				7379736518ABA3AF007613B2 /* generic.png in Resources */,
@@ -2854,6 +2932,7 @@
 				73697AAF18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
+				73A6861318C87A9100FF18E0 /* task_approve_button.png in Resources */,
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
 				73FF557718ACE2370009CA56 /* large_audio.png in Resources */,
 				73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */,
@@ -2913,6 +2992,7 @@
 				27E84E7618AD53510024B658 /* mainmenu-about.png in Resources */,
 				73881FCD188FF6B00052C75F /* actionsheet-comments@2x.png in Resources */,
 				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
+				73A7665918C8E2980087E38F /* task_approve_button_selected@2x.png in Resources */,
 				73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
 				27E84E8218AD53510024B658 /* mainmenu-myfiles.png in Resources */,
@@ -2920,6 +3000,7 @@
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
 				7319019E1843B614002C82C1 /* onboarding-blue.png in Resources */,
+				739B0A4118CF7E2500239584 /* TasksAndAttachmentsViewController.xib in Resources */,
 				271DC76A189C2D250059D1B2 /* status-restricted.png in Resources */,
 				73B95AB517A68B7E0099FB84 /* site-action-join.png in Resources */,
 				73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */,
@@ -2969,6 +3050,7 @@
 				27E84E8518AD53510024B658 /* mainmenu-repository@2x.png in Resources */,
 				271DC773189C2D250059D1B2 /* status-sync-loading@2x.png in Resources */,
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
+				73A7665A18C8E2980087E38F /* task_reject_button_selected.png in Resources */,
 				7379737518ABA3AF007613B2 /* mime_video.png in Resources */,
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
@@ -3051,6 +3133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */,
+				739B0A4018CF7E2500239584 /* TasksAndAttachmentsViewController.m in Sources */,
 				731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */,
 				731901A21844B490002C82C1 /* ContainerViewController.m in Sources */,
 				73B959EE17A686590099FB84 /* main.m in Sources */,
@@ -3068,6 +3151,7 @@
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
+				739B0A3E18CF7E2500239584 /* ProcessTasksCell.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
@@ -3091,10 +3175,10 @@
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
+				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
-				73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,

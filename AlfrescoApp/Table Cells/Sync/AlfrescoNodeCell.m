@@ -10,7 +10,7 @@
 #import "SyncNodeStatus.h"
 #import "Utility.h"
 
-NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
+static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
 static CGFloat const FavoriteIconWidth = 14.0f;
 static CGFloat const FavoriteIconRightSpace = 8.0f;
@@ -121,6 +121,11 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
+}
+
++ (NSString *)cellIdentifier
+{
+    return kAlfrescoNodeCellIdentifier;
 }
 
 #pragma mark - Notification Methods

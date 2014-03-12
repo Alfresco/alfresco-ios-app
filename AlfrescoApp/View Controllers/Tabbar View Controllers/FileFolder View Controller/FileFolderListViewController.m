@@ -139,7 +139,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.searchController = searchController;
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
+    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -784,7 +784,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
+    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     // config the cell here...
     AlfrescoNode *currentNode = nil;

@@ -20,50 +20,48 @@
 #import "ErrorDescriptions.h"
 #import "TextView.h"
 #import "UIColor+Custom.h"
+#import "TasksAndAttachmentsViewController.h"
 
+static NSString * const kReviewKey = @"Review";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 typedef NS_ENUM(NSUInteger, TaskType)
 {
     TaskTypeTask = 0,
-    TaskTypeWorkflow
+    TaskTypeProcess
 };
 
 @interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate>
 
 //// Layout Constraints ////
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *pagingSegmentControlContainerHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *textViewContainerHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpacingOfTextViewContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *doneButtonWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *approveButtonWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *rejectButtonWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reassignButtonWidthConstraint;
 
 //// Data Models ////
 // Models
+@property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, assign) TaskType taskType;
-@property (nonatomic, strong) NSArray *attachmentNodes;
 // Services
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
 //// Views ////
 // Header
 @property (nonatomic, weak) TaskHeaderView *taskHeaderView;
 @property (nonatomic, weak) IBOutlet UIView *taskHeaderViewContainer;
-// Paging Segment
-@property (nonatomic, weak) IBOutlet UIView *pagingSegmentControlContainer;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *pagingSegmentControl;
-// Paging
-@property (nonatomic, weak) IBOutlet PagedScrollView *pagedScrollView;
-// Attachments
-@property (nonatomic, weak) IBOutlet UIView *attachmentContainerView;
-@property (nonatomic, weak) IBOutlet UILabel *noAttachmentLabel;
-@property (nonatomic, weak) IBOutlet UITableView *attachmentsTableView;
+// Container
+@property (nonatomic, weak) IBOutlet UIView *detailsContainerView;
 // Comments
 @property (nonatomic, weak) IBOutlet TextView *textView;
+@property (nonatomic, weak) IBOutlet UIButton *doneButton;
 @property (nonatomic, weak) IBOutlet UIButton *approveButton;
-@property (nonatomic, weak) IBOutlet UIButton *declineButton;
-// Other
-@property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, weak) IBOutlet UIButton *rejectButton;
+@property (nonatomic, weak) IBOutlet UIButton *reassignButton;
 
 @end
 
@@ -71,12 +69,31 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [super init];
+    self = [self initWithTaskType:TaskTypeTask session:session];
     if (self)
     {
         self.task = task;
+    }
+    return self;
+}
+
+- (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
+{
+    self = [self initWithTaskType:TaskTypeProcess session:session];
+    if (self)
+    {
+        self.process = process;
+    }
+    return self;
+}
+
+- (instancetype)initWithTaskType:(TaskType)taskType session:(id<AlfrescoSession>)session
+{
+    self = [super init];
+    if (self)
+    {
         self.session = session;
-        self.taskType = TaskTypeTask;
+        self.taskType = taskType;
         [self createServicesWithSession:session];
         [self registerForNotifications];
     }
@@ -92,57 +109,23 @@ typedef NS_ENUM(NSUInteger, TaskType)
 {
     [super viewDidLoad];
     
-    if (self.taskType == TaskTypeTask)
-    {
-        self.title = self.task.name;
-        self.pagingSegmentControlContainerHeightConstraint.constant = 0;
-        [self.pagedScrollView addSubview:self.attachmentContainerView];
-        [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
-    }
-    else
-    {
-        
-    }
-    
-    if (self.session)
-    {
-        [self showHUD];
-        [self loadAttachmentsWithCompletionBlock:^(NSArray *array, NSError *error) {
-            [self hideHUD];
-            if (array && array.count > 0)
-            {
-                self.attachmentsTableView.hidden = NO;
-                self.attachmentNodes = array;
-                [self.attachmentsTableView reloadData];
-            }
-        }];
-    }
-    
-    UINib *nib = [UINib nibWithNibName:NSStringFromClass([AlfrescoNodeCell class]) bundle:nil];
-    [self.attachmentsTableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
-    
-    [self createTaskHeaderView];
-    
-    self.textView.maximumHeight = kMaxCommentTextViewHeight;
-    self.textView.layer.cornerRadius = 5.0f;
-    self.textView.layer.borderColor = [[UIColor lineSeparatorColor] CGColor];
-    self.textView.layer.borderWidth = 0.5f;
-    self.textView.font = [UIFont systemFontOfSize:12.0f];
-    
-    [self localiseUI];
-    
-    // tap gesture
+    // configure the view
+    [self configureForType:self.taskType];
+
+    // dismiss keyboard gesture
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapView:)];
     tapGesture.delegate = self;
     [self.view addGestureRecognizer:tapGesture];
+    
+    // localise UI
+    [self localiseUI];
 }
 
 #pragma mark - Private Functions
 
 - (void)localiseUI
 {
-    self.textView.placeholderText = @"Add comment here - localise me";
-    self.noAttachmentLabel.text = @"No Attachments - Localise me";
+    self.textView.placeholderText = NSLocalizedString(@"tasks.textview.addcomment.placeholder", @"Ad comment placeholder");
 }
 
 - (void)registerForNotifications
@@ -163,7 +146,82 @@ typedef NS_ENUM(NSUInteger, TaskType)
 - (void)createServicesWithSession:(id<AlfrescoSession>)session
 {
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+}
+
+- (void)configureForType:(TaskType)type
+{
+    [self createTaskHeaderView];
+    
+    TasksAndAttachmentsViewController *attachmentViewController = nil;
+    
+    if (type == TaskTypeTask)
+    {
+        // configure the header view for the task
+        [self.taskHeaderView configureViewForTask:self.task];
+        // configure the transition buttons
+        [self configureTransitionButtonsForTask:self.task];
+        // init the attachment controller
+        attachmentViewController = [[TasksAndAttachmentsViewController alloc] initWithTask:self.task session:self.session];
+        // set the tableview inset to ensure the content isn't behind the comment view
+        attachmentViewController.tableViewInsets = UIEdgeInsetsMake(0, 0, self.textViewContainerHeightConstraint.constant, 0);
+        // retrieve the process definition for the header view
+        [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
+    }
+    else if (type == TaskTypeProcess)
+    {
+        // configure the header view for the process
+        [self.taskHeaderView configureViewForProcess:self.process];
+        // init the attachment controller
+        attachmentViewController = [[TasksAndAttachmentsViewController alloc] initWithProcess:self.process session:self.session];
+        // hide the comment view
+        self.textViewContainerHeightConstraint.constant = 0;
+        // retrieve the process definition for the header view
+        [self retrieveProcessDefinitionNameForIdentifier:self.process.processDefinitionIdentifier];
+    }
+    
+    // add the attachment controller
+    [self addChildViewController:attachmentViewController];
+    attachmentViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.detailsContainerView addSubview:attachmentViewController.view];
+    [attachmentViewController didMoveToParentViewController:self];
+    
+    // setup the constraints to the container view
+    NSDictionary *views = @{@"childView" : attachmentViewController.view};
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[childView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views];
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[childView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views];
+    [self.detailsContainerView addConstraints:verticalConstraints];
+    [self.detailsContainerView addConstraints:horizontalConstraints];
+    
+    // setup the comments text view
+    self.textView.maximumHeight = kMaxCommentTextViewHeight;
+    self.textView.layer.cornerRadius = 5.0f;
+    self.textView.layer.borderColor = [[UIColor lineSeparatorColor] CGColor];
+    self.textView.layer.borderWidth = 0.5f;
+    self.textView.font = [UIFont systemFontOfSize:12.0f];
+}
+
+- (void)configureTransitionButtonsForTask:(AlfrescoWorkflowTask *)task
+{
+    if ([self shouldDisplayApproveAndRejectButtonsForTask:task])
+    {
+        self.doneButtonWidthConstraint.constant = 0;
+    }
+    else
+    {
+        self.approveButtonWidthConstraint.constant = 0;
+        self.rejectButtonWidthConstraint.constant = 0;
+    }
+}
+
+- (BOOL)shouldDisplayApproveAndRejectButtonsForTask:(AlfrescoWorkflowTask *)task
+{
+    BOOL displayApproveAndReject = NO;
+    // if it contains review in the processDefinitionIdentifier - It's a review and approve task.
+    if ([task.processDefinitionIdentifier rangeOfString:kReviewKey options:NSCaseInsensitiveSearch].location != NSNotFound)
+    {
+        displayApproveAndReject = YES;
+    }
+    return displayApproveAndReject;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -197,29 +255,9 @@ typedef NS_ENUM(NSUInteger, TaskType)
     } completion:nil];
 }
 
-- (void)showHUD
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!self.progressHUD)
-        {
-            self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.progressHUD];
-        }
-        [self.progressHUD show:YES];
-    });
-}
-
-- (void)hideHUD
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.progressHUD hide:YES];
-    });
-}
-
 - (void)createTaskHeaderView
 {
     TaskHeaderView *taskHeaderView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TaskHeaderView class]) owner:self options:nil] lastObject];
-    [taskHeaderView configureViewForTask:self.task];
     [self.taskHeaderViewContainer addSubview:taskHeaderView];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(taskHeaderView);
@@ -241,18 +279,6 @@ typedef NS_ENUM(NSUInteger, TaskType)
     }];
 }
 
-- (void)loadAttachmentsWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
-{
-    if (self.taskType == TaskTypeTask)
-    {
-        [self.workflowService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
-    }
-    else if (self.taskType == TaskTypeWorkflow)
-    {
-        // TODO
-    }
-}
-
 - (void)completeTaskWithProperties:(NSDictionary *)properties
 {
     __block MBProgressHUD *completingProgressHUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -260,7 +286,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [completingProgressHUD show:YES];
     
     self.approveButton.enabled = NO;
-    self.declineButton.enabled = NO;
+    self.rejectButton.enabled = NO;
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
@@ -268,7 +294,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
         weakSelf.approveButton.enabled = YES;
-        weakSelf.declineButton.enabled = YES;
+        weakSelf.rejectButton.enabled = YES;
         
         if (error)
         {
@@ -278,7 +304,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         }
         else
         {
-            weakSelf.textView.text = @"Add comment here - localise me";
+            weakSelf.textView.text = NSLocalizedString(@"tasks.textview.addcomment.placeholder", @"Add Comment");
             // TODO
         }
     }];
@@ -315,101 +341,6 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self completeTaskWithProperties:properties];
 }
 
-#pragma mark - PagedScrollViewDelegate Functions
-
-- (void)pagedScrollViewDidScrollToFocusViewAtIndex:(NSInteger)viewIndex whilstDragging:(BOOL)dragging
-{
-    if (dragging)
-    {
-        [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
-    }
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.attachmentNodes.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNodeCell *cell = [self.attachmentsTableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
-    
-    AlfrescoNode *currentNode = [self.attachmentNodes objectAtIndex:indexPath.row];
-    
-    SyncManager *syncManager = [SyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    
-    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-    
-    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        
-        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
-    }];
-    
-    if ([currentNode isKindOfClass:[AlfrescoFolder class]])
-    {
-        cell.image.image = smallImageForType(@"folder");
-    }
-    else
-    {
-        AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-        
-        UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-        if (thumbnail)
-        {
-            [cell.image setImage:thumbnail withFade:NO];
-        }
-        else
-        {
-            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-            cell.image.image = placeholderImage;
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
-                {
-                    [cell.image setImage:image withFade:YES];
-                }
-            }];
-        }
-    }
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNodeCell *cell = (AlfrescoNodeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    
-    return height;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    AlfrescoDocument *selectedDocument = [self.attachmentNodes objectAtIndex:indexPath.row];
-    [self.documentService retrievePermissionsOfNode:selectedDocument completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-        if (permissions)
-        {
-            DocumentPreviewViewController *documentPreviewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:selectedDocument permissions:permissions contentFilePath:nil documentLocation:InAppDocumentLocationFilesAndFolders session:self.session];
-            [self.navigationController pushViewController:documentPreviewController animated:YES];
-        }
-        else
-        {
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission failed to be retrieved"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-    }];
-}
-
 #pragma mark - TextViewDelegate Functions
 
 - (void)textViewHeightDidChange:(TextView *)textView
@@ -417,18 +348,18 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self.view sizeToFit];
 }
 
-#pragma mark UIGestureRecognizerDelegate methods
+#pragma mark - UIGestureRecognizerDelegate Functions
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    BOOL shouldRecognise = YES;
+    BOOL shouldRecieveTouch = YES;
     
-    if ([touch.view isDescendantOfView:self.attachmentsTableView])
+    if ([touch.view isDescendantOfView:self.detailsContainerView])
     {
-        shouldRecognise = NO;
+        shouldRecieveTouch = NO;
     }
     
-    return shouldRecognise;
+    return shouldRecieveTouch;
 }
 
 @end

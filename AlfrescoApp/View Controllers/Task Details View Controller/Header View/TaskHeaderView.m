@@ -122,7 +122,14 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 - (void)configureViewForProcess:(AlfrescoWorkflowProcess *)process
 {
-    
+    [self.dateFormatter setDateFormat:@"MMMM"];
+    self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
+    [self.dateFormatter setDateFormat:@"dd"];
+    self.calendarDateLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
+    self.taskNameLabel.text = process.name;
+    self.taskTypeLabel.text = @"";
+    self.taskInitiatorLabel.text = process.initiatorUsername;
+    [self setPriorityLevel:process.priority];
 }
 
 - (void)configureViewForTask:(AlfrescoWorkflowTask *)task

@@ -10,8 +10,6 @@
 #import "ThumbnailImageView.h"
 @class SyncNodeStatus;
 
-extern NSString * const kAlfrescoNodeCellIdentifier;
-
 @interface AlfrescoNodeCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *filename;
@@ -19,6 +17,7 @@ extern NSString * const kAlfrescoNodeCellIdentifier;
 @property (nonatomic, strong) IBOutlet ThumbnailImageView *image;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressBar;
 
++ (NSString *)cellIdentifier;
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
 
