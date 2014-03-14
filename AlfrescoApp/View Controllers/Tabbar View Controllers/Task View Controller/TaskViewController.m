@@ -177,7 +177,15 @@ typedef NS_ENUM(NSUInteger, TaskType)
         listingContext = self.defaultListingContext;
     }
     
-    [self.workflowService retrieveProcessesInState:kAlfrescoWorkflowProcessStateActive listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+    // create a new listing context so we can filter the processes
+    AlfrescoListingFilter *filter = [[AlfrescoListingFilter alloc] initWithFilter:kAlfrescoFilterByWorkflowState value:kAlfrescoFilterValueWorkflowStateActive];
+    AlfrescoListingContext *filteredListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:listingContext.maxItems
+                                                                                            skipCount:listingContext.skipCount
+                                                                                         sortProperty:listingContext.sortProperty
+                                                                                        sortAscending:listingContext.sortAscending
+                                                                                        listingFilter:filter];
+    
+    [self.workflowService retrieveProcessesWithListingContext:filteredListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (error)
         {
             AlfrescoLogError(@"Error: %@", error.localizedDescription);
