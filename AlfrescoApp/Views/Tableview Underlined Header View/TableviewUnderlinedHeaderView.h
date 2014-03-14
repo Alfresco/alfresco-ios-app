@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-static CGFloat const kMetadataHeaderViewHeight = 36.0f;
-
-@interface MetadataHeaderView : UIView
+@interface TableviewUnderlinedHeaderView : UIView
 
 @property (nonatomic, weak) IBOutlet UILabel *headerTitleTextLabel;
+
++ (CGFloat)headerViewHeight;
 
 @end

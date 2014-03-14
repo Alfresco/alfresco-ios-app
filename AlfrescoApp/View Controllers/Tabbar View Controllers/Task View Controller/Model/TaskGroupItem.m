@@ -10,40 +10,51 @@
 
 @implementation TaskGroupItem
 
-- (instancetype)initWithTitle:(NSString *)title
+- (instancetype)initWithTitle:(NSString *)title filteringPredicate:(NSPredicate *)predicate
 {
     self = [self init];
     if (self)
     {
         self.title = title;
-        self.tasks = [NSMutableArray array];
+        self.tasksBeforeFiltering = [NSMutableArray array];
+        self.tasksAfterFiltering = [NSMutableArray array];
         self.hasMoreItems = NO;
+        self.filteringPredicate = predicate;
     }
     return self;
 }
 
-- (BOOL)hasTasks
+- (void)addAndApplyFilteringToTasks:(NSArray *)tasks;
 {
-    return ([self numberOfTasks] > 0);
+    [self.tasksBeforeFiltering addObjectsFromArray:tasks];
+    self.tasksAfterFiltering = [[self.tasksBeforeFiltering filteredArrayUsingPredicate:self.filteringPredicate] mutableCopy];
 }
 
-- (NSInteger)numberOfTasks
+- (void)removeTasks:(NSArray *)tasks
 {
-    return self.tasks.count;
+    [self.tasksBeforeFiltering removeObjectsInArray:tasks];
+    [self.tasksAfterFiltering removeObjectsInArray:tasks];
+}
+
+- (BOOL)hasDisplayableTasks
+{
+    return (self.tasksAfterFiltering.count > 0);
+}
+
+- (NSInteger)numberOfTasksBeforeFiltering
+{
+    return self.tasksBeforeFiltering.count;
+}
+
+- (NSInteger)numberOfTasksAfterFiltering
+{
+    return self.tasksAfterFiltering.count;
 }
 
 - (void)clearAllTasks
 {
-    [self.tasks removeAllObjects];
-}
-
-- (void)addTasks:(NSArray *)tasks
-{
-    [self.tasks addObjectsFromArray:tasks];
-}
-- (void)removeTasks:(NSArray *)tasks
-{
-    [self.tasks removeObjectsInArray:tasks];
+    [self.tasksBeforeFiltering removeAllObjects];
+    [self.tasksAfterFiltering removeAllObjects];
 }
 
 @end

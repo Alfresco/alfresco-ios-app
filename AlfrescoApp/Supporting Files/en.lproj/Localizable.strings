@@ -459,6 +459,18 @@
 "tasks.process.unnamed" = "Unnamed Process";
 "tasks.title.mytasks" = "My Tasks";
 "tasks.title.taskistarted" = "Tasks I Started";
+// Details
+"tasks.priority.high" = "High Priority";
+"tasks.priority.medium" = "Medium Priority";
+"tasks.priority.low" = "Low Priority";
+"tasks.textview.addcomment.placeholder" = "Add Comment";
+"tasks.attachments.noattachments" = "No attachments";
+"tasks.tasks.notasks" = "No tasks";
+"task.details.section.header.attachments" = "Attachments";
+"task.details.section.header.tasks" = "Tasks";
+// Cell
+"tasks.cell.taskcompleted" = "%@ completed this task %@";
+"tasks.cell.tasknotcompleted" = "%@ has not completed this task";
 
 /**
  * Settings

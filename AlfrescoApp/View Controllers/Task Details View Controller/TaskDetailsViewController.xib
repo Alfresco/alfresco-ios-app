@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskDetailsViewController">
+            <connections>
+                <outlet property="approveButton" destination="fJO-Dk-RIK" id="syQ-a3-gks"/>
+                <outlet property="approveButtonWidthConstraint" destination="Tp3-HJ-Cfb" id="FPP-R6-eYq"/>
+                <outlet property="bottomSpacingOfTextViewContainerConstraint" destination="59w-B3-odL" id="J4n-EG-ak4"/>
+                <outlet property="detailsContainerView" destination="Xs0-dY-vPN" id="MsC-3k-fS0"/>
+                <outlet property="doneButton" destination="1JN-dD-qp9" id="AjK-re-lP8"/>
+                <outlet property="doneButtonWidthConstraint" destination="6jt-QO-HdF" id="elr-4E-1mL"/>
+                <outlet property="reassignButton" destination="UIe-w9-Iin" id="iQb-LE-qfl"/>
+                <outlet property="reassignButtonWidthConstraint" destination="Eag-Og-10t" id="bon-bw-q9W"/>
+                <outlet property="rejectButton" destination="e1A-fd-lfJ" id="zmF-t4-Wdp"/>
+                <outlet property="rejectButtonWidthConstraint" destination="Nya-r7-T1Q" id="e5C-B8-Z9O"/>
+                <outlet property="taskHeaderViewContainer" destination="IaX-5e-dWJ" id="z34-Vk-ONk"/>
+                <outlet property="textView" destination="7Ct-FG-PHJ" id="Y4g-1o-b0v"/>
+                <outlet property="textViewContainerHeightConstraint" destination="NCR-oh-o7O" id="Alj-ri-c28"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaX-5e-dWJ" userLabel="Header View">
+                    <rect key="frame" x="8" y="8" width="304" height="85"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="85" id="JhH-aS-ok8"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xs0-dY-vPN" userLabel="Main Container">
+                    <rect key="frame" x="0.0" y="101" width="320" height="467"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U8a-gk-Zub" userLabel="Comments Container">
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ADD COMMENT" translatesAutoresizingMaskIntoConstraints="NO" id="7Ct-FG-PHJ" customClass="TextView">
+                            <rect key="frame" x="8" y="10" width="144" height="30"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="fSv-Qi-0I9"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="a9V-1X-wuC"/>
+                                <outlet property="textViewDelegate" destination="-1" id="Xnf-zc-0X5"/>
+                            </connections>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1A-fd-lfJ" userLabel="Reject Button">
+                            <rect key="frame" x="240" y="9" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="Nya-r7-T1Q"/>
+                                <constraint firstAttribute="width" constant="32" id="bi7-Hq-6Zo"/>
+                            </constraints>
+                            <state key="normal" image="task_reject_button.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" image="task_reject_button_selected.png"/>
+                            <connections>
+                                <action selector="pressedRejectButton:" destination="-1" eventType="touchUpInside" id="Fe3-iS-HqE"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJO-Dk-RIK" userLabel="Approve Button">
+                            <rect key="frame" x="200" y="9" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="8HU-BM-3aj"/>
+                                <constraint firstAttribute="width" constant="32" id="Tp3-HJ-Cfb"/>
+                            </constraints>
+                            <state key="normal" image="task_approve_button.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" image="task_approve_button_selected.png"/>
+                            <connections>
+                                <action selector="pressedApproveButton:" destination="-1" eventType="touchUpInside" id="yL7-zp-xhr"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1JN-dD-qp9" userLabel="Done Button">
+                            <rect key="frame" x="160" y="9" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="6jt-QO-HdF"/>
+                                <constraint firstAttribute="height" constant="32" id="yER-6V-5DR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="D">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIe-w9-Iin" userLabel="Reassign Button">
+                            <rect key="frame" x="280" y="9" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="Eag-Og-10t"/>
+                                <constraint firstAttribute="height" constant="32" id="obQ-yU-NJO"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="R-A">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="7Ct-FG-PHJ" firstAttribute="top" secondItem="U8a-gk-Zub" secondAttribute="top" constant="10" id="0oW-pk-Pmg"/>
+                        <constraint firstItem="fJO-Dk-RIK" firstAttribute="leading" secondItem="1JN-dD-qp9" secondAttribute="trailing" constant="8" id="6TY-aK-2kx"/>
+                        <constraint firstItem="1JN-dD-qp9" firstAttribute="leading" secondItem="7Ct-FG-PHJ" secondAttribute="trailing" constant="8" id="Is3-Qw-wnN"/>
+                        <constraint firstItem="7Ct-FG-PHJ" firstAttribute="leading" secondItem="U8a-gk-Zub" secondAttribute="leading" constant="8" id="LsE-AA-xll"/>
+                        <constraint firstAttribute="height" constant="50" id="NCR-oh-o7O"/>
+                        <constraint firstAttribute="centerY" secondItem="fJO-Dk-RIK" secondAttribute="centerY" id="Tiw-Lo-Cqe"/>
+                        <constraint firstAttribute="trailing" secondItem="UIe-w9-Iin" secondAttribute="trailing" constant="8" id="Vr1-i7-uNH"/>
+                        <constraint firstAttribute="centerY" secondItem="e1A-fd-lfJ" secondAttribute="centerY" id="d13-yQ-DW0"/>
+                        <constraint firstAttribute="bottom" secondItem="7Ct-FG-PHJ" secondAttribute="bottom" constant="10" id="diU-x7-1ik"/>
+                        <constraint firstItem="e1A-fd-lfJ" firstAttribute="leading" secondItem="fJO-Dk-RIK" secondAttribute="trailing" constant="8" id="iX4-vF-sSR"/>
+                        <constraint firstAttribute="centerY" secondItem="UIe-w9-Iin" secondAttribute="centerY" id="jiM-d1-iIR"/>
+                        <constraint firstAttribute="centerY" secondItem="1JN-dD-qp9" secondAttribute="centerY" id="loI-Pn-ONc"/>
+                        <constraint firstItem="UIe-w9-Iin" firstAttribute="leading" secondItem="e1A-fd-lfJ" secondAttribute="trailing" constant="8" id="qrZ-hD-xPG"/>
+                        <constraint firstAttribute="centerY" secondItem="e1A-fd-lfJ" secondAttribute="centerY" id="zPc-8U-rZ5"/>
+                        <constraint firstItem="1JN-dD-qp9" firstAttribute="leading" secondItem="7Ct-FG-PHJ" secondAttribute="trailing" constant="8" id="zdx-iA-soQ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="U8a-gk-Zub" secondAttribute="bottom" id="59w-B3-odL"/>
+                <constraint firstAttribute="trailing" secondItem="Xs0-dY-vPN" secondAttribute="trailing" id="FfE-MU-rX4"/>
+                <constraint firstItem="Xs0-dY-vPN" firstAttribute="top" secondItem="IaX-5e-dWJ" secondAttribute="bottom" constant="8" id="NQU-AJ-yjM"/>
+                <constraint firstItem="Xs0-dY-vPN" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Neh-Mh-JJh"/>
+                <constraint firstItem="IaX-5e-dWJ" firstAttribute="top" secondItem="1" secondAttribute="top" constant="8" id="eVb-X4-A4r"/>
+                <constraint firstAttribute="bottom" secondItem="Xs0-dY-vPN" secondAttribute="bottom" id="jRT-tW-xdd"/>
+                <constraint firstAttribute="trailing" secondItem="U8a-gk-Zub" secondAttribute="trailing" id="raQ-Ua-ehJ"/>
+                <constraint firstItem="IaX-5e-dWJ" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="wO9-dX-cVa"/>
+                <constraint firstAttribute="trailing" secondItem="IaX-5e-dWJ" secondAttribute="trailing" constant="8" id="yeI-XJ-Vt7"/>
+                <constraint firstItem="U8a-gk-Zub" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="zd2-Mk-SKD"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="task_approve_button.png" width="32" height="32"/>
+        <image name="task_approve_button_selected.png" width="32" height="32"/>
+        <image name="task_reject_button.png" width="32" height="32"/>
+        <image name="task_reject_button_selected.png" width="32" height="32"/>
+    </resources>
+</document>
