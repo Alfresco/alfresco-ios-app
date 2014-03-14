@@ -319,11 +319,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (IBAction)pressedApproveButton:(id)sender
 {
-    NSMutableDictionary *properties = [@{kAlfrescoTaskReviewOutcome : kAlfrescoTaskApprove} mutableCopy];
+    NSMutableDictionary *properties = [@{kAlfrescoWorkflowTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
     
     if (self.textView.hasText)
     {
-        [properties setObject:self.textView.text forKey:kAlfrescoTaskComment];
+        [properties setObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
     }
     
     [self completeTaskWithProperties:properties];
@@ -331,11 +331,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (IBAction)pressedRejectButton:(id)sender
 {
-    NSMutableDictionary *properties = [@{kAlfrescoTaskReviewOutcome : kAlfrescoTaskReject} mutableCopy];
+    NSMutableDictionary *properties = [@{kAlfrescoWorkflowTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionReject} mutableCopy];
     
     if (self.textView.hasText)
     {
-        [properties setObject:self.textView.text forKey:kAlfrescoTaskComment];
+        [properties setObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
     }
     
     [self completeTaskWithProperties:properties];
