@@ -131,7 +131,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.searchController = searchController;
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
+    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     [self.searchController.searchResultsTableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
     
     self.tableView.delegate = self;

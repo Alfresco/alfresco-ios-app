@@ -9,7 +9,7 @@
 #import "MetaDataViewController.h"
 #import "MetadataCell.h"
 #import "ConnectivityManager.h"
-#import "MetadataHeaderView.h"
+#import "TableviewUnderlinedHeaderView.h"
 #import "UIColor+Custom.h"
 
 static NSString * kMetadataToDisplayPlistName = @"MetadataDisplayList";
@@ -106,12 +106,12 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return kMetadataHeaderViewHeight;
+    return [TableviewUnderlinedHeaderView headerViewHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    MetadataHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MetadataHeaderView class]) owner:self options:nil] lastObject];
+    TableviewUnderlinedHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TableviewUnderlinedHeaderView class]) owner:self options:nil] lastObject];
     headerView.headerTitleTextLabel.textColor = [UIColor appTintColor];
     
     NSString *headerTitleText = nil;

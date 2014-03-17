@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TasksAndAttachmentsViewController">
             <connections>
-                <outlet property="tableView" destination="ktB-nN-Iuy" id="Ymt-EO-38h"/>
-                <outlet property="view" destination="1" id="br9-Xk-8AD"/>
+                <outlet property="tableView" destination="hPv-WV-xIK" id="5Vb-AS-lQS"/>
+                <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -15,23 +15,24 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ktB-nN-Iuy">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hPv-WV-xIK">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="XzN-RF-iIK"/>
-                        <outlet property="delegate" destination="-1" id="JRy-9F-kt8"/>
+                        <outlet property="dataSource" destination="-1" id="WVD-ht-9lB"/>
+                        <outlet property="delegate" destination="-1" id="yhY-dk-ZDE"/>
                     </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="ktB-nN-Iuy" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="5GX-mk-VI0"/>
-                <constraint firstItem="ktB-nN-Iuy" firstAttribute="top" secondItem="1" secondAttribute="top" id="f19-Pg-sn2"/>
-                <constraint firstAttribute="trailing" secondItem="ktB-nN-Iuy" secondAttribute="trailing" id="iR6-Ni-i73"/>
-                <constraint firstAttribute="bottom" secondItem="ktB-nN-Iuy" secondAttribute="bottom" id="pYC-9y-S3k"/>
+                <constraint firstAttribute="trailing" secondItem="hPv-WV-xIK" secondAttribute="trailing" id="357-IA-0fN"/>
+                <constraint firstItem="hPv-WV-xIK" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="4e8-Eh-IR4"/>
+                <constraint firstItem="hPv-WV-xIK" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Ez0-fe-2Sb"/>
+                <constraint firstAttribute="bottom" secondItem="hPv-WV-xIK" secondAttribute="bottom" id="dj8-ys-rfV"/>
+                <constraint firstAttribute="trailing" secondItem="hPv-WV-xIK" secondAttribute="trailing" id="neF-op-WNh"/>
+                <constraint firstItem="hPv-WV-xIK" firstAttribute="top" secondItem="1" secondAttribute="top" id="ymB-sT-wiX"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

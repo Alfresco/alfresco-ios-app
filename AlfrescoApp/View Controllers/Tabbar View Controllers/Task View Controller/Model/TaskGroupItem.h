@@ -11,18 +11,20 @@
 @interface TaskGroupItem : NSObject
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) NSMutableArray *tasks;
+@property (nonatomic, strong) NSMutableArray *tasksBeforeFiltering;
+@property (nonatomic, strong) NSMutableArray *tasksAfterFiltering;
 @property (nonatomic, assign) BOOL hasMoreItems;
+@property (nonatomic, strong) NSPredicate *filteringPredicate;
 
-- (instancetype)initWithTitle:(NSString *)title;
+- (instancetype)initWithTitle:(NSString *)title filteringPredicate:(NSPredicate *)predicate;
 
-- (void)addTasks:(NSArray *)tasks;
+- (void)addAndApplyFilteringToTasks:(NSArray *)tasks;
 - (void)removeTasks:(NSArray *)tasks;
+- (BOOL)hasDisplayableTasks;
 
-- (BOOL)hasTasks;
-- (NSInteger)numberOfTasks;
+- (NSInteger)numberOfTasksBeforeFiltering;
+- (NSInteger)numberOfTasksAfterFiltering;
 
 - (void)clearAllTasks;
-
 
 @end

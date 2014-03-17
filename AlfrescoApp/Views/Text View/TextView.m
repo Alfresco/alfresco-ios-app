@@ -43,6 +43,20 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
     [self setup];
 }
 
+#pragma mark - Overridden Functions
+
+- (BOOL)hasText
+{
+    BOOL hasText = NO;
+    
+    if (![self.text isEqualToString:self.placeholderText] && self.text.length > 0)
+    {
+        hasText = YES;
+    }
+    
+    return hasText;
+}
+
 #pragma mark - Custom Getters/Setters
 
 - (void)setPlaceholderText:(NSString *)placeholderText
