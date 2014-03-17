@@ -66,7 +66,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
+    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     // config the cell here...
     AlfrescoNode *currentNode = nil;

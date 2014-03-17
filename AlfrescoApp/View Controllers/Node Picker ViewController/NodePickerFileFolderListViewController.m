@@ -75,8 +75,8 @@ static CGFloat const kCellHeight = 64.0f;
     }
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
+    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+    [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self

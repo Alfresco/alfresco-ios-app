@@ -50,7 +50,7 @@ static CGFloat const kCellHeight = 64.0f;
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
+    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     if (self.nodePicker.mode == NodePickerModeMultiSelect)
     {
@@ -148,7 +148,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
+    AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     SyncManager *syncManager = [SyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
