@@ -60,7 +60,7 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
     [self.tableView setEditing:YES];
     [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kMultiSelectToolBarHeight, 0.0);
+    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
     self.searchDisplayController.searchResultsTableView.contentInset = edgeInset;
     
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
@@ -76,7 +76,7 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.peoplePicker cancelPeoplePicker];
+    [self.peoplePicker cancel];
 }
 
 - (void)doneButtonPressed:(id)sender
@@ -150,7 +150,7 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
         person = self.searchResults[indexPath.row];
     }
     
-    if (self.peoplePicker.peoplePickerMode == PeoplePickerModeSingleSelect)
+    if (self.peoplePicker.mode == PeoplePickerModeSingleSelect)
     {
         [self.peoplePicker deselectAllPeople];
         [self.peoplePicker selectPerson:person];

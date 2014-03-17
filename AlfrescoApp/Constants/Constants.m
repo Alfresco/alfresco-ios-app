@@ -110,11 +110,8 @@ CGFloat const kUploadJPEGCompressionQuality = 1.0f;
 // MultiSelect Actions
 NSString * const kMultiSelectDelete = @"deleteAction";
 
-// Picker
-NSString * const kNodePickerSelectDocuments = @"nodePickerSelectDocuments";
-NSString * const kNodePickerDeSelectAll = @"nodePickerDeSelectAll";
-NSString * const kNodePickerSelectFolder = @"nodePickerSelectFolder";
-NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDeselectAllNotification";
+// Pickers
+CGFloat const kPickerMultiSelectToolBarHeight = 44.0f;
 
 // Favourites notifications
 NSString * const kFavouritesDidAddNodeNotification = @"FavouritesDidAddNodeNotification";

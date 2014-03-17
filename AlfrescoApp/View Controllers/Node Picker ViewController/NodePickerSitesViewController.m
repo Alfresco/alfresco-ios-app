@@ -39,7 +39,7 @@
     [self.searchController.searchResultsTableView setEditing:YES];
     [self.searchController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kMultiSelectToolBarHeight, 0.0);
+    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
     self.tableView.contentInset = edgeInset;
     self.searchController.searchResultsTableView.contentInset = edgeInset;
     
@@ -51,7 +51,7 @@
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.nodePicker cancelNodePicker];
+    [self.nodePicker cancel];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -59,7 +59,7 @@
     [super viewWillAppear:animated];
     
     [self.nodePicker updateMultiSelectToolBarActions];
-    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    if (self.nodePicker.type == NodePickerTypeFolders)
     {
         [self.nodePicker deselectAllNodes];
     }

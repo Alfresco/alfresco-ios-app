@@ -53,28 +53,33 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     return self;
 }
 
-- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus registerForNotifications:(BOOL)registerForNotifications
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusChanged:)
+                                                 name:kSyncStatusChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didAddNodeToFavorites:)
+                                                 name:kFavouritesDidAddNodeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRemoveNodeFromFavorites:)
+                                                 name:kFavouritesDidRemoveNodeNotification
+                                               object:nil];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
 {
     self.node = node;
     self.nodeStatus = nodeStatus;
     self.filename.text = node.name;
     [self updateNodeDetails:nodeStatus];
-    
-    if (registerForNotifications)
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(statusChanged:)
-                                                     name:kSyncStatusChangeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didAddNodeToFavorites:)
-                                                     name:kFavouritesDidAddNodeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didRemoveNodeFromFavorites:)
-                                                     name:kFavouritesDidRemoveNodeNotification
-                                                   object:nil];
-    }
 }
 
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate

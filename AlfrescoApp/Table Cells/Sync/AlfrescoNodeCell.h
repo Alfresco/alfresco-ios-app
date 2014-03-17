@@ -19,7 +19,9 @@ extern NSString * const kAlfrescoNodeCellIdentifier;
 @property (nonatomic, strong) IBOutlet ThumbnailImageView *image;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressBar;
 
-- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus registerForNotifications:(BOOL)registerForNotifications;
+- (void)registerForNotifications;
+- (void)removeNotifications;
+- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
 
 @end

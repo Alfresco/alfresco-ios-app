@@ -66,7 +66,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"MainMenuItemCellIdentifier";
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.nodePicker cancelNodePicker];
+    [self.nodePicker cancel];
 }
 
 - (void)configureScopeView

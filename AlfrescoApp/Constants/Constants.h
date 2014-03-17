@@ -112,11 +112,8 @@ extern CGFloat const kUploadJPEGCompressionQuality;
 // MultiSelect Actions
 extern NSString * const kMultiSelectDelete;
 
-// Picker
-extern NSString * const kNodePickerSelectDocuments;
-extern NSString * const kNodePickerDeSelectAll;
-extern NSString * const kNodePickerSelectFolder;
-extern NSString * const kAlfrescoPickerDeselectAllNotification;
+// Pickers
+extern CGFloat const kPickerMultiSelectToolBarHeight;
 
 // Favourites notifications
 extern NSString * const kFavouritesDidAddNodeNotification;

@@ -33,9 +33,9 @@
     return self;
 }
 
-- (void)startPeoplePickerWithPeople:(NSMutableArray *)people peoplePickerMode:(PeoplePickerMode)peoplePickerMode
+- (void)startWithPeople:(NSMutableArray *)people mode:(PeoplePickerMode)mode
 {
-    self.peoplePickerMode = peoplePickerMode;
+    self.mode = mode;
     self.peopleAlreadySelected = people;
     
     if (!self.multiSelectToolbar)
@@ -51,7 +51,7 @@
     [self.navigationController pushViewController:self.peoplePickerViewController animated:YES];
 }
 
-- (void)cancelPeoplePicker
+- (void)cancel
 {
     if (self.navigationController.viewControllers.firstObject == self.peoplePickerViewController)
     {
@@ -90,9 +90,9 @@
     }];
     [self.multiSelectToolbar userDidDeselectItem:existingPerson];
     
-    if (self.peoplePickerMode == PeoplePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(peoplePickerUserRemovedPerson:peoplePickerMode:)])
+    if (self.mode == PeoplePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(peoplePicker:didDeselectPerson:)])
     {
-        [self.delegate peoplePickerUserRemovedPerson:existingPerson peoplePickerMode:self.peoplePickerMode];
+        [self.delegate peoplePicker:self didDeselectPerson:existingPerson];
     }
 }
 
@@ -149,11 +149,11 @@
 
 - (void)pickingPeopleComplete
 {
-    [self cancelPeoplePicker];
+    [self cancel];
     
-    if ([self.delegate respondsToSelector:@selector(peoplePickerUserDidSelectPeople:peoplePickerMode:)])
+    if ([self.delegate respondsToSelector:@selector(peoplePicker:didSelectPeople:)])
     {
-        [self.delegate peoplePickerUserDidSelectPeople:self.multiSelectToolbar.selectedItems peoplePickerMode:self.peoplePickerMode];
+        [self.delegate peoplePicker:self didSelectPeople:self.multiSelectToolbar.selectedItems];
     }
 }
 

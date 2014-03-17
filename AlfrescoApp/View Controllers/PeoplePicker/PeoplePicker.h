@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MultiSelectActionsToolbar.h"
 
-extern CGFloat const kMultiSelectToolBarHeight;
+@class PeoplePicker;
 
 typedef NS_ENUM(NSInteger, PeoplePickerMode)
 {
@@ -20,20 +20,37 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
 @protocol PeoplePickerDelegate <NSObject>
 
 @optional
-- (void)peoplePickerUserDidSelectPeople:(NSArray *)selectedPeople peoplePickerMode:(PeoplePickerMode)peoplePickerMode;
-- (void)peoplePickerUserRemovedPerson:(AlfrescoPerson *)person peoplePickerMode:(PeoplePickerMode)peoplePickerMode;
+- (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople;
+- (void)peoplePicker:(PeoplePicker *)peoplePicker didDeselectPerson:(AlfrescoPerson *)person;
 
 @end
 
 @interface PeoplePicker : NSObject <MultiSelectActionsDelegate>
 
-@property (nonatomic, assign) PeoplePickerMode peoplePickerMode;
+@property (nonatomic, assign) PeoplePickerMode mode;
 @property (nonatomic, weak) id<PeoplePickerDelegate> delegate;
 
+/*
+ * initiate People Picker giving it reference to nav controller so it can push viewcontrollers e.g people controller
+ * @param NavigationController
+ */
 - (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController;
-- (void)startPeoplePickerWithPeople:(NSMutableArray *)people peoplePickerMode:(PeoplePickerMode)peoplePickerMode;
-- (void)cancelPeoplePicker;
 
+/*
+ * start people picker
+ * @param People Picker Mode
+ */
+- (void)startWithPeople:(NSMutableArray *)people mode:(PeoplePickerMode)mode;
+
+/*
+ * cancel people picker
+ */
+- (void)cancel;
+
+
+/*
+ * Bellow methods are internal to PeoplePicker controllers (accessed from PeoplePickerViewController)
+ */
 - (BOOL)isPersonSelected:(AlfrescoPerson *)person;
 - (void)deselectPerson:(AlfrescoPerson *)person;
 - (void)deselectAllPeople;

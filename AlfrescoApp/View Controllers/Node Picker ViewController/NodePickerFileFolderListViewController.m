@@ -58,21 +58,21 @@ static CGFloat const kCellHeight = 64.0f;
         self.title = self.displayFolder.name;
     }
     
-    if (self.nodePicker.nodePickerMode == NodePickerModeMultiSelect)
+    if (self.nodePicker.mode == NodePickerModeMultiSelect)
     {
         [self.tableView setEditing:YES];
         [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     }
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kMultiSelectToolBarHeight, 0.0);
+    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
     self.tableView.contentInset = edgeInset;
     self.searchDisplayController.searchResultsTableView.contentInset = edgeInset;
     
     [self.searchDisplayController.searchResultsTableView setEditing:YES];
     [self.searchDisplayController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    if (self.nodePicker.type == NodePickerTypeFolders)
     {
         if (self.displayFolder)
         {
@@ -109,7 +109,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.nodePicker cancelNodePicker];
+    [self.nodePicker cancel];
 }
 
 - (void)loadContentOfFolder
@@ -151,7 +151,7 @@ static CGFloat const kCellHeight = 64.0f;
         listingContext = self.defaultListingContext;
     }
     
-    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    if (self.nodePicker.type == NodePickerTypeFolders)
     {
         [self.documentService retrieveFoldersInFolder:folder listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             
@@ -212,7 +212,7 @@ static CGFloat const kCellHeight = 64.0f;
     
     BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus registerForNotifications:NO];
+    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
     [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
     
     [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
@@ -278,7 +278,7 @@ static CGFloat const kCellHeight = 64.0f;
     }
     else
     {
-        if (self.nodePicker.nodePickerType == NodePickerTypeDocuments && self.nodePicker.nodePickerMode == NodePickerModeSingleSelect)
+        if (self.nodePicker.type == NodePickerTypeDocuments && self.nodePicker.mode == NodePickerModeSingleSelect)
         {
             [self.nodePicker deselectAllNodes];
             [self.nodePicker selectNode:selectedNode];

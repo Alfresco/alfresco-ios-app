@@ -10,7 +10,10 @@
 #import "NodePickerScopeViewController.h"
 #import "NodePickerListViewController.h"
 
-CGFloat const kMultiSelectToolBarHeight = 44.0f;
+static NSString * const kNodePickerSelectDocuments = @"nodePickerSelectDocuments";
+static NSString * const kNodePickerDeSelectAll = @"nodePickerDeSelectAll";
+static NSString * const kNodePickerSelectFolder = @"nodePickerSelectFolder";
+NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDeselectAllNotification";
 
 @interface NodePicker()
 
@@ -20,8 +23,8 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
 @property (nonatomic, strong) NSMutableArray *nodesAlreadySelected;
 @property (nonatomic, strong) UIViewController *nextController;
 @property (nonatomic, assign) BOOL isMultiSelectToolBarVisible;
-@property (nonatomic, assign, readwrite) NodePickerMode nodePickerMode;
-@property (nonatomic, assign, readwrite) NodePickerType nodePickerType;
+@property (nonatomic, assign, readwrite) NodePickerMode mode;
+@property (nonatomic, assign, readwrite) NodePickerType type;
 
 @end
 
@@ -38,12 +41,10 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
     return self;
 }
 
-- (void)startNodePickerWithNodes:(NSMutableArray *)nodes
-                  nodePickerType:(NodePickerType)nodePickerType
-                  nodePickerMode:(NodePickerMode)nodePickerMode
+- (void)startWithNodes:(NSMutableArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode
 {
-    self.nodePickerType = nodePickerType;
-    self.nodePickerMode = nodePickerMode;
+    self.type = type;
+    self.mode = mode;
     
     // search to get AlfrescoNodes if passed array holds nodes identifiers
     if ([nodes.firstObject isKindOfClass:[NSString class]])
@@ -65,7 +66,7 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
         self.nodesAlreadySelected = nodes;
     }
     
-    if (self.nodePickerType == NodePickerTypeDocuments && self.nodePickerMode == NodePickerModeMultiSelect && nodes.count > 0)
+    if (self.type == NodePickerTypeDocuments && self.mode == NodePickerModeMultiSelect && nodes.count > 0)
     {
         self.nextController = [[NodePickerListViewController alloc] initWithSession:self.session items:self.nodesAlreadySelected nodePickerController:self];
     }
@@ -80,7 +81,7 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
     }
     
     CGRect navFrame = self.navigationController.view.frame;
-    self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithFrame:CGRectMake(0, navFrame.size.height - kMultiSelectToolBarHeight, navFrame.size.width, kMultiSelectToolBarHeight)];
+    self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithFrame:CGRectMake(0, navFrame.size.height - kPickerMultiSelectToolBarHeight, navFrame.size.width, kPickerMultiSelectToolBarHeight)];
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar enterMultiSelectMode:nil];
     
@@ -98,12 +99,12 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
 - (void)updateMultiSelectToolBarActions
 {
     [self.multiSelectToolbar removeToolBarButtons];
-    if (self.nodePickerType == NodePickerTypeDocuments && self.nodePickerMode == NodePickerModeMultiSelect)
+    if (self.type == NodePickerTypeDocuments && self.mode == NodePickerModeMultiSelect)
     {
         [self.multiSelectToolbar createToolBarButtonForTitleKey:@"nodes.picker.button.select.documents" actionId:kNodePickerSelectDocuments isDestructive:NO];
         [self showMultiSelectToolBar];
     }
-    else if (self.nodePickerType == NodePickerTypeFolders && self.nodePickerMode == NodePickerModeSingleSelect)
+    else if (self.type == NodePickerTypeFolders && self.mode == NodePickerModeSingleSelect)
     {
         [self.multiSelectToolbar createToolBarButtonForTitleKey:@"nodes.picker.button.select.folder" actionId:kNodePickerSelectFolder isDestructive:NO];
         [self showMultiSelectToolBar];
@@ -115,11 +116,11 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
     [self.multiSelectToolbar refreshToolBarButtons];
 }
 
-- (void)cancelNodePicker
+- (void)cancel
 {
     [self hideMultiSelectToolBar];
     
-    if (self.nodePickerMode == NodePickerModeMultiSelect)
+    if (self.mode == NodePickerModeMultiSelect)
     {
         if ([self.nextController isKindOfClass:[NodePickerListViewController class]])
         {
@@ -130,7 +131,7 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
-    else if (self.nodePickerMode == NodePickerModeSingleSelect)
+    else if (self.mode == NodePickerModeSingleSelect)
     {
         if (self.navigationController.viewControllers.firstObject == self.nextController)
         {
@@ -165,11 +166,11 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
 {
     BOOL isSelectionEnabled = YES;
     
-    if (self.nodePickerType == NodePickerTypeDocuments)
+    if (self.type == NodePickerTypeDocuments)
     {
         isSelectionEnabled = node.isDocument;
     }
-    else if (self.nodePickerType == NodePickerTypeFolders)
+    else if (self.type == NodePickerTypeFolders)
     {
         isSelectionEnabled = node.isFolder;
     }
@@ -227,9 +228,9 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
     }];
     [self.multiSelectToolbar userDidDeselectItem:existingNode];
     
-    if (self.nodePickerMode == NodePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(nodePickerUserRemovedNode:nodePickerType:nodePickerMode:)])
+    if (self.mode == NodePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(nodePicker:didDeselectNode:)])
     {
-        [self.delegate nodePickerUserRemovedNode:existingNode nodePickerType:self.nodePickerType nodePickerMode:self.nodePickerMode];
+        [self.delegate nodePicker:self didDeselectNode:existingNode];
     }
 }
 
@@ -245,10 +246,10 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
 
 - (void)pickingNodesComplete
 {
-    [self cancelNodePicker];
-    if ([self.delegate respondsToSelector:@selector(nodePickerUserDidSelectNodes:nodePickerType:nodePickerMode:)])
+    [self cancel];
+    if ([self.delegate respondsToSelector:@selector(nodePicker:didSelectNodes:)])
     {
-        [self.delegate nodePickerUserDidSelectNodes:self.multiSelectToolbar.selectedItems nodePickerType:self.nodePickerType nodePickerMode:self.nodePickerMode];
+        [self.delegate nodePicker:self didSelectNodes:self.multiSelectToolbar.selectedItems];
     }
 }
 
@@ -261,32 +262,32 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
         if ([self.nextController isKindOfClass:[NodePickerListViewController class]])
         {
             [(NodePickerListViewController *)self.nextController refreshListWithItems:selectedItems];
-            [self cancelNodePicker];
+            [self cancel];
         }
         else
         {
-            [self cancelNodePicker];
+            [self cancel];
         }
-        if ([self.delegate respondsToSelector:@selector(nodePickerUserDidSelectNodes:nodePickerType:nodePickerMode:)])
+        if ([self.delegate respondsToSelector:@selector(nodePicker:didSelectNodes:)])
         {
-            [self.delegate nodePickerUserDidSelectNodes:selectedItems nodePickerType:self.nodePickerType nodePickerMode:self.nodePickerMode];
+            [self.delegate nodePicker:self didSelectNodes:selectedItems];
         }
     }
     else if ([actionId isEqualToString:kNodePickerDeSelectAll])
     {
         [self deselectAllNodes];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoPickerDeselectAllNotification object:nil];
-        if ([self.delegate respondsToSelector:@selector(nodePickerUserDidSelectNodes:nodePickerType:nodePickerMode:)])
+        if ([self.delegate respondsToSelector:@selector(nodePicker:didSelectNodes:)])
         {
-            [self.delegate nodePickerUserDidSelectNodes:selectedItems nodePickerType:self.nodePickerType nodePickerMode:self.nodePickerMode];
+            [self.delegate nodePicker:self didSelectNodes:selectedItems];
         }
     }
     else if ([actionId isEqualToString:kNodePickerSelectFolder])
     {
-        [self cancelNodePicker];
-        if ([self.delegate respondsToSelector:@selector(nodePickerUserDidSelectNodes:nodePickerType:nodePickerMode:)])
+        [self cancel];
+        if ([self.delegate respondsToSelector:@selector(nodePicker:didSelectNodes:)])
         {
-            [self.delegate nodePickerUserDidSelectNodes:selectedItems nodePickerType:self.nodePickerType nodePickerMode:self.nodePickerMode];
+            [self.delegate nodePicker:self didSelectNodes:selectedItems];
         }
     }
 }
@@ -296,7 +297,7 @@ CGFloat const kMultiSelectToolBarHeight = 44.0f;
 - (NSString *)cmisSearchQueryWithNodes:(NSArray *)nodes
 {
     NSString *pattern = [NSString stringWithFormat:@"(cmis:objectId='%@')", [nodes componentsJoinedByString:@"' OR cmis:objectId='"]];
-    NSString *nodeType = (self.nodePickerType == NodePickerTypeDocuments) ? @"document" : @"folder";
+    NSString *nodeType = (self.type == NodePickerTypeDocuments) ? @"document" : @"folder";
     
     return [NSString stringWithFormat:@"SELECT * FROM cmis:%@ WHERE %@", nodeType, pattern];
 }

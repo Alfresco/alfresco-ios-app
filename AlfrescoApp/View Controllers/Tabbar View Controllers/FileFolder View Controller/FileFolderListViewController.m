@@ -795,7 +795,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus registerForNotifications:YES];
+    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+    [cell registerForNotifications];
     [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
     
     [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
@@ -830,6 +831,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AlfrescoNodeCell *nodeCell = (AlfrescoNodeCell *)cell;
+    [nodeCell removeNotifications];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

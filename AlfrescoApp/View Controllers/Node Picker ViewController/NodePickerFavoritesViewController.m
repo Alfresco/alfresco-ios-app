@@ -52,13 +52,13 @@ static CGFloat const kCellHeight = 64.0f;
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:kAlfrescoNodeCellIdentifier];
     
-    if (self.nodePicker.nodePickerMode == NodePickerModeMultiSelect)
+    if (self.nodePicker.mode == NodePickerModeMultiSelect)
     {
         [self.tableView setEditing:YES];
         [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     }
     
-    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    if (self.nodePicker.type == NodePickerTypeFolders)
     {
         if (self.parentNode)
         {
@@ -86,7 +86,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (void)cancelButtonPressed:(id)sender
 {
-    [self.nodePicker cancelNodePicker];
+    [self.nodePicker cancel];
 }
 
 #pragma mark - Private Methods
@@ -102,7 +102,7 @@ static CGFloat const kCellHeight = 64.0f;
         self.tableViewData = [[SyncManager sharedManager] syncDocumentsAndFoldersForSession:self.session withCompletionBlock:^(NSMutableArray *syncedNodes) {
             if (syncedNodes)
             {
-                if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+                if (self.nodePicker.type == NodePickerTypeFolders)
                 {
                     self.tableViewData = [self foldersInNodes:syncedNodes];
                 }
@@ -115,7 +115,7 @@ static CGFloat const kCellHeight = 64.0f;
         }];
     }
     
-    if (self.nodePicker.nodePickerType == NodePickerTypeFolders)
+    if (self.nodePicker.type == NodePickerTypeFolders)
     {
         self.tableViewData = [self foldersInNodes:self.tableViewData];
     }
@@ -156,7 +156,7 @@ static CGFloat const kCellHeight = 64.0f;
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus registerForNotifications:NO];
+    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
     [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
@@ -228,7 +228,7 @@ static CGFloat const kCellHeight = 64.0f;
     }
     else
     {
-        if (self.nodePicker.nodePickerType == NodePickerTypeDocuments && self.nodePicker.nodePickerMode == NodePickerModeSingleSelect)
+        if (self.nodePicker.type == NodePickerTypeDocuments && self.nodePicker.mode == NodePickerModeSingleSelect)
         {
             [self.nodePicker deselectAllNodes];
             [self.nodePicker selectNode:selectedNode];
