@@ -74,6 +74,9 @@
 		089FAFF018CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FAFEF18CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib */; };
 		089FAFF918D0773600AB4613 /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */; };
 		089FAFFD18D07D4200AB4613 /* NodePickerFavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */; };
+		089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */; };
+		089FB00C18D2021C00AB4613 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB00B18D2021C00AB4613 /* ProgressView.m */; };
+		089FB00E18D2023100AB4613 /* ProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FB00D18D2023100AB4613 /* ProgressView.xib */; };
 		08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
@@ -591,6 +594,11 @@
 		089FAFF718D0773600AB4613 /* NodePickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerFavoritesViewController.h; path = "Node Picker ViewController/NodePickerFavoritesViewController.h"; sourceTree = "<group>"; };
 		089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerFavoritesViewController.m; path = "Node Picker ViewController/NodePickerFavoritesViewController.m"; sourceTree = "<group>"; };
 		089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NodePickerFavoritesViewController.xib; path = "Node Picker ViewController/NodePickerFavoritesViewController.xib"; sourceTree = "<group>"; };
+		089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNavigationViewController.h; sourceTree = "<group>"; };
+		089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNavigationViewController.m; sourceTree = "<group>"; };
+		089FB00A18D2021C00AB4613 /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressView.h; path = ProgressView/ProgressView.h; sourceTree = "<group>"; };
+		089FB00B18D2021C00AB4613 /* ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressView.m; path = ProgressView/ProgressView.m; sourceTree = "<group>"; };
+		089FB00D18D2023100AB4613 /* ProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProgressView.xib; path = ProgressView/ProgressView.xib; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
 		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
@@ -1316,6 +1324,16 @@
 				08735D3D18C9DBDC0010334A /* PersonCell.xib */,
 			);
 			name = PersonCell;
+			sourceTree = "<group>";
+		};
+		089FB00918D201E100AB4613 /* Progress View */ = {
+			isa = PBXGroup;
+			children = (
+				089FB00A18D2021C00AB4613 /* ProgressView.h */,
+				089FB00B18D2021C00AB4613 /* ProgressView.m */,
+				089FB00D18D2023100AB4613 /* ProgressView.xib */,
+			);
+			name = "Progress View";
 			sourceTree = "<group>";
 		};
 		08B61F9B1804076800C827EA /* Custom Popovers */ = {
@@ -2231,6 +2249,8 @@
 			children = (
 				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
 				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
+				089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */,
+				089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */,
 				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
 				73B9582917A6750E0099FB84 /* ParentListViewController.m */,
 				0804DCA5181962A400E3ACC2 /* Accounts View Controllers */,
@@ -2264,6 +2284,7 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				089FB00918D201E100AB4613 /* Progress View */,
 				73881F91188E7DEA0052C75F /* Text View */,
 				7319018E183CDEE0002C82C1 /* Document Overlay View */,
 				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
@@ -3000,6 +3021,7 @@
 				73B95AC117A68B7E0099FB84 /* download.png in Resources */,
 				27E84E8018AD53510024B658 /* mainmenu-localfiles.png in Resources */,
 				7319019F1843B614002C82C1 /* onboarding-grey.png in Resources */,
+				089FB00E18D2023100AB4613 /* ProgressView.xib in Resources */,
 				080A812118561E6D00B79306 /* certificate-add.png in Resources */,
 				27E84E8518AD53510024B658 /* mainmenu-repository@2x.png in Resources */,
 				271DC773189C2D250059D1B2 /* status-sync-loading@2x.png in Resources */,
@@ -3133,6 +3155,7 @@
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */,
+				089FB00C18D2021C00AB4613 /* ProgressView.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
@@ -3195,6 +3218,7 @@
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */,
+				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,
 				0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
 				08948C601823C24D006D38F5 /* SwitchCell.m in Sources */,

@@ -77,7 +77,11 @@
             self.syncRequest = [self.documentFolderService retrieveContentOfDocument:self.document outputStream:(NSOutputStream *)self.stream completionBlock:^(BOOL succeeded, NSError *error) {
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    weakSelf.downloadCompletionBlock(succeeded, error);
+                    
+                    if (weakSelf.downloadCompletionBlock)
+                    {
+                        weakSelf.downloadCompletionBlock(succeeded, error);
+                    }
                 }];
                 operationCompleted = YES;
                 
@@ -91,7 +95,11 @@
             self.syncRequest = [self.documentFolderService updateContentOfDocument:self.document contentStream:(AlfrescoContentStream *)self.stream completionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    weakSelf.uploadCompletionBlock(uploadedDocument, error);
+                    
+                    if (weakSelf.uploadCompletionBlock)
+                    {
+                        weakSelf.uploadCompletionBlock(uploadedDocument, error);
+                    }
                 }];
                 operationCompleted = YES;
                 
