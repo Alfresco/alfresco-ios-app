@@ -14,10 +14,10 @@ extern NSString * const kAlfrescoNodeCellIdentifier;
 
 @interface AlfrescoNodeCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel *filename;
-@property (nonatomic, strong) IBOutlet UILabel *details;
-@property (nonatomic, strong) IBOutlet ThumbnailImageView *image;
-@property (nonatomic, strong) IBOutlet UIProgressView *progressBar;
+@property (nonatomic, weak) IBOutlet UILabel *filename;
+@property (nonatomic, weak) IBOutlet UILabel *details;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *image;
+@property (nonatomic, weak) IBOutlet UIProgressView *progressBar;
 
 - (void)registerForNotifications;
 - (void)removeNotifications;

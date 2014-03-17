@@ -17,6 +17,5 @@
 + (UIColor *)highWorkflowPriorityColor;
 + (UIColor *)mediumWorkflowPriorityColor;
 + (UIColor *)lowWorkflowPriorityColor;
-+ (UIColor *)nodePickerScopeCellSelectionColor;
 
 @end

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import "ParentListViewController.h"
+#import "BaseFileFolderListViewController.h"
 #import "NodePicker.h"
 
-@interface NodePickerFileFolderListViewController : ParentListViewController
+@interface NodePickerFileFolderListViewController : BaseFileFolderListViewController
 
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder
              folderDisplayName:(NSString *)displayName

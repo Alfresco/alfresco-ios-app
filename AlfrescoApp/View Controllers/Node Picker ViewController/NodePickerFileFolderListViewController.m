@@ -20,13 +20,7 @@ static CGFloat const kCellHeight = 64.0f;
 #import "Utility.h"
 
 @interface NodePickerFileFolderListViewController ()
-
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
-@property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, weak) NodePicker *nodePicker;
-@property (nonatomic, strong) AlfrescoFolder *displayFolder;
-@property (nonatomic, strong) NSArray *searchResults;
-
 @end
 
 @implementation NodePickerFileFolderListViewController
@@ -39,8 +33,8 @@ static CGFloat const kCellHeight = 64.0f;
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     if (self)
     {
-        _nodePicker = nodePicker;
-        _displayFolder = folder;
+        self.nodePicker = nodePicker;
+        self.displayFolder = folder;
     }
     return self;
 }
@@ -49,9 +43,9 @@ static CGFloat const kCellHeight = 64.0f;
 {
     [super viewDidLoad];
     
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-    self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+    [self createAlfrescoServicesWithSession:self.session];
     [self loadContentOfFolder];
+    self.searchController = self.searchDisplayController;
     
     if (self.displayFolder)
     {
@@ -195,7 +189,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
+    AlfrescoNodeCell *cell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     AlfrescoNode *currentNode = nil;
     if (tableView == self.searchDisplayController.searchResultsTableView)
@@ -207,46 +201,15 @@ static CGFloat const kCellHeight = 64.0f;
         currentNode = self.tableViewData[indexPath.row];
     }
     
-    SyncManager *syncManager = [SyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    
-    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-    
+    [cell updateStatusIconsIsSyncNode:NO isFavoriteNode:NO animate:NO];
     [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
         
-        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+        [cell updateStatusIconsIsSyncNode:NO isFavoriteNode:isFavorite animate:NO];
     }];
     
-    if (currentNode.isFolder)
-    {
-        cell.image.image = smallImageForType(@"folder");
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    else
-    {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-        
-        UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-        if (thumbnail)
-        {
-            [cell.image setImage:thumbnail withFade:NO];
-        }
-        else
-        {
-            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-            cell.image.image = placeholderImage;
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
-                {
-                    [cell.image setImage:image withFade:YES];
-                }
-            }];
-        }
-    }
+    cell.progressBar.hidden = YES;
+    [cell removeNotifications];
     
     if ([self.nodePicker isNodeSelected:currentNode])
     {
@@ -312,55 +275,12 @@ static CGFloat const kCellHeight = 64.0f;
     return kCellHeight;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // the last row index of the table data
-    NSUInteger lastSiteRowIndex = self.tableViewData.count - 1;
-    
-    // if the last cell is about to be drawn, check if there are more sites
-    if (indexPath.row == lastSiteRowIndex)
-    {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
-        if (self.moreItemsAvailable)
-        {
-            // show more items are loading ...
-            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [spinner startAnimating];
-            self.tableView.tableFooterView = spinner;
-            
-            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                [self addMoreToTableViewWithPagingResult:pagingResult error:error];
-                self.tableView.tableFooterView = nil;
-            }];
-        }
-    }
-}
-
 #pragma mark - Searchbar Delegate
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
     [self.tableView reloadData];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithFolder:self.displayFolder includeDescendants:YES];
-    
-    __block MBProgressHUD *searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchDisplayController.searchResultsTableView];
-    [self.searchDisplayController.searchResultsTableView addSubview:searchProgressHUD];
-    [searchProgressHUD show:YES];
-    
-    [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
-        [searchProgressHUD hide:YES];
-        searchProgressHUD = nil;
-        if (array)
-        {
-            self.searchResults = [array mutableCopy];
-            [self.searchDisplayController.searchResultsTableView reloadData];
-        }
-    }];
 }
 
 @end

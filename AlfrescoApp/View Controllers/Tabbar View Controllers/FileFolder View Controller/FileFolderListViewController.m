@@ -12,19 +12,15 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
 #import "Utility.h"
-#import "AlfrescoNodeCell.h"
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
 #import "UIAlertView+ALF.h"
 #import "LocationManager.h"
 #import <ImageIO/ImageIO.h>
-#import "ThumbnailDownloader.h"
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
-#import "SyncManager.h"
-#import "FavouriteManager.h"
 #import "FolderPreviewViewController.h"
 #import "UIColor+Custom.h"
 
@@ -36,15 +32,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 @interface FileFolderListViewController ()
 
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
-@property (nonatomic, strong) AlfrescoSearchService *searchService;
-@property (nonatomic, strong) AlfrescoFolder *displayFolder;
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
 @property (nonatomic, strong) NSString *folderDisplayName;
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
-@property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, strong) AlfrescoFolder *displayFolder;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
@@ -52,7 +44,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIBarButtonItem *actionSheetBarButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, assign) BOOL capturingMedia;
-@property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
@@ -216,28 +207,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 }
 
 #pragma mark - Custom getters and setters
-
-- (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
-{
-    _displayFolder = displayFolder;
-    
-    if (_displayFolder)
-    {
-        [self showHUD];
-        [self retrieveContentOfFolder:_displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self hideHUD];
-            if (pagingResult)
-            {
-                [self reloadTableViewWithPagingResult:pagingResult error:error];
-            }
-            else
-            {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-        }];
-    }
-}
 
 - (UIImagePickerController *)imagePickerController
 {
@@ -498,12 +467,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
-}
-
-- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
-{
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
@@ -777,58 +740,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlfrescoNodeCellIdentifier];
-    
-    // config the cell here...
-    AlfrescoNode *currentNode = nil;
-    if (tableView == self.searchController.searchResultsTableView)
-    {
-        currentNode = [self.searchResults objectAtIndex:indexPath.row];
-    }
-    else
-    {
-        currentNode = [self.tableViewData objectAtIndex:indexPath.row];
-    }
-    
-    SyncManager *syncManager = [SyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    
-    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+    AlfrescoNodeCell *cell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     [cell registerForNotifications];
-    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-    
-    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        
-        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
-    }];
-    
-    if ([currentNode isKindOfClass:[AlfrescoFolder class]])
-    {
-        cell.image.image = smallImageForType(@"folder");
-    }
-    else
-    {
-        AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-        
-        UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-        if (thumbnail)
-        {
-            [cell.image setImage:thumbnail withFade:NO];
-        }
-        else
-        {
-            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-            cell.image.image = placeholderImage;
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
-                {
-                    [cell.image setImage:image withFade:YES];
-                }
-            }];
-        }
-    }
     
     return cell;
 }
@@ -971,38 +884,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             }];
         }
     }
-}
-
-#pragma mark - UISearchBarDelegate Functions
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithFolder:self.displayFolder includeDescendants:YES];
-    
-    __block MBProgressHUD *searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:searchProgressHUD];
-    [searchProgressHUD show:YES];
-    
-    [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
-        [searchProgressHUD hide:YES];
-        searchProgressHUD = nil;
-        if (array)
-        {
-            self.searchResults = [array mutableCopy];
-            [self.searchController.searchResultsTableView reloadData];
-        }
-        else
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-    }];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    self.searchResults = nil;
 }
 
 #pragma mark - UIActionSheetDelegate Functions

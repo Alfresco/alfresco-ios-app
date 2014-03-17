@@ -45,9 +45,4 @@
     return [UIColor blueColor];
 }
 
-+ (UIColor *)nodePickerScopeCellSelectionColor
-{
-    return [UIColor colorWithRed:(CGFloat)217.0/255.0 green:(CGFloat)217.0/255.0 blue:(CGFloat)217.0/255.0 alpha:1.0];
-}
-
 @end

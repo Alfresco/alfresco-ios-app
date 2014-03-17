@@ -74,6 +74,9 @@
 		089FAFF018CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FAFEF18CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib */; };
 		089FAFF918D0773600AB4613 /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */; };
 		089FAFFD18D07D4200AB4613 /* NodePickerFavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */; };
+		089FB02418D738D500AB4613 /* BaseFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */; };
+		089FB02918D7552D00AB4613 /* NodePickerScopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */; };
+		089FB02A18D7552D00AB4613 /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */; };
 		08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
@@ -591,6 +594,11 @@
 		089FAFF718D0773600AB4613 /* NodePickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerFavoritesViewController.h; path = "Node Picker ViewController/NodePickerFavoritesViewController.h"; sourceTree = "<group>"; };
 		089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerFavoritesViewController.m; path = "Node Picker ViewController/NodePickerFavoritesViewController.m"; sourceTree = "<group>"; };
 		089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NodePickerFavoritesViewController.xib; path = "Node Picker ViewController/NodePickerFavoritesViewController.xib"; sourceTree = "<group>"; };
+		089FB02218D738D500AB4613 /* BaseFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderListViewController.h; sourceTree = "<group>"; };
+		089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
+		089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeCell.h; sourceTree = "<group>"; };
+		089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeCell.m; sourceTree = "<group>"; };
+		089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
 		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
@@ -1316,6 +1324,16 @@
 				08735D3D18C9DBDC0010334A /* PersonCell.xib */,
 			);
 			name = PersonCell;
+			sourceTree = "<group>";
+		};
+		089FB02518D7552D00AB4613 /* NodePickerScope */ = {
+			isa = PBXGroup;
+			children = (
+				089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */,
+				089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */,
+				089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */,
+			);
+			path = NodePickerScope;
 			sourceTree = "<group>";
 		};
 		08B61F9B1804076800C827EA /* Custom Popovers */ = {
@@ -2091,6 +2109,7 @@
 		73B957E117A6750E0099FB84 /* Table Cells */ = {
 			isa = PBXGroup;
 			children = (
+				089FB02518D7552D00AB4613 /* NodePickerScope */,
 				08735D3918C9DB7B0010334A /* PersonCell */,
 				0804DCB2181967EE00E3ACC2 /* AccountCell */,
 				73B957E217A6750E0099FB84 /* ActivitiesTableViewCellController.h */,
@@ -2566,6 +2585,8 @@
 				73B95AE717A68DF20099FB84 /* FileFolderListViewController.h */,
 				73B95AE817A68DF20099FB84 /* FileFolderListViewController.m */,
 				08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */,
+				089FB02218D738D500AB4613 /* BaseFileFolderListViewController.h */,
+				089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2859,6 +2880,7 @@
 				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
 				27F054D51891832B00C2454C /* app-icon-120.png in Resources */,
 				73217436187AC0CC008B330D /* CommentViewController.xib in Resources */,
+				089FB02A18D7552D00AB4613 /* NodePickerScopeCell.xib in Resources */,
 				27E84E8118AD53510024B658 /* mainmenu-localfiles@2x.png in Resources */,
 				080A812218561E6D00B79306 /* certificate-add@2x.png in Resources */,
 				27E84E7818AD53510024B658 /* mainmenu-accounts.png in Resources */,
@@ -3140,8 +3162,10 @@
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				085CC81B18BDEED400E43C98 /* NodePickerFileFolderListViewController.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
+				089FB02918D7552D00AB4613 /* NodePickerScopeCell.m in Sources */,
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
+				089FB02418D738D500AB4613 /* BaseFileFolderListViewController.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
 				089FAFEE18CF67E900AB4613 /* NodePickerScopeViewController.m in Sources */,

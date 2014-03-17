@@ -14,7 +14,7 @@
 #import "NodePickerFavoritesViewController.h"
 #import "SyncViewController.h"
 #import "SyncManager.h"
-#import "MainMenuItemCell.h"
+#import "NodePickerScopeCell.h"
 #import "UIColor+Custom.h"
 
 NSString * const kNodePickerScopeCellIdentifier = @"MainMenuItemCellIdentifier";
@@ -47,7 +47,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"MainMenuItemCellIdentifier";
     self.title = NSLocalizedString(@"nodes.picker.scope.title", @"Node Picker Scope");
     [self configureScopeView];
     
-    UINib *cellNib = [UINib nibWithNibName:@"MainMenuItemCell" bundle:nil];
+    UINib *cellNib = [UINib nibWithNibName:@"NodePickerScopeCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kNodePickerScopeCellIdentifier];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -160,14 +160,12 @@ NSString * const kNodePickerScopeCellIdentifier = @"MainMenuItemCellIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:kNodePickerScopeCellIdentifier];
+    NodePickerScopeCell *cell = [tableView dequeueReusableCellWithIdentifier:kNodePickerScopeCellIdentifier];
     
     MainMenuItem *currentItem = self.tableViewData[indexPath.row];
-    cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
-    cell.menuImageView.tintColor = [UIColor appTintColor];
-    cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    cell.selectedBackgroundView.backgroundColor = [UIColor nodePickerScopeCellSelectionColor];
+    cell.label.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
+    cell.imageView.tintColor = [UIColor appTintColor];
+    cell.imageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     return cell;
 }
