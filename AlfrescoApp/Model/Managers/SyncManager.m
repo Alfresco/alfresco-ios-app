@@ -948,7 +948,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         completionBlock(YES);
         
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        self.syncProgressSize += bytesTransferred - nodeStatus.bytesTransfered;
+        self.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
         nodeStatus.bytesTransfered = bytesTransferred;
         nodeStatus.totalBytesToTransfer = bytesTotal;
     }];
@@ -1040,7 +1040,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             completionBlock(YES);
                                                                         }
                                                                     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                                                                        self.syncProgressSize += bytesTransferred - nodeStatus.bytesTransfered;
+                                                                        self.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
                                                                         nodeStatus.bytesTransfered = bytesTransferred;
                                                                         nodeStatus.totalBytesToTransfer = bytesTotal;
                                                                     }];
@@ -1095,6 +1095,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         [self cancelSyncForDocumentWithIdentifier:documentIdentifier];
     }
+    self.totalSyncSize = 0;
+    self.syncProgressSize = 0;
 }
 
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node
@@ -1312,9 +1314,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)notifyProgressDelegateAboutCurrentProgress
 {
-    if ([self.progressDelegate respondsToSelector:@selector(syncTotalSizeToSync:syncedSize:)])
+    if ([self.progressDelegate respondsToSelector:@selector(totalSizeToSync:syncedSize:)])
     {
-        [self.progressDelegate syncTotalSizeToSync:self.totalSyncSize syncedSize:self.syncProgressSize];
+        [self.progressDelegate totalSizeToSync:self.totalSyncSize syncedSize:self.syncProgressSize];
     }
 }
 

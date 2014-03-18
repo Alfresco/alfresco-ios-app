@@ -18,6 +18,9 @@ NSString * const kLargeThumbnailImageMappingPlist = @"LargeThumbnailImageMapping
 NSString * const kRenditionImageDocLib = @"doclib";
 NSString * const kRenditionImageImagePreview = @"imgpreview";
 
+// App RevealController
+CGFloat const kRevealControllerMasterViewWidth = 300.0f;
+
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 

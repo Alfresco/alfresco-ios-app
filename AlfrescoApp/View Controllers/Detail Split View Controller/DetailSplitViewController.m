@@ -10,7 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kAnimationSpeed = 0.2f;
-static const CGFloat kMasterViewWidth = 300.0f;
 
 @interface DetailSplitViewController () <UIGestureRecognizerDelegate>
 
@@ -42,7 +41,7 @@ static const CGFloat kMasterViewWidth = 300.0f;
     
     UIView *masterViewContainer = [[UIView alloc] initWithFrame:CGRectMake(screenBounds.origin.x,
                                                                            screenBounds.origin.y,
-                                                                           kMasterViewWidth,
+                                                                           kRevealControllerMasterViewWidth,
                                                                            screenBounds.size.height)];
     masterViewContainer.autoresizesSubviews = YES;
     masterViewContainer.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -121,8 +120,8 @@ static const CGFloat kMasterViewWidth = 300.0f;
     {
         [UIView animateWithDuration:kAnimationSpeed animations:^{
             CGRect detailFrame = self.detailViewContainer.frame;
-            detailFrame.origin.x = kMasterViewWidth;
-            detailFrame.size.width = detailFrame.size.width - kMasterViewWidth;
+            detailFrame.origin.x = kRevealControllerMasterViewWidth;
+            detailFrame.size.width = detailFrame.size.width - kRevealControllerMasterViewWidth;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
             self.isExpanded = YES;
@@ -137,7 +136,7 @@ static const CGFloat kMasterViewWidth = 300.0f;
         [UIView animateWithDuration:kAnimationSpeed animations:^{
             CGRect detailFrame = self.detailViewContainer.frame;
             detailFrame.origin.x = 0;
-            detailFrame.size.width = detailFrame.size.width + kMasterViewWidth;
+            detailFrame.size.width = detailFrame.size.width + kRevealControllerMasterViewWidth;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
             self.isExpanded = NO;
@@ -152,8 +151,8 @@ static const CGFloat kMasterViewWidth = 300.0f;
     if (UIInterfaceOrientationIsLandscape(orientation))
     {
         CGRect detailFrame = self.detailViewContainer.frame;
-        detailFrame.origin.x = kMasterViewWidth;
-        detailFrame.size.width -= kMasterViewWidth;
+        detailFrame.origin.x = kRevealControllerMasterViewWidth;
+        detailFrame.size.width -= kRevealControllerMasterViewWidth;
         self.detailViewContainer.frame = detailFrame;
         self.isExpanded = YES;
     }

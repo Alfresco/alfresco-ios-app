@@ -56,7 +56,7 @@
 "sync.items.singular" = "item";
 "sync.items.plural" = "items";
 "sync.cancelAll.alert.title" = "Sync";
-"sync.cancelAll.alert.message" = "Would you like to cancel all sync?";
+"sync.cancelAll.alert.message" = "Would you like to cancel all sync operations?";
 
 /**
  * Sync Obstacles

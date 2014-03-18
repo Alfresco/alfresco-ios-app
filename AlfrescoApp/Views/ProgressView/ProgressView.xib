@@ -7,35 +7,33 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="p84-Lh-kFm" customClass="ProgressView">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="76"/>
+            <rect key="frame" x="0.0" y="0.0" width="300" height="59"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8XH-x7-UKh">
-                    <rect key="frame" x="20" y="10" width="268" height="21"/>
+                    <rect key="frame" x="20" y="7" width="241" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ah3-on-JJw">
-                    <rect key="frame" x="20" y="54" width="226" height="2"/>
+                    <rect key="frame" x="20" y="43" width="266" height="2"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </progressView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMO-Iu-cqo">
-                    <rect key="frame" x="254" y="33" width="38" height="30"/>
+                    <rect key="frame" x="254" y="9" width="38" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <state key="normal" title="X">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <connections>
-                        <action selector="cancelButtonPressed:" destination="p84-Lh-kFm" eventType="touchUpInside" id="3WZ-y0-Evl"/>
-                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="cancelButton" destination="AMO-Iu-cqo" id="lZU-OY-NPM"/>
                 <outlet property="progressBar" destination="ah3-on-JJw" id="abn-Hz-5nQ"/>
                 <outlet property="progressInfoLabel" destination="8XH-x7-UKh" id="0sR-3q-88b"/>
             </connections>

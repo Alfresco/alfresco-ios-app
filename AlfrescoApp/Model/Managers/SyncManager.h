@@ -16,7 +16,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 
 @optional
 - (void)numberOfSyncOperationsInProgress:(NSInteger)numberOfOperations;
-- (void)syncTotalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize;
+- (void)totalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize;
 
 @end
 

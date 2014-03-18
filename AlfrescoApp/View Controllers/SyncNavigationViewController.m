@@ -29,13 +29,19 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 {
     [super viewDidLoad];
     
+    // setup navigation view frame
+    CGRect navigationFrame = self.view.frame;
+    navigationFrame.size.width = kRevealControllerMasterViewWidth;
+    self.view.frame = navigationFrame;
+    
     SyncManager *syncManager = [SyncManager sharedManager];
     syncManager.progressDelegate = self;
     
     self.progressView = [[ProgressView alloc] init];
-    CGRect navFrame = self.view.bounds;
+    
+    // setup progress view's frame to appear at the bottom of the navigation view
     CGRect progressViewFrame = self.progressView.frame;
-    progressViewFrame.origin.y = navFrame.size.height;
+    progressViewFrame.origin.y = navigationFrame.size.height;
     self.progressView.frame = progressViewFrame;
     [self.progressView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
     
@@ -43,6 +49,8 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     
     [self.view addSubview:self.progressView];
 }
+
+#pragma mark - Sync Manager Progress Delegate Methods
 
 - (void)numberOfSyncOperationsInProgress:(NSInteger)numberOfOperations
 {
@@ -59,7 +67,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     }
 }
 
-- (void)syncTotalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize
+- (void)totalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize
 {
     self.totalSyncSize = totalSize;
     self.syncedSize = syncedSize;
@@ -68,7 +76,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 
 #pragma mark - private Methods
 
-- (void)cancelSyncOperations
+- (void)cancelSyncOperations:(id)sender
 {
     SyncManager *syncManager = [SyncManager sharedManager];
     
@@ -83,6 +91,9 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         if (buttonIndex == 0)
         {
             [syncManager cancelAllSyncOperations];
+            self.syncedSize = 0;
+            self.totalSyncSize = 0;
+            self.progressView.progressBar.progress = 0.0f;
         }
     }];
 }
