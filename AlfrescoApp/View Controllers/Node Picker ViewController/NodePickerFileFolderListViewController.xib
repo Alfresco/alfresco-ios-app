@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NodePickerFileFolderListViewController">
+            <connections>
+                <outlet property="searchDisplayController" destination="r1P-pH-Ysx" id="N6p-5x-KFB"/>
+                <outlet property="tableView" destination="nDq-sW-bG5" id="G7x-6x-2yM"/>
+                <outlet property="view" destination="BJI-ep-fhY" id="Bb0-lt-QZa"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="BJI-ep-fhY">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nDq-sW-bG5">
+                    <rect key="frame" x="10" y="46" width="300" height="517"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="VVJ-ZV-at9">
+                    <rect key="frame" x="0.0" y="2" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="2Vq-vk-Z1E"/>
+                    </connections>
+                </searchBar>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="nDq-sW-bG5" secondAttribute="bottom" constant="5" id="2ku-TQ-3O3"/>
+                <constraint firstItem="VVJ-ZV-at9" firstAttribute="top" secondItem="BJI-ep-fhY" secondAttribute="top" constant="2" id="HJU-JG-aub"/>
+                <constraint firstAttribute="trailing" secondItem="VVJ-ZV-at9" secondAttribute="trailing" id="Tz7-GR-mLF"/>
+                <constraint firstItem="nDq-sW-bG5" firstAttribute="top" secondItem="VVJ-ZV-at9" secondAttribute="bottom" id="YPG-g2-Lr6"/>
+                <constraint firstItem="VVJ-ZV-at9" firstAttribute="leading" secondItem="BJI-ep-fhY" secondAttribute="leading" id="bcX-ti-6bC"/>
+                <constraint firstItem="nDq-sW-bG5" firstAttribute="leading" secondItem="BJI-ep-fhY" secondAttribute="leading" constant="10" id="sI2-kt-nI9"/>
+                <constraint firstAttribute="trailing" secondItem="nDq-sW-bG5" secondAttribute="trailing" constant="10" id="tbe-5S-TaC"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <searchDisplayController id="r1P-pH-Ysx">
+            <connections>
+                <outlet property="delegate" destination="-1" id="Ygs-m6-H9e"/>
+                <outlet property="searchBar" destination="VVJ-ZV-at9" id="Nfl-dx-rMi"/>
+                <outlet property="searchContentsController" destination="-1" id="Lvx-Vi-uJo"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="5gx-Bg-j6g"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="4sT-mI-fZ8"/>
+            </connections>
+        </searchDisplayController>
+    </objects>
+</document>

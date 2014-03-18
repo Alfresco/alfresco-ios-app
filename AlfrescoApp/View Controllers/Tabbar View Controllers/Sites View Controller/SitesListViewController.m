@@ -8,7 +8,6 @@
 
 #import "SitesListViewController.h"
 #import "FileFolderListViewController.h"
-#import "Utility.h"
 #import "PreviewViewController.h"
 #import "UniversalDevice.h"
 #import "SitesCell.h"
@@ -32,13 +31,10 @@ static CGFloat kSearchCellHeight = 60.0f;
 
 @interface SitesListViewController()
 
-@property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
-@property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSIndexPath *expandedCellIndexPath;
 @property (nonatomic, assign) SiteListType selectedListType;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;

@@ -53,13 +53,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     return self;
 }
 
-- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
+- (void)registerForNotifications
 {
-    self.node = node;
-    self.nodeStatus = nodeStatus;
-    self.filename.text = node.name;
-    [self updateNodeDetails:nodeStatus];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(statusChanged:)
                                                  name:kSyncStatusChangeNotification
@@ -72,6 +67,19 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
                                              selector:@selector(didRemoveNodeFromFavorites:)
                                                  name:kFavouritesDidRemoveNodeNotification
                                                object:nil];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
+{
+    self.node = node;
+    self.nodeStatus = nodeStatus;
+    self.filename.text = node.name;
+    [self updateNodeDetails:nodeStatus];
 }
 
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate
@@ -227,7 +235,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         case SyncStatusWaiting:
             statusImageName = @"status-sync-waiting";
             break;
-
+            
         case SyncStatusSuccessful:
             statusImageName = @"status-sync-synced";
             break;

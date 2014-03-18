@@ -110,6 +110,9 @@ CGFloat const kUploadJPEGCompressionQuality = 1.0f;
 // MultiSelect Actions
 NSString * const kMultiSelectDelete = @"deleteAction";
 
+// Pickers
+CGFloat const kPickerMultiSelectToolBarHeight = 44.0f;
+
 // Favourites notifications
 NSString * const kFavouritesDidAddNodeNotification = @"FavouritesDidAddNodeNotification";
 NSString * const kFavouritesDidRemoveNodeNotification = @"FavouritesDidRemoveNodeNotification";

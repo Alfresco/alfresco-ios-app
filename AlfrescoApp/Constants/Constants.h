@@ -112,6 +112,9 @@ extern CGFloat const kUploadJPEGCompressionQuality;
 // MultiSelect Actions
 extern NSString * const kMultiSelectDelete;
 
+// Pickers
+extern CGFloat const kPickerMultiSelectToolBarHeight;
+
 // Favourites notifications
 extern NSString * const kFavouritesDidAddNodeNotification;
 extern NSString * const kFavouritesDidRemoveNodeNotification;

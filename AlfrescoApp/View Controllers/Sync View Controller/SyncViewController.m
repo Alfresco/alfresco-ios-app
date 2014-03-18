@@ -206,8 +206,9 @@ static CGFloat const kCellImageViewHeight = 32.0f;
     
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
-    
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
+    [nodeCell registerForNotifications];
+    
     BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
     [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
@@ -243,6 +244,12 @@ static CGFloat const kCellImageViewHeight = 32.0f;
         }
     }
     return nodeCell;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AlfrescoNodeCell *nodeCell = (AlfrescoNodeCell *)cell;
+    [nodeCell removeNotifications];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

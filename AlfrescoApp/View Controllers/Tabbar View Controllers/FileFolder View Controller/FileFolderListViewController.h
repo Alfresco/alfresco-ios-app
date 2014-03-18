@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ParentListViewController.h"
+#import "BaseFileFolderListViewController.h"
 #import "UploadFormViewController.h"
 #import "DownloadsViewController.h"
 #import "MultiSelectActionsToolbar.h"
@@ -16,16 +16,15 @@
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface FileFolderListViewController : ParentListViewController <
+@interface FileFolderListViewController : BaseFileFolderListViewController <
     DownloadsPickerDelegate,
     MultiSelectActionsDelegate,
     UploadFormViewControllerDelegate,
     UIActionSheetDelegate,
     UIImagePickerControllerDelegate,
     UINavigationControllerDelegate,
-    UIPopoverControllerDelegate,
-    UISearchBarDelegate,
-    UISearchDisplayDelegate>
+    UIPopoverControllerDelegate
+    >
 
 /**
  Providing nil to the folder parameter will result in the root folder (Company Home) being displayed.

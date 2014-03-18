@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
 #import "SitesCell.h"
+#import "Utility.h"
 
 typedef NS_ENUM(NSInteger, SiteListType)
 {
@@ -18,5 +19,9 @@ typedef NS_ENUM(NSInteger, SiteListType)
 };
 
 @interface SitesListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate, SiteCellDelegate>
+
+@property (nonatomic, strong) AlfrescoSiteService *siteService;
+@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) NSArray *searchResults;
 
 @end
