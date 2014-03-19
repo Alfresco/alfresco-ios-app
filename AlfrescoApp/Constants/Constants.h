@@ -26,6 +26,9 @@ extern NSString * const kProtocolHTTPS;
 extern NSString * const kHTTPMethodPOST;
 extern NSString * const kHTTPMethodGET;
 
+// App RevealController
+extern CGFloat const kRevealControllerMasterViewWidth;
+
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
 

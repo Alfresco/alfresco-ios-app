@@ -12,7 +12,17 @@
 extern NSString * const kDocumentsRemovedFromSyncOnServerWithLocalChanges;
 extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 
+@protocol SyncManagerProgressDelegate <NSObject>
+
+@optional
+- (void)numberOfSyncOperationsInProgress:(NSInteger)numberOfOperations;
+- (void)totalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize;
+
+@end
+
 @interface SyncManager : NSObject
+
+@property (nonatomic, weak) id<SyncManagerProgressDelegate> progressDelegate;
 
 /**
  * Returns the shared singleton
@@ -38,7 +48,8 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 
-- (void)cancelSyncForDocument:(AlfrescoDocument *)document;
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)cancelAllSyncOperations;
 - (void)retrySyncForDocument: (AlfrescoDocument *)document;
 /*
  * Sync Obstacle Methods
