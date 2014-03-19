@@ -122,6 +122,7 @@
 - (void)cancelOperation
 {
     [self.syncRequest cancel];
+    [self cancel];
 }
 
 - (void)dealloc

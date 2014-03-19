@@ -83,12 +83,12 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.cancelAll.alert.title", @"Sync")
                                                     message:NSLocalizedString(@"sync.cancelAll.alert.message", @"Would you like to...")
                                                    delegate:nil
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), NSLocalizedString(@"No", @"No"), nil];
+                                          cancelButtonTitle:NSLocalizedString(@"sync.cancelAll.alert.button.continue", @"Continue")
+                                          otherButtonTitles:NSLocalizedString(@"sync.cancelAll.alert.button.stop", @"Stop Sync"), nil];
     
     [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         
-        if (buttonIndex == 0)
+        if (!isCancelButton)
         {
             [syncManager cancelAllSyncOperations];
             self.syncedSize = 0;

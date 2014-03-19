@@ -47,16 +47,24 @@
 		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */; };
 		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
-		085CC81518BD02A500E43C98 /* NodePickerSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81418BD02A500E43C98 /* NodePickerSitesViewController.m */; };
-		085CC81818BDEC3300E43C98 /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81718BDEC3300E43C98 /* NodePicker.m */; };
-		085CC81B18BDEED400E43C98 /* NodePickerFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 085CC81A18BDEED400E43C98 /* NodePickerFileFolderListViewController.m */; };
 		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
-		08735D3318C748A80010334A /* PeoplePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3218C748A80010334A /* PeoplePicker.m */; };
-		08735D3718C74DD30010334A /* PeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3518C74DD30010334A /* PeoplePickerViewController.m */; };
-		08735D3818C74DD30010334A /* PeoplePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08735D3618C74DD30010334A /* PeoplePickerViewController.xib */; };
 		08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3B18C9DBAE0010334A /* PersonCell.m */; };
 		08735D3E18C9DBDC0010334A /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08735D3D18C9DBDC0010334A /* PersonCell.xib */; };
+		0876A03118D99F800035370A /* BaseFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */; };
+		0876A04218D99FF60035370A /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03518D99FF60035370A /* NodePicker.m */; };
+		0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */; };
+		0876A04418D99FF60035370A /* NodePickerFavoritesViewcontroller.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A03818D99FF60035370A /* NodePickerFavoritesViewcontroller.xib */; };
+		0876A04518D99FF60035370A /* NodePickerFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */; };
+		0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */; };
+		0876A04718D99FF60035370A /* NodePickerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03D18D99FF60035370A /* NodePickerListViewController.m */; };
+		0876A04818D99FF60035370A /* NodePickerScopeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03F18D99FF60035370A /* NodePickerScopeViewController.m */; };
+		0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A04118D99FF60035370A /* NodePickerSitesViewController.m */; };
+		0876A05718D9A0A80035370A /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05518D9A0A80035370A /* ProgressView.m */; };
+		0876A05818D9A0A80035370A /* ProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A05618D9A0A80035370A /* ProgressView.xib */; };
+		0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05B18D9A9E30035370A /* PeoplePicker.m */; };
+		0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */; };
+		0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */; };
 		088228641843722B006E58A4 /* RequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228631843722B006E58A4 /* RequestHandler.m */; };
 		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
 		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
@@ -69,14 +77,7 @@
 		08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C5C1823B62E006D38F5 /* TextFieldCell.xib */; };
 		08948C601823C24D006D38F5 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C5F1823C24D006D38F5 /* SwitchCell.m */; };
 		08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C611823C26E006D38F5 /* SwitchCell.xib */; };
-		089FAFDC18CE19BC00AB4613 /* NodePickerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FAFDB18CE19BC00AB4613 /* NodePickerListViewController.m */; };
-		089FAFEE18CF67E900AB4613 /* NodePickerScopeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FAFED18CF67E900AB4613 /* NodePickerScopeViewController.m */; };
-		089FAFF018CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FAFEF18CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib */; };
-		089FAFF918D0773600AB4613 /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */; };
-		089FAFFD18D07D4200AB4613 /* NodePickerFavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */; };
 		089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */; };
-		089FB00C18D2021C00AB4613 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB00B18D2021C00AB4613 /* ProgressView.m */; };
-		089FB00E18D2023100AB4613 /* ProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FB00D18D2023100AB4613 /* ProgressView.xib */; };
 		08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
@@ -570,22 +571,33 @@
 		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SyncObstacleTableViewCell~ipad.xib"; sourceTree = "<group>"; };
 		0833248817FF0DC200EE6AA8 /* blue-button-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30.png"; sourceTree = "<group>"; };
 		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
-		085CC81318BD02A500E43C98 /* NodePickerSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerSitesViewController.h; path = "Node Picker ViewController/NodePickerSitesViewController.h"; sourceTree = "<group>"; };
-		085CC81418BD02A500E43C98 /* NodePickerSitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerSitesViewController.m; path = "Node Picker ViewController/NodePickerSitesViewController.m"; sourceTree = "<group>"; };
-		085CC81618BDEC3300E43C98 /* NodePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePicker.h; path = "Node Picker ViewController/NodePicker.h"; sourceTree = "<group>"; };
-		085CC81718BDEC3300E43C98 /* NodePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePicker.m; path = "Node Picker ViewController/NodePicker.m"; sourceTree = "<group>"; };
-		085CC81918BDEED400E43C98 /* NodePickerFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerFileFolderListViewController.h; path = "Node Picker ViewController/NodePickerFileFolderListViewController.h"; sourceTree = "<group>"; };
-		085CC81A18BDEED400E43C98 /* NodePickerFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerFileFolderListViewController.m; path = "Node Picker ViewController/NodePickerFileFolderListViewController.m"; sourceTree = "<group>"; };
 		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
-		08735D3118C748A80010334A /* PeoplePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PeoplePicker.h; path = PeoplePicker/PeoplePicker.h; sourceTree = "<group>"; };
-		08735D3218C748A80010334A /* PeoplePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PeoplePicker.m; path = PeoplePicker/PeoplePicker.m; sourceTree = "<group>"; };
-		08735D3418C74DD30010334A /* PeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PeoplePickerViewController.h; path = PeoplePicker/PeoplePickerViewController.h; sourceTree = "<group>"; };
-		08735D3518C74DD30010334A /* PeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PeoplePickerViewController.m; path = PeoplePicker/PeoplePickerViewController.m; sourceTree = "<group>"; };
-		08735D3618C74DD30010334A /* PeoplePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PeoplePickerViewController.xib; path = PeoplePicker/PeoplePickerViewController.xib; sourceTree = "<group>"; };
 		08735D3A18C9DBAE0010334A /* PersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonCell.h; path = PersonCell/PersonCell.h; sourceTree = "<group>"; };
 		08735D3B18C9DBAE0010334A /* PersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonCell.m; path = PersonCell/PersonCell.m; sourceTree = "<group>"; };
 		08735D3D18C9DBDC0010334A /* PersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PersonCell.xib; path = PersonCell/PersonCell.xib; sourceTree = "<group>"; };
+		0876A03418D99FF60035370A /* NodePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePicker.h; sourceTree = "<group>"; };
+		0876A03518D99FF60035370A /* NodePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePicker.m; sourceTree = "<group>"; };
+		0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerFavoritesViewController.h; sourceTree = "<group>"; };
+		0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerFavoritesViewController.m; sourceTree = "<group>"; };
+		0876A03818D99FF60035370A /* NodePickerFavoritesViewcontroller.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerFavoritesViewcontroller.xib; sourceTree = "<group>"; };
+		0876A03918D99FF60035370A /* NodePickerFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerFileFolderListViewController.h; sourceTree = "<group>"; };
+		0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerFileFolderListViewController.m; sourceTree = "<group>"; };
+		0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerFileFolderListViewController.xib; sourceTree = "<group>"; };
+		0876A03C18D99FF60035370A /* NodePickerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerListViewController.h; sourceTree = "<group>"; };
+		0876A03D18D99FF60035370A /* NodePickerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerListViewController.m; sourceTree = "<group>"; };
+		0876A03E18D99FF60035370A /* NodePickerScopeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeViewController.h; sourceTree = "<group>"; };
+		0876A03F18D99FF60035370A /* NodePickerScopeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeViewController.m; sourceTree = "<group>"; };
+		0876A04018D99FF60035370A /* NodePickerSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerSitesViewController.h; sourceTree = "<group>"; };
+		0876A04118D99FF60035370A /* NodePickerSitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerSitesViewController.m; sourceTree = "<group>"; };
+		0876A05418D9A0A80035370A /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
+		0876A05518D9A0A80035370A /* ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressView.m; sourceTree = "<group>"; };
+		0876A05618D9A0A80035370A /* ProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressView.xib; sourceTree = "<group>"; };
+		0876A05A18D9A9E30035370A /* PeoplePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeoplePicker.h; sourceTree = "<group>"; };
+		0876A05B18D9A9E30035370A /* PeoplePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeoplePicker.m; sourceTree = "<group>"; };
+		0876A05C18D9A9E30035370A /* PeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeoplePickerViewController.h; sourceTree = "<group>"; };
+		0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeoplePickerViewController.m; sourceTree = "<group>"; };
+		0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeoplePickerViewController.xib; sourceTree = "<group>"; };
 		088228621843722B006E58A4 /* RequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestHandler.h; sourceTree = "<group>"; };
 		088228631843722B006E58A4 /* RequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestHandler.m; sourceTree = "<group>"; };
 		088228651843B180006E58A4 /* AttributedLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedLabelCell.h; sourceTree = "<group>"; };
@@ -605,24 +617,13 @@
 		08948C5E1823C24D006D38F5 /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		08948C5F1823C24D006D38F5 /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		08948C611823C26E006D38F5 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
-		089FAFDA18CE19BC00AB4613 /* NodePickerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerListViewController.h; path = "Node Picker ViewController/NodePickerListViewController.h"; sourceTree = "<group>"; };
-		089FAFDB18CE19BC00AB4613 /* NodePickerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerListViewController.m; path = "Node Picker ViewController/NodePickerListViewController.m"; sourceTree = "<group>"; };
-		089FAFEC18CF67E900AB4613 /* NodePickerScopeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerScopeViewController.h; path = "Node Picker ViewController/NodePickerScopeViewController.h"; sourceTree = "<group>"; };
-		089FAFED18CF67E900AB4613 /* NodePickerScopeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerScopeViewController.m; path = "Node Picker ViewController/NodePickerScopeViewController.m"; sourceTree = "<group>"; };
-		089FAFEF18CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NodePickerFileFolderListViewController.xib; path = "Node Picker ViewController/NodePickerFileFolderListViewController.xib"; sourceTree = "<group>"; };
-		089FAFF718D0773600AB4613 /* NodePickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodePickerFavoritesViewController.h; path = "Node Picker ViewController/NodePickerFavoritesViewController.h"; sourceTree = "<group>"; };
-		089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodePickerFavoritesViewController.m; path = "Node Picker ViewController/NodePickerFavoritesViewController.m"; sourceTree = "<group>"; };
-		089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NodePickerFavoritesViewController.xib; path = "Node Picker ViewController/NodePickerFavoritesViewController.xib"; sourceTree = "<group>"; };
+		089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNavigationViewController.h; sourceTree = "<group>"; };
+		089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNavigationViewController.m; sourceTree = "<group>"; };
 		089FB02218D738D500AB4613 /* BaseFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderListViewController.h; sourceTree = "<group>"; };
 		089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
 		089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeCell.h; sourceTree = "<group>"; };
 		089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeCell.m; sourceTree = "<group>"; };
 		089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
-		089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNavigationViewController.h; sourceTree = "<group>"; };
-		089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNavigationViewController.m; sourceTree = "<group>"; };
-		089FB00A18D2021C00AB4613 /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressView.h; path = ProgressView/ProgressView.h; sourceTree = "<group>"; };
-		089FB00B18D2021C00AB4613 /* ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressView.m; path = ProgressView/ProgressView.m; sourceTree = "<group>"; };
-		089FB00D18D2023100AB4613 /* ProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProgressView.xib; path = ProgressView/ProgressView.xib; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
 		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
@@ -1330,39 +1331,6 @@
 			path = "Sync View Controller/Sync Obstacles/FavoritesErrorTableViewCell";
 			sourceTree = "<group>";
 		};
-		085CC80C18BCFE4100E43C98 /* NodePickerViewController */ = {
-			isa = PBXGroup;
-			children = (
-				085CC81618BDEC3300E43C98 /* NodePicker.h */,
-				085CC81718BDEC3300E43C98 /* NodePicker.m */,
-				089FAFDA18CE19BC00AB4613 /* NodePickerListViewController.h */,
-				089FAFDB18CE19BC00AB4613 /* NodePickerListViewController.m */,
-				089FAFEC18CF67E900AB4613 /* NodePickerScopeViewController.h */,
-				089FAFED18CF67E900AB4613 /* NodePickerScopeViewController.m */,
-				085CC81318BD02A500E43C98 /* NodePickerSitesViewController.h */,
-				085CC81418BD02A500E43C98 /* NodePickerSitesViewController.m */,
-				085CC81918BDEED400E43C98 /* NodePickerFileFolderListViewController.h */,
-				085CC81A18BDEED400E43C98 /* NodePickerFileFolderListViewController.m */,
-				089FAFEF18CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib */,
-				089FAFF718D0773600AB4613 /* NodePickerFavoritesViewController.h */,
-				089FAFF818D0773600AB4613 /* NodePickerFavoritesViewController.m */,
-				089FAFFC18D07D4200AB4613 /* NodePickerFavoritesViewController.xib */,
-			);
-			name = NodePickerViewController;
-			sourceTree = "<group>";
-		};
-		08735D3018C7483B0010334A /* PeoplePickerViewController */ = {
-			isa = PBXGroup;
-			children = (
-				08735D3118C748A80010334A /* PeoplePicker.h */,
-				08735D3218C748A80010334A /* PeoplePicker.m */,
-				08735D3418C74DD30010334A /* PeoplePickerViewController.h */,
-				08735D3518C74DD30010334A /* PeoplePickerViewController.m */,
-				08735D3618C74DD30010334A /* PeoplePickerViewController.xib */,
-			);
-			name = PeoplePickerViewController;
-			sourceTree = "<group>";
-		};
 		08735D3918C9DB7B0010334A /* PersonCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1373,6 +1341,49 @@
 			name = PersonCell;
 			sourceTree = "<group>";
 		};
+		0876A03318D99FF60035370A /* Node Picker ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0876A03418D99FF60035370A /* NodePicker.h */,
+				0876A03518D99FF60035370A /* NodePicker.m */,
+				0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */,
+				0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */,
+				0876A03818D99FF60035370A /* NodePickerFavoritesViewcontroller.xib */,
+				0876A03918D99FF60035370A /* NodePickerFileFolderListViewController.h */,
+				0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */,
+				0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */,
+				0876A03C18D99FF60035370A /* NodePickerListViewController.h */,
+				0876A03D18D99FF60035370A /* NodePickerListViewController.m */,
+				0876A03E18D99FF60035370A /* NodePickerScopeViewController.h */,
+				0876A03F18D99FF60035370A /* NodePickerScopeViewController.m */,
+				0876A04018D99FF60035370A /* NodePickerSitesViewController.h */,
+				0876A04118D99FF60035370A /* NodePickerSitesViewController.m */,
+			);
+			path = "Node Picker ViewController";
+			sourceTree = "<group>";
+		};
+		0876A05318D9A0A80035370A /* ProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				0876A05418D9A0A80035370A /* ProgressView.h */,
+				0876A05518D9A0A80035370A /* ProgressView.m */,
+				0876A05618D9A0A80035370A /* ProgressView.xib */,
+			);
+			path = ProgressView;
+			sourceTree = "<group>";
+		};
+		0876A05918D9A9E30035370A /* People Picker ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0876A05A18D9A9E30035370A /* PeoplePicker.h */,
+				0876A05B18D9A9E30035370A /* PeoplePicker.m */,
+				0876A05C18D9A9E30035370A /* PeoplePickerViewController.h */,
+				0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */,
+				0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */,
+			);
+			path = "People Picker ViewController";
+			sourceTree = "<group>";
+		};
 		089FB02518D7552D00AB4613 /* NodePickerScope */ = {
 			isa = PBXGroup;
 			children = (
@@ -1381,16 +1392,6 @@
 				089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */,
 			);
 			path = NodePickerScope;
-			sourceTree = "<group>";
-		};
-		089FB00918D201E100AB4613 /* Progress View */ = {
-			isa = PBXGroup;
-			children = (
-				089FB00A18D2021C00AB4613 /* ProgressView.h */,
-				089FB00B18D2021C00AB4613 /* ProgressView.m */,
-				089FB00D18D2023100AB4613 /* ProgressView.xib */,
-			);
-			name = "Progress View";
 			sourceTree = "<group>";
 		};
 		08B61F9B1804076800C827EA /* Custom Popovers */ = {
@@ -2390,8 +2391,8 @@
 				73B95AD817A68DF20099FB84 /* Preview View Controller */,
 				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
 				0833244D17F981EC00EE6AA8 /* Sync ViewController */,
-				085CC80C18BCFE4100E43C98 /* NodePickerViewController */,
-				08735D3018C7483B0010334A /* PeoplePickerViewController */,
+				0876A03318D99FF60035370A /* Node Picker ViewController */,
+				0876A05918D9A9E30035370A /* People Picker ViewController */,
 				73B95ADD17A68DF20099FB84 /* Tabbar View Controllers */,
 				73F628B4185779050050F437 /* Text File View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
@@ -2405,7 +2406,7 @@
 			isa = PBXGroup;
 			children = (
 				739B0A2A18CF7C9B00239584 /* Tableview Underlined Header View */,
-				089FB00918D201E100AB4613 /* Progress View */,
+				0876A05318D9A0A80035370A /* ProgressView */,
 				73881F91188E7DEA0052C75F /* Text View */,
 				7319018E183CDEE0002C82C1 /* Document Overlay View */,
 				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
@@ -2934,11 +2935,13 @@
 				27F054D61891832B00C2454C /* app-icon-144.png in Resources */,
 				080A812418561E6D00B79306 /* certificate@2x.png in Resources */,
 				080A811B18561CD800B79306 /* ClientCertificateViewController.xib in Resources */,
+				0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */,
 				271DC76F189C2D250059D1B2 /* status-sync-failed@2x.png in Resources */,
 				73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */,
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				73FF557E18ACE2370009CA56 /* large_excel@2x.png in Resources */,
 				7384BDF917F3377A00C6A54F /* UserPreferences.plist in Resources */,
+				0876A04418D99FF60035370A /* NodePickerFavoritesViewcontroller.xib in Resources */,
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
 				7379736918ABA3AF007613B2 /* mime_doc.png in Resources */,
 				73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */,
@@ -3008,7 +3011,6 @@
 				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
 				27F054D51891832B00C2454C /* app-icon-120.png in Resources */,
 				73217436187AC0CC008B330D /* CommentViewController.xib in Resources */,
-				089FB02A18D7552D00AB4613 /* NodePickerScopeCell.xib in Resources */,
 				73A6861518C87A9100FF18E0 /* task_reject_button.png in Resources */,
 				27E84E8118AD53510024B658 /* mainmenu-localfiles@2x.png in Resources */,
 				080A812218561E6D00B79306 /* certificate-add@2x.png in Resources */,
@@ -3018,6 +3020,7 @@
 				73881FE81890086F0052C75F /* actionsheet-print@2x.png in Resources */,
 				73B95A9417A68B7E0099FB84 /* expand.png in Resources */,
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
+				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
 				7379737418ABA3AF007613B2 /* mime_txt@2x.png in Resources */,
 				0833247417FADFE600EE6AA8 /* stop-transfer.png in Resources */,
 				73A6861618C87A9100FF18E0 /* task_reject_button@2x.png in Resources */,
@@ -3056,7 +3059,6 @@
 				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				73FF558118ACE2370009CA56 /* large_notes.png in Resources */,
 				73D6492518AD855D00333266 /* actionsheet-add-folder@2x.png in Resources */,
-				08735D3818C74DD30010334A /* PeoplePickerViewController.xib in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
@@ -3106,7 +3108,6 @@
 				73A7665918C8E2980087E38F /* task_approve_button_selected@2x.png in Resources */,
 				73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
-				089FAFF018CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib in Resources */,
 				27E84E8218AD53510024B658 /* mainmenu-myfiles.png in Resources */,
 				73FF558518ACE2370009CA56 /* large_powerpoint.png in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
@@ -3139,7 +3140,6 @@
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
 				73697A8F18B2758A00021B02 /* TaskViewController.xib in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
-				089FAFFD18D07D4200AB4613 /* NodePickerFavoritesViewController.xib in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
 				7379737F18ABA3AF007613B2 /* site.png in Resources */,
 				7379736418ABA3AF007613B2 /* folder@2x.png in Resources */,
@@ -3159,7 +3159,6 @@
 				73B95AC117A68B7E0099FB84 /* download.png in Resources */,
 				27E84E8018AD53510024B658 /* mainmenu-localfiles.png in Resources */,
 				7319019F1843B614002C82C1 /* onboarding-grey.png in Resources */,
-				089FB00E18D2023100AB4613 /* ProgressView.xib in Resources */,
 				080A812118561E6D00B79306 /* certificate-add.png in Resources */,
 				27E84E8518AD53510024B658 /* mainmenu-repository@2x.png in Resources */,
 				271DC773189C2D250059D1B2 /* status-sync-loading@2x.png in Resources */,
@@ -3167,6 +3166,7 @@
 				73A7665A18C8E2980087E38F /* task_reject_button_selected.png in Resources */,
 				7379737518ABA3AF007613B2 /* mime_video.png in Resources */,
 				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
+				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
 				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
@@ -3268,9 +3268,11 @@
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				739B0A3E18CF7E2500239584 /* ProcessTasksCell.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
-				085CC81518BD02A500E43C98 /* NodePickerSitesViewController.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
+				0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */,
+				0876A05718D9A0A80035370A /* ProgressView.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
+				0876A04718D99FF60035370A /* NodePickerListViewController.m in Sources */,
 				73B078A0189AB4F800D02C43 /* Reachability.m in Sources */,
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				08E799B1182A57850030FD53 /* ButtonCell.m in Sources */,
@@ -3280,8 +3282,8 @@
 				73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */,
-				08735D3718C74DD30010334A /* PeoplePickerViewController.m in Sources */,
 				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,
+				0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
 				73697AA718BB65C400021B02 /* TaskHeaderView.m in Sources */,
@@ -3291,31 +3293,25 @@
 				73B9585017A6750F0099FB84 /* SitesCell.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
-				085CC81818BDEC3300E43C98 /* NodePicker.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
+				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
-				73299A22185B4B8F00F96AF5 /* MetadataHeaderView.m in Sources */,
-				089FB00C18D2021C00AB4613 /* ProgressView.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
 				7379733218AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld in Sources */,
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
-				085CC81B18BDEED400E43C98 /* NodePickerFileFolderListViewController.m in Sources */,
+				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
-				089FB02918D7552D00AB4613 /* NodePickerScopeCell.m in Sources */,
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
-				089FB02418D738D500AB4613 /* BaseFileFolderListViewController.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
-				089FAFEE18CF67E900AB4613 /* NodePickerScopeViewController.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
-				08735D3318C748A80010334A /* PeoplePicker.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
@@ -3323,9 +3319,12 @@
 				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
+				0876A03118D99F800035370A /* BaseFileFolderListViewController.m in Sources */,
+				0876A04518D99FF60035370A /* NodePickerFileFolderListViewController.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				7379733818AA8E9B007613B2 /* SyncError.m in Sources */,
+				0876A04818D99FF60035370A /* NodePickerScopeViewController.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
@@ -3333,7 +3332,6 @@
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
-				089FAFDC18CE19BC00AB4613 /* NodePickerListViewController.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
@@ -3345,7 +3343,6 @@
 				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
 				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
 				73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */,
-				089FAFF918D0773600AB4613 /* NodePickerFavoritesViewController.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
@@ -3367,6 +3364,7 @@
 				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,
 				0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
+				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
 				08948C601823C24D006D38F5 /* SwitchCell.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
