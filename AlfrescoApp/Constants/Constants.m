@@ -59,6 +59,7 @@ NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey = @"AlfrescoDocume
 NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDownloadedIdentifierKey";
 NSString * const kAlfrescoNodeAddedOnServerParentFolderKey = @"AlfrescoNodeAddedOnServerParentFolderKey";
 NSString * const kAlfrescoNodeAddedOnServerSubNodeKey = @"AlfrescoNodeAddedOnServerSubNodeKey";
+NSString * const kAlfrescoWorkflowTaskDidComplete = @"AlfrescoWorkflowTaskDidComplete";
 
 // Accounts
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";

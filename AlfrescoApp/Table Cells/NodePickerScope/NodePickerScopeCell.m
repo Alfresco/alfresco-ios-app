@@ -11,6 +11,8 @@
 
 @implementation NodePickerScopeCell
 
+@dynamic imageView;
+
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];

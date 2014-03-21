@@ -23,12 +23,6 @@ static NSString * const kActivitiToDo = @"activitiAdhoc";
 static NSString * const kSupportedTasksPredicateFormat = @"(processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@)";
 static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername like %@";
 
-typedef NS_ENUM(NSUInteger, TaskType)
-{
-    TaskTypeMyTasks = 0,
-    TaskTypeTasksIStarted
-};
-
 @interface TaskViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
@@ -50,12 +44,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
         self.session = session;
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
-        
-        
-        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(sessionReceived:)
                                                      name:kAlfrescoSessionReceivedNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(taskCompleted:)
+                                                     name:kAlfrescoWorkflowTaskDidComplete
                                                    object:nil];
         [self createWorkflowServicesWithSession:session];
     }
@@ -68,7 +63,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
     
-    UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tasks_filter.png"] style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
+    UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"task_filter.png"] style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
     [self.navigationItem setRightBarButtonItem:filterButton];
     self.filterButton = filterButton;
     
@@ -97,12 +92,53 @@ typedef NS_ENUM(NSUInteger, TaskType)
         [self.myTasks clearAllTasks];
         [self.tasksIStarted clearAllTasks];
         
-        [self loadTasksForTaskType:TaskTypeMyTasks listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskType:TaskTypeTask listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
+}
+
+- (void)taskCompleted:(NSNotification *)notification
+{
+    // reload tasks and workflows following completion
+    __weak typeof(self) weakSelf = self;
+
+    [self showHUD];
+    AlfrescoListingContext *tasksListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:self.myTasks.tasksBeforeFiltering.count skipCount:0];
+    [self loadTasksWithListingContext:tasksListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [weakSelf hideHUD];
+        if (pagingResult)
+        {
+            [weakSelf.myTasks clearAllTasks];
+            [weakSelf.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
+            
+            // currently being displayed, refresh the tableview.
+            if (weakSelf.displayedTaskType == TaskTypeTask)
+            {
+                weakSelf.tableViewData = weakSelf.myTasks.tasksAfterFiltering;
+                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+        }
+    }];
+    
+    AlfrescoListingContext *workflowListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:self.tasksIStarted.tasksBeforeFiltering.count skipCount:0];
+    [self loadWorkflowProcessesWithListingContext:workflowListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [weakSelf hideHUD];
+        if (pagingResult)
+        {
+            [weakSelf.tasksIStarted clearAllTasks];
+            [weakSelf.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
+            
+            // currently being displayed, refresh the tableview.
+            if (weakSelf.displayedTaskType == TaskTypeProcess)
+            {
+                weakSelf.tableViewData = weakSelf.tasksIStarted.tasksAfterFiltering;
+                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+        }
+    }];
 }
 
 - (void)createWorkflowServicesWithSession:(id<AlfrescoSession>)session
@@ -122,11 +158,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
     TaskGroupItem *returnGroupItem = nil;
     switch (taskType)
     {
-        case TaskTypeMyTasks:
+        case TaskTypeTask:
             returnGroupItem = self.myTasks;
             break;
 
-        case TaskTypeTasksIStarted:
+        case TaskTypeProcess:
             returnGroupItem = self.tasksIStarted;
             break;
     }
@@ -150,13 +186,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
         
         switch (taskType)
         {
-            case TaskTypeMyTasks:
+            case TaskTypeTask:
             {
                 [self loadTasksWithListingContext:listingContext completionBlock:completionBlock];
             }
             break;
                 
-            case TaskTypeTasksIStarted:
+            case TaskTypeProcess:
             {
                 [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:completionBlock];
             }
@@ -253,7 +289,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     {
         switch (self.displayedTaskType)
         {
-            case TaskTypeMyTasks:
+            case TaskTypeTask:
             {
                 [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
                 self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
@@ -261,7 +297,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
             }
             break;
                 
-            case TaskTypeTasksIStarted:
+            case TaskTypeProcess:
             {
                 [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
                 self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
@@ -305,7 +341,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     
     switch (self.displayedTaskType)
     {
-        case TaskTypeMyTasks:
+        case TaskTypeTask:
         {
             AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
             NSString *taskTitle = (currentTask.name) ? currentTask.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
@@ -313,9 +349,9 @@ typedef NS_ENUM(NSUInteger, TaskType)
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentTask.dueAt];
             [cell setPriorityLevel:currentTask.priority];
         }
-            break;
+        break;
             
-        case TaskTypeTasksIStarted:
+        case TaskTypeProcess:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
             NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
@@ -323,7 +359,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentProcess.dueAt];
             [cell setPriorityLevel:currentProcess.priority];
         }
-            break;
+        break;
     }
     
     return cell;
@@ -363,14 +399,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
     
     TaskDetailsViewController *taskDetailsViewController = nil;
     
-    if (self.displayedTaskType == TaskTypeMyTasks)
+    if (self.displayedTaskType == TaskTypeTask)
     {
         taskDetailsViewController = [[TaskDetailsViewController alloc] initWithTask:(AlfrescoWorkflowTask *)selectedObject session:self.session];
     }
-    else if (self.displayedTaskType == TaskTypeTasksIStarted)
+    else if (self.displayedTaskType == TaskTypeProcess)
     {
         taskDetailsViewController = [[TaskDetailsViewController alloc] initWithProcess:(AlfrescoWorkflowProcess *)selectedObject session:self.session];
-        
     }
     
     [UniversalDevice pushToDisplayViewController:taskDetailsViewController usingNavigationController:self.navigationController animated:YES];
@@ -416,13 +451,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")])
     {
-        [self loadTasksForTaskType:TaskTypeMyTasks listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskType:TaskTypeTask listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")])
     {
-        [self loadTasksForTaskType:TaskTypeTasksIStarted listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskType:TaskTypeProcess listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }

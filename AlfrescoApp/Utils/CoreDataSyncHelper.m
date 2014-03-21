@@ -27,6 +27,8 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
 
 @implementation CoreDataSyncHelper
 
+@dynamic managedObjectContext;
+
 - (id)init
 {
     self = [super init];

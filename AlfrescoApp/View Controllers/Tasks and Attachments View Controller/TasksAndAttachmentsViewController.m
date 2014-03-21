@@ -21,12 +21,6 @@
 static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier CONTAINS '$start'";
 static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
-typedef NS_ENUM(NSUInteger, TaskType)
-{
-    TaskTypeTask = 0,
-    TaskTypeProcess
-};
-
 @interface TasksAndAttachmentsViewController ()
 
 // Services
@@ -116,27 +110,32 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)populateTableView
 {
+    __weak typeof(self) weakSelf = self;
+    
+    [self showHUD];
     [self loadAttachmentsWithCompletionBlock:^(NSArray *array, NSError *error) {
+        [weakSelf hideHUD];
         if (array && array.count > 0)
         {
-            [self.attachments removeAllObjects];
-            [self.attachments addObjectsFromArray:array];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[self sectionForArray:self.attachments]];
-            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+            [weakSelf.attachments removeAllObjects];
+            [weakSelf.attachments addObjectsFromArray:array];
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[weakSelf sectionForArray:weakSelf.attachments]];
+            [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }];
     
     if (self.taskType == TaskTypeProcess)
     {
         [self loadTasksWithCompletionBlock:^(NSArray *array, NSError *error) {
+            [weakSelf hideHUD];
             if (array)
             {
-                [self.tasks removeAllObjects];
+                [weakSelf.tasks removeAllObjects];
                 NSPredicate *filteredArrayPredicate = [NSPredicate predicateWithFormat:kStartTaskRemovalPredicateFormat];
                 NSArray *filteredTasks = [array filteredArrayUsingPredicate:filteredArrayPredicate];
-                [self.tasks addObjectsFromArray:filteredTasks];
-                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[self sectionForArray:self.tasks]];
-                [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakSelf.tasks addObjectsFromArray:filteredTasks];
+                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[weakSelf sectionForArray:weakSelf.tasks]];
+                [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
             }
         }];
     }

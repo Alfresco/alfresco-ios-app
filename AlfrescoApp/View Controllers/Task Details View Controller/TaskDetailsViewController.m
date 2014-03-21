@@ -21,15 +21,10 @@
 #import "TextView.h"
 #import "UIColor+Custom.h"
 #import "TasksAndAttachmentsViewController.h"
+#import "UniversalDevice.h"
 
 static NSString * const kReviewKey = @"Review";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
-
-typedef NS_ENUM(NSUInteger, TaskType)
-{
-    TaskTypeTask = 0,
-    TaskTypeProcess
-};
 
 @interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate>
 
@@ -285,16 +280,21 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self.view addSubview:completingProgressHUD];
     [completingProgressHUD show:YES];
     
+    self.doneButton.enabled = NO;
     self.approveButton.enabled = NO;
     self.rejectButton.enabled = NO;
+    self.reassignButton.enabled = NO;
+    
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
     [self.workflowService completeTask:self.task properties:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
+        weakSelf.doneButton.enabled = YES;
         weakSelf.approveButton.enabled = YES;
         weakSelf.rejectButton.enabled = YES;
+        weakSelf.reassignButton.enabled = YES;
         
         if (error)
         {
@@ -304,8 +304,8 @@ typedef NS_ENUM(NSUInteger, TaskType)
         }
         else
         {
-            weakSelf.textView.text = NSLocalizedString(@"tasks.textview.addcomment.placeholder", @"Add Comment");
-            // TODO
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskDidComplete object:task];
+            [UniversalDevice clearDetailViewController];
         }
     }];
 }
@@ -316,6 +316,18 @@ typedef NS_ENUM(NSUInteger, TaskType)
 }
 
 #pragma mark - IBActions
+
+- (IBAction)pressedDoneButton:(id)sender
+{
+    NSDictionary *properties = nil;
+    
+    if (self.textView.hasText)
+    {
+        properties = [NSDictionary dictionaryWithObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
+    }
+    
+    [self completeTaskWithProperties:properties];
+}
 
 - (IBAction)pressedApproveButton:(id)sender
 {
@@ -339,6 +351,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
     }
     
     [self completeTaskWithProperties:properties];
+}
+
+- (IBAction)pressedReassignButton:(id)sender
+{
+    // TODO
 }
 
 #pragma mark - TextViewDelegate Functions

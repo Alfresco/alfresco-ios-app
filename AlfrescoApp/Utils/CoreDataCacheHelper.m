@@ -23,6 +23,8 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 
 @implementation CoreDataCacheHelper
 
+@dynamic managedObjectContext;
+
 - (id)init
 {
     self = [super init];
@@ -35,32 +37,32 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 
 #pragma mark - Creation Convenience Functions
 
-- (AvatarImageCache *)createAvatarObjectInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (AvatarImageCache *)createAvatarObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    return (AvatarImageCache *)[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([AvatarImageCache class]) inManagedObjectContext:managedObjectContext];
+    return (AvatarImageCache *)[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([AvatarImageCache class]) inManagedObjectContext:managedContext];
 }
 
-- (DocLibImageCache *)createDocLibObjectInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (DocLibImageCache *)createDocLibObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    return (DocLibImageCache *)[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([DocLibImageCache class]) inManagedObjectContext:managedObjectContext];
+    return (DocLibImageCache *)[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([DocLibImageCache class]) inManagedObjectContext:managedContext];
 }
 
-- (DocumentPreviewImageCache *)createDocumentPreviewObjectInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (DocumentPreviewImageCache *)createDocumentPreviewObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    return (DocumentPreviewImageCache *)[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([DocumentPreviewImageCache class]) inManagedObjectContext:managedObjectContext];
+    return (DocumentPreviewImageCache *)[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([DocumentPreviewImageCache class]) inManagedObjectContext:managedContext];
 }
 
 #pragma mark - Retrieval Functions
 
-- (AvatarImageCache *)retrieveAvatarForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (AvatarImageCache *)retrieveAvatarForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 {
-    if (!managedObjectContext)
+    if (!managedContext)
     {
-        managedObjectContext = self.managedObjectContext;
+        managedContext = self.managedObjectContext;
     }
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
-    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([AvatarImageCache class]) withPredicate:predicate inManagedObjectContext:managedObjectContext];
+    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([AvatarImageCache class]) withPredicate:predicate inManagedObjectContext:managedContext];
     AvatarImageCache *returnedImageCacheObject = nil;
     if (nodes.count > 0)
     {
@@ -70,15 +72,15 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 }
 
 
-- (DocLibImageCache *)retrieveDocLibForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (DocLibImageCache *)retrieveDocLibForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    if (!managedObjectContext)
+    if (!managedContext)
     {
-        managedObjectContext = self.managedObjectContext;
+        managedContext = self.managedObjectContext;
     }
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
-    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocLibImageCache class]) withPredicate:predicate inManagedObjectContext:managedObjectContext];
+    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocLibImageCache class]) withPredicate:predicate inManagedObjectContext:managedContext];
     DocLibImageCache *returnedImageCacheObject = nil;
     if (nodes.count > 0)
     {
@@ -87,15 +89,15 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     return returnedImageCacheObject;
 }
 
-- (DocumentPreviewImageCache *)retrieveDocumentPreviewForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (DocumentPreviewImageCache *)retrieveDocumentPreviewForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    if (!managedObjectContext)
+    if (!managedContext)
     {
-        managedObjectContext = self.managedObjectContext;
+        managedContext = self.managedObjectContext;
     }
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
-    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocumentPreviewImageCache class]) withPredicate:predicate inManagedObjectContext:managedObjectContext];
+    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocumentPreviewImageCache class]) withPredicate:predicate inManagedObjectContext:managedContext];
     DocumentPreviewImageCache *returnedImageCacheObject = nil;
     if (nodes.count > 0)
     {

@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, TaskType)
+{
+    TaskTypeTask = 0,
+    TaskTypeProcess
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 
 extern int const kMaxItemsPerListingRetrieve;
@@ -61,6 +67,7 @@ extern NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey;
 extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
+extern NSString * const kAlfrescoWorkflowTaskDidComplete;
 
 // Accounts
 extern NSString * const kAlfrescoAccountAddedNotification;

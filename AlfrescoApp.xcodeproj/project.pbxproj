@@ -267,6 +267,16 @@
 		7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7384BE0117F3558900C6A54F /* SettingTextFieldCell.xib */; };
 		7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0417F42CA800C6A54F /* PreferenceManager.m */; };
 		7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
+		7386815C18DC8EE400F315B8 /* task_done_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815818DC8EE400F315B8 /* task_done_button.png */; };
+		7386815D18DC8EE400F315B8 /* task_done_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815918DC8EE400F315B8 /* task_done_button@2x.png */; };
+		7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816018DC8F1700F315B8 /* task_re-assign_button.png */; };
+		7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */; };
+		7386816618DC8FBF00F315B8 /* task_done_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816418DC8FBF00F315B8 /* task_done_button_selected.png */; };
+		7386816718DC8FBF00F315B8 /* task_done_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */; };
+		7386816C18DC9F4500F315B8 /* task_filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816A18DC9F4500F315B8 /* task_filter.png */; };
+		7386816D18DC9F4500F315B8 /* task_filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816B18DC9F4500F315B8 /* task_filter@2x.png */; };
+		7386817018DC9F5200F315B8 /* task_re-assign_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */; };
+		7386817118DC9F5200F315B8 /* task_re-assign_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */; };
 		73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F52188831410052C75F /* UIView+DrawingUtils.m */; };
 		73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F5518883BE10052C75F /* UIColor+Custom.m */; };
 		73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73881F57188842D60052C75F /* MetaDataViewController.xib */; };
@@ -327,8 +337,6 @@
 		73A7665918C8E2980087E38F /* task_approve_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665518C8E2980087E38F /* task_approve_button_selected@2x.png */; };
 		73A7665A18C8E2980087E38F /* task_reject_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665618C8E2980087E38F /* task_reject_button_selected.png */; };
 		73A7665B18C8E2980087E38F /* task_reject_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */; };
-		73A7665E18C8E4A40087E38F /* tasks_filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665C18C8E4A40087E38F /* tasks_filter.png */; };
-		73A7665F18C8E4A40087E38F /* tasks_filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73A7665D18C8E4A40087E38F /* tasks_filter@2x.png */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
 		73B078A0189AB4F800D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0789F189AB4F800D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -860,6 +868,16 @@
 		7384BE0417F42CA800C6A54F /* PreferenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceManager.m; sourceTree = "<group>"; };
 		7384BE0617F57FEC00C6A54F /* SettingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingConstants.h; path = AlfrescoApp/Constants/SettingConstants.h; sourceTree = SOURCE_ROOT; };
 		7384BE0717F57FEC00C6A54F /* SettingConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingConstants.m; path = AlfrescoApp/Constants/SettingConstants.m; sourceTree = SOURCE_ROOT; };
+		7386815818DC8EE400F315B8 /* task_done_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button.png; sourceTree = "<group>"; };
+		7386815918DC8EE400F315B8 /* task_done_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button@2x.png"; sourceTree = "<group>"; };
+		7386816018DC8F1700F315B8 /* task_re-assign_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button.png"; sourceTree = "<group>"; };
+		7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button@2x.png"; sourceTree = "<group>"; };
+		7386816418DC8FBF00F315B8 /* task_done_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button_selected.png; sourceTree = "<group>"; };
+		7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button_selected@2x.png"; sourceTree = "<group>"; };
+		7386816A18DC9F4500F315B8 /* task_filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_filter.png; sourceTree = "<group>"; };
+		7386816B18DC9F4500F315B8 /* task_filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_filter@2x.png"; sourceTree = "<group>"; };
+		7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button_selected.png"; sourceTree = "<group>"; };
+		7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button_selected@2x.png"; sourceTree = "<group>"; };
 		73881F51188831410052C75F /* UIView+DrawingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DrawingUtils.h"; sourceTree = "<group>"; };
 		73881F52188831410052C75F /* UIView+DrawingUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DrawingUtils.m"; sourceTree = "<group>"; };
 		73881F5418883BE10052C75F /* UIColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Custom.h"; sourceTree = "<group>"; };
@@ -934,8 +952,6 @@
 		73A7665518C8E2980087E38F /* task_approve_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_approve_button_selected@2x.png"; sourceTree = "<group>"; };
 		73A7665618C8E2980087E38F /* task_reject_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_reject_button_selected.png; sourceTree = "<group>"; };
 		73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_reject_button_selected@2x.png"; sourceTree = "<group>"; };
-		73A7665C18C8E4A40087E38F /* tasks_filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tasks_filter.png; sourceTree = "<group>"; };
-		73A7665D18C8E4A40087E38F /* tasks_filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tasks_filter@2x.png"; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
 		73B0788C189A559400D02C43 /* bubble_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_blue@2x.png"; sourceTree = "<group>"; };
 		73B0789E189AB4F800D02C43 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -2099,16 +2115,24 @@
 		73A6860E18C87A9100FF18E0 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				7386815818DC8EE400F315B8 /* task_done_button.png */,
+				7386815918DC8EE400F315B8 /* task_done_button@2x.png */,
 				73A6860F18C87A9100FF18E0 /* task_approve_button.png */,
 				73A6861018C87A9100FF18E0 /* task_approve_button@2x.png */,
 				73A6861118C87A9100FF18E0 /* task_reject_button.png */,
 				73A6861218C87A9100FF18E0 /* task_reject_button@2x.png */,
+				7386816018DC8F1700F315B8 /* task_re-assign_button.png */,
+				7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */,
+				7386816418DC8FBF00F315B8 /* task_done_button_selected.png */,
+				7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */,
 				73A7665418C8E2980087E38F /* task_approve_button_selected.png */,
 				73A7665518C8E2980087E38F /* task_approve_button_selected@2x.png */,
 				73A7665618C8E2980087E38F /* task_reject_button_selected.png */,
 				73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */,
-				73A7665C18C8E4A40087E38F /* tasks_filter.png */,
-				73A7665D18C8E4A40087E38F /* tasks_filter@2x.png */,
+				7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */,
+				7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */,
+				7386816A18DC9F4500F315B8 /* task_filter.png */,
+				7386816B18DC9F4500F315B8 /* task_filter@2x.png */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -2855,6 +2879,7 @@
 			files = (
 				73B9584B17A6750F0099FB84 /* CommentCell.xib in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comments.png in Resources */,
+				7386815D18DC8EE400F315B8 /* task_done_button@2x.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
 				7379737A18ABA3AF007613B2 /* mime_xml@2x.png in Resources */,
 				73FF558018ACE2370009CA56 /* large_image@2x.png in Resources */,
@@ -2887,8 +2912,10 @@
 				73B95A6817A68B7E0099FB84 /* play-media@2x.png in Resources */,
 				73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */,
 				73881F731889800C0052C75F /* Help Error in Resources */,
+				7386816618DC8FBF00F315B8 /* task_done_button_selected.png in Resources */,
 				731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */,
 				271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */,
+				7386816C18DC9F4500F315B8 /* task_filter.png in Resources */,
 				7379738018ABA3AF007613B2 /* site@2x.png in Resources */,
 				271DC769189C2D250059D1B2 /* status-restricted-highlighted@2x.png in Resources */,
 				73881F6F188956390052C75F /* WebBrowserViewController~ipad.xib in Resources */,
@@ -2910,7 +2937,6 @@
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				271DC772189C2D250059D1B2 /* status-sync-loading.png in Resources */,
 				739B0A3F18CF7E2500239584 /* ProcessTasksCell.xib in Resources */,
-				73A7665E18C8E4A40087E38F /* tasks_filter.png in Resources */,
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
 				7379736B18ABA3AF007613B2 /* mime_img.png in Resources */,
 				27F054D61891832B00C2454C /* app-icon-144.png in Resources */,
@@ -3011,7 +3037,6 @@
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				73B95A9617A68B7E0099FB84 /* pull-to-refresh.png in Resources */,
 				27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */,
-				73A7665F18C8E4A40087E38F /* tasks_filter@2x.png in Resources */,
 				27E84E7B18AD53510024B658 /* mainmenu-activities@2x.png in Resources */,
 				73B95A9717A68B7E0099FB84 /* pull-to-refresh@2x.png in Resources */,
 				7379736518ABA3AF007613B2 /* generic.png in Resources */,
@@ -3025,6 +3050,7 @@
 				7379737C18ABA3AF007613B2 /* mime_zip@2x.png in Resources */,
 				73881FE0188FF9290052C75F /* actionsheet-unfavourited.png in Resources */,
 				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
+				7386816718DC8FBF00F315B8 /* task_done_button_selected@2x.png in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
 				73697AAF18BCC30F00021B02 /* TaskDetailsViewController~ipad.xib in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
@@ -3055,6 +3081,7 @@
 				0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */,
 				73881FD5188FF6B00052C75F /* actionsheet-liked@2x.png in Resources */,
 				27F054DC1891832B00C2454C /* app-icon-58.png in Resources */,
+				7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */,
 				0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
@@ -3074,6 +3101,7 @@
 				2744022018AA83C400DF23DD /* Settings.bundle in Resources */,
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
 				271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */,
+				7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */,
 				08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73FF557918ACE2370009CA56 /* large_blank_document.png in Resources */,
@@ -3088,6 +3116,7 @@
 				73A7665918C8E2980087E38F /* task_approve_button_selected@2x.png in Resources */,
 				73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
+				7386817018DC9F5200F315B8 /* task_re-assign_button_selected.png in Resources */,
 				089FAFF018CF7C4D00AB4613 /* NodePickerFileFolderListViewController.xib in Resources */,
 				27E84E8218AD53510024B658 /* mainmenu-myfiles.png in Resources */,
 				73FF558518ACE2370009CA56 /* large_powerpoint.png in Resources */,
@@ -3102,6 +3131,7 @@
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				73881FD1188FF6B00052C75F /* actionsheet-download@2x.png in Resources */,
+				7386817118DC9F5200F315B8 /* task_re-assign_button_selected@2x.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
 				73697AA318BB649C00021B02 /* TaskDetailsViewController.xib in Resources */,
 				0833247917FB0CD000EE6AA8 /* ui-button-bar-badge-error@2x.png in Resources */,
@@ -3121,6 +3151,7 @@
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
 				73697A8F18B2758A00021B02 /* TaskViewController.xib in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
+				7386815C18DC8EE400F315B8 /* task_done_button.png in Resources */,
 				089FAFFD18D07D4200AB4613 /* NodePickerFavoritesViewController.xib in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
 				7379737F18ABA3AF007613B2 /* site.png in Resources */,
@@ -3135,6 +3166,7 @@
 				73881FD8188FF6B00052C75F /* actionsheet-tasks@2x.png in Resources */,
 				73881FCA188FF6B00052C75F /* actionsheet-attachments.png in Resources */,
 				27E84E7E18AD53510024B658 /* mainmenu-help.png in Resources */,
+				7386816D18DC9F4500F315B8 /* task_filter@2x.png in Resources */,
 				271DC771189C2D250059D1B2 /* status-sync-loading-highlighted@2x.png in Resources */,
 				27F054DD1891832B00C2454C /* app-icon-72.png in Resources */,
 				73B95AC017A68B7E0099FB84 /* comments@2x.png in Resources */,
@@ -3520,6 +3552,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3645,6 +3678,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3677,6 +3711,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -18,8 +18,6 @@
 static NSInteger const kCellHeight = 60;
 static CGFloat const kFooterHeight = 32.0f;
 static CGFloat const kPullToRefreshDelay = 0.2f;
-static CGFloat const kCellImageViewWidth = 32.0f;
-static CGFloat const kCellImageViewHeight = 32.0f;
 static NSString * const kDownloadsInterface = @"DownloadsViewController";
 
 @interface DownloadsViewController ()

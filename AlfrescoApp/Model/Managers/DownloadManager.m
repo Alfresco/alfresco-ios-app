@@ -11,7 +11,6 @@
 #import "UIAlertView+ALF.h"
 
 static NSUInteger const kOverwriteConfirmationOptionYes = 0;
-static NSUInteger const kOverwriteConfirmationOptionNo = 1;
 
 static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 

@@ -15,7 +15,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "DocumentOverlayView.h"
 
-static CGFloat const kToolbarButtonPadding = 5.0f;
 static NSUInteger const kRandomStringLength = 32;
 static CGFloat const kAnimationSpeed = 0.3f;
 
