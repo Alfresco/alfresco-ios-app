@@ -317,7 +317,7 @@ static CGFloat const kFooterHeight = 32.0f;
     switch (nodeStatus.status)
     {
         case SyncStatusLoading:
-            [syncManager cancelSyncForDocument:(AlfrescoDocument *)node];
+            [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
             break;
             
         case SyncStatusFailed:

@@ -28,6 +28,8 @@ static NSUInteger const kSyncMaxConcurrentOperations = 2;
 
 static NSUInteger const kSyncConfirmationOptionYes = 0;
 
+static NSString * const kSyncProgressSizeKey = @"syncProgressSize";
+
 /*
  * Sync Obstacle keys
  */
@@ -47,6 +49,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) NSMutableDictionary *syncOperations;
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) CoreDataSyncHelper *syncCoreDataHelper;
+@property (nonatomic, assign) unsigned long long totalSyncSize;
+@property (nonatomic, assign) unsigned long long syncProgressSize;
 @end
 
 @implementation SyncManager
@@ -90,6 +94,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                  selector:@selector(reachabilityChanged:)
                                                      name:kAlfrescoConnectivityChangedNotification
                                                    object:nil];
+        
+        [self addObserver:self forKeyPath:kSyncProgressSizeKey options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -433,6 +439,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
+                self.totalSyncSize = 0;
+                self.syncProgressSize = 0;
+                
                 unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
                 AlfrescoLogDebug(@"Total Download Size: %@", stringForLongFileSize(totalDownloadSize));
                 
@@ -446,15 +455,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                     [self displayConfirmationAlertWithTitle:confirmationTitle message:confirmationMessage completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
                         if (buttonIndex == kSyncConfirmationOptionYes)
                         {
+                            self.totalSyncSize += totalDownloadSize;
                             [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
                         }
                     }];
                 }
                 else
                 {
+                    self.totalSyncSize += totalDownloadSize;
                     [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
                 }
                 
+                self.totalSyncSize += [self totalSizeForDocuments:nodesToUpload];
                 [self uploadContentsForNodes:nodesToUpload withCompletionBlock:nil];
                 
                 if ([self didEncounterObstaclesDuringSync])
@@ -931,13 +943,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeInfo.syncError = syncError;
         }
         [self.syncOperations removeObjectForKey:document.identifier];
+        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
         completionBlock(YES);
         
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+        self.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
         nodeStatus.bytesTransfered = bytesTransferred;
         nodeStatus.totalBytesToTransfer = bytesTotal;
     }];
     [self.syncOperations setValue:downloadOperation forKey:document.identifier];
+    [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     [self.syncQueue addOperation:downloadOperation];
 }
 
@@ -1018,30 +1033,44 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                         }
                                                                         
                                                                         [self.syncOperations removeObjectForKey:document.identifier];
+                                                                        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
                                                                         if (completionBlock != NULL)
                                                                         {
                                                                             completionBlock(YES);
                                                                         }
                                                                     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                                                                        self.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
                                                                         nodeStatus.bytesTransfered = bytesTransferred;
                                                                         nodeStatus.totalBytesToTransfer = bytesTotal;
                                                                     }];
     [self.syncOperations setValue:uploadOperation forKey:document.identifier];
+    [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     [self.syncQueue addOperation:uploadOperation];
 }
 
 #pragma mark - Public Utilities
 
-- (void)cancelSyncForDocument:(AlfrescoDocument *)document
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
 {
-    SyncOperation *syncOperation = [self.syncOperations objectForKey:document.identifier];
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:documentIdentifier];
+    
+    SyncOperation *syncOperation = [self.syncOperations objectForKey:documentIdentifier];
     [syncOperation cancelOperation];
-    [self.syncOperations removeObjectForKey:document.identifier];
+    [self.syncOperations removeObjectForKey:documentIdentifier];
+    nodeStatus.status = SyncStatusFailed;
+    
+    [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+    self.totalSyncSize -= nodeStatus.totalSize;
+    self.syncProgressSize -= nodeStatus.bytesTransfered;
+    nodeStatus.bytesTransfered = 0;
 }
 
 - (void)retrySyncForDocument: (AlfrescoDocument *)document
 {
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:document.identifier];
+    
+    self.totalSyncSize += document.contentLength;
+    [self notifyProgressDelegateAboutCurrentProgress];
     
     if (nodeStatus.activityType == SyncActivityTypeDownload)
     {
@@ -1055,6 +1084,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
         }];
     }
+}
+
+- (void)cancelAllSyncOperations
+{
+    NSArray *syncDocumentIdentifiers = [self.syncOperations allKeys];
+    
+    for (NSString *documentIdentifier in syncDocumentIdentifiers)
+    {
+        [self cancelSyncForDocumentWithIdentifier:documentIdentifier];
+    }
+    self.totalSyncSize = 0;
+    self.syncProgressSize = 0;
 }
 
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node
@@ -1247,8 +1288,35 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             parentNodeStatus.status = syncStatus;
         }
     }
+    
     [privateManagedObjectContext reset];
     privateManagedObjectContext = nil;
+}
+
+#pragma mark - Sync Progress Information Methods
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:kSyncProgressSizeKey])
+    {
+        [self notifyProgressDelegateAboutCurrentProgress];
+    }
+}
+
+- (void)notifyProgressDelegateAboutNumberOfNodesInProgress
+{
+    if ([self.progressDelegate respondsToSelector:@selector(numberOfSyncOperationsInProgress:)])
+    {
+        [self.progressDelegate numberOfSyncOperationsInProgress:self.syncOperations.count];
+    }
+}
+
+- (void)notifyProgressDelegateAboutCurrentProgress
+{
+    if ([self.progressDelegate respondsToSelector:@selector(totalSizeToSync:syncedSize:)])
+    {
+        [self.progressDelegate totalSizeToSync:self.totalSyncSize syncedSize:self.syncProgressSize];
+    }
 }
 
 #pragma mark - Reachibility Changed Notification

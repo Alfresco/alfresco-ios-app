@@ -52,6 +52,13 @@
 "sync.enable.message" = "Would you like to automatically keep your favorite documents in sync with this %@?";
 "sync.state.waiting-to-sync" = "Waiting to sync...";
 "sync.state.failed-to-sync" = "Sync Failed";
+"sync.progress.label" = "Syncing %d %@, %@ left"; // example final string: "Syncing 5 items, 238.3 MB left"
+"sync.items.singular" = "item";
+"sync.items.plural" = "items";
+"sync.cancelAll.alert.title" = "Sync";
+"sync.cancelAll.alert.message" = "Would you like to cancel all sync operations?";
+"sync.cancelAll.alert.button.continue" = "Continue";
+"sync.cancelAll.alert.button.stop" = "Stop Sync";
 
 /**
  * Sync Obstacles

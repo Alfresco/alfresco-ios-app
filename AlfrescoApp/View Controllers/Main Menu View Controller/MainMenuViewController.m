@@ -8,6 +8,7 @@
 
 #import "MainMenuViewController.h"
 #import "MainMenuItemCell.h"
+#import "SyncNavigationViewController.h"
 #import "FileFolderListViewController.h"
 #import "SitesListViewController.h"
 #import "ActivitiesViewController.h"
@@ -369,7 +370,7 @@ static NSUInteger const kAccountsRowNumber = 0;
             BOOL isSyncEnabled = [[SyncManager sharedManager] isSyncEnabled];
             
             SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.alfrescoSession];
-            NavigationViewController *syncNavigationController = [[NavigationViewController alloc] initWithRootViewController:syncViewController];
+            SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
             favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
                                                                    imageName:isSyncEnabled ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
                                                            localizedTitleKey:isSyncEnabled ? @"sync.title" : @"favourites.title"
