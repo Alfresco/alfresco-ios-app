@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, TaskType)
+typedef NS_ENUM(NSUInteger, TaskFilter)
 {
-    TaskTypeTask = 0,
-    TaskTypeProcess
+    TaskFilterTask = 0,
+    TaskFilterProcess
 };
 
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);

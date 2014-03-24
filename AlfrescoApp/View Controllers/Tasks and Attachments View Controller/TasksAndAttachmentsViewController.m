@@ -30,7 +30,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskType taskType;
+@property (nonatomic, assign) TaskFilter taskType;
 @property (nonatomic, strong) NSMutableArray *tasks;
 @property (nonatomic, strong) NSMutableArray *attachments;
 
@@ -40,7 +40,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeTask session:session];
+    self = [self initWithTaskType:TaskFilterTask session:session];
     if (self)
     {
         self.task = task;
@@ -50,7 +50,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeProcess session:session];
+    self = [self initWithTaskType:TaskFilterProcess session:session];
     if (self)
     {
         self.process = process;
@@ -58,7 +58,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
     return self;
 }
 
-- (instancetype)initWithTaskType:(TaskType)taskType session:(id<AlfrescoSession>)session
+- (instancetype)initWithTaskType:(TaskFilter)taskType session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -124,7 +124,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
         }
     }];
     
-    if (self.taskType == TaskTypeProcess)
+    if (self.taskType == TaskFilterProcess)
     {
         [self loadTasksWithCompletionBlock:^(NSArray *array, NSError *error) {
             [weakSelf hideHUD];
@@ -162,11 +162,11 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (void)loadAttachmentsWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskType == TaskTypeTask)
+    if (self.taskType == TaskFilterTask)
     {
         [self.workflowService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
     }
-    else if (self.taskType == TaskTypeProcess)
+    else if (self.taskType == TaskFilterProcess)
     {
         [self.workflowService retrieveAttachmentsForProcess:self.process completionBlock:completionBlock];
     }
@@ -174,7 +174,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (void)loadTasksWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskType == TaskTypeProcess)
+    if (self.taskType == TaskFilterProcess)
     {
         [self.workflowService retrieveTasksForProcess:self.process completionBlock:completionBlock];
     }
@@ -184,7 +184,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 {
     NSArray *currentArray = nil;
     
-    if (self.taskType == TaskTypeTask)
+    if (self.taskType == TaskFilterTask)
     {
         currentArray = self.attachments;
     }
@@ -215,11 +215,11 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
     }
     else if (array == self.attachments)
     {
-        if (self.taskType == TaskTypeTask)
+        if (self.taskType == TaskFilterTask)
         {
             section = 0;
         }
-        else if (self.taskType == TaskTypeProcess)
+        else if (self.taskType == TaskFilterProcess)
         {
             section = 1;
         }
@@ -259,7 +259,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return (self.taskType == TaskTypeTask) ? 1 : 2;
+    return (self.taskType == TaskFilterTask) ? 1 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
