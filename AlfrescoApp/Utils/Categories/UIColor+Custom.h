@@ -18,5 +18,8 @@
 + (UIColor *)highWorkflowPriorityColor;
 + (UIColor *)mediumWorkflowPriorityColor;
 + (UIColor *)lowWorkflowPriorityColor;
++ (UIColor *)systemNoticeBlue;
++ (UIColor *)systemNoticeRed;
++ (UIColor *)systemNoticeYellow;
 
 @end

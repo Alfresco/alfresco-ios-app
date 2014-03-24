@@ -369,7 +369,6 @@
 		73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */; };
 		73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */; };
 		73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580A17A6750E0099FB84 /* SystemNotice.m */; };
-		73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580C17A6750E0099FB84 /* SystemNoticeGradientView.m */; };
 		73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */; };
 		73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582717A6750E0099FB84 /* NavigationViewController.m */; };
 		73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582917A6750E0099FB84 /* ParentListViewController.m */; };
@@ -1020,8 +1019,6 @@
 		73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+ALF.m"; sourceTree = "<group>"; };
 		73B9580917A6750E0099FB84 /* SystemNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotice.h; sourceTree = "<group>"; };
 		73B9580A17A6750E0099FB84 /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotice.m; sourceTree = "<group>"; };
-		73B9580B17A6750E0099FB84 /* SystemNoticeGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeGradientView.h; sourceTree = "<group>"; };
-		73B9580C17A6750E0099FB84 /* SystemNoticeGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeGradientView.m; sourceTree = "<group>"; };
 		73B9580D17A6750E0099FB84 /* SystemNoticeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeManager.h; sourceTree = "<group>"; };
 		73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeManager.m; sourceTree = "<group>"; };
 		73B9582617A6750E0099FB84 /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
@@ -2379,8 +2376,6 @@
 			children = (
 				73B9580917A6750E0099FB84 /* SystemNotice.h */,
 				73B9580A17A6750E0099FB84 /* SystemNotice.m */,
-				73B9580B17A6750E0099FB84 /* SystemNoticeGradientView.h */,
-				73B9580C17A6750E0099FB84 /* SystemNoticeGradientView.m */,
 				73B9580D17A6750E0099FB84 /* SystemNoticeManager.h */,
 				73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */,
 			);
@@ -3348,7 +3343,6 @@
 				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
-				73B9585B17A6750F0099FB84 /* SystemNoticeGradientView.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
 				0876A03118D99F800035370A /* BaseFileFolderListViewController.m in Sources */,

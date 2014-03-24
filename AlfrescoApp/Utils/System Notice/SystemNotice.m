@@ -6,19 +6,20 @@
 
 #import "SystemNotice.h"
 #import "SystemNoticeManager.h"
-#import "SystemNoticeGradientView.h"
+#import "UIColor+Custom.h"
+
+static CGFloat const kSystemNoticeAlpha = 0.95f;
 
 @interface SystemNotice ()
-@property (nonatomic, assign, readwrite) SystemNoticeStyle noticeStyle;
-@property (nonatomic, strong) UIView *view;
-@property (nonatomic, strong) UIView *noticeView;
-@property (nonatomic, assign) SystemNoticeGradientColor gradientColor;
+@property (nonatomic, assign) SystemNoticeStyle noticeStyle;
+@property (nonatomic, weak) UIView *viewToDisplayOn;
+@property (nonatomic, strong) UIColor *systemNoticeBackgroundColour;
 @property (nonatomic, strong) NSString *icon;
 @property (nonatomic, strong) UIColor *labelColor;
 @property (nonatomic, strong) UIColor *shadowColor;
 @property (nonatomic, strong) NSString *defaultTitle;
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *messageLabel;
+@property (nonatomic, weak) UILabel *titleLabel;
+@property (nonatomic, weak) UILabel *messageLabel;
 @property (nonatomic, assign) CGFloat offsetY;
 @end
 
@@ -32,20 +33,20 @@ CGFloat hiddenYOrigin;
 {
     if (self = [super init])
     {
-        self.view = view;
+        self.viewToDisplayOn = view;
         
         switch (style)
         {
             case SystemNoticeStyleInformation:
-                self.gradientColor = SystemNoticeGradientColorBlue;
+                self.systemNoticeBackgroundColour = [UIColor systemNoticeBlue];
                 self.icon = @"system_notice_info";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-                self.displayTime = 1.5f;
+                self.displayTime = 2.0f;
                 break;
                 
             case SystemNoticeStyleError:
-                self.gradientColor = SystemNoticeGradientColorRed;
+                self.systemNoticeBackgroundColour = [UIColor systemNoticeRed];
                 self.icon = @"system_notice_error";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
@@ -54,7 +55,7 @@ CGFloat hiddenYOrigin;
                 break;
             
             case SystemNoticeStyleWarning:
-                self.gradientColor = SystemNoticeGradientColorYellow;
+                self.systemNoticeBackgroundColour = [UIColor systemNoticeYellow];
                 self.icon = @"system_notice_warning";
                 self.labelColor = [UIColor blackColor];
                 self.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
@@ -100,92 +101,101 @@ CGFloat hiddenYOrigin;
 - (void)createNotice
 {
     // Get the view width, allowing for rotations
-    CGRect rotatedView = CGRectApplyAffineTransform(self.view.frame, self.view.transform);
+    CGRect rotatedView = CGRectApplyAffineTransform(self.viewToDisplayOn.frame, self.viewToDisplayOn.transform);
     CGFloat viewWidth = rotatedView.size.width;
     
-    CGFloat messageLineHeight = 15.0;
-    CGFloat originY = (self.message) ? 10.0 : 18.0;
+    // Status Bar Height - [[UIApplication sharedApplication] statusBarFrame].size.height yields 1024 occasionally on iOS 7
+    CGFloat statusBarHeight = 20.0f;
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, originY, viewWidth - 70.0, 16.0)];
-    self.titleLabel.textColor = self.labelColor;
-    self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    self.titleLabel.shadowColor = self.shadowColor;
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    self.titleLabel.backgroundColor = [UIColor clearColor];
-    self.titleLabel.text = (self.title != nil) ? self.title : self.defaultTitle;
+    // Padding
+    CGFloat paddingBetweenMessageLabelAndBottonOfView = 10.0f;
+    
+    CGFloat messageLineHeight = 15.0;
+    CGFloat originY = (self.message) ? statusBarHeight : 25.0;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, originY, viewWidth - 70.0, 16.0)];
+    titleLabel.textColor = self.labelColor;
+    titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    titleLabel.shadowColor = self.shadowColor;
+    titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.text = (self.title != nil) ? self.title : self.defaultTitle;
     
     // Message label
+    UILabel *messageLabel = nil;
     if (self.message)
     {
-        self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 10.0 + 10.0, viewWidth - 70.0, messageLineHeight)];
-        self.messageLabel.font = [UIFont systemFontOfSize:13.0];
-        self.messageLabel.textColor = self.labelColor;
-        self.messageLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        self.messageLabel.shadowColor = self.shadowColor;
-        self.messageLabel.backgroundColor = [UIColor clearColor];
-        self.messageLabel.text = self.message;
-        self.messageLabel.numberOfLines = 0;
-        self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 10.0 + 10.0, viewWidth - 70.0, messageLineHeight)];
+        messageLabel.font = [UIFont systemFontOfSize:13.0];
+        messageLabel.textColor = self.labelColor;
+        messageLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        messageLabel.shadowColor = self.shadowColor;
+        messageLabel.backgroundColor = [UIColor clearColor];
+        messageLabel.text = self.message;
+        messageLabel.numberOfLines = 0;
+        messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
-        CGRect rect = self.messageLabel.frame;
-        rect.origin.y = self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height;
+        CGRect rect = messageLabel.frame;
+        rect.origin.y = titleLabel.frame.origin.y + titleLabel.frame.size.height;
         
         // Prevent UILabel centering the text in the middle
-        [self.messageLabel sizeToFit];
+        [messageLabel sizeToFit];
         
         // Determine the height of the message
-        messageLineHeight = 5.0 + self.messageLabel.frame.size.height;
-        rect.size.height = self.messageLabel.frame.size.height;
+        messageLineHeight = 5.0 + messageLabel.frame.size.height;
+        rect.size.height = messageLabel.frame.size.height;
         rect.size.width = viewWidth - 70.0;
-        self.messageLabel.frame = rect;
+        messageLabel.frame = rect;
     }
     
     // Calculate the notice view height
-    float noticeViewHeight = 25.0 + messageLineHeight;
+    float noticeViewHeight = 25.0 + messageLineHeight + paddingBetweenMessageLabelAndBottonOfView;
     
     // Allow for shadow when hiding
     hiddenYOrigin = 0.0 - noticeViewHeight - 20.0;
     
-    // Gradient view dependant on notice type
-    CGRect gradientRect = CGRectMake(0.0, hiddenYOrigin, viewWidth, noticeViewHeight + 10.0);
-    self.noticeView = [[SystemNoticeGradientView alloc] initGradientViewColor:self.gradientColor frame:gradientRect];
-    self.noticeView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.noticeView.contentMode = UIViewContentModeCenter;
-    [self.view addSubview:self.noticeView];
+    // Setup the view
+    CGRect frameRect = CGRectMake(0.0, hiddenYOrigin, viewWidth, noticeViewHeight + 10.0);
+    self.frame = frameRect;
+    self.backgroundColor = self.systemNoticeBackgroundColour;
+    self.alpha = kSystemNoticeAlpha;
+    [self.viewToDisplayOn addSubview:self];
     
     // Icon view
-    UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0, 10.0, 20.0, 30.0)];
+    UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0, statusBarHeight, 20.0, 30.0)];
     iconView.image = [UIImage imageNamed:self.icon];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.alpha = 0.9;
-    [self.noticeView addSubview:iconView];
+    [self addSubview:iconView];
     
     // Title label
-    [self.noticeView addSubview:self.titleLabel];
+    [self addSubview:titleLabel];
+    self.titleLabel = titleLabel;
     
     // Message label
-    [self.noticeView addSubview:self.messageLabel];
+    [self addSubview:messageLabel];
+    self.messageLabel = messageLabel;
     
     // Drop shadow
-    CALayer *noticeLayer = self.noticeView.layer;
+    CALayer *noticeLayer = self.layer;
     noticeLayer.shadowColor = [[UIColor blackColor] CGColor];
     noticeLayer.shadowOffset = CGSizeMake(0.0, 3);
-    noticeLayer.shadowOpacity = 0.50;
+    noticeLayer.shadowOpacity = 0.5f;
     noticeLayer.masksToBounds = NO;
     
     // Invisible button to manually dismiss the notice
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0.0, 0.0, self.noticeView.frame.size.width, self.noticeView.frame.size.height);
+    button.frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
     [button addTarget:self action:@selector(dismissNotice) forControlEvents:UIControlEventTouchUpInside];
-    [self.noticeView addSubview:button];
+    [self addSubview:button];
 }
 
 - (void)displayNotice
 {
     [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        CGRect newFrame = self.noticeView.frame;
+        CGRect newFrame = self.frame;
         newFrame.origin.y = self.offsetY;
-        self.noticeView.frame = newFrame;
+        self.frame = newFrame;
     } completion:^(BOOL finished){
         [self performSelector:@selector(dismissNotice) withObject:nil afterDelay:self.displayTime];
     }];
@@ -201,17 +211,17 @@ CGFloat hiddenYOrigin;
     if (animated)
     {
         [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            CGRect newFrame = self.noticeView.frame;
+            CGRect newFrame = self.frame;
             newFrame.origin.y = hiddenYOrigin;
-            self.noticeView.frame = newFrame;
+            self.frame = newFrame;
         } completion:^(BOOL finished){
-            [self.noticeView removeFromSuperview];
+            [self removeFromSuperview];
             [[SystemNoticeManager sharedManager] systemNoticeDidDisappear:self];
         }];
     }
     else
     {
-        [self.noticeView removeFromSuperview];
+        [self removeFromSuperview];
         [[SystemNoticeManager sharedManager] systemNoticeDidDisappear:self];
     }
     
