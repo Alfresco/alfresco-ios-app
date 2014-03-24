@@ -115,7 +115,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 #pragma mark - Public Functions
 
-- (void)updateTaskTypeLabelToString:(NSString *)taskTypeString
+- (void)updateTaskFilterLabelToString:(NSString *)taskTypeString
 {
     self.taskTypeLabel.text = taskTypeString;
 }

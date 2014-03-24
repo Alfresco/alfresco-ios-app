@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SystemNotice : NSObject
+@interface SystemNotice : UIView
 
 typedef enum
 {

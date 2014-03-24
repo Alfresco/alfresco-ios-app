@@ -50,4 +50,19 @@
     return [UIColor colorWithRed:(CGFloat)193.0/255.0 green:(CGFloat)192.0/255.0 blue:(CGFloat)192.0/255.0 alpha:1.0];
 }
 
++ (UIColor *)systemNoticeBlue
+{
+    return [UIColor colorWithRed:(CGFloat)56.0/255.0 green:(CGFloat)170.0/255.0 blue:(CGFloat)218.0/255.0 alpha:1.0];
+}
+
++ (UIColor *)systemNoticeRed
+{
+    return [UIColor redColor];
+}
+
++ (UIColor *)systemNoticeYellow
+{
+    return [UIColor yellowColor];
+}
+
 @end

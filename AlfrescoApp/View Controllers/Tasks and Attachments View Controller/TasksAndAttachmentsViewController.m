@@ -21,12 +21,6 @@
 static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier CONTAINS '$start'";
 static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
-typedef NS_ENUM(NSUInteger, TaskType)
-{
-    TaskTypeTask = 0,
-    TaskTypeProcess
-};
-
 @interface TasksAndAttachmentsViewController ()
 
 // Services
@@ -36,7 +30,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskType taskType;
+@property (nonatomic, assign) TaskFilter taskType;
 @property (nonatomic, strong) NSMutableArray *tasks;
 @property (nonatomic, strong) NSMutableArray *attachments;
 
@@ -46,7 +40,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeTask session:session];
+    self = [self initWithTaskFilter:TaskFilterTask session:session];
     if (self)
     {
         self.task = task;
@@ -56,7 +50,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeProcess session:session];
+    self = [self initWithTaskFilter:TaskFilterProcess session:session];
     if (self)
     {
         self.process = process;
@@ -64,7 +58,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     return self;
 }
 
-- (instancetype)initWithTaskType:(TaskType)taskType session:(id<AlfrescoSession>)session
+- (instancetype)initWithTaskFilter:(TaskFilter)taskType session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -116,27 +110,32 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)populateTableView
 {
+    __weak typeof(self) weakSelf = self;
+    
+    [self showHUD];
     [self loadAttachmentsWithCompletionBlock:^(NSArray *array, NSError *error) {
+        [weakSelf hideHUD];
         if (array && array.count > 0)
         {
-            [self.attachments removeAllObjects];
-            [self.attachments addObjectsFromArray:array];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[self sectionForArray:self.attachments]];
-            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+            [weakSelf.attachments removeAllObjects];
+            [weakSelf.attachments addObjectsFromArray:array];
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[weakSelf sectionForArray:weakSelf.attachments]];
+            [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }];
     
-    if (self.taskType == TaskTypeProcess)
+    if (self.taskType == TaskFilterProcess)
     {
         [self loadTasksWithCompletionBlock:^(NSArray *array, NSError *error) {
+            [weakSelf hideHUD];
             if (array)
             {
-                [self.tasks removeAllObjects];
+                [weakSelf.tasks removeAllObjects];
                 NSPredicate *filteredArrayPredicate = [NSPredicate predicateWithFormat:kStartTaskRemovalPredicateFormat];
                 NSArray *filteredTasks = [array filteredArrayUsingPredicate:filteredArrayPredicate];
-                [self.tasks addObjectsFromArray:filteredTasks];
-                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[self sectionForArray:self.tasks]];
-                [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakSelf.tasks addObjectsFromArray:filteredTasks];
+                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[weakSelf sectionForArray:weakSelf.tasks]];
+                [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
             }
         }];
     }
@@ -163,11 +162,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)loadAttachmentsWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskType == TaskTypeTask)
+    if (self.taskType == TaskFilterTask)
     {
         [self.workflowService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
     }
-    else if (self.taskType == TaskTypeProcess)
+    else if (self.taskType == TaskFilterProcess)
     {
         [self.workflowService retrieveAttachmentsForProcess:self.process completionBlock:completionBlock];
     }
@@ -175,7 +174,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (void)loadTasksWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskType == TaskTypeProcess)
+    if (self.taskType == TaskFilterProcess)
     {
         [self.workflowService retrieveTasksForProcess:self.process completionBlock:completionBlock];
     }
@@ -185,7 +184,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 {
     NSArray *currentArray = nil;
     
-    if (self.taskType == TaskTypeTask)
+    if (self.taskType == TaskFilterTask)
     {
         currentArray = self.attachments;
     }
@@ -216,11 +215,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
     }
     else if (array == self.attachments)
     {
-        if (self.taskType == TaskTypeTask)
+        if (self.taskType == TaskFilterTask)
         {
             section = 0;
         }
-        else if (self.taskType == TaskTypeProcess)
+        else if (self.taskType == TaskFilterProcess)
         {
             section = 1;
         }
@@ -260,7 +259,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return (self.taskType == TaskTypeTask) ? 1 : 2;
+    return (self.taskType == TaskFilterTask) ? 1 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

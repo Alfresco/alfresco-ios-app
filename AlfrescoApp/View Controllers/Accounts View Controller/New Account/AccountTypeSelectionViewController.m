@@ -16,13 +16,11 @@ static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
 
 static NSInteger const kCloudSectionNumber = 0;
-static NSInteger const kOnPremiseSectionNumber = 1;
 
 static CGFloat const kAccountTypeTitleFontSize = 20.0f;
 static CGFloat const kAccountTypeInlineButtonFontSize = 14.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
-static CGFloat const kAccountTypeFooterFontSize = 15.0f;
 static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 @interface AccountTypeSelectionViewController () <AccountInfoViewControllerDelegate>

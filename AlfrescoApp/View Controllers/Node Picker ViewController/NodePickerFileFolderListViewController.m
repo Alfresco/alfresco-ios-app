@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-static NSInteger const kFolderSelectionButtonWidth = 32;
-static NSInteger const kFolderSelectionButtongHeight = 32;
-
 static CGFloat const kCellHeight = 64.0f;
 
 #import "NodePickerFileFolderListViewController.h"

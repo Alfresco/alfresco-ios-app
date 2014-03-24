@@ -27,7 +27,6 @@ static NSString * const kSyncQueueName = @"syncQueue";
 static NSUInteger const kSyncMaxConcurrentOperations = 2;
 
 static NSUInteger const kSyncConfirmationOptionYes = 0;
-static NSUInteger const kSyncConfirmationOptionNo = 1;
 
 static NSString * const kSyncProgressSizeKey = @"syncProgressSize";
 

@@ -23,8 +23,6 @@
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kFooterHeight = 32.0f;
-static CGFloat const kCellImageViewWidth = 32.0f;
-static CGFloat const kCellImageViewHeight = 32.0f;
 
 @interface SyncViewController ()
 

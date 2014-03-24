@@ -21,15 +21,10 @@
 #import "TextView.h"
 #import "UIColor+Custom.h"
 #import "TasksAndAttachmentsViewController.h"
+#import "UniversalDevice.h"
 
 static NSString * const kReviewKey = @"Review";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
-
-typedef NS_ENUM(NSUInteger, TaskType)
-{
-    TaskTypeTask = 0,
-    TaskTypeProcess
-};
 
 @interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate>
 
@@ -46,7 +41,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskType taskType;
+@property (nonatomic, assign) TaskFilter taskFilter;
 // Services
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
@@ -69,7 +64,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeTask session:session];
+    self = [self initWithTaskFilter:TaskFilterTask session:session];
     if (self)
     {
         self.task = task;
@@ -79,7 +74,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeProcess session:session];
+    self = [self initWithTaskFilter:TaskFilterProcess session:session];
     if (self)
     {
         self.process = process;
@@ -87,13 +82,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
     return self;
 }
 
-- (instancetype)initWithTaskType:(TaskType)taskType session:(id<AlfrescoSession>)session
+- (instancetype)initWithTaskFilter:(TaskFilter)taskType session:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
     {
         self.session = session;
-        self.taskType = taskType;
+        self.taskFilter = taskType;
         [self createServicesWithSession:session];
         [self registerForNotifications];
     }
@@ -110,7 +105,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [super viewDidLoad];
     
     // configure the view
-    [self configureForType:self.taskType];
+    [self configureForType:self.taskFilter];
 
     // dismiss keyboard gesture
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapView:)];
@@ -148,13 +143,13 @@ typedef NS_ENUM(NSUInteger, TaskType)
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
 }
 
-- (void)configureForType:(TaskType)type
+- (void)configureForType:(TaskFilter)type
 {
     [self createTaskHeaderView];
     
     TasksAndAttachmentsViewController *attachmentViewController = nil;
     
-    if (type == TaskTypeTask)
+    if (type == TaskFilterTask)
     {
         // configure the header view for the task
         [self.taskHeaderView configureViewForTask:self.task];
@@ -167,7 +162,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
         // retrieve the process definition for the header view
         [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
     }
-    else if (type == TaskTypeProcess)
+    else if (type == TaskFilterProcess)
     {
         // configure the header view for the process
         [self.taskHeaderView configureViewForProcess:self.process];
@@ -274,7 +269,7 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self.workflowService retrieveProcessDefinitionWithIdentifier:identifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
         if (processDefinition)
         {
-            [self.taskHeaderView updateTaskTypeLabelToString:processDefinition.name];
+            [self.taskHeaderView updateTaskFilterLabelToString:processDefinition.name];
         }
     }];
 }
@@ -285,16 +280,21 @@ typedef NS_ENUM(NSUInteger, TaskType)
     [self.view addSubview:completingProgressHUD];
     [completingProgressHUD show:YES];
     
+    self.doneButton.enabled = NO;
     self.approveButton.enabled = NO;
     self.rejectButton.enabled = NO;
+    self.reassignButton.enabled = NO;
+    
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
     [self.workflowService completeTask:self.task properties:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
+        weakSelf.doneButton.enabled = YES;
         weakSelf.approveButton.enabled = YES;
         weakSelf.rejectButton.enabled = YES;
+        weakSelf.reassignButton.enabled = YES;
         
         if (error)
         {
@@ -304,8 +304,8 @@ typedef NS_ENUM(NSUInteger, TaskType)
         }
         else
         {
-            weakSelf.textView.text = NSLocalizedString(@"tasks.textview.addcomment.placeholder", @"Add Comment");
-            // TODO
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskDidComplete object:task];
+            [UniversalDevice clearDetailViewController];
         }
     }];
 }
@@ -316,6 +316,18 @@ typedef NS_ENUM(NSUInteger, TaskType)
 }
 
 #pragma mark - IBActions
+
+- (IBAction)pressedDoneButton:(id)sender
+{
+    NSDictionary *properties = nil;
+    
+    if (self.textView.hasText)
+    {
+        properties = [NSDictionary dictionaryWithObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
+    }
+    
+    [self completeTaskWithProperties:properties];
+}
 
 - (IBAction)pressedApproveButton:(id)sender
 {
@@ -339,6 +351,11 @@ typedef NS_ENUM(NSUInteger, TaskType)
     }
     
     [self completeTaskWithProperties:properties];
+}
+
+- (IBAction)pressedReassignButton:(id)sender
+{
+    // TODO
 }
 
 #pragma mark - TextViewDelegate Functions
