@@ -27,7 +27,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, assign) TaskType displayedTaskType;
+@property (nonatomic, assign) TaskFilter displayedTaskFilter;
 @property (nonatomic, strong) TaskGroupItem *myTasks;
 @property (nonatomic, strong) TaskGroupItem *tasksIStarted;
 @property (nonatomic, weak) UIBarButtonItem *filterButton;
@@ -70,7 +70,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     if (self.session)
     {
         [self showHUD];
-        [self loadTasksForTaskType:self.displayedTaskType listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -92,7 +92,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         [self.myTasks clearAllTasks];
         [self.tasksIStarted clearAllTasks];
         
-        [self loadTasksForTaskType:TaskTypeTask listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -115,7 +115,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             [weakSelf.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
             
             // currently being displayed, refresh the tableview.
-            if (weakSelf.displayedTaskType == TaskTypeTask)
+            if (weakSelf.displayedTaskFilter == TaskFilterTask)
             {
                 weakSelf.tableViewData = weakSelf.myTasks.tasksAfterFiltering;
                 [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -132,7 +132,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             [weakSelf.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
             
             // currently being displayed, refresh the tableview.
-            if (weakSelf.displayedTaskType == TaskTypeProcess)
+            if (weakSelf.displayedTaskFilter == TaskFilterProcess)
             {
                 weakSelf.tableViewData = weakSelf.tasksIStarted.tasksAfterFiltering;
                 [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -153,27 +153,27 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
                                            filteringPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[myTasksPredicate, tasksIStartedPredicate]]];
 }
 
-- (TaskGroupItem *)taskGroupItemForType:(TaskType)taskType
+- (TaskGroupItem *)taskGroupItemForType:(TaskFilter)taskType
 {
     TaskGroupItem *returnGroupItem = nil;
     switch (taskType)
     {
-        case TaskTypeTask:
+        case TaskFilterTask:
             returnGroupItem = self.myTasks;
             break;
 
-        case TaskTypeProcess:
+        case TaskFilterProcess:
             returnGroupItem = self.tasksIStarted;
             break;
     }
     return returnGroupItem;
 }
 
-- (void)loadTasksForTaskType:(TaskType)taskType listingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
+- (void)loadTasksForTaskFilter:(TaskFilter)taskType listingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
     TaskGroupItem *groupToSwitchTo = [self taskGroupItemForType:taskType];
     
-    self.displayedTaskType = taskType;
+    self.displayedTaskFilter = taskType;
     self.title = groupToSwitchTo.title;
     
     if (groupToSwitchTo.hasDisplayableTasks == NO || forceRefresh || groupToSwitchTo.hasMoreItems)
@@ -186,13 +186,13 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         
         switch (taskType)
         {
-            case TaskTypeTask:
+            case TaskFilterTask:
             {
                 [self loadTasksWithListingContext:listingContext completionBlock:completionBlock];
             }
             break;
                 
-            case TaskTypeProcess:
+            case TaskFilterProcess:
             {
                 [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:completionBlock];
             }
@@ -287,9 +287,9 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 {
     if (pagingResult)
     {
-        switch (self.displayedTaskType)
+        switch (self.displayedTaskFilter)
         {
-            case TaskTypeTask:
+            case TaskFilterTask:
             {
                 [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
                 self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
@@ -297,7 +297,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             }
             break;
                 
-            case TaskTypeProcess:
+            case TaskFilterProcess:
             {
                 [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
                 self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
@@ -314,7 +314,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 {
     if (pagingResult)
     {
-        TaskGroupItem *currentGroupedItem = [self taskGroupItemForType:self.displayedTaskType];
+        TaskGroupItem *currentGroupedItem = [self taskGroupItemForType:self.displayedTaskFilter];
         [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];;
         currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
         self.tableViewData = currentGroupedItem.tasksAfterFiltering;
@@ -339,9 +339,9 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         cell = (TasksCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TasksCell class]) owner:self options:nil] lastObject];
     }
     
-    switch (self.displayedTaskType)
+    switch (self.displayedTaskFilter)
     {
-        case TaskTypeTask:
+        case TaskFilterTask:
         {
             AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
             NSString *taskTitle = (currentTask.name) ? currentTask.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
@@ -351,7 +351,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         }
         break;
             
-        case TaskTypeProcess:
+        case TaskFilterProcess:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
             NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
@@ -368,7 +368,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // the last row index of the table data
-    TaskGroupItem *currentTaskGroup = [self taskGroupItemForType:self.displayedTaskType];
+    TaskGroupItem *currentTaskGroup = [self taskGroupItemForType:self.displayedTaskFilter];
     
     NSUInteger lastRowIndex = currentTaskGroup.numberOfTasksAfterFiltering - 1;
     
@@ -383,7 +383,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             [spinner startAnimating];
             self.tableView.tableFooterView = spinner;
 
-            [self loadTasksForTaskType:self.displayedTaskType listingContext:moreListingContext forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:moreListingContext forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                 [self addMoreToTableViewWithPagingResult:pagingResult error:error];
                 self.tableView.tableFooterView = nil;
             }];
@@ -399,11 +399,11 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     
     TaskDetailsViewController *taskDetailsViewController = nil;
     
-    if (self.displayedTaskType == TaskTypeTask)
+    if (self.displayedTaskFilter == TaskFilterTask)
     {
         taskDetailsViewController = [[TaskDetailsViewController alloc] initWithTask:(AlfrescoWorkflowTask *)selectedObject session:self.session];
     }
-    else if (self.displayedTaskType == TaskTypeProcess)
+    else if (self.displayedTaskFilter == TaskFilterProcess)
     {
         taskDetailsViewController = [[TaskDetailsViewController alloc] initWithProcess:(AlfrescoWorkflowProcess *)selectedObject session:self.session];
     }
@@ -427,7 +427,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     [self showLoadingTextInRefreshControl:refreshControl];
     if (self.session)
     {
-        [self loadTasksForTaskType:self.displayedTaskType listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -451,13 +451,13 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")])
     {
-        [self loadTasksForTaskType:TaskTypeTask listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")])
     {
-        [self loadTasksForTaskType:TaskTypeProcess listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadTasksForTaskFilter:TaskFilterProcess listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }

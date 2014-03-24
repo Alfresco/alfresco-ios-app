@@ -40,7 +40,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskFilterTask session:session];
+    self = [self initWithTaskFilter:TaskFilterTask session:session];
     if (self)
     {
         self.task = task;
@@ -50,7 +50,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskFilterProcess session:session];
+    self = [self initWithTaskFilter:TaskFilterProcess session:session];
     if (self)
     {
         self.process = process;
@@ -58,7 +58,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
     return self;
 }
 
-- (instancetype)initWithTaskType:(TaskFilter)taskType session:(id<AlfrescoSession>)session
+- (instancetype)initWithTaskFilter:(TaskFilter)taskType session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)

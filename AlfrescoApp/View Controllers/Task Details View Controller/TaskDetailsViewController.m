@@ -41,7 +41,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskType taskType;
+@property (nonatomic, assign) TaskFilter taskFilter;
 // Services
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
@@ -64,7 +64,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeTask session:session];
+    self = [self initWithTaskFilter:TaskFilterTask session:session];
     if (self)
     {
         self.task = task;
@@ -74,7 +74,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskType:TaskTypeProcess session:session];
+    self = [self initWithTaskFilter:TaskFilterProcess session:session];
     if (self)
     {
         self.process = process;
@@ -82,13 +82,13 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     return self;
 }
 
-- (instancetype)initWithTaskType:(TaskType)taskType session:(id<AlfrescoSession>)session
+- (instancetype)initWithTaskFilter:(TaskFilter)taskType session:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
     {
         self.session = session;
-        self.taskType = taskType;
+        self.taskFilter = taskType;
         [self createServicesWithSession:session];
         [self registerForNotifications];
     }
@@ -105,7 +105,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [super viewDidLoad];
     
     // configure the view
-    [self configureForType:self.taskType];
+    [self configureForType:self.taskFilter];
 
     // dismiss keyboard gesture
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapView:)];
@@ -143,13 +143,13 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
 }
 
-- (void)configureForType:(TaskType)type
+- (void)configureForType:(TaskFilter)type
 {
     [self createTaskHeaderView];
     
     TasksAndAttachmentsViewController *attachmentViewController = nil;
     
-    if (type == TaskTypeTask)
+    if (type == TaskFilterTask)
     {
         // configure the header view for the task
         [self.taskHeaderView configureViewForTask:self.task];
@@ -162,7 +162,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
         // retrieve the process definition for the header view
         [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
     }
-    else if (type == TaskTypeProcess)
+    else if (type == TaskFilterProcess)
     {
         // configure the header view for the process
         [self.taskHeaderView configureViewForProcess:self.process];
@@ -269,7 +269,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.workflowService retrieveProcessDefinitionWithIdentifier:identifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
         if (processDefinition)
         {
-            [self.taskHeaderView updateTaskTypeLabelToString:processDefinition.name];
+            [self.taskHeaderView updateTaskFilterLabelToString:processDefinition.name];
         }
     }];
 }
