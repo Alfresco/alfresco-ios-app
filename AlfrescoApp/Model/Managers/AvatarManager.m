@@ -84,7 +84,7 @@
     {
         completionBlock(retrievedImage, nil);
     }
-    else
+    else if (identifier)
     {
         if (![[self.requestedUsernamesAndCompletionBlocks allKeys] containsObject:identifier])
         {
