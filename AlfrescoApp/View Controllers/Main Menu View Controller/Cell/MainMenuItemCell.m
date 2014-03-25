@@ -9,6 +9,9 @@
 #import "MainMenuItemCell.h"
 #import "UIColor+Custom.h"
 
+static NSString * const kMainMenuItemCellIdentifier = @"MainMenuItemCellIdentifier";
+static CGFloat const kMainMenuItemCellHeight = 50.0f;
+
 @implementation MainMenuItemCell
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -24,6 +27,12 @@
     return self;
 }
 
+- (void)awakeFromNib
+{
+    // should be empty by default
+    self.menuAccountNameLabel.text = @"";
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -31,6 +40,18 @@
     [self.contentView layoutSubviews];
     self.menuImageView.layer.cornerRadius = self.menuImageView.frame.size.width / 2;
     self.menuImageView.clipsToBounds = YES;
+}
+
+#pragma mark - Public Functions
+
++ (NSString *)cellIdentifier
+{
+    return kMainMenuItemCellIdentifier;
+}
+
++ (CGFloat)minimumCellHeight
+{
+    return kMainMenuItemCellHeight;
 }
 
 @end

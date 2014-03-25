@@ -25,9 +25,7 @@
 #import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
 #import "UIColor+Custom.h"
-
-NSString * const kMainMenuItemCellIdentifier = @"MainMenuItemCellIdentifier";
-static CGFloat const kMainMenuItemCellHeight = 48.0f;
+#import "AvatarManager.h"
 
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
@@ -67,6 +65,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionUpdated:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appConfigurationUpdated:) name:kAlfrescoAppConfigurationUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListEmpty:) name:kAlfrescoAccountsListEmptyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
     }
     return self;
 }
@@ -94,8 +93,8 @@ static NSUInteger const kAccountsRowNumber = 0;
     view.autoresizesSubviews = YES;
     self.view = view;
 
-    UINib *cellNib = [UINib nibWithNibName:@"MainMenuItemCell" bundle:nil];
-    [self.tableView registerNib:cellNib forCellReuseIdentifier:kMainMenuItemCellIdentifier];
+    UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([MainMenuItemCell class]) bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:[MainMenuItemCell cellIdentifier]];
 }
 
 #pragma mark - Table view data source
@@ -113,7 +112,7 @@ static NSUInteger const kAccountsRowNumber = 0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:kMainMenuItemCellIdentifier];
+    MainMenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:[MainMenuItemCell cellIdentifier]];
     
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *currentItem = [sectionArray objectAtIndex:indexPath.row];
@@ -121,13 +120,40 @@ static NSUInteger const kAccountsRowNumber = 0;
     cell.menuTextLabel.textColor = [UIColor mainMenuLabelColor];
     cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
+    if ([currentItem.localizedTitleKey isEqualToString:@"accounts.title"])
+    {
+        NSString *currentUserAccountIdentifier = self.alfrescoSession.personIdentifier;
+        cell.menuAccountNameLabel.text = [[[AccountManager sharedManager] selectedAccount] accountDescription];
+        cell.menuAccountNameLabel.textColor = [UIColor mainMenuLabelColor];
+        UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:currentUserAccountIdentifier];
+        if (avatar)
+        {
+            [cell.menuImageView setImage:avatar withFade:NO];
+        }
+        else
+        {
+            UIImage *placeholderImage = cell.menuImageView.image;
+            cell.menuImageView.image = placeholderImage;
+            [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentUserAccountIdentifier session:self.alfrescoSession completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+                if (avatarImage)
+                {
+                    [cell.menuImageView setImage:avatarImage withFade:YES];
+                }
+            }];
+        }
+    }
+    
     cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kMainMenuItemCellHeight;
+    MainMenuItemCell *cell = (MainMenuItemCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    
+    return MAX(height, [MainMenuItemCell minimumCellHeight]);
 }
 
 #pragma mark - Table view delegate
@@ -165,6 +191,8 @@ static NSUInteger const kAccountsRowNumber = 0;
 - (void)sessionUpdated:(NSNotification *)notification
 {
     self.alfrescoSession = (id<AlfrescoSession>)notification.object;
+    
+    [self reloadAccountSection];
 }
 
 - (void)appConfigurationUpdated:(NSNotification *)notification
@@ -192,6 +220,18 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         NSInteger localMainMenuItemsSectionIndex = [self.tableData indexOfObject:localMenuItems];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:localMainMenuItemsSectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)accountUpdated:(NSNotification *)notification
+{
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    UserAccount *updatedAccount = notification.object;
+    
+    if ([selectedAccount.accountIdentifier isEqualToString:updatedAccount.accountIdentifier])
+    {
+        [self reloadAccountSection];
+        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber] animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 }
 
@@ -497,6 +537,12 @@ static NSUInteger const kAccountsRowNumber = 0;
         }];
     }];
     return foundItem;
+}
+
+- (void)reloadAccountSection
+{
+    // Reload the accounts section
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - Public Functions

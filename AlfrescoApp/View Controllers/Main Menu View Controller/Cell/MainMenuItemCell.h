@@ -13,5 +13,9 @@
 
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *menuImageView;
 @property (nonatomic, weak) IBOutlet UILabel *menuTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *menuAccountNameLabel;
+
++ (NSString *)cellIdentifier;
++ (CGFloat)minimumCellHeight;
 
 @end
