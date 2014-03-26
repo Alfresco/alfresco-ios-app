@@ -41,7 +41,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     return self;
 }
 
-- (void)startWithNodes:(NSMutableArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode
+- (void)startWithNodes:(NSArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode
 {
     self.type = type;
     self.mode = mode;
@@ -63,7 +63,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     }
     else
     {
-        self.nodesAlreadySelected = nodes;
+        self.nodesAlreadySelected = [nodes mutableCopy];
     }
     
     if (self.type == NodePickerTypeDocuments && self.mode == NodePickerModeMultiSelect && nodes.count > 0)
@@ -128,7 +128,15 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
         }
         else
         {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            // pop to view controller just before Picker contollers
+            NSInteger nextViewControllerIndex = [self.navigationController.viewControllers indexOfObject:self.nextController];
+            NSInteger previousControllerIndex = nextViewControllerIndex > 0 ? (nextViewControllerIndex - 1) : NSNotFound;
+            
+            if (previousControllerIndex != NSNotFound)
+            {
+                UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:previousControllerIndex];
+                [self.navigationController popToViewController:previousViewController animated:YES];
+            }
         }
     }
     else if (self.mode == NodePickerModeSingleSelect)

@@ -502,6 +502,41 @@
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";
 
 /**
+ * Create Tasks
+ */
+"task.choose.task.type.title" = "Choose task type";
+"task.type.workflow.todo" = "Todo";
+"task.type.workflow.review.and.approve" = "Review & Approve";
+"task.type.workflow.todo.footer" = "Assign a task to a person.";
+"task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve documents.";
+
+"task.create.title" = "Create Task";
+"task.create.button" = "Create";
+"task.create.taskTitle" = "Title";
+"task.create.taskTitle.placeholder" = "New task";
+"task.create.duedate" = "Due on";
+"task.create.duedate.placeholder" = "No date";
+"task.create.assignee" = "Assignee";
+"task.create.assignees" = "Assignees";
+"task.create.assignee.placeholder" = "No Assignee";
+"task.create.attachment" = "Attachment";
+"task.create.attachments" = "Attachments";
+"task.create.attachments.placeholder" = "No attachments";
+"task.create.priority" = "Priority";
+"task.create.priority.high" = "High";
+"task.create.priority.medium" = "Medium";
+"task.create.priority.low" = "Low";
+"task.create.emailnotification" = "Email notification";
+"task.create.approvers" = "Approvers";
+"task.create.approver" = "Approver";
+"task.create.created" = "Task created";
+"task.create.error" = "Task creation failed";
+
+/* Date picker */
+"date.picker.title" = "Calendar";
+"date.picker.today" = "Today";
+
+/**
  * Settings
  */
 "settings.title" = "Settings";
