@@ -22,11 +22,12 @@
 #import "UIColor+Custom.h"
 #import "TasksAndAttachmentsViewController.h"
 #import "UniversalDevice.h"
+#import "PeoplePicker.h"
 
 static NSString * const kReviewKey = @"Review";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
-@interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate>
+@interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate, PeoplePickerDelegate>
 
 //// Layout Constraints ////
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *textViewContainerHeightConstraint;
@@ -42,6 +43,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, assign) TaskFilter taskFilter;
+@property (nonatomic, strong) PeoplePicker *peoplePickerManager;
 // Services
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
@@ -280,25 +282,18 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.view addSubview:completingProgressHUD];
     [completingProgressHUD show:YES];
     
-    self.doneButton.enabled = NO;
-    self.approveButton.enabled = NO;
-    self.rejectButton.enabled = NO;
-    self.reassignButton.enabled = NO;
-    
+    [self disableActionButtons];
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
     [self.workflowService completeTask:self.task properties:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
-        weakSelf.doneButton.enabled = YES;
-        weakSelf.approveButton.enabled = YES;
-        weakSelf.rejectButton.enabled = YES;
-        weakSelf.reassignButton.enabled = YES;
+        [weakSelf enableActionButtons];
         
         if (error)
         {
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.add.comment.failed", @"Adding Comment Failed"), [ErrorDescriptions descriptionForError:error]]);
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.complete.process", @"Unable To Complete Task Process"), [ErrorDescriptions descriptionForError:error]]);
             [Notifier notifyWithAlfrescoError:error];
             [weakSelf.textView becomeFirstResponder];
         }
@@ -313,6 +308,22 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 - (void)didTapView:(UITapGestureRecognizer *)gesture
 {
     [self.textView resignFirstResponder];
+}
+
+- (void)disableActionButtons
+{
+    self.doneButton.enabled = NO;
+    self.approveButton.enabled = NO;
+    self.rejectButton.enabled = NO;
+    self.reassignButton.enabled = NO;
+}
+
+- (void)enableActionButtons
+{
+    self.doneButton.enabled = YES;
+    self.approveButton.enabled = YES;
+    self.rejectButton.enabled = YES;
+    self.reassignButton.enabled = YES;
 }
 
 #pragma mark - IBActions
@@ -355,7 +366,9 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 - (IBAction)pressedReassignButton:(id)sender
 {
-    // TODO
+    PeoplePicker *peoplePicker = [[PeoplePicker alloc] initWithSession:self.session navigationController:self.navigationController delegate:self];
+    [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelect modally:YES];
+    self.peoplePickerManager = peoplePicker;
 }
 
 #pragma mark - TextViewDelegate Functions
@@ -377,6 +390,33 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     }
     
     return shouldRecieveTouch;
+}
+
+#pragma mark - PeoplePickerDelegate Functions
+
+- (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople
+{
+    if (selectedPeople && selectedPeople.count > 0)
+    {
+        AlfrescoPerson *reassignee = selectedPeople[0];
+        
+        [self disableActionButtons];
+        __weak typeof(self) weakSelf = self;
+        [self.workflowService reassignTask:self.task toAssignee:reassignee completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
+            [weakSelf enableActionButtons];
+            if (error)
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.complete.process", @"Unable To Complete Task Process"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+                [weakSelf.textView becomeFirstResponder];
+            }
+            else
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskDidComplete object:task];
+                [UniversalDevice clearDetailViewController];
+            }
+        }];
+    }
 }
 
 @end

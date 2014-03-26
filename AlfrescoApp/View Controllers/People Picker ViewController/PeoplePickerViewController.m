@@ -68,7 +68,7 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
     [self.tableView registerNib:nib forCellReuseIdentifier:kCellReuseIdentifier];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;

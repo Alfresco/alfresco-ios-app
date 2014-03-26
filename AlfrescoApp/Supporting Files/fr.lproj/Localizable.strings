@@ -103,6 +103,8 @@
 "error.no.internet.access.message" = "Please check that you're connected to the internet and try again. You can still access your downloaded documents without having a connection.";
 "error.access.permissions.message" = "Please ensure that you have access rights for this operation";
 "error.retrieving.metadata" = "Metadata for %@ could not be retrieved.";
+// workflow
+"error.workflow.unable.to.complete.process" = "Unable to complete process on task. Error: %@";
 
 /**
  * Custom error descriptions
