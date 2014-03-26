@@ -13,5 +13,6 @@
 + (instancetype)sharedManager;
 - (UIImage *)avatarForIdentifier:(NSString *)identifier;
 - (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock;
+- (void)deleteAvatarForIdentifier:(NSString *)identifier;
 
 @end

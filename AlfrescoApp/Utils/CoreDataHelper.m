@@ -61,7 +61,13 @@
 {
     if (managedObject)
     {
+        if (!managedContext)
+        {
+            managedContext = self.managedObjectContext;
+        }
+        
         [managedContext deleteObject:managedObject];
+        
         [self saveContextForManagedObjectContext:managedContext];
     }
 }
