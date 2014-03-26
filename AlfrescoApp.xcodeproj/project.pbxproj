@@ -274,7 +274,6 @@
 		7379733818AA8E9B007613B2 /* SyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732F18AA8E9B007613B2 /* SyncError.m */; };
 		7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379733118AA8E9B007613B2 /* SyncNodeInfo.m */; };
 		7379734118ABA1DD007613B2 /* LargeThumbnailImageMapping.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7379734018ABA1DD007613B2 /* LargeThumbnailImageMapping.plist */; };
-		7384BDEB17F1A4A800C6A54F /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDEA17F1A4A800C6A54F /* TaskViewController.m */; };
 		7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF017F2F8C000C6A54F /* SettingsViewController.m */; };
 		7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BDF317F330C600C6A54F /* SettingToggleCell.m */; };
 		7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7384BDF617F3310700C6A54F /* SettingToggleCell.xib */; };
@@ -889,8 +888,6 @@
 		7379733018AA8E9B007613B2 /* SyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeInfo.h; sourceTree = "<group>"; };
 		7379733118AA8E9B007613B2 /* SyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNodeInfo.m; sourceTree = "<group>"; };
 		7379734018ABA1DD007613B2 /* LargeThumbnailImageMapping.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LargeThumbnailImageMapping.plist; sourceTree = "<group>"; };
-		7384BDE917F1A4A800C6A54F /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewController.h; path = "Task View Controller/TaskViewController.h"; sourceTree = "<group>"; };
-		7384BDEA17F1A4A800C6A54F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewController.m; path = "Task View Controller/TaskViewController.m"; sourceTree = "<group>"; };
 		7384BDEF17F2F8C000C6A54F /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = "Settings View Controller/SettingsViewController.h"; sourceTree = "<group>"; };
 		7384BDF017F2F8C000C6A54F /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsViewController.m; path = "Settings View Controller/SettingsViewController.m"; sourceTree = "<group>"; };
 		7384BDF217F330C600C6A54F /* SettingToggleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingToggleCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingToggleCell.h"; sourceTree = SOURCE_ROOT; };
@@ -1463,8 +1460,7 @@
 				08E1EA1218DB057900F9052F /* Task View Controller */,
 				08E1EA1D18DB057900F9052F /* Tasks and Attachments View Controller */,
 			);
-			name = "Workflow Controllers";
-			path = "View Controllers/Workflow Controllers";
+			path = "Workflow Controllers";
 			sourceTree = "<group>";
 		};
 		08E1EA0918DB057900F9052F /* Task Details View Controller */ = {
@@ -1875,7 +1871,6 @@
 				73B957E117A6750E0099FB84 /* Table Cells */,
 				73B957FA17A6750E0099FB84 /* Utils */,
 				73B9580F17A6750E0099FB84 /* View Controllers */,
-				08E1EA0818DB057900F9052F /* Workflow Controllers */,
 				73B9583617A6750F0099FB84 /* Views */,
 				73B9587617A67A110099FB84 /* Alfresco SDK */,
 				73B959CD17A67A760099FB84 /* Third Party Libraries */,
@@ -2483,6 +2478,7 @@
 				73B95ADD17A68DF20099FB84 /* Tabbar View Controllers */,
 				73F628B4185779050050F437 /* Text File View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
+				08E1EA0818DB057900F9052F /* Workflow Controllers */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -3021,7 +3017,6 @@
 				737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */,
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				271DC772189C2D250059D1B2 /* status-sync-loading.png in Resources */,
-				739B0A3F18CF7E2500239584 /* ProcessTasksCell.xib in Resources */,
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
 				27F054D61891832B00C2454C /* app-icon-144.png in Resources */,
 				080A812418561E6D00B79306 /* certificate@2x.png in Resources */,
