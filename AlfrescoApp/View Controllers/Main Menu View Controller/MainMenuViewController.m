@@ -66,6 +66,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appConfigurationUpdated:) name:kAlfrescoAppConfigurationUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListEmpty:) name:kAlfrescoAccountsListEmptyNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
     }
     return self;
 }
@@ -232,6 +233,20 @@ static NSUInteger const kAccountsRowNumber = 0;
     {
         [self reloadAccountSection];
         [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
+- (void)accountRemoved:(NSNotification *)notification
+{
+    [[AvatarManager sharedManager] deleteAvatarForIdentifier:self.alfrescoSession.personIdentifier];
+    
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    UserAccount *removedAccount = notification.object;
+    
+    if ([selectedAccount.accountIdentifier isEqualToString:removedAccount.accountIdentifier])
+    {
+        self.alfrescoSession = nil;
+        [self reloadAccountSection];
     }
 }
 

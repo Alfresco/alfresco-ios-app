@@ -59,7 +59,7 @@
     
     self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
     
-    [self clearAvatarCache];
+    [self clearOldAvatarRequests];
 }
 
 #pragma mark - Public Functions
@@ -133,6 +133,12 @@
     }
 }
 
+- (void)deleteAvatarForIdentifier:(NSString *)identifier
+{
+    AvatarImageCache *avatarToDelete = [self.coreDataCacheHelper retrieveAvatarForIdentifier:identifier inManagedObjectContext:nil];
+    [self.coreDataCacheHelper deleteRecordForManagedObject:avatarToDelete inManagedObjectContext:nil];
+}
+
 #pragma mark - Private Functions
 
 - (void)addCompletionBlock:(ImageCompletionBlock)completionBlock forKey:(NSString *)personIdentifier
@@ -165,9 +171,14 @@
     [self.requestedUsernamesAndCompletionBlocks removeObjectForKey:personIdentifier];
 }
 
-- (void)clearAvatarCache
+- (void)clearOldAvatarRequests
 {
-    [self.requestedUsernamesAndCompletionBlocks removeAllObjects];
+    [[self.requestedUsernamesAndCompletionBlocks allKeys] enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
+        if (![key isEqualToString:self.session.personIdentifier])
+        {
+            [self.requestedUsernamesAndCompletionBlocks removeObjectForKey:key];
+        }
+    }];
 }
 
 @end
