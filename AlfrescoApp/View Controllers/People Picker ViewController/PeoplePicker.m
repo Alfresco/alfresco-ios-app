@@ -33,10 +33,10 @@
     return self;
 }
 
-- (void)startWithPeople:(NSMutableArray *)people mode:(PeoplePickerMode)mode
+- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode
 {
     self.mode = mode;
-    self.peopleAlreadySelected = people;
+    self.peopleAlreadySelected = [people mutableCopy];
     
     if (!self.multiSelectToolbar)
     {
@@ -59,7 +59,15 @@
     }
     else
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        // pop to view controller just before Picker contollers
+        NSInteger nextViewControllerIndex = [self.navigationController.viewControllers indexOfObject:self.peoplePickerViewController];
+        NSInteger previousControllerIndex = nextViewControllerIndex > 0 ? (nextViewControllerIndex - 1) : NSNotFound;
+        
+        if (previousControllerIndex != NSNotFound)
+        {
+            UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:previousControllerIndex];
+            [self.navigationController popToViewController:previousViewController animated:YES];
+        }
     }
 }
 

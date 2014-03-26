@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
  * start people picker
  * @param People Picker Mode
  */
-- (void)startWithPeople:(NSMutableArray *)people mode:(PeoplePickerMode)mode;
+- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode;
 
 /*
  * cancel people picker

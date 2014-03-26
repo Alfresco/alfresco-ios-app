@@ -142,3 +142,6 @@ NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";
 
 // Help/Documentation
 NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
+
+// Workflow
+NSString * const kAlfrescoTaskAddedNotification = @"AlfrescoTaskAddedNotification";

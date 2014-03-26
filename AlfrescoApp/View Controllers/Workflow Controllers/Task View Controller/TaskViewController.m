@@ -15,6 +15,7 @@
 #import "Utility.h"
 #import "TaskDetailsViewController.h"
 #import "UniversalDevice.h"
+#import "TaskTypeViewController.h"
 
 static NSString * const kDateFormat = @"dd MMM";
 static NSString * const kActivitiReview = @"activitiReview";
@@ -69,8 +70,12 @@ typedef NS_ENUM(NSUInteger, TaskType)
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
     
     UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tasks_filter.png"] style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
-    [self.navigationItem setRightBarButtonItem:filterButton];
     self.filterButton = filterButton;
+    
+    UIBarButtonItem *AddTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(createTask:)];
+    self.navigationItem.rightBarButtonItems = @[filterButton, AddTaskButton];
     
     if (self.session)
     {
@@ -81,6 +86,14 @@ typedef NS_ENUM(NSUInteger, TaskType)
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
+}
+
+- (void)createTask:(id)sender
+{
+    TaskTypeViewController *taskTypeController = [[TaskTypeViewController alloc] initWithSession:self.session];
+    UINavigationController *newTaskNavigationController = [[UINavigationController alloc] initWithRootViewController:taskTypeController];
+    newTaskNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:newTaskNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Private Functions

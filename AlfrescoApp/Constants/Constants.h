@@ -144,3 +144,6 @@ extern NSString * const kAlfrescoCloudAPIAccountID;
 
 // Help/Documentation
 extern NSString * const kAlfrescoHelpURLString;
+
+// workflow
+extern NSString * const kAlfrescoTaskAddedNotification;

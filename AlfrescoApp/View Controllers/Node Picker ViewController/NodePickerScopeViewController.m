@@ -17,7 +17,7 @@
 #import "NodePickerScopeCell.h"
 #import "UIColor+Custom.h"
 
-NSString * const kNodePickerScopeCellIdentifier = @"MainMenuItemCellIdentifier";
+NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifier";
 
 @interface NodePickerScopeViewController ()
 
@@ -160,7 +160,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"MainMenuItemCellIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NodePickerScopeCell *cell = [tableView dequeueReusableCellWithIdentifier:kNodePickerScopeCellIdentifier];
+    NodePickerScopeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kNodePickerScopeCellIdentifier];
     
     MainMenuItem *currentItem = self.tableViewData[indexPath.row];
     cell.label.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
