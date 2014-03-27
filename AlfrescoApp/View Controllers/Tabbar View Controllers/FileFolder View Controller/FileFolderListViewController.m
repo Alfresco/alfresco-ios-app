@@ -1075,7 +1075,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+        [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
             [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         }];
     }
@@ -1117,7 +1117,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+        [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
             [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         }];
     }
@@ -1154,7 +1154,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     __weak FileFolderListViewController *weakSelf = self;
     [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
-        
         [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
         weakSelf.actionSheetSender.enabled = YES;
     }];

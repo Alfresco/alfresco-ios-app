@@ -3552,6 +3552,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
@@ -3564,6 +3566,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(TARGET_BUILD_DIR)\"",
@@ -3574,6 +3577,7 @@
 					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3678,6 +3682,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
@@ -3690,6 +3696,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(TARGET_BUILD_DIR)\"",
@@ -3700,6 +3707,7 @@
 					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0-debug.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3711,6 +3719,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
@@ -3723,6 +3733,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(TARGET_BUILD_DIR)\"",
@@ -3733,6 +3744,7 @@
 					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
