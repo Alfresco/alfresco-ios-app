@@ -494,7 +494,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
         case CreateTaskRowTypeAssignees:
         {
             PeoplePickerMode peoplePickerMode = (self.workflowType == WorkflowTypeTodo) ? PeoplePickerModeSingleSelect : PeoplePickerModeMultiSelect;
-            [self.peoplePicker startWithPeople:self.assignees mode:peoplePickerMode];
+            [self.peoplePicker startWithPeople:self.assignees mode:peoplePickerMode modally:NO];
             break;
         }
         case CreateTaskRowTypeDueDate:

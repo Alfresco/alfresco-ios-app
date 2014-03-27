@@ -8,10 +8,12 @@
 
 #import "PeoplePicker.h"
 #import "PeoplePickerViewController.h"
+#import "NavigationViewController.h"
 
 @interface PeoplePicker()
 
 @property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) UINavigationController *peoplePickerNavigationController;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, strong) NSMutableArray *peopleAlreadySelected;
@@ -24,16 +26,22 @@
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController
 {
+    return [self initWithSession:session navigationController:navigationController delegate:nil];
+}
+
+- (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController delegate:(id<PeoplePickerDelegate>)delegate
+{
     self = [super init];
     if (self)
     {
         _session = session;
         _navigationController = navigationController;
+        _delegate = delegate;
     }
     return self;
 }
 
-- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode
+- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
 {
     self.mode = mode;
     self.peopleAlreadySelected = [people mutableCopy];
@@ -48,14 +56,27 @@
     [self replaceSelectedPeopleWithPeople:self.peopleAlreadySelected];
     
     self.peoplePickerViewController = [[PeoplePickerViewController alloc] initWithSession:self.session peoplePicker:self];
-    [self.navigationController pushViewController:self.peoplePickerViewController animated:YES];
+    if (modally)
+    {
+        NavigationViewController *modalNavigationController = [[NavigationViewController alloc] initWithRootViewController:self.peoplePickerViewController];
+        modalNavigationController.modalPresentationStyle = UIModalPresentationPageSheet;
+        [self.navigationController presentViewController:modalNavigationController animated:YES completion:nil];
+        self.peoplePickerNavigationController = modalNavigationController;
+    }
+    else
+    {
+        [self.navigationController pushViewController:self.peoplePickerViewController animated:YES];
+        self.peoplePickerNavigationController = self.navigationController;
+    }
 }
 
 - (void)cancel
 {
-    if (self.navigationController.viewControllers.firstObject == self.peoplePickerViewController)
+    if (self.peoplePickerNavigationController.viewControllers.firstObject == self.peoplePickerViewController)
     {
-        [self.peoplePickerViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.peoplePickerViewController dismissViewControllerAnimated:YES completion:^{
+            self.peoplePickerNavigationController = nil;
+        }];
     }
     else
     {

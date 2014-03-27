@@ -31,16 +31,24 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
 @property (nonatomic, weak) id<PeoplePickerDelegate> delegate;
 
 /*
- * initiate People Picker giving it reference to nav controller so it can push viewcontrollers e.g people controller
+ * Initiate People Picker giving it reference to nav controller so it can push viewcontrollers e.g people controller
  * @param NavigationController
  */
 - (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController;
 
 /*
+ * Initiate People Picker giving it reference to nav controller so it can push viewcontrollers e.g people controller
+ * @param NavigationController
+ * @param delegate - call back object comforming to PeoplePickerDelegate
+ */
+- (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController delegate:(id<PeoplePickerDelegate>)delegate;
+
+/*
  * start people picker
  * @param People Picker Mode
+ * @param modally - whether or not to display the picker modally
  */
-- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode;
+- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
 
 /*
  * cancel people picker
