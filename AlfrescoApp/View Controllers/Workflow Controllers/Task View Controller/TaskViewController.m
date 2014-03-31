@@ -46,10 +46,6 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(sessionReceived:)
-                                                     name:kAlfrescoSessionReceivedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(taskCompleted:)
                                                      name:kAlfrescoWorkflowTaskDidComplete
                                                    object:nil];
