@@ -61,7 +61,7 @@
 		0876A03118D99F800035370A /* BaseFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */; };
 		0876A04218D99FF60035370A /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03518D99FF60035370A /* NodePicker.m */; };
 		0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */; };
-		0876A04418D99FF60035370A /* NodePickerFavoritesViewcontroller.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A03818D99FF60035370A /* NodePickerFavoritesViewcontroller.xib */; };
+		0876A04418D99FF60035370A /* NodePickerFavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A03818D99FF60035370A /* NodePickerFavoritesViewController.xib */; };
 		0876A04518D99FF60035370A /* NodePickerFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */; };
 		0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */; };
 		0876A04718D99FF60035370A /* NodePickerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03D18D99FF60035370A /* NodePickerListViewController.m */; };
@@ -72,6 +72,7 @@
 		0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05B18D9A9E30035370A /* PeoplePicker.m */; };
 		0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */; };
 		0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */; };
+		0880753618E441F100E000E3 /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */; };
 		088228641843722B006E58A4 /* RequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228631843722B006E58A4 /* RequestHandler.m */; };
 		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
 		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
@@ -605,7 +606,7 @@
 		0876A03518D99FF60035370A /* NodePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePicker.m; sourceTree = "<group>"; };
 		0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerFavoritesViewController.h; sourceTree = "<group>"; };
 		0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerFavoritesViewController.m; sourceTree = "<group>"; };
-		0876A03818D99FF60035370A /* NodePickerFavoritesViewcontroller.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerFavoritesViewcontroller.xib; sourceTree = "<group>"; };
+		0876A03818D99FF60035370A /* NodePickerFavoritesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerFavoritesViewController.xib; sourceTree = "<group>"; };
 		0876A03918D99FF60035370A /* NodePickerFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerFileFolderListViewController.h; sourceTree = "<group>"; };
 		0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerFileFolderListViewController.m; sourceTree = "<group>"; };
 		0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerFileFolderListViewController.xib; sourceTree = "<group>"; };
@@ -1397,7 +1398,7 @@
 				0876A03518D99FF60035370A /* NodePicker.m */,
 				0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */,
 				0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */,
-				0876A03818D99FF60035370A /* NodePickerFavoritesViewcontroller.xib */,
+				0876A03818D99FF60035370A /* NodePickerFavoritesViewController.xib */,
 				0876A03918D99FF60035370A /* NodePickerFileFolderListViewController.h */,
 				0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */,
 				0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */,
@@ -2881,7 +2882,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ALF;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Alfresco;
 				TargetAttributes = {
 					08E89C9817E7593B006936DF = {
@@ -3028,7 +3029,7 @@
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				73FF557E18ACE2370009CA56 /* large_excel@2x.png in Resources */,
 				7384BDF917F3377A00C6A54F /* UserPreferences.plist in Resources */,
-				0876A04418D99FF60035370A /* NodePickerFavoritesViewcontroller.xib in Resources */,
+				0876A04418D99FF60035370A /* NodePickerFavoritesViewController.xib in Resources */,
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
 				73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */,
 				734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */,
@@ -3234,6 +3235,7 @@
 				271DC777189C2D250059D1B2 /* status-sync-synced@2x.png in Resources */,
 				73881F6E188956390052C75F /* WebBrowserViewController.xib in Resources */,
 				27E84E8C18AD53510024B658 /* mainmenu-sync.png in Resources */,
+				0880753618E441F100E000E3 /* NodePickerScopeCell.xib in Resources */,
 				08E1EA2618DB057900F9052F /* TaskHeaderView.xib in Resources */,
 				73B95ABE17A68B7E0099FB84 /* actionButton@2x.png in Resources */,
 				73B95ABF17A68B7E0099FB84 /* comments.png in Resources */,
@@ -3606,7 +3608,6 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3636,7 +3637,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3702,7 +3702,6 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3736,7 +3735,6 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3766,7 +3764,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3803,7 +3800,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 80764C79F17643929EEA92E8 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

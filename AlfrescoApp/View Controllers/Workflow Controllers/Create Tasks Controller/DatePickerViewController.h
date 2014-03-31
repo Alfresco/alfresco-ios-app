@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class DatePickerViewController;
+
+@protocol DatePickerViewControllerDelegate <NSObject>
+
+@optional
+- (void)datePicker:(DatePickerViewController *)datePicker selectedDate:(NSDate *)date;
+
+@end
+
 @interface DatePickerViewController : UIViewController
 
 - (instancetype)initWithDate:(NSDate *)date;
-
-- (void)showAndSelectDate:(NSDate *)date;
-- (NSDate *)selectedDate;
+@property (nonatomic, weak) id<DatePickerViewControllerDelegate> delegate;
 
 @end

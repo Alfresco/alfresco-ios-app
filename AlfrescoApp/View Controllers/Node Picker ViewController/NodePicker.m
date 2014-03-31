@@ -41,7 +41,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     return self;
 }
 
-- (void)startWithNodes:(NSArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode
+- (void)startWithNodes:(NSMutableArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode
 {
     self.type = type;
     self.mode = mode;
@@ -63,7 +63,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     }
     else
     {
-        self.nodesAlreadySelected = [nodes mutableCopy];
+        self.nodesAlreadySelected = nodes;
     }
     
     if (self.type == NodePickerTypeDocuments && self.mode == NodePickerModeMultiSelect && nodes.count > 0)
@@ -235,11 +235,6 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
         }
     }];
     [self.multiSelectToolbar userDidDeselectItem:existingNode];
-    
-    if (self.mode == NodePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(nodePicker:didDeselectNode:)])
-    {
-        [self.delegate nodePicker:self didDeselectNode:existingNode];
-    }
 }
 
 - (void)deselectAllNodes

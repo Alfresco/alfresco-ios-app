@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "WorkflowTypes.h"
+#import "NodePicker.h"
+#import "PeoplePicker.h"
+#import "DatePickerViewController.h"
 
-typedef NS_ENUM(NSUInteger, CreateTaskRowType)
+typedef NS_ENUM(NSInteger, CreateTaskRowType)
 {
     CreateTaskRowTypeTitle,
     CreateTaskRowTypeDueDate,
@@ -20,7 +23,7 @@ typedef NS_ENUM(NSUInteger, CreateTaskRowType)
     CreateTaskRowTypeEmailNotification
 };
 
-@interface CreateTaskViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface CreateTaskViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, NodePickerDelegate, PeoplePickerDelegate, DatePickerViewControllerDelegate>
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType;
 

@@ -30,26 +30,41 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
     
     if (self.date)
     {
-        [_datePicker setDate:self.date animated:YES];
+        [self.datePicker setDate:self.date animated:YES];
     }
     else
     {
-        [_datePicker setDate:[NSDate date] animated:YES];
+        [self.datePicker setDate:[NSDate date] animated:YES];
     }
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.title = NSLocalizedString(@"date.picker.title", @"Calendar");
+    self.datePicker.minimumDate = [NSDate date];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"date.picker.today", @"Today")
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(showAndSelectToday:)];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                           target:self
+                                                                                           action:@selector(datePickerDone:)];
 }
 
-- (void)showAndSelectDate:(NSDate *)date
+- (void)showAndSelectToday:(id)sender
 {
-    [self.datePicker setDate:date animated:YES];
+    [self.datePicker setDate:[NSDate date] animated:YES];
 }
 
-- (NSDate *)selectedDate
+- (void)datePickerDone:(id)sender
 {
-    return self.datePicker.date;
+    if ([self.delegate respondsToSelector:@selector(datePicker:selectedDate:)])
+    {
+        [self.delegate datePicker:self selectedDate:self.datePicker.date];
+    }
 }
 
 @end

@@ -12,16 +12,14 @@
 #import "SwitchCell.h"
 #import "TaskPriorityCell.h"
 #import "TaskApproversCell.h"
-#import "NodePicker.h"
-#import "PeoplePicker.h"
-#import "DatePickerViewController.h"
 #import "Utility.h"
 #import "ErrorDescriptions.h"
 #import "MBProgressHud.h"
 
 static CGFloat const kNavigationBarHeight = 44.0f;
 
-@interface CreateTaskViewController () <NodePickerDelegate, PeoplePickerDelegate>
+@interface CreateTaskViewController ()
+
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
@@ -34,6 +32,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 @property (nonatomic, strong) DatePickerViewController *datePickerViewController;
 @property (nonatomic, strong) UIPopoverController *datePopoverController;
 @property (nonatomic, strong) NSDate *dueDate;
+@property (nonatomic, strong) UIBarButtonItem *createTaskButton;
 
 @property (nonatomic, strong) UITextField *titleField;
 @property (nonatomic, strong) UILabel *dueDateLabel;
@@ -65,7 +64,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"task.create.title", nil);
+    self.title = NSLocalizedString(@"task.create.title", @"Create Task");
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -73,14 +72,14 @@ static CGFloat const kNavigationBarHeight = 44.0f;
                                                                                   target:self
                                                                                   action:@selector(cancelButtonTapped:)];
     
-    UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                  target:self
-                                                                                  action:@selector(createTaskButtonTapped:)];
-    createButton.enabled = NO;
-    createButton.title = NSLocalizedString(@"task.create.button", nil);
+    self.createTaskButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.create.button", @"Create")
+                                                             style:UIBarButtonItemStyleDone
+                                                            target:self
+                                                            action:@selector(createTaskButtonTapped:)];
+    self.createTaskButton.enabled = NO;
     
     self.navigationItem.leftBarButtonItem = cancelButton;
-    self.navigationItem.rightBarButtonItem = createButton;
+    self.navigationItem.rightBarButtonItem = self.createTaskButton;
     
     self.nodePicker = [[NodePicker alloc] initWithSession:self.session navigationController:self.navigationController];
     self.nodePicker.delegate = self;
@@ -99,7 +98,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 {
     [super viewDidAppear:animated];
     [self.tableView reloadData];
-    [self validateFormAndEnableDoneButtonIfValid];
+    [self validateForm];
 }
 
 #pragma mark - Private Methods
@@ -153,93 +152,66 @@ static CGFloat const kNavigationBarHeight = 44.0f;
     [self.workflowService retrieveProcessDefinitionsWithCompletionBlock:^(NSArray *array, NSError *error) {
         
         NSArray *filteredArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.key ENDSWITH[cd] %@", processDefinitionKey]];
-        NSString *processDefinitionidentifier = [filteredArray.firstObject identifier];
+        AlfrescoWorkflowProcessDefinition *processDefinition = filteredArray.firstObject;
         
-        if (processDefinitionidentifier)
+        if (processDefinition)
         {
-            [self.workflowService retrieveProcessDefinitionWithIdentifier:processDefinitionidentifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
-                
-                if (error)
-                {
-                    [progressHUD show:NO];
-                    displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
-                }
-                else
-                {
-                    NSString *title = [self.titleField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                    NSInteger priority = self.prioritySegmentControl.selectedSegmentIndex + 1;
-                    
-                    NSMutableDictionary *variables = [@{kAlfrescoWorkflowProcessDescription : title, kAlfrescoWorkflowProcessPriority : @(priority)} mutableCopy];
-                    if (self.emailNotificationSwitch.isOn)
-                    {
-                        [variables setValue:@"true" forKey:kAlfrescoWorkflowProcessSendEmailNotification];
-                    }
-                    if (self.dueDate)
-                    {
-                        NSNumber *dueDateInterval = [NSNumber numberWithLongLong:[self.dueDate timeIntervalSince1970] * 1000];  // converting dueDate to milliseconds since 1970
-                        [variables setValue:dueDateInterval forKey:kAlfrescoWorkflowProcessDueDate];
-                    }
-                    if (self.workflowType == WorkflowTypeReview)
-                    {
-                        NSInteger approvalRate = round((self.approversCell.stepper.value / self.assignees.count) * 100);
-                        [variables setValue:[NSNumber numberWithInteger:approvalRate] forKey:kAlfrescoWorkflowProcessApprovalRate];
-                    }
-                    
-                    [self.workflowService startProcessForProcessDefinition:processDefinition
-                                                                 assignees:self.assignees
-                                                                 variables:variables
-                                                               attachments:self.attachments
-                                                           completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
-                                                               
-                                                               [progressHUD show:NO];
-                                                               if (error)
-                                                               {
-                                                                   displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
-                                                               }
-                                                               else
-                                                               {
-                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoTaskAddedNotification object:process];
-                                                                   [self dismissViewControllerAnimated:YES completion:^{
-                                                                       displayInformationMessage(NSLocalizedString(@"task.create.created", @"Task Created"));
-                                                                   }];
-                                                               }
+            NSString *title = [self.titleField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSInteger priority = self.prioritySegmentControl.selectedSegmentIndex + 1;
+            
+            NSMutableDictionary *variables = [@{kAlfrescoWorkflowProcessDescription : title, kAlfrescoWorkflowProcessPriority : @(priority)} mutableCopy];
+            if (self.emailNotificationSwitch.isOn)
+            {
+                [variables setValue:@"true" forKey:kAlfrescoWorkflowProcessSendEmailNotification];
+            }
+            if (self.dueDate)
+            {
+                // This will change once SDK is updated to support NSDate for dueDate
+                NSNumber *dueDateInterval = [NSNumber numberWithLongLong:[self.dueDate timeIntervalSince1970] * 1000];  // converting dueDate to milliseconds since 1970
+                [variables setValue:dueDateInterval forKey:kAlfrescoWorkflowProcessDueDate];
+            }
+            if (self.workflowType == WorkflowTypeReview)
+            {
+                NSInteger approvalRate = round((self.approversCell.stepper.value / self.assignees.count) * 100);
+                [variables setValue:[NSNumber numberWithInteger:approvalRate] forKey:kAlfrescoWorkflowProcessApprovalRate];
+            }
+            
+            [self.workflowService startProcessForProcessDefinition:processDefinition
+                                                         assignees:self.assignees
+                                                         variables:variables
+                                                       attachments:self.attachments
+                                                   completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
+                                                       
+                                                       [progressHUD hide:YES];
+                                                       if (error)
+                                                       {
+                                                           displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
+                                                       }
+                                                       else
+                                                       {
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoTaskAddedNotification object:process];
+                                                           [self dismissViewControllerAnimated:YES completion:^{
+                                                               displayInformationMessage(NSLocalizedString(@"task.create.created", @"Task Created"));
                                                            }];
-                }
-            }];
+                                                       }
+                                                   }];
+        }
+        else
+        {
+            [progressHUD hide:YES];
+            displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
         }
     }];
 }
 
 - (void)stepperPressed:(id)sender
 {
-    [self updateApproversStepper];
-    [self updateApproversPercentage];
+    [self updateApproversCellInfo];
 }
 
-- (void)updateApproversStepper
+- (void)updateApproversCellInfo
 {
-    if (self.assignees.count > 0)
-    {
-        self.approversCell.stepper.enabled = YES;
-        self.approversCell.stepper.minimumValue = 1;
-        self.approversCell.stepper.maximumValue = self.assignees.count;
-    }
-    else
-    {
-        self.approversCell.stepper.minimumValue = 0;
-        self.approversCell.stepper.maximumValue = 0;
-        self.approversCell.stepper.enabled = NO;
-    }
-}
-
-- (void)updateApproversPercentage
-{
-    int numberOfApprovers = 1;
-    if (self.assignees.count > 0)
-    {
-        numberOfApprovers = self.approversCell.stepper.value;
-    }
-    
+    NSInteger numberOfApprovers = self.approversCell.stepper.value;
     if (numberOfApprovers == 0)
     {
         numberOfApprovers = 1;
@@ -251,29 +223,37 @@ static CGFloat const kNavigationBarHeight = 44.0f;
     
     if (self.assignees.count == 0)
     {
+        self.approversCell.stepper.minimumValue = 0;
+        self.approversCell.stepper.maximumValue = 0;
+        self.approversCell.stepper.enabled = NO;
         self.approversCell.titleLabel.text = NSLocalizedString(@"task.create.approvers", @"Approvers");
-    }
-    else if (self.assignees.count == 1)
-    {
-        self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%i of %i %@", numberOfApprovers, self.assignees.count, NSLocalizedString(@"task.create.approver", nil)];
     }
     else
     {
-        self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%i of %i %@", numberOfApprovers, self.assignees.count, NSLocalizedString(@"task.create.approvers", nil)];
+        self.approversCell.stepper.enabled = YES;
+        self.approversCell.stepper.minimumValue = 1;
+        self.approversCell.stepper.maximumValue = self.assignees.count;
+        
+        if (self.assignees.count == 1)
+        {
+            self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%i of %i %@", numberOfApprovers, self.assignees.count, NSLocalizedString(@"task.create.approver", @"Approver")];
+        }
+        else
+        {
+            self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%i of %i %@", numberOfApprovers, self.assignees.count, NSLocalizedString(@"task.create.approvers", @"Approvers")];
+        }
     }
 }
+
+- (void)validateForm
+{
+    self.createTaskButton.enabled = ((self.assignees.count > 0) && (self.titleField.text.length >= 1));
+}
+
 - (void)showDatePicker:(CGRect)positionInTableView
 {
     self.datePickerViewController = [[DatePickerViewController alloc] initWithDate:self.dueDate];
-    self.datePickerViewController.title = NSLocalizedString(@"date.picker.title", nil);
-    self.datePickerViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"date.picker.today", @"Today")
-                                                                                                      style:UIBarButtonItemStyleBordered
-                                                                                                     target:self
-                                                                                                     action:@selector(showAndSelectToday)];
-    
-    self.datePickerViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                                                    target:self
-                                                                                                                    action:@selector(pickerDone:)];
+    self.datePickerViewController.delegate = self;
     
     if (IS_IPAD)
     {
@@ -293,16 +273,13 @@ static CGFloat const kNavigationBarHeight = 44.0f;
     }
 }
 
-- (void)showAndSelectToday
-{
-    [self.datePickerViewController showAndSelectDate:[NSDate date]];
-}
+#pragma mark - DatePicker Delegate Method
 
-- (void)pickerDone:(id)sender
+- (void)datePicker:(DatePickerViewController *)datePicker selectedDate:(NSDate *)date
 {
     if (self.datePickerViewController != nil)
     {
-        self.dueDate = self.datePickerViewController.selectedDate;
+        self.dueDate = date;
         self.datePickerViewController = nil;
         [self.tableView reloadData];
         
@@ -319,12 +296,6 @@ static CGFloat const kNavigationBarHeight = 44.0f;
     }
 }
 
-- (void)validateFormAndEnableDoneButtonIfValid
-{
-    BOOL isFormValid = ((self.assignees.count > 0) && (self.titleField.text.length >= 1));
-    self.navigationItem.rightBarButtonItem.enabled = isFormValid ? YES : NO;
-}
-
 #pragma mark - TableView Delegate and Datasource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -339,7 +310,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CreateTaskRowType rowType = [self.tableViewGroups[indexPath.section][indexPath.row] intValue];
+    CreateTaskRowType rowType = [self.tableViewGroups[indexPath.section][indexPath.row] integerValue];
     
     UITableViewCell *cell = nil;
     switch (rowType)
@@ -357,7 +328,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
                 titleCell.valueTextField.placeholder = NSLocalizedString(@"task.create.taskTitle.placeholder", @"required");
                 [titleCell.valueTextField becomeFirstResponder];
             }
-            titleCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            titleCell.valueTextField.returnKeyType = UIReturnKeyDone;
             titleCell.valueTextField.delegate = self;
             self.titleField = titleCell.valueTextField;
             cell = titleCell;
@@ -388,16 +359,14 @@ static CGFloat const kNavigationBarHeight = 44.0f;
             assigneesCell.titleLabel.text = self.workflowType == WorkflowTypeTodo ? NSLocalizedString(@"task.create.assignee", @"Assignee") : NSLocalizedString(@"task.create.assignees", @"Assignees");
             if (self.assignees && self.assignees.count > 0)
             {
-                NSString *localizedDescription = @"";
                 if (self.assignees.count > 1)
                 {
-                    localizedDescription = [NSLocalizedString(@"task.create.assignees", @"Assignees") lowercaseString];
+                    assigneesCell.valueLabel.text = [NSString stringWithFormat:@"%d %@", self.assignees.count, [NSLocalizedString(@"task.create.assignees", @"Assignees") lowercaseString]];
                 }
                 else
                 {
-                    localizedDescription = [NSLocalizedString(@"task.create.assignee", @"Assignee") lowercaseString];
+                    assigneesCell.valueLabel.text = [self.assignees.firstObject fullName];
                 }
-                assigneesCell.valueLabel.text = [NSString stringWithFormat:@"%d %@", self.assignees.count, localizedDescription];
             }
             else
             {
@@ -414,16 +383,14 @@ static CGFloat const kNavigationBarHeight = 44.0f;
             attachmentsCell.titleLabel.text = NSLocalizedString(@"task.create.attachments", @"attachements");
             if (self.attachments && self.attachments.count > 0)
             {
-                NSString *localizedDescription = @"";
                 if (self.attachments.count > 1)
                 {
-                    localizedDescription = [NSLocalizedString(@"task.create.attachments", @"Attachments") lowercaseString];
+                    attachmentsCell.valueLabel.text = [NSString stringWithFormat:@"%d %@", self.attachments.count, [NSLocalizedString(@"task.create.attachments", @"Attachments") lowercaseString]];
                 }
                 else
                 {
-                    localizedDescription = [NSLocalizedString(@"task.create.attachment", @"Attachment") lowercaseString];
+                    attachmentsCell.valueLabel.text = [self.attachments.firstObject name];
                 }
-                attachmentsCell.valueLabel.text = [NSString stringWithFormat:@"%d %@", self.attachments.count, localizedDescription];
             }
             else
             {
@@ -441,6 +408,12 @@ static CGFloat const kNavigationBarHeight = 44.0f;
             [priorityCell.segmentControl setTitle:NSLocalizedString(@"task.create.priority.high", @"High") forSegmentAtIndex:0];
             [priorityCell.segmentControl setTitle:NSLocalizedString(@"task.create.priority.medium", @"Medium") forSegmentAtIndex:1];
             [priorityCell.segmentControl setTitle:NSLocalizedString(@"task.create.priority.low", @"Low") forSegmentAtIndex:2];
+            
+            if (self.prioritySegmentControl)
+            {
+                [priorityCell.segmentControl setSelectedSegmentIndex:self.prioritySegmentControl.selectedSegmentIndex];
+            }
+            
             self.prioritySegmentControl = priorityCell.segmentControl;
             cell = priorityCell;
             break;
@@ -449,19 +422,24 @@ static CGFloat const kNavigationBarHeight = 44.0f;
         {
             SwitchCell *emailNotificationCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
             emailNotificationCell.titleLabel.text = NSLocalizedString(@"task.create.emailnotification", @"Email Notification");
+            
+            if (self.emailNotificationSwitch)
+            {
+                [emailNotificationCell.valueSwitch setOn:self.emailNotificationSwitch.isOn animated:NO];
+            }
+            
             self.emailNotificationSwitch = emailNotificationCell.valueSwitch;
-            [self.emailNotificationSwitch setOn:YES animated:YES];
             cell = emailNotificationCell;
             break;
         }
         case CreateTaskRowTypeApprovers:
         {
-            self.approversCell = (TaskApproversCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TaskApproversCell class]) owner:self options:nil] lastObject];
+            TaskApproversCell *approversCell = (TaskApproversCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TaskApproversCell class]) owner:self options:nil] lastObject];
+            approversCell.stepper.value = self.approversCell.stepper.value;
             
-            [self updateApproversPercentage];
-            [self updateApproversStepper];
+            self.approversCell = approversCell;
             [self.approversCell.stepper addTarget:self action:@selector(stepperPressed:) forControlEvents:UIControlEventValueChanged];
-            
+            [self updateApproversCellInfo];
             cell = self.approversCell;
             break;
         }
@@ -477,7 +455,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CreateTaskRowType rowType = [self.tableViewGroups[indexPath.section][indexPath.row] intValue];
+    CreateTaskRowType rowType = [self.tableViewGroups[indexPath.section][indexPath.row] integerValue];
     
     if (rowType != CreateTaskRowTypeTitle)
     {
@@ -513,7 +491,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 - (void)textFieldDidChange:(NSNotification *)note
 {
-    [self validateFormAndEnableDoneButtonIfValid];
+    [self validateForm];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -532,11 +510,6 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 - (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople
 {
     self.assignees = [selectedPeople mutableCopy];
-}
-
-- (void)nodePicker:(NodePicker *)nodePicker didDeselectNode:(AlfrescoNode *)node
-{
-    [self.attachments removeObject:node];
 }
 
 @end

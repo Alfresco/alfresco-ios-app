@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, NodePickerMode)
  * @param Node Picker Type
  * @param Node Picker Mode
  */
-- (void)startWithNodes:(NSArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode;
+- (void)startWithNodes:(NSMutableArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode;
 
 /*
  * cancel nodes picker
