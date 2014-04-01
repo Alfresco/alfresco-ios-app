@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
 
 @optional
 - (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople;
-- (void)peoplePicker:(PeoplePicker *)peoplePicker didDeselectPerson:(AlfrescoPerson *)person;
 
 @end
 

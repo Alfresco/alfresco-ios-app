@@ -207,6 +207,7 @@ static CGFloat const kCellHeight = 64.0f;
     
     cell.progressBar.hidden = YES;
     [cell removeNotifications];
+    cell.accessoryType = UITableViewCellAccessoryNone;
     
     if ([self.nodePicker isNodeSelected:currentNode])
     {

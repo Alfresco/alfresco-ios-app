@@ -17,6 +17,8 @@
 #import "NodePickerScopeCell.h"
 #import "UIColor+Custom.h"
 
+static CGFloat const kCellHeight = 64.0f;
+
 NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifier";
 
 @interface NodePickerScopeViewController ()
@@ -44,7 +46,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"nodes.picker.scope.title", @"Node Picker Scope");
+    self.title = NSLocalizedString(@"nodes.picker.list.title", @"Attachments");
     [self configureScopeView];
     
     UINib *cellNib = [UINib nibWithNibName:@"NodePickerScopeCell" bundle:nil];
@@ -158,14 +160,19 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     return self.tableViewData.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kCellHeight;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NodePickerScopeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kNodePickerScopeCellIdentifier];
     
     MainMenuItem *currentItem = self.tableViewData[indexPath.row];
-    cell.label.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
-    cell.imageView.tintColor = [UIColor appTintColor];
-    cell.imageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    cell.label.text = NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title");
+    cell.thumbnail.tintColor = [UIColor appTintColor];
+    cell.thumbnail.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     return cell;
 }

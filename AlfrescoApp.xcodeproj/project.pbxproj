@@ -30,6 +30,9 @@
 		080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */; };
 		080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A813018573CBC00B79306 /* CertificateDocumentFilter.m */; };
 		080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */; };
+		08263A7C18E9A7CE00BE84B6 /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */; };
+		08263A7F18E9E00D00BE84B6 /* NodePickerListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */; };
+		08263A8118E9E07C00BE84B6 /* NodePickerListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */; };
 		0830260B18DC52D700A0D0A0 /* TaskPriorityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */; };
 		0830260D18DC52F400A0D0A0 /* TaskPriorityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */; };
 		0830261018DC5EDA00A0D0A0 /* TaskApproversCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0830260F18DC5EDA00A0D0A0 /* TaskApproversCell.m */; };
@@ -72,7 +75,6 @@
 		0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05B18D9A9E30035370A /* PeoplePicker.m */; };
 		0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */; };
 		0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */; };
-		0880753618E441F100E000E3 /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */; };
 		088228641843722B006E58A4 /* RequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228631843722B006E58A4 /* RequestHandler.m */; };
 		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
 		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
@@ -565,6 +567,10 @@
 		080A813018573CBC00B79306 /* CertificateDocumentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CertificateDocumentFilter.m; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.m"; sourceTree = "<group>"; };
 		080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConfigurationManager.h; sourceTree = "<group>"; };
 		080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppConfigurationManager.m; sourceTree = "<group>"; };
+		08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
+		08263A7D18E9E00D00BE84B6 /* NodePickerListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerListCell.h; sourceTree = "<group>"; };
+		08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerListCell.m; sourceTree = "<group>"; };
+		08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerListCell.xib; sourceTree = "<group>"; };
 		0830260918DC52D600A0D0A0 /* TaskPriorityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskPriorityCell.h; sourceTree = "<group>"; };
 		0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskPriorityCell.m; sourceTree = "<group>"; };
 		0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskPriorityCell.xib; sourceTree = "<group>"; };
@@ -649,7 +655,6 @@
 		089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
 		089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeCell.h; sourceTree = "<group>"; };
 		089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeCell.m; sourceTree = "<group>"; };
-		089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
 		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
@@ -1439,7 +1444,10 @@
 			children = (
 				089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */,
 				089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */,
-				089FB02818D7552D00AB4613 /* NodePickerScopeCell.xib */,
+				08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */,
+				08263A7D18E9E00D00BE84B6 /* NodePickerListCell.h */,
+				08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */,
+				08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */,
 			);
 			path = NodePickerScope;
 			sourceTree = "<group>";
@@ -3018,6 +3026,7 @@
 				737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */,
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				271DC772189C2D250059D1B2 /* status-sync-loading.png in Resources */,
+				08263A8118E9E07C00BE84B6 /* NodePickerListCell.xib in Resources */,
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
 				27F054D61891832B00C2454C /* app-icon-144.png in Resources */,
 				080A812418561E6D00B79306 /* certificate@2x.png in Resources */,
@@ -3235,7 +3244,7 @@
 				271DC777189C2D250059D1B2 /* status-sync-synced@2x.png in Resources */,
 				73881F6E188956390052C75F /* WebBrowserViewController.xib in Resources */,
 				27E84E8C18AD53510024B658 /* mainmenu-sync.png in Resources */,
-				0880753618E441F100E000E3 /* NodePickerScopeCell.xib in Resources */,
+				08263A7C18E9A7CE00BE84B6 /* NodePickerScopeCell.xib in Resources */,
 				08E1EA2618DB057900F9052F /* TaskHeaderView.xib in Resources */,
 				73B95ABE17A68B7E0099FB84 /* actionButton@2x.png in Resources */,
 				73B95ABF17A68B7E0099FB84 /* comments.png in Resources */,
@@ -3485,6 +3494,7 @@
 				73B95B0317A68DF20099FB84 /* SitesListViewController.m in Sources */,
 				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
+				08263A7F18E9E00D00BE84B6 /* NodePickerListCell.m in Sources */,
 				088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
 			);

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="52" id="dMl-Oa-tOq" customClass="NodePickerListCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dMl-Oa-tOq" id="bfb-dA-cgp">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PlJ-FB-V4Y" customClass="ThumbnailImageView">
+                        <rect key="frame" x="12" y="10" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="FVr-uW-Hjm"/>
+                            <constraint firstAttribute="width" constant="32" id="mmU-Ck-Bs1"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BFP-T3-rlV">
+                        <rect key="frame" x="58" y="15" width="242" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="BFP-T3-rlV" secondAttribute="centerY" id="IdQ-gD-6Lb"/>
+                    <constraint firstItem="BFP-T3-rlV" firstAttribute="leading" secondItem="PlJ-FB-V4Y" secondAttribute="trailing" constant="14" id="euS-Jd-rpF"/>
+                    <constraint firstAttribute="centerY" secondItem="PlJ-FB-V4Y" secondAttribute="centerY" id="kpN-La-jql"/>
+                    <constraint firstAttribute="trailing" secondItem="BFP-T3-rlV" secondAttribute="trailing" constant="20" id="mKh-re-7Qz"/>
+                    <constraint firstItem="PlJ-FB-V4Y" firstAttribute="leading" secondItem="bfb-dA-cgp" secondAttribute="leading" constant="12" id="uk1-BN-vbP"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="label" destination="BFP-T3-rlV" id="GGO-Hb-dTN"/>
+                <outlet property="thumbnail" destination="PlJ-FB-V4Y" id="pzC-Gc-QtP"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

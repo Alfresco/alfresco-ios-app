@@ -118,11 +118,6 @@
         }
     }];
     [self.multiSelectToolbar userDidDeselectItem:existingPerson];
-    
-    if (self.mode == PeoplePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(peoplePicker:didDeselectPerson:)])
-    {
-        [self.delegate peoplePicker:self didDeselectPerson:existingPerson];
-    }
 }
 
 - (void)deselectAllPeople

@@ -266,8 +266,10 @@
  **/
 "nodes.picker.attachments.select" = "Select attachments...";
 "nodes.picker.list.title" = "Attachments";
+"nodes.picker.list.attachments.section.title" = "Selected Attachments";
+"nodes.picker.list.attachments.section.footer" = "Swipe to delete";
 "nodes.picker.button.select.documents" = "Select Document(s)";
-"nodes.picker.button.select.documents.counter" = "Select (%u) Document(s)";
+"nodes.picker.button.select.documents.counter" = "Select %u Document(s)";
 "nodes.picker.button.deselectAll" = "Deselect All";
 "nodes.picker.button.deselectAll.counter" = "Deselect All";
 "nodes.picker.button.select.folder" = "Select this folder";
