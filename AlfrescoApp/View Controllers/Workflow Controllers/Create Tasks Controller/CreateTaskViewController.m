@@ -129,54 +129,36 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 - (void)createTaskButtonTapped:(id)sender
 {
-    NSString *processDefinitionKey = @"";
-    if (self.session.repositoryInfo.capabilities.doesSupportActivitiWorkflowEngine)
+    WorkflowType workflowType = self.workflowType;
+    if (workflowType == WorkflowTypeReview)
     {
-        if (self.workflowType == WorkflowTypeTodo)
-        {
-            processDefinitionKey = @"activitiAdhoc";
-        }
-        else
-        {
-            processDefinitionKey = (self.assignees.count > 1) ? @"activitiParallelReview" : @"activitiReview";
-        }
+        workflowType = (self.assignees.count > 1) ? workflowTypeReviewAndApprove : WorkflowTypeReview;
     }
-    else if (self.session.repositoryInfo.capabilities.doesSupportJBPMWorkflowEngine)
-    {
-        processDefinitionKey = (self.workflowType == WorkflowTypeTodo) ? @"adhoc" : @"review";
-    }
+    NSString *processDefinitionKey = [WorkflowHelper processDefinitionKeyForWorkflowType:workflowType session:self.session];
     
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
     [progressHUD show:YES];
     
-    [self.workflowService retrieveProcessDefinitionsWithCompletionBlock:^(NSArray *array, NSError *error) {
-        
-        NSArray *filteredArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.key ENDSWITH[cd] %@", processDefinitionKey]];
-        AlfrescoWorkflowProcessDefinition *processDefinition = filteredArray.firstObject;
+    [self.workflowService retrieveProcessDefinitionWithKey:processDefinitionKey completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
         
         if (processDefinition)
         {
             NSString *title = [self.titleField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            NSInteger priority = self.prioritySegmentControl.selectedSegmentIndex + 1;
+            NSNumber *priority = @(self.prioritySegmentControl.selectedSegmentIndex + 1);
+            NSNumber *sendNotification = @(self.emailNotificationSwitch.isOn);
+            NSDictionary *variables = nil;
             
-            NSMutableDictionary *variables = [@{kAlfrescoWorkflowProcessDescription : title, kAlfrescoWorkflowProcessPriority : @(priority)} mutableCopy];
-            if (self.emailNotificationSwitch.isOn)
-            {
-                [variables setValue:@"true" forKey:kAlfrescoWorkflowProcessSendEmailNotification];
-            }
-            if (self.dueDate)
-            {
-                // This will change once SDK is updated to support NSDate for dueDate
-                NSNumber *dueDateInterval = [NSNumber numberWithLongLong:[self.dueDate timeIntervalSince1970] * 1000];  // converting dueDate to milliseconds since 1970
-                [variables setValue:dueDateInterval forKey:kAlfrescoWorkflowProcessDueDate];
-            }
             if (self.workflowType == WorkflowTypeReview)
             {
                 NSInteger approvalRate = round((self.approversCell.stepper.value / self.assignees.count) * 100);
-                [variables setValue:[NSNumber numberWithInteger:approvalRate] forKey:kAlfrescoWorkflowProcessApprovalRate];
+                variables = @{kAlfrescoWorkflowProcessApprovalRate : @(approvalRate)};
             }
             
             [self.workflowService startProcessForProcessDefinition:processDefinition
+                                                              name:title
+                                                          priority:priority
+                                                           dueDate:self.dueDate
+                                             sendEmailNotification:sendNotification
                                                          assignees:self.assignees
                                                          variables:variables
                                                        attachments:self.attachments

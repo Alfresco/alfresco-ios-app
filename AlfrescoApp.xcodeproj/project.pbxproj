@@ -33,6 +33,7 @@
 		08263A7C18E9A7CE00BE84B6 /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */; };
 		08263A7F18E9E00D00BE84B6 /* NodePickerListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */; };
 		08263A8118E9E07C00BE84B6 /* NodePickerListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */; };
+		082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 082ED88818EC21A100518216 /* WorkflowHelper.m */; };
 		0830260B18DC52D700A0D0A0 /* TaskPriorityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */; };
 		0830260D18DC52F400A0D0A0 /* TaskPriorityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */; };
 		0830261018DC5EDA00A0D0A0 /* TaskApproversCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0830260F18DC5EDA00A0D0A0 /* TaskApproversCell.m */; };
@@ -571,6 +572,8 @@
 		08263A7D18E9E00D00BE84B6 /* NodePickerListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerListCell.h; sourceTree = "<group>"; };
 		08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerListCell.m; sourceTree = "<group>"; };
 		08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerListCell.xib; sourceTree = "<group>"; };
+		082ED88718EC21A100518216 /* WorkflowHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkflowHelper.h; sourceTree = "<group>"; };
+		082ED88818EC21A100518216 /* WorkflowHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkflowHelper.m; sourceTree = "<group>"; };
 		0830260918DC52D600A0D0A0 /* TaskPriorityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskPriorityCell.h; sourceTree = "<group>"; };
 		0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskPriorityCell.m; sourceTree = "<group>"; };
 		0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskPriorityCell.xib; sourceTree = "<group>"; };
@@ -689,7 +692,6 @@
 		08E1EA3B18DB2E1200F9052F /* CreateTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTaskViewController.h; sourceTree = "<group>"; };
 		08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTaskViewController.m; sourceTree = "<group>"; };
 		08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateTaskViewController.xib; sourceTree = "<group>"; };
-		08E1EA4718DB404200F9052F /* WorkflowTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkflowTypes.h; sourceTree = "<group>"; };
 		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
 		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
 		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
@@ -1555,7 +1557,8 @@
 				08E1EA3B18DB2E1200F9052F /* CreateTaskViewController.h */,
 				08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */,
 				08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */,
-				08E1EA4718DB404200F9052F /* WorkflowTypes.h */,
+				082ED88718EC21A100518216 /* WorkflowHelper.h */,
+				082ED88818EC21A100518216 /* WorkflowHelper.m */,
 				08344EF518E2E64E00B061C0 /* DatePickerViewController.h */,
 				08344EF618E2E64E00B061C0 /* DatePickerViewController.m */,
 				08344EF718E2E64E00B061C0 /* DatePickerViewController.xib */,
@@ -3440,6 +3443,7 @@
 				08E1EA2F18DB057900F9052F /* ProcessTasksCell.m in Sources */,
 				08E1EA3718DB06D100F9052F /* TaskTypeViewController.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
+				082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0830261018DC5EDA00A0D0A0 /* TaskApproversCell.m in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,

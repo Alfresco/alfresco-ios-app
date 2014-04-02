@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WorkflowTypes.h"
+#import "WorkflowHelper.h"
 #import "NodePicker.h"
 #import "PeoplePicker.h"
 #import "DatePickerViewController.h"

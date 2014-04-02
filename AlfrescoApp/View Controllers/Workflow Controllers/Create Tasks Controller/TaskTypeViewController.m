@@ -8,7 +8,7 @@
 
 #import "TaskTypeViewController.h"
 #import "CreateTaskViewController.h"
-#import "WorkflowTypes.h"
+#import "WorkflowHelper.h"
 
 static NSString * const kTaskTypeCellIdentifier = @"TaskTypeCellIdentifier";
 
@@ -102,7 +102,7 @@ static CGFloat const kTaskTypeFooterHeight = 28.0f;
     footerLabel.numberOfLines = 0;
     footerLabel.backgroundColor = self.tableView.backgroundColor;
     footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor colorWithRed:76.0/255.0f green:86.0/255.0f blue:108.0/255.0f alpha:1];
+    footerLabel.textColor = [UIColor colorWithRed:76.0/255.0f green:86.0/255.0f blue:108.0/255.0f alpha:1.0f];
     footerLabel.font = [UIFont systemFontOfSize:15];
     [footerLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
     
