@@ -22,14 +22,14 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CBP-G3-7ak">
-                        <rect key="frame" x="67" y="6" width="244" height="30"/>
+                        <rect key="frame" x="67" y="6" width="241" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="CBP-G3-7ak" secondAttribute="trailing" constant="9" id="6Gl-JV-yQn"/>
+                    <constraint firstAttribute="trailing" secondItem="CBP-G3-7ak" secondAttribute="trailing" constant="12" id="6Gl-JV-yQn"/>
                     <constraint firstItem="CBP-G3-7ak" firstAttribute="top" secondItem="4bz-Vo-ZDx" secondAttribute="top" constant="6" id="RKn-vQ-uml"/>
                     <constraint firstItem="L1C-3q-825" firstAttribute="top" secondItem="4bz-Vo-ZDx" secondAttribute="top" constant="9" id="Sth-yL-obb"/>
                     <constraint firstAttribute="bottom" secondItem="CBP-G3-7ak" secondAttribute="bottom" constant="7" id="W2N-za-mxs"/>

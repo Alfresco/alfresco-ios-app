@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PeoplePicker.h"
 
-@interface PeoplePickerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@interface PeoplePickerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session peoplePicker:(PeoplePicker *)peoplePicker;
 

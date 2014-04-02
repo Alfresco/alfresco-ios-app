@@ -128,7 +128,15 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
         }
         else
         {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            // pop to view controller just before Picker contollers
+            NSInteger nextViewControllerIndex = [self.navigationController.viewControllers indexOfObject:self.nextController];
+            NSInteger previousControllerIndex = nextViewControllerIndex > 0 ? (nextViewControllerIndex - 1) : NSNotFound;
+            
+            if (previousControllerIndex != NSNotFound)
+            {
+                UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:previousControllerIndex];
+                [self.navigationController popToViewController:previousViewController animated:YES];
+            }
         }
     }
     else if (self.mode == NodePickerModeSingleSelect)
@@ -227,11 +235,6 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
         }
     }];
     [self.multiSelectToolbar userDidDeselectItem:existingNode];
-    
-    if (self.mode == NodePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(nodePicker:didDeselectNode:)])
-    {
-        [self.delegate nodePicker:self didDeselectNode:existingNode];
-    }
 }
 
 - (void)deselectAllNodes

@@ -12,7 +12,7 @@
 
 @interface NodePickerFavoritesViewController : ParentListViewController
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node
+- (instancetype)initWithParentNode:(AlfrescoFolder *)node
                            session:(id<AlfrescoSession>)session
               nodePickerController:(NodePicker *)nodePicker;
 

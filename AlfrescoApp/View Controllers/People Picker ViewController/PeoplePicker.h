@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
 
 @optional
 - (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople;
-- (void)peoplePicker:(PeoplePicker *)peoplePicker didDeselectPerson:(AlfrescoPerson *)person;
 
 @end
 
@@ -48,7 +47,7 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
  * @param People Picker Mode
  * @param modally - whether or not to display the picker modally
  */
-- (void)startWithPeople:(NSMutableArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
+- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
 
 /*
  * cancel people picker

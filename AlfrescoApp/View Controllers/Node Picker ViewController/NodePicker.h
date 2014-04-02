@@ -29,7 +29,6 @@ typedef NS_ENUM(NSInteger, NodePickerMode)
 
 @optional
 - (void)nodePicker:(NodePicker *)nodePicker didSelectNodes:(NSArray *)selectedNodes;
-- (void)nodePicker:(NodePicker *)nodePicker didDeselectNode:(AlfrescoNode *)node;
 
 @end
 

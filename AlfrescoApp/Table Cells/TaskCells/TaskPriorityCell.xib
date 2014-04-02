@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="a6N-vt-nsm" customClass="TaskPriorityCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a6N-vt-nsm" id="vF2-nf-MOE">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="afa-w8-E1V">
+                        <rect key="frame" x="117" y="8" width="191" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <segments>
+                            <segment title="High"/>
+                            <segment title="Medium"/>
+                            <segment title="Low"/>
+                        </segments>
+                    </segmentedControl>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqr-Ty-sgj">
+                        <rect key="frame" x="12" y="11" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="hqr-Ty-sgj" secondAttribute="centerY" id="9jJ-lq-MvK"/>
+                    <constraint firstAttribute="centerY" secondItem="afa-w8-E1V" secondAttribute="centerY" id="ntW-SW-j6j"/>
+                    <constraint firstItem="hqr-Ty-sgj" firstAttribute="leading" secondItem="vF2-nf-MOE" secondAttribute="leading" constant="12" id="qot-b6-vhf"/>
+                    <constraint firstAttribute="trailing" secondItem="afa-w8-E1V" secondAttribute="trailing" constant="12" id="y0w-cA-myO"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="segmentControl" destination="afa-w8-E1V" id="Ofj-bw-Pfh"/>
+                <outlet property="titleLabel" destination="hqr-Ty-sgj" id="VIB-0g-TAr"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

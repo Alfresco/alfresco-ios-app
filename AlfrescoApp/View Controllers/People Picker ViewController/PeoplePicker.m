@@ -41,10 +41,10 @@
     return self;
 }
 
-- (void)startWithPeople:(NSMutableArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
+- (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
 {
     self.mode = mode;
-    self.peopleAlreadySelected = people;
+    self.peopleAlreadySelected = [people mutableCopy];
     
     if (!self.multiSelectToolbar)
     {
@@ -80,7 +80,15 @@
     }
     else
     {
-        [self.peoplePickerNavigationController popToRootViewControllerAnimated:YES];
+        // pop to view controller just before Picker contollers
+        NSInteger nextViewControllerIndex = [self.navigationController.viewControllers indexOfObject:self.peoplePickerViewController];
+        NSInteger previousControllerIndex = nextViewControllerIndex > 0 ? (nextViewControllerIndex - 1) : NSNotFound;
+        
+        if (previousControllerIndex != NSNotFound)
+        {
+            UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:previousControllerIndex];
+            [self.navigationController popToViewController:previousViewController animated:YES];
+        }
     }
 }
 
@@ -105,16 +113,11 @@
         
         if ([person.identifier isEqualToString:selectedPerson.identifier])
         {
-            existingPerson = person;
+            existingPerson = selectedPerson;
             *stop = YES;
         }
     }];
     [self.multiSelectToolbar userDidDeselectItem:existingPerson];
-    
-    if (self.mode == PeoplePickerModeMultiSelect && [self.delegate respondsToSelector:@selector(peoplePicker:didDeselectPerson:)])
-    {
-        [self.delegate peoplePicker:self didDeselectPerson:existingPerson];
-    }
 }
 
 - (void)deselectAllPeople

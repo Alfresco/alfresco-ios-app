@@ -266,8 +266,10 @@
  **/
 "nodes.picker.attachments.select" = "Select attachments...";
 "nodes.picker.list.title" = "Attachments";
+"nodes.picker.list.attachments.section.title" = "Selected Attachments";
+"nodes.picker.list.attachments.section.footer" = "Swipe to delete";
 "nodes.picker.button.select.documents" = "Select Document(s)";
-"nodes.picker.button.select.documents.counter" = "Select (%u) Document(s)";
+"nodes.picker.button.select.documents.counter" = "Select %u Document(s)";
 "nodes.picker.button.deselectAll" = "Deselect All";
 "nodes.picker.button.deselectAll.counter" = "Deselect All";
 "nodes.picker.button.select.folder" = "Select this folder";
@@ -278,10 +280,13 @@
  * People Picker
  */
 "people.picker.title" = "Choose assignee";
-"people.picker.list.title" = "";
 "people.picker.assignees.select" = "Select assignees...";
 "people.picker.assignee.select" = "Select assignee...";
 "people.picker.list.title" = "Assignees";
+"people.picker.search.results.section.title" = "Search Results";
+"people.picker.selected.people.section.title" = "Selected People";
+"people.picker.search.title" = "Search People";
+"people.picker.search.no.results" = "No Search Results";
 
 /**
  * About View Controller
@@ -502,6 +507,41 @@
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";
+
+/**
+ * Create Tasks
+ */
+"task.choose.task.type.title" = "Choose task type";
+"task.type.workflow.todo" = "Todo";
+"task.type.workflow.review.and.approve" = "Review & Approve";
+"task.type.workflow.todo.footer" = "Assign a task to a person.";
+"task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve documents.";
+
+"task.create.title" = "Create Task";
+"task.create.button" = "Create";
+"task.create.taskTitle" = "Title";
+"task.create.taskTitle.placeholder" = "New task";
+"task.create.duedate" = "Due on";
+"task.create.duedate.placeholder" = "No date";
+"task.create.assignee" = "Assignee";
+"task.create.assignees" = "Assignees";
+"task.create.assignee.placeholder" = "No Assignee";
+"task.create.attachment" = "Attachment";
+"task.create.attachments" = "Attachments";
+"task.create.attachments.placeholder" = "No attachments";
+"task.create.priority" = "Priority";
+"task.create.priority.high" = "High";
+"task.create.priority.medium" = "Medium";
+"task.create.priority.low" = "Low";
+"task.create.emailnotification" = "Email notification";
+"task.create.approvers" = "Approvers";
+"task.create.approver" = "Approver";
+"task.create.created" = "Task created";
+"task.create.error" = "Task creation failed";
+
+/* Date picker */
+"date.picker.title" = "Calendar";
+"date.picker.today" = "Today";
 
 /**
  * Settings
