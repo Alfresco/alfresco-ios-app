@@ -113,7 +113,7 @@
         
         if ([person.identifier isEqualToString:selectedPerson.identifier])
         {
-            existingPerson = person;
+            existingPerson = selectedPerson;
             *stop = YES;
         }
     }];

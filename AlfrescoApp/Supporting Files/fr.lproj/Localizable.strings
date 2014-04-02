@@ -280,10 +280,13 @@
  * People Picker
  */
 "people.picker.title" = "Choose assignee";
-"people.picker.list.title" = "";
 "people.picker.assignees.select" = "Select assignees...";
 "people.picker.assignee.select" = "Select assignee...";
 "people.picker.list.title" = "Assignees";
+"people.picker.search.results.section.title" = "Search Results";
+"people.picker.selected.people.section.title" = "Selected People";
+"people.picker.search.title" = "Search People";
+"people.picker.search.no.results" = "No Search Results";
 
 /**
  * About View Controller

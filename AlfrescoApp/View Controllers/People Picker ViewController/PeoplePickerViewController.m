@@ -6,19 +6,26 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-static NSString * const kCellReuseIdentifier = @"PersonCell";
+static NSString * const kCustomCellReuseIdentifier = @"CustomPersonCell";
+static NSString * const kDefaultCellReuseIdentifier = @"DefaultPersonCell";
+
+static NSInteger const kSearchResultsIndex = 0;
 
 #import "PeoplePickerViewController.h"
 #import "AvatarManager.h"
 #import "PersonCell.h"
+#import "MBProgressHud.h"
 
 @interface PeoplePickerViewController ()
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
 @property (nonatomic, weak) PeoplePicker *peoplePicker;
-@property (nonatomic, strong) NSArray *searchResults;
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSArray *tableViewData;
+@property (nonatomic, strong) NSArray *groupHeaderTitles;
+
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 
 @end
 
@@ -42,8 +49,11 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.searchBar.delegate = self;
+    [self.searchBar becomeFirstResponder];
     
     self.title = NSLocalizedString(@"people.picker.title", @"Choose Assignee");
+    self.searchBar.placeholder = NSLocalizedString(@"people.picker.search.title", @"Search People");
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                 target:self
@@ -55,17 +65,18 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
                                                                                   action:@selector(cancelButtonPressed:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    [self.searchDisplayController.searchResultsTableView setEditing:YES];
-    [self.searchDisplayController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
     [self.tableView setEditing:YES];
     [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
-    self.searchDisplayController.searchResultsTableView.contentInset = edgeInset;
+    NSMutableArray *searchResults = [@[NSLocalizedString(@"people.picker.search.no.results", @"No Search Results")] mutableCopy];
+    NSMutableArray *selectedPeople = self.peoplePicker.selectedPeople ? [self.peoplePicker.selectedPeople mutableCopy] : [NSMutableArray array];
+    
+    self.tableViewData = @[searchResults, selectedPeople];
+    self.groupHeaderTitles = @[NSLocalizedString(@"people.picker.search.results.section.title", @"Searched Results"), NSLocalizedString(@"people.picker.selected.people.section.title", @"Selected People")];
     
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
-    [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:kCellReuseIdentifier];
-    [self.tableView registerNib:nib forCellReuseIdentifier:kCellReuseIdentifier];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kCustomCellReuseIdentifier];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kDefaultCellReuseIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -88,114 +99,148 @@ static NSString * const kCellReuseIdentifier = @"PersonCell";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.tableViewData.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger numberOfRows = 0;
-    if (tableView == self.tableView)
-    {
-        numberOfRows = [[self.peoplePicker selectedPeople] count];
-    }
-    else
-    {
-        numberOfRows = self.searchResults.count;
-    }
-    return numberOfRows;
+    return [self.tableViewData[section] count];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id item = self.tableViewData[indexPath.section][indexPath.row];
+    return [item isKindOfClass:[AlfrescoPerson class]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
+    UITableViewCell *tableCell = nil;
+    id item = self.tableViewData[indexPath.section][indexPath.row];
     
-    AlfrescoPerson *person = nil;
-    
-    if (tableView == self.tableView)
+    if ([item isKindOfClass:[AlfrescoPerson class]])
     {
-        person = [self.peoplePicker selectedPeople][indexPath.row];
+        PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:kCustomCellReuseIdentifier forIndexPath:indexPath];
+        AlfrescoPerson *person = (AlfrescoPerson *)item;
+        cell.nameLabel.text = person.fullName;
+        
+        AvatarManager *avatarManager = [AvatarManager sharedManager];
+        
+        [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
+            
+            cell.avatarImageView.image = image;
+        }];
+        
+        if ([self.peoplePicker isPersonSelected:person])
+        {
+            [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        tableCell = cell;
     }
     else
     {
-        person = self.searchResults[indexPath.row];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kDefaultCellReuseIdentifier forIndexPath:indexPath];
+        cell.textLabel.text = item;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        tableCell = cell;
     }
     
-    cell.nameLabel.text = person.fullName;
-    
-    AvatarManager *avatarManager = [AvatarManager sharedManager];
-    
-    [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
-        
-        cell.avatarImageView.image = image;
-    }];
-    
-    if ([self.peoplePicker isPersonSelected:person])
-    {
-        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
-    
-    return cell;
+    return tableCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoPerson *person = nil;
+    id item = self.tableViewData[indexPath.section][indexPath.row];
     
-    if (tableView == self.tableView)
+    if ([item isKindOfClass:[AlfrescoPerson class]])
     {
-        person = [self.peoplePicker selectedPeople][indexPath.row];
-    }
-    else
-    {
-        person = self.searchResults[indexPath.row];
-    }
-    
-    if (self.peoplePicker.mode == PeoplePickerModeSingleSelect)
-    {
-        [self.peoplePicker deselectAllPeople];
-        [self.peoplePicker selectPerson:person];
-        [self.peoplePicker pickingPeopleComplete];
-    }
-    else
-    {
-        [self.peoplePicker selectPerson:person];
+        AlfrescoPerson *person = (AlfrescoPerson *)item;
+        if (self.peoplePicker.mode == PeoplePickerModeSingleSelect)
+        {
+            [self.peoplePicker deselectAllPeople];
+            [self.peoplePicker selectPerson:person];
+            [self.peoplePicker pickingPeopleComplete];
+        }
+        else
+        {
+            [self.peoplePicker selectPerson:person];
+            [self updateSelectedPeopleSectionData:person];
+        }
     }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoPerson *person = nil;
+    id item = self.tableViewData[indexPath.section][indexPath.row];
     
-    if (tableView == self.tableView)
+    if ([item isKindOfClass:[AlfrescoPerson class]])
     {
-        person = [self.peoplePicker selectedPeople][indexPath.row];
+        AlfrescoPerson *person = (AlfrescoPerson *)item;
+        [self.peoplePicker deselectPerson:person];
+        [tableView reloadData];
     }
-    else
-    {
-        person = self.searchResults[indexPath.row];
-    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *headerTitle = nil;
     
-    [self.peoplePicker deselectPerson:person];
-    [tableView reloadData];
+    if ([self.tableViewData[section] count] != 0)
+    {
+        headerTitle = self.groupHeaderTitles[section];
+    }
+    return headerTitle;
+}
+
+#pragma mark - Private Methods
+
+- (void)updateSelectedPeopleSectionData:(AlfrescoPerson *)selectedPerson
+{
+    NSMutableArray *selectedPeople = self.tableViewData.lastObject;
+    
+    __block BOOL personExists = NO;
+    [selectedPeople enumerateObjectsUsingBlock:^(AlfrescoPerson *person, NSUInteger index, BOOL *stop) {
+        
+        if ([person.identifier isEqualToString:selectedPerson.identifier])
+        {
+            personExists = YES;
+            *stop = YES;
+        }
+    }];
+    
+    if (!personExists)
+    {
+        [selectedPeople addObject:selectedPerson];
+    }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Search Bar Delegates
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    [searchBar resignFirstResponder];
+    
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
+    [progressHUD show:YES];
+    
     [self.personService searchWithKeywords:self.searchBar.text completionBlock:^(NSArray *array, NSError *error) {
         
-        if (!error)
+        [progressHUD hide:YES];
+        
+        NSMutableArray *searchResults = self.tableViewData[kSearchResultsIndex];
+        [searchResults removeAllObjects];
+        
+        if (error || array.count == 0)
         {
-            self.searchResults = array;
-            [self.searchDisplayController.searchResultsTableView reloadData];
+            [searchResults addObject:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results")];
         }
+        else
+        {
+            [searchResults addObjectsFromArray:array];
+        }
+        [self.tableView reloadData];
     }];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self.tableView reloadData];
 }
 
 @end
