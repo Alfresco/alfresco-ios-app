@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PeoplePickerViewController">
             <connections>
-                <outlet property="searchBar" destination="8zu-gc-Tk7" id="9jD-6V-fUJ"/>
-                <outlet property="searchDisplayController" destination="fUV-do-Xgv" id="pW1-ac-UdC"/>
+                <outlet property="searchBar" destination="zbK-D3-Mcj" id="SUZ-Kh-duA"/>
                 <outlet property="tableView" destination="bjs-hX-jcR" id="99O-Un-we4"/>
                 <outlet property="view" destination="1" id="Fyl-jy-Qdq"/>
             </connections>
@@ -17,29 +16,27 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="8zu-gc-Tk7">
-                    <rect key="frame" x="0.0" y="2" width="320" height="44"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="bjs-hX-jcR">
+                    <rect key="frame" x="0.0" y="46" width="320" height="517"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </tableView>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="zbK-D3-Mcj">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="Qtr-dz-F9u"/>
-                    </connections>
                 </searchBar>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bjs-hX-jcR">
-                    <rect key="frame" x="10" y="46" width="300" height="517"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="bjs-hX-jcR" firstAttribute="top" secondItem="8zu-gc-Tk7" secondAttribute="bottom" id="4Ad-2B-FOU"/>
-                <constraint firstItem="8zu-gc-Tk7" firstAttribute="top" secondItem="1" secondAttribute="top" constant="2" id="B09-qH-Nyt"/>
-                <constraint firstItem="8zu-gc-Tk7" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="J6p-0t-sTR"/>
-                <constraint firstAttribute="trailing" secondItem="8zu-gc-Tk7" secondAttribute="trailing" id="JOQ-rf-qwW"/>
-                <constraint firstAttribute="trailing" secondItem="bjs-hX-jcR" secondAttribute="trailing" constant="10" id="V5Z-aS-xeg"/>
+                <constraint firstItem="bjs-hX-jcR" firstAttribute="top" secondItem="zbK-D3-Mcj" secondAttribute="bottom" constant="2" id="2wX-F7-91i"/>
+                <constraint firstItem="zbK-D3-Mcj" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Dcz-w5-6MS"/>
+                <constraint firstAttribute="trailing" secondItem="bjs-hX-jcR" secondAttribute="trailing" id="V5Z-aS-xeg"/>
                 <constraint firstAttribute="bottom" secondItem="bjs-hX-jcR" secondAttribute="bottom" constant="5" id="ZOr-b4-sDl"/>
-                <constraint firstItem="bjs-hX-jcR" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="gvo-Ym-Lzy"/>
+                <constraint firstItem="bjs-hX-jcR" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="gvo-Ym-Lzy"/>
+                <constraint firstAttribute="trailing" secondItem="zbK-D3-Mcj" secondAttribute="trailing" id="o8x-42-qNx"/>
+                <constraint firstItem="zbK-D3-Mcj" firstAttribute="top" secondItem="1" secondAttribute="top" id="sij-SF-4of"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -48,7 +45,6 @@
         <searchDisplayController id="fUV-do-Xgv">
             <connections>
                 <outlet property="delegate" destination="-1" id="aqY-f2-1ES"/>
-                <outlet property="searchBar" destination="8zu-gc-Tk7" id="fw9-1W-QVq"/>
                 <outlet property="searchContentsController" destination="-1" id="1OM-Bw-StU"/>
                 <outlet property="searchResultsDataSource" destination="-1" id="blo-GB-gud"/>
                 <outlet property="searchResultsDelegate" destination="-1" id="CJn-WG-Wbp"/>

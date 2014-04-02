@@ -18,7 +18,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 @interface NodePickerFavoritesViewController ()
 
-@property (nonatomic) AlfrescoNode *parentNode;
+@property (nonatomic) AlfrescoFolder *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, weak) NodePicker *nodePicker;
 
@@ -26,7 +26,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 @implementation NodePickerFavoritesViewController
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node
+- (instancetype)initWithParentNode:(AlfrescoFolder *)node
                            session:(id<AlfrescoSession>)session
               nodePickerController:(NodePicker *)nodePicker
 {
@@ -93,27 +93,7 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
 {
-    if (folder)
-    {
-        self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
-    }
-    else
-    {
-        self.tableViewData = [[SyncManager sharedManager] syncDocumentsAndFoldersForSession:self.session withCompletionBlock:^(NSMutableArray *syncedNodes) {
-            if (syncedNodes)
-            {
-                if (self.nodePicker.type == NodePickerTypeFolders)
-                {
-                    self.tableViewData = [self foldersInNodes:syncedNodes];
-                }
-                else
-                {
-                    self.tableViewData = syncedNodes;
-                }
-                [self.tableView reloadData];
-            }
-        }];
-    }
+    self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
     
     if (self.nodePicker.type == NodePickerTypeFolders)
     {
@@ -214,7 +194,7 @@ static CGFloat const kCellHeight = 64.0f;
         
         if (isSyncOn)
         {
-            viewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:selectedNode session:self.session nodePickerController:self.nodePicker];
+            viewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:(AlfrescoFolder *)selectedNode session:self.session nodePickerController:self.nodePicker];
             
         }
         else
