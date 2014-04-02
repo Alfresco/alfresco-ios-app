@@ -15,10 +15,7 @@ static NSString * const kTaskTypeCellIdentifier = @"TaskTypeCellIdentifier";
 static NSInteger const kNumberOfSections = 2;
 static NSInteger const kNumberOfRowsInSection = 1;
 
-static NSInteger const kTodoRowNumber = 0;
-static NSInteger const kReviewAndApproveRowNumber = 1;
-
-static CGFloat const kTaskTypeFooterHeight = 28.0f;
+static NSInteger const kSectionNumberAdHoc = 0;
 
 @interface TaskTypeViewController ()
 @property (nonatomic, strong) id<AlfrescoSession> session;
@@ -74,7 +71,7 @@ static CGFloat const kTaskTypeFooterHeight = 28.0f;
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTaskTypeCellIdentifier];
     
-    if (indexPath.section == kTodoRowNumber)
+    if (indexPath.section == kSectionNumberAdHoc)
     {
         cell.textLabel.text = NSLocalizedString(@"task.type.workflow.todo", @"Todo");
     }
@@ -88,42 +85,18 @@ static CGFloat const kTaskTypeFooterHeight = 28.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WorkflowType type = indexPath.section == 0 ? WorkflowTypeTodo : WorkflowTypeReview;
+    WorkflowType type = indexPath.section == 0 ? WorkflowTypeAdHoc : WorkflowTypeReview;
     CreateTaskViewController *createTaskViewController = [[CreateTaskViewController alloc] initWithSession:self.session workflowType:type];
     [self.navigationController pushViewController:createTaskViewController animated:YES];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
-    
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    footerLabel.numberOfLines = 0;
-    footerLabel.backgroundColor = self.tableView.backgroundColor;
-    footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor colorWithRed:76.0/255.0f green:86.0/255.0f blue:108.0/255.0f alpha:1.0f];
-    footerLabel.font = [UIFont systemFontOfSize:15];
-    [footerLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-    
-    if (section == kTodoRowNumber)
+    if (section == kSectionNumberAdHoc)
     {
-        footerLabel.text = NSLocalizedString(@"task.type.workflow.todo.footer", @"Adhoc task description.");
+        return NSLocalizedString(@"task.type.workflow.todo.footer", @"Adhoc task description.");
     }
-    else if (section == kReviewAndApproveRowNumber)
-    {
-        footerLabel.text = NSLocalizedString(@"task.type.workflow.review.and.approve.footer", @"Review and approve task description.");
-    }
-    
-    [footerLabel sizeToFit];
-    [footerView addSubview:footerLabel];
-    
-    return footerLabel;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return kTaskTypeFooterHeight;
+    return NSLocalizedString(@"task.type.workflow.review.and.approve.footer", @"Review and approve task description.");
 }
 
 @end

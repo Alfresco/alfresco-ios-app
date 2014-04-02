@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, WorkflowType)
+typedef NS_ENUM(NSInteger, WorkflowType)
 {
-    WorkflowTypeTodo,
-    WorkflowTypeReview,
-    workflowTypeReviewAndApprove
+    WorkflowTypeAdHoc,
+    WorkflowTypeReview
 };
 
 @interface WorkflowHelper : NSObject
 
-+ (NSString *)processDefinitionKeyForWorkflowType:(WorkflowType)workflowType session:(id<AlfrescoSession>)session;
++ (NSString *)processDefinitionKeyForWorkflowType:(WorkflowType)workflowType numberOfAssignees:(NSUInteger)numberOfAssignees session:(id<AlfrescoSession>)session;
 
 @end

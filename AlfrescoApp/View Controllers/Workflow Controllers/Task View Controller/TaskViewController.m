@@ -116,7 +116,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     __weak typeof(self) weakSelf = self;
 
     [self showHUD];
-    AlfrescoListingContext *tasksListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:self.myTasks.tasksBeforeFiltering.count skipCount:0];
+    AlfrescoListingContext *tasksListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:[@(self.myTasks.tasksBeforeFiltering.count) intValue] skipCount:0];
     [self loadTasksWithListingContext:tasksListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [weakSelf hideHUD];
         if (pagingResult)
@@ -133,7 +133,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         }
     }];
     
-    AlfrescoListingContext *workflowListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:self.tasksIStarted.tasksBeforeFiltering.count skipCount:0];
+    AlfrescoListingContext *workflowListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:[@(self.tasksIStarted.tasksBeforeFiltering.count) intValue] skipCount:0];
     [self loadWorkflowProcessesWithListingContext:workflowListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [weakSelf hideHUD];
         if (pagingResult)
@@ -385,7 +385,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:currentTaskGroup.numberOfTasksBeforeFiltering];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(currentTaskGroup.numberOfTasksBeforeFiltering) intValue]];
         if ([currentTaskGroup hasMoreItems])
         {
             // show more items are loading ...

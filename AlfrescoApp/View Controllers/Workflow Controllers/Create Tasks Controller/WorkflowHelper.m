@@ -21,24 +21,28 @@ static NSString * const kAlfrescoJBPMWorkflowTypeReview = @"wf:Review";
 
 @implementation WorkflowHelper
 
-+ (NSString *)processDefinitionKeyForWorkflowType:(WorkflowType)workflowType session:(id<AlfrescoSession>)session
++ (NSString *)processDefinitionKeyForWorkflowType:(WorkflowType)workflowType numberOfAssignees:(NSUInteger)numberOfAssignees session:(id<AlfrescoSession>)session
 {
     NSString *processDefinitionKey = @"";
     
     BOOL doesSupportActivitiEngine = session.repositoryInfo.capabilities.doesSupportActivitiWorkflowEngine;
     BOOL doesSupportJBPMEngine = session.repositoryInfo.capabilities.doesSupportJBPMWorkflowEngine;
     
-    if (workflowType == WorkflowTypeTodo)
+    // Activiti workflow engine is prioritised over JBPM if both are available
+    if (workflowType == WorkflowTypeAdHoc)
     {
-        processDefinitionKey = doesSupportJBPMEngine ?  kAlfrescoJBPMWorkflowTypeAdhoc : kAlfrescoActivitiWorkflowTypeAdhoc;
-    }
-    else if (workflowType == WorkflowTypeReview)
-    {
-        processDefinitionKey = doesSupportJBPMEngine ?  kAlfrescoJBPMWorkflowTypeReview : kAlfrescoActivitiWorkflowTypeReview;
+        processDefinitionKey = doesSupportActivitiEngine ? kAlfrescoActivitiWorkflowTypeAdhoc : kAlfrescoJBPMWorkflowTypeAdhoc;
     }
     else
     {
-        processDefinitionKey = doesSupportJBPMEngine ?  kAlfrescoJBPMWorkflowTypeParallelReview : kAlfrescoActivitiWorkflowTypeParallelReview;
+        if (numberOfAssignees == 1)
+        {
+            processDefinitionKey = doesSupportActivitiEngine ? kAlfrescoActivitiWorkflowTypeReview : kAlfrescoJBPMWorkflowTypeReview;
+        }
+        else
+        {
+            processDefinitionKey = doesSupportActivitiEngine ? kAlfrescoActivitiWorkflowTypeParallelReview : kAlfrescoJBPMWorkflowTypeParallelReview;
+        }
     }
     
     if (!session.repositoryInfo.capabilities.doesSupportPublicAPI)

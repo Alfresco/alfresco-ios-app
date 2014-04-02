@@ -116,7 +116,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
     NSArray *group1 = @[@(CreateTaskRowTypeTitle), @(CreateTaskRowTypeDueDate)];
     
     NSArray *group2 = nil;
-    if (self.workflowType == WorkflowTypeTodo)
+    if (self.workflowType == WorkflowTypeAdHoc)
     {
         group2 = @[@(CreateTaskRowTypeAssignees), @(CreateTaskRowTypeAttachments)];
     }
@@ -137,12 +137,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 - (void)createTaskButtonTapped:(id)sender
 {
-    WorkflowType workflowType = self.workflowType;
-    if (workflowType == WorkflowTypeReview)
-    {
-        workflowType = (self.assignees.count > 1) ? workflowTypeReviewAndApprove : WorkflowTypeReview;
-    }
-    NSString *processDefinitionKey = [WorkflowHelper processDefinitionKeyForWorkflowType:workflowType session:self.session];
+    NSString *processDefinitionKey = [WorkflowHelper processDefinitionKeyForWorkflowType:self.workflowType numberOfAssignees:self.assignees.count session:self.session];
     
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
     [progressHUD show:YES];
@@ -226,11 +221,11 @@ static CGFloat const kNavigationBarHeight = 44.0f;
         
         if (self.assignees.count == 1)
         {
-            self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%i of %i %@", numberOfApprovers, self.assignees.count, NSLocalizedString(@"task.create.approver", @"Approver")];
+            self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%li of %li %@", (long)numberOfApprovers, (long)self.assignees.count, NSLocalizedString(@"task.create.approver", @"Approver")];
         }
         else
         {
-            self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%i of %i %@", numberOfApprovers, self.assignees.count, NSLocalizedString(@"task.create.approvers", @"Approvers")];
+            self.approversCell.titleLabel.text = [NSString stringWithFormat:@"%li of %li %@", (long)numberOfApprovers, (long)self.assignees.count, NSLocalizedString(@"task.create.approvers", @"Approvers")];
         }
     }
 }
@@ -345,12 +340,12 @@ static CGFloat const kNavigationBarHeight = 44.0f;
         case CreateTaskRowTypeAssignees:
         {
             LabelCell *assigneesCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            assigneesCell.titleLabel.text = self.workflowType == WorkflowTypeTodo ? NSLocalizedString(@"task.create.assignee", @"Assignee") : NSLocalizedString(@"task.create.assignees", @"Assignees");
+            assigneesCell.titleLabel.text = self.workflowType == WorkflowTypeAdHoc ? NSLocalizedString(@"task.create.assignee", @"Assignee") : NSLocalizedString(@"task.create.assignees", @"Assignees");
             if (self.assignees && self.assignees.count > 0)
             {
                 if (self.assignees.count > 1)
                 {
-                    assigneesCell.valueLabel.text = [NSString stringWithFormat:@"%d %@", self.assignees.count, [NSLocalizedString(@"task.create.assignees", @"Assignees") lowercaseString]];
+                    assigneesCell.valueLabel.text = [NSString stringWithFormat:@"%li %@", (long)self.assignees.count, [NSLocalizedString(@"task.create.assignees", @"Assignees") lowercaseString]];
                 }
                 else
                 {
@@ -374,7 +369,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
             {
                 if (self.attachments.count > 1)
                 {
-                    attachmentsCell.valueLabel.text = [NSString stringWithFormat:@"%d %@", self.attachments.count, [NSLocalizedString(@"task.create.attachments", @"Attachments") lowercaseString]];
+                    attachmentsCell.valueLabel.text = [NSString stringWithFormat:@"%li %@", (long)self.attachments.count, [NSLocalizedString(@"task.create.attachments", @"Attachments") lowercaseString]];
                 }
                 else
                 {
@@ -460,7 +455,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
         }
         case CreateTaskRowTypeAssignees:
         {
-            PeoplePickerMode peoplePickerMode = (self.workflowType == WorkflowTypeTodo) ? PeoplePickerModeSingleSelect : PeoplePickerModeMultiSelect;
+            PeoplePickerMode peoplePickerMode = (self.workflowType == WorkflowTypeAdHoc) ? PeoplePickerModeSingleSelect : PeoplePickerModeMultiSelect;
             [self.peoplePicker startWithPeople:self.assignees mode:peoplePickerMode modally:NO];
             break;
         }
@@ -478,7 +473,7 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 #pragma mark - UITextField Notification
 
-- (void)textFieldDidChange:(NSNotification *)note
+- (void)textFieldDidChange:(NSNotification *)notification
 {
     [self validateForm];
 }
