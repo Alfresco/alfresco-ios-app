@@ -3598,9 +3598,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
-					"$(PROJECT_DIR)/AlfrescoApp/Third",
-					Party,
-					Libraries/Flurry,
+					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3731,9 +3729,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
-					"$(PROJECT_DIR)/AlfrescoApp/Third",
-					Party,
-					Libraries/Flurry,
+					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3771,9 +3767,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
-					"$(PROJECT_DIR)/AlfrescoApp/Third",
-					Party,
-					Libraries/Flurry,
+					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
