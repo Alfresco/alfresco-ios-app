@@ -94,9 +94,17 @@ static CGFloat const kNavigationBarHeight = 44.0f;
                                                object:nil];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillLayoutSubviews
 {
-    [super viewDidAppear:animated];
+    if (self.titleField.text.length == 0 && !self.titleField.isFirstResponder)
+    {
+        [self.titleField becomeFirstResponder];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self.tableView reloadData];
     [self validateForm];
 }
@@ -308,7 +316,6 @@ static CGFloat const kNavigationBarHeight = 44.0f;
             else
             {
                 titleCell.valueTextField.placeholder = NSLocalizedString(@"task.create.taskTitle.placeholder", @"required");
-                [titleCell.valueTextField becomeFirstResponder];
             }
             titleCell.valueTextField.returnKeyType = UIReturnKeyDone;
             titleCell.valueTextField.delegate = self;
