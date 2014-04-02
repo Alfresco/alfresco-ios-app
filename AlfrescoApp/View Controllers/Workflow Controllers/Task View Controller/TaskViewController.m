@@ -15,6 +15,7 @@
 #import "Utility.h"
 #import "TaskDetailsViewController.h"
 #import "UniversalDevice.h"
+#import "TaskTypeViewController.h"
 
 static NSString * const kDateFormat = @"dd MMM";
 static NSString * const kActivitiReview = @"activitiReview";
@@ -60,8 +61,13 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
     
     UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"task_filter.png"] style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
-    [self.navigationItem setRightBarButtonItem:filterButton];
     self.filterButton = filterButton;
+    
+    UIBarButtonItem *addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(createTask:)];
+    self.navigationItem.rightBarButtonItem = addTaskButton;
+    self.navigationItem.leftBarButtonItem = filterButton;
     
     if (self.session)
     {
@@ -72,6 +78,14 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
+}
+
+- (void)createTask:(id)sender
+{
+    TaskTypeViewController *taskTypeController = [[TaskTypeViewController alloc] initWithSession:self.session];
+    UINavigationController *newTaskNavigationController = [[UINavigationController alloc] initWithRootViewController:taskTypeController];
+    newTaskNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:newTaskNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Private Functions
@@ -102,7 +116,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     __weak typeof(self) weakSelf = self;
 
     [self showHUD];
-    AlfrescoListingContext *tasksListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:self.myTasks.tasksBeforeFiltering.count skipCount:0];
+    AlfrescoListingContext *tasksListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:[@(self.myTasks.tasksBeforeFiltering.count) intValue] skipCount:0];
     [self loadTasksWithListingContext:tasksListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [weakSelf hideHUD];
         if (pagingResult)
@@ -119,7 +133,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         }
     }];
     
-    AlfrescoListingContext *workflowListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:self.tasksIStarted.tasksBeforeFiltering.count skipCount:0];
+    AlfrescoListingContext *workflowListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:[@(self.tasksIStarted.tasksBeforeFiltering.count) intValue] skipCount:0];
     [self loadWorkflowProcessesWithListingContext:workflowListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [weakSelf hideHUD];
         if (pagingResult)
@@ -371,7 +385,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:currentTaskGroup.numberOfTasksBeforeFiltering];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(currentTaskGroup.numberOfTasksBeforeFiltering) intValue]];
         if ([currentTaskGroup hasMoreItems])
         {
             // show more items are loading ...

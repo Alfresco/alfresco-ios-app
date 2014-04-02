@@ -937,7 +937,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
             
             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:document.identifier inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:YES inManagedObjectContext:nil];
-            syncError.errorCode = [NSNumber numberWithInt:error.code];
+            syncError.errorCode = @(error.code);
             syncError.errorDescription = [error localizedDescription];
             
             nodeInfo.syncError = syncError;
@@ -1026,7 +1026,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                                                                                      inAccountWithId:[self selectedAccountIdentifier]
                                                                                                                                 ifNotExistsCreateNew:YES
                                                                                                                               inManagedObjectContext:nil];
-                                                                            syncError.errorCode = [NSNumber numberWithInt:error.code];
+                                                                            syncError.errorCode = @(error.code);
                                                                             syncError.errorDescription = [error localizedDescription];
                                                                             
                                                                             nodeInfo.syncError = syncError;

@@ -164,7 +164,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
         // retrieve the process definition for the header view
         [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
     }
-    else if (filter == TaskFilterProcess)
+    else // if (filter == TaskFilterProcess)
     {
         // configure the header view for the process
         [self.taskHeaderView configureViewForProcess:self.process];
