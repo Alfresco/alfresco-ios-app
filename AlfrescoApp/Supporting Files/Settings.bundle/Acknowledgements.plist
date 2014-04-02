@@ -16,6 +16,14 @@
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>
+			<string>Flurry</string>
+			<key>File</key>
+			<string>Flurry</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
 			<string>MBProgressHUD</string>
 			<key>File</key>
 			<string>MBProgressHUD</string>

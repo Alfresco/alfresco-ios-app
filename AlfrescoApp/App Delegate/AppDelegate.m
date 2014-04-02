@@ -24,6 +24,7 @@
 #import "MigrationAssistant.h"
 #import "AppConfigurationManager.h"
 #import "UIColor+Custom.h"
+#import "AnalyticsManager.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -81,6 +82,12 @@
         [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"50a2db26b7e3926dcca100aebc019fdd"];
         [[BITHockeyManager sharedHockeyManager] startManager];
         [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+    }
+    
+    // Start analytics only for non-dev builds
+    if (![bundleVersion isEqualToString:@"dev"])
+    {
+        [[AnalyticsManager sharedManager] startAnalytics];
     }
 
     return YES;

@@ -204,6 +204,8 @@
 		27F054DF1891832B00C2454C /* app-icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D21891832B00C2454C /* app-icon-80.png */; };
 		5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB5D92344964A91B3E95A3F /* libPods.a */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
+		730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730B444918EC393B008A0977 /* libFlurry_4.4.0.a */; };
+		730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B444D18EC3A96008A0977 /* AnalyticsManager.m */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
 		73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73190195184365AA002C82C1 /* OnboardingViewController.xib */; };
@@ -792,6 +794,10 @@
 		73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlfrescoSDK.xcodeproj; path = AlfrescoSDK/AlfrescoSDK/AlfrescoSDK.xcodeproj; sourceTree = SOURCE_ROOT; };
 		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
 		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
+		730B444818EC393B008A0977 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		730B444918EC393B008A0977 /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
+		730B444C18EC3A96008A0977 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
+		730B444D18EC3A96008A0977 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
 		73190190183CDF26002C82C1 /* DocumentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentOverlayView.m; path = "Document Overlay View/DocumentOverlayView.m"; sourceTree = "<group>"; };
 		73190193184365AA002C82C1 /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnboardingViewController.h; path = "Onboarding View Controller/OnboardingViewController.h"; sourceTree = "<group>"; };
@@ -1226,6 +1232,7 @@
 				73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
 				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
+				730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */,
 				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
 				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
 			);
@@ -1673,6 +1680,15 @@
 				7304DA7D1884348B00229809 /* VersionHistoryViewController.m */,
 			);
 			path = "Version View Controller";
+			sourceTree = "<group>";
+		};
+		730B444718EC393B008A0977 /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				730B444818EC393B008A0977 /* Flurry.h */,
+				730B444918EC393B008A0977 /* libFlurry_4.4.0.a */,
+			);
+			path = Flurry;
 			sourceTree = "<group>";
 		};
 		7319018E183CDEE0002C82C1 /* Document Overlay View */ = {
@@ -2270,6 +2286,8 @@
 		73B957D017A6750E0099FB84 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				730B444C18EC3A96008A0977 /* AnalyticsManager.h */,
+				730B444D18EC3A96008A0977 /* AnalyticsManager.m */,
 				73922271187C1BF700BFCE21 /* AvatarManager.h */,
 				73922272187C1BF700BFCE21 /* AvatarManager.m */,
 				73B957D117A6750E0099FB84 /* ConnectivityManager.h */,
@@ -2533,6 +2551,7 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				730B444718EC393B008A0977 /* Flurry */,
 				73B0789D189AB4F800D02C43 /* Reachability */,
 				27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */,
 			);
@@ -3454,6 +3473,7 @@
 				088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */,
 				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
 				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
+				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
 				73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
@@ -3669,7 +3689,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(TARGET_BUILD_DIR)\"",
+					"$(TARGET_BUILD_DIR)",
+					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3796,7 +3817,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(TARGET_BUILD_DIR)\"",
+					"$(TARGET_BUILD_DIR)",
+					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3832,7 +3854,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(TARGET_BUILD_DIR)\"",
+					"$(TARGET_BUILD_DIR)",
+					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
