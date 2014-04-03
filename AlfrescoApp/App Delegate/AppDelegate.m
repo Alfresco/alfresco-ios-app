@@ -51,6 +51,8 @@
     
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     self.window.tintColor = [UIColor appTintColor];
+    
+    [self.window makeKeyAndVisible];
 
     AccountManager *accountManager = [AccountManager sharedManager];
     [AppConfigurationManager sharedManager];
@@ -68,8 +70,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
         }];
     }
-    
-    [self.window makeKeyAndVisible];
     
 #ifdef DEBUG
 //    [[AccountManager sharedManager] removeAllAccounts];
