@@ -301,6 +301,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [items addObject:[ActionCollectionItem favouriteItem]];
         [items addObject:[ActionCollectionItem likeItem]];
         [items addObject:[ActionCollectionItem downloadItem]];
+        [items addObject:[ActionCollectionItem sendForReview]];
         
         if (self.documentPermissions.canComment)
         {
@@ -389,6 +390,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierRename])
     {
         [self.actionHandler pressedRenameActionItem:actionItem atPath:self.documentContentFilePath];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierSendForReview])
+    {
+        [self.actionHandler pressedSendForReviewActionItem:actionItem node:self.document];
     }
 }
 

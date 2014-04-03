@@ -12,19 +12,9 @@
 #import "PeoplePicker.h"
 #import "DatePickerViewController.h"
 
-typedef NS_ENUM(NSInteger, CreateTaskRowType)
-{
-    CreateTaskRowTypeTitle,
-    CreateTaskRowTypeDueDate,
-    CreateTaskRowTypeAssignees,
-    CreateTaskRowTypeApprovers,
-    CreateTaskRowTypeAttachments,
-    CreateTaskRowTypePriority,
-    CreateTaskRowTypeEmailNotification
-};
-
 @interface CreateTaskViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, NodePickerDelegate, PeoplePickerDelegate, DatePickerViewControllerDelegate>
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments;
 
 @end

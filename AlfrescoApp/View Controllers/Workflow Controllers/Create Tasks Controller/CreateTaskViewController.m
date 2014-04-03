@@ -18,6 +18,17 @@
 
 static CGFloat const kNavigationBarHeight = 44.0f;
 
+typedef NS_ENUM(NSInteger, CreateTaskRowType)
+{
+    CreateTaskRowTypeTitle,
+    CreateTaskRowTypeDueDate,
+    CreateTaskRowTypeAssignees,
+    CreateTaskRowTypeApprovers,
+    CreateTaskRowTypeAttachments,
+    CreateTaskRowTypePriority,
+    CreateTaskRowTypeEmailNotification
+};
+
 @interface CreateTaskViewController ()
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
@@ -50,12 +61,18 @@ static CGFloat const kNavigationBarHeight = 44.0f;
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
+    return [self initWithSession:session workflowType:workflowType attachments:nil];
+}
+
+- (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments
+{
+    self = [self init];
     if (self)
     {
         _session = session;
         _workflowType = workflowType;
         _workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
+        _attachments = [attachments mutableCopy];
     }
     return self;
 }

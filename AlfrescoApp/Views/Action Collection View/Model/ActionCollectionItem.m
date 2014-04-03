@@ -27,6 +27,7 @@ NSString * const kActionCollectionIdentifierDelete = @"ActionCollectionIdentifie
 NSString * const kActionCollectionIdentifierRename = @"ActionCollectionIdentifierRename";
 NSString * const kActionCollectionIdentifierCreateSubfolder = @"ActionCollectionIdentifierCreateSubfolder";
 NSString * const kActionCollectionIdentifierUploadDocument = @"ActionCollectionIdentifierUploadDocument";
+NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionIdentifierSendForReview";
 
 @interface ActionCollectionItem ()
 
@@ -106,6 +107,12 @@ NSString * const kActionCollectionIdentifierUploadDocument = @"ActionCollectionI
 + (instancetype)uploadItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-upload.png"] title:NSLocalizedString(@"action.upload", @"Upload") identifier:kActionCollectionIdentifierUploadDocument];
+}
+
++ (instancetype)sendForReview
+{
+    // WAITING FOR MOBILE-2448 - Action icon for "Send for review"
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-upload.png"] title:NSLocalizedString(@"action.review", @"Send For Review") identifier:kActionCollectionIdentifierSendForReview];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

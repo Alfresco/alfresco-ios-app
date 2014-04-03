@@ -30,6 +30,7 @@
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem;
 - (AlfrescoRequest *)pressedCreateSubFolderActionItem:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder;
 - (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path;
-- (void)pressedUploadActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;;
+- (void)pressedUploadActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;
+- (void)pressedSendForReviewActionItem:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document;
 
 @end
