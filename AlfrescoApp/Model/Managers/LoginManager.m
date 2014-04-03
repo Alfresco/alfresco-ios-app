@@ -70,6 +70,9 @@
     
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
+        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [self showHUDOnView:delegate.window];
+        
         if (account.accountType == UserAccountTypeOnPremise)
         {
             if (!account.password || [account.password isEqualToString:@""])
@@ -79,8 +82,7 @@
                 return;
             }
             
-            AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [self showHUDOnView:delegate.window];
+            
             [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
                 [self hideHUD];
                 if (!successful)
@@ -93,7 +95,7 @@
         else
         {
             [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
-                
+                [self hideHUD];
                 logInSuccessful(successful, session);
             }];
         }
