@@ -21,6 +21,7 @@
 #import "NavigationViewController.h"
 #import "UploadFormViewController.h"
 #import "SyncManager.h"
+#import "CreateTaskViewController.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -423,6 +424,14 @@
     {
         [UniversalDevice displayModalViewController:downloadPickerNavigationController onController:self.controller withCompletionBlock:nil];
     }
+}
+
+- (void)pressedSendForReviewActionItem:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document
+{
+    CreateTaskViewController *createTaskViewController = [[CreateTaskViewController alloc] initWithSession:self.session workflowType:WorkflowTypeReview attachments:@[document]];
+    NavigationViewController *createTaskNavigationController = [[NavigationViewController alloc] initWithRootViewController:createTaskViewController];
+    createTaskNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.controller presentViewController:createTaskNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Private Functions

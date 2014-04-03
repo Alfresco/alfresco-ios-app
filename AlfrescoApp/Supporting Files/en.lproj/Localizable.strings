@@ -572,6 +572,7 @@
 "action.rename" = "Rename";
 "action.subfolder" = "Add Folder";
 "action.upload" = "Upload";
+"action.review" = "Review";
 // alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename document to:";

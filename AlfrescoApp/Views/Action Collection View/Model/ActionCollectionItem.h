@@ -27,6 +27,7 @@ extern NSString * const kActionCollectionIdentifierDelete;
 extern NSString * const kActionCollectionIdentifierRename;
 extern NSString * const kActionCollectionIdentifierCreateSubfolder;
 extern NSString * const kActionCollectionIdentifierUploadDocument;
+extern NSString * const kActionCollectionIdentifierSendForReview;
 
 @interface ActionCollectionItem : NSObject
 
@@ -46,6 +47,7 @@ extern NSString * const kActionCollectionIdentifierUploadDocument;
 + (instancetype)renameItem;
 + (instancetype)subfolderItem;
 + (instancetype)uploadItem;
++ (instancetype)sendForReview;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end
