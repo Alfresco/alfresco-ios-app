@@ -15,9 +15,9 @@ static NSString * const kAlfrescoActivitiWorkflowTypeAdhoc = @"activitiAdhoc";
 static NSString * const kAlfrescoActivitiWorkflowTypeParallelReview = @"activitiParallelReview";
 static NSString * const kAlfrescoActivitiWorkflowTypeReview = @"activitiReview";
 
-static NSString * const kAlfrescoJBPMWorkflowTypeAdhoc = @"wf:Adhoc";
-static NSString * const kAlfrescoJBPMWorkflowTypeParallelReview = @"wf:ParallelReview";
-static NSString * const kAlfrescoJBPMWorkflowTypeReview = @"wf:Review";
+static NSString * const kAlfrescoJBPMWorkflowTypeAdhoc = @"wf:adhoc";
+static NSString * const kAlfrescoJBPMWorkflowTypeParallelReview = @"wf:parallelreview";
+static NSString * const kAlfrescoJBPMWorkflowTypeReview = @"wf:review";
 
 @implementation WorkflowHelper
 
