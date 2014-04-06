@@ -21,7 +21,10 @@ static NSString * const kDateFormat = @"dd MMM";
 static NSString * const kActivitiReview = @"activitiReview";
 static NSString * const kActivitiParallelReview = @"activitiParallelReview";
 static NSString * const kActivitiToDo = @"activitiAdhoc";
-static NSString * const kSupportedTasksPredicateFormat = @"(processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@)";
+static NSString * const kJBPMReview = @"wf:review";
+static NSString * const kJBPMParallelReview = @"wf:parallelreview";
+static NSString * const kJBPMToDo = @"wf:adhoc";
+static NSString * const kSupportedTasksPredicateFormat = @"(processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@)";
 static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername like %@";
 
 @interface TaskViewController () <UIActionSheetDelegate>
@@ -155,7 +158,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 {
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
     
-    NSPredicate *myTasksPredicate = [NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, kActivitiReview, kActivitiParallelReview, kActivitiToDo];
+    NSPredicate *myTasksPredicate = [NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, kActivitiReview, kActivitiParallelReview, kActivitiToDo, kJBPMReview, kJBPMParallelReview, kJBPMToDo];
     NSPredicate *tasksIStartedPredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
     self.myTasks = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")
                                      filteringPredicate:myTasksPredicate];
