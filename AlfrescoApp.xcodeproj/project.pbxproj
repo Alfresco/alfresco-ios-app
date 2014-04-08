@@ -474,6 +474,12 @@
 		73BE41FB18F3FF2900DB8912 /* account-type-cloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41F718F3FF2900DB8912 /* account-type-cloud@2x.png */; };
 		73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41F818F3FF2900DB8912 /* account-type-onpremise.png */; };
 		73BE41FD18F3FF2900DB8912 /* account-type-onpremise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41F918F3FF2900DB8912 /* account-type-onpremise@2x.png */; };
+		73BE420418F4021300DB8912 /* task_priority_high.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41FE18F4021300DB8912 /* task_priority_high.png */; };
+		73BE420518F4021300DB8912 /* task_priority_high@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41FF18F4021300DB8912 /* task_priority_high@2x.png */; };
+		73BE420618F4021300DB8912 /* task_priority_low.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420018F4021300DB8912 /* task_priority_low.png */; };
+		73BE420718F4021300DB8912 /* task_priority_low@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420118F4021300DB8912 /* task_priority_low@2x.png */; };
+		73BE420818F4021300DB8912 /* task_priority_medium.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420218F4021300DB8912 /* task_priority_medium.png */; };
+		73BE420918F4021300DB8912 /* task_priority_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420318F4021300DB8912 /* task_priority_medium@2x.png */; };
 		73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73D6491F18AD803F00333266 /* MainMenuItemCell.xib */; };
 		73D6492418AD855D00333266 /* actionsheet-add-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492218AD855D00333266 /* actionsheet-add-folder.png */; };
 		73D6492518AD855D00333266 /* actionsheet-add-folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */; };
@@ -1172,6 +1178,12 @@
 		73BE41F718F3FF2900DB8912 /* account-type-cloud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account-type-cloud@2x.png"; sourceTree = "<group>"; };
 		73BE41F818F3FF2900DB8912 /* account-type-onpremise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account-type-onpremise.png"; sourceTree = "<group>"; };
 		73BE41F918F3FF2900DB8912 /* account-type-onpremise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account-type-onpremise@2x.png"; sourceTree = "<group>"; };
+		73BE41FE18F4021300DB8912 /* task_priority_high.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_priority_high.png; sourceTree = "<group>"; };
+		73BE41FF18F4021300DB8912 /* task_priority_high@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_priority_high@2x.png"; sourceTree = "<group>"; };
+		73BE420018F4021300DB8912 /* task_priority_low.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_priority_low.png; sourceTree = "<group>"; };
+		73BE420118F4021300DB8912 /* task_priority_low@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_priority_low@2x.png"; sourceTree = "<group>"; };
+		73BE420218F4021300DB8912 /* task_priority_medium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_priority_medium.png; sourceTree = "<group>"; };
+		73BE420318F4021300DB8912 /* task_priority_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_priority_medium@2x.png"; sourceTree = "<group>"; };
 		73D6491F18AD803F00333266 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuItemCell.xib; path = "Main Menu View Controller/Cell/MainMenuItemCell.xib"; sourceTree = "<group>"; };
 		73D6492218AD855D00333266 /* actionsheet-add-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-add-folder.png"; sourceTree = "<group>"; };
 		73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-add-folder@2x.png"; sourceTree = "<group>"; };
@@ -2256,6 +2268,12 @@
 				7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */,
 				7386816A18DC9F4500F315B8 /* task_filter.png */,
 				7386816B18DC9F4500F315B8 /* task_filter@2x.png */,
+				73BE41FE18F4021300DB8912 /* task_priority_high.png */,
+				73BE41FF18F4021300DB8912 /* task_priority_high@2x.png */,
+				73BE420018F4021300DB8912 /* task_priority_low.png */,
+				73BE420118F4021300DB8912 /* task_priority_low@2x.png */,
+				73BE420218F4021300DB8912 /* task_priority_medium.png */,
+				73BE420318F4021300DB8912 /* task_priority_medium@2x.png */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -3057,6 +3075,7 @@
 				271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */,
 				7386816C18DC9F4500F315B8 /* task_filter.png in Resources */,
 				271DC769189C2D250059D1B2 /* status-restricted-highlighted@2x.png in Resources */,
+				73BE420918F4021300DB8912 /* task_priority_medium@2x.png in Resources */,
 				732DBFA118E1BC6B00F7A0BF /* small_xml@2x.png in Resources */,
 				73881F6F188956390052C75F /* WebBrowserViewController~ipad.xib in Resources */,
 				0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */,
@@ -3177,6 +3196,7 @@
 				73B95A9517A68B7E0099FB84 /* expand@2x.png in Resources */,
 				73FF558218ACE2370009CA56 /* large_notes@2x.png in Resources */,
 				73881FD9188FF6B00052C75F /* actionsheet-unliked.png in Resources */,
+				73BE420718F4021300DB8912 /* task_priority_low@2x.png in Resources */,
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				73B95A9617A68B7E0099FB84 /* pull-to-refresh.png in Resources */,
 				27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */,
@@ -3201,8 +3221,10 @@
 				73FF557718ACE2370009CA56 /* large_audio.png in Resources */,
 				73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */,
 				08735D3E18C9DBDC0010334A /* PersonCell.xib in Resources */,
+				73BE420418F4021300DB8912 /* task_priority_high.png in Resources */,
 				0830260D18DC52F400A0D0A0 /* TaskPriorityCell.xib in Resources */,
 				27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */,
+				73BE420618F4021300DB8912 /* task_priority_low.png in Resources */,
 				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				73BE41FD18F3FF2900DB8912 /* account-type-onpremise@2x.png in Resources */,
 				73FF558118ACE2370009CA56 /* large_notes.png in Resources */,
@@ -3235,8 +3257,10 @@
 				27F054D91891832B00C2454C /* app-icon-40.png in Resources */,
 				73881FE1188FF9290052C75F /* actionsheet-unfavourited@2x.png in Resources */,
 				27E84E7A18AD53510024B658 /* mainmenu-activities.png in Resources */,
+				73BE420818F4021300DB8912 /* task_priority_medium.png in Resources */,
 				732DBFA318E1BC6B00F7A0BF /* small_zip@2x.png in Resources */,
 				73881FD3188FF6B00052C75F /* actionsheet-email@2x.png in Resources */,
+				73BE420518F4021300DB8912 /* task_priority_high@2x.png in Resources */,
 				732DBF9F18E1BC6B00F7A0BF /* small_word@2x.png in Resources */,
 				2744022018AA83C400DF23DD /* Settings.bundle in Resources */,
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
