@@ -111,8 +111,7 @@ NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionId
 
 + (instancetype)sendForReview
 {
-    // WAITING FOR MOBILE-2448 - Action icon for "Send for review"
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-upload.png"] title:NSLocalizedString(@"action.review", @"Send For Review") identifier:kActionCollectionIdentifierSendForReview];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-review.png"] title:NSLocalizedString(@"action.review", @"Send For Review") identifier:kActionCollectionIdentifierSendForReview];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier
