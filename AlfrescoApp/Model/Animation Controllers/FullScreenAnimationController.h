@@ -13,7 +13,7 @@
 @property (nonatomic, assign) BOOL isGoingIntoFullscreenMode;
 // Defaults to 1 if this is not set
 @property (nonatomic, assign) NSTimeInterval presentationSpeed;
-// Defaults to 0.3 id this is not set
+// Defaults to 0.3 if this is not set
 @property (nonatomic, assign) NSTimeInterval dismissalSpeed;
 
 @end
