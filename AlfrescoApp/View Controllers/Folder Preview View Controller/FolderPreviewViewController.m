@@ -16,7 +16,8 @@
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
-    PagingScrollViewSegmentTypeMetadata = 0,
+    PagingScrollViewSegmentTypeFilePreview = 0,
+    PagingScrollViewSegmentTypeMetadata,
     PagingScrollViewSegmentTypeComments,
     PagingScrollViewSegmentType_MAX
 };

@@ -16,6 +16,7 @@
 - (NSArray *)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (NSArray *)retrieveRecordsForTable:(NSString *)table withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
+- (void)deleteRecordsWithPredicate:(NSPredicate *)predicate inTable:(NSString *)table inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (void)deleteAllRecordsInTable:(NSString *)table inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 

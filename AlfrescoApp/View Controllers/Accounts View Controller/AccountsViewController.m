@@ -164,7 +164,14 @@ static CGFloat const kDefaultFontSize = 18.0f;
         
         cell.textLabel.font = [UIFont systemFontOfSize:kDefaultFontSize];
         cell.textLabel.text = account.accountDescription;
-        cell.imageView.image = (account.accountType == UserAccountTypeOnPremise) ? [UIImage imageNamed:@"accounttype-onpremise.png"] : [UIImage imageNamed:@"accounttype-cloud.png"];
+        
+        UIImage *accountTypeImage = [UIImage imageNamed:@"account-type-onpremise.png"];
+        if (account.accountType == UserAccountTypeCloud)
+        {
+            accountTypeImage = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        }
+        
+        cell.imageView.image = accountTypeImage;
         
         if (account.accountType != UserAccountTypeCloud)
         {

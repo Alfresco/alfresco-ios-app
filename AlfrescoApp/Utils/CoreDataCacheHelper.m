@@ -106,6 +106,23 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     return returnedImageCacheObject;
 }
 
+- (void)removeAllCachedDataOlderThanNumberOfDays:(NSNumber *)numberOfDays
+{
+    NSCalendar *calender = [NSCalendar currentCalendar];
+    
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    dateComponents.day = -numberOfDays.integerValue;
+    
+    
+    NSDate *cutOffDate = [calender dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dateAdded > %@", cutOffDate];
+    
+    [self deleteRecordsWithPredicate:predicate inTable:NSStringFromClass([AvatarImageCache class]) inManagedObjectContext:self.managedObjectContext];
+    [self deleteRecordsWithPredicate:predicate inTable:NSStringFromClass([DocLibImageCache class]) inManagedObjectContext:self.managedObjectContext];
+    [self deleteRecordsWithPredicate:predicate inTable:NSStringFromClass([DocumentPreviewImageCache class]) inManagedObjectContext:self.managedObjectContext];
+}
+
 #pragma mark - Custom Getters and Setters
 
 - (NSManagedObjectContext *)cacheManagedObjectContext

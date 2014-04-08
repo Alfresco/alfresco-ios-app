@@ -57,6 +57,38 @@
 
 #pragma mark - Delete Records Methods
 
+- (void)deleteRecordsWithPredicate:(NSPredicate *)predicate inTable:(NSString *)table inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (predicate && table)
+    {
+        if (!managedContext)
+        {
+            managedContext = self.managedObjectContext;
+        }
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:table inManagedObjectContext:managedContext];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        fetchRequest.entity = entity;
+        fetchRequest.predicate = predicate;
+        
+        NSError *fetchRequestError = nil;
+        NSArray *records = [managedContext executeFetchRequest:fetchRequest error:&fetchRequestError];
+        
+        if (fetchRequestError)
+        {
+            AlfrescoLogError(@"Unable to complete the fetch request for entity: %@, predicate: %@", table, predicate);
+        }
+        
+        for (id returnedResultObject in records)
+        {
+            [managedContext deleteObject:returnedResultObject];
+        }
+        
+        [self saveContextForManagedObjectContext:managedContext];
+    }
+}
+
 - (void)deleteRecordForManagedObject:(NSManagedObject *)managedObject inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     if (managedObject)

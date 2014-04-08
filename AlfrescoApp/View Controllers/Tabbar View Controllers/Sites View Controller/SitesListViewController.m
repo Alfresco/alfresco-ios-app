@@ -8,7 +8,6 @@
 
 #import "SitesListViewController.h"
 #import "FileFolderListViewController.h"
-#import "PreviewViewController.h"
 #import "UniversalDevice.h"
 #import "SitesCell.h"
 #import "ConnectivityManager.h"
@@ -17,6 +16,7 @@
 #import "MetaDataViewController.h"
 #import "ThumbnailDownloader.h"
 #import "AccountManager.h"
+#import "FilePreviewViewController.h"
 
 CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
@@ -321,7 +321,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                 [self hideHUD];
                 if (succeeded)
                 {
-                    PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode documentPermissions:permissions contentFilePath:downloadDestinationPath session:self.session displayOverlayCloseButton:NO];
+                    FilePreviewViewController *previewController = [[FilePreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode session:self.session];
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
                 }
                 else

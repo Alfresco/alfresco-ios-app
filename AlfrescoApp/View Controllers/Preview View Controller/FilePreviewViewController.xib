@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FilePreviewViewController">
+            <connections>
+                <outlet property="downloadProgressContainer" destination="YKg-P6-wfH" id="dfO-uM-cE9"/>
+                <outlet property="downloadProgressView" destination="bHR-ut-g0r" id="1B3-wm-fN6"/>
+                <outlet property="heightForDownloadContainer" destination="Ycj-pp-ew4" id="3zb-sd-JZF"/>
+                <outlet property="moviePlayerContainer" destination="Mcd-3l-EwV" id="vAj-V8-d9y"/>
+                <outlet property="previewThumbnailImageView" destination="Im1-vZ-tko" id="zQs-Mf-pq9"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webView" destination="b6V-M3-0Zl" id="BMV-ee-YR1"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Im1-vZ-tko" userLabel="Thumbnail Image View" customClass="ThumbnailImageView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <webView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6V-M3-0Zl" userLabel="Document Preview Web View">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="2Xf-Zl-b5x"/>
+                    </connections>
+                </webView>
+                <view clipsSubviews="YES" alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YKg-P6-wfH" userLabel="Download Progress Container">
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nEO-Lg-bT2">
+                            <rect key="frame" x="297" y="3" width="20" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="TES-jO-IYJ"/>
+                            </constraints>
+                            <state key="normal" title="X">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="didPressCancelDownload:" destination="-1" eventType="touchUpInside" id="Atp-9m-7vw"/>
+                            </connections>
+                        </button>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="bHR-ut-g0r">
+                            <rect key="frame" x="8" y="29" width="304" height="2"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </progressView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="bHR-ut-g0r" firstAttribute="leading" secondItem="YKg-P6-wfH" secondAttribute="leading" constant="8" id="6Xk-FG-Hfg"/>
+                        <constraint firstItem="bHR-ut-g0r" firstAttribute="top" relation="lessThanOrEqual" secondItem="nEO-Lg-bT2" secondAttribute="bottom" constant="6" id="8WU-Qh-1hA"/>
+                        <constraint firstAttribute="trailing" secondItem="nEO-Lg-bT2" secondAttribute="trailing" constant="3" id="Ggj-hV-vxg"/>
+                        <constraint firstAttribute="centerY" secondItem="bHR-ut-g0r" secondAttribute="centerY" constant="-5" id="NKV-HB-h4U"/>
+                        <constraint firstAttribute="height" constant="50" id="Ycj-pp-ew4"/>
+                        <constraint firstAttribute="trailing" secondItem="bHR-ut-g0r" secondAttribute="trailing" constant="8" id="hY1-AS-zie"/>
+                        <constraint firstItem="nEO-Lg-bT2" firstAttribute="top" secondItem="YKg-P6-wfH" secondAttribute="top" constant="3" id="sSQ-wb-4SG"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mcd-3l-EwV" userLabel="Movie Player Container">
+                    <rect key="frame" x="0.0" y="134" width="320" height="300"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="Jbe-ro-f41"/>
+                    </constraints>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Mcd-3l-EwV" secondAttribute="trailing" id="4Hx-z2-r3k"/>
+                <constraint firstAttribute="trailing" secondItem="Im1-vZ-tko" secondAttribute="trailing" id="7cy-Dn-1dQ"/>
+                <constraint firstAttribute="bottom" secondItem="b6V-M3-0Zl" secondAttribute="bottom" id="BbR-vn-YJd"/>
+                <constraint firstItem="Im1-vZ-tko" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="NOV-fV-i5j"/>
+                <constraint firstItem="b6V-M3-0Zl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="PJl-mc-YSU"/>
+                <constraint firstAttribute="bottom" secondItem="YKg-P6-wfH" secondAttribute="bottom" id="PPm-Yn-Qgv"/>
+                <constraint firstItem="b6V-M3-0Zl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QGZ-Ni-G7r"/>
+                <constraint firstAttribute="bottom" secondItem="Im1-vZ-tko" secondAttribute="bottom" id="ULJ-En-iar"/>
+                <constraint firstAttribute="trailing" secondItem="b6V-M3-0Zl" secondAttribute="trailing" id="Y1J-2R-wcV"/>
+                <constraint firstAttribute="centerY" secondItem="Mcd-3l-EwV" secondAttribute="centerY" id="Yz3-Yd-wzv"/>
+                <constraint firstItem="YKg-P6-wfH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Zce-Te-czq"/>
+                <constraint firstAttribute="trailing" secondItem="YKg-P6-wfH" secondAttribute="trailing" id="emd-TO-gUp"/>
+                <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Mcd-3l-EwV" secondAttribute="bottom" priority="750" constant="159" id="fnd-DA-xXi"/>
+                <constraint firstItem="Mcd-3l-EwV" firstAttribute="top" relation="lessThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" priority="750" constant="159" id="kDU-8g-7th"/>
+                <constraint firstItem="Im1-vZ-tko" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lsH-CZ-8G2"/>
+                <constraint firstItem="Mcd-3l-EwV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="v2s-zW-BfM"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>
