@@ -25,6 +25,7 @@
 #import "AppConfigurationManager.h"
 #import "UIColor+Custom.h"
 #import "AnalyticsManager.h"
+#import "CoreDataCacheHelper.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -37,6 +38,7 @@
 @property (nonatomic, strong) NSString *deferredSourceApplication;
 @property (nonatomic, strong) id deferredAnnotation;
 @property (nonatomic, strong) UIViewController *appRootViewController;
+@property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 
 @end
 
@@ -51,6 +53,10 @@
     
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     self.window.tintColor = [UIColor appTintColor];
+    
+    // clean up cache
+    self.cacheHelper = [[CoreDataCacheHelper alloc] init];
+    [self.cacheHelper removeAllCachedDataOlderThanNumberOfDays:@(kNumberOfDaysToKeepCachedData)];
     
     [self.window makeKeyAndVisible];
 

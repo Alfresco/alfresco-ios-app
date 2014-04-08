@@ -22,4 +22,6 @@
 - (DocumentPreviewImageCache *)createDocumentPreviewObjectInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (DocumentPreviewImageCache *)retrieveDocumentPreviewForIdentifier:(NSString *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
+- (void)removeAllCachedDataOlderThanNumberOfDays:(NSNumber *)numberOfDays;
+
 @end
