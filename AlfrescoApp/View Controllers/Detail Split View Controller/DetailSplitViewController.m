@@ -8,6 +8,8 @@
 
 #import "DetailSplitViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AccountManager.h"
+#import "UniversalDevice.h"
 
 static const CGFloat kAnimationSpeed = 0.2f;
 
@@ -30,6 +32,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
     {
         self.masterViewController = masterViewController;
         self.detailViewController = detailViewController;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
     }
     return self;
 }
@@ -188,6 +191,17 @@ static const CGFloat kAnimationSpeed = 0.2f;
     [view.layer setShadowOffset:CGSizeMake(-0.5, 0.0)];
     view.layer.shouldRasterize = YES;
     view.layer.rasterizationScale = [UIScreen mainScreen].scale;
+}
+
+- (void)accountRemoved:(NSNotification *)notification
+{
+    UserAccount *removedAccount = notification.object;
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    
+    if ([removedAccount.accountIdentifier isEqualToString:selectedAccount.accountIdentifier])
+    {
+        [UniversalDevice clearDetailViewController];
+    }
 }
 
 @end
