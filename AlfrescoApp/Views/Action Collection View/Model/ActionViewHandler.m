@@ -15,13 +15,14 @@
 #import "Utility.h"
 #import "ErrorDescriptions.h"
 #import "DownloadManager.h"
-#import "PreviewViewController.h"
 #import "UIAlertView+ALF.h"
 #import "DownloadsViewController.h"
 #import "NavigationViewController.h"
 #import "UploadFormViewController.h"
 #import "SyncManager.h"
 #import "CreateTaskViewController.h"
+#import "DocumentPreviewManager.h"
+#import "FilePreviewViewController.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -32,6 +33,7 @@
 @property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) NSMutableArray *queuedCompletionBlocks;
 
 @end
 
@@ -47,8 +49,15 @@
         self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
         self.controller = controller;
+        self.queuedCompletionBlocks = [NSMutableArray array];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (AlfrescoRequest *)pressedLikeActionItem:(ActionCollectionItem *)actionItem
@@ -105,48 +114,62 @@
 
 - (AlfrescoRequest *)pressedEmailActionItem:(ActionCollectionItem *)actionItem
 {
+    void (^displayEmailBlock)(NSString *filePath) = ^(NSString *filePath) {
+        if (filePath && [MFMailComposeViewController canSendMail])
+        {
+            MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
+            emailController.mailComposeDelegate = self;
+            [emailController setSubject:self.node.name];
+            
+            // attachment
+            NSString *mimeType = [Utility mimeTypeForFileExtension:self.node.name];
+            if (!mimeType)
+            {
+                mimeType = @"application/octet-stream";
+            }
+            NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
+            [emailController addAttachmentData:documentData mimeType:mimeType fileName:self.node.name];
+            
+            // content body template
+            NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"emailTemplate" ofType:@"html" inDirectory:@"Email Template"];
+            NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+            [emailController setMessageBody:htmlString isHTML:YES];
+            
+            emailController.modalPresentationStyle = UIModalPresentationPageSheet;
+            
+            [self.controller presentViewController:emailController animated:YES completion:nil];
+        }
+    };
+    
     AlfrescoRequest *request = nil;
     
-    if ([MFMailComposeViewController canSendMail])
+    DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
+    if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
     {
-        __weak typeof(self) weakSelf = self;
-        
-        request = [self retrieveContentOfDocument:(AlfrescoDocument *)self.node completionBlock:^(NSString *fileLocation) {
-            if (fileLocation)
-            {
-                MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
-                emailController.mailComposeDelegate = weakSelf;
-                [emailController setSubject:weakSelf.node.name];
-                
-                // attachment
-                NSString *mimeType = [Utility mimeTypeForFileExtension:weakSelf.node.name];
-                if (!mimeType)
-                {
-                    mimeType = @"application/octet-stream";
-                }
-                NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:fileLocation]];
-                [emailController addAttachmentData:documentData mimeType:mimeType fileName:weakSelf.node.name];
-                
-                // content body template
-                NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"emailTemplate" ofType:@"html" inDirectory:@"Email Template"];
-                NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-                [emailController setMessageBody:htmlString isHTML:YES];
-                
-                [UniversalDevice displayModalViewController:emailController onController:self.controller withCompletionBlock:nil];
-            }
-        }];
+        NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+        displayEmailBlock(fileLocation);
     }
-    
+    else
+    {
+        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+        {
+            [self addCompletionBlock:displayEmailBlock];
+        }
+        else
+        {
+            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+        }
+    }
     return request;
 }
 
 - (AlfrescoRequest *)pressedDownloadActionItem:(ActionCollectionItem *)actionItem
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *downloadPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:filenameAppendedWithDateModififed(self.node.name, self.node)];
+    NSString *downloadPath = [[DocumentPreviewManager sharedManager] filePathForDocument:(AlfrescoDocument *)self.node];
     AlfrescoRequest *downloadRequest = nil;
     
-    if ([fileManager fileExistsAtPath:downloadPath])
+    if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
     {
         // rename the file to remove the date modified suffix, and then copy it to downloads
         NSString *tempPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:self.node.name];
@@ -181,12 +204,12 @@
 
 - (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView
 {
-    return [self retrieveContentOfDocument:(AlfrescoDocument *)self.node completionBlock:^(NSString *fileLocation) {
-        if (fileLocation)
+    void (^printBlock)(NSString *filePath) = ^(NSString *filePath) {
+        if (filePath)
         {
             // define a print block
             void (^printBlock)(UIWebView *webView) = ^(UIWebView *webView) {
-                NSURL *fileURL = [NSURL fileURLWithPath:fileLocation];
+                NSURL *fileURL = [NSURL fileURLWithPath:filePath];
                 
                 UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
                 
@@ -224,7 +247,7 @@
             
             // determine whether to use defult OS printing
             NSSet *printableUTIs = [UIPrintInteractionController printableUTIs];
-            CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileLocation.pathExtension, NULL);
+            CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)filePath.pathExtension, NULL);
             __block BOOL useNativePrinting = NO;
             [printableUTIs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
                 if (UTTypeConformsTo(UTI, (__bridge CFStringRef)obj))
@@ -241,7 +264,7 @@
             }
             else
             {
-                PreviewViewController *hiddenPreviewController = [[PreviewViewController alloc] initWithFilePath:fileLocation finishedLoadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
+                FilePreviewViewController *hiddenPreviewController = [[FilePreviewViewController alloc] initWithFilePath:filePath loadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
                     if (loadedIntoWebView)
                     {
                         printBlock(webView);
@@ -253,15 +276,36 @@
                 [hiddenPreviewController didMoveToParentViewController:self.controller];
             }
         }
-    }];
+    };
+    
+    AlfrescoRequest *request = nil;
+    
+    DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
+    if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+    {
+        NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+        printBlock(fileLocation);
+    }
+    else
+    {
+        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+        {
+            [self addCompletionBlock:printBlock];
+        }
+        else
+        {
+            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+        }
+    }
+    return request;
 }
 
 - (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView
 {
-    return [self retrieveContentOfDocument:(AlfrescoDocument *)self.node completionBlock:^(NSString *fileLocation) {
-        if (fileLocation)
+    void (^displayEmailBlock)(NSString *filePath) = ^(NSString *filePath) {
+        if (filePath)
         {
-            NSURL *fileURL = [NSURL fileURLWithPath:fileLocation];
+            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
             
             if (!self.documentInteractionController)
             {
@@ -279,7 +323,28 @@
                 displayInformationMessageWithTitle(cantOpenMessage, cantOpenTitle);
             }
         }
-    }];
+    };
+    
+    AlfrescoRequest *request = nil;
+    
+    DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
+    if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+    {
+        NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+        displayEmailBlock(fileLocation);
+    }
+    else
+    {
+        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+        {
+            [self addCompletionBlock:displayEmailBlock];
+        }
+        else
+        {
+            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+        }
+    }
+    return request;
 }
 
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem
@@ -434,50 +499,34 @@
     [self.controller presentViewController:createTaskNavigationController animated:YES completion:nil];
 }
 
+#pragma mark - DocumentPreviewManager Notification Callbacks
+
+- (void)downloadComplete:(NSNotification *)notification
+{
+    NSString *displayedDocumentIdentifier = [[DocumentPreviewManager sharedManager] documentIdentifierForDocument:(AlfrescoDocument *)self.node];
+    NSString *notificationDocumentIdentifier = notification.userInfo[kDocumentPreviewManagerDocumentIdentifierNotificationKey];
+    
+    if ([displayedDocumentIdentifier isEqualToString:notificationDocumentIdentifier])
+    {
+        [self runAndRemoveAllCompletionBlocksWithFilePath:[[DocumentPreviewManager sharedManager] filePathForDocument:(AlfrescoDocument *)self.node]];
+    }
+}
+
 #pragma mark - Private Functions
 
-- (AlfrescoRequest *)retrieveContentOfDocument:(AlfrescoDocument *)document completionBlock:(void (^)(NSString *fileLocation))completionBlock
+- (void)addCompletionBlock:(DocumentPreviewManagerFileSavedBlock)completionBlock
 {
-    AlfrescoRequest *downloadRequest = nil;
-    if (completionBlock != NULL)
-    {
-        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-        NSString *downloadPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:filenameAppendedWithDateModififed(document.name, document)];
-        
-        if ([fileManager fileExistsAtPath:downloadPath])
-        {
-            completionBlock(downloadPath);
-        }
-        else
-        {
-            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadPath append:NO];
-            
-            if ([self.controller respondsToSelector:@selector(displayProgressIndicator)])
-            {
-                [self.controller displayProgressIndicator];
-            }
-            downloadRequest = [self.documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                if ([self.controller respondsToSelector:@selector(hideProgressIndicator)])
-                {
-                    [self.controller hideProgressIndicator];
-                }
-                if (succeeded)
-                {
-                    completionBlock(downloadPath);
-                }
-                else
-                {
-                    // display an error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-            } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                // progress indicator update
-            }];
-        }
-    }
-    
-    return downloadRequest;
+    DocumentPreviewManagerFileSavedBlock retainedBlock = [completionBlock copy];
+    [self.queuedCompletionBlocks addObject:retainedBlock];
+}
+
+- (void)runAndRemoveAllCompletionBlocksWithFilePath:(NSString *)filePath
+{
+    [self.queuedCompletionBlocks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        DocumentPreviewManagerFileSavedBlock currentBlock = (DocumentPreviewManagerFileSavedBlock)obj;
+        currentBlock(filePath);
+    }];
+    [self.queuedCompletionBlocks removeAllObjects];
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate Functions
@@ -530,7 +579,6 @@
             self.popover = nil;
             displayUploadViewController();
         }
-        
     }
     else
     {

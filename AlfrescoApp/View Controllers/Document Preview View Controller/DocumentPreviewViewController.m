@@ -10,7 +10,6 @@
 #import "ActionCollectionView.h"
 #import "ThumbnailImageView.h"
 #import "ThumbnailDownloader.h"
-#import "PreviewViewController.h"
 #import "MBProgressHUD.h"
 #import "Utility.h"
 #import "ErrorDescriptions.h"
@@ -27,10 +26,11 @@
 #import "UIAlertView+ALF.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ActionViewHandler.h"
+#import "FilePreviewViewController.h"
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
-    PagingScrollViewSegmentTypePreview = 0,
+    PagingScrollViewSegmentTypeFilePreview = 0,
     PagingScrollViewSegmentTypeMetadata,
     PagingScrollViewSegmentTypeVersionHistory,
     PagingScrollViewSegmentTypeComments,
@@ -94,10 +94,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         self.title = self.document.name;
     }
     
-    UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewDocument:)];
-    imageTap.numberOfTapsRequired = 1;
-    [self.documentThumbnail addGestureRecognizer:imageTap];
-    
     // collection view
     [self setupActionCollectionView];
     
@@ -160,75 +156,9 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     });
 }
 
-- (void)previewDocument:(id)sender
-{
-    void (^preparePreviewController)(PreviewViewController *) = ^(PreviewViewController *previewController)
-    {
-        previewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        [self addChildViewController:previewController];
-        [self.view addSubview:previewController.view];
-        [previewController didMoveToParentViewController:self];
-    };
-    
-    if (self.documentContentFilePath)
-    {
-        PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document
-                                                                               documentPermissions:self.documentPermissions
-                                                                                   contentFilePath:self.documentContentFilePath
-                                                                                           session:self.session
-                                                                         displayOverlayCloseButton:YES];
-        preparePreviewController(previewController);
-    }
-    else
-    {
-        [self retrieveContentOfDocument:self.document completionBlock:^(NSString *fileLocation) {
-            PreviewViewController *previewController = [[PreviewViewController alloc] initWithDocument:self.document
-                                                                                   documentPermissions:self.documentPermissions
-                                                                                       contentFilePath:fileLocation
-                                                                                               session:self.session
-                                                                             displayOverlayCloseButton:YES];
-            preparePreviewController(previewController);
-        }];
-    }
-}
-
-- (void)retrieveContentOfDocument:(AlfrescoDocument *)document completionBlock:(void (^)(NSString *fileLocation))completionBlock
-{
-    if (completionBlock != NULL)
-    {
-        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-        NSString *downloadPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:filenameAppendedWithDateModififed(document.name, document)];
-        
-        if ([fileManager fileExistsAtPath:downloadPath])
-        {
-            completionBlock(downloadPath);
-        }
-        else
-        {
-            NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadPath append:NO];
-            
-            [self showHUD];
-            [self.documentService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                [self hideHUD];
-                if (succeeded)
-                {
-                    completionBlock(downloadPath);
-                }
-                else
-                {
-                    // display an error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-            } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                // progress indicator update
-            }];
-        }
-    }
-}
-
 - (void)setupPagingScrollView
 {
+    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
@@ -238,24 +168,26 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [self.pagingControllers addObject:[NSNull null]];
     }
     
+    [self.pagingControllers insertObject:filePreviewController atIndex:PagingScrollViewSegmentTypeFilePreview];
     [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentTypeMetadata];
     [self.pagingControllers insertObject:versionHistoryController atIndex:PagingScrollViewSegmentTypeVersionHistory];
     [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentTypeComments];
     
-    [self.pagingScrollView addSubview:self.documentThumbnail];
     for (int i = 0; i < self.pagingControllers.count; i++)
     {
         if (![self.pagingControllers[i] isKindOfClass:[NSNull class]])
         {
             UIViewController *currentController = self.pagingControllers[i];
+            [self addChildViewController:currentController];
             [self.pagingScrollView addSubview:currentController.view];
+            [currentController didMoveToParentViewController:self];
         }
     }
 }
 
 - (void)localiseUI
 {
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypePreview];
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeFilePreview];
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.version.history.title", @"Version Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeVersionHistory];
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];

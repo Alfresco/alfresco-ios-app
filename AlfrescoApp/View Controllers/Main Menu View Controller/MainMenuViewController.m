@@ -21,7 +21,6 @@
 #import "DetailSplitViewController.h"
 #import "AppConfigurationManager.h"
 #import "SettingsViewController.h"
-#import "PreviewViewController.h"
 #import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
 #import "UIColor+Custom.h"

@@ -203,9 +203,12 @@
 		27F054DE1891832B00C2454C /* app-icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D11891832B00C2454C /* app-icon-76.png */; };
 		27F054DF1891832B00C2454C /* app-icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F054D21891832B00C2454C /* app-icon-80.png */; };
 		5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB5D92344964A91B3E95A3F /* libPods.a */; };
+		7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
 		730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730B444918EC393B008A0977 /* libFlurry_4.4.0.a */; };
 		730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B444D18EC3A96008A0977 /* AnalyticsManager.m */; };
+		730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B445618ED7B96008A0977 /* FilePreviewViewController.m */; };
+		730B445918ED7B96008A0977 /* FilePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730B445718ED7B96008A0977 /* FilePreviewViewController.xib */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
 		73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73190195184365AA002C82C1 /* OnboardingViewController.xib */; };
@@ -455,7 +458,6 @@
 		73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD117A68DF20099FB84 /* LoginViewController.m */; };
 		73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD417A68DF20099FB84 /* MetaDataViewController.m */; };
 		73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */; };
-		73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ADC17A68DF20099FB84 /* PreviewViewController.m */; };
 		73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AE017A68DF20099FB84 /* AboutViewController.m */; };
 		73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B95AE117A68DF20099FB84 /* AboutViewController.xib */; };
 		73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B95AE217A68DF20099FB84 /* AboutViewController~ipad.xib */; };
@@ -470,6 +472,7 @@
 		73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
+		73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */; };
 		73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73D6491F18AD803F00333266 /* MainMenuItemCell.xib */; };
 		73D6492418AD855D00333266 /* actionsheet-add-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492218AD855D00333266 /* actionsheet-add-folder.png */; };
 		73D6492518AD855D00333266 /* actionsheet-add-folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */; };
@@ -791,6 +794,8 @@
 		27F054D01891832B00C2454C /* app-icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-72.png"; sourceTree = "<group>"; };
 		27F054D11891832B00C2454C /* app-icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-76.png"; sourceTree = "<group>"; };
 		27F054D21891832B00C2454C /* app-icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-80.png"; sourceTree = "<group>"; };
+		7300DE9318EF010F00F5F57E /* FullScreenAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenAnimationController.h; sourceTree = "<group>"; };
+		7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenAnimationController.m; sourceTree = "<group>"; };
 		73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlfrescoSDK.xcodeproj; path = AlfrescoSDK/AlfrescoSDK/AlfrescoSDK.xcodeproj; sourceTree = SOURCE_ROOT; };
 		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
 		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
@@ -798,6 +803,9 @@
 		730B444918EC393B008A0977 /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		730B444C18EC3A96008A0977 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		730B444D18EC3A96008A0977 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
+		730B445518ED7B96008A0977 /* FilePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePreviewViewController.h; sourceTree = "<group>"; };
+		730B445618ED7B96008A0977 /* FilePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePreviewViewController.m; sourceTree = "<group>"; };
+		730B445718ED7B96008A0977 /* FilePreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilePreviewViewController.xib; sourceTree = "<group>"; };
 		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
 		73190190183CDF26002C82C1 /* DocumentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentOverlayView.m; path = "Document Overlay View/DocumentOverlayView.m"; sourceTree = "<group>"; };
 		73190193184365AA002C82C1 /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnboardingViewController.h; path = "Onboarding View Controller/OnboardingViewController.h"; sourceTree = "<group>"; };
@@ -1137,8 +1145,6 @@
 		73B95AD417A68DF20099FB84 /* MetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaDataViewController.m; sourceTree = "<group>"; };
 		73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderViewController.h; sourceTree = "<group>"; };
 		73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderViewController.m; sourceTree = "<group>"; };
-		73B95ADB17A68DF20099FB84 /* PreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewViewController.h; sourceTree = "<group>"; };
-		73B95ADC17A68DF20099FB84 /* PreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewViewController.m; sourceTree = "<group>"; };
 		73B95ADF17A68DF20099FB84 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		73B95AE017A68DF20099FB84 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		73B95AE117A68DF20099FB84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -1162,6 +1168,8 @@
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73B95B1F17A6AE860099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		73BE41EA18F2AFF500DB8912 /* DocumentPreviewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreviewManager.h; sourceTree = "<group>"; };
+		73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreviewManager.m; sourceTree = "<group>"; };
 		73D6491F18AD803F00333266 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuItemCell.xib; path = "Main Menu View Controller/Cell/MainMenuItemCell.xib"; sourceTree = "<group>"; };
 		73D6492218AD855D00333266 /* actionsheet-add-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-add-folder.png"; sourceTree = "<group>"; };
 		73D6492318AD855D00333266 /* actionsheet-add-folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-add-folder@2x.png"; sourceTree = "<group>"; };
@@ -1662,6 +1670,15 @@
 				27F054D21891832B00C2454C /* app-icon-80.png */,
 			);
 			path = "App Icon";
+			sourceTree = "<group>";
+		};
+		7300DE9218EF00EA00F5F57E /* Animation Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7300DE9318EF010F00F5F57E /* FullScreenAnimationController.h */,
+				7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */,
+			);
+			path = "Animation Controllers";
 			sourceTree = "<group>";
 		};
 		73036F291886E3CC002AF6DC /* Products */ = {
@@ -2270,6 +2287,7 @@
 		73B957CF17A6750E0099FB84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7300DE9218EF00EA00F5F57E /* Animation Controllers */,
 				731901B318477E4E002C82C1 /* Legacy */,
 				73E9E20B17E7394900A198B4 /* UserAccount.h */,
 				73E9E20C17E7394900A198B4 /* UserAccount.m */,
@@ -2294,6 +2312,8 @@
 				73B957D217A6750E0099FB84 /* ConnectivityManager.m */,
 				73B957D317A6750E0099FB84 /* DownloadManager.h */,
 				73B957D417A6750E0099FB84 /* DownloadManager.m */,
+				73BE41EA18F2AFF500DB8912 /* DocumentPreviewManager.h */,
+				73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */,
 				73B957D517A6750E0099FB84 /* LocationManager.h */,
 				73B957D617A6750E0099FB84 /* LocationManager.m */,
 				73B957D717A6750E0099FB84 /* LoginManager.h */,
@@ -2776,8 +2796,9 @@
 			children = (
 				73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */,
 				73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */,
-				73B95ADB17A68DF20099FB84 /* PreviewViewController.h */,
-				73B95ADC17A68DF20099FB84 /* PreviewViewController.m */,
+				730B445518ED7B96008A0977 /* FilePreviewViewController.h */,
+				730B445618ED7B96008A0977 /* FilePreviewViewController.m */,
+				730B445718ED7B96008A0977 /* FilePreviewViewController.xib */,
 			);
 			path = "Preview View Controller";
 			sourceTree = "<group>";
@@ -3068,6 +3089,7 @@
 				08E1EA2918DB057900F9052F /* TaskDetailsViewController~ipad.xib in Resources */,
 				27F054D81891832B00C2454C /* app-icon-29.png in Resources */,
 				271DC766189C2D250059D1B2 /* status-favourite.png in Resources */,
+				730B445918ED7B96008A0977 /* FilePreviewViewController.xib in Resources */,
 				737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */,
 				080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */,
 				73FF558A18ACE2370009CA56 /* large_word@2x.png in Resources */,
@@ -3389,6 +3411,7 @@
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
 				08E1EA2D18DB057900F9052F /* TaskViewController.m in Sources */,
+				73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
@@ -3480,9 +3503,11 @@
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
 				7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */,
+				730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */,
 				73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				08E1EA2718DB057900F9052F /* TaskDetailsViewController.m in Sources */,
+				7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
@@ -3505,7 +3530,6 @@
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
-				73B95AFC17A68DF20099FB84 /* PreviewViewController.m in Sources */,
 				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
