@@ -8,9 +8,11 @@
 
 #import "AnalyticsManager.h"
 #import "Flurry.h"
+#import "PreferenceManager.h"
 
 @interface AnalyticsManager ()
 
+@property (nonatomic, assign, readwrite) BOOL flurryHasStarted;
 @property (nonatomic, assign, readwrite) BOOL analyticsAreActive;
 
 @end
@@ -27,19 +29,59 @@
     return sharedManager;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:kSettingsDidChangeNotification object:nil];
+    }
+    return self;
+}
+
+// Should never get here
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)startAnalytics
 {
-    // ADD CHECK TO SEE IF "SEND DIAGNOSTIC INFORMATION" IS SET.
-    // CHECK DEPENDS ON MOBILE-2060
+    if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
+    {
+        [self start];
+    }
+}
+
+- (void)stopAnalytics
+{
+    [self stop];
+}
+
+#pragma mark - Private Methods
+
+void uncaughtExceptionHandler(NSException *exception)
+{
+    [Flurry logError:@"Uncaught Exception" message:@"The app crashed!" exception:exception];
+}
+
+- (void)start
+{
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    [Flurry startSession:ALFRESCO_FLURRY_API_KEY];
+    
+    if (!self.flurryHasStarted)
+    {
+        [Flurry startSession:ALFRESCO_FLURRY_API_KEY];
+        self.flurryHasStarted = YES;
+    }
+
     [Flurry setEventLoggingEnabled:YES];
     [Flurry setSessionReportsOnCloseEnabled:YES];
     [Flurry setSessionReportsOnPauseEnabled:YES];
     self.analyticsAreActive = YES;
 }
 
-- (void)stopAnalytics
+- (void)stop
 {
     NSSetUncaughtExceptionHandler(nil);
     [Flurry setEventLoggingEnabled:NO];
@@ -48,13 +90,23 @@
     self.analyticsAreActive = NO;
 }
 
-#pragma mark - Private Methods
-
-void uncaughtExceptionHandler(NSException *exception)
+- (void)preferencesDidChange:(NSNotification *)notification
 {
-    // ADD CHECK TO SEE IF "SEND DIAGNOSTIC INFORMATION" IS SET. IF SO, LOG THIS ERROR
-    // CHECK DEPENDS ON MOBILE-2060
-    [Flurry logError:@"Uncaught Exception" message:@"The app crashed!" exception:exception];
+    NSString *preferenceKeyChanged = notification.object;
+
+    if ([preferenceKeyChanged isEqualToString:kSettingsSendDiagnosticsIdentifier])
+    {
+        BOOL shouldSendDiagnostics = [notification.userInfo[kSettingChangedToKey] boolValue];
+        
+        if (shouldSendDiagnostics && !self.analyticsAreActive)
+        {
+            [self start];
+        }
+        else if (self.analyticsAreActive)
+        {
+            [self stop];
+        }
+    }
 }
 
 @end

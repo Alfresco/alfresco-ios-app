@@ -20,6 +20,8 @@
 #import "UserAccount.h"
 #import "ThumbnailDownloader.h"
 #import "Constants.h"
+#import "PreferenceManager.h"
+#import "ConnectivityManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kFooterHeight = 32.0f;
@@ -89,6 +91,10 @@ static CGFloat const kFooterHeight = 32.0f;
                                              selector:@selector(documentDeleted:)
                                                  name:kAlfrescoDocumentDeletedOnServerNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didUpdatePreference:)
+                                                 name:kSettingsDidChangeNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -117,6 +123,11 @@ static CGFloat const kFooterHeight = 32.0f;
     }
     [self hidePullToRefreshView];
     [self.tableView reloadData];
+}
+
+- (void)cancelSync
+{
+    [[SyncManager sharedManager] cancelAllSyncOperations];
 }
 
 - (void)sessionReceived:(NSNotification *)notification
@@ -166,6 +177,27 @@ static CGFloat const kFooterHeight = 32.0f;
         [self.tableViewData removeObject:deletedDocument];
         NSIndexPath *indexPathOfDeletedNode = [NSIndexPath indexPathForRow:index inSection:0];
         [self.tableView deleteRowsAtIndexPaths:@[indexPathOfDeletedNode] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)didUpdatePreference:(NSNotification *)notification
+{
+    NSString *preferenceKeyChanged = notification.object;
+    BOOL isCurrentlyOnCellular = [[ConnectivityManager sharedManager] isOnCellular];
+    
+    if ([preferenceKeyChanged isEqualToString:kSettingsSyncOnCellularIdentifier] && isCurrentlyOnCellular)
+    {
+        BOOL shouldSyncOnCellular = [notification.userInfo[kSettingChangedToKey] boolValue];
+        
+        // if changed to no and is syncing, then cancel sync
+        if ([[SyncManager sharedManager] isCurrentlySyncing] && !shouldSyncOnCellular)
+        {
+            [self cancelSync];
+        }
+        else if (shouldSyncOnCellular)
+        {
+            [self loadSyncNodesForFolder:self.parentNode];
+        }
     }
 }
 

@@ -14,7 +14,7 @@
 #import "SettingLabelCell.h"
 #import "AboutViewController.h"
 
-static NSString * const kAboutIdentifier = @"about.identifier";
+static NSUInteger const kCellLeftInset = 10;
 
 @interface SettingsViewController () <SettingsCellProtocol>
 
@@ -31,6 +31,7 @@ static NSString * const kAboutIdentifier = @"about.identifier";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, kCellLeftInset, 0, 0);
     [view addSubview:self.tableView];
     
     view.autoresizesSubviews = YES;
@@ -140,6 +141,7 @@ static NSString * const kAboutIdentifier = @"about.identifier";
     if (!cell)
     {
         cell = (SettingCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(CellClass) owner:self options:nil] lastObject];
+        cell.delegate = self;
     }
     
     id preferenceValue = [[PreferenceManager sharedManager] preferenceForIdentifier:[currentCellInfo valueForKey:kSettingsCellPerferenceIdentifier]];
@@ -154,7 +156,7 @@ static NSString * const kAboutIdentifier = @"about.identifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SettingCell *cell = (SettingCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ([cell.preferenceIdentifier isEqualToString:kAboutIdentifier])
+    if ([cell.preferenceIdentifier isEqualToString:kSettingsAboutIdentifier])
     {
         AboutViewController *aboutViewController = [[AboutViewController alloc] init];
         [self.navigationController pushViewController:aboutViewController animated:YES];

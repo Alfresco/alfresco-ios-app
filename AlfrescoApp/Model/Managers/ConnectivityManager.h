@@ -13,5 +13,7 @@
 + (id)sharedManager;
 
 - (BOOL)hasInternetConnection;
+- (BOOL)isOnCellular;
+- (BOOL)isOnWifi;
 
 @end

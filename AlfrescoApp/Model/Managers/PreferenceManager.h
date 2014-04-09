@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SettingConstants.h"
 
 @interface PreferenceManager : NSObject
 
 + (instancetype)sharedManager;
 
+// Convenience Methods
+- (BOOL)shouldSyncOnCellular;
+- (BOOL)shouldSendDiagnostics;
+
+// Accessors and Modifiers
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier;
 - (void)updatePreferenceToValue:(id)obj preferenceIdentifier:(NSString *)preferenceIdentifier;
 

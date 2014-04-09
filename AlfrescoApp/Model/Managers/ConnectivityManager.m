@@ -51,6 +51,32 @@
     return NO;
 }
 
+- (BOOL)isOnCellular
+{
+    BOOL isOnCellular = NO;
+    
+    NetworkStatus currentState = [self.internetReachability currentReachabilityStatus];
+    if (currentState == ReachableViaWWAN)
+    {
+        isOnCellular = YES;
+    }
+    
+    return isOnCellular;
+}
+
+- (BOOL)isOnWifi
+{
+    BOOL isOnWifi = NO;
+    
+    NetworkStatus currentState = [self.internetReachability currentReachabilityStatus];
+    if (currentState == ReachableViaWiFi)
+    {
+        isOnWifi = YES;
+    }
+    
+    return isOnWifi;
+}
+
 #pragma mark - Private Functions
 
 - (void)reachabilityChanged:(NSNotification *)notification
