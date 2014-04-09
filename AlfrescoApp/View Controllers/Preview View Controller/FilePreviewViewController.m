@@ -63,13 +63,14 @@ static CGFloat downloadProgressHeight;
     return self;
 }
 
-- (instancetype)initWithFilePath:(NSString *)filePath loadingCompletionBlock:(void (^)(UIWebView *webView, BOOL loadedIntoWebView))loadingCompleteBlock
+- (instancetype)initWithFilePath:(NSString *)filePath document:(AlfrescoDocument *)document loadingCompletionBlock:(void (^)(UIWebView *, BOOL))loadingCompleteBlock
 {
     self = [self init];
     if (self)
     {
         self.shouldLoadFromFileAndRunCompletionBlock = YES;
         self.filePathForFileToLoad = filePath;
+        self.document = document;
         self.loadingCompleteBlock = loadingCompleteBlock;
     }
     return self;
@@ -91,45 +92,45 @@ static CGFloat downloadProgressHeight;
     self.downloadProgressView.progress = 0.0f;
     [self hideProgressViewAnimated:NO];
     
-    if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:self.document])
+    if (self.shouldLoadFromFileAndRunCompletionBlock)
     {
-        NSString *filePathToLoad = [[DocumentPreviewManager sharedManager] filePathForDocument:self.document];
-        
-        if (self.shouldLoadFromFileAndRunCompletionBlock)
-        {
-            filePathToLoad = self.filePathForFileToLoad;
-        }
-        
-        [self displayFileAtPath:filePathToLoad];
-        
+        [self displayFileAtPath:self.filePathForFileToLoad];
     }
     else
     {
-        // Try and obtain the document thumbnail from the cache
-        UIImage *placeholderImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];;
-        
-        __weak typeof(self) weakSelf = self;
-        if (!placeholderImage)
+        if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:self.document])
         {
-            // set a placeholder image
-            placeholderImage = largeImageForType(self.document.name.pathExtension);
-            [self.previewThumbnailImageView setImage:placeholderImage withFade:NO];
-            
-            // request thumbnail
-            [self requestThumbnailForDocument:self.document completionBlock:^(UIImage *image, NSError *error) {
-                // update the image with a fade
-                [weakSelf.previewThumbnailImageView setImage:image withFade:YES];
-                
-                // request the document download
-                weakSelf.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-            }];
+            NSString *filePathToLoad = [[DocumentPreviewManager sharedManager] filePathForDocument:self.document];
+            [self displayFileAtPath:filePathToLoad];
         }
         else
         {
-            [self.previewThumbnailImageView setImage:placeholderImage withFade:NO];
+            // Try and obtain the document thumbnail from the cache
+            UIImage *placeholderImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];;
             
-            // request the document download
-            self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+            __weak typeof(self) weakSelf = self;
+            if (!placeholderImage)
+            {
+                // set a placeholder image
+                placeholderImage = largeImageForType(self.document.name.pathExtension);
+                [self.previewThumbnailImageView setImage:placeholderImage withFade:NO];
+                
+                // request thumbnail
+                [self requestThumbnailForDocument:self.document completionBlock:^(UIImage *image, NSError *error) {
+                    // update the image with a fade
+                    [weakSelf.previewThumbnailImageView setImage:image withFade:YES];
+                    
+                    // request the document download
+                    weakSelf.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+                }];
+            }
+            else
+            {
+                [self.previewThumbnailImageView setImage:placeholderImage withFade:NO];
+                
+                // request the document download
+                self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+            }
         }
     }
 }
@@ -379,7 +380,7 @@ static CGFloat downloadProgressHeight;
     [self showWebViewAnimated:YES];
     [self hideProgressViewAnimated:YES];
     
-    if (self.shouldLoadFromFileAndRunCompletionBlock)
+    if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(webView, YES);
     }
@@ -387,7 +388,7 @@ static CGFloat downloadProgressHeight;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    if (self.shouldLoadFromFileAndRunCompletionBlock)
+    if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(nil, NO);
     }
