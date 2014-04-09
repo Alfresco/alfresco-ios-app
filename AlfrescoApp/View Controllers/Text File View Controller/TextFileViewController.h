@@ -13,5 +13,6 @@
 @interface TextFileViewController : UIViewController
 
 - (instancetype)initWithUploadFileDestinationFolder:(AlfrescoFolder *)uploadFolder session:(id<AlfrescoSession>)session delegate:(id<UploadFormViewControllerDelegate>)delegate;
+- (instancetype)initWithEditDocument:(AlfrescoDocument *)document contentFilePath:(NSString *)contentPath session:(id<AlfrescoSession>)session;
 
 @end

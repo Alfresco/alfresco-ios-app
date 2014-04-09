@@ -158,7 +158,15 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)setupPagingScrollView
 {
-    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+    FilePreviewViewController *filePreviewController = nil;
+    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
+    {
+        filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document loadingCompletionBlock:nil];
+    }
+    else
+    {
+        filePreviewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+    }
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
@@ -234,6 +242,18 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [items addObject:[ActionCollectionItem likeItem]];
         [items addObject:[ActionCollectionItem downloadItem]];
         [items addObject:[ActionCollectionItem sendForReview]];
+        
+        if (self.documentPermissions.canEdit)
+        {
+            NSString *extension = self.document.name.pathExtension;
+            NSArray *editableFileExtensions = @[@"txt", @"html", @"xml", @"css", @"js"];
+            
+            BOOL canEdit = [editableFileExtensions containsObject:extension];
+            if (canEdit)
+            {
+                [items addObject:[ActionCollectionItem editItem]];
+            }
+        }
         
         if (self.documentPermissions.canComment)
         {
@@ -326,6 +346,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierSendForReview])
     {
         [self.actionHandler pressedSendForReviewActionItem:actionItem node:self.document];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEdit])
+    {
+        [self.actionHandler pressedEditActionItem:actionItem forDocumentWithContentPath:self.documentContentFilePath];
     }
 }
 

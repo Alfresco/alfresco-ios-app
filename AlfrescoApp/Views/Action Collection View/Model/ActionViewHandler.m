@@ -23,6 +23,7 @@
 #import "CreateTaskViewController.h"
 #import "DocumentPreviewManager.h"
 #import "FilePreviewViewController.h"
+#import "TextFileViewController.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -342,6 +343,44 @@
         else
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+        }
+    }
+    return request;
+}
+
+- (AlfrescoRequest *)pressedEditActionItem:(ActionCollectionItem *)actionItem forDocumentWithContentPath:(NSString *)contentPath
+{
+    void (^displayEditController)(NSString *filePath) = ^(NSString *filePath) {
+        
+        TextFileViewController *textFileController = [[TextFileViewController alloc] initWithEditDocument:(AlfrescoDocument *)self.node contentFilePath:filePath session:self.session];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textFileController];
+        [self.controller presentViewController:navigationController animated:YES completion:nil];
+    };
+    
+    AlfrescoRequest *request = nil;
+    
+    if (contentPath)
+    {
+        displayEditController(contentPath);
+    }
+    else
+    {
+        DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
+        if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+        {
+            NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+            displayEditController(fileLocation);
+        }
+        else
+        {
+            if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+            {
+                [self addCompletionBlock:displayEditController];
+            }
+            else
+            {
+                request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+            }
         }
     }
     return request;

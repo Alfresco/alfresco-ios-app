@@ -10,13 +10,19 @@
 #import "UniversalDevice.h"
 #import "UploadFormViewController.h"
 #import "UIAlertView+ALF.h"
+#import "DownloadManager.h"
+#import "SyncManager.h"
+#import "MBProgressHud.h"
 
 static NSString * const kTextFileMimeType = @"text/plain";
 
 @interface TextFileViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) AlfrescoFolder *uploadDestinationFolder;
+@property (nonatomic, strong) AlfrescoDocument *editingDocument;
+@property (nonatomic, strong) NSString *documentContentPath;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, weak) id<UploadFormViewControllerDelegate> uploadFormViewControllerDelegate;
 @property (nonatomic, weak) UITextView *textView;
 
@@ -32,6 +38,20 @@ static NSString * const kTextFileMimeType = @"text/plain";
         self.uploadDestinationFolder = uploadFolder;
         self.session = session;
         self.uploadFormViewControllerDelegate = delegate;
+        [self registerForNotifications];
+    }
+    return self;
+}
+
+- (instancetype)initWithEditDocument:(AlfrescoDocument *)document contentFilePath:(NSString *)contentPath session:(id<AlfrescoSession>)session
+{
+    self = [super init];
+    if (self)
+    {
+        self.editingDocument = document;
+        self.documentContentPath = contentPath;
+        self.session = session;
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self registerForNotifications];
     }
     return self;
@@ -55,7 +75,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
     NSDictionary *views = NSDictionaryOfVariableBindings(textView);
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[textView]|" options:NSLayoutFormatAlignAllTop | NSLayoutFormatAlignAllBottom metrics:nil views:views]];
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
-
+    
     view.autoresizesSubviews = YES;
     self.view = view;
 }
@@ -64,21 +84,32 @@ static NSString * const kTextFileMimeType = @"text/plain";
 {
     [super viewDidLoad];
     
-    // configure
-    self.title = NSLocalizedString(@"createtextfile.title", @"Create Text File");
+    self.title = self.editingDocument ? self.editingDocument.name : NSLocalizedString(@"createtextfile.title", @"Create Text File");
+    NSString *rightBarButtonTitle = self.editingDocument ? NSLocalizedString(@"document.edit.button.save", @"Save") : NSLocalizedString(@"Next", @"Next");
+    NSString *leftBarButtonTitle = self.editingDocument ? NSLocalizedString(@"document.edit.button.discard", @"Discard") : NSLocalizedString(@"Cancel", @"Cancel");
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed:)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:leftBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:rightBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
     self.navigationItem.rightBarButtonItem = nextButton;
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    if (self.documentContentPath)
+    {
+        NSError *error = nil;
+        NSString *fileContent = [[NSString alloc] initWithContentsOfFile:self.documentContentPath encoding:NSUTF8StringEncoding error:&error];
+        if (!error)
+        {
+            self.textView.text = fileContent;
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.textView becomeFirstResponder];
     });
@@ -100,8 +131,11 @@ static NSString * const kTextFileMimeType = @"text/plain";
     
     if (self.textView.text.length > 0)
     {
-        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"createtextfile.dismiss.confirmation.title", @"Discard Title")
-                                                                    message:NSLocalizedString(@"createtextfile.dismiss.confirmation.message", @"Discard Message")
+        NSString *alertTitleKey = self.editingDocument ? @"document.edit.button.discard" : @"createtextfile.dismiss.confirmation.title";
+        NSString *alertMessageKey = self.editingDocument ? @"document.edit.dismiss.confirmation.message" : @"createtextfile.dismiss.confirmation.message";
+        
+        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
+                                                                    message:NSLocalizedString(alertMessageKey, @"Discard Message")
                                                                    delegate:self
                                                           cancelButtonTitle:NSLocalizedString(@"Yes", @"Yes")
                                                           otherButtonTitles:NSLocalizedString(@"No", @"No"), nil];
@@ -120,12 +154,65 @@ static NSString * const kTextFileMimeType = @"text/plain";
 
 - (void)nextButtonPressed:(id)sender
 {
-    NSData *textData = [self.textView.text dataUsingEncoding:NSUTF8StringEncoding];
-    
+    NSString *text = self.textView.text;
+    NSData *textData = [text dataUsingEncoding:NSUTF8StringEncoding];
     AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithData:textData mimeType:kTextFileMimeType];
     
-    UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadContentFile:contentFile inFolder:self.uploadDestinationFolder uploadFormType:UploadFormTypeDocument delegate:self.uploadFormViewControllerDelegate];
-    [self.navigationController pushViewController:uploadFormController animated:YES];
+    if (self.editingDocument)
+    {
+        SyncManager *syncManager = [SyncManager sharedManager];
+        BOOL isSyncDocument = [syncManager isNodeInSyncList:self.editingDocument];
+        
+        if (isSyncDocument)
+        {
+            [text writeToFile:self.documentContentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
+            [syncManager retrySyncForDocument:self.editingDocument];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+            [progressHUD show:YES];
+            
+            [self.documentFolderService updateContentOfDocument:self.editingDocument contentFile:contentFile completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                
+                [progressHUD hide:YES];
+                if (document)
+                {
+                    [text writeToFile:self.documentContentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"document.edit.failed.title", @"Edit Document Save Failed Title")
+                                                                              message:NSLocalizedString(@"document.edit.savefailed.message", @"Edit Document Save Failed Message")
+                                                                             delegate:self
+                                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+                    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                        if (!isCancelButton)
+                        {
+                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.documentContentPath completionBlock:nil];
+                        }
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }];
+                }
+            } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                
+            }];
+        }
+    }
+    else
+    {
+        UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session
+                                                                                         uploadContentFile:contentFile
+                                                                                                  inFolder:self.uploadDestinationFolder
+                                                                                            uploadFormType:UploadFormTypeDocument
+                                                                                                  delegate:self.uploadFormViewControllerDelegate];
+        [self.navigationController pushViewController:uploadFormController animated:YES];
+    }
 }
 
 #pragma mark - Keyboard Managment
