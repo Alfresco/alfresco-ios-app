@@ -11,6 +11,6 @@
 @interface FilePreviewViewController : UIViewController
 
 - (instancetype)initWithDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session;
-- (instancetype)initWithFilePath:(NSString *)filePath loadingCompletionBlock:(void (^)(UIWebView *webView, BOOL loadedIntoWebView))loadingCompleteBlock;
+- (instancetype)initWithFilePath:(NSString *)filePath document:(AlfrescoDocument *)document loadingCompletionBlock:(void (^)(UIWebView *webView, BOOL loadedIntoWebView))loadingCompleteBlock;
 
 @end

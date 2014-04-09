@@ -264,7 +264,7 @@
             }
             else
             {
-                FilePreviewViewController *hiddenPreviewController = [[FilePreviewViewController alloc] initWithFilePath:filePath loadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
+                FilePreviewViewController *hiddenPreviewController = [[FilePreviewViewController alloc] initWithFilePath:filePath document:nil loadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
                     if (loadedIntoWebView)
                     {
                         printBlock(webView);
