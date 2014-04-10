@@ -12,6 +12,9 @@
 @interface ConnectivityManager ()
 
 @property (nonatomic, strong) Reachability *internetReachability;
+@property (nonatomic, assign, readwrite, getter = hasInternetConnection) BOOL hasInternetConnection;
+@property (nonatomic, assign, readwrite, getter = isOnCellular) BOOL onCellular;
+@property (nonatomic, assign, readwrite, getter = isOnWifi) BOOL onWifi;
 
 @end
 

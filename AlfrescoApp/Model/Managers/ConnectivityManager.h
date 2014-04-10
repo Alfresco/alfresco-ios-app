@@ -10,10 +10,10 @@
 
 @interface ConnectivityManager : NSObject
 
-+ (id)sharedManager;
+@property (nonatomic, assign, readonly, getter = hasInternetConnection) BOOL hasInternetConnection;
+@property (nonatomic, assign, readonly, getter = isOnCellular) BOOL onCellular;
+@property (nonatomic, assign, readonly, getter = isOnWifi) BOOL onWifi;
 
-- (BOOL)hasInternetConnection;
-- (BOOL)isOnCellular;
-- (BOOL)isOnWifi;
++ (id)sharedManager;
 
 @end
