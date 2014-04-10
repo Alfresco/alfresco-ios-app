@@ -40,6 +40,16 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     return self;
 }
 
+- (BOOL)shouldSyncOnCellular
+{
+    return [[self preferenceForIdentifier:kSettingsSyncOnCellularIdentifier] boolValue];
+}
+
+- (BOOL)shouldSendDiagnostics
+{
+    return [[self preferenceForIdentifier:kSettingsSendDiagnosticsIdentifier] boolValue];
+}
+
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier
 {
     return [self.preferences valueForKey:preferenceIdentifier];
@@ -47,8 +57,10 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 - (void)updatePreferenceToValue:(id)obj preferenceIdentifier:(NSString *)preferenceIdentifier
 {
-    [self.preferences setObject:obj forKey:preferenceIdentifier];
+    id existingValue = self.preferences[preferenceIdentifier];
+    self.preferences[preferenceIdentifier] = obj;
     [self savePreferences];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSettingsDidChangeNotification object:preferenceIdentifier userInfo:@{kSettingChangedFromKey : existingValue, kSettingChangedToKey : obj}];
 }
 
 #pragma mark - Private Functions

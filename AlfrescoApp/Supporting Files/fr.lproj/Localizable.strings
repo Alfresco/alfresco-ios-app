@@ -552,7 +552,9 @@
  * Settings
  */
 "settings.title" = "Settings";
-"settings.about.section.title" = "General";
+"settings.general.title" = "General";
+"settings.sync.on.cellular" = "Cellular Sync";
+"settings.send.diagnostics" = "Send Diagnostics";
 
 /**
  * Onboarding View Controller

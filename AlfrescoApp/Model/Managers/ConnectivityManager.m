@@ -12,6 +12,9 @@
 @interface ConnectivityManager ()
 
 @property (nonatomic, strong) Reachability *internetReachability;
+@property (nonatomic, assign, readwrite, getter = hasInternetConnection) BOOL hasInternetConnection;
+@property (nonatomic, assign, readwrite, getter = isOnCellular) BOOL onCellular;
+@property (nonatomic, assign, readwrite, getter = isOnWifi) BOOL onWifi;
 
 @end
 
@@ -49,6 +52,32 @@
         return YES;
     }
     return NO;
+}
+
+- (BOOL)isOnCellular
+{
+    BOOL isOnCellular = NO;
+    
+    NetworkStatus currentState = [self.internetReachability currentReachabilityStatus];
+    if (currentState == ReachableViaWWAN)
+    {
+        isOnCellular = YES;
+    }
+    
+    return isOnCellular;
+}
+
+- (BOOL)isOnWifi
+{
+    BOOL isOnWifi = NO;
+    
+    NetworkStatus currentState = [self.internetReachability currentReachabilityStatus];
+    if (currentState == ReachableViaWiFi)
+    {
+        isOnWifi = YES;
+    }
+    
+    return isOnWifi;
 }
 
 #pragma mark - Private Functions
