@@ -155,11 +155,11 @@
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service Document";
+"accountdetails.fields.syncPreference" = "Sync Favorites?";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
 "accountdetails.header.authentication" = "Account Authentication";
 "accountdetails.header.advanced" = "Advanced";
-"accountdetails.buttons.browse" = "Browse Documents";
-"accountdetails.buttons.delete" = "Delete Account";
+"accountdetails.header.setting" = "Settings";
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "Failure to authenticate. Check your account settings with your system administrator.";
