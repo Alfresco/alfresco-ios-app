@@ -23,6 +23,7 @@
 #import "CreateTaskViewController.h"
 #import "DocumentPreviewManager.h"
 #import "FilePreviewViewController.h"
+#import "TextFileViewController.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -151,14 +152,11 @@
     }
     else
     {
-        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            [self addCompletionBlock:displayEmailBlock];
-        }
-        else
+        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
         }
+        [self addCompletionBlock:displayEmailBlock];
     }
     return request;
 }
@@ -288,14 +286,11 @@
     }
     else
     {
-        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            [self addCompletionBlock:printBlock];
-        }
-        else
+        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
         }
+        [self addCompletionBlock:printBlock];
     }
     return request;
 }
@@ -335,13 +330,45 @@
     }
     else
     {
-        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
         {
-            [self addCompletionBlock:displayEmailBlock];
+            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+        }
+        [self addCompletionBlock:displayEmailBlock];
+    }
+    return request;
+}
+
+- (AlfrescoRequest *)pressedEditActionItem:(ActionCollectionItem *)actionItem forDocumentWithContentPath:(NSString *)contentPath
+{
+    void (^displayEditController)(NSString *filePath) = ^(NSString *filePath) {
+        
+        TextFileViewController *textFileController = [[TextFileViewController alloc] initWithEditDocument:(AlfrescoDocument *)self.node contentFilePath:filePath session:self.session];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textFileController];
+        [self.controller presentViewController:navigationController animated:YES completion:nil];
+    };
+    
+    AlfrescoRequest *request = nil;
+    
+    if (contentPath)
+    {
+        displayEditController(contentPath);
+    }
+    else
+    {
+        DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
+        if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+        {
+            NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+            displayEditController(fileLocation);
         }
         else
         {
-            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+            if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+            {
+                request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+            }
+            [self addCompletionBlock:displayEditController];
         }
     }
     return request;

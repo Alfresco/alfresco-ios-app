@@ -71,6 +71,7 @@ extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
 extern NSString * const kAlfrescoWorkflowTaskDidComplete;
+extern NSString * const kAlfrescoDocumentEditedNotification;
 
 // Accounts
 extern NSString * const kAlfrescoAccountAddedNotification;

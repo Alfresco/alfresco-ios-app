@@ -462,6 +462,11 @@
 "createtextfile.title" = "Create File";
 "createtextfile.dismiss.confirmation.title" = "Dismiss?";
 "createtextfile.dismiss.confirmation.message" = "Are you sure you want to cancel the creation of this text file?\n\nPlease not, all work will be discarded.";
+"document.edit.button.discard" = "Discard Changes";
+"document.edit.button.save" = "Save";
+"document.edit.failed.title" = "Save Document";
+"document.edit.savefailed.message" = "Could not save document on the server. Do you want to save the document to your Downloads?";
+"document.edit.dismiss.confirmation.message" = "Are you sure you want to cancel changes made to the file?";
 
 /**
  * Saveback
@@ -575,6 +580,7 @@
 "action.subfolder" = "Add Folder";
 "action.upload" = "Upload";
 "action.review" = "Review";
+"action.edit" = "Edit";
 // alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename document to:";
