@@ -152,14 +152,11 @@
     }
     else
     {
-        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            [self addCompletionBlock:displayEmailBlock];
-        }
-        else
+        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
         }
+        [self addCompletionBlock:displayEmailBlock];
     }
     return request;
 }
@@ -289,14 +286,11 @@
     }
     else
     {
-        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            [self addCompletionBlock:printBlock];
-        }
-        else
+        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
         }
+        [self addCompletionBlock:printBlock];
     }
     return request;
 }
@@ -336,14 +330,11 @@
     }
     else
     {
-        if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            [self addCompletionBlock:displayEmailBlock];
-        }
-        else
+        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
         }
+        [self addCompletionBlock:displayEmailBlock];
     }
     return request;
 }
@@ -373,14 +364,11 @@
         }
         else
         {
-            if ([previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-            {
-                [self addCompletionBlock:displayEditController];
-            }
-            else
+            if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
             {
                 request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
             }
+            [self addCompletionBlock:displayEditController];
         }
     }
     return request;
