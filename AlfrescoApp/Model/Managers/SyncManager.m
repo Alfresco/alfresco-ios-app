@@ -7,7 +7,6 @@
 //
 
 #import "SyncManager.h"
-#import "Reachability.h"
 #import "Utility.h"
 #import "CoreDataSyncHelper.h"
 #import "SyncAccount.h"
@@ -20,6 +19,7 @@
 #import "UserAccount.h"
 #import "SyncOperation.h"
 #import "ConnectivityManager.h"
+#import "PreferenceManager.h"
 
 static NSString * const kDidAskToSync = @"didAskToSync";
 
@@ -1124,7 +1124,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                     if (buttonIndex == kSyncConfirmationOptionYes)
                                     {
                                         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSyncPreference];
-                                        [[NSUserDefaults standardUserDefaults] boolForKey:kSyncOnCellular];   // temporary
                                     }
                                     else
                                     {
@@ -1141,6 +1140,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
 }
 
+- (BOOL)isCurrentlySyncing
+{
+    return (self.syncQueue.operationCount > 0);
+}
+
 - (BOOL)isFirstUse
 {
     BOOL didAskToSync = [[NSUserDefaults standardUserDefaults] boolForKey:kDidAskToSync];
@@ -1150,14 +1154,15 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (BOOL)isSyncEnabled
 {
     BOOL syncPreferenceEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kSyncPreference];
-    BOOL syncOnCellularEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kSyncOnCellular];
+    BOOL syncOnCellularEnabled = [[PreferenceManager sharedManager] shouldSyncOnCellular];
     
     if (syncPreferenceEnabled)
     {
-        Reachability *reachability = [Reachability reachabilityForInternetConnection];
-        NetworkStatus status = [reachability currentReachabilityStatus];
+        BOOL isCurrentlyOnCellular = [[ConnectivityManager sharedManager] isOnCellular];
+        BOOL isCurrentlyOnWifi = [[ConnectivityManager sharedManager] isOnWifi];
+        
         // if the device is on cellular and "sync on cellular" is set OR the device is on wifi, return YES
-        if ((status == ReachableViaWWAN && syncOnCellularEnabled) || status == ReachableViaWiFi)
+        if ((isCurrentlyOnCellular && syncOnCellularEnabled) || isCurrentlyOnWifi)
         {
             return YES;
         }

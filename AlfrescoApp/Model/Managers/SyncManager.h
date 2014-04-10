@@ -62,6 +62,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 /*
  * Sync Utilities
  */
+- (BOOL)isCurrentlySyncing;
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
 - (BOOL)isFirstUse;
 /*
