@@ -8,7 +8,12 @@
 
 #import "SettingConstants.h"
 
-// plist keys
+// Notifications
+NSString * const kSettingsDidChangeNotification = @"SettingsDidChangeNotification";
+NSString * const kSettingChangedFromKey = @"SettingChangedFromKey";
+NSString * const kSettingChangedToKey = @"SettingChangedToKey";
+
+// Plist keys
 NSString * const kSettingsLocalizedTitleKey = @"LocalizedTitleKey";
 NSString * const kSettingsTableViewData = @"SettingsTableViewData";
 NSString * const kSettingsGroupHeaderLocalizedKey = @"GroupHeaderLocalizedKey";
@@ -18,12 +23,17 @@ NSString * const kSettingsCellType = @"Type";
 NSString * const kSettingsCellValue = @"Value";
 NSString * const kSettingsCellLocalizedTitleKey = @"LocalizedCellTitleKey";
 
-// cell types
+// Cell types
 NSString * const kSettingsToggleCell = @"AlfrescoSettingsToggle";
 NSString * const kSettingsTextFieldCell = @"AlfrescoSettingsTextField";
 NSString * const kSettingsLabelCell = @"AlfrescoSettingsLabel";
 
-// reuse identifers
+// Reuse identifers
 NSString * const kSettingsToggleCellReuseIdentifier = @"ToggleCell";
 NSString * const kSettingsTextFieldCellReuseIdentifier = @"TextFieldCell";
 NSString * const kSettingsLabelCellReuseIdentifier = @"LabelCell";
+
+// Setting identifiers - Please note these are referenced in UserPreferences.plist
+NSString * const kSettingsAboutIdentifier = @"SettingsAboutIdentifier";
+NSString * const kSettingsSyncOnCellularIdentifier = @"SettingsSyncOnCellularIdentifier";
+NSString * const kSettingsSendDiagnosticsIdentifier = @"SettingsSendDiagnosticsIdentifier";
