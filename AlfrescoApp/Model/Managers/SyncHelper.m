@@ -282,6 +282,19 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     [self.syncCoreDataHelper saveContextForManagedObjectContext:managedContext];
 }
 
+- (void)removeSyncContentAndInfoForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    NSString *accountContentDirectory = [self syncContentDirectoryPathForAccountWithId:accountId];
+    NSError *error = nil;
+    [self.fileManager removeItemAtPath:accountContentDirectory error:&error];
+    
+    if (!error)
+    {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@", accountId];
+        [self.syncCoreDataHelper deleteRecordsWithPredicate:predicate inTable:kSyncNodeInfoManagedObject inManagedObjectContext:managedContext];
+    }
+}
+
 - (void)removeSyncContentAndInfoInManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     NSString *syncContentDirectory = [self syncContentDirectoryPathForAccountWithId:nil];
