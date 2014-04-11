@@ -22,6 +22,7 @@
 #import "Constants.h"
 #import "PreferenceManager.h"
 #import "ConnectivityManager.h"
+#import "FileFolderListViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kFooterHeight = 32.0f;
@@ -94,6 +95,10 @@ static CGFloat const kFooterHeight = 32.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didUpdatePreference:)
                                                  name:kSettingsDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountInfoUpdated:)
+                                                 name:kAlfrescoAccountUpdatedNotification
                                                object:nil];
 }
 
@@ -201,6 +206,23 @@ static CGFloat const kFooterHeight = 32.0f;
     }
 }
 
+- (void)accountInfoUpdated:(NSNotification *)notification
+{
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    
+    UserAccount *notificationAccount = notification.object;
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    
+    if ((notificationAccount == selectedAccount) && notificationAccount.isSyncOn)
+    {
+        [self loadSyncNodesForFolder:nil];
+    }
+    else if (notificationAccount == selectedAccount)
+    {
+        [self.tableView reloadData];
+    }
+}
+
 #pragma mark - TableView Datasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -288,9 +310,19 @@ static CGFloat const kFooterHeight = 32.0f;
     AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
     
+    BOOL isSyncOn = [syncManager isSyncEnabled];
+    
     if (selectedNode.isFolder)
     {
-        SyncViewController *controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
+        UIViewController *controller = nil;
+        if (isSyncOn)
+        {
+            controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
+        }
+        else
+        {
+            controller = [[FileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderDisplayName:selectedNode.name session:self.session];
+        }
         [self.navigationController pushViewController:controller animated:YES];
     }
     else
@@ -315,6 +347,7 @@ static CGFloat const kFooterHeight = 32.0f;
                 return;
             }
             [self showHUD];
+            InAppDocumentLocation documentLocation = isSyncOn ? InAppDocumentLocationSync : InAppDocumentLocationFilesAndFolders;
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 
                 [self hideHUD];
@@ -323,7 +356,7 @@ static CGFloat const kFooterHeight = 32.0f;
                     DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
                                                                                                                            permissions:permissions
                                                                                                                        contentFilePath:filePath
-                                                                                                                      documentLocation:InAppDocumentLocationSync
+                                                                                                                      documentLocation:documentLocation
                                                                                                                                session:self.session];
                     previewController.hidesBottomBarWhenPushed = YES;
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];

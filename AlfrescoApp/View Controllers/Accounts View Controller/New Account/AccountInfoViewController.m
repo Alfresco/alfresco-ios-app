@@ -22,19 +22,13 @@ static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
 static NSString * const kServiceDocument = @"/alfresco";
 
-typedef NS_ENUM(NSInteger, AccountInfoTableSection)
-{
-    AccountInfoTableSectionAuthentication = 0,
-    AccountInfoTableSectionAdvanced,
-    AccountInfoTableSectionBrowse,
-    AccountInfoTableSectionDelete
-};
-
+static NSInteger const kAdvancedSectionNumber = 1;
 static NSInteger const kAccountInfoCertificateRow = 2;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroups;
+@property (nonatomic, strong) NSArray *tableGroupHeaders;
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UITextField *serverAddressTextField;
@@ -43,6 +37,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 @property (nonatomic, strong) UITextField *serviceDocumentTextField;
 @property (nonatomic, strong) UILabel *certificateLabel;
 @property (nonatomic, strong) UISwitch *protocolSwitch;
+@property (nonatomic, strong) UISwitch *syncPreferenceSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
@@ -204,18 +199,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == AccountInfoTableSectionAuthentication)
-    {
-        return NSLocalizedString(@"accountdetails.header.authentication", @"Authenticate");
-    }
-    else if (section == AccountInfoTableSectionAdvanced)
-    {
-        return NSLocalizedString(@"accountdetails.header.advanced", @"Advanced");
-    }
-    else
-    {
-        return nil;
-    }
+    return NSLocalizedString(self.tableGroupHeaders[section], @"Section Header");
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -230,7 +214,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == AccountInfoTableSectionAdvanced && indexPath.row == kAccountInfoCertificateRow)
+    if (indexPath.section == kAdvancedSectionNumber && indexPath.row == kAccountInfoCertificateRow)
     {
         [self.activeTextField resignFirstResponder];
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
@@ -245,8 +229,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)constructTableCellsForAlfrescoServer
 {
-    NSArray *groups = nil;
-    
     TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
     descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
     descriptionCell.valueTextField.delegate = self;
@@ -254,6 +236,12 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
     self.descriptionTextField = descriptionCell.valueTextField;
     self.descriptionTextField.text = self.formBackupAccount.accountDescription;
+    
+    SwitchCell *syncPreferenceCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+    syncPreferenceCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.syncPreference", @"Sync");
+    self.syncPreferenceSwitch = syncPreferenceCell.valueSwitch;
+    [self.syncPreferenceSwitch addTarget:self action:@selector(syncPreferenceChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.syncPreferenceSwitch setOn:self.formBackupAccount.isSyncOn animated:YES];
     
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
@@ -313,14 +301,16 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         
         certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        groups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                    @[portCell, serviceDocumentCell, certificateCell] ];
+        self.tableGroups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                              @[portCell, serviceDocumentCell, certificateCell],
+                              @[syncPreferenceCell] ];
+        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced", @"accountdetails.header.setting"];
     }
     else
     {
-        groups = @[ @[descriptionCell] ];
+        self.tableGroups = @[ @[descriptionCell], @[syncPreferenceCell] ];
+        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting"];
     }
-    self.tableGroups = groups;
 }
 
 #pragma mark - private Methods
@@ -337,6 +327,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
     self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.isSyncOn = self.syncPreferenceSwitch.isOn;
 }
 
 /**
@@ -405,12 +396,25 @@ static NSInteger const kAccountInfoCertificateRow = 2;
                 hasAccountPropertiesChanged = YES;
             }
             
+            if (!(self.formBackupAccount.isSyncOn == self.syncPreferenceSwitch.isOn))
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
             didChangeAndIsValid = hasAccountPropertiesChanged;
         }
     }
     else
     {
-        didChangeAndIsValid = ![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text];
+        if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
+        {
+            hasAccountPropertiesChanged = YES;
+        }
+        if (!(self.formBackupAccount.isSyncOn == self.syncPreferenceSwitch.isOn))
+        {
+            hasAccountPropertiesChanged = YES;
+        }
+        didChangeAndIsValid = hasAccountPropertiesChanged;
     }
     return didChangeAndIsValid;
 }
@@ -428,6 +432,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
+        self.account.isSyncOn = temporaryAccount.isSyncOn;
     };
     
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -477,6 +482,11 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         }
     }
     
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+- (void)syncPreferenceChanged:(id)sender
+{
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
