@@ -18,6 +18,9 @@ NSString * const kLargeThumbnailImageMappingPlist = @"LargeThumbnailImageMapping
 NSString * const kRenditionImageDocLib = @"doclib";
 NSString * const kRenditionImageImagePreview = @"imgpreview";
 
+NSString * const kEditableDocumentExtensions = @"txt, html, xml, css, js";
+NSString * const kEditableDocumentMimeTypes = @"text/plain, text/html, text/xml, application/xml, text/css, text/javascript, application/javascript";
+
 // App RevealController
 CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 

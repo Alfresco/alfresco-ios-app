@@ -26,6 +26,9 @@ extern NSString * const kLargeThumbnailImageMappingPlist;
 extern NSString * const kRenditionImageDocLib;
 extern NSString * const kRenditionImageImagePreview;
 
+extern NSString * const kEditableDocumentExtensions;
+extern NSString * const kEditableDocumentMimeTypes;
+
 extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;
