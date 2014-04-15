@@ -86,6 +86,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                  selector:@selector(nodeAdded:)
                                                      name:kAlfrescoNodeAddedOnServerNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentUpdatedOnServer:)
+                                                     name:kAlfrescoSaveBackRemoteComplete
+                                                   object:nil];
     }
     return self;
 }
@@ -693,6 +697,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         AlfrescoNode *subnode = [foldersDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
         [self addAlfrescoNodes:@[subnode] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (void)documentUpdatedOnServer:(NSNotification *)notifictaion
+{
+    NSString *nodeIdentifierUpdated = notifictaion.object;
+    AlfrescoDocument *updatedDocument = notifictaion.userInfo[kAlfrescoDocumentUpdatedDocumentParameterKey];
+
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeIdentifierUpdated inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
+    
+    if (indexPath)
+    {
+        [self.tableViewData replaceObjectAtIndex:indexPath.row withObject:updatedDocument];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 

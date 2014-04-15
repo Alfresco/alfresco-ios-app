@@ -153,6 +153,27 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return nodes.count > 0;
 }
 
+- (AlfrescoDocument *)retrieveSyncedAlfrescoDocumentForIdentifier:(NSString *)documentIdentifier managedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"syncNodeInfoId == %@", documentIdentifier];
+    NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
+    
+    AlfrescoDocument *syncedDocument = nil;
+    
+    if (nodes.count > 0)
+    {
+        NSData *syncedDocumentData = [(SyncNodeInfo *)nodes.firstObject node];
+        syncedDocument = [NSKeyedUnarchiver unarchiveObjectWithData:syncedDocumentData];
+    }
+    
+    return syncedDocument;
+}
+
 #pragma mark - Debugging Dump Methods
 
 - (void)logAllDataInManagedObjectContext:(NSManagedObjectContext *)managedContext
