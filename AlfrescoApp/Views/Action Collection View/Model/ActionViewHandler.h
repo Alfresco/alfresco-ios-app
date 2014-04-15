@@ -23,10 +23,10 @@
 - (AlfrescoRequest *)pressedUnlikeActionItem:(ActionCollectionItem *)actionItem;
 - (AlfrescoRequest *)pressedFavouriteActionItem:(ActionCollectionItem *)actionItem;
 - (AlfrescoRequest *)pressedUnfavouriteActionItem:(ActionCollectionItem *)actionItem;
-- (AlfrescoRequest *)pressedEmailActionItem:(ActionCollectionItem *)actionItem;
+- (AlfrescoRequest *)pressedEmailActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location;
 - (AlfrescoRequest *)pressedDownloadActionItem:(ActionCollectionItem *)actionItem;
-- (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;
-- (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;
+- (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location presentFromView:(UIView *)view inView:(UIView *)inView;
+- (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location presentFromView:(UIView *)view inView:(UIView *)inView;
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem;
 - (AlfrescoRequest *)pressedCreateSubFolderActionItem:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder;
 - (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path;

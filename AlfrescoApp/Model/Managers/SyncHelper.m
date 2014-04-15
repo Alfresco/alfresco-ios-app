@@ -296,6 +296,11 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     }
 }
 
+- (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef
+{
+    return [self.syncCoreDataHelper retrieveSyncedAlfrescoDocumentForIdentifier:documentRef managedObjectContext:nil];
+}
+
 #pragma mark - Private Interface
 
 - (id)init

@@ -63,6 +63,9 @@ NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDo
 NSString * const kAlfrescoNodeAddedOnServerParentFolderKey = @"AlfrescoNodeAddedOnServerParentFolderKey";
 NSString * const kAlfrescoNodeAddedOnServerSubNodeKey = @"AlfrescoNodeAddedOnServerSubNodeKey";
 NSString * const kAlfrescoWorkflowTaskDidComplete = @"AlfrescoWorkflowTaskDidComplete";
+// Saveback
+NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
+NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";
 
 // Accounts
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";
@@ -146,3 +149,16 @@ NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
 
 // Workflow
 NSString * const kAlfrescoTaskAddedNotification = @"AlfrescoTaskAddedNotification";
+
+// Quickoffice
+NSString * const kQuickofficeApplicationSecretUUIDKey = @"PartnerApplicationSecretUUID";
+NSString * const kQuickofficeApplicationInfoKey = @"PartnerApplicationInfo";
+NSString * const kQuickofficeApplicationIdentifierKey = @"PartnerApplicationIdentifier";
+NSString * const kQuickofficeApplicationDocumentExtension = @"alf01";
+NSString * const kQuickofficeApplicationDocumentExtensionKey = @"PartnerApplicationDocumentExtension";
+NSString * const kQuickofficeApplicationDocumentUTI = @"com.alfresco.mobile.qpa";
+NSString * const kQuickofficeApplicationDocumentUTIKey = @"PartnerApplicationDocumentUTI";
+// Custom
+NSString * const kQuickofficeApplicationBundleIdentifierPrefix = @"com.quickoffice.";
+NSString * const kAlfrescoInfoMetadataKey = @"AlfrescoInfoMetadataKey";
+NSString * const kAppIdentifier = @"AlfrescoMobileApp";

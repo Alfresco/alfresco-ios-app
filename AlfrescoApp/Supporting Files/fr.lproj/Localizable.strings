@@ -593,5 +593,11 @@
 "action.delete.failed.message" = "Failed to delete %@.";
 
 /**
+ * SaveBack
+ */
+"saveback.completed.title" = "SaveBack Completed";
+"saveback.completed.message" = "%@ has successfully been saved back";
+
+/**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */

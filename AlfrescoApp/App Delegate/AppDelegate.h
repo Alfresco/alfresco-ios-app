@@ -30,10 +30,4 @@ typedef NS_ENUM(NSUInteger, MainMenuNavigationControllerType)
 
 @property (strong, nonatomic) UIWindow *window;
 
-// Returns a NavigationViewController corresponding to the enum value passed-in
-- (NavigationViewController *)navigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType;
-
-// Makes a UITabBar active corresponding to the enum value passed-in
-- (void)activateTabBarForNavigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType;
-
 @end

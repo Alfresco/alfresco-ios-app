@@ -10,7 +10,6 @@
 #import "PlaceholderViewController.h"
 #import "Utility.h"
 #import "LoginManager.h"
-#import "FileURLHandler.h"
 #import "LocationManager.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
@@ -26,19 +25,15 @@
 #import "UIColor+Custom.h"
 #import "AnalyticsManager.h"
 #import "CoreDataCacheHelper.h"
+#import "FileHandlerManager.h"
 
 #import <HockeySDK/HockeySDK.h>
 
 @interface AppDelegate()
 
-// Storage for deferred application:openURL:sourceApplication:annotation:
-@property (nonatomic, assign) BOOL hasDeferredOpenURLToProcess;
-@property (nonatomic, strong) id<URLHandlerProtocol> deferredHandler;
-@property (nonatomic, strong) NSURL *deferredURL;
-@property (nonatomic, strong) NSString *deferredSourceApplication;
-@property (nonatomic, strong) id deferredAnnotation;
 @property (nonatomic, strong) UIViewController *appRootViewController;
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
 
@@ -47,19 +42,26 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.hasDeferredOpenURLToProcess = NO;
     
+    // Migrate any old accounts if required
     [MigrationAssistant runMigrationAssistant];
     
+    // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     self.window.tintColor = [UIColor appTintColor];
     
-    // clean up cache
+    // Clean up cache
     self.cacheHelper = [[CoreDataCacheHelper alloc] init];
     [self.cacheHelper removeAllCachedDataOlderThanNumberOfDays:@(kNumberOfDaysToKeepCachedData)];
     
+    // Register the delegate for session updates
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRecieved:) name:kAlfrescoSessionReceivedNotification object:nil];
+    
+    // Make the window visiable
     [self.window makeKeyAndVisible];
 
+    // If this is the first rum of the app, remove all old accounts (Deleted from the device and reinstalled).
+    // This needs to be done as deleting the app does not clear out the keychain
     AccountManager *accountManager = [AccountManager sharedManager];
     [AppConfigurationManager sharedManager];
     
@@ -72,15 +74,10 @@
     else if (accountManager.selectedAccount)
     {
         [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
         }];
     }
     
-#ifdef DEBUG
-//    [[AccountManager sharedManager] removeAllAccounts];
-#endif
-
     // HockeyApp SDK - only for non-dev builds to avoid update prompt
     NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     if (![bundleVersion isEqualToString:@"dev"])
@@ -101,7 +98,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return NO;
+    return [[FileHandlerManager sharedManager] handleURL:url sourceApplication:sourceApplication annotation:annotation session:self.session];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -167,31 +164,9 @@
     [userDefaults synchronize];
 }
 
-#pragma mark - Public Interface
-
-- (NavigationViewController *)navigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType
+- (void)sessionRecieved:(NSNotification *)notification
 {
-//    return [self.navigationControllers objectAtIndex:navigationControllerType];
-    // TODO
-    return nil;
-}
-
-- (void)activateTabBarForNavigationControllerOfType:(MainMenuNavigationControllerType)navigationControllerType
-{
-    //    [self.tabBarController setSelectedIndex:navigationControllerType];
-}
-
-#pragma mark - UITabbarControllerDelegate Functions
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
-{
-    // Avoid popping to the root view controller when double tapping the about tab
-    if ([viewController.tabBarItem.title isEqualToString:NSLocalizedString(@"about.title", @"About Title")] && tabBarController.selectedViewController == viewController)
-    {
-        return NO;
-    }
-    
-    return YES;
+    self.session = notification.object;
 }
 
 @end

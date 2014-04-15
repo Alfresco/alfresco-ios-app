@@ -14,6 +14,13 @@ typedef NS_ENUM(NSUInteger, TaskFilter)
     TaskFilterProcess
 };
 
+typedef NS_ENUM(NSInteger, InAppDocumentLocation)
+{
+    InAppDocumentLocationFilesAndFolders = 0,
+    InAppDocumentLocationSync,
+    InAppDocumentLocationLocalFiles
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 
 extern int const kMaxItemsPerListingRetrieve;
@@ -71,6 +78,9 @@ extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
 extern NSString * const kAlfrescoWorkflowTaskDidComplete;
+// Saveback
+extern NSString * const kAlfrescoSaveBackLocalComplete;
+extern NSString * const kAlfrescoSaveBackRemoteComplete;
 
 // Accounts
 extern NSString * const kAlfrescoAccountAddedNotification;
@@ -152,5 +162,18 @@ extern NSString * const kAlfrescoCloudAPIAccountID;
 // Help/Documentation
 extern NSString * const kAlfrescoHelpURLString;
 
-// workflow
+// Workflow
 extern NSString * const kAlfrescoTaskAddedNotification;
+
+// Quickoffice
+extern NSString * const kQuickofficeApplicationSecretUUIDKey;
+extern NSString * const kQuickofficeApplicationInfoKey;
+extern NSString * const kQuickofficeApplicationIdentifierKey;
+extern NSString * const kQuickofficeApplicationDocumentExtension;
+extern NSString * const kQuickofficeApplicationDocumentExtensionKey;
+extern NSString * const kQuickofficeApplicationDocumentUTI;
+extern NSString * const kQuickofficeApplicationDocumentUTIKey;
+// custom
+extern NSString * const kQuickofficeApplicationBundleIdentifierPrefix;
+extern NSString * const kAlfrescoInfoMetadataKey;
+extern NSString * const kAppIdentifier;
