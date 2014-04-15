@@ -66,7 +66,7 @@ static CGFloat const kFooterHeight = 32.0f;
         [self disablePullToRefresh];
     }
     
-    self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
+    self.title = [self listTitle];
     self.tableViewFooter = [[UILabel alloc] init];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
@@ -132,6 +132,21 @@ static CGFloat const kFooterHeight = 32.0f;
     }
     [self hidePullToRefreshView];
     [self.tableView reloadData];
+}
+
+- (NSString *)listTitle
+{
+    NSString *title = @"";
+    if (self.parentNode)
+    {
+        title = self.parentNode.name;
+    }
+    else
+    {
+        UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+        title = userAccount.isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+    }
+    return title;
 }
 
 - (void)cancelSync
@@ -213,6 +228,7 @@ static CGFloat const kFooterHeight = 32.0f;
 - (void)accountInfoUpdated:(NSNotification *)notification
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
+    self.title = [self listTitle];
     
     UserAccount *notificationAccount = notification.object;
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
