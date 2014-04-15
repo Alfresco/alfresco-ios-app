@@ -5,12 +5,12 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DocumentPreviewViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseDocumentPreviewViewController">
             <connections>
                 <outlet property="actionMenuView" destination="she-YW-fRt" id="c6L-IM-UuZ"/>
-                <outlet property="documentThumbnail" destination="ajv-mC-8Oc" id="yKS-EV-BsY"/>
                 <outlet property="pagingScrollView" destination="aHo-93-a2B" id="Gx3-As-0Ck"/>
                 <outlet property="pagingSegmentControl" destination="Fa9-gb-l3D" id="0vw-Sa-2G4"/>
+                <outlet property="segmentControlHeightConstraint" destination="sr6-Vm-NRo" id="QCi-AT-kdH"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -37,7 +37,7 @@
                         <outlet property="delegate" destination="-1" id="rjM-hQ-Wc6"/>
                     </connections>
                 </scrollView>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Fa9-gb-l3D">
+                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Fa9-gb-l3D">
                     <rect key="frame" x="5" y="10" width="310" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
@@ -71,12 +71,5 @@
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mime_doc.png" id="ajv-mC-8Oc" customClass="ThumbnailImageView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="174"/>
-            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-        </imageView>
     </objects>
-    <resources>
-        <image name="mime_doc.png" width="32" height="32"/>
-    </resources>
 </document>

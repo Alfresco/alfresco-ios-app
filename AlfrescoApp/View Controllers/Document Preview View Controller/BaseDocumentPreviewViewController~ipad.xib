@@ -5,12 +5,12 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DocumentPreviewViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseDocumentPreviewViewController">
             <connections>
                 <outlet property="actionMenuView" destination="jWJ-GZ-Bv7" id="vjt-iw-lL3"/>
-                <outlet property="documentThumbnail" destination="0zh-qj-0qe" id="UPP-ia-ay6"/>
                 <outlet property="pagingScrollView" destination="W5I-8h-eej" id="dkl-cr-jK3"/>
                 <outlet property="pagingSegmentControl" destination="Wf6-TO-B0e" id="Qfy-s5-U0V"/>
+                <outlet property="segmentControlHeightConstraint" destination="qv4-4a-6Ij" id="cvf-lu-nbF"/>
                 <outlet property="view" destination="1" id="zQc-V0-u7o"/>
             </connections>
         </placeholder>
@@ -37,8 +37,8 @@
                         <outlet property="delegate" destination="-1" id="SX3-D9-vdJ"/>
                     </connections>
                 </scrollView>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="159.00000467538834" y="10" width="450" height="29"/>
+                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
+                    <rect key="frame" x="159" y="10" width="450" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="450" id="DdW-5m-2GS"/>
@@ -70,9 +70,5 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="0zh-qj-0qe" customClass="ThumbnailImageView">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-        </imageView>
     </objects>
 </document>

@@ -24,6 +24,8 @@
 #import "DocumentPreviewManager.h"
 #import "FilePreviewViewController.h"
 #import "TextFileViewController.h"
+#import "AccountManager.h"
+#import "SaveBackMetadata.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -35,6 +37,7 @@
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) NSMutableArray *queuedCompletionBlocks;
+@property (nonatomic, assign) InAppDocumentLocation documentLocation;
 
 @end
 
@@ -113,23 +116,23 @@
     }];
 }
 
-- (AlfrescoRequest *)pressedEmailActionItem:(ActionCollectionItem *)actionItem
+- (AlfrescoRequest *)pressedEmailActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location
 {
     void (^displayEmailBlock)(NSString *filePath) = ^(NSString *filePath) {
         if (filePath && [MFMailComposeViewController canSendMail])
         {
             MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
             emailController.mailComposeDelegate = self;
-            [emailController setSubject:self.node.name];
+            [emailController setSubject:filePath.lastPathComponent];
             
             // attachment
-            NSString *mimeType = [Utility mimeTypeForFileExtension:self.node.name];
+            NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.lastPathComponent];
             if (!mimeType)
             {
                 mimeType = @"application/octet-stream";
             }
             NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
-            [emailController addAttachmentData:documentData mimeType:mimeType fileName:self.node.name];
+            [emailController addAttachmentData:documentData mimeType:mimeType fileName:filePath.lastPathComponent];
             
             // content body template
             NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"emailTemplate" ofType:@"html" inDirectory:@"Email Template"];
@@ -142,22 +145,32 @@
         }
     };
     
+    self.documentLocation = location;
+    
     AlfrescoRequest *request = nil;
     
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
-    if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+    if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
-        NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
-        displayEmailBlock(fileLocation);
+        if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+        {
+            NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+            displayEmailBlock(fileLocation);
+        }
+        else
+        {
+            if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+            {
+                request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+            }
+            [self addCompletionBlock:displayEmailBlock];
+        }
     }
     else
     {
-        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
-        }
-        [self addCompletionBlock:displayEmailBlock];
+        displayEmailBlock(documentPath);
     }
+    
     return request;
 }
 
@@ -200,7 +213,7 @@
     return downloadRequest;
 }
 
-- (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView
+- (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location presentFromView:(UIView *)view inView:(UIView *)inView
 {
     void (^printBlock)(NSString *filePath) = ^(NSString *filePath) {
         if (filePath)
@@ -276,26 +289,36 @@
         }
     };
     
+    self.documentLocation = location;
+    
     AlfrescoRequest *request = nil;
     
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
-    if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+    if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
-        NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
-        printBlock(fileLocation);
+        if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+        {
+            NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
+            printBlock(fileLocation);
+        }
+        else
+        {
+            if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+            {
+                request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+            }
+            [self addCompletionBlock:printBlock];
+        }
     }
     else
     {
-        if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
-        {
-            request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
-        }
-        [self addCompletionBlock:printBlock];
+        printBlock(documentPath);
     }
+    
     return request;
 }
 
-- (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView
+- (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location presentFromView:(UIView *)view inView:(UIView *)inView
 {
     void (^displayEmailBlock)(NSString *filePath) = ^(NSString *filePath) {
         if (filePath)
@@ -320,10 +343,12 @@
         }
     };
     
+    self.documentLocation = location;
+    
     AlfrescoRequest *request = nil;
     
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
-    if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
+    if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
         displayEmailBlock(fileLocation);
@@ -371,6 +396,7 @@
             [self addCompletionBlock:displayEditController];
         }
     }
+    
     return request;
 }
 
@@ -575,7 +601,25 @@
 
 - (void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
 {
-    // TODO: Saveback API's
+    NSDictionary *annotationDictionary = nil;
+    
+    if ([application hasPrefix:kQuickofficeApplicationBundleIdentifierPrefix])
+    {
+        UserAccount *currentAccount = [[AccountManager sharedManager] selectedAccount];
+        SaveBackMetadata *savebackMetadata = [[SaveBackMetadata alloc] initWithAccountID:currentAccount.accountIdentifier nodeRef:self.node.identifier originalFileLocation:controller.URL.absoluteString documentLocation:self.documentLocation];
+        
+        annotationDictionary = @{kQuickofficeApplicationSecretUUIDKey : ALFRESCO_QUICKOFFICE_PARTNER_KEY,
+                                 kQuickofficeApplicationInfoKey : @{kAlfrescoInfoMetadataKey : savebackMetadata.dictionaryRepresentation},
+                                 kQuickofficeApplicationIdentifierKey : kAppIdentifier,
+                                 kQuickofficeApplicationDocumentExtensionKey : kQuickofficeApplicationDocumentExtension,
+                                 kQuickofficeApplicationDocumentUTIKey : kQuickofficeApplicationDocumentUTI};
+    }
+    else
+    {
+        // TODO: Custom Save Back Parameters
+    }
+    
+    controller.annotation = annotationDictionary;
 }
 
 - (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller

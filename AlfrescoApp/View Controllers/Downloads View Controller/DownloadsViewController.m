@@ -7,7 +7,7 @@
 //
 
 #import "DownloadsViewController.h"
-#import "DocumentPreviewViewController.h"
+#import "DownloadsDocumentPreviewViewController.h"
 #import "UniversalDevice.h"
 #import "DownloadManager.h"
 #import "Utility.h"
@@ -260,13 +260,22 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         else
         {
             AlfrescoDocument *documentToDisplay = [[DownloadManager sharedManager] infoForDocument:contentFullPath];
-            // Additional property added by category
-            documentToDisplay.isDownloaded = YES;
-            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:documentToDisplay
-                                                                                                                   permissions:nil
-                                                                                                               contentFilePath:contentFullPath
-                                                                                                              documentLocation:InAppDocumentLocationLocalFiles
-                                                                                                                       session:self.session];
+            DownloadsDocumentPreviewViewController *previewController = nil;
+            if (documentToDisplay)
+            {
+                // Additional property added by category
+                documentToDisplay.isDownloaded = YES;
+                previewController = [[DownloadsDocumentPreviewViewController alloc] initWithAlfrescoDocument:documentToDisplay
+                                                                                                 permissions:nil
+                                                                                             contentFilePath:contentFullPath
+                                                                                            documentLocation:InAppDocumentLocationLocalFiles
+                                                                                                     session:self.session];
+            }
+            else
+            {
+                previewController = [[DownloadsDocumentPreviewViewController alloc] initWithFilePath:contentFullPath];
+            }
+            
             previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
