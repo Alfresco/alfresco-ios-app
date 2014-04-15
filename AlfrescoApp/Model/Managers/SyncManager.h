@@ -70,9 +70,4 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (BOOL)isSyncEnabled;
 
-/*
- * shows if sync is on in settings
- */
-- (BOOL)isSyncPreferenceOn;
-
 @end

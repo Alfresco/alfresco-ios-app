@@ -234,7 +234,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         return NO;
     };
     
-    if ([self isSyncEnabled])
+    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+    
+    if (userAccount.isSyncOn)
     {
         [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
             
@@ -1107,34 +1109,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return isInSyncList;
 }
 
-- (void)showSyncAlertIfFirstUseWithCompletionBlock:(void (^)(BOOL completed))completionBlock
-{
-    if ([self isFirstUse])
-    {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
-        [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
-                                        message:message
-                                completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                                    
-                                    if (buttonIndex == kSyncConfirmationOptionYes)
-                                    {
-                                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSyncPreference];
-                                    }
-                                    else
-                                    {
-                                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSyncPreference];
-                                    }
-                                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDidAskToSync];
-                                    [[NSUserDefaults standardUserDefaults] synchronize];
-                                    completionBlock(YES);
-                                }];
-    }
-    else
-    {
-        completionBlock(YES);
-    }
-}
-
 - (BOOL)isCurrentlySyncing
 {
     return (self.syncQueue.operationCount > 0);
@@ -1164,11 +1138,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     return NO;
-}
-
-- (BOOL)isSyncPreferenceOn
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kSyncPreference];
 }
 
 #pragma mark - UIAlertview Methods

@@ -16,6 +16,7 @@
 #import "SyncManager.h"
 #import "NodePickerScopeCell.h"
 #import "UIColor+Custom.h"
+#import "AccountManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -106,11 +107,11 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
         BOOL showFavorites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationFavoritesKey];
         if (showFavorites)
         {
-            BOOL isSyncEnabled = [[SyncManager sharedManager] isSyncEnabled];
+            UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
             NodePickerFavoritesViewController *syncViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
             MainMenuItem *favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                                 imageName:isSyncEnabled ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
-                                                                         localizedTitleKey:isSyncEnabled ? @"sync.title" : @"favourites.title"
+                                                                                 imageName:userAccount.isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
+                                                                         localizedTitleKey:userAccount.isSyncOn ? @"sync.title" : @"favourites.title"
                                                                             viewController:syncViewController
                                                                            displayInDetail:NO];
             [self.tableViewData addObject:favoritesMenuItem];

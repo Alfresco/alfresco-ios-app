@@ -61,7 +61,7 @@ static CGFloat const kFooterHeight = 32.0f;
         [self loadSyncNodesForFolder:self.parentNode];
     }
     
-    if (self.parentNode != nil)
+    if (self.parentNode != nil || ![[ConnectivityManager sharedManager] hasInternetConnection])
     {
         [self disablePullToRefresh];
     }
@@ -99,6 +99,10 @@ static CGFloat const kFooterHeight = 32.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(accountInfoUpdated:)
                                                  name:kAlfrescoAccountUpdatedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kAlfrescoConnectivityChangedNotification
                                                object:nil];
 }
 
@@ -310,12 +314,12 @@ static CGFloat const kFooterHeight = 32.0f;
     AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
     
-    BOOL isSyncOn = [syncManager isSyncEnabled];
+    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
     
     if (selectedNode.isFolder)
     {
         UIViewController *controller = nil;
-        if (isSyncOn)
+        if (userAccount.isSyncOn)
         {
             controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
         }
@@ -347,7 +351,7 @@ static CGFloat const kFooterHeight = 32.0f;
                 return;
             }
             [self showHUD];
-            InAppDocumentLocation documentLocation = isSyncOn ? InAppDocumentLocationSync : InAppDocumentLocationFilesAndFolders;
+            InAppDocumentLocation documentLocation = userAccount.isSyncOn ? InAppDocumentLocationSync : InAppDocumentLocationFilesAndFolders;
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 
                 [self hideHUD];
@@ -499,10 +503,10 @@ static CGFloat const kFooterHeight = 32.0f;
 - (NSString *)tableFooterText
 {
     SyncManager *syncManager = [SyncManager sharedManager];
-    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
+    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
     NSString *footerText = @"";
     
-    if (isSyncOn)
+    if (userAccount.isSyncOn)
     {
         SyncNodeStatus *nodeStatus = nil;
         if (!self.parentNode)
@@ -547,6 +551,22 @@ static CGFloat const kFooterHeight = 32.0f;
     {
         [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
         self.retrySyncNode = nil;
+    }
+}
+
+#pragma mark - Connectivy Notification Methods
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    if (hasInternetConnection)
+    {
+        [self enablePullToRefresh];
+        [self loadSyncNodesForFolder:self.parentNode];
+    }
+    else
+    {
+        [self disablePullToRefresh];
     }
 }
 

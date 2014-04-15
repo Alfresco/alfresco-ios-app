@@ -13,6 +13,7 @@
 #import "AlfrescoNodeCell.h"
 #import "Utility.h"
 #import "ThumbnailDownloader.h"
+#import "AccountManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -93,13 +94,41 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
 {
-    self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
+    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
     
-    if (self.nodePicker.type == NodePickerTypeFolders)
+    if (userAccount.isSyncOn)
     {
-        self.tableViewData = [self foldersInNodes:self.tableViewData];
+        NSMutableArray *syncNodes = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
+        
+        if (self.nodePicker.type == NodePickerTypeFolders)
+        {
+            self.tableViewData = [self foldersInNodes:self.tableViewData];
+        }
+        else
+        {
+            self.tableViewData = syncNodes;
+        }
+        
+        [self.tableView reloadData];
     }
-    [self.tableView reloadData];
+    else
+    {
+        [self showHUD];
+        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
+            
+            [self hideHUD];
+            if (self.nodePicker.type == NodePickerTypeFolders)
+            {
+                self.tableViewData = [self foldersInNodes:array];
+            }
+            else
+            {
+                self.tableViewData = [array mutableCopy];
+            }
+            
+            [self.tableView reloadData];
+        }];
+    }
 }
 
 - (NSMutableArray *)foldersInNodes:(NSArray *)nodes
@@ -189,10 +218,10 @@ static CGFloat const kCellHeight = 64.0f;
     
     if (selectedNode.isFolder)
     {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncEnabled];
+        UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
         UIViewController *viewController = nil;
         
-        if (isSyncOn)
+        if (userAccount.isSyncOn)
         {
             viewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:(AlfrescoFolder *)selectedNode session:self.session nodePickerController:self.nodePicker];
             
