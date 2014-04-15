@@ -246,9 +246,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         if (self.documentPermissions.canEdit)
         {
             NSString *extension = self.document.name.pathExtension;
-            NSArray *editableFileExtensions = @[@"txt", @"html", @"xml", @"css", @"js"];
             
-            BOOL canEdit = [editableFileExtensions containsObject:extension];
+            NSArray *editableDocumentExtensions = [kEditableDocumentExtensions componentsSeparatedByString:@","];
+            NSArray *editableDocumentMimeTypes = [kEditableDocumentMimeTypes componentsSeparatedByString:@","];
+            
+            BOOL canEdit = [editableDocumentExtensions containsObject:extension] && [editableDocumentMimeTypes containsObject:self.document.contentMimeType];
             if (canEdit)
             {
                 [items addObject:[ActionCollectionItem editItem]];
