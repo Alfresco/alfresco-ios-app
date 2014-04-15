@@ -55,9 +55,9 @@
     [self.cacheHelper removeAllCachedDataOlderThanNumberOfDays:@(kNumberOfDaysToKeepCachedData)];
     
     // Register the delegate for session updates
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRecieved:) name:kAlfrescoSessionReceivedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     
-    // Make the window visiable
+    // Make the window visible
     [self.window makeKeyAndVisible];
 
     // If this is the first rum of the app, remove all old accounts (Deleted from the device and reinstalled).
@@ -164,7 +164,7 @@
     [userDefaults synchronize];
 }
 
-- (void)sessionRecieved:(NSNotification *)notification
+- (void)sessionReceived:(NSNotification *)notification
 {
     self.session = notification.object;
 }

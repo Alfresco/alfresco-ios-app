@@ -68,7 +68,7 @@
     {
         objc_property_t property = properties[i];
         const char *propertyName = property_getName(property);
-        if(propertyName)
+        if (propertyName)
         {
             NSString *propertyNameString = [NSString stringWithCString:propertyName encoding:[NSString defaultCStringEncoding]];
             [propertyNames addObject:propertyNameString];

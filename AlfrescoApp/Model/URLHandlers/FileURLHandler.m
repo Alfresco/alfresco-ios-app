@@ -87,6 +87,9 @@ static NSString * const kHandlerPrefix = @"file://";
                         else
                         {
                             [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:filePath completionBlock:nil];
+                            NSString *title = NSLocalizedString(@"saveback.failed.title", @"SaveBack Failed Title");
+                            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"SaveBack Failed Message"), node.name];
+                            displayErrorMessageWithTitle(message, title);
                         }
                     } progressBlock:nil];
                 }
@@ -98,7 +101,6 @@ static NSString * const kHandlerPrefix = @"file://";
     {
         // Come from another app, not saveback ...
         // Save to downloads for the moment
-        // Requires clear requirements/wireframes on how to deal with accounts, accounts without passwords, and locations.
         [[DownloadManager sharedManager] saveDocument:nil contentPath:url.path completionBlock:nil];
         handled = YES;
     }
