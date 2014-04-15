@@ -38,6 +38,8 @@ extern NSString * const kSyncReloadContentKey;
                  refreshExistingSyncNodes:(BOOL)refreshExisting
                    inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
+- (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef;
+
 + (SyncHelper *)sharedHelper;
 
 @end

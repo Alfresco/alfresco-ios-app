@@ -258,7 +258,7 @@
 		73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD71802C679007172EE /* ActionCollectionItem.m */; };
 		73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD91802C679007172EE /* ActionCollectionRow.m */; };
 		73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AE11802E5C6007172EE /* DocumentPreviewViewController.m */; };
-		73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AE21802E5C6007172EE /* DocumentPreviewViewController.xib */; };
+		73632AE41802E5C6007172EE /* BaseDocumentPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AE21802E5C6007172EE /* BaseDocumentPreviewViewController.xib */; };
 		73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEB1806F5D2007172EE /* SwitchViewController.m */; };
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
@@ -341,7 +341,11 @@
 		739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */; };
 		739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
-		73A04F30187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A04F2F187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib */; };
+		739E107D18F6D83600495616 /* SaveBackMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 739E107C18F6D83600495616 /* SaveBackMetadata.m */; };
+		739E108018F6F10700495616 /* FileHandlerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 739E107F18F6F10700495616 /* FileHandlerManager.m */; };
+		739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739E108218FC19B100495616 /* DownloadsDocumentPreviewViewController.m */; };
+		739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */; };
+		73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */; };
 		73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */; };
 		73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
@@ -869,7 +873,7 @@
 		73632AD91802C679007172EE /* ActionCollectionRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionRow.m; sourceTree = "<group>"; };
 		73632AE01802E5C6007172EE /* DocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentPreviewViewController.h; path = "Document Preview View Controller/DocumentPreviewViewController.h"; sourceTree = "<group>"; };
 		73632AE11802E5C6007172EE /* DocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = DocumentPreviewViewController.m; path = "Document Preview View Controller/DocumentPreviewViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		73632AE21802E5C6007172EE /* DocumentPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DocumentPreviewViewController.xib; path = "Document Preview View Controller/DocumentPreviewViewController.xib"; sourceTree = "<group>"; };
+		73632AE21802E5C6007172EE /* BaseDocumentPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BaseDocumentPreviewViewController.xib; path = "Document Preview View Controller/BaseDocumentPreviewViewController.xib"; sourceTree = "<group>"; };
 		73632AEA1806F5D2007172EE /* SwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwitchViewController.h; path = "Switcher View Controller/SwitchViewController.h"; sourceTree = "<group>"; };
 		73632AEB1806F5D2007172EE /* SwitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwitchViewController.m; path = "Switcher View Controller/SwitchViewController.m"; sourceTree = "<group>"; };
 		73632AEE1806F674007172EE /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuViewController.h; path = "Main Menu View Controller/MainMenuViewController.h"; sourceTree = "<group>"; };
@@ -985,7 +989,15 @@
 		739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableviewUnderlinedHeaderView.xib; sourceTree = "<group>"; };
 		739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoFileManager+Extensions.h"; sourceTree = "<group>"; };
 		739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoFileManager+Extensions.m"; sourceTree = "<group>"; };
-		73A04F2F187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "DocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/DocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
+		739E107B18F6D83600495616 /* SaveBackMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveBackMetadata.h; sourceTree = "<group>"; };
+		739E107C18F6D83600495616 /* SaveBackMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveBackMetadata.m; sourceTree = "<group>"; };
+		739E107E18F6F10700495616 /* FileHandlerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandlerManager.h; sourceTree = "<group>"; };
+		739E107F18F6F10700495616 /* FileHandlerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHandlerManager.m; sourceTree = "<group>"; };
+		739E108118FC19B100495616 /* DownloadsDocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadsDocumentPreviewViewController.h; path = "Document Preview View Controller/DownloadsDocumentPreviewViewController.h"; sourceTree = "<group>"; };
+		739E108218FC19B100495616 /* DownloadsDocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadsDocumentPreviewViewController.m; path = "Document Preview View Controller/DownloadsDocumentPreviewViewController.m"; sourceTree = "<group>"; };
+		739E108418FC219E00495616 /* BaseDocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseDocumentPreviewViewController.h; path = "Document Preview View Controller/BaseDocumentPreviewViewController.h"; sourceTree = "<group>"; };
+		739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseDocumentPreviewViewController.m; path = "Document Preview View Controller/BaseDocumentPreviewViewController.m"; sourceTree = "<group>"; };
+		73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "BaseDocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/BaseDocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
 		73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+AutoLayout.h"; sourceTree = "<group>"; };
 		73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+AutoLayout.m"; sourceTree = "<group>"; };
 		73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItemCell.h; path = "Main Menu View Controller/Cell/MainMenuItemCell.h"; sourceTree = "<group>"; };
@@ -1826,10 +1838,14 @@
 		73632ADF1802E574007172EE /* Document Preview Controller */ = {
 			isa = PBXGroup;
 			children = (
+				739E108418FC219E00495616 /* BaseDocumentPreviewViewController.h */,
+				739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */,
+				73632AE21802E5C6007172EE /* BaseDocumentPreviewViewController.xib */,
+				73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */,
 				73632AE01802E5C6007172EE /* DocumentPreviewViewController.h */,
 				73632AE11802E5C6007172EE /* DocumentPreviewViewController.m */,
-				73632AE21802E5C6007172EE /* DocumentPreviewViewController.xib */,
-				73A04F2F187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib */,
+				739E108118FC19B100495616 /* DownloadsDocumentPreviewViewController.h */,
+				739E108218FC19B100495616 /* DownloadsDocumentPreviewViewController.m */,
 			);
 			name = "Document Preview Controller";
 			sourceTree = "<group>";
@@ -2337,6 +2353,8 @@
 				7384BE0417F42CA800C6A54F /* PreferenceManager.m */,
 				080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */,
 				080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */,
+				739E107E18F6F10700495616 /* FileHandlerManager.h */,
+				739E107F18F6F10700495616 /* FileHandlerManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2347,6 +2365,8 @@
 				73B957DC17A6750E0099FB84 /* FileURLHandler.h */,
 				73B957DD17A6750E0099FB84 /* FileURLHandler.m */,
 				73B957DE17A6750E0099FB84 /* URLHandlerProtocol.h */,
+				739E107B18F6D83600495616 /* SaveBackMetadata.h */,
+				739E107C18F6D83600495616 /* SaveBackMetadata.m */,
 			);
 			path = URLHandlers;
 			sourceTree = "<group>";
@@ -3087,7 +3107,7 @@
 				7384BDF917F3377A00C6A54F /* UserPreferences.plist in Resources */,
 				0876A04418D99FF60035370A /* NodePickerFavoritesViewController.xib in Resources */,
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
-				73632AE41802E5C6007172EE /* DocumentPreviewViewController.xib in Resources */,
+				73632AE41802E5C6007172EE /* BaseDocumentPreviewViewController.xib in Resources */,
 				734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */,
 				73FF558318ACE2370009CA56 /* large_pdf.png in Resources */,
 				08E1EA2918DB057900F9052F /* TaskDetailsViewController~ipad.xib in Resources */,
@@ -3211,7 +3231,7 @@
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
 				271DC76E189C2D250059D1B2 /* status-sync-failed.png in Resources */,
-				73A04F30187F11C800C4EAB4 /* DocumentPreviewViewController~ipad.xib in Resources */,
+				73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */,
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
 				0808B9E2183D1083000A8984 /* empty_icon.png in Resources */,
 				0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */,
@@ -3438,6 +3458,7 @@
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
+				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
 				73B9584C17A6750F0099FB84 /* FileFolderCell.m in Sources */,
 				73B9584E17A6750F0099FB84 /* MetadataCell.m in Sources */,
 				73B9585017A6750F0099FB84 /* SitesCell.m in Sources */,
@@ -3457,6 +3478,7 @@
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
+				739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */,
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
@@ -3482,6 +3504,7 @@
 				08344E6618E0458800B061C0 /* NodePickerScopeCell.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
+				739E107D18F6D83600495616 /* SaveBackMetadata.m in Sources */,
 				08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */,
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
@@ -3520,6 +3543,7 @@
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
+				739E108018F6F10700495616 /* FileHandlerManager.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */,
 				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,

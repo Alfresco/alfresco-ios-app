@@ -8,10 +8,8 @@
 
 #import "DocumentPreviewViewController.h"
 #import "ActionCollectionView.h"
-#import "ThumbnailImageView.h"
 #import "ThumbnailDownloader.h"
 #import "MBProgressHUD.h"
-#import "Utility.h"
 #import "ErrorDescriptions.h"
 #import "UniversalDevice.h"
 #import "MetaDataViewController.h"
@@ -20,7 +18,6 @@
 #import "CommentViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "FavouriteManager.h"
-#import <MessageUI/MessageUI.h>
 #import "DownloadManager.h"
 #import "SyncManager.h"
 #import "UIAlertView+ALF.h"
@@ -28,97 +25,23 @@
 #import "ActionViewHandler.h"
 #import "FilePreviewViewController.h"
 
-typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
-{
-    PagingScrollViewSegmentTypeFilePreview = 0,
-    PagingScrollViewSegmentTypeMetadata,
-    PagingScrollViewSegmentTypeVersionHistory,
-    PagingScrollViewSegmentTypeComments,
-    PagingScrollViewSegmentType_MAX
-};
-
 @interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, CommentViewControllerDelegate, ActionViewDelegate>
-
-@property (nonatomic, strong, readwrite) AlfrescoDocument *document;
-@property (nonatomic, strong, readwrite) AlfrescoPermissions *documentPermissions;
-@property (nonatomic, strong, readwrite) id<AlfrescoSession> session;
-@property (nonatomic, strong, readwrite) AlfrescoDocumentFolderService *documentService;
-@property (nonatomic, strong, readwrite) NSString *documentContentFilePath;
-@property (nonatomic, strong, readwrite) AlfrescoRatingService *ratingService;
-@property (nonatomic, strong, readwrite) MBProgressHUD *progressHUD;
-@property (nonatomic, strong, readwrite) NSString *previewImageFolderURLString;
-@property (nonatomic, weak, readwrite) IBOutlet ThumbnailImageView *documentThumbnail;
-@property (nonatomic, weak, readwrite) IBOutlet ActionCollectionView *actionMenuView;
-@property (nonatomic, weak, readwrite) IBOutlet PagedScrollView *pagingScrollView;
-@property (nonatomic, weak, readwrite) IBOutlet UISegmentedControl *pagingSegmentControl;
-@property (nonatomic, strong, readwrite) NSMutableArray *pagingControllers;
-@property (nonatomic, strong, readwrite) ActionViewHandler *actionHandler;
-@property (nonatomic, assign, readwrite) InAppDocumentLocation documentLocation;
 
 @end
 
 @implementation DocumentPreviewViewController
 
-- (instancetype)initWithAlfrescoDocument:(AlfrescoDocument *)document
-                             permissions:(AlfrescoPermissions *)permissions
-                         contentFilePath:(NSString *)contentFilePath
-                        documentLocation:(InAppDocumentLocation)documentLocation
-                                 session:(id<AlfrescoSession>)session
-{
-    self = [super init];
-    if (self)
-    {
-        self.document = document;
-        self.documentPermissions = permissions;
-        self.session = session;
-        self.documentContentFilePath = contentFilePath;
-        self.documentLocation = documentLocation;
-        self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-        self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
-        self.pagingControllers = [NSMutableArray array];
-        self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:document session:session controller:self];
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    if (self.documentLocation == InAppDocumentLocationLocalFiles)
-    {
-        self.title = self.documentContentFilePath.lastPathComponent;
-    }
-    else
-    {
-        self.title = self.document.name;
-    }
+    self.title = self.document.name;
     
     // collection view
     [self setupActionCollectionView];
     
     // setup the paging view
     [self setupPagingScrollView];
-    
-    UIImage *thumbnailImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];
-    
-    if (thumbnailImage)
-    {
-        [self.documentThumbnail setImage:thumbnailImage withFade:NO];
-    }
-    else
-    {
-        UIImage *placeholderImage = largeImageForType([self.document.name pathExtension]);
-        self.documentThumbnail.image = placeholderImage;
-        
-        __weak typeof(self) weakSelf = self;
-        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document renditionType:kRenditionImageImagePreview session:self.session completionBlock:^(UIImage *image, NSError *error) {
-            if (image)
-            {
-                [weakSelf.documentThumbnail setImage:image withFade:YES];
-            }
-        }];
-    }
     
     // localise the UI
     [self localiseUI];
@@ -193,14 +116,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
 }
 
-- (void)localiseUI
-{
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeFilePreview];
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.version.history.title", @"Version Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeVersionHistory];
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
-}
-
 - (void)updateActionButtons
 {
     // check node is favourited
@@ -232,34 +147,27 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     
     NSMutableArray *items = [NSMutableArray array];
     
-    if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    [items addObject:[ActionCollectionItem favouriteItem]];
+    [items addObject:[ActionCollectionItem likeItem]];
+    [items addObject:[ActionCollectionItem downloadItem]];
+    [items addObject:[ActionCollectionItem sendForReview]];
+
+    if (self.documentPermissions.canEdit)
     {
-        [items addObject:[ActionCollectionItem renameItem]];
-    }
-    else
-    {
-        [items addObject:[ActionCollectionItem favouriteItem]];
-        [items addObject:[ActionCollectionItem likeItem]];
-        [items addObject:[ActionCollectionItem downloadItem]];
-        [items addObject:[ActionCollectionItem sendForReview]];
-        
-        if (self.documentPermissions.canEdit)
-        {
-            NSArray *editableDocumentExtensions = [kEditableDocumentExtensions componentsSeparatedByString:@","];
-            NSArray *editableDocumentMimeTypes = [kEditableDocumentMimeTypes componentsSeparatedByString:@","];
+       NSArray *editableDocumentExtensions = [kEditableDocumentExtensions componentsSeparatedByString:@","];
+       NSArray *editableDocumentMimeTypes = [kEditableDocumentMimeTypes componentsSeparatedByString:@","];
             
-            if ([editableDocumentExtensions containsObject:self.document.name.pathExtension] ||
-                [editableDocumentMimeTypes containsObject:self.document.contentMimeType] ||
-                [self.document.contentMimeType hasPrefix:@"text/"])
-            {
-                [items addObject:[ActionCollectionItem editItem]];
-            }
-        }
-        
-        if (self.documentPermissions.canComment)
-        {
-            [items addObject:[ActionCollectionItem commentItem]];
-        }
+       if ([editableDocumentExtensions containsObject:self.document.name.pathExtension] ||
+           [editableDocumentMimeTypes containsObject:self.document.contentMimeType] ||
+           [self.document.contentMimeType hasPrefix:@"text/"])
+       {
+           [items addObject:[ActionCollectionItem editItem]];
+       }
+    }
+    
+    if (self.documentPermissions.canComment)
+    {
+        [items addObject:[ActionCollectionItem commentItem]];
     }
     
     if (!isRestricted)
@@ -277,20 +185,12 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
         [items addObject:[ActionCollectionItem openInItem]];
     }
     
-    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentPermissions.canDelete)
+    if (self.documentPermissions.canDelete)
     {
         [items addObject:[ActionCollectionItem deleteItem]];
     }
     
     self.actionMenuView.items = items;
-}
-
-#pragma mark - IBActions
-
-- (IBAction)segmentValueChanged:(id)sender
-{
-    PagingScrollViewSegmentType selectedSegment = self.pagingSegmentControl.selectedSegmentIndex;
-    [self.pagingScrollView scrollToDisplayViewAtIndex:selectedSegment animated:YES];
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions
@@ -315,7 +215,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEmail])
     {
-        [self.actionHandler pressedEmailActionItem:actionItem];
+        [self.actionHandler pressedEmailActionItem:actionItem documentPath:self.documentContentFilePath documentLocation:self.documentLocation];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDownload])
     {
@@ -330,11 +230,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierPrint])
     {
-        [self.actionHandler pressedPrintActionItem:actionItem presentFromView:cell inView:view];
+        [self.actionHandler pressedPrintActionItem:actionItem documentPath:self.documentContentFilePath documentLocation:self.documentLocation presentFromView:cell inView:view];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierOpenIn])
     {
-        [self.actionHandler pressedOpenInActionItem:actionItem presentFromView:cell inView:view];
+        [self.actionHandler pressedOpenInActionItem:actionItem documentPath:self.documentContentFilePath documentLocation:self.documentLocation presentFromView:cell inView:view];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
     {

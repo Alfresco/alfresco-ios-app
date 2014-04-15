@@ -69,6 +69,7 @@ static CGFloat downloadProgressHeight;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadStarting:) name:kDocumentPreviewManagerWillStartDownloadNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadProgress:) name:kDocumentPreviewManagerProgressNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileLocallyUpdated:) name:kAlfrescoSaveBackLocalComplete object:nil];
     }
     return self;
 }
@@ -81,6 +82,7 @@ static CGFloat downloadProgressHeight;
         self.shouldLoadFromFileAndRunCompletionBlock = YES;
         self.filePathForFileToLoad = filePath;
         self.document = document;
+        self.animationController = [[FullScreenAnimationController alloc] init];
         self.loadingCompleteBlock = loadingCompleteBlock;
     }
     return self;
@@ -220,7 +222,7 @@ static CGFloat downloadProgressHeight;
 {
     if (!self.presentingViewController)
     {
-        FilePreviewViewController *presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+        FilePreviewViewController *presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil loadingCompletionBlock:nil];
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
@@ -228,7 +230,7 @@ static CGFloat downloadProgressHeight;
                                                                       target:self
                                                                       action:@selector(dismiss:)];
         [presentationViewController.navigationItem setRightBarButtonItem:doneButton];
-        presentationViewController.title = self.document.name;
+        presentationViewController.title = (self.document) ? self.document.name : self.filePathForFileToLoad.lastPathComponent;
         
         navigationPresentationViewController.transitioningDelegate  = self;
         navigationPresentationViewController.modalPresentationStyle = UIModalPresentationCustom;
@@ -380,6 +382,16 @@ static CGFloat downloadProgressHeight;
     if ([displayedDocumentIdentifier isEqualToString:notificationDocumentIdentifier])
     {
         [self displayFileAtPath:[[DocumentPreviewManager sharedManager] filePathForDocument:self.document]];
+    }
+}
+
+- (void)fileLocallyUpdated:(NSNotification *)notification
+{
+    NSString *nodeRefUpdated = notification.object;
+    
+    if ([nodeRefUpdated isEqualToString:self.document.identifier])
+    {
+        [self.webView reload];
     }
 }
 
