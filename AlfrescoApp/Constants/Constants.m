@@ -18,6 +18,10 @@ NSString * const kLargeThumbnailImageMappingPlist = @"LargeThumbnailImageMapping
 NSString * const kRenditionImageDocLib = @"doclib";
 NSString * const kRenditionImageImagePreview = @"imgpreview";
 
+NSString * const kEditableDocumentExtensions = @"txt,htm,html,xml,css,js,ftl,java,properties";
+// In addition, all "text/..." mimetypes are allowed to be edited
+NSString * const kEditableDocumentMimeTypes = @"application/xml,application/javascript";
+
 // App RevealController
 CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 
@@ -63,6 +67,7 @@ NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDo
 NSString * const kAlfrescoNodeAddedOnServerParentFolderKey = @"AlfrescoNodeAddedOnServerParentFolderKey";
 NSString * const kAlfrescoNodeAddedOnServerSubNodeKey = @"AlfrescoNodeAddedOnServerSubNodeKey";
 NSString * const kAlfrescoWorkflowTaskDidComplete = @"AlfrescoWorkflowTaskDidComplete";
+NSString * const kAlfrescoDocumentEditedNotification = @"AlfrescoDocumentEditedNotification";
 // Saveback
 NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
 NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";

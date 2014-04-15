@@ -33,6 +33,9 @@ extern NSString * const kLargeThumbnailImageMappingPlist;
 extern NSString * const kRenditionImageDocLib;
 extern NSString * const kRenditionImageImagePreview;
 
+extern NSString * const kEditableDocumentExtensions;
+extern NSString * const kEditableDocumentMimeTypes;
+
 extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;
@@ -78,6 +81,7 @@ extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
 extern NSString * const kAlfrescoWorkflowTaskDidComplete;
+extern NSString * const kAlfrescoDocumentEditedNotification;
 // Saveback
 extern NSString * const kAlfrescoSaveBackLocalComplete;
 extern NSString * const kAlfrescoSaveBackRemoteComplete;

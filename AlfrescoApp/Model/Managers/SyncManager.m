@@ -94,6 +94,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                  selector:@selector(reachabilityChanged:)
                                                      name:kAlfrescoConnectivityChangedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(accountInfoUpdated:)
+                                                     name:kAlfrescoAccountUpdatedNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(accountRemoved:)
+                                                     name:kAlfrescoAccountRemovedNotification
+                                                   object:nil];
         
         [self addObserver:self forKeyPath:kSyncProgressSizeKey options:NSKeyValueObservingOptionNew context:nil];
     }
@@ -226,8 +234,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         return NO;
     };
     
-    void (^retrievePermissionsAndNodeHierarchies)(void) = ^{
-        
+    if ([self isSyncEnabled])
+    {
         [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
             
             if (!hasFolder(nodes))
@@ -256,17 +264,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
             }
         }];
-    };
-    
-    if ([self isFirstUse])
-    {
-        [self showSyncAlertIfFirstUseWithCompletionBlock:^(BOOL completed) {
-            retrievePermissionsAndNodeHierarchies();
-        }];
-    }
-    else
-    {
-        retrievePermissionsAndNodeHierarchies();
     }
 }
 
@@ -741,56 +738,54 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    [self showSyncAlertIfFirstUseWithCompletionBlock:^(BOOL completed) {
-        NSString *selectedAccountIdentifier = [self selectedAccountIdentifier];
-        BOOL isSyncNodesInfoInMemory = ([self.syncNodesInfo objectForKey:selectedAccountIdentifier] != nil);
-        
-        void (^syncNode)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
+    NSString *selectedAccountIdentifier = [self selectedAccountIdentifier];
+    BOOL isSyncNodesInfoInMemory = ([self.syncNodesInfo objectForKey:selectedAccountIdentifier] != nil);
+    
+    void (^syncNode)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
+    {
+        // start sync for this node only
+        if (!isSyncNodesInfoInMemory)
         {
-            // start sync for this node only if s
-            if (!isSyncNodesInfoInMemory)
-            {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:NO];
-                });
-            }
-        };
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:NO];
+            });
+        }
+    };
+    
+    [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
         
-        [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
-            
-            if (isSyncNodesInfoInMemory)
-            {
-                NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccountIdentifier];
-                [topLevelSyncNodes addObject:node];
-            }
-            else
-            {
-                self.syncNodesInfo = [NSMutableDictionary dictionary];
-                [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
-            }
-            
-            if (node.isFolder)
-            {
-                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                    if (self.nodeChildrenRequestsCount == 0)
-                    {
-                        syncNode(node);
-                        if (completionBlock != NULL)
-                        {
-                            completionBlock(YES);
-                        }
-                    }
-                }];
-            }
-            else
-            {
-                syncNode(node);
-                if (completionBlock != NULL)
+        if (isSyncNodesInfoInMemory)
+        {
+            NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccountIdentifier];
+            [topLevelSyncNodes addObject:node];
+        }
+        else
+        {
+            self.syncNodesInfo = [NSMutableDictionary dictionary];
+            [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
+        }
+        
+        if (node.isFolder)
+        {
+            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                if (self.nodeChildrenRequestsCount == 0)
                 {
-                    completionBlock(YES);
+                    syncNode(node);
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock(YES);
+                    }
                 }
+            }];
+        }
+        else
+        {
+            syncNode(node);
+            if (completionBlock != NULL)
+            {
+                completionBlock(YES);
             }
-        }];
+        }
     }];
 }
 
@@ -1153,7 +1148,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (BOOL)isSyncEnabled
 {
-    BOOL syncPreferenceEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kSyncPreference];
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    BOOL syncPreferenceEnabled = selectedAccount.isSyncOn;
     BOOL syncOnCellularEnabled = [[PreferenceManager sharedManager] shouldSyncOnCellular];
     
     if (syncPreferenceEnabled)
@@ -1322,6 +1318,37 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         [self.progressDelegate totalSizeToSync:self.totalSyncSize syncedSize:self.syncProgressSize];
     }
+}
+
+#pragma mark - Account Notifications
+
+- (void)accountInfoUpdated:(NSNotification *)notification
+{
+    UserAccount *notificationAccount = notification.object;
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    SyncHelper *syncHelper = [SyncHelper sharedHelper];
+    
+    if (!notificationAccount.isSyncOn)
+    {
+        if (notificationAccount == selectedAccount)
+        {
+            [self cancelAllSyncOperations];
+        }
+        [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    }
+}
+
+- (void)accountRemoved:(NSNotification *)notification
+{
+    UserAccount *notificationAccount = notification.object;
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    SyncHelper *syncHelper = [SyncHelper sharedHelper];
+    
+    if (notificationAccount == selectedAccount)
+    {
+        [self cancelAllSyncOperations];
+    }
+    [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
 }
 
 #pragma mark - Reachibility Changed Notification

@@ -196,6 +196,11 @@ NSString *stringForLongFileSize(unsigned long long size)
 
 NSString *stringByRemovingHTMLTagsFromString(NSString *htmlString)
 {
+    if (!htmlString)
+    {
+        return nil;
+    }
+    
     NSRange range;
     NSString *string = htmlString;
     

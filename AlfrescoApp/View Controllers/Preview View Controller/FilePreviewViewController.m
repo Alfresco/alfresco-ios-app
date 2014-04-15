@@ -48,6 +48,16 @@ static CGFloat downloadProgressHeight;
 
 @implementation FilePreviewViewController
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+    }
+    return self;
+}
+
 - (instancetype)initWithDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session
 {
     self = [self init];
@@ -183,13 +193,13 @@ static CGFloat downloadProgressHeight;
     // constraints
     NSDictionary *views = @{@"moviePlayerView" : mediaPlayer.view};
     [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[moviePlayerView]|"
-                                                                                          options:NSLayoutFormatAlignAllBaseline
-                                                                                          metrics:nil
-                                                                                            views:views]];
+                                                                                      options:NSLayoutFormatAlignAllBaseline
+                                                                                      metrics:nil
+                                                                                        views:views]];
     [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[moviePlayerView]|"
-                                                                                          options:NSLayoutFormatAlignAllCenterX
-                                                                                          metrics:nil
-                                                                                            views:views]];
+                                                                                      options:NSLayoutFormatAlignAllCenterX
+                                                                                      metrics:nil
+                                                                                        views:views]];
     self.mediaPlayerController = mediaPlayer;
 }
 
@@ -385,6 +395,13 @@ static CGFloat downloadProgressHeight;
     }
 }
 
+#pragma mark - Document Editing Notification
+
+- (void)editingDocumentCompleted:(NSNotification *)notification
+{
+    [self.webView reload];
+}
+
 #pragma mark - UIWebViewDelegate Functions
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -416,7 +433,7 @@ static CGFloat downloadProgressHeight;
 #pragma mark - UIViewControllerAnimatedTransitioning Functions
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
-{    
+{
     self.animationController.isGoingIntoFullscreenMode = YES;
     return self.animationController;
 }

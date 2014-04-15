@@ -81,7 +81,15 @@
 
 - (void)setupPagingScrollView
 {
-    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+    FilePreviewViewController *filePreviewController = nil;
+    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
+    {
+        filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document loadingCompletionBlock:nil];
+    }
+    else
+    {
+        filePreviewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+    }
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
@@ -143,6 +151,19 @@
     [items addObject:[ActionCollectionItem likeItem]];
     [items addObject:[ActionCollectionItem downloadItem]];
     [items addObject:[ActionCollectionItem sendForReview]];
+
+    if (self.documentPermissions.canEdit)
+    {
+       NSArray *editableDocumentExtensions = [kEditableDocumentExtensions componentsSeparatedByString:@","];
+       NSArray *editableDocumentMimeTypes = [kEditableDocumentMimeTypes componentsSeparatedByString:@","];
+            
+       if ([editableDocumentExtensions containsObject:self.document.name.pathExtension] ||
+           [editableDocumentMimeTypes containsObject:self.document.contentMimeType] ||
+           [self.document.contentMimeType hasPrefix:@"text/"])
+       {
+           [items addObject:[ActionCollectionItem editItem]];
+       }
+    }
     
     if (self.documentPermissions.canComment)
     {
@@ -226,6 +247,10 @@
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierSendForReview])
     {
         [self.actionHandler pressedSendForReviewActionItem:actionItem node:self.document];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEdit])
+    {
+        [self.actionHandler pressedEditActionItem:actionItem forDocumentWithContentPath:self.documentContentFilePath];
     }
 }
 
