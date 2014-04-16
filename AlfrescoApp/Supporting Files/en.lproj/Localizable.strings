@@ -157,7 +157,7 @@
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service Document";
-"accountdetails.fields.syncPreference" = "Sync Favorites?";
+"accountdetails.fields.syncPreference" = "Sync Favorite Content";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
 "accountdetails.header.authentication" = "Account Authentication";
 "accountdetails.header.advanced" = "Advanced";
