@@ -525,4 +525,29 @@ NSString *filenameAppendedWithDateModififed(NSString *filenameOrPath, AlfrescoNo
     }
 }
 
++ (UIImage *)imageForPriority:(NSNumber *)priority
+{
+    NSInteger priorityValue = priority.integerValue;
+    
+    UIImage *priorityImage = nil;
+    
+    switch (priorityValue) {
+        case 1:
+            priorityImage = [UIImage imageNamed:@"task_priority_high.png"];
+            break;
+            
+        case 2:
+            priorityImage = [UIImage imageNamed:@"task_priority_medium.png"];
+            break;
+        case 3:
+            priorityImage = [UIImage imageNamed:@"task_priority_low.png"];
+            break;
+            
+        default:
+            break;
+    }
+    
+    return priorityImage;
+}
+
 @end
