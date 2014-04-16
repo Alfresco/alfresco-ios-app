@@ -60,4 +60,14 @@ static NSString * const kAlfrescoJBPMWorkflowTypeReview = @"wf:review";
     return processDefinitionKey;
 }
 
++ (BOOL)isJBPMTask:(AlfrescoWorkflowTask *)task
+{
+    if ([task.identifier rangeOfString:kAlfrescoWorkflowJBPMEngine].location != NSNotFound)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 @end
