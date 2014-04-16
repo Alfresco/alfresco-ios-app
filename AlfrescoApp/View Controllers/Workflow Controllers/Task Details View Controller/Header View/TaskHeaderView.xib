@@ -35,18 +35,18 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1o-rg-esF">
-                            <rect key="frame" x="25" y="66" width="46" height="17"/>
+                            <rect key="frame" x="20" y="66" width="46" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QjU-2O-mwE">
-                            <rect key="frame" x="0.0" y="64" width="20" height="20"/>
+                            <rect key="frame" x="0.0" y="64" width="15" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="S5n-ad-FEI"/>
-                                <constraint firstAttribute="width" constant="20" id="miK-MB-MtP"/>
+                                <constraint firstAttribute="width" constant="15" id="miK-MB-MtP"/>
                             </constraints>
                         </imageView>
                     </subviews>

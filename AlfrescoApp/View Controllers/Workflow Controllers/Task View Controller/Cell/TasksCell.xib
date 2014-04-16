@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DUE DATE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECz-cR-Xvv">
-                        <rect key="frame" x="46" y="39" width="268" height="15"/>
+                        <rect key="frame" x="36" y="39" width="278" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="o7c-bG-8i1"/>
@@ -23,24 +23,24 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="TASK NAME" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="85" translatesAutoresizingMaskIntoConstraints="NO" id="RWB-0G-Mmr">
-                        <rect key="frame" x="46" y="19" width="85" height="20"/>
+                        <rect key="frame" x="36" y="19" width="85" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EoK-TX-dZA">
-                        <rect key="frame" x="8" y="14" width="30" height="30"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EoK-TX-dZA">
+                        <rect key="frame" x="12" y="20" width="12" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="6SZ-rE-1Tv"/>
-                            <constraint firstAttribute="height" constant="30" id="abZ-qs-gBl"/>
+                            <constraint firstAttribute="width" constant="12" id="6SZ-rE-1Tv"/>
+                            <constraint firstAttribute="height" constant="20" id="abZ-qs-gBl"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="RWB-0G-Mmr" firstAttribute="leading" secondItem="ECz-cR-Xvv" secondAttribute="leading" id="3Sx-LO-BJL"/>
-                    <constraint firstItem="RWB-0G-Mmr" firstAttribute="leading" secondItem="EoK-TX-dZA" secondAttribute="trailing" constant="8" id="4Bd-3B-dUn"/>
-                    <constraint firstItem="EoK-TX-dZA" firstAttribute="leading" secondItem="jOn-o3-uFW" secondAttribute="leading" constant="8" id="6uo-Sc-rI7"/>
+                    <constraint firstItem="RWB-0G-Mmr" firstAttribute="leading" secondItem="EoK-TX-dZA" secondAttribute="trailing" constant="12" id="4Bd-3B-dUn"/>
+                    <constraint firstItem="EoK-TX-dZA" firstAttribute="leading" secondItem="jOn-o3-uFW" secondAttribute="leading" constant="12" id="6uo-Sc-rI7"/>
                     <constraint firstAttribute="bottom" secondItem="ECz-cR-Xvv" secondAttribute="bottom" constant="5" id="SAR-h1-53o"/>
                     <constraint firstAttribute="trailing" secondItem="ECz-cR-Xvv" secondAttribute="trailing" constant="6" id="Zhf-Dg-47p"/>
                     <constraint firstAttribute="centerY" secondItem="EoK-TX-dZA" secondAttribute="centerY" id="dYC-B4-ipZ"/>
