@@ -7,20 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseDocumentPreviewViewController.h"
 
-typedef NS_ENUM(NSInteger, InAppDocumentLocation)
-{
-    InAppDocumentLocationFilesAndFolders = 0,
-    InAppDocumentLocationSync,
-    InAppDocumentLocationLocalFiles
-};
+@interface DocumentPreviewViewController : BaseDocumentPreviewViewController
 
-@interface DocumentPreviewViewController : UIViewController
 
-- (instancetype)initWithAlfrescoDocument:(AlfrescoDocument *)document
-                             permissions:(AlfrescoPermissions *)permissions
-                         contentFilePath:(NSString *)contentFilePath
-                        documentLocation:(InAppDocumentLocation)documentLocation
-                                 session:(id<AlfrescoSession>)session;
 
 @end

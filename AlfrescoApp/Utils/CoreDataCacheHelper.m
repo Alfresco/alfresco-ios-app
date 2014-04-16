@@ -116,7 +116,7 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     
     NSDate *cutOffDate = [calender dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dateAdded > %@", cutOffDate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dateAdded < %@", cutOffDate];
     
     [self deleteRecordsWithPredicate:predicate inTable:NSStringFromClass([AvatarImageCache class]) inManagedObjectContext:self.managedObjectContext];
     [self deleteRecordsWithPredicate:predicate inTable:NSStringFromClass([DocLibImageCache class]) inManagedObjectContext:self.managedObjectContext];
