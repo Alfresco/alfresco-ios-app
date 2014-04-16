@@ -212,6 +212,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return syncError.errorDescription;
 }
 
+- (void)updateAllSyncNodeStatusWithStatus:(SyncStatus)status
+{
+    NSArray *nodeStatusKeys = [self.syncNodesStatus allKeys];
+    for (NSString *nodeStatusKey in nodeStatusKeys)
+    {
+        SyncNodeStatus *nodeStatus = self.syncNodesStatus[nodeStatusKey];
+        nodeStatus.status = status;
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
@@ -744,7 +754,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     void (^syncNode)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
     {
         // start sync for this node only
-        if (!isSyncNodesInfoInMemory)
+        if ([self isSyncPreferenceOn])
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:NO];
@@ -882,22 +892,29 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     
     __block NSInteger totalPermissionRequests = nodes.count;
     
-    for (AlfrescoNode *node in nodes)
+    if (nodes.count == 0)
     {
-        [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-            
-            totalPermissionRequests--;
-            
-            if (permissions)
-            {
-                [self.permissions setObject:permissions forKey:node.identifier];
-            }
-            
-            if (totalPermissionRequests == 0 && completionBlock != NULL)
-            {
-                completionBlock();
-            }
-        }];
+        completionBlock();
+    }
+    else
+    {
+        for (AlfrescoNode *node in nodes)
+        {
+            [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                
+                totalPermissionRequests--;
+                
+                if (permissions)
+                {
+                    [self.permissions setObject:permissions forKey:node.identifier];
+                }
+                
+                if (totalPermissionRequests == 0 && completionBlock != NULL)
+                {
+                    completionBlock();
+                }
+            }];
+        }
     }
 }
 
@@ -1311,6 +1328,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             [self cancelAllSyncOperations];
         }
         [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+        [self updateAllSyncNodeStatusWithStatus:SyncStatusRemoved];
     }
 }
 
@@ -1325,6 +1343,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         [self cancelAllSyncOperations];
     }
     [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    [self updateAllSyncNodeStatusWithStatus:SyncStatusRemoved];
 }
 
 #pragma mark - Reachibility Changed Notification
