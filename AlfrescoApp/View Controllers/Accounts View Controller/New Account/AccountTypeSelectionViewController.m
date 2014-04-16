@@ -83,13 +83,13 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     cell.textLabel.font = [UIFont boldSystemFontOfSize:kAccountTypeTitleFontSize];
     if (indexPath.section == 0)
     {
-        cell.imageView.image = [UIImage imageNamed:@"accounttype-cloud.png"];
+        cell.imageView.image = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         cell.accessoryView = [self createCloudSignUpButton];
     }
     else
     {
-        cell.imageView.image = [UIImage imageNamed:@"accounttype-onpremise.png"];
+        cell.imageView.image = [UIImage imageNamed:@"account-type-onpremise.png"];
         cell.textLabel.text = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
         cell.accessoryView = nil;
     }
