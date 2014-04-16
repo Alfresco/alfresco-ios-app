@@ -7,13 +7,13 @@
 //
 
 #import "TasksCell.h"
-#import "UIColor+Custom.h"
+#import "Utility.h"
 
 static CGFloat const kMinimumCellHeight = 70.0f;
 
 @interface TasksCell ()
 
-@property (nonatomic, weak) IBOutlet UIView *taskPriorityView;
+@property (nonatomic, weak) IBOutlet UIImageView *taskPriorityImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizonalPaddingBetweenContentViewAndPriorityIndicator;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *priorityIndicatiorWidth;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizonalPaddingBetweenPriorityIndicatorAndTextLabel;
@@ -24,21 +24,11 @@ static CGFloat const kMinimumCellHeight = 70.0f;
 
 #pragma mark - Private Functions
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    UIColor *taskPriorityColour = self.taskPriorityView.backgroundColor;
-    
-    [super setSelected:selected animated:animated];
-    
-    self.taskPriorityView.backgroundColor = taskPriorityColour;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
     [self.contentView layoutSubviews];
-    self.taskPriorityView.layer.cornerRadius = self.taskPriorityView.frame.size.width/2;
     
     CGFloat horizonalPaddingBetweenContentViewAndPriorityIndicator = self.horizonalPaddingBetweenContentViewAndPriorityIndicator.constant;
     CGFloat priorityIndicatiorWidth = self.priorityIndicatiorWidth.constant;
@@ -57,29 +47,9 @@ static CGFloat const kMinimumCellHeight = 70.0f;
     return kMinimumCellHeight;
 }
 
-- (void)setPriorityLevel:(NSNumber *)priorty
+- (void)setPriorityLevel:(NSNumber *)priority
 {
-    NSInteger priorityValue = priorty.integerValue;
-    
-    UIColor *priortyColour = nil;
-    
-    switch (priorityValue) {
-        case 1:
-            priortyColour = [UIColor highWorkflowPriorityColor];
-            break;
-            
-        case 2:
-            priortyColour = [UIColor mediumWorkflowPriorityColor];
-            break;
-        case 3:
-            priortyColour = [UIColor lowWorkflowPriorityColor];
-            break;
-            
-        default:
-            break;
-    }
-    
-    self.taskPriorityView.backgroundColor = priortyColour;
+    self.taskPriorityImageView.image = [Utility imageForPriority:priority];
 }
 
 @end

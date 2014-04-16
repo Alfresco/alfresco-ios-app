@@ -7,7 +7,7 @@
 //
 
 #import "TaskHeaderView.h"
-#import "UIColor+Custom.h"
+#import "Utility.h"
 
 static CGFloat const kCalendarCornerRadius = 10.0f;
 static CGFloat const kCalendarStrokeWidth = 0.5f;
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 @property (nonatomic, weak) IBOutlet UILabel *taskNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taskTypeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taskInitiatorLabel;
-@property (nonatomic, weak) IBOutlet UIView *taskPriorityView;
+@property (nonatomic, weak) IBOutlet UIImageView *taskPriorityImageView;
 @property (nonatomic, weak) IBOutlet UILabel *taskPriorityLabel;
 
 @end
@@ -39,13 +39,6 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 - (void)awakeFromNib
 {
     [self commonInit];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    self.taskPriorityView.layer.cornerRadius = self.taskPriorityView.frame.size.width/2;
 }
 
 #pragma mark - Private Functions
@@ -89,27 +82,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 - (void)setPriorityLevel:(NSNumber *)priority
 {
-    NSInteger priorityValue = priority.integerValue;
-    
-    UIColor *priortyColour = nil;
-    
-    switch (priorityValue) {
-        case 1:
-            priortyColour = [UIColor highWorkflowPriorityColor];
-            break;
-            
-        case 2:
-            priortyColour = [UIColor mediumWorkflowPriorityColor];
-            break;
-        case 3:
-            priortyColour = [UIColor lowWorkflowPriorityColor];
-            break;
-            
-        default:
-            break;
-    }
-    
-    self.taskPriorityView.backgroundColor = priortyColour;
+    self.taskPriorityImageView.image = [Utility imageForPriority:priority];
     self.taskPriorityLabel.text = [self priortyStringFromPriority:priority];
 }
 

@@ -62,4 +62,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)colorButtonsForActionSheet:(UIActionSheet *)actionSheet tintColor:(UIColor *)tintColor;
++ (UIImage *)imageForPriority:(NSNumber *)priority;
+
 @end
