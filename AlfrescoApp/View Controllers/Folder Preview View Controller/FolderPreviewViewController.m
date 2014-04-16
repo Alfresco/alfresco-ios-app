@@ -14,12 +14,11 @@
 #import "FavouriteManager.h"
 #import "ActionViewHandler.h"
 
-typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
+typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
-    PagingScrollViewSegmentTypeFilePreview = 0,
-    PagingScrollViewSegmentTypeMetadata,
-    PagingScrollViewSegmentTypeComments,
-    PagingScrollViewSegmentType_MAX
+    PagingScrollViewSegmentFolderTypeMetadata = 0,
+    PagingScrollViewSegmentFolderTypeComments,
+    PagingScrollViewSegmentFolderType_MAX
 };
 
 @interface FolderPreviewViewController () <CommentViewControllerDelegate, PagedScrollViewDelegate, ActionViewDelegate>
@@ -92,8 +91,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (void)localiseUI
 {
-    [self.segmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
-    [self.segmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+    [self.segmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeMetadata];
+    [self.segmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
 }
 
 - (void)setupPagingScrollView
@@ -101,13 +100,13 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.folder session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.folder permissions:self.permissions session:self.session delegate:self];
     
-    for (int i = 0; i < PagingScrollViewSegmentType_MAX; i++)
+    for (int i = 0; i < PagingScrollViewSegmentFolderType_MAX; i++)
     {
         [self.pagingControllers addObject:[NSNull null]];
     }
     
-    [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentTypeMetadata];
-    [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentTypeComments];
+    [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
+    [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentFolderTypeComments];
     
     for (int i = 0; i < self.pagingControllers.count; i++)
     {
@@ -174,7 +173,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 - (IBAction)segmentValueChanged:(id)sender
 {
-    PagingScrollViewSegmentType selectedSegment = self.segmentControl.selectedSegmentIndex;
+    PagingScrollViewSegmentFolderType selectedSegment = self.segmentControl.selectedSegmentIndex;
     [self.pagedScrollView scrollToDisplayViewAtIndex:selectedSegment animated:YES];
 }
 
@@ -200,9 +199,9 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierComment])
     {
-        self.segmentControl.selectedSegmentIndex = PagingScrollViewSegmentTypeComments;
-        [self.pagedScrollView scrollToDisplayViewAtIndex:PagingScrollViewSegmentTypeComments animated:YES];
-        CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentTypeComments];
+        self.segmentControl.selectedSegmentIndex = PagingScrollViewSegmentFolderTypeComments;
+        [self.pagedScrollView scrollToDisplayViewAtIndex:PagingScrollViewSegmentFolderTypeComments animated:YES];
+        CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentFolderTypeComments];
         [commentsViewController focusCommentEntry];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
@@ -235,10 +234,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     }
     else
     {
-        segmentCommentText = [self.segmentControl titleForSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+        segmentCommentText = [self.segmentControl titleForSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
     }
     
-    [self.segmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+    [self.segmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
 }
 
 #pragma mark - PagedScrollViewDelegate Functions
