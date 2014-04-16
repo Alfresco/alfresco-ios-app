@@ -143,8 +143,8 @@ static CGFloat const kFooterHeight = 32.0f;
     }
     else
     {
-        UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
-        title = userAccount.isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+        title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
     }
     return title;
 }
@@ -330,12 +330,12 @@ static CGFloat const kFooterHeight = 32.0f;
     AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
     
-    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
     
     if (selectedNode.isFolder)
     {
         UIViewController *controller = nil;
-        if (userAccount.isSyncOn)
+        if (isSyncOn)
         {
             controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
         }
@@ -367,7 +367,7 @@ static CGFloat const kFooterHeight = 32.0f;
                 return;
             }
             [self showHUD];
-            InAppDocumentLocation documentLocation = userAccount.isSyncOn ? InAppDocumentLocationSync : InAppDocumentLocationFilesAndFolders;
+            InAppDocumentLocation documentLocation = isSyncOn ? InAppDocumentLocationSync : InAppDocumentLocationFilesAndFolders;
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 
                 [self hideHUD];
@@ -519,10 +519,10 @@ static CGFloat const kFooterHeight = 32.0f;
 - (NSString *)tableFooterText
 {
     SyncManager *syncManager = [SyncManager sharedManager];
-    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
     NSString *footerText = @"";
     
-    if (userAccount.isSyncOn)
+    if (isSyncOn)
     {
         SyncNodeStatus *nodeStatus = nil;
         if (!self.parentNode)
@@ -575,7 +575,7 @@ static CGFloat const kFooterHeight = 32.0f;
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    if (hasInternetConnection)
+    if (hasInternetConnection && self.parentNode == nil)
     {
         [self enablePullToRefresh];
         [self loadSyncNodesForFolder:self.parentNode];

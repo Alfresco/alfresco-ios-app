@@ -421,13 +421,13 @@ static NSUInteger const kAccountsRowNumber = 0;
         MainMenuItem *favoritesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSync];
         if (showFavorites && !favoritesMenuItem)
         {
-            UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
-            
+            BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+
             SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.alfrescoSession];
             SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
             favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                   imageName:userAccount.isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
-                                                           localizedTitleKey:userAccount.isSyncOn ? @"sync.title" : @"favourites.title"
+                                                                   imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
+                                                           localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
                                                               viewController:syncNavigationController
                                                              displayInDetail:NO];
             [repositoryMenuItems insertObject:favoritesMenuItem atIndex:nextIndex];

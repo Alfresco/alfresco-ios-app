@@ -13,7 +13,6 @@
 #import "AlfrescoNodeCell.h"
 #import "Utility.h"
 #import "ThumbnailDownloader.h"
-#import "AccountManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -94,15 +93,15 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
 {
-    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
     
-    if (userAccount.isSyncOn)
+    if (isSyncOn)
     {
         NSMutableArray *syncNodes = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
         
         if (self.nodePicker.type == NodePickerTypeFolders)
         {
-            self.tableViewData = [self foldersInNodes:self.tableViewData];
+            self.tableViewData = [self foldersInNodes:syncNodes];
         }
         else
         {
@@ -218,10 +217,10 @@ static CGFloat const kCellHeight = 64.0f;
     
     if (selectedNode.isFolder)
     {
-        UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
         UIViewController *viewController = nil;
         
-        if (userAccount.isSyncOn)
+        if (isSyncOn)
         {
             viewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:(AlfrescoFolder *)selectedNode session:self.session nodePickerController:self.nodePicker];
             

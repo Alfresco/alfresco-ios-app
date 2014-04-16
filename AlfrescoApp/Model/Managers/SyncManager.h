@@ -66,8 +66,8 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
 - (BOOL)isFirstUse;
 /*
- * shows if sync is enabled based on cellular / wifi preference
+ * shows if sync is on in settings
  */
-- (BOOL)isSyncEnabled;
+- (BOOL)isSyncPreferenceOn;
 
 @end

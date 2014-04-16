@@ -234,9 +234,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         return NO;
     };
     
-    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
-    
-    if (userAccount.isSyncOn)
+    if ([self isSyncPreferenceOn])
     {
         [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
             
@@ -1120,6 +1118,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return !didAskToSync;
 }
 
+/*
+ * shows if sync is enabled based on cellular / wifi preference
+ */
 - (BOOL)isSyncEnabled
 {
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
@@ -1138,6 +1139,12 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     return NO;
+}
+
+- (BOOL)isSyncPreferenceOn
+{
+    UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
+    return userAccount.isSyncOn;
 }
 
 #pragma mark - UIAlertview Methods
