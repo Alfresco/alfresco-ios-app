@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
             if (self.workflowType == WorkflowTypeReview)
             {
                 NSInteger approvalRate = round((self.approversCell.stepper.value / self.assignees.count) * 100);
-                variables = @{kAlfrescoWorkflowProcessApprovalRate : @(approvalRate)};
+                variables = @{kAlfrescoWorkflowVariableProcessApprovalRate : @(approvalRate)};
             }
             
             [self.workflowService startProcessForProcessDefinition:processDefinition

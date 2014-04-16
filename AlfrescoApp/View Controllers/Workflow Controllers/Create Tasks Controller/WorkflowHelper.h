@@ -17,5 +17,6 @@ typedef NS_ENUM(NSInteger, WorkflowType)
 @interface WorkflowHelper : NSObject
 
 + (NSString *)processDefinitionKeyForWorkflowType:(WorkflowType)workflowType numberOfAssignees:(NSUInteger)numberOfAssignees session:(id<AlfrescoSession>)session;
++ (BOOL)isJBPMTask:(AlfrescoWorkflowTask *)task;
 
 @end
