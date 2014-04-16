@@ -22,6 +22,7 @@
 #import "TextFileViewController.h"
 #import "FolderPreviewViewController.h"
 #import "UIColor+Custom.h"
+#import "FailedTransferDetailViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -43,6 +44,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIBarButtonItem *actionSheetBarButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, assign) BOOL capturingMedia;
+@property (nonatomic, strong) UIPopoverController *retrySyncPopover;
+@property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
@@ -488,28 +491,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         selectedNode = [self.tableViewData objectAtIndex:indexPath.row];
     }
     
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-    
-    if (self.searchController.searchResultsTableView && self.searchController.searchResultsTableView.window)
+    if (selectedNode.isFolder)
     {
-        [self showSearchProgressHUD];
-        [self.documentService retrieveNodeWithIdentifier:selectedNode.identifier completionBlock:^(AlfrescoNode *node, NSError *error) {
-            [self hideSearchProgressHUD];
-            if (node)
-            {
-                MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node session:self.session];
-                [UniversalDevice pushToDisplayViewController:metadataViewController usingNavigationController:self.navigationController animated:YES];
-            }
-            else
-            {
-                NSString *metadataRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.retrieving.metadata", "Metadata Retrieval Error"), selectedNode.name];
-                displayErrorMessage(metadataRetrievalErrorMessage);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-        }];
-    }
-    else
-    {
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        
         [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
             if (permissions)
             {
@@ -523,6 +508,30 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [Notifier notifyWithAlfrescoError:error];
             }
         }];
+    }
+    else
+    {
+        SyncManager *syncManager = [SyncManager sharedManager];
+        SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
+        
+        switch (nodeStatus.status)
+        {
+            case SyncStatusLoading:
+            {
+                [syncManager cancelSyncForDocumentWithIdentifier:selectedNode.identifier];
+                break;
+            }
+            case SyncStatusFailed:
+            {
+                self.retrySyncNode = selectedNode;
+                [self showPopoverForFailedSyncNodeAtIndexPath:indexPath];
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
     }
 }
 
@@ -1257,6 +1266,54 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             break;
         }
     }
+}
+
+#pragma mark - Retrying Failed Sync Methods
+
+- (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
+{
+    SyncManager *syncManager = [SyncManager sharedManager];
+    AlfrescoNode *node = self.tableViewData[indexPath.row];
+    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
+    
+    if (IS_IPAD)
+    {
+        FailedTransferDetailViewController *syncFailedDetailController = nil;
+        
+        syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
+                                                                                       message:errorDescription retryCompletionBlock:^(BOOL retry) {
+                                                                                           if (retry)
+                                                                                           {
+                                                                                               [self retrySyncAndCloseRetryPopover];
+                                                                                           }
+                                                                                       }];
+        
+        self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
+        [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if(cell.accessoryView.window != nil)
+        {
+            [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
+                                    message:errorDescription
+                                   delegate:self
+                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                          otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
+    }
+}
+
+- (void)retrySyncAndCloseRetryPopover
+{
+    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
+    [self.retrySyncPopover dismissPopoverAnimated:YES];
+    self.retrySyncNode = nil;
+    self.retrySyncPopover = nil;
 }
 
 @end

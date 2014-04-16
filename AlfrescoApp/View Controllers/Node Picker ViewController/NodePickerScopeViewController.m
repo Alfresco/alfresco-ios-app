@@ -106,11 +106,11 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
         BOOL showFavorites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationFavoritesKey];
         if (showFavorites)
         {
-            BOOL isSyncEnabled = [[SyncManager sharedManager] isSyncEnabled];
+            BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
             NodePickerFavoritesViewController *syncViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
             MainMenuItem *favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                                 imageName:isSyncEnabled ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
-                                                                         localizedTitleKey:isSyncEnabled ? @"sync.title" : @"favourites.title"
+                                                                                 imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
+                                                                         localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
                                                                             viewController:syncViewController
                                                                            displayInDetail:NO];
             [self.tableViewData addObject:favoritesMenuItem];

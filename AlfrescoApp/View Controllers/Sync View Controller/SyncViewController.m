@@ -61,12 +61,12 @@ static CGFloat const kFooterHeight = 32.0f;
         [self loadSyncNodesForFolder:self.parentNode];
     }
     
-    if (self.parentNode != nil)
+    if (self.parentNode != nil || ![[ConnectivityManager sharedManager] hasInternetConnection])
     {
         [self disablePullToRefresh];
     }
     
-    self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
+    self.title = [self listTitle];
     self.tableViewFooter = [[UILabel alloc] init];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
@@ -100,6 +100,10 @@ static CGFloat const kFooterHeight = 32.0f;
                                              selector:@selector(accountInfoUpdated:)
                                                  name:kAlfrescoAccountUpdatedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kAlfrescoConnectivityChangedNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -128,6 +132,21 @@ static CGFloat const kFooterHeight = 32.0f;
     }
     [self hidePullToRefreshView];
     [self.tableView reloadData];
+}
+
+- (NSString *)listTitle
+{
+    NSString *title = @"";
+    if (self.parentNode)
+    {
+        title = self.parentNode.name;
+    }
+    else
+    {
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+        title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+    }
+    return title;
 }
 
 - (void)cancelSync
@@ -209,6 +228,7 @@ static CGFloat const kFooterHeight = 32.0f;
 - (void)accountInfoUpdated:(NSNotification *)notification
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
+    self.title = [self listTitle];
     
     UserAccount *notificationAccount = notification.object;
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
@@ -310,7 +330,7 @@ static CGFloat const kFooterHeight = 32.0f;
     AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
     
-    BOOL isSyncOn = [syncManager isSyncEnabled];
+    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
     
     if (selectedNode.isFolder)
     {
@@ -547,6 +567,22 @@ static CGFloat const kFooterHeight = 32.0f;
     {
         [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
         self.retrySyncNode = nil;
+    }
+}
+
+#pragma mark - Connectivy Notification Methods
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    if (hasInternetConnection && self.parentNode == nil)
+    {
+        [self enablePullToRefresh];
+        [self loadSyncNodesForFolder:self.parentNode];
+    }
+    else
+    {
+        [self disablePullToRefresh];
     }
 }
 

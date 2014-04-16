@@ -93,13 +93,41 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
 {
-    self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
+    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
     
-    if (self.nodePicker.type == NodePickerTypeFolders)
+    if (isSyncOn)
     {
-        self.tableViewData = [self foldersInNodes:self.tableViewData];
+        NSMutableArray *syncNodes = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
+        
+        if (self.nodePicker.type == NodePickerTypeFolders)
+        {
+            self.tableViewData = [self foldersInNodes:syncNodes];
+        }
+        else
+        {
+            self.tableViewData = syncNodes;
+        }
+        
+        [self.tableView reloadData];
     }
-    [self.tableView reloadData];
+    else
+    {
+        [self showHUD];
+        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
+            
+            [self hideHUD];
+            if (self.nodePicker.type == NodePickerTypeFolders)
+            {
+                self.tableViewData = [self foldersInNodes:array];
+            }
+            else
+            {
+                self.tableViewData = [array mutableCopy];
+            }
+            
+            [self.tableView reloadData];
+        }];
+    }
 }
 
 - (NSMutableArray *)foldersInNodes:(NSArray *)nodes
@@ -189,7 +217,7 @@ static CGFloat const kCellHeight = 64.0f;
     
     if (selectedNode.isFolder)
     {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncEnabled];
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
         UIViewController *viewController = nil;
         
         if (isSyncOn)
