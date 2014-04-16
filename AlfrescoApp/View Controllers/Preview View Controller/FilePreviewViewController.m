@@ -222,7 +222,17 @@ static CGFloat downloadProgressHeight;
 {
     if (!self.presentingViewController)
     {
-        FilePreviewViewController *presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil loadingCompletionBlock:nil];
+        FilePreviewViewController *presentationViewController = nil;
+        
+        if (!self.shouldLoadFromFileAndRunCompletionBlock)
+        {
+            presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+        }
+        else
+        {
+            presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil loadingCompletionBlock:nil];
+        }
+        
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
