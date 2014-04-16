@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentViewController">
@@ -23,12 +23,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comments.png" translatesAutoresizingMaskIntoConstraints="NO" id="4Nt-62-WkZ">
-                            <rect key="frame" x="8" y="10" width="20" height="26"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ENTER TEXT HERE" translatesAutoresizingMaskIntoConstraints="NO" id="RZv-md-4XZ" customClass="TextView">
-                            <rect key="frame" x="40" y="8" width="216" height="30"/>
+                            <rect key="frame" x="10" y="8" width="246" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -56,16 +52,13 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="RZv-md-4XZ" firstAttribute="leading" secondItem="4Nt-62-WkZ" secondAttribute="trailing" constant="12" id="9Vw-Ab-mLc"/>
                         <constraint firstItem="RZv-md-4XZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="8" id="C1T-IA-WZ8"/>
                         <constraint firstAttribute="bottom" secondItem="GJC-wF-92f" secondAttribute="bottom" constant="8" id="EeQ-oX-dx3"/>
-                        <constraint firstAttribute="bottom" secondItem="4Nt-62-WkZ" secondAttribute="bottom" constant="10" id="K71-el-pVj"/>
+                        <constraint firstItem="RZv-md-4XZ" firstAttribute="leading" secondItem="Rag-u7-uCY" secondAttribute="leading" constant="10" id="JBc-hZ-1WM"/>
                         <constraint firstAttribute="trailing" secondItem="GJC-wF-92f" secondAttribute="trailing" constant="8" id="Mu1-H9-3LD"/>
                         <constraint firstItem="GJC-wF-92f" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="8" id="VeZ-7o-t9e"/>
-                        <constraint firstItem="4Nt-62-WkZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="10" id="jZO-U6-IKB"/>
                         <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" constant="16" id="l98-FR-SjL"/>
                         <constraint firstAttribute="bottom" secondItem="RZv-md-4XZ" secondAttribute="bottom" constant="8" id="ogi-G4-jzS"/>
-                        <constraint firstItem="4Nt-62-WkZ" firstAttribute="leading" secondItem="Rag-u7-uCY" secondAttribute="leading" constant="8" id="qFq-lb-HZh"/>
                         <constraint firstItem="GJC-wF-92f" firstAttribute="leading" secondItem="RZv-md-4XZ" secondAttribute="trailing" constant="16" id="xZe-ak-hXn"/>
                     </constraints>
                 </view>
@@ -97,7 +90,4 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
-    <resources>
-        <image name="comments.png" width="20" height="20"/>
-    </resources>
 </document>
