@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DismissCompletionProtocol.h"
 
-@interface WebBrowserViewController : UIViewController
+@interface WebBrowserViewController : UIViewController <DismissCompletionProtocol>
+
+@property (nonatomic, copy) DismissCompletionBlock dismissCompletionBlock;
 
 - (instancetype)initWithURLString:(NSString *)urlString initialTitle:(NSString *)initialTitle errorLoadingURLString:(NSString *)errorURLString;
 - (instancetype)initWithURL:(NSURL *)url initialTitle:(NSString *)initialTitle errorLoadingURL:(NSURL *)errorURL;

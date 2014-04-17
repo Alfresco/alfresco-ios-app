@@ -25,6 +25,7 @@
 #import "DownloadsViewController.h"
 #import "UIColor+Custom.h"
 #import "AvatarManager.h"
+#import "DismissCompletionProtocol.h"
 
 // where the repo items should be displayed in the tableview
 static NSUInteger const kRepositoryItemsSectionNumber = 1;
@@ -39,6 +40,7 @@ static NSUInteger const kAccountsRowNumber = 0;
 @property (nonatomic, strong, readwrite) NSMutableArray *tableData;
 @property (nonatomic, weak, readwrite) UITableView *tableView;
 @property (nonatomic, assign, readwrite) BOOL hasRepositorySpecificSection;
+@property (nonatomic, strong) NSIndexPath *deselectedIndexPath;
 
 @end
 
@@ -158,6 +160,12 @@ static NSUInteger const kAccountsRowNumber = 0;
 
 #pragma mark - Table view delegate
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.deselectedIndexPath = indexPath;
+    return indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
@@ -261,7 +269,16 @@ static NSUInteger const kAccountsRowNumber = 0;
 
 - (NSMutableArray *)defaultMenuItems
 {
+    DismissCompletionBlock dismissCompletionBlock = ^(void) {
+        // Restore previously selected menu item when modal views are dismissed
+        if (self.deselectedIndexPath)
+        {
+            [self.tableView selectRowAtIndexPath:self.deselectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    };
+    
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:self.alfrescoSession];
+    settingsViewController.dismissCompletionBlock = dismissCompletionBlock;
     NavigationViewController *settingsNavigationController = [[NavigationViewController alloc] initWithRootViewController:settingsViewController];
     MainMenuItem *settingsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSettings
                                                                         imageName:@"mainmenu-settings.png"
@@ -271,6 +288,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     
     NSURL *userGuidUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"UserGuide" ofType:@"pdf"]];
     WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:userGuidUrl initialTitle:NSLocalizedString(@"help.title", @"Help") errorLoadingURL:nil];
+    helpViewController.dismissCompletionBlock = dismissCompletionBlock;
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
                                                                     imageName:@"mainmenu-help.png"
