@@ -11,6 +11,7 @@
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "CloudSignUpViewController.h"
+#import "UIColor+Custom.h"
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
@@ -260,14 +261,17 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     button.titleLabel.numberOfLines = 0;
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.font = signUpFont;
+    button.tintColor = [UIColor appTintColor];
     
     [button setTitle:signUpButtonText forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [button setTitleColor:button.tintColor forState:UIControlStateNormal];
 
     [button setFrame:CGRectInset(button.frame, -8.0f, -4.0f)];
+    // drop the button text down 2 pixels
+    button.titleEdgeInsets = UIEdgeInsetsMake(2.0f, 0, 0, 0);
     button.layer.cornerRadius = 4.0f;
     button.layer.borderWidth = 1.0f;
-    button.layer.borderColor = button.titleLabel.textColor.CGColor;
+    button.layer.borderColor = button.tintColor.CGColor;
     
     [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     return button;
