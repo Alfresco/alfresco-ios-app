@@ -102,6 +102,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                  selector:@selector(accountRemoved:)
                                                      name:kAlfrescoAccountRemovedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(nodeAdded:)
+                                                     name:kAlfrescoNodeAddedOnServerNotification
+                                                   object:nil];
         
         [self addObserver:self forKeyPath:kSyncProgressSizeKey options:NSKeyValueObservingOptionNew context:nil];
     }
@@ -1356,6 +1360,66 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         self.alfrescoSession = nil;
         self.documentFolderService = nil;
         [self syncDocumentsAndFoldersForSession:nil withCompletionBlock:nil];
+    }
+}
+
+#pragma mark - Upload Node Notification
+
+- (void)nodeAdded:(NSNotification *)notification
+{
+    NSDictionary *infoDictionary = notification.object;
+    AlfrescoFolder *parentFolder = infoDictionary[kAlfrescoNodeAddedOnServerParentFolderKey];
+    
+    if ([self isNodeInSyncList:parentFolder])
+    {
+        SyncHelper *syncHelper = [SyncHelper sharedHelper];
+        AlfrescoNode *subNode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
+        SyncNodeStatus *nodeStatus = [syncHelper syncNodeStatusObjectForNodeWithId:subNode.identifier inSyncNodesStatus:self.syncNodesStatus];
+        
+        [self retrievePermissionsForNodes:@[subNode] withCompletionBlock:^{
+            
+            [syncHelper populateNodes:@[subNode]
+                       inParentFolder:parentFolder.identifier
+                     forAccountWithId:[self selectedAccountIdentifier]
+                         preserveInfo:nil
+                          permissions:self.permissions
+               inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            
+            if (subNode.isFolder)
+            {
+                nodeStatus.status = SyncStatusSuccessful;
+            }
+            else
+            {
+                NSString *syncNameForNode = [syncHelper syncNameForNode:subNode inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:subNode.identifier
+                                                                              inAccountWithId:[self selectedAccountIdentifier]
+                                                                       inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                
+                NSURL *contentLocation = infoDictionary[kAlfrescoNodeAddedOnServerContentLocationLocally];
+                NSString *destinationURL = [NSURL fileURLWithPath:[[syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode]];
+                
+                NSError *error = nil;
+                [[NSFileManager defaultManager] copyItemAtURL:contentLocation toURL:[NSURL fileURLWithPath:destinationURL] error:&error];
+                
+                nodeStatus.totalSize = [(AlfrescoDocument *)subNode contentLength];
+                if (error)
+                {
+                    nodeStatus.status = SyncStatusFailed;
+                }
+                else
+                {
+                    nodeStatus.status = SyncStatusSuccessful;
+                    nodeStatus.activityType = SyncActivityTypeIdle;
+                    
+                    nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:subNode];
+                    nodeInfo.lastDownloadedDate = [NSDate date];
+                    nodeInfo.syncContentPath = destinationURL;
+                    nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
+                }
+            }
+            [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+        }];
     }
 }
 

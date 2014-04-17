@@ -1215,7 +1215,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 #pragma mark - FileFolderListViewControllerDelegate Functions
 
-- (void)didFinishUploadingNode:(AlfrescoNode *)node
+- (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL
 {
     [self retrievePermissionsForNode:node];
     [self addAlfrescoNodes:@[node] withRowAnimation:UITableViewRowAnimationAutomatic];
