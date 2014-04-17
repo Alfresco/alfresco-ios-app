@@ -60,18 +60,11 @@
     // Make the window visiable
     [self.window makeKeyAndVisible];
 
-    // If this is the first rum of the app, remove all old accounts (Deleted from the device and reinstalled).
-    // This needs to be done as deleting the app does not clear out the keychain
-    AccountManager *accountManager = [AccountManager sharedManager];
     [AppConfigurationManager sharedManager];
     
-    BOOL isFirstLaunch = [self isAppFirstLaunch];
-    if (isFirstLaunch)
-    {
-        [accountManager removeAllAccounts];
-        [self updateAppFirstLaunchFlag];
-    }
-    else if (accountManager.selectedAccount)
+    // If a selected account is selected, attempt a login
+    AccountManager *accountManager = [AccountManager sharedManager];
+    if (accountManager.selectedAccount)
     {
         [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
@@ -136,6 +129,13 @@
         
         rootRevealViewController.masterViewController = mainMenuController;
         rootRevealViewController.detailViewController = splitViewController;
+    }
+    
+    BOOL isFirstLaunch = [self isAppFirstLaunch];
+    if (isFirstLaunch)
+    {
+        [[AccountManager sharedManager] removeAllAccounts];
+        [self updateAppFirstLaunchFlag];
     }
     
     // check accounts and add this if applicable
