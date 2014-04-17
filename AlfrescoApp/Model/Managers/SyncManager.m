@@ -1174,22 +1174,34 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     if (updateFolderSizes)
     {
         NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
-        NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"isFolder == NO && account.accountId == %@", [self selectedAccountIdentifier]];
+        NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"account.accountId == %@", [self selectedAccountIdentifier]];
+        
         NSArray *documentsInfo = [self.syncCoreDataHelper retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:documentsPredicate inManagedObjectContext:privateManagedObjectContext];
         
         for (SyncNodeInfo *nodeInfo in documentsInfo)
         {
-            AlfrescoNode *node = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
-            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
-            nodeStatus.totalSize = ((AlfrescoDocument *)node).contentLength;
-            
-            if (checkIfModified && nodeStatus.activityType != SyncActivityTypeUpload)
+            SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:nodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+            if (nodeInfo.isFolder.boolValue)
             {
-                BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:privateManagedObjectContext];
-                if (isModifiedLocally)
+                if (nodeInfo.nodes.count == 0)
                 {
-                    nodeStatus.status = SyncStatusWaiting;
-                    nodeStatus.activityType = SyncActivityTypeUpload;
+                    nodeStatus.status = SyncStatusSuccessful;
+                }
+            }
+            else
+            {
+                AlfrescoNode *node = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
+                SyncNodeStatus *nodeStatus = [[SyncHelper sharedHelper] syncNodeStatusObjectForNodeWithId:node.identifier inSyncNodesStatus:self.syncNodesStatus];
+                nodeStatus.totalSize = ((AlfrescoDocument *)node).contentLength;
+                
+                if (checkIfModified && nodeStatus.activityType != SyncActivityTypeUpload)
+                {
+                    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:privateManagedObjectContext];
+                    if (isModifiedLocally)
+                    {
+                        nodeStatus.status = SyncStatusWaiting;
+                        nodeStatus.activityType = SyncActivityTypeUpload;
+                    }
                 }
             }
         }
