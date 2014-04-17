@@ -294,8 +294,6 @@
 		7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */; };
 		7386816618DC8FBF00F315B8 /* task_done_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816418DC8FBF00F315B8 /* task_done_button_selected.png */; };
 		7386816718DC8FBF00F315B8 /* task_done_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */; };
-		7386816C18DC9F4500F315B8 /* task_filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816A18DC9F4500F315B8 /* task_filter.png */; };
-		7386816D18DC9F4500F315B8 /* task_filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816B18DC9F4500F315B8 /* task_filter@2x.png */; };
 		7386817018DC9F5200F315B8 /* task_re-assign_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */; };
 		7386817118DC9F5200F315B8 /* task_re-assign_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */; };
 		73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73881F52188831410052C75F /* UIView+DrawingUtils.m */; };
@@ -940,8 +938,6 @@
 		7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button@2x.png"; sourceTree = "<group>"; };
 		7386816418DC8FBF00F315B8 /* task_done_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button_selected.png; sourceTree = "<group>"; };
 		7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button_selected@2x.png"; sourceTree = "<group>"; };
-		7386816A18DC9F4500F315B8 /* task_filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_filter.png; sourceTree = "<group>"; };
-		7386816B18DC9F4500F315B8 /* task_filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_filter@2x.png"; sourceTree = "<group>"; };
 		7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button_selected.png"; sourceTree = "<group>"; };
 		7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button_selected@2x.png"; sourceTree = "<group>"; };
 		73881F51188831410052C75F /* UIView+DrawingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DrawingUtils.h"; sourceTree = "<group>"; };
@@ -2283,8 +2279,6 @@
 				73A7665718C8E2980087E38F /* task_reject_button_selected@2x.png */,
 				7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */,
 				7386816F18DC9F5200F315B8 /* task_re-assign_button_selected@2x.png */,
-				7386816A18DC9F4500F315B8 /* task_filter.png */,
-				7386816B18DC9F4500F315B8 /* task_filter@2x.png */,
 				73BE41FE18F4021300DB8912 /* task_priority_high.png */,
 				73BE41FF18F4021300DB8912 /* task_priority_high@2x.png */,
 				73BE420018F4021300DB8912 /* task_priority_low.png */,
@@ -3095,7 +3089,6 @@
 				73BE41F318F3FCF100DB8912 /* actionsheet-review.png in Resources */,
 				731901AA1844D217002C82C1 /* onboarding-blue@2x.png in Resources */,
 				271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */,
-				7386816C18DC9F4500F315B8 /* task_filter.png in Resources */,
 				271DC769189C2D250059D1B2 /* status-restricted-highlighted@2x.png in Resources */,
 				73BE420918F4021300DB8912 /* task_priority_medium@2x.png in Resources */,
 				732DBFA118E1BC6B00F7A0BF /* small_xml@2x.png in Resources */,
@@ -3347,7 +3340,6 @@
 				73881FD2188FF6B00052C75F /* actionsheet-email.png in Resources */,
 				73881FCA188FF6B00052C75F /* actionsheet-attachments.png in Resources */,
 				27E84E7E18AD53510024B658 /* mainmenu-help.png in Resources */,
-				7386816D18DC9F4500F315B8 /* task_filter@2x.png in Resources */,
 				732DBF9C18E1BC6B00F7A0BF /* small_video.png in Resources */,
 				271DC771189C2D250059D1B2 /* status-sync-loading-highlighted@2x.png in Resources */,
 				27F054DD1891832B00C2454C /* app-icon-72.png in Resources */,
