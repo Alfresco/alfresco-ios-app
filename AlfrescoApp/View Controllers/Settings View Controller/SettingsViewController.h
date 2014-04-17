@@ -7,7 +7,10 @@
 //
 
 #import "ParentListViewController.h"
+#import "DismissCompletionProtocol.h"
 
-@interface SettingsViewController : ParentListViewController
+@interface SettingsViewController : ParentListViewController <DismissCompletionProtocol>
+
+@property (nonatomic, copy) DismissCompletionBlock dismissCompletionBlock;
 
 @end

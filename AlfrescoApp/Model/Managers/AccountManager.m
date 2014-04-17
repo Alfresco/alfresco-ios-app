@@ -57,7 +57,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     NSInteger index = [self.accountsFromKeychain indexOfObject:account inSortedRange:NSMakeRange(0, self.accountsFromKeychain.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
     
     [self.accountsFromKeychain insertObject:account atIndex:index];
-    [self saveAllAccountsToKeychain];
+    [self saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
 }
 
@@ -75,13 +75,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
     }
-    [self saveAllAccountsToKeychain];
+    [self saveAccountsToKeychain];
 }
 
 - (void)removeAccount:(UserAccount *)account
 {
     [self.accountsFromKeychain removeObject:account];
-    [self saveAllAccountsToKeychain];
+    [self saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];
     if (self.accountsFromKeychain.count == 0)
     {
@@ -107,7 +107,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 - (void)saveAccountsToKeychain
 {
-    [self saveAllAccountsToKeychain];
+    NSError *saveError = nil;
+    [KeychainUtils updateSavedAccounts:self.accountsFromKeychain forListIdentifier:kKeychainAccountListIdentifier error:&saveError];
+    
+    if (saveError && saveError.code != -25300)
+    {
+        AlfrescoLogDebug(@"Error saving to keychain. Error: %@", saveError.localizedDescription);
+    }
 }
 
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier alfrescoSession:(id<AlfrescoSession>)alfrescoSession
@@ -207,17 +213,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 #pragma mark - Private Functions
 
-- (void)saveAllAccountsToKeychain
-{
-    NSError *saveError = nil;
-    [KeychainUtils updateSavedAccounts:self.accountsFromKeychain forListIdentifier:kKeychainAccountListIdentifier error:&saveError];
-    
-    if (saveError && saveError.code != -25300)
-    {
-        AlfrescoLogDebug(@"Error saving to keychain. Error: %@", saveError.localizedDescription);
-    }
-}
-
 - (void)loadAccountsFromKeychain
 {
     NSError *keychainRetrieveError = nil;
@@ -246,7 +241,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
                 
                 if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
                 {
-                    [self saveAllAccountsToKeychain];
+                    [self saveAccountsToKeychain];
                 }
             }];
         }

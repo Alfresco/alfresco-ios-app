@@ -23,8 +23,10 @@
 #import "TasksAndAttachmentsViewController.h"
 #import "UniversalDevice.h"
 #import "PeoplePicker.h"
+#import "WorkflowHelper.h"
 
-static NSString * const kReviewKey = @"Review";
+static NSString * const kJBPMReviewTask = @"wf:reviewTask";
+static NSString * const kActivitiReviewTask = @"wf:activitiReviewTask";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 @interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate, PeoplePickerDelegate>
@@ -213,11 +215,13 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 - (BOOL)shouldDisplayApproveAndRejectButtonsForTask:(AlfrescoWorkflowTask *)task
 {
     BOOL displayApproveAndReject = NO;
-    // if it contains review in the processDefinitionIdentifier - It's a review and approve task.
-    if ([task.processDefinitionIdentifier rangeOfString:kReviewKey options:NSCaseInsensitiveSearch].location != NSNotFound)
+    
+    // It's a review and approve task if the task type matches
+    if ([task.type isEqualToString:kJBPMReviewTask] || [task.type isEqualToString:kActivitiReviewTask])
     {
         displayApproveAndReject = YES;
     }
+    
     return displayApproveAndReject;
 }
 
@@ -286,7 +290,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
-    [self.workflowService completeTask:self.task properties:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
+    [self.workflowService completeTask:self.task variables:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
         [weakSelf enableActionButtons];
@@ -334,7 +338,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     
     if (self.textView.hasText)
     {
-        properties = [NSDictionary dictionaryWithObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
+        properties = [NSDictionary dictionaryWithObject:self.textView.text forKey:kAlfrescoWorkflowVariableTaskComment];
     }
     
     [self completeTaskWithProperties:properties];
@@ -342,11 +346,17 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 - (IBAction)pressedApproveButton:(id)sender
 {
-    NSMutableDictionary *properties = [@{kAlfrescoWorkflowTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
+    NSMutableDictionary *properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
+    
+    if ([WorkflowHelper isJBPMTask:self.task])
+    {
+        // JBPM tasks need to have the transitions property set appropriately
+        properties[kAlfrescoWorkflowVariableTaskTransition] = [kAlfrescoWorkflowTaskTransitionApprove lowercaseString];
+    }
     
     if (self.textView.hasText)
     {
-        [properties setObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
+        properties[kAlfrescoWorkflowVariableTaskComment] = self.textView.text;
     }
     
     [self completeTaskWithProperties:properties];
@@ -354,11 +364,17 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 - (IBAction)pressedRejectButton:(id)sender
 {
-    NSMutableDictionary *properties = [@{kAlfrescoWorkflowTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionReject} mutableCopy];
+    NSMutableDictionary *properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionReject} mutableCopy];
+    
+    if ([WorkflowHelper isJBPMTask:self.task])
+    {
+        // JBPM tasks need to have the transitions property set appropriately
+        properties[kAlfrescoWorkflowVariableTaskTransition] = [kAlfrescoWorkflowTaskTransitionReject lowercaseString];
+    }
     
     if (self.textView.hasText)
     {
-        [properties setObject:self.textView.text forKey:kAlfrescoWorkflowTaskComment];
+        properties[kAlfrescoWorkflowVariableTaskComment] = self.textView.text;
     }
     
     [self completeTaskWithProperties:properties];

@@ -8,6 +8,7 @@
 
 #import "WebBrowserViewController.h"
 #import "ConnectivityManager.h"
+#import "DismissCompletionProtocol.h"
 
 static CGFloat const kSpacingBetweenButtons = 10.0f;
 
@@ -114,7 +115,7 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
 
 - (void)dismissHelp:(UIBarButtonItem *)buttonItem
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:self.dismissCompletionBlock];
 }
 
 - (void)updateButtons

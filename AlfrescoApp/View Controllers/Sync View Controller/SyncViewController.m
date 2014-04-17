@@ -26,7 +26,6 @@
 #import "FolderPreviewViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
-static CGFloat const kFooterHeight = 32.0f;
 
 @interface SyncViewController ()
 
@@ -34,7 +33,7 @@ static CGFloat const kFooterHeight = 32.0f;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-@property (nonatomic, strong) UILabel *tableViewFooter;
+@property (nonatomic, weak) IBOutlet UILabel *footerLabel;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
 
 @end
@@ -68,7 +67,7 @@ static CGFloat const kFooterHeight = 32.0f;
     }
     
     self.title = [self listTitle];
-    self.tableViewFooter = [[UILabel alloc] init];
+    self.footerLabel.text = [self tableFooterText];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
@@ -258,20 +257,6 @@ static CGFloat const kFooterHeight = 32.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return kCellHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return kFooterHeight;
-}
-
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    self.tableViewFooter.text = [self tableView:tableView titleForFooterInSection:section];
-    self.tableViewFooter.backgroundColor = [UIColor whiteColor];
-    self.tableViewFooter.textAlignment = NSTextAlignmentCenter;
-    
-    return self.tableViewFooter;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -515,15 +500,10 @@ static CGFloat const kFooterHeight = 32.0f;
         if (!self.parentNode || [self.parentNode.identifier isEqualToString:notificationNodeId])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.tableViewFooter.text = [self tableFooterText];
+                self.footerLabel.text = [self tableFooterText];
             });
         }
     }
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
-    return [self tableFooterText];
 }
 
 #pragma mark - Private Class Functions
