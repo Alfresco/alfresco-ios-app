@@ -105,11 +105,14 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         [self.myTasks clearAllTasks];
         [self.tasksIStarted clearAllTasks];
         
-        [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self hideHUD];
-            [self hidePullToRefreshView];
-            [self reloadTableViewWithPagingResult:pagingResult error:error];
-        }];
+        if ([self shouldRefresh])
+        {
+            [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                [self hideHUD];
+                [self hidePullToRefreshView];
+                [self reloadTableViewWithPagingResult:pagingResult error:error];
+            }];
+        }
     }
 }
 
