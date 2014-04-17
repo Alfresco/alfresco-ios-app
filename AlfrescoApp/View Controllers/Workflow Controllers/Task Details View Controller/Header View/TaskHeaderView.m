@@ -99,7 +99,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
     self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
     [self.dateFormatter setDateFormat:@"dd"];
     self.calendarDateLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
-    self.taskNameLabel.text = process.name;
+    self.taskNameLabel.text = (process.name) ? process.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
     self.taskTypeLabel.text = @"";
     self.taskInitiatorLabel.text = process.initiatorUsername;
     [self setPriorityLevel:process.priority];
@@ -111,7 +111,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
     self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:task.dueAt];
     [self.dateFormatter setDateFormat:@"dd"];
     self.calendarDateLabel.text = [self.dateFormatter stringFromDate:task.dueAt];
-    self.taskNameLabel.text = task.name;
+    self.taskNameLabel.text = (task.name) ? task.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
     self.taskTypeLabel.text = @"";
     self.taskInitiatorLabel.text = task.assigneeIdentifier;
     [self setPriorityLevel:task.priority];
