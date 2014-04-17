@@ -7,6 +7,7 @@
 //
 
 #import "ParentListViewController.h"
+#import "ConnectivityManager.h"
 
 @interface ParentListViewController ()
 
@@ -47,6 +48,10 @@
                                                  selector:@selector(sessionReceived:)
                                                      name:kAlfrescoSessionReceivedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(connectivityChanged:)
+                                                     name:kAlfrescoConnectivityChangedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -65,7 +70,10 @@
     self.view.autoresizesSubviews = YES;
     
     // Pull to Refresh
-    [self enablePullToRefresh];
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        [self enablePullToRefresh];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -305,6 +313,20 @@
 {
     id <AlfrescoSession> session = notification.object;
     self.session = session;
+}
+
+- (void)connectivityChanged:(NSNotification *)notification
+{
+    BOOL hasInternet = [notification.object boolValue];
+    
+    if (hasInternet)
+    {
+        [self enablePullToRefresh];
+    }
+    else
+    {
+        [self disablePullToRefresh];
+    }
 }
 
 #pragma mark - UIRefreshControl Functions

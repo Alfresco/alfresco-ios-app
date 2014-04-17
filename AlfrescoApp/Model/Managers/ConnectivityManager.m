@@ -84,7 +84,7 @@
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConnectivityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConnectivityChangedNotification object:@([self hasInternetConnection])];
 }
 
 @end
