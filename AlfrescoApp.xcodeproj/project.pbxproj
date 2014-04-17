@@ -759,6 +759,7 @@
 		2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload@2x.png"; sourceTree = "<group>"; };
 		2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties.png"; sourceTree = "<group>"; };
 		2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties@2x.png"; sourceTree = "<group>"; };
+		276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissCompletionProtocol.h; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -2392,8 +2393,9 @@
 		73B957DF17A6750E0099FB84 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				73B957E017A6750E0099FB84 /* ItemInDetailViewProtocol.h */,
+				276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */,
 				080A812D18573AD700B79306 /* DocumentFilter.h */,
+				73B957E017A6750E0099FB84 /* ItemInDetailViewProtocol.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

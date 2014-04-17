@@ -26,8 +26,6 @@ static NSString * const kDidAskToSync = @"didAskToSync";
 static NSString * const kSyncQueueName = @"syncQueue";
 static NSUInteger const kSyncMaxConcurrentOperations = 2;
 
-static NSUInteger const kSyncConfirmationOptionYes = 0;
-
 static NSString * const kSyncProgressSizeKey = @"syncProgressSize";
 
 /*
@@ -444,13 +442,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
                 {
-                    NSString *totalSizeString = stringForLongFileSize(totalDownloadSize);
-                    NSString *maxAllowedString = stringForLongFileSize(kDefaultMaximumAllowedDownloadSize);
-                    NSString *confirmationTitle = NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title");
-                    NSString *confirmationMessage = [NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"sync download size message alert message"), totalSizeString, maxAllowedString];
-                    
-                    [self displayConfirmationAlertWithTitle:confirmationTitle message:confirmationMessage completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                        if (buttonIndex == kSyncConfirmationOptionYes)
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title")
+                                                                    message:[NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"Sync download size"), stringForLongFileSize(totalDownloadSize)]
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"sync.downloadsize.prompt.cancel", @"Don't Sync")
+                                                          otherButtonTitles:NSLocalizedString(@"sync.downloadsize.prompt.confirm", @"Sync Now"), nil];
+
+                    [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                        if (!isCancelButton)
                         {
                             self.totalSyncSize += totalDownloadSize;
                             [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
@@ -1148,16 +1147,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 }
 
 #pragma mark - UIAlertview Methods
-
-- (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), NSLocalizedString(@"No", @"No"), nil];
-    [alert showWithCompletionBlock:completionBlock];
-}
 
 - (void)updateFolderSizes:(BOOL)updateFolderSizes andCheckIfAnyFileModifiedLocally:(BOOL)checkIfModified
 {

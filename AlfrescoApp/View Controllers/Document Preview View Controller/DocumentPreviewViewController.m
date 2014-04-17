@@ -150,7 +150,12 @@
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
     [items addObject:[ActionCollectionItem downloadItem]];
-    [items addObject:[ActionCollectionItem sendForReview]];
+    
+    if ([self.session isKindOfClass:[AlfrescoRepositorySession class]])
+    {
+        // We do not currently support creating or querying workflows for Alfresco in the cloud
+        [items addObject:[ActionCollectionItem sendForReview]];
+    }
 
     if (self.documentPermissions.canEdit)
     {

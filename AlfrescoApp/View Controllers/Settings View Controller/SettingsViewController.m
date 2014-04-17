@@ -61,7 +61,7 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (void)doneButtonPressed:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:self.dismissCompletionBlock];
 }
 
 - (Class)determineTableViewCellClassFromCellInfo:(NSDictionary *)cellInfo

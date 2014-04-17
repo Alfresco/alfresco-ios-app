@@ -159,6 +159,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
                 {
                     [accountManager saveAccountsToKeychain];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session];
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
@@ -238,7 +239,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     self.descriptionTextField.text = self.formBackupAccount.accountDescription;
     
     SwitchCell *syncPreferenceCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
-    syncPreferenceCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.syncPreference", @"Sync");
+    syncPreferenceCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.syncPreference", @"Sync Favorite Content");
     self.syncPreferenceSwitch = syncPreferenceCell.valueSwitch;
     [self.syncPreferenceSwitch addTarget:self action:@selector(syncPreferenceChanged:) forControlEvents:UIControlEventValueChanged];
     [self.syncPreferenceSwitch setOn:self.formBackupAccount.isSyncOn animated:YES];
@@ -302,9 +303,9 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         self.tableGroups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                              @[portCell, serviceDocumentCell, certificateCell],
-                              @[syncPreferenceCell] ];
-        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced", @"accountdetails.header.setting"];
+                              @[syncPreferenceCell],
+                              @[portCell, serviceDocumentCell, certificateCell]];
+        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.advanced"];
     }
     else
     {
