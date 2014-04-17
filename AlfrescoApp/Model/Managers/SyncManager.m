@@ -1386,10 +1386,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                        inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
                 
                 NSURL *contentLocation = infoDictionary[kAlfrescoNodeAddedOnServerContentLocationLocally];
-                NSString *destinationURL = [NSURL fileURLWithPath:[[syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode]];
+                NSString *destinationPath = [[syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode];
+                NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
                 
                 NSError *error = nil;
-                [[NSFileManager defaultManager] copyItemAtURL:contentLocation toURL:[NSURL fileURLWithPath:destinationURL] error:&error];
+                [[NSFileManager defaultManager] copyItemAtURL:contentLocation toURL:destinationURL error:&error];
                 
                 nodeStatus.totalSize = [(AlfrescoDocument *)subNode contentLength];
                 if (error)
@@ -1403,7 +1404,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                     
                     nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:subNode];
                     nodeInfo.lastDownloadedDate = [NSDate date];
-                    nodeInfo.syncContentPath = destinationURL;
+                    nodeInfo.syncContentPath = destinationPath;
                     nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
                 }
             }
