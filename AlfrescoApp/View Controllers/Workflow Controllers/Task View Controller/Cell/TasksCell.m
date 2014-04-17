@@ -8,6 +8,7 @@
 
 #import "TasksCell.h"
 #import "Utility.h"
+#import "UIColor+Custom.h"
 
 static CGFloat const kMinimumCellHeight = 70.0f;
 
@@ -31,10 +32,10 @@ static CGFloat const kMinimumCellHeight = 70.0f;
     [self.contentView layoutSubviews];
     
     CGFloat horizonalPaddingBetweenContentViewAndPriorityIndicator = self.horizonalPaddingBetweenContentViewAndPriorityIndicator.constant;
-    CGFloat priorityIndicatiorWidth = self.priorityIndicatiorWidth.constant;
+    CGFloat priorityIndicatorWidth = self.priorityIndicatiorWidth.constant;
     CGFloat horizonalPaddingBetweenPriorityIndicatorAndTextLabel = self.horizonalPaddingBetweenPriorityIndicatorAndTextLabel.constant;
     
-    CGFloat leftPadding = horizonalPaddingBetweenContentViewAndPriorityIndicator + priorityIndicatiorWidth + horizonalPaddingBetweenPriorityIndicatorAndTextLabel;
+    CGFloat leftPadding = horizonalPaddingBetweenContentViewAndPriorityIndicator + priorityIndicatorWidth + horizonalPaddingBetweenPriorityIndicatorAndTextLabel;
     CGFloat rightPadding = horizonalPaddingBetweenContentViewAndPriorityIndicator;
     
     self.taskNameTextLabel.preferredMaxLayoutWidth = self.contentView.frame.size.width - (leftPadding + rightPadding);
@@ -49,7 +50,14 @@ static CGFloat const kMinimumCellHeight = 70.0f;
 
 - (void)setPriorityLevel:(NSNumber *)priority
 {
-    self.taskPriorityImageView.image = [Utility imageForPriority:priority];
+    TaskPriority *taskPriority = [Utility taskPriorityForPriority:priority];
+    self.taskPriorityImageView.image = [taskPriority.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.taskPriorityImageView.tintColor = taskPriority.tintColor;
+}
+
+- (void)setTaskOverdue:(BOOL)overdue
+{
+    self.taskDueDateTextLabel.textColor = overdue ? [UIColor taskOverdueColor] : [UIColor blackColor];
 }
 
 @end

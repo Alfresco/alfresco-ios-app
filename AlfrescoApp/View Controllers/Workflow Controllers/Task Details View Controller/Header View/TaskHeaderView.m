@@ -58,32 +58,12 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
     self.calendarBackgroundView.backgroundColor = [UIColor whiteColor];
 }
 
-- (NSString *)priortyStringFromPriority:(NSNumber *)priority
-{
-    NSString *priorityString = nil;
-    
-    switch (priority.integerValue)
-    {
-        case WorkflowPriorityTypeHigh:
-            priorityString = NSLocalizedString(@"tasks.priority.high", @"High Priority");
-            break;
-            
-        case WorkflowPriorityTypeMedium:
-            priorityString = NSLocalizedString(@"tasks.priority.medium", @"Medium Priority");
-            break;
-            
-        case WorkflowPriorityTypeLow:
-            priorityString = NSLocalizedString(@"tasks.priority.low", @"Low Priority");
-            break;
-    }
-    
-    return priorityString;
-}
-
 - (void)setPriorityLevel:(NSNumber *)priority
 {
-    self.taskPriorityImageView.image = [Utility imageForPriority:priority];
-    self.taskPriorityLabel.text = [self priortyStringFromPriority:priority];
+    TaskPriority *taskPriority = [Utility taskPriorityForPriority:priority];
+    self.taskPriorityImageView.image = [taskPriority.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.taskPriorityImageView.tintColor = taskPriority.tintColor;
+    self.taskPriorityLabel.text = taskPriority.summary;
 }
 
 #pragma mark - Public Functions
@@ -95,10 +75,18 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 - (void)configureViewForProcess:(AlfrescoWorkflowProcess *)process
 {
-    [self.dateFormatter setDateFormat:@"MMMM"];
-    self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
-    [self.dateFormatter setDateFormat:@"dd"];
-    self.calendarDateLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
+    if (process.dueAt)
+    {
+        [self.dateFormatter setDateFormat:@"MMMM"];
+        self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
+        [self.dateFormatter setDateFormat:@"dd"];
+        self.calendarDateLabel.text = [self.dateFormatter stringFromDate:process.dueAt];
+    }
+    else
+    {
+        self.calendarMonthLabel.text = NSLocalizedString(@"tasks.calendar.no-due-date", @"No Date");
+        self.calendarDateLabel.text = @"?";
+    }
     self.taskNameLabel.text = (process.name) ? process.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
     self.taskTypeLabel.text = @"";
     self.taskInitiatorLabel.text = process.initiatorUsername;
@@ -107,10 +95,18 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 - (void)configureViewForTask:(AlfrescoWorkflowTask *)task
 {
-    [self.dateFormatter setDateFormat:@"MMMM"];
-    self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:task.dueAt];
-    [self.dateFormatter setDateFormat:@"dd"];
-    self.calendarDateLabel.text = [self.dateFormatter stringFromDate:task.dueAt];
+    if (task.dueAt)
+    {
+        [self.dateFormatter setDateFormat:@"MMMM"];
+        self.calendarMonthLabel.text = [self.dateFormatter stringFromDate:task.dueAt];
+        [self.dateFormatter setDateFormat:@"dd"];
+        self.calendarDateLabel.text = [self.dateFormatter stringFromDate:task.dueAt];
+    }
+    else
+    {
+        self.calendarMonthLabel.text = NSLocalizedString(@"tasks.calendar.no-due-date", @"No Date");
+        self.calendarDateLabel.text = @"?";
+    }
     self.taskNameLabel.text = (task.name) ? task.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
     self.taskTypeLabel.text = @"";
     self.taskInitiatorLabel.text = task.assigneeIdentifier;

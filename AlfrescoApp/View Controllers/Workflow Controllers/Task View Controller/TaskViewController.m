@@ -17,7 +17,7 @@
 #import "UniversalDevice.h"
 #import "TaskTypeViewController.h"
 
-static NSString * const kDateFormat = @"dd MMM";
+static NSString * const kDateFormat = @"dd MMMM yyyy";
 static NSString * const kActivitiReview = @"activitiReview";
 static NSString * const kActivitiParallelReview = @"activitiParallelReview";
 static NSString * const kActivitiToDo = @"activitiAdhoc";
@@ -63,7 +63,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
     
-    UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"task_filter.png"] style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
+    UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tasks.view.button", @"View") style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
     self.filterButton = filterButton;
     
     UIBarButtonItem *addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -363,6 +363,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             NSString *taskTitle = (currentTask.name) ? currentTask.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
             cell.taskNameTextLabel.text = taskTitle;
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentTask.dueAt];
+            [cell setTaskOverdue:([currentTask.dueAt timeIntervalSinceNow] < 0)];
             [cell setPriorityLevel:currentTask.priority];
         }
         break;
@@ -373,6 +374,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
             cell.taskNameTextLabel.text = processTitle;
             cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentProcess.dueAt];
+            [cell setTaskOverdue:([currentProcess.dueAt timeIntervalSinceNow] < 0)];
             [cell setPriorityLevel:currentProcess.priority];
         }
         break;

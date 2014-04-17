@@ -14,6 +14,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *taskDueDateTextLabel;
 
 + (CGFloat)minimumCellHeight;
-- (void)setPriorityLevel:(NSNumber *)priorty;
+- (void)setPriorityLevel:(NSNumber *)priority;
+- (void)setTaskOverdue:(BOOL)overdue;
 
 @end

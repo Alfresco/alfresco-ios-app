@@ -12,7 +12,20 @@
 @class AlfrescoNode;
 @class UserAccount;
 
-/* System Notices */
+
+/**
+ * TaskPriority lightweight class
+ */
+@interface TaskPriority : NSObject
+@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, retain) UIColor *tintColor;
+@property (nonatomic, retain) NSString *summary;
+@end
+
+
+/**
+ * System Notices
+ */
 SystemNotice *displayErrorMessage(NSString *message);
 SystemNotice *displayErrorMessageWithTitle(NSString *message, NSString *title);
 SystemNotice *displayWarningMessageWithTitle(NSString *message, NSString *title);
@@ -62,6 +75,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)colorButtonsForActionSheet:(UIActionSheet *)actionSheet tintColor:(UIColor *)tintColor;
-+ (UIImage *)imageForPriority:(NSNumber *)priority;
++ (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority;
 
 @end

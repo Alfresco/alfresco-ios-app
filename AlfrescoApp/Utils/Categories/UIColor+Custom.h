@@ -18,5 +18,9 @@
 + (UIColor *)systemNoticeBlue;
 + (UIColor *)systemNoticeRed;
 + (UIColor *)systemNoticeYellow;
++ (UIColor *)taskPriorityHighColor;
++ (UIColor *)taskPriorityMediumColor;
++ (UIColor *)taskPriorityLowColor;
++ (UIColor *)taskOverdueColor;
 
 @end
