@@ -419,19 +419,34 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         BOOL showFavorites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationFavoritesKey];
         MainMenuItem *favoritesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSync];
-        if (showFavorites && !favoritesMenuItem)
+        if (showFavorites)
         {
             BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-
-            SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.alfrescoSession];
-            SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
-            favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
-                                                                   imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
-                                                           localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
-                                                              viewController:syncNavigationController
-                                                             displayInDetail:NO];
-            [repositoryMenuItems insertObject:favoritesMenuItem atIndex:nextIndex];
-            repositoryMenuItemsChanged = YES;
+            
+            if (!favoritesMenuItem)
+            {
+                SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.alfrescoSession];
+                SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
+                favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                                                                       imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
+                                                               localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
+                                                                  viewController:syncNavigationController
+                                                                 displayInDetail:NO];
+                [repositoryMenuItems insertObject:favoritesMenuItem atIndex:nextIndex];
+                repositoryMenuItemsChanged = YES;
+                
+            }
+            else
+            {
+                MainMenuItem *menuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                                                                            imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
+                                                                    localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
+                                                                       viewController:favoritesMenuItem.viewController
+                                                                      displayInDetail:NO];
+                [repositoryMenuItems replaceObjectAtIndex:[repositoryMenuItems indexOfObject:favoritesMenuItem] withObject:menuItem];
+                favoritesMenuItem = menuItem;
+                repositoryMenuItemsChanged = YES;
+            }
         }
         else if (!showFavorites && favoritesMenuItem)
         {
@@ -575,13 +590,13 @@ static NSUInteger const kAccountsRowNumber = 0;
     if (!self.hasRepositorySpecificSection)
     {
         [self.tableData insertObject:repositoryItems atIndex:kRepositoryItemsSectionNumber];
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.hasRepositorySpecificSection = YES;
     }
     else
     {
         [self.tableData replaceObjectAtIndex:kRepositoryItemsSectionNumber withObject:repositoryItems];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kRepositoryItemsSectionNumber] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
