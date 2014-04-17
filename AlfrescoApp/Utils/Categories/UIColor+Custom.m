@@ -44,10 +44,30 @@
 {
     return [UIColor redColor];
 }
-
 + (UIColor *)systemNoticeYellow
 {
     return [UIColor yellowColor];
 }
+
++ (UIColor *)taskPriorityHighColor
+{
+    return [UIColor redColor];
+}
+
++ (UIColor *)taskPriorityMediumColor
+{
+    return [UIColor darkGrayColor];
+}
+
++ (UIColor *)taskPriorityLowColor
+{
+    return [UIColor lightGrayColor];
+}
+
++ (UIColor *)taskOverdueColor
+{
+    return [UIColor redColor];
+}
+
 
 @end

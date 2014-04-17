@@ -16,11 +16,27 @@
 #import "DetailSplitViewController.h"
 #import "UniversalDevice.h"
 #import "ContainerViewController.h"
+#import "UIColor+Custom.h"
 
 static NSDictionary *smallIconMappings;
 static NSDictionary *largeIconMappings;
 static NSDateFormatter *dateFormatter;
 static CGFloat const kZoomAnimationSpeed = 0.2f;
+
+/**
+ * TaskPriority lightweight class
+ */
+@implementation TaskPriority
++ (id)taskPriorityWithImageName:(NSString *)imageName tintColor:(UIColor *)tintColor summary:(NSString *)summary
+{
+    TaskPriority *taskPriority = [TaskPriority new];
+    taskPriority.image = [UIImage imageNamed:imageName];
+    taskPriority.tintColor = tintColor;
+    taskPriority.summary = summary;
+    return taskPriority;
+}
+@end
+
 
 @interface Utility ()
 
@@ -525,29 +541,29 @@ NSString *filenameAppendedWithDateModififed(NSString *filenameOrPath, AlfrescoNo
     }
 }
 
-+ (UIImage *)imageForPriority:(NSNumber *)priority
++ (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority
 {
-    NSInteger priorityValue = priority.integerValue;
+    TaskPriority *taskPriority = nil;
     
-    UIImage *priorityImage = nil;
-    
-    switch (priorityValue) {
+    switch (priority.integerValue)
+    {
         case 1:
-            priorityImage = [UIImage imageNamed:@"task_priority_high.png"];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_high.png" tintColor:[UIColor taskPriorityHighColor] summary:NSLocalizedString(@"tasks.priority.high", @"High Priority")];
             break;
             
         case 2:
-            priorityImage = [UIImage imageNamed:@"task_priority_medium.png"];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_medium.png" tintColor:[UIColor taskPriorityMediumColor] summary:NSLocalizedString(@"tasks.priority.medium", @"Medium Priority")];
             break;
+
         case 3:
-            priorityImage = [UIImage imageNamed:@"task_priority_low.png"];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_low.png" tintColor:[UIColor taskPriorityLowColor] summary:NSLocalizedString(@"tasks.priority.low", @"Low Priority")];
             break;
             
         default:
             break;
     }
     
-    return priorityImage;
+    return taskPriority;
 }
 
 @end

@@ -504,6 +504,7 @@
 "tasks.title.mytasks" = "My Tasks";
 "tasks.title.taskistarted" = "Tasks I Started";
 // Details
+"tasks.calendar.no-due-date" = "No Date";
 "tasks.priority.high" = "High Priority";
 "tasks.priority.medium" = "Medium Priority";
 "tasks.priority.low" = "Low Priority";
