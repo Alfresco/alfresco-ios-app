@@ -23,6 +23,7 @@
 #import "PreferenceManager.h"
 #import "ConnectivityManager.h"
 #import "FileFolderListViewController.h"
+#import "FolderPreviewViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -102,6 +103,10 @@ static CGFloat const kCellHeight = 64.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kAlfrescoConnectivityChangedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(nodeAdded:)
+                                                 name:kAlfrescoNodeAddedOnServerNotification
                                                object:nil];
 }
 
@@ -352,7 +357,6 @@ static CGFloat const kCellHeight = 64.0f;
                 return;
             }
             [self showHUD];
-            InAppDocumentLocation documentLocation = isSyncOn ? InAppDocumentLocationSync : InAppDocumentLocationFilesAndFolders;
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 
                 [self hideHUD];
@@ -361,7 +365,7 @@ static CGFloat const kCellHeight = 64.0f;
                     DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
                                                                                                                            permissions:permissions
                                                                                                                        contentFilePath:filePath
-                                                                                                                      documentLocation:documentLocation
+                                                                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
                                                                                                                                session:self.session];
                     previewController.hidesBottomBarWhenPushed = YES;
                     [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
@@ -399,8 +403,30 @@ static CGFloat const kCellHeight = 64.0f;
             
         default:
         {
-            MetaDataViewController *metaDataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:node session:self.session];
-            [UniversalDevice pushToDisplayViewController:metaDataViewController usingNavigationController:self.navigationController animated:YES];
+            [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            
+            AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:node];
+            if (syncNodePermissions)
+            {
+                FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node permissions:syncNodePermissions session:self.session];
+                [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+            }
+            else
+            {
+                [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (permissions)
+                    {
+                        FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node permissions:permissions session:self.session];
+                        [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+                    }
+                    else
+                    {
+                        NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), node.name];
+                        displayErrorMessage(permissionRetrievalErrorMessage);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                }];
+            }
             break;
         }
     }
@@ -563,6 +589,21 @@ static CGFloat const kCellHeight = 64.0f;
     else
     {
         [self disablePullToRefresh];
+    }
+}
+
+#pragma mark - Upload Node Notification
+
+- (void)nodeAdded:(NSNotification *)notification
+{
+    NSDictionary *infoDictionary = notification.object;
+    
+    AlfrescoFolder *parentFolder = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerParentFolderKey];
+    
+    if ([parentFolder.identifier isEqualToString:self.parentNode.identifier])
+    {
+        AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
+        [self addAlfrescoNodes:@[subnode] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 

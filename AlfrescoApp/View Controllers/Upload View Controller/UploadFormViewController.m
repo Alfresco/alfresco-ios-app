@@ -624,9 +624,9 @@ static NSString * const kAudioFileName = @"audio.m4a";
                     if (succeeded)
                     {
                         [weakSelf dismissViewControllerAnimated:YES completion:^{
-                            if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                            if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:fromLocation:)])
                             {
-                                [weakSelf.delegate didFinishUploadingNode:document];
+                                [weakSelf.delegate didFinishUploadingNode:document fromLocation:self.documentURL];
                             }
                         }];
                     }
@@ -640,9 +640,9 @@ static NSString * const kAudioFileName = @"audio.m4a";
             else
             {
                 [weakSelf dismissViewControllerAnimated:YES completion:^{
-                    if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                    if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:fromLocation:)])
                     {
-                        [weakSelf.delegate didFinishUploadingNode:document];
+                        [weakSelf.delegate didFinishUploadingNode:document fromLocation:self.documentURL];
                     }
                 }];
             }
@@ -725,9 +725,9 @@ static NSString * const kAudioFileName = @"audio.m4a";
                         if (succeeded)
                         {
                             [weakSelf dismissViewControllerAnimated:YES completion:^{
-                                if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                                if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:fromLocation:)])
                                 {
-                                    [weakSelf.delegate didFinishUploadingNode:document];
+                                    [weakSelf.delegate didFinishUploadingNode:document fromLocation:self.documentURL];
                                 }
                             }];
                         }
@@ -741,9 +741,9 @@ static NSString * const kAudioFileName = @"audio.m4a";
                 else
                 {
                     [weakSelf dismissViewControllerAnimated:YES completion:^{
-                        if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:)])
+                        if ([weakSelf.delegate respondsToSelector:@selector(didFinishUploadingNode:fromLocation:)])
                         {
-                            [weakSelf.delegate didFinishUploadingNode:document];
+                            [weakSelf.delegate didFinishUploadingNode:document fromLocation:self.documentURL];
                         }
                     }];
                 }

@@ -80,6 +80,7 @@ extern NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey;
 extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
+extern NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally;
 extern NSString * const kAlfrescoWorkflowTaskDidComplete;
 extern NSString * const kAlfrescoDocumentEditedNotification;
 // Saveback

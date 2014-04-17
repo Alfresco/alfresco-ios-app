@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, UploadFormType)
 @protocol UploadFormViewControllerDelegate <NSObject>
 
 @optional
-- (void)didFinishUploadingNode:(AlfrescoNode *)node;
+- (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL;
 - (void)didFailUploadingNode:(NSError *)error;
 - (void)didCancelUpload;
 

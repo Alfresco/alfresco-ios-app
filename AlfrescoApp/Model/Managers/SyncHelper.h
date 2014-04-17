@@ -17,6 +17,12 @@ extern NSString * const kSyncReloadContentKey;
 @interface SyncHelper : NSObject
 
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
+- (void)populateNodes:(NSArray *)nodes
+       inParentFolder:(NSString *)folderId
+     forAccountWithId:(NSString *)accountId
+         preserveInfo:(NSDictionary *)info
+          permissions:(NSDictionary *)permissions inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+
 - (NSString *)syncNameForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
