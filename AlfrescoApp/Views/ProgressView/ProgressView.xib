@@ -1,37 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="p84-Lh-kFm" customClass="ProgressView">
+        <view contentMode="scaleToFill" id="p84-Lh-kFm" userLabel="ProgressView" customClass="ProgressView">
             <rect key="frame" x="0.0" y="0.0" width="300" height="59"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8XH-x7-UKh">
-                    <rect key="frame" x="20" y="7" width="241" height="21"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRq-HB-wkX">
+                    <rect key="frame" x="0.0" y="1" width="300" height="58"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ah3-on-JJw">
-                    <rect key="frame" x="20" y="43" width="266" height="2"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </progressView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMO-Iu-cqo">
-                    <rect key="frame" x="254" y="9" width="38" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <state key="normal" title="X">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8XH-x7-UKh">
+                            <rect key="frame" x="8" y="8" width="240" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="OAV-8l-UJt"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ah3-on-JJw">
+                            <rect key="frame" x="8" y="41" width="240" height="2"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </progressView>
+                        <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMO-Iu-cqo">
+                            <rect key="frame" x="260" y="13" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="IHg-3x-lC6"/>
+                                <constraint firstAttribute="width" constant="32" id="xfQ-XI-tov"/>
+                            </constraints>
+                            <state key="normal" image="sync-button-stop-all.png"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="8XH-x7-UKh" firstAttribute="trailing" secondItem="ah3-on-JJw" secondAttribute="trailing" id="9Lj-8o-394"/>
+                        <constraint firstAttribute="trailing" secondItem="8XH-x7-UKh" secondAttribute="trailing" constant="52" id="QIl-ob-orp"/>
+                        <constraint firstItem="ah3-on-JJw" firstAttribute="top" secondItem="8XH-x7-UKh" secondAttribute="bottom" constant="12" id="WJZ-ZS-FbW"/>
+                        <constraint firstAttribute="trailing" secondItem="AMO-Iu-cqo" secondAttribute="trailing" constant="8" id="WXO-DL-9Hn"/>
+                        <constraint firstItem="8XH-x7-UKh" firstAttribute="leading" secondItem="ah3-on-JJw" secondAttribute="leading" id="bhB-bz-wSw"/>
+                        <constraint firstItem="8XH-x7-UKh" firstAttribute="leading" secondItem="lRq-HB-wkX" secondAttribute="leading" constant="8" id="dZt-S1-fCc"/>
+                        <constraint firstItem="8XH-x7-UKh" firstAttribute="top" secondItem="lRq-HB-wkX" secondAttribute="top" constant="8" id="orE-NY-czh"/>
+                        <constraint firstAttribute="centerY" secondItem="AMO-Iu-cqo" secondAttribute="centerY" id="yCq-sG-I2m"/>
+                    </constraints>
+                </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+            <constraints>
+                <constraint firstItem="lRq-HB-wkX" firstAttribute="leading" secondItem="p84-Lh-kFm" secondAttribute="leading" id="HvH-1K-anv"/>
+                <constraint firstAttribute="trailing" secondItem="lRq-HB-wkX" secondAttribute="trailing" id="PQA-41-zI1"/>
+                <constraint firstItem="lRq-HB-wkX" firstAttribute="top" secondItem="p84-Lh-kFm" secondAttribute="top" constant="1" id="Q86-M3-aha"/>
+                <constraint firstAttribute="bottom" secondItem="lRq-HB-wkX" secondAttribute="bottom" id="hDl-LK-Sr3"/>
+            </constraints>
             <connections>
                 <outlet property="cancelButton" destination="AMO-Iu-cqo" id="lZU-OY-NPM"/>
                 <outlet property="progressBar" destination="ah3-on-JJw" id="abn-Hz-5nQ"/>
@@ -39,4 +65,7 @@
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="sync-button-stop-all.png" width="32" height="32"/>
+    </resources>
 </document>

@@ -150,6 +150,8 @@
 		271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */; };
 		271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC762189C2D250059D1B2 /* status-sync-waiting.png */; };
 		271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */; };
+		2739574F1900B12B00169BEB /* sync-button-stop-all.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574D1900B12B00169BEB /* sync-button-stop-all.png */; };
+		273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */; };
 		2744022018AA83C400DF23DD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2744021F18AA83C400DF23DD /* Settings.bundle */; };
 		274E61B6189DD22300202572 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
 		274E61B7189DD22300202572 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
@@ -751,6 +753,8 @@
 		271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC762189C2D250059D1B2 /* status-sync-waiting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting.png"; sourceTree = "<group>"; };
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
+		2739574D1900B12B00169BEB /* sync-button-stop-all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all.png"; sourceTree = "<group>"; };
+		2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all@2x.png"; sourceTree = "<group>"; };
 		2744021F18AA83C400DF23DD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
 		2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload.png"; sourceTree = "<group>"; };
@@ -1387,6 +1391,8 @@
 			children = (
 				0833247617FB0CD000EE6AA8 /* sync-button-error.png */,
 				0833247717FB0CD000EE6AA8 /* sync-button-error@2x.png */,
+				2739574D1900B12B00169BEB /* sync-button-stop-all.png */,
+				2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */,
 				0833247217FADFE600EE6AA8 /* sync-button-stop.png */,
 				0833247317FADFE600EE6AA8 /* sync-button-stop@2x.png */,
 			);
@@ -3129,6 +3135,7 @@
 				271DC766189C2D250059D1B2 /* status-favourite.png in Resources */,
 				730B445918ED7B96008A0977 /* FilePreviewViewController.xib in Resources */,
 				737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */,
+				2739574F1900B12B00169BEB /* sync-button-stop-all.png in Resources */,
 				080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */,
 				73FF558A18ACE2370009CA56 /* large_word@2x.png in Resources */,
 				732DBFA718E1BDAB00F7A0BF /* small_site@2x.png in Resources */,
@@ -3361,6 +3368,7 @@
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
 				73B95B0C17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist in Resources */,
+				273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */,
 				732DBFAA18E1BDB600F7A0BF /* small_folder.png in Resources */,
 				73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */,
 				73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */,
