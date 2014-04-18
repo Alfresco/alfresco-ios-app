@@ -75,9 +75,7 @@
         if (self.isDownload)
         {
             self.syncRequest = [self.documentFolderService retrieveContentOfDocument:self.document outputStream:(NSOutputStream *)self.stream completionBlock:^(BOOL succeeded, NSError *error) {
-                
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    
                     if (weakSelf.downloadCompletionBlock)
                     {
                         weakSelf.downloadCompletionBlock(succeeded, error);
@@ -86,16 +84,13 @@
                 operationCompleted = YES;
                 
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                
                 weakSelf.progressBlock(bytesTransferred, bytesTotal);
             }];
         }
         else
         {
             self.syncRequest = [self.documentFolderService updateContentOfDocument:self.document contentStream:(AlfrescoContentStream *)self.stream completionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
-                
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    
                     if (weakSelf.uploadCompletionBlock)
                     {
                         weakSelf.uploadCompletionBlock(uploadedDocument, error);
@@ -104,17 +99,13 @@
                 operationCompleted = YES;
                 
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                
                 weakSelf.progressBlock(bytesTransferred, bytesTotal);
             }];
         }
         
-        while (!operationCompleted)
+        while (![self isCancelled] && !operationCompleted)
         {
-            if (![self isCancelled] && !operationCompleted)
-            {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            }
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
     }
 }
