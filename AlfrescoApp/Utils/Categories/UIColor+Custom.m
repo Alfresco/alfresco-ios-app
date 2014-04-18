@@ -30,6 +30,12 @@
     return [UIColor colorWithRed:(CGFloat)53.0/255.0 green:(CGFloat)53.0/255.0 blue:(CGFloat)55.0/255.0 alpha:1.0];
 }
 
++ (UIColor *)syncButtonFailedColor
+{
+    // Matches status-sync-failed.png
+    return [UIColor colorWithRed:0.82 green:0.32 blue:0.34 alpha:1.0];
+}
+
 + (UIColor *)borderGreyColor
 {
     return [UIColor colorWithRed:(CGFloat)212.0/255.0 green:(CGFloat)212.0/255.0 blue:212.0/255.0 alpha:1.0f];
