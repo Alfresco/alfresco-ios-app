@@ -45,7 +45,7 @@
  * Sync
  */
 "favourites.title" = "Favorites";
-"sync.title" = "Sync";
+"sync.title" = "Synced Content";
 "sync.downloadsize.prompt.title" = "Download Size";
 "sync.downloadsize.prompt.message" = "Sync download size %@. Do you want to proceed?";
 "sync.downloadsize.prompt.cancel" = "Don't Sync";

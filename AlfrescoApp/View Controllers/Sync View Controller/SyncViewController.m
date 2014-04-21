@@ -26,6 +26,7 @@
 #import "FolderPreviewViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
+static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
 @interface SyncViewController ()
 
@@ -35,6 +36,7 @@ static CGFloat const kCellHeight = 64.0f;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, weak) IBOutlet UILabel *footerLabel;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
+@property (nonatomic, assign) BOOL syncOnSiteRequestsCompletion;
 
 @end
 
@@ -47,6 +49,10 @@ static CGFloat const kCellHeight = 64.0f;
     {
         self.session = session;
         self.parentNode = node;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(siteRequestsCompleted:)
+                                                     name:kAlfrescoSiteRequestsCompletedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -99,10 +105,6 @@ static CGFloat const kCellHeight = 64.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(accountInfoUpdated:)
                                                  name:kAlfrescoAccountUpdatedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged:)
-                                                 name:kAlfrescoConnectivityChangedNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(nodeAdded:)
@@ -167,9 +169,20 @@ static CGFloat const kCellHeight = 64.0f;
     if (![[SyncManager sharedManager] isFirstUse])
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-        [self loadSyncNodesForFolder:self.parentNode];
+        // Hold off making sync network requests until either the Sites requests have completed, or a timeout period has passed
+        self.syncOnSiteRequestsCompletion = YES;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kSyncOnSiteRequestsCompletionTimeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.syncOnSiteRequestsCompletion = NO;
+            [self loadSyncNodesForFolder:self.parentNode];
+        });
         self.didSyncAfterSessionRefresh = YES;
     }
+}
+
+- (void)siteRequestsCompleted:(NSNotification *)notification
+{
+    self.syncOnSiteRequestsCompletion = NO;
+    [self loadSyncNodesForFolder:self.parentNode];
 }
 
 - (void)didAddNodeToFavourites:(NSNotification *)notification
@@ -576,12 +589,13 @@ static CGFloat const kCellHeight = 64.0f;
     }
 }
 
-#pragma mark - Connectivy Notification Methods
+#pragma mark - Connectivity Notification Methods
 
-- (void)reachabilityChanged:(NSNotification *)notification
+// @Override
+- (void)connectivityChanged:(NSNotification *)notification
 {
-    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    if (hasInternetConnection && self.parentNode == nil)
+    BOOL hasInternet = [notification.object boolValue];
+    if (hasInternet && self.parentNode == nil)
     {
         [self enablePullToRefresh];
         [self loadSyncNodesForFolder:self.parentNode];
@@ -597,7 +611,6 @@ static CGFloat const kCellHeight = 64.0f;
 - (void)nodeAdded:(NSNotification *)notification
 {
     NSDictionary *infoDictionary = notification.object;
-    
     AlfrescoFolder *parentFolder = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerParentFolderKey];
     
     if ([parentFolder.identifier isEqualToString:self.parentNode.identifier])

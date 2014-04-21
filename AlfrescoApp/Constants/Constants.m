@@ -51,8 +51,9 @@ NSString * const kProtocolHTTPS = @"https";
 NSString * const kHTTPMethodPOST = @"POST";
 NSString * const kHTTPMethodGET = @"GET";
 
-// Notificiations
+// Notifications
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
+NSString * const kAlfrescoSiteRequestsCompletedNotification = @"AlfrescoSiteRequestsCompleted";
 NSString * const kAlfrescoAccessDeniedNotification = @"AlfrescoUnauthorizedAccessNotification";
 NSString * const kAlfrescoApplicationPolicyUpdatedNotification = @"AlfrescoApplicationPolicyUpdatedNotification";
 NSString * const kAlfrescoDocumentDownloadedNotification = @"AlfrescoDocumentDownloadedNotification";
