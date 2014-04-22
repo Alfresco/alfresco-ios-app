@@ -315,32 +315,39 @@
                               kAlfrescoClientCertificateCredentials : certificateCredential};
     }
     
-    self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
-    self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString]
-                                                                username:account.username
-                                                                password:password
-                                                              parameters:sessionParameters
-                                                         completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                                                             if (session)
-                                                             {
-                                                                 [UniversalDevice clearDetailViewController];
-                                                                 
-                                                                 self.currentLoginURLString = nil;
-                                                                 self.currentLoginRequest = nil;
-                                                                 
-                                                                 if (completionBlock != NULL)
-                                                                 {
-                                                                     completionBlock(YES, session);
-                                                                 }
-                                                             }
-                                                             else
-                                                             {
-                                                                 if (completionBlock != NULL)
-                                                                 {
-                                                                     completionBlock(NO, nil);
-                                                                 }
-                                                             }
-                                                         }];
+    BOOL hostIsReachable = [[ConnectivityManager sharedManager] canReachHostName:account.serverAddress];
+    if (hostIsReachable)
+    {
+        self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
+        self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+            if (session)
+            {
+                [UniversalDevice clearDetailViewController];
+                
+                self.currentLoginURLString = nil;
+                self.currentLoginRequest = nil;
+                
+                if (completionBlock != NULL)
+                {
+                    completionBlock(YES, session);
+                }
+            }
+            else
+            {
+                if (completionBlock != NULL)
+                {
+                    completionBlock(NO, nil);
+                }
+            }
+        }];
+    }
+    else
+    {
+        if (completionBlock != NULL)
+        {
+            completionBlock(NO, nil);
+        }
+    }
 }
 
 - (void)showHUDOnView:(UIView *)view
