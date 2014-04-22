@@ -19,16 +19,7 @@
 {
     self.metadataTableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.metadataTableview layoutSubviews];
-}
-
-#pragma mark - IBOutlets
-
-- (IBAction)didPressExpandButton:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(cell:didPressExpandButton:)])
-    {
-        [self.delegate cell:self didPressExpandButton:(UIButton *)sender];
-    }
+    self.disclosureImageView.image = [self.disclosureImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end

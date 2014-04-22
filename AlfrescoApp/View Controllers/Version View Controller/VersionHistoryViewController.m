@@ -14,7 +14,7 @@
 
 static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 
-@interface VersionHistoryViewController () <VersionHistoryCellDelegate>
+@interface VersionHistoryViewController ()
 
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) AlfrescoVersionService *versionService;
@@ -100,24 +100,6 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     self.versionService = [[AlfrescoVersionService alloc] initWithSession:session];
 }
 
-- (UIButton *)makeDetailDisclosureButton
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
-- (void)accessoryButtonTapped:(UIButton *)accessoryButton withEvent:(UIEvent *)event
-{
-    VersionHistoryCell *selectedCell = (VersionHistoryCell *)accessoryButton.superview;
-    NSIndexPath *indexPathToSelectedCell = [self.tableView indexPathForCell:selectedCell];
-    
-    AlfrescoDocument *selectedDocument = [self.tableViewData objectAtIndex:indexPathToSelectedCell.row];
-    
-    MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:selectedDocument session:self.session];
-    [self.navigationController pushViewController:metadataViewController animated:YES];
-}
-
 - (void)rotateView:(UIView *)view duration:(CGFloat)duration angle:(CGFloat)angle
 {
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -158,7 +140,6 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     if (!versionHistoryCell)
     {
         versionHistoryCell = (VersionHistoryCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VersionHistoryCell class]) owner:self options:nil] lastObject];
-        versionHistoryCell.delegate = self;
     }
     
     AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPath.row];
@@ -213,17 +194,12 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - VersionHistoryCellDelegate
-
-- (void)cell:(VersionHistoryCell *)cell didPressExpandButton:(UIButton *)button
-{
-    NSIndexPath *indexPathOfSelectedCell = [self.tableView indexPathForCell:cell];
     
-    if ([indexPathOfSelectedCell isEqual:self.expandedCellIndexPath])
+    VersionHistoryCell *cell = (VersionHistoryCell *)[tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([indexPath isEqual:self.expandedCellIndexPath])
     {
-        [self rotateView:button duration:kExpandButtonRotationSpeed angle:0.0f];
+        [self rotateView:cell.disclosureImageView duration:kExpandButtonRotationSpeed angle:0.0f];
         self.expandedCellIndexPath = nil;
     }
     else
@@ -231,10 +207,10 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
         if (self.expandedCellIndexPath)
         {
             VersionHistoryCell *previouslySelectedCell = (VersionHistoryCell *)[self.tableView cellForRowAtIndexPath:self.expandedCellIndexPath];
-            [self rotateView:previouslySelectedCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+            [self rotateView:previouslySelectedCell.disclosureImageView duration:kExpandButtonRotationSpeed angle:0.0f];
         }
         
-        AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPathOfSelectedCell.row];
+        AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPath.row];
         
         if (!self.expandedCellMetadataController)
         {
@@ -249,9 +225,9 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
         cell.metadataTableview.dataSource = self.expandedCellMetadataController;
         [cell.metadataTableview reloadData];
         
-        [self rotateView:button duration:kExpandButtonRotationSpeed angle:M_PI];
+        [self rotateView:cell.disclosureImageView duration:kExpandButtonRotationSpeed angle:M_PI];
         
-        self.expandedCellIndexPath = indexPathOfSelectedCell;
+        self.expandedCellIndexPath = indexPath;
     }
     
     [self.tableView beginUpdates];
