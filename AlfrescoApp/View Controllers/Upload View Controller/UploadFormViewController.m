@@ -687,6 +687,13 @@ static NSString * const kAudioFileName = @"audio.m4a";
             mimeType = [Utility mimeTypeForFileExtension:weakSelf.fileExtension];
         }
         
+        // force the mimetype to audio/mp4 as the repo does not recognise audio/x-m4a
+        // as a result it applies both audio and image aspects
+        if ([mimeType isEqualToString:@"audio/x-m4a"])
+        {
+            mimeType = @"audio/mp4";
+        }
+        
         // create the content file
         AlfrescoContentFile *contentFile = nil;
         
