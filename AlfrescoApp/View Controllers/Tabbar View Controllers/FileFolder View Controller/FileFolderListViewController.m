@@ -1087,6 +1087,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             selectedImageExtension = @"jpg";
             contentFormType = UploadFormTypeImageCreated;
+            self.capturingMedia = YES;
         }
         
         // add GPS metadata if Location Services are allowed for this app
@@ -1105,9 +1106,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
-            [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-        }];
+        if (self.capturingMedia)
+        {
+            [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
+                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+            }];
+        }
+        else
+        {
+            [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+            }];
+        }
     }
     else if ([mediaType isEqualToString:(NSString *)kUTTypeVideo] || [mediaType isEqualToString:(NSString *)kUTTypeMovie])
     {
@@ -1140,6 +1150,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
         {
             contentFormType = UploadFormTypeVideoCreated;
+            self.capturingMedia = YES;
         }
         
         // create the view controller
@@ -1147,9 +1158,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
-        [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
-            [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-        }];
+        if (self.capturingMedia)
+        {
+            [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
+                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+            }];
+        }
+        else
+        {
+            [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+            }];
+        }
     }
 
     self.actionSheetSender.enabled = YES;
