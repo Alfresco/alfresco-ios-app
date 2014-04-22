@@ -18,6 +18,4 @@
 @property (nonatomic, weak) IBOutlet UITableView *metadataTableview;
 @property (nonatomic, weak) IBOutlet UIImageView *disclosureImageView;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *metadataTableViewHeightConstraint;
-
 @end
