@@ -236,7 +236,7 @@ static CGFloat downloadProgressHeight;
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
-                                                                       style:UIBarButtonItemStylePlain
+                                                                       style:UIBarButtonItemStyleDone
                                                                       target:self
                                                                       action:@selector(dismiss:)];
         [presentationViewController.navigationItem setRightBarButtonItem:doneButton];
