@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCA7181962E700E3ACC2 /* AccountsViewController.m */; };
 		0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCA91819634000E3ACC2 /* AccountsViewController.xib */; };
-		0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCB41819680E00E3ACC2 /* AccountCell.m */; };
-		0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCB61819682700E3ACC2 /* AccountCell.xib */; };
 		0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */; };
 		0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */; };
 		0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */; };
@@ -30,20 +28,11 @@
 		080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */; };
 		080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A813018573CBC00B79306 /* CertificateDocumentFilter.m */; };
 		080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */; };
-		08263A7C18E9A7CE00BE84B6 /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */; };
-		08263A7F18E9E00D00BE84B6 /* NodePickerListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */; };
-		08263A8118E9E07C00BE84B6 /* NodePickerListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */; };
 		082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 082ED88818EC21A100518216 /* WorkflowHelper.m */; };
-		0830260B18DC52D700A0D0A0 /* TaskPriorityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */; };
-		0830260D18DC52F400A0D0A0 /* TaskPriorityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */; };
-		0830261018DC5EDA00A0D0A0 /* TaskApproversCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0830260F18DC5EDA00A0D0A0 /* TaskApproversCell.m */; };
-		0830261418DC5F1700A0D0A0 /* TaskApproversCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0830261318DC5F1700A0D0A0 /* TaskApproversCell.xib */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244F17F9823800EE6AA8 /* SyncViewController.m */; };
 		0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833245117F9853600EE6AA8 /* SyncViewController.xib */; };
-		0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833246E17F98FE700EE6AA8 /* AlfrescoNodeCell.m */; };
-		0833247117F9900000EE6AA8 /* AlfrescoNodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247017F9900000EE6AA8 /* AlfrescoNodeCell.xib */; };
 		0833247417FADFE600EE6AA8 /* stop-transfer.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247217FADFE600EE6AA8 /* stop-transfer.png */; };
 		0833247517FADFE600EE6AA8 /* stop-transfer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */; };
 		0833247817FB0CD000EE6AA8 /* ui-button-bar-badge-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */; };
@@ -55,14 +44,9 @@
 		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */; };
 		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
-		08344E6618E0458800B061C0 /* NodePickerScopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */; };
 		08344EF818E2E64E00B061C0 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08344EF618E2E64E00B061C0 /* DatePickerViewController.m */; };
 		08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08344EF718E2E64E00B061C0 /* DatePickerViewController.xib */; };
-		0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26417E3660D00F744D0 /* ActivityViewController.xib */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
-		08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08735D3B18C9DBAE0010334A /* PersonCell.m */; };
-		08735D3E18C9DBDC0010334A /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08735D3D18C9DBDC0010334A /* PersonCell.xib */; };
-		0876A03118D99F800035370A /* BaseFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */; };
 		0876A04218D99FF60035370A /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03518D99FF60035370A /* NodePicker.m */; };
 		0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */; };
 		0876A04418D99FF60035370A /* NodePickerFavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A03818D99FF60035370A /* NodePickerFavoritesViewController.xib */; };
@@ -77,23 +61,12 @@
 		0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */; };
 		0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */; };
 		088228641843722B006E58A4 /* RequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228631843722B006E58A4 /* RequestHandler.m */; };
-		088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088228661843B180006E58A4 /* AttributedLabelCell.m */; };
-		088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 088228681843B1B7006E58A4 /* AttributedLabelCell.xib */; };
-		088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 088364FC180C3EC3008EA97D /* SyncOperation.m */; };
 		08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */; };
 		08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */; };
-		0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */; };
-		0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */; };
-		08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C581823B5EC006D38F5 /* TextFieldCell.m */; };
-		08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C5C1823B62E006D38F5 /* TextFieldCell.xib */; };
-		08948C601823C24D006D38F5 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08948C5F1823C24D006D38F5 /* SwitchCell.m */; };
-		08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08948C611823C26E006D38F5 /* SwitchCell.xib */; };
 		089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */; };
-		08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */; };
 		08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */; };
 		08B61FA11804132000C827EA /* failed-transfer-detail-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */; };
 		08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */; };
-		08CC861C18990E1800CDC524 /* FileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */; };
 		08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E1EA0C18DB057900F9052F /* TaskHeaderView.m */; };
 		08E1EA2618DB057900F9052F /* TaskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA0D18DB057900F9052F /* TaskHeaderView.xib */; };
 		08E1EA2718DB057900F9052F /* TaskDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E1EA0F18DB057900F9052F /* TaskDetailsViewController.m */; };
@@ -114,10 +87,6 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */; };
 		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
-		08E799B1182A57850030FD53 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B0182A57850030FD53 /* ButtonCell.m */; };
-		08E799B3182A579B0030FD53 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799B2182A579B0030FD53 /* ButtonCell.xib */; };
-		08E799B6182AA3CF0030FD53 /* LabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799B5182AA3CF0030FD53 /* LabelCell.m */; };
-		08E799B8182AA3EC0030FD53 /* LabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799B7182AA3EC0030FD53 /* LabelCell.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89C9B17E7593B006936DF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89C9A17E7593B006936DF /* XCTest.framework */; };
 		08E89C9C17E7593B006936DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
@@ -288,6 +257,56 @@
 		7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7384BE0117F3558900C6A54F /* SettingTextFieldCell.xib */; };
 		7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0417F42CA800C6A54F /* PreferenceManager.m */; };
 		7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
+		738664911906AD660021D1BD /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386648E1906AD660021D1BD /* AboutViewController.m */; };
+		738664921906AD660021D1BD /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386648F1906AD660021D1BD /* AboutViewController.xib */; };
+		738664931906AD660021D1BD /* AboutViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664901906AD660021D1BD /* AboutViewController~ipad.xib */; };
+		738664981906AD740021D1BD /* ActivitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664961906AD740021D1BD /* ActivitiesViewController.m */; };
+		738664991906AD740021D1BD /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664971906AD740021D1BD /* ActivityViewController.xib */; };
+		738664A01906AD840021D1BD /* BaseFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */; };
+		738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386649E1906AD840021D1BD /* FileFolderListViewController.m */; };
+		738664A21906AD840021D1BD /* FileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386649F1906AD840021D1BD /* FileFolderListViewController.xib */; };
+		738664A61906AD8E0021D1BD /* SitesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664A51906AD8E0021D1BD /* SitesListViewController.m */; };
+		738664AA1906AE2E0021D1BD /* ThumbnailImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664A91906AE2E0021D1BD /* ThumbnailImageView.m */; };
+		738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664AD1906AF6A0021D1BD /* SyncOperation.m */; };
+		738664B31906B12B0021D1BD /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664B11906B12B0021D1BD /* CommentCell.m */; };
+		738664B41906B12B0021D1BD /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664B21906B12B0021D1BD /* CommentCell.xib */; };
+		738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664B71906B13D0021D1BD /* FileFolderCell.m */; };
+		738664BA1906B13D0021D1BD /* FileFolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664B81906B13D0021D1BD /* FileFolderCell.xib */; };
+		738664BF1906B14C0021D1BD /* SitesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664BD1906B14C0021D1BD /* SitesCell.m */; };
+		738664C01906B14C0021D1BD /* SitesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664BE1906B14C0021D1BD /* SitesCell.xib */; };
+		738664C51906B16F0021D1BD /* MetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664C31906B16F0021D1BD /* MetadataCell.m */; };
+		738664C61906B16F0021D1BD /* MetadataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664C41906B16F0021D1BD /* MetadataCell.xib */; };
+		738664CE1906B1E50021D1BD /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664C91906B1E50021D1BD /* AccountCell.m */; };
+		738664CF1906B1E50021D1BD /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664CA1906B1E50021D1BD /* AccountCell.xib */; };
+		738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664CC1906B1E50021D1BD /* TextFieldCell.m */; };
+		738664D11906B1E50021D1BD /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664CD1906B1E50021D1BD /* TextFieldCell.xib */; };
+		738664DE1906B2260021D1BD /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664D31906B2260021D1BD /* ButtonCell.m */; };
+		738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664D41906B2260021D1BD /* ButtonCell.xib */; };
+		738664E01906B2260021D1BD /* CenterLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664D61906B2260021D1BD /* CenterLabelCell.m */; };
+		738664E11906B2260021D1BD /* CenterLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664D71906B2260021D1BD /* CenterLabelCell.xib */; };
+		738664E21906B2260021D1BD /* LabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664D91906B2260021D1BD /* LabelCell.m */; };
+		738664E31906B2260021D1BD /* LabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664DA1906B2260021D1BD /* LabelCell.xib */; };
+		738664E41906B2260021D1BD /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664DC1906B2260021D1BD /* SwitchCell.m */; };
+		738664E51906B2260021D1BD /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664DD1906B2260021D1BD /* SwitchCell.xib */; };
+		738664F01906B2420021D1BD /* PersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664E81906B2420021D1BD /* PersonCell.m */; };
+		738664F11906B2420021D1BD /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664E91906B2420021D1BD /* PersonCell.xib */; };
+		738664F21906B2420021D1BD /* TaskApproversCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664EB1906B2420021D1BD /* TaskApproversCell.m */; };
+		738664F31906B2420021D1BD /* TaskApproversCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664EC1906B2420021D1BD /* TaskApproversCell.xib */; };
+		738664F41906B2420021D1BD /* TaskPriorityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664EE1906B2420021D1BD /* TaskPriorityCell.m */; };
+		738664F51906B2420021D1BD /* TaskPriorityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664EF1906B2420021D1BD /* TaskPriorityCell.xib */; };
+		738664FD1906B27C0021D1BD /* NodePickerListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664F81906B27C0021D1BD /* NodePickerListCell.m */; };
+		738664FE1906B27C0021D1BD /* NodePickerListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664F91906B27C0021D1BD /* NodePickerListCell.xib */; };
+		738664FF1906B27C0021D1BD /* NodePickerScopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664FB1906B27C0021D1BD /* NodePickerScopeCell.m */; };
+		738665001906B27C0021D1BD /* NodePickerScopeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664FC1906B27C0021D1BD /* NodePickerScopeCell.xib */; };
+		738665051906B2A60021D1BD /* AlfrescoNodeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665031906B2A60021D1BD /* AlfrescoNodeCell.m */; };
+		738665061906B2A60021D1BD /* AlfrescoNodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665041906B2A60021D1BD /* AlfrescoNodeCell.xib */; };
+		7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665091906B2D10021D1BD /* VersionHistoryCell.m */; };
+		7386650C1906B2D10021D1BD /* VersionHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386650A1906B2D10021D1BD /* VersionHistoryCell.xib */; };
+		738665161906B3ED0021D1BD /* ActivitiesTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386650F1906B3ED0021D1BD /* ActivitiesTableViewCellController.m */; };
+		738665171906B3ED0021D1BD /* ActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665111906B3ED0021D1BD /* ActivityTableViewCell.m */; };
+		738665181906B3ED0021D1BD /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */; };
+		738665191906B3ED0021D1BD /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665141906B3ED0021D1BD /* AttributedLabelCell.m */; };
+		7386651A1906B3ED0021D1BD /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665151906B3ED0021D1BD /* AttributedLabelCell.xib */; };
 		7386815C18DC8EE400F315B8 /* task_done_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815818DC8EE400F315B8 /* task_done_button.png */; };
 		7386815D18DC8EE400F315B8 /* task_done_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815918DC8EE400F315B8 /* task_done_button@2x.png */; };
 		7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816018DC8F1700F315B8 /* task_re-assign_button.png */; };
@@ -367,18 +386,6 @@
 		73B9584517A6750F0099FB84 /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D817A6750E0099FB84 /* LoginManager.m */; };
 		73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */; };
 		73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957DD17A6750E0099FB84 /* FileURLHandler.m */; };
-		73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */; };
-		73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957E517A6750E0099FB84 /* ActivityTableViewCell.m */; };
-		73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957E817A6750E0099FB84 /* CommentCell.m */; };
-		73B9584B17A6750F0099FB84 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B957E917A6750E0099FB84 /* CommentCell.xib */; };
-		73B9584C17A6750F0099FB84 /* FileFolderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957EC17A6750E0099FB84 /* FileFolderCell.m */; };
-		73B9584D17A6750F0099FB84 /* FileFolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B957ED17A6750E0099FB84 /* FileFolderCell.xib */; };
-		73B9584E17A6750F0099FB84 /* MetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957F017A6750E0099FB84 /* MetadataCell.m */; };
-		73B9584F17A6750F0099FB84 /* MetadataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B957F117A6750E0099FB84 /* MetadataCell.xib */; };
-		73B9585017A6750F0099FB84 /* SitesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957F417A6750E0099FB84 /* SitesCell.m */; };
-		73B9585117A6750F0099FB84 /* SitesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B957F517A6750E0099FB84 /* SitesCell.xib */; };
-		73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957F817A6750E0099FB84 /* VersionHistoryCell.m */; };
-		73B9585317A6750F0099FB84 /* VersionHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B957F917A6750E0099FB84 /* VersionHistoryCell.xib */; };
 		73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */; };
 		73B9585517A6750F0099FB84 /* Notifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957FE17A6750E0099FB84 /* Notifier.m */; };
 		73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580017A6750E0099FB84 /* UniversalDevice.m */; };
@@ -389,7 +396,6 @@
 		73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */; };
 		73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582717A6750E0099FB84 /* NavigationViewController.m */; };
 		73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582917A6750E0099FB84 /* ParentListViewController.m */; };
-		73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */; };
 		73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */; };
 		73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */; };
 		73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B959DE17A6844B0099FB84 /* QuartzCore.framework */; };
@@ -455,12 +461,6 @@
 		73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD117A68DF20099FB84 /* LoginViewController.m */; };
 		73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AD417A68DF20099FB84 /* MetaDataViewController.m */; };
 		73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */; };
-		73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AE017A68DF20099FB84 /* AboutViewController.m */; };
-		73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B95AE117A68DF20099FB84 /* AboutViewController.xib */; };
-		73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B95AE217A68DF20099FB84 /* AboutViewController~ipad.xib */; };
-		73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AE517A68DF20099FB84 /* ActivitiesViewController.m */; };
-		73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AE817A68DF20099FB84 /* FileFolderListViewController.m */; };
-		73B95B0317A68DF20099FB84 /* SitesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AEE17A68DF20099FB84 /* SitesListViewController.m */; };
 		73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AF117A68DF20099FB84 /* TagPickerViewController.m */; };
 		73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AF317A68DF20099FB84 /* UploadFormViewController.m */; };
 		73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0717A68E770099FB84 /* UserGuide.pdf */; };
@@ -551,9 +551,6 @@
 		0804DCA6181962E700E3ACC2 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountsViewController.h; path = "Accounts View Controller/AccountsViewController.h"; sourceTree = "<group>"; };
 		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountsViewController.m; path = "Accounts View Controller/AccountsViewController.m"; sourceTree = "<group>"; };
 		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountsViewController.xib; path = "Accounts View Controller/AccountsViewController.xib"; sourceTree = "<group>"; };
-		0804DCB31819680E00E3ACC2 /* AccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountCell.h; path = Account/AccountCell.h; sourceTree = "<group>"; };
-		0804DCB41819680E00E3ACC2 /* AccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountCell.m; path = Account/AccountCell.m; sourceTree = "<group>"; };
-		0804DCB61819682700E3ACC2 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountCell.xib; path = Account/AccountCell.xib; sourceTree = "<group>"; };
 		0804DCBA18197F8600E3ACC2 /* AccountTypeSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountTypeSelectionViewController.h; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.h"; sourceTree = "<group>"; };
 		0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountTypeSelectionViewController.m; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.m"; sourceTree = "<group>"; };
 		0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountTypeSelectionViewController.xib; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.xib"; sourceTree = "<group>"; };
@@ -582,18 +579,8 @@
 		080A813018573CBC00B79306 /* CertificateDocumentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CertificateDocumentFilter.m; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.m"; sourceTree = "<group>"; };
 		080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConfigurationManager.h; sourceTree = "<group>"; };
 		080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppConfigurationManager.m; sourceTree = "<group>"; };
-		08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
-		08263A7D18E9E00D00BE84B6 /* NodePickerListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerListCell.h; sourceTree = "<group>"; };
-		08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerListCell.m; sourceTree = "<group>"; };
-		08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerListCell.xib; sourceTree = "<group>"; };
 		082ED88718EC21A100518216 /* WorkflowHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkflowHelper.h; sourceTree = "<group>"; };
 		082ED88818EC21A100518216 /* WorkflowHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkflowHelper.m; sourceTree = "<group>"; };
-		0830260918DC52D600A0D0A0 /* TaskPriorityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskPriorityCell.h; sourceTree = "<group>"; };
-		0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskPriorityCell.m; sourceTree = "<group>"; };
-		0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskPriorityCell.xib; sourceTree = "<group>"; };
-		0830260E18DC5EDA00A0D0A0 /* TaskApproversCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskApproversCell.h; sourceTree = "<group>"; };
-		0830260F18DC5EDA00A0D0A0 /* TaskApproversCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskApproversCell.m; sourceTree = "<group>"; };
-		0830261318DC5F1700A0D0A0 /* TaskApproversCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskApproversCell.xib; sourceTree = "<group>"; };
 		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
 		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
 		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
@@ -601,9 +588,6 @@
 		0833244E17F9823800EE6AA8 /* SyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncViewController.h; path = "Sync View Controller/SyncViewController.h"; sourceTree = "<group>"; };
 		0833244F17F9823800EE6AA8 /* SyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SyncViewController.m; path = "Sync View Controller/SyncViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0833245117F9853600EE6AA8 /* SyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncViewController.xib; path = "Sync View Controller/SyncViewController.xib"; sourceTree = "<group>"; };
-		0833246D17F98FE700EE6AA8 /* AlfrescoNodeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlfrescoNodeCell.h; path = Sync/AlfrescoNodeCell.h; sourceTree = "<group>"; };
-		0833246E17F98FE700EE6AA8 /* AlfrescoNodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlfrescoNodeCell.m; path = Sync/AlfrescoNodeCell.m; sourceTree = "<group>"; };
-		0833247017F9900000EE6AA8 /* AlfrescoNodeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlfrescoNodeCell.xib; path = Sync/AlfrescoNodeCell.xib; sourceTree = "<group>"; };
 		0833247217FADFE600EE6AA8 /* stop-transfer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stop-transfer.png"; sourceTree = "<group>"; };
 		0833247317FADFE600EE6AA8 /* stop-transfer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stop-transfer@2x.png"; sourceTree = "<group>"; };
 		0833247617FB0CD000EE6AA8 /* ui-button-bar-badge-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-button-bar-badge-error.png"; sourceTree = "<group>"; };
@@ -620,11 +604,7 @@
 		08344EF518E2E64E00B061C0 /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		08344EF618E2E64E00B061C0 /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		08344EF718E2E64E00B061C0 /* DatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DatePickerViewController.xib; sourceTree = "<group>"; };
-		0871D26417E3660D00F744D0 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
-		08735D3A18C9DBAE0010334A /* PersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonCell.h; path = PersonCell/PersonCell.h; sourceTree = "<group>"; };
-		08735D3B18C9DBAE0010334A /* PersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonCell.m; path = PersonCell/PersonCell.m; sourceTree = "<group>"; };
-		08735D3D18C9DBDC0010334A /* PersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PersonCell.xib; path = PersonCell/PersonCell.xib; sourceTree = "<group>"; };
 		0876A03418D99FF60035370A /* NodePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePicker.h; sourceTree = "<group>"; };
 		0876A03518D99FF60035370A /* NodePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePicker.m; sourceTree = "<group>"; };
 		0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerFavoritesViewController.h; sourceTree = "<group>"; };
@@ -649,36 +629,16 @@
 		0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeoplePickerViewController.xib; sourceTree = "<group>"; };
 		088228621843722B006E58A4 /* RequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestHandler.h; sourceTree = "<group>"; };
 		088228631843722B006E58A4 /* RequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestHandler.m; sourceTree = "<group>"; };
-		088228651843B180006E58A4 /* AttributedLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedLabelCell.h; sourceTree = "<group>"; };
-		088228661843B180006E58A4 /* AttributedLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributedLabelCell.m; sourceTree = "<group>"; };
-		088228681843B1B7006E58A4 /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
-		088364FB180C3EC3008EA97D /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
-		088364FC180C3EC3008EA97D /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
 		08885FEC18BCB3DD008CBE66 /* SettingLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingLabelCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.h"; sourceTree = SOURCE_ROOT; };
 		08885FED18BCB3DD008CBE66 /* SettingLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingLabelCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.m"; sourceTree = SOURCE_ROOT; };
 		08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingLabelCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingLabelCell.xib"; sourceTree = SOURCE_ROOT; };
-		0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
-		0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterLabelCell.m; sourceTree = "<group>"; };
-		0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterLabelCell.xib; sourceTree = "<group>"; };
-		08948C571823B5EC006D38F5 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFieldCell.h; path = Account/TextFieldCell.h; sourceTree = "<group>"; };
-		08948C581823B5EC006D38F5 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextFieldCell.m; path = Account/TextFieldCell.m; sourceTree = "<group>"; };
-		08948C5C1823B62E006D38F5 /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldCell.xib; path = Account/TextFieldCell.xib; sourceTree = "<group>"; };
-		08948C5E1823C24D006D38F5 /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
-		08948C5F1823C24D006D38F5 /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
-		08948C611823C26E006D38F5 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
 		089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNavigationViewController.h; sourceTree = "<group>"; };
 		089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNavigationViewController.m; sourceTree = "<group>"; };
-		089FB02218D738D500AB4613 /* BaseFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderListViewController.h; sourceTree = "<group>"; };
-		089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
-		089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeCell.h; sourceTree = "<group>"; };
-		089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeCell.m; sourceTree = "<group>"; };
 		08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AlfrescoApp.xcconfig; sourceTree = "<group>"; };
-		08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
 		08B61F9C1804079C00C827EA /* FailedTransferDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FailedTransferDetailViewController.h; path = "Custom Popovers/FailedTransferDetailViewController.h"; sourceTree = "<group>"; };
 		08B61F9D1804079C00C827EA /* FailedTransferDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FailedTransferDetailViewController.m; path = "Custom Popovers/FailedTransferDetailViewController.m"; sourceTree = "<group>"; };
 		08B61F9F1804132000C827EA /* failed-transfer-detail-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button.png"; sourceTree = "<group>"; };
 		08B61FA01804132000C827EA /* failed-transfer-detail-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "failed-transfer-detail-button@2x.png"; sourceTree = "<group>"; };
-		08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderListViewController.xib; sourceTree = "<group>"; };
 		08E1EA0B18DB057900F9052F /* TaskHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskHeaderView.h; sourceTree = "<group>"; };
 		08E1EA0C18DB057900F9052F /* TaskHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskHeaderView.m; sourceTree = "<group>"; };
 		08E1EA0D18DB057900F9052F /* TaskHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskHeaderView.xib; sourceTree = "<group>"; };
@@ -709,12 +669,6 @@
 		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
 		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
 		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
-		08E799AF182A57850030FD53 /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
-		08E799B0182A57850030FD53 /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
-		08E799B2182A579B0030FD53 /* ButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
-		08E799B4182AA3CF0030FD53 /* LabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelCell.h; sourceTree = "<group>"; };
-		08E799B5182AA3CF0030FD53 /* LabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelCell.m; sourceTree = "<group>"; };
-		08E799B7182AA3EC0030FD53 /* LabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelCell.xib; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
 		08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AlfrescoApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -932,6 +886,83 @@
 		7384BE0417F42CA800C6A54F /* PreferenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceManager.m; sourceTree = "<group>"; };
 		7384BE0617F57FEC00C6A54F /* SettingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingConstants.h; path = AlfrescoApp/Constants/SettingConstants.h; sourceTree = SOURCE_ROOT; };
 		7384BE0717F57FEC00C6A54F /* SettingConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingConstants.m; path = AlfrescoApp/Constants/SettingConstants.m; sourceTree = SOURCE_ROOT; };
+		7386648D1906AD660021D1BD /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		7386648E1906AD660021D1BD /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		7386648F1906AD660021D1BD /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
+		738664901906AD660021D1BD /* AboutViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AboutViewController~ipad.xib"; sourceTree = "<group>"; };
+		738664951906AD740021D1BD /* ActivitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesViewController.h; sourceTree = "<group>"; };
+		738664961906AD740021D1BD /* ActivitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesViewController.m; sourceTree = "<group>"; };
+		738664971906AD740021D1BD /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
+		7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderListViewController.h; sourceTree = "<group>"; };
+		7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
+		7386649D1906AD840021D1BD /* FileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderListViewController.h; sourceTree = "<group>"; };
+		7386649E1906AD840021D1BD /* FileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderListViewController.m; sourceTree = "<group>"; };
+		7386649F1906AD840021D1BD /* FileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderListViewController.xib; sourceTree = "<group>"; };
+		738664A41906AD8E0021D1BD /* SitesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesListViewController.h; sourceTree = "<group>"; };
+		738664A51906AD8E0021D1BD /* SitesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesListViewController.m; sourceTree = "<group>"; };
+		738664A81906AE2E0021D1BD /* ThumbnailImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailImageView.h; sourceTree = "<group>"; };
+		738664A91906AE2E0021D1BD /* ThumbnailImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailImageView.m; sourceTree = "<group>"; };
+		738664AC1906AF6A0021D1BD /* SyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperation.h; sourceTree = "<group>"; };
+		738664AD1906AF6A0021D1BD /* SyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperation.m; sourceTree = "<group>"; };
+		738664B01906B12B0021D1BD /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
+		738664B11906B12B0021D1BD /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
+		738664B21906B12B0021D1BD /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
+		738664B61906B13D0021D1BD /* FileFolderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderCell.h; sourceTree = "<group>"; };
+		738664B71906B13D0021D1BD /* FileFolderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderCell.m; sourceTree = "<group>"; };
+		738664B81906B13D0021D1BD /* FileFolderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderCell.xib; sourceTree = "<group>"; };
+		738664BC1906B14C0021D1BD /* SitesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesCell.h; sourceTree = "<group>"; };
+		738664BD1906B14C0021D1BD /* SitesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesCell.m; sourceTree = "<group>"; };
+		738664BE1906B14C0021D1BD /* SitesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SitesCell.xib; sourceTree = "<group>"; };
+		738664C21906B16F0021D1BD /* MetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataCell.h; sourceTree = "<group>"; };
+		738664C31906B16F0021D1BD /* MetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataCell.m; sourceTree = "<group>"; };
+		738664C41906B16F0021D1BD /* MetadataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataCell.xib; sourceTree = "<group>"; };
+		738664C81906B1E50021D1BD /* AccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCell.h; sourceTree = "<group>"; };
+		738664C91906B1E50021D1BD /* AccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCell.m; sourceTree = "<group>"; };
+		738664CA1906B1E50021D1BD /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
+		738664CB1906B1E50021D1BD /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
+		738664CC1906B1E50021D1BD /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
+		738664CD1906B1E50021D1BD /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
+		738664D21906B2260021D1BD /* ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCell.h; sourceTree = "<group>"; };
+		738664D31906B2260021D1BD /* ButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCell.m; sourceTree = "<group>"; };
+		738664D41906B2260021D1BD /* ButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
+		738664D51906B2260021D1BD /* CenterLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterLabelCell.h; sourceTree = "<group>"; };
+		738664D61906B2260021D1BD /* CenterLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterLabelCell.m; sourceTree = "<group>"; };
+		738664D71906B2260021D1BD /* CenterLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterLabelCell.xib; sourceTree = "<group>"; };
+		738664D81906B2260021D1BD /* LabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelCell.h; sourceTree = "<group>"; };
+		738664D91906B2260021D1BD /* LabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelCell.m; sourceTree = "<group>"; };
+		738664DA1906B2260021D1BD /* LabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelCell.xib; sourceTree = "<group>"; };
+		738664DB1906B2260021D1BD /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
+		738664DC1906B2260021D1BD /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
+		738664DD1906B2260021D1BD /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
+		738664E71906B2420021D1BD /* PersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCell.h; sourceTree = "<group>"; };
+		738664E81906B2420021D1BD /* PersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCell.m; sourceTree = "<group>"; };
+		738664E91906B2420021D1BD /* PersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
+		738664EA1906B2420021D1BD /* TaskApproversCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskApproversCell.h; sourceTree = "<group>"; };
+		738664EB1906B2420021D1BD /* TaskApproversCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskApproversCell.m; sourceTree = "<group>"; };
+		738664EC1906B2420021D1BD /* TaskApproversCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskApproversCell.xib; sourceTree = "<group>"; };
+		738664ED1906B2420021D1BD /* TaskPriorityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskPriorityCell.h; sourceTree = "<group>"; };
+		738664EE1906B2420021D1BD /* TaskPriorityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskPriorityCell.m; sourceTree = "<group>"; };
+		738664EF1906B2420021D1BD /* TaskPriorityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskPriorityCell.xib; sourceTree = "<group>"; };
+		738664F71906B27C0021D1BD /* NodePickerListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerListCell.h; sourceTree = "<group>"; };
+		738664F81906B27C0021D1BD /* NodePickerListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerListCell.m; sourceTree = "<group>"; };
+		738664F91906B27C0021D1BD /* NodePickerListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerListCell.xib; sourceTree = "<group>"; };
+		738664FA1906B27C0021D1BD /* NodePickerScopeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeCell.h; sourceTree = "<group>"; };
+		738664FB1906B27C0021D1BD /* NodePickerScopeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeCell.m; sourceTree = "<group>"; };
+		738664FC1906B27C0021D1BD /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
+		738665021906B2A60021D1BD /* AlfrescoNodeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoNodeCell.h; sourceTree = "<group>"; };
+		738665031906B2A60021D1BD /* AlfrescoNodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoNodeCell.m; sourceTree = "<group>"; };
+		738665041906B2A60021D1BD /* AlfrescoNodeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlfrescoNodeCell.xib; sourceTree = "<group>"; };
+		738665081906B2D10021D1BD /* VersionHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryCell.h; sourceTree = "<group>"; };
+		738665091906B2D10021D1BD /* VersionHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryCell.m; sourceTree = "<group>"; };
+		7386650A1906B2D10021D1BD /* VersionHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionHistoryCell.xib; sourceTree = "<group>"; };
+		7386650E1906B3ED0021D1BD /* ActivitiesTableViewCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesTableViewCellController.h; sourceTree = "<group>"; };
+		7386650F1906B3ED0021D1BD /* ActivitiesTableViewCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesTableViewCellController.m; sourceTree = "<group>"; };
+		738665101906B3ED0021D1BD /* ActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityTableViewCell.h; sourceTree = "<group>"; };
+		738665111906B3ED0021D1BD /* ActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityTableViewCell.m; sourceTree = "<group>"; };
+		738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
+		738665131906B3ED0021D1BD /* AttributedLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedLabelCell.h; sourceTree = "<group>"; };
+		738665141906B3ED0021D1BD /* AttributedLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributedLabelCell.m; sourceTree = "<group>"; };
+		738665151906B3ED0021D1BD /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
 		7386815818DC8EE400F315B8 /* task_done_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button.png; sourceTree = "<group>"; };
 		7386815918DC8EE400F315B8 /* task_done_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button@2x.png"; sourceTree = "<group>"; };
 		7386816018DC8F1700F315B8 /* task_re-assign_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button.png"; sourceTree = "<group>"; };
@@ -1044,25 +1075,6 @@
 		73B957DD17A6750E0099FB84 /* FileURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileURLHandler.m; sourceTree = "<group>"; };
 		73B957DE17A6750E0099FB84 /* URLHandlerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLHandlerProtocol.h; sourceTree = "<group>"; };
 		73B957E017A6750E0099FB84 /* ItemInDetailViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemInDetailViewProtocol.h; sourceTree = "<group>"; };
-		73B957E217A6750E0099FB84 /* ActivitiesTableViewCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesTableViewCellController.h; sourceTree = "<group>"; };
-		73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesTableViewCellController.m; sourceTree = "<group>"; };
-		73B957E417A6750E0099FB84 /* ActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityTableViewCell.h; sourceTree = "<group>"; };
-		73B957E517A6750E0099FB84 /* ActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityTableViewCell.m; sourceTree = "<group>"; };
-		73B957E717A6750E0099FB84 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
-		73B957E817A6750E0099FB84 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
-		73B957E917A6750E0099FB84 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
-		73B957EB17A6750E0099FB84 /* FileFolderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderCell.h; sourceTree = "<group>"; };
-		73B957EC17A6750E0099FB84 /* FileFolderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderCell.m; sourceTree = "<group>"; };
-		73B957ED17A6750E0099FB84 /* FileFolderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderCell.xib; sourceTree = "<group>"; };
-		73B957EF17A6750E0099FB84 /* MetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataCell.h; sourceTree = "<group>"; };
-		73B957F017A6750E0099FB84 /* MetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataCell.m; sourceTree = "<group>"; };
-		73B957F117A6750E0099FB84 /* MetadataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataCell.xib; sourceTree = "<group>"; };
-		73B957F317A6750E0099FB84 /* SitesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesCell.h; sourceTree = "<group>"; };
-		73B957F417A6750E0099FB84 /* SitesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesCell.m; sourceTree = "<group>"; };
-		73B957F517A6750E0099FB84 /* SitesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SitesCell.xib; sourceTree = "<group>"; };
-		73B957F717A6750E0099FB84 /* VersionHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryCell.h; sourceTree = "<group>"; };
-		73B957F817A6750E0099FB84 /* VersionHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryCell.m; sourceTree = "<group>"; };
-		73B957F917A6750E0099FB84 /* VersionHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionHistoryCell.xib; sourceTree = "<group>"; };
 		73B957FB17A6750E0099FB84 /* ErrorDescriptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorDescriptions.h; sourceTree = "<group>"; };
 		73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorDescriptions.m; sourceTree = "<group>"; };
 		73B957FD17A6750E0099FB84 /* Notifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifier.h; sourceTree = "<group>"; };
@@ -1083,8 +1095,6 @@
 		73B9582717A6750E0099FB84 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
 		73B9582817A6750E0099FB84 /* ParentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentListViewController.h; sourceTree = "<group>"; };
 		73B9582917A6750E0099FB84 /* ParentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentListViewController.m; sourceTree = "<group>"; };
-		73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailImageView.h; sourceTree = "<group>"; };
-		73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailImageView.m; sourceTree = "<group>"; };
 		73B9583E17A6750F0099FB84 /* MultiSelectActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionItem.h; sourceTree = "<group>"; };
 		73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionItem.m; sourceTree = "<group>"; };
 		73B9584017A6750F0099FB84 /* MultiSelectActionsToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionsToolbar.h; sourceTree = "<group>"; };
@@ -1156,16 +1166,6 @@
 		73B95AD417A68DF20099FB84 /* MetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaDataViewController.m; sourceTree = "<group>"; };
 		73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderViewController.h; sourceTree = "<group>"; };
 		73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderViewController.m; sourceTree = "<group>"; };
-		73B95ADF17A68DF20099FB84 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		73B95AE017A68DF20099FB84 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		73B95AE117A68DF20099FB84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
-		73B95AE217A68DF20099FB84 /* AboutViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AboutViewController~ipad.xib"; sourceTree = "<group>"; };
-		73B95AE417A68DF20099FB84 /* ActivitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesViewController.h; sourceTree = "<group>"; };
-		73B95AE517A68DF20099FB84 /* ActivitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesViewController.m; sourceTree = "<group>"; };
-		73B95AE717A68DF20099FB84 /* FileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderListViewController.h; sourceTree = "<group>"; };
-		73B95AE817A68DF20099FB84 /* FileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FileFolderListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		73B95AED17A68DF20099FB84 /* SitesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesListViewController.h; sourceTree = "<group>"; };
-		73B95AEE17A68DF20099FB84 /* SitesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SitesListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B95AF017A68DF20099FB84 /* TagPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagPickerViewController.h; sourceTree = "<group>"; };
 		73B95AF117A68DF20099FB84 /* TagPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagPickerViewController.m; sourceTree = "<group>"; };
 		73B95AF217A68DF20099FB84 /* UploadFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFormViewController.h; sourceTree = "<group>"; };
@@ -1275,6 +1275,7 @@
 		0804DCA5181962A400E3ACC2 /* Accounts View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				738664C71906B1E50021D1BD /* Cell */,
 				080A81191855FE4C00B79306 /* CertificateViewControllers */,
 				0804DCB818197F0C00E3ACC2 /* New Account */,
 				0804DCA6181962E700E3ACC2 /* AccountsViewController.h */,
@@ -1282,31 +1283,6 @@
 				0804DCA91819634000E3ACC2 /* AccountsViewController.xib */,
 			);
 			name = "Accounts View Controllers";
-			sourceTree = "<group>";
-		};
-		0804DCB2181967EE00E3ACC2 /* AccountCell */ = {
-			isa = PBXGroup;
-			children = (
-				0804DCB31819680E00E3ACC2 /* AccountCell.h */,
-				0804DCB41819680E00E3ACC2 /* AccountCell.m */,
-				0804DCB61819682700E3ACC2 /* AccountCell.xib */,
-				08948C571823B5EC006D38F5 /* TextFieldCell.h */,
-				08948C581823B5EC006D38F5 /* TextFieldCell.m */,
-				08948C5C1823B62E006D38F5 /* TextFieldCell.xib */,
-				08948C5E1823C24D006D38F5 /* SwitchCell.h */,
-				08948C5F1823C24D006D38F5 /* SwitchCell.m */,
-				08948C611823C26E006D38F5 /* SwitchCell.xib */,
-				08E799AF182A57850030FD53 /* ButtonCell.h */,
-				08E799B0182A57850030FD53 /* ButtonCell.m */,
-				08E799B2182A579B0030FD53 /* ButtonCell.xib */,
-				08E799B4182AA3CF0030FD53 /* LabelCell.h */,
-				08E799B5182AA3CF0030FD53 /* LabelCell.m */,
-				08E799B7182AA3EC0030FD53 /* LabelCell.xib */,
-				0888ABBD182B9E93002FEE2C /* CenterLabelCell.h */,
-				0888ABBE182B9E93002FEE2C /* CenterLabelCell.m */,
-				0888ABC0182B9EAD002FEE2C /* CenterLabelCell.xib */,
-			);
-			name = AccountCell;
 			sourceTree = "<group>";
 		};
 		0804DCB818197F0C00E3ACC2 /* New Account */ = {
@@ -1358,28 +1334,16 @@
 			name = CertificateViewControllers;
 			sourceTree = "<group>";
 		};
-		0830260718DC505500A0D0A0 /* TaskCells */ = {
+		0833244D17F981EC00EE6AA8 /* Sync View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0830260918DC52D600A0D0A0 /* TaskPriorityCell.h */,
-				0830260A18DC52D600A0D0A0 /* TaskPriorityCell.m */,
-				0830260C18DC52F400A0D0A0 /* TaskPriorityCell.xib */,
-				0830260E18DC5EDA00A0D0A0 /* TaskApproversCell.h */,
-				0830260F18DC5EDA00A0D0A0 /* TaskApproversCell.m */,
-				0830261318DC5F1700A0D0A0 /* TaskApproversCell.xib */,
-			);
-			path = TaskCells;
-			sourceTree = "<group>";
-		};
-		0833244D17F981EC00EE6AA8 /* Sync ViewController */ = {
-			isa = PBXGroup;
-			children = (
+				738665011906B2A60021D1BD /* Cell */,
+				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
 				0833244E17F9823800EE6AA8 /* SyncViewController.h */,
 				0833244F17F9823800EE6AA8 /* SyncViewController.m */,
 				0833245117F9853600EE6AA8 /* SyncViewController.xib */,
-				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
 			);
-			name = "Sync ViewController";
+			name = "Sync View Controller";
 			sourceTree = "<group>";
 		};
 		0833245317F98CC700EE6AA8 /* Sync */ = {
@@ -1393,23 +1357,13 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
-		0833246C17F98FAB00EE6AA8 /* Sync */ = {
-			isa = PBXGroup;
-			children = (
-				0833246D17F98FE700EE6AA8 /* AlfrescoNodeCell.h */,
-				0833246E17F98FE700EE6AA8 /* AlfrescoNodeCell.m */,
-				0833247017F9900000EE6AA8 /* AlfrescoNodeCell.xib */,
-			);
-			name = Sync;
-			sourceTree = "<group>";
-		};
 		0833247A17FEB98900EE6AA8 /* Sync Obstacles */ = {
 			isa = PBXGroup;
 			children = (
+				0833247E17FEB9C400EE6AA8 /* FavoritesErrorTableViewCell */,
 				0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */,
 				0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */,
 				0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */,
-				0833247E17FEB9C400EE6AA8 /* FavoritesErrorTableViewCell */,
 			);
 			name = "Sync Obstacles";
 			sourceTree = "<group>";
@@ -1426,19 +1380,10 @@
 			path = "Sync View Controller/Sync Obstacles/FavoritesErrorTableViewCell";
 			sourceTree = "<group>";
 		};
-		08735D3918C9DB7B0010334A /* PersonCell */ = {
-			isa = PBXGroup;
-			children = (
-				08735D3A18C9DBAE0010334A /* PersonCell.h */,
-				08735D3B18C9DBAE0010334A /* PersonCell.m */,
-				08735D3D18C9DBDC0010334A /* PersonCell.xib */,
-			);
-			name = PersonCell;
-			sourceTree = "<group>";
-		};
 		0876A03318D99FF60035370A /* Node Picker ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				738664F61906B27C0021D1BD /* Cell */,
 				0876A03418D99FF60035370A /* NodePicker.h */,
 				0876A03518D99FF60035370A /* NodePicker.m */,
 				0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */,
@@ -1470,6 +1415,7 @@
 		0876A05918D9A9E30035370A /* People Picker ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				738664E61906B2420021D1BD /* Cell */,
 				0876A05A18D9A9E30035370A /* PeoplePicker.h */,
 				0876A05B18D9A9E30035370A /* PeoplePicker.m */,
 				0876A05C18D9A9E30035370A /* PeoplePickerViewController.h */,
@@ -1477,19 +1423,6 @@
 				0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */,
 			);
 			path = "People Picker ViewController";
-			sourceTree = "<group>";
-		};
-		089FB02518D7552D00AB4613 /* NodePickerScope */ = {
-			isa = PBXGroup;
-			children = (
-				089FB02618D7552D00AB4613 /* NodePickerScopeCell.h */,
-				089FB02718D7552D00AB4613 /* NodePickerScopeCell.m */,
-				08263A7B18E9A7CE00BE84B6 /* NodePickerScopeCell.xib */,
-				08263A7D18E9E00D00BE84B6 /* NodePickerListCell.h */,
-				08263A7E18E9E00D00BE84B6 /* NodePickerListCell.m */,
-				08263A8018E9E07C00BE84B6 /* NodePickerListCell.xib */,
-			);
-			path = NodePickerScope;
 			sourceTree = "<group>";
 		};
 		08B61F9B1804076800C827EA /* Custom Popovers */ = {
@@ -1506,8 +1439,8 @@
 			children = (
 				08E1EA3418DB06A700F9052F /* Create Tasks Controller */,
 				08E1EA0918DB057900F9052F /* Task Details View Controller */,
-				08E1EA1218DB057900F9052F /* Task View Controller */,
 				08E1EA1D18DB057900F9052F /* Tasks and Attachments View Controller */,
+				08E1EA1218DB057900F9052F /* Task View Controller */,
 			);
 			path = "Workflow Controllers";
 			sourceTree = "<group>";
@@ -1716,6 +1649,7 @@
 		7304DA7B1884348B00229809 /* Version View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				738665071906B2D10021D1BD /* Cell */,
 				7304DA7C1884348B00229809 /* VersionHistoryViewController.h */,
 				7304DA7D1884348B00229809 /* VersionHistoryViewController.m */,
 			);
@@ -1813,10 +1747,10 @@
 		73632ACE1802C679007172EE /* Action Collection View */ = {
 			isa = PBXGroup;
 			children = (
-				73632ACF1802C679007172EE /* ActionCollectionView.h */,
-				73632AD01802C679007172EE /* ActionCollectionView.m */,
 				73632AD11802C679007172EE /* Cells */,
 				73632AD51802C679007172EE /* Model */,
+				73632ACF1802C679007172EE /* ActionCollectionView.h */,
+				73632AD01802C679007172EE /* ActionCollectionView.m */,
 			);
 			path = "Action Collection View";
 			sourceTree = "<group>";
@@ -1940,7 +1874,6 @@
 				7379731F18AA8E9B007613B2 /* Data Models */,
 				73B957CF17A6750E0099FB84 /* Model */,
 				73B957DF17A6750E0099FB84 /* Protocols */,
-				73B957E117A6750E0099FB84 /* Table Cells */,
 				73B957FA17A6750E0099FB84 /* Utils */,
 				73B9580F17A6750E0099FB84 /* View Controllers */,
 				73B9583617A6750F0099FB84 /* Views */,
@@ -1954,24 +1887,24 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73B95B0D17A6A8D00099FB84 /* Activities.strings */,
 				274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */,
-				73881F87188D87220052C75F /* AlfrescoApp.entitlements */,
-				73881F721889800C0052C75F /* Help Error */,
-				73FC470B1823BE7400864E80 /* Email Template */,
-				73B95B0617A68E770099FB84 /* Help Guides */,
-				73B959F117A68B7E0099FB84 /* Images */,
 				73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */,
+				73881F87188D87220052C75F /* AlfrescoApp.entitlements */,
+				08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */,
 				73B957C317A6728A0099FB84 /* Default-568h@2x.png */,
 				73B957C417A6728A0099FB84 /* Default.png */,
 				73B957C517A6728A0099FB84 /* Default@2x.png */,
-				73B957C617A6728A0099FB84 /* main.m */,
-				08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */,
+				73FC470B1823BE7400864E80 /* Email Template */,
+				73881F721889800C0052C75F /* Help Error */,
+				73B95B0617A68E770099FB84 /* Help Guides */,
+				73B959F117A68B7E0099FB84 /* Images */,
+				73B95B1817A6AE010099FB84 /* InfoPlist.strings */,
 				73B95B1E17A6AE7E0099FB84 /* Localizable.strings */,
-				73B95B0D17A6A8D00099FB84 /* Activities.strings */,
+				73B957C617A6728A0099FB84 /* main.m */,
+				73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */,
 				73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */,
 				7379734018ABA1DD007613B2 /* LargeThumbnailImageMapping.plist */,
-				73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */,
-				73B95B1817A6AE010099FB84 /* InfoPlist.strings */,
 				7384BDF817F3377A00C6A54F /* UserPreferences.plist */,
 				2744021F18AA83C400DF23DD /* Settings.bundle */,
 			);
@@ -2117,6 +2050,200 @@
 				08885FF018BCB43C008CBE66 /* SettingLabelCell.xib */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		7386648C1906AD660021D1BD /* About View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7386648D1906AD660021D1BD /* AboutViewController.h */,
+				7386648E1906AD660021D1BD /* AboutViewController.m */,
+				7386648F1906AD660021D1BD /* AboutViewController.xib */,
+				738664901906AD660021D1BD /* AboutViewController~ipad.xib */,
+			);
+			path = "About View Controller";
+			sourceTree = "<group>";
+		};
+		738664941906AD740021D1BD /* Activities View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7386650D1906B3ED0021D1BD /* Cell */,
+				738664951906AD740021D1BD /* ActivitiesViewController.h */,
+				738664961906AD740021D1BD /* ActivitiesViewController.m */,
+				738664971906AD740021D1BD /* ActivityViewController.xib */,
+			);
+			path = "Activities View Controller";
+			sourceTree = "<group>";
+		};
+		7386649A1906AD840021D1BD /* FileFolder View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				738664B51906B13D0021D1BD /* Cell */,
+				7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */,
+				7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */,
+				7386649D1906AD840021D1BD /* FileFolderListViewController.h */,
+				7386649E1906AD840021D1BD /* FileFolderListViewController.m */,
+				7386649F1906AD840021D1BD /* FileFolderListViewController.xib */,
+			);
+			path = "FileFolder View Controller";
+			sourceTree = "<group>";
+		};
+		738664A31906AD8E0021D1BD /* Sites View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				738664BB1906B14C0021D1BD /* Cell */,
+				738664A41906AD8E0021D1BD /* SitesListViewController.h */,
+				738664A51906AD8E0021D1BD /* SitesListViewController.m */,
+			);
+			path = "Sites View Controller";
+			sourceTree = "<group>";
+		};
+		738664A71906AE2E0021D1BD /* Thumbnail Image View */ = {
+			isa = PBXGroup;
+			children = (
+				738664A81906AE2E0021D1BD /* ThumbnailImageView.h */,
+				738664A91906AE2E0021D1BD /* ThumbnailImageView.m */,
+			);
+			path = "Thumbnail Image View";
+			sourceTree = "<group>";
+		};
+		738664AB1906AF6A0021D1BD /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				738664AC1906AF6A0021D1BD /* SyncOperation.h */,
+				738664AD1906AF6A0021D1BD /* SyncOperation.m */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		738664AF1906B12B0021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664B01906B12B0021D1BD /* CommentCell.h */,
+				738664B11906B12B0021D1BD /* CommentCell.m */,
+				738664B21906B12B0021D1BD /* CommentCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		738664B51906B13D0021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664B61906B13D0021D1BD /* FileFolderCell.h */,
+				738664B71906B13D0021D1BD /* FileFolderCell.m */,
+				738664B81906B13D0021D1BD /* FileFolderCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		738664BB1906B14C0021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664BC1906B14C0021D1BD /* SitesCell.h */,
+				738664BD1906B14C0021D1BD /* SitesCell.m */,
+				738664BE1906B14C0021D1BD /* SitesCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		738664C11906B16F0021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664C21906B16F0021D1BD /* MetadataCell.h */,
+				738664C31906B16F0021D1BD /* MetadataCell.m */,
+				738664C41906B16F0021D1BD /* MetadataCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		738664C71906B1E50021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664C81906B1E50021D1BD /* AccountCell.h */,
+				738664C91906B1E50021D1BD /* AccountCell.m */,
+				738664CA1906B1E50021D1BD /* AccountCell.xib */,
+				738664D21906B2260021D1BD /* ButtonCell.h */,
+				738664D31906B2260021D1BD /* ButtonCell.m */,
+				738664D41906B2260021D1BD /* ButtonCell.xib */,
+				738664D51906B2260021D1BD /* CenterLabelCell.h */,
+				738664D61906B2260021D1BD /* CenterLabelCell.m */,
+				738664D71906B2260021D1BD /* CenterLabelCell.xib */,
+				738664D81906B2260021D1BD /* LabelCell.h */,
+				738664D91906B2260021D1BD /* LabelCell.m */,
+				738664DA1906B2260021D1BD /* LabelCell.xib */,
+				738664DB1906B2260021D1BD /* SwitchCell.h */,
+				738664DC1906B2260021D1BD /* SwitchCell.m */,
+				738664DD1906B2260021D1BD /* SwitchCell.xib */,
+				738664CB1906B1E50021D1BD /* TextFieldCell.h */,
+				738664CC1906B1E50021D1BD /* TextFieldCell.m */,
+				738664CD1906B1E50021D1BD /* TextFieldCell.xib */,
+			);
+			name = Cell;
+			path = "Accounts View Controller/Cell";
+			sourceTree = "<group>";
+		};
+		738664E61906B2420021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664E71906B2420021D1BD /* PersonCell.h */,
+				738664E81906B2420021D1BD /* PersonCell.m */,
+				738664E91906B2420021D1BD /* PersonCell.xib */,
+				738664EA1906B2420021D1BD /* TaskApproversCell.h */,
+				738664EB1906B2420021D1BD /* TaskApproversCell.m */,
+				738664EC1906B2420021D1BD /* TaskApproversCell.xib */,
+				738664ED1906B2420021D1BD /* TaskPriorityCell.h */,
+				738664EE1906B2420021D1BD /* TaskPriorityCell.m */,
+				738664EF1906B2420021D1BD /* TaskPriorityCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		738664F61906B27C0021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738664F71906B27C0021D1BD /* NodePickerListCell.h */,
+				738664F81906B27C0021D1BD /* NodePickerListCell.m */,
+				738664F91906B27C0021D1BD /* NodePickerListCell.xib */,
+				738664FA1906B27C0021D1BD /* NodePickerScopeCell.h */,
+				738664FB1906B27C0021D1BD /* NodePickerScopeCell.m */,
+				738664FC1906B27C0021D1BD /* NodePickerScopeCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		738665011906B2A60021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738665021906B2A60021D1BD /* AlfrescoNodeCell.h */,
+				738665031906B2A60021D1BD /* AlfrescoNodeCell.m */,
+				738665041906B2A60021D1BD /* AlfrescoNodeCell.xib */,
+			);
+			name = Cell;
+			path = "Sync View Controller/Cell";
+			sourceTree = "<group>";
+		};
+		738665071906B2D10021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				738665081906B2D10021D1BD /* VersionHistoryCell.h */,
+				738665091906B2D10021D1BD /* VersionHistoryCell.m */,
+				7386650A1906B2D10021D1BD /* VersionHistoryCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		7386650D1906B3ED0021D1BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				7386650E1906B3ED0021D1BD /* ActivitiesTableViewCellController.h */,
+				7386650F1906B3ED0021D1BD /* ActivitiesTableViewCellController.m */,
+				738665101906B3ED0021D1BD /* ActivityTableViewCell.h */,
+				738665111906B3ED0021D1BD /* ActivityTableViewCell.m */,
+				738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */,
+				738665131906B3ED0021D1BD /* AttributedLabelCell.h */,
+				738665141906B3ED0021D1BD /* AttributedLabelCell.m */,
+				738665151906B3ED0021D1BD /* AttributedLabelCell.xib */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		73881F5E18893BB70052C75F /* Web Browser View Controller */ = {
@@ -2321,14 +2448,15 @@
 			children = (
 				7300DE9218EF00EA00F5F57E /* Animation Controllers */,
 				731901B318477E4E002C82C1 /* Legacy */,
-				73E9E20B17E7394900A198B4 /* UserAccount.h */,
-				73E9E20C17E7394900A198B4 /* UserAccount.m */,
+				73B957D017A6750E0099FB84 /* Managers */,
+				738664AB1906AF6A0021D1BD /* Operations */,
+				73B957DB17A6750E0099FB84 /* URLHandlers */,
 				080828A4184DEDCB000524A3 /* AccountCertificate.h */,
 				080828A5184DEDCB000524A3 /* AccountCertificate.m */,
 				0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */,
 				0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */,
-				73B957D017A6750E0099FB84 /* Managers */,
-				73B957DB17A6750E0099FB84 /* URLHandlers */,
+				73E9E20B17E7394900A198B4 /* UserAccount.h */,
+				73E9E20C17E7394900A198B4 /* UserAccount.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2336,38 +2464,36 @@
 		73B957D017A6750E0099FB84 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				73E9E21017E854ED00A198B4 /* AccountManager.h */,
+				73E9E21117E854ED00A198B4 /* AccountManager.m */,
 				730B444C18EC3A96008A0977 /* AnalyticsManager.h */,
 				730B444D18EC3A96008A0977 /* AnalyticsManager.m */,
+				080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */,
+				080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */,
 				73922271187C1BF700BFCE21 /* AvatarManager.h */,
 				73922272187C1BF700BFCE21 /* AvatarManager.m */,
 				73B957D117A6750E0099FB84 /* ConnectivityManager.h */,
 				73B957D217A6750E0099FB84 /* ConnectivityManager.m */,
-				73B957D317A6750E0099FB84 /* DownloadManager.h */,
-				73B957D417A6750E0099FB84 /* DownloadManager.m */,
 				73BE41EA18F2AFF500DB8912 /* DocumentPreviewManager.h */,
 				73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */,
+				73B957D317A6750E0099FB84 /* DownloadManager.h */,
+				73B957D417A6750E0099FB84 /* DownloadManager.m */,
+				73A47E45182268AD00D35FBD /* FavouriteManager.h */,
+				73A47E46182268AD00D35FBD /* FavouriteManager.m */,
+				739E107E18F6F10700495616 /* FileHandlerManager.h */,
+				739E107F18F6F10700495616 /* FileHandlerManager.m */,
 				73B957D517A6750E0099FB84 /* LocationManager.h */,
 				73B957D617A6750E0099FB84 /* LocationManager.m */,
 				73B957D717A6750E0099FB84 /* LoginManager.h */,
 				73B957D817A6750E0099FB84 /* LoginManager.m */,
-				73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */,
-				73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */,
-				73E9E21017E854ED00A198B4 /* AccountManager.h */,
-				73E9E21117E854ED00A198B4 /* AccountManager.m */,
-				08E89C9217E7488C006936DF /* SyncManager.h */,
-				08E89C9317E7488C006936DF /* SyncManager.m */,
-				73A47E45182268AD00D35FBD /* FavouriteManager.h */,
-				73A47E46182268AD00D35FBD /* FavouriteManager.m */,
-				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
-				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
-				088364FB180C3EC3008EA97D /* SyncOperation.h */,
-				088364FC180C3EC3008EA97D /* SyncOperation.m */,
 				7384BE0317F42CA800C6A54F /* PreferenceManager.h */,
 				7384BE0417F42CA800C6A54F /* PreferenceManager.m */,
-				080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */,
-				080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */,
-				739E107E18F6F10700495616 /* FileHandlerManager.h */,
-				739E107F18F6F10700495616 /* FileHandlerManager.m */,
+				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
+				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
+				08E89C9217E7488C006936DF /* SyncManager.h */,
+				08E89C9317E7488C006936DF /* SyncManager.m */,
+				73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */,
+				73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2387,113 +2513,38 @@
 		73B957DF17A6750E0099FB84 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */,
 				080A812D18573AD700B79306 /* DocumentFilter.h */,
+				276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */,
 				73B957E017A6750E0099FB84 /* ItemInDetailViewProtocol.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		73B957E117A6750E0099FB84 /* Table Cells */ = {
-			isa = PBXGroup;
-			children = (
-				089FB02518D7552D00AB4613 /* NodePickerScope */,
-				08735D3918C9DB7B0010334A /* PersonCell */,
-				0804DCB2181967EE00E3ACC2 /* AccountCell */,
-				73B957E217A6750E0099FB84 /* ActivitiesTableViewCellController.h */,
-				73B957E317A6750E0099FB84 /* ActivitiesTableViewCellController.m */,
-				73B957E417A6750E0099FB84 /* ActivityTableViewCell.h */,
-				73B957E517A6750E0099FB84 /* ActivityTableViewCell.m */,
-				08AD4AA818A5369D00054A7D /* ActivityTableViewCell.xib */,
-				088228651843B180006E58A4 /* AttributedLabelCell.h */,
-				088228661843B180006E58A4 /* AttributedLabelCell.m */,
-				088228681843B1B7006E58A4 /* AttributedLabelCell.xib */,
-				73B957E617A6750E0099FB84 /* Comments */,
-				73B957EA17A6750E0099FB84 /* FileFolder */,
-				73B957EE17A6750E0099FB84 /* Metadata */,
-				73B957F217A6750E0099FB84 /* Sites */,
-				0830260718DC505500A0D0A0 /* TaskCells */,
-				0833246C17F98FAB00EE6AA8 /* Sync */,
-				73B957F617A6750E0099FB84 /* Version History */,
-			);
-			path = "Table Cells";
-			sourceTree = "<group>";
-		};
-		73B957E617A6750E0099FB84 /* Comments */ = {
-			isa = PBXGroup;
-			children = (
-				73B957E717A6750E0099FB84 /* CommentCell.h */,
-				73B957E817A6750E0099FB84 /* CommentCell.m */,
-				73B957E917A6750E0099FB84 /* CommentCell.xib */,
-			);
-			path = Comments;
-			sourceTree = "<group>";
-		};
-		73B957EA17A6750E0099FB84 /* FileFolder */ = {
-			isa = PBXGroup;
-			children = (
-				73B957EB17A6750E0099FB84 /* FileFolderCell.h */,
-				73B957EC17A6750E0099FB84 /* FileFolderCell.m */,
-				73B957ED17A6750E0099FB84 /* FileFolderCell.xib */,
-			);
-			path = FileFolder;
-			sourceTree = "<group>";
-		};
-		73B957EE17A6750E0099FB84 /* Metadata */ = {
-			isa = PBXGroup;
-			children = (
-				73B957EF17A6750E0099FB84 /* MetadataCell.h */,
-				73B957F017A6750E0099FB84 /* MetadataCell.m */,
-				73B957F117A6750E0099FB84 /* MetadataCell.xib */,
-			);
-			path = Metadata;
-			sourceTree = "<group>";
-		};
-		73B957F217A6750E0099FB84 /* Sites */ = {
-			isa = PBXGroup;
-			children = (
-				73B957F317A6750E0099FB84 /* SitesCell.h */,
-				73B957F417A6750E0099FB84 /* SitesCell.m */,
-				73B957F517A6750E0099FB84 /* SitesCell.xib */,
-			);
-			path = Sites;
-			sourceTree = "<group>";
-		};
-		73B957F617A6750E0099FB84 /* Version History */ = {
-			isa = PBXGroup;
-			children = (
-				73B957F717A6750E0099FB84 /* VersionHistoryCell.h */,
-				73B957F817A6750E0099FB84 /* VersionHistoryCell.m */,
-				73B957F917A6750E0099FB84 /* VersionHistoryCell.xib */,
-			);
-			path = "Version History";
-			sourceTree = "<group>";
-		};
 		73B957FA17A6750E0099FB84 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				73B9580317A6750E0099FB84 /* Categories */,
+				73B9580817A6750E0099FB84 /* System Notice */,
 				080675E917EC44AA004AF3A2 /* CoreDataHelper.h */,
 				080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */,
 				7379730C18A9295B007613B2 /* CoreDataSyncHelper.h */,
 				7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */,
 				7379731018AA2E55007613B2 /* CoreDataCacheHelper.h */,
 				7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */,
-				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
-				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
 				73B957FB17A6750E0099FB84 /* ErrorDescriptions.h */,
 				73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */,
+				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
+				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
+				731901B0184770F5002C82C1 /* MigrationAssistant.h */,
+				731901B1184770F5002C82C1 /* MigrationAssistant.m */,
 				73B957FD17A6750E0099FB84 /* Notifier.h */,
 				73B957FE17A6750E0099FB84 /* Notifier.m */,
+				088228621843722B006E58A4 /* RequestHandler.h */,
+				088228631843722B006E58A4 /* RequestHandler.m */,
 				73B957FF17A6750E0099FB84 /* UniversalDevice.h */,
 				73B9580017A6750E0099FB84 /* UniversalDevice.m */,
 				73B9580117A6750E0099FB84 /* Utility.h */,
 				73B9580217A6750E0099FB84 /* Utility.m */,
-				73B9580317A6750E0099FB84 /* Categories */,
-				73B9580817A6750E0099FB84 /* System Notice */,
-				088228621843722B006E58A4 /* RequestHandler.h */,
-				088228631843722B006E58A4 /* RequestHandler.m */,
-				731901B0184770F5002C82C1 /* MigrationAssistant.h */,
-				731901B1184770F5002C82C1 /* MigrationAssistant.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2503,18 +2554,18 @@
 			children = (
 				73B9580417A6750E0099FB84 /* AlfrescoDocument+ALF.h */,
 				73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */,
+				739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */,
+				739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */,
 				73B350B51851E8BF0037E3E3 /* NSData+Base64.h */,
 				73B350B61851E8BF0037E3E3 /* NSData+Base64.m */,
 				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
 				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
-				739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */,
-				739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */,
 				73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */,
 				73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */,
-				73881F51188831410052C75F /* UIView+DrawingUtils.h */,
-				73881F52188831410052C75F /* UIView+DrawingUtils.m */,
 				73881F5418883BE10052C75F /* UIColor+Custom.h */,
 				73881F5518883BE10052C75F /* UIColor+Custom.m */,
+				73881F51188831410052C75F /* UIView+DrawingUtils.h */,
+				73881F52188831410052C75F /* UIView+DrawingUtils.m */,
 				73697A8118B22D9700021B02 /* UIViewController+Swizzled.h */,
 				73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */,
 			);
@@ -2537,34 +2588,37 @@
 			children = (
 				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
 				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
-				089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */,
-				089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */,
 				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
 				73B9582917A6750E0099FB84 /* ParentListViewController.m */,
+				089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */,
+				089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */,
+				7386648C1906AD660021D1BD /* About View Controller */,
+				738664941906AD740021D1BD /* Activities View Controller */,
 				0804DCA5181962A400E3ACC2 /* Accounts View Controllers */,
-				08B61F9B1804076800C827EA /* Custom Popovers */,
-				73632AED1806F62C007172EE /* Main Menu View Controller */,
-				73632AE61806C2F8007172EE /* Switcher View Controller */,
-				731901A31844B49A002C82C1 /* Container View Controller */,
-				7399A00117F9A720005B8648 /* Root Reveal Controller */,
-				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
 				73B95AC317A68DF20099FB84 /* Comments View Controller */,
+				731901A31844B49A002C82C1 /* Container View Controller */,
+				08B61F9B1804076800C827EA /* Custom Popovers */,
+				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
 				73632ADF1802E574007172EE /* Document Preview Controller */,
-				737972F218A39E59007613B2 /* Folder Preview Controller */,
 				73B95AC817A68DF20099FB84 /* Downloads View Controller */,
-				73881F5E18893BB70052C75F /* Web Browser View Controller */,
-				7319019218436504002C82C1 /* Onboarding View Controller */,
+				7386649A1906AD840021D1BD /* FileFolder View Controller */,
+				737972F218A39E59007613B2 /* Folder Preview Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
+				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				73B95AD217A68DF20099FB84 /* Metadata View Controller */,
-				7304DA7B1884348B00229809 /* Version View Controller */,
-				73B95AD817A68DF20099FB84 /* Preview View Controller */,
-				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
-				0833244D17F981EC00EE6AA8 /* Sync ViewController */,
 				0876A03318D99FF60035370A /* Node Picker ViewController */,
+				7319019218436504002C82C1 /* Onboarding View Controller */,
 				0876A05918D9A9E30035370A /* People Picker ViewController */,
-				73B95ADD17A68DF20099FB84 /* Tabbar View Controllers */,
+				7399A00117F9A720005B8648 /* Root Reveal Controller */,
+				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
+				738664A31906AD8E0021D1BD /* Sites View Controller */,
+				0833244D17F981EC00EE6AA8 /* Sync View Controller */,
+				73632AE61806C2F8007172EE /* Switcher View Controller */,
+				73B95AD817A68DF20099FB84 /* Preview View Controller */,
 				73F628B4185779050050F437 /* Text File View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
+				7304DA7B1884348B00229809 /* Version View Controller */,
+				73881F5E18893BB70052C75F /* Web Browser View Controller */,
 				08E1EA0818DB057900F9052F /* Workflow Controllers */,
 			);
 			path = "View Controllers";
@@ -2573,15 +2627,14 @@
 		73B9583617A6750F0099FB84 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				739B0A2A18CF7C9B00239584 /* Tableview Underlined Header View */,
-				0876A05318D9A0A80035370A /* ProgressView */,
-				73881F91188E7DEA0052C75F /* Text View */,
-				7319018E183CDEE0002C82C1 /* Document Overlay View */,
-				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
 				73632ACE1802C679007172EE /* Action Collection View */,
-				73B9583B17A6750F0099FB84 /* ThumbnailImageView.h */,
-				73B9583C17A6750F0099FB84 /* ThumbnailImageView.m */,
+				7319018E183CDEE0002C82C1 /* Document Overlay View */,
 				73B9583D17A6750F0099FB84 /* MultiSelect */,
+				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
+				0876A05318D9A0A80035370A /* ProgressView */,
+				739B0A2A18CF7C9B00239584 /* Tableview Underlined Header View */,
+				73881F91188E7DEA0052C75F /* Text View */,
+				738664A71906AE2E0021D1BD /* Thumbnail Image View */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2609,8 +2662,8 @@
 			isa = PBXGroup;
 			children = (
 				730B444718EC393B008A0977 /* Flurry */,
-				73B0789D189AB4F800D02C43 /* Reachability */,
 				27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */,
+				73B0789D189AB4F800D02C43 /* Reachability */,
 			);
 			path = "Third Party Libraries";
 			sourceTree = "<group>";
@@ -2792,6 +2845,7 @@
 		73B95AC317A68DF20099FB84 /* Comments View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				738664AF1906B12B0021D1BD /* Cell */,
 				73B95AC617A68DF20099FB84 /* CommentViewController.h */,
 				73B95AC717A68DF20099FB84 /* CommentViewController.m */,
 				73217435187AC0CC008B330D /* CommentViewController.xib */,
@@ -2821,6 +2875,7 @@
 		73B95AD217A68DF20099FB84 /* Metadata View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				738664C11906B16F0021D1BD /* Cell */,
 				73B95AD317A68DF20099FB84 /* MetaDataViewController.h */,
 				73B95AD417A68DF20099FB84 /* MetaDataViewController.m */,
 				73881F57188842D60052C75F /* MetaDataViewController.xib */,
@@ -2838,59 +2893,6 @@
 				730B445718ED7B96008A0977 /* FilePreviewViewController.xib */,
 			);
 			path = "Preview View Controller";
-			sourceTree = "<group>";
-		};
-		73B95ADD17A68DF20099FB84 /* Tabbar View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				73B95ADE17A68DF20099FB84 /* About View Controller */,
-				73B95AE317A68DF20099FB84 /* Activities View Controller */,
-				73B95AE617A68DF20099FB84 /* FileFolder View Controller */,
-				73B95AEC17A68DF20099FB84 /* Sites View Controller */,
-			);
-			path = "Tabbar View Controllers";
-			sourceTree = "<group>";
-		};
-		73B95ADE17A68DF20099FB84 /* About View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				73B95ADF17A68DF20099FB84 /* AboutViewController.h */,
-				73B95AE017A68DF20099FB84 /* AboutViewController.m */,
-				73B95AE117A68DF20099FB84 /* AboutViewController.xib */,
-				73B95AE217A68DF20099FB84 /* AboutViewController~ipad.xib */,
-			);
-			path = "About View Controller";
-			sourceTree = "<group>";
-		};
-		73B95AE317A68DF20099FB84 /* Activities View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				73B95AE417A68DF20099FB84 /* ActivitiesViewController.h */,
-				73B95AE517A68DF20099FB84 /* ActivitiesViewController.m */,
-				0871D26417E3660D00F744D0 /* ActivityViewController.xib */,
-			);
-			path = "Activities View Controller";
-			sourceTree = "<group>";
-		};
-		73B95AE617A68DF20099FB84 /* FileFolder View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				73B95AE717A68DF20099FB84 /* FileFolderListViewController.h */,
-				73B95AE817A68DF20099FB84 /* FileFolderListViewController.m */,
-				08CC861B18990E1800CDC524 /* FileFolderListViewController.xib */,
-				089FB02218D738D500AB4613 /* BaseFileFolderListViewController.h */,
-				089FB02318D738D500AB4613 /* BaseFileFolderListViewController.m */,
-			);
-			path = "FileFolder View Controller";
-			sourceTree = "<group>";
-		};
-		73B95AEC17A68DF20099FB84 /* Sites View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				73B95AED17A68DF20099FB84 /* SitesListViewController.h */,
-				73B95AEE17A68DF20099FB84 /* SitesListViewController.m */,
-			);
-			path = "Sites View Controller";
 			sourceTree = "<group>";
 		};
 		73B95AEF17A68DF20099FB84 /* Upload View Controller */ = {
@@ -3041,20 +3043,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73B9584B17A6750F0099FB84 /* CommentCell.xib in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comments.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
 				7386815D18DC8EE400F315B8 /* task_done_button@2x.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
 				73FF558018ACE2370009CA56 /* large_image@2x.png in Resources */,
-				73B9584D17A6750F0099FB84 /* FileFolderCell.xib in Resources */,
 				08E1EA3018DB057900F9052F /* ProcessTasksCell.xib in Resources */,
-				73B9584F17A6750F0099FB84 /* MetadataCell.xib in Resources */,
-				73B9585117A6750F0099FB84 /* SitesCell.xib in Resources */,
 				08E1EA2B18DB057900F9052F /* TasksCell.xib in Resources */,
 				73A6861418C87A9100FF18E0 /* task_approve_button@2x.png in Resources */,
-				73B9585317A6750F0099FB84 /* VersionHistoryCell.xib in Resources */,
 				73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */,
 				73B95A6117A68B7E0099FB84 /* AboutLogo.png in Resources */,
 				73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */,
@@ -3066,7 +3063,6 @@
 				73B95A6217A68B7E0099FB84 /* AboutLogo@2x.png in Resources */,
 				73B95A6317A68B7E0099FB84 /* AboutLogo@2x~ipad.png in Resources */,
 				73B95A6417A68B7E0099FB84 /* AboutLogo~ipad.png in Resources */,
-				0833247117F9900000EE6AA8 /* AlfrescoNodeCell.xib in Resources */,
 				732DBFA618E1BDAB00F7A0BF /* small_site.png in Resources */,
 				73B95A6517A68B7E0099FB84 /* avatar.png in Resources */,
 				73A7665B18C8E2980087E38F /* task_reject_button_selected@2x.png in Resources */,
@@ -3074,8 +3070,8 @@
 				73B95A6717A68B7E0099FB84 /* play-media.png in Resources */,
 				73881FE4188FF9680052C75F /* actionsheet-favourited@2x.png in Resources */,
 				73881FD4188FF6B00052C75F /* actionsheet-liked.png in Resources */,
+				738664D11906B1E50021D1BD /* TextFieldCell.xib in Resources */,
 				7384BE0217F3558900C6A54F /* SettingTextFieldCell.xib in Resources */,
-				08AD4AA918A5369D00054A7D /* ActivityTableViewCell.xib in Resources */,
 				0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */,
 				732DBF9E18E1BC6B00F7A0BF /* small_word.png in Resources */,
 				73FF558B18ACE2370009CA56 /* large_xml.png in Resources */,
@@ -3094,8 +3090,8 @@
 				732DBFA118E1BC6B00F7A0BF /* small_xml@2x.png in Resources */,
 				73881F6F188956390052C75F /* WebBrowserViewController~ipad.xib in Resources */,
 				0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */,
+				738664931906AD660021D1BD /* AboutViewController~ipad.xib in Resources */,
 				7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */,
-				08E799B3182A579B0030FD53 /* ButtonCell.xib in Resources */,
 				73FF558C18ACE2370009CA56 /* large_xml@2x.png in Resources */,
 				271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */,
 				73FF557818ACE2370009CA56 /* large_audio@2x.png in Resources */,
@@ -3107,15 +3103,18 @@
 				737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */,
 				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				271DC772189C2D250059D1B2 /* status-sync-loading.png in Resources */,
-				08263A8118E9E07C00BE84B6 /* NodePickerListCell.xib in Resources */,
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
+				738664F51906B2420021D1BD /* TaskPriorityCell.xib in Resources */,
 				27F054D61891832B00C2454C /* app-icon-144.png in Resources */,
 				080A812418561E6D00B79306 /* certificate@2x.png in Resources */,
 				080A811B18561CD800B79306 /* ClientCertificateViewController.xib in Resources */,
 				0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */,
+				738665061906B2A60021D1BD /* AlfrescoNodeCell.xib in Resources */,
 				271DC76F189C2D250059D1B2 /* status-sync-failed@2x.png in Resources */,
+				738664FE1906B27C0021D1BD /* NodePickerListCell.xib in Resources */,
 				732DBF9518E1BC6B00F7A0BF /* small_image@2x.png in Resources */,
 				73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */,
+				738665181906B3ED0021D1BD /* ActivityTableViewCell.xib in Resources */,
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				73FF557E18ACE2370009CA56 /* large_excel@2x.png in Resources */,
 				7384BDF917F3377A00C6A54F /* UserPreferences.plist in Resources */,
@@ -3123,6 +3122,7 @@
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
 				73632AE41802E5C6007172EE /* BaseDocumentPreviewViewController.xib in Resources */,
 				734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */,
+				7386650C1906B2D10021D1BD /* VersionHistoryCell.xib in Resources */,
 				73FF558318ACE2370009CA56 /* large_pdf.png in Resources */,
 				08E1EA2918DB057900F9052F /* TaskDetailsViewController~ipad.xib in Resources */,
 				27F054D81891832B00C2454C /* app-icon-29.png in Resources */,
@@ -3137,11 +3137,11 @@
 				73881F8D188D8AF20052C75F /* browser_close.png in Resources */,
 				271DC76C189C2D250059D1B2 /* status-sync-failed-highlighted.png in Resources */,
 				73B95A8717A68B7E0099FB84 /* Default-568h@2x.png in Resources */,
+				738664E51906B2260021D1BD /* SwitchCell.xib in Resources */,
 				271DC774189C2D250059D1B2 /* status-sync-synced-highlighted.png in Resources */,
 				732DBF9A18E1BC6B00F7A0BF /* small_powerpoint.png in Resources */,
-				08CC861C18990E1800CDC524 /* FileFolderListViewController.xib in Resources */,
+				738665001906B27C0021D1BD /* NodePickerScopeCell.xib in Resources */,
 				73A7665818C8E2980087E38F /* task_approve_button_selected.png in Resources */,
-				0830261418DC5F1700A0D0A0 /* TaskApproversCell.xib in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */,
 				73FF557A18ACE2370009CA56 /* large_blank_document@2x.png in Resources */,
@@ -3151,9 +3151,9 @@
 				27F054D41891832B00C2454C /* app-icon-114.png in Resources */,
 				73881FCE188FF6B00052C75F /* actionsheet-delete.png in Resources */,
 				0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */,
-				08948C621823C26E006D38F5 /* SwitchCell.xib in Resources */,
-				08E799B8182AA3EC0030FD53 /* LabelCell.xib in Resources */,
+				738664BA1906B13D0021D1BD /* FileFolderCell.xib in Resources */,
 				73881F8E188D8AF20052C75F /* browser_close@2x.png in Resources */,
+				738664921906AD660021D1BD /* AboutViewController.xib in Resources */,
 				27F054DE1891832B00C2454C /* app-icon-76.png in Resources */,
 				739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */,
 				73881FCB188FF6B00052C75F /* actionsheet-attachments@2x.png in Resources */,
@@ -3173,7 +3173,6 @@
 				08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
 				2764ABD618CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png in Resources */,
-				0871D26517E3660D00F744D0 /* ActivityViewController.xib in Resources */,
 				27F054DA1891832B00C2454C /* app-icon-50.png in Resources */,
 				73B95A8D17A68B7E0099FB84 /* Default@2x.png in Resources */,
 				732DBF8E18E1BC6B00F7A0BF /* small_audio.png in Resources */,
@@ -3188,7 +3187,6 @@
 				08E1EA3218DB057900F9052F /* TasksAndAttachmentsViewController.xib in Resources */,
 				73B95A9217A68B7E0099FB84 /* collapse.png in Resources */,
 				08E1EA2818DB057900F9052F /* TaskDetailsViewController.xib in Resources */,
-				088228691843B1B7006E58A4 /* AttributedLabelCell.xib in Resources */,
 				27F054D51891832B00C2454C /* app-icon-120.png in Resources */,
 				73217436187AC0CC008B330D /* CommentViewController.xib in Resources */,
 				73A6861518C87A9100FF18E0 /* task_reject_button.png in Resources */,
@@ -3214,6 +3212,7 @@
 				73BE420718F4021300DB8912 /* task_priority_low@2x.png in Resources */,
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				73B95A9617A68B7E0099FB84 /* pull-to-refresh.png in Resources */,
+				738664E31906B2260021D1BD /* LabelCell.xib in Resources */,
 				27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */,
 				27E84E7B18AD53510024B658 /* mainmenu-activities@2x.png in Resources */,
 				73B95A9717A68B7E0099FB84 /* pull-to-refresh@2x.png in Resources */,
@@ -3222,11 +3221,13 @@
 				73B95A9A17A68B7E0099FB84 /* system_notice_info.png in Resources */,
 				732DBF9718E1BC6B00F7A0BF /* small_notes@2x.png in Resources */,
 				731901AB1844D217002C82C1 /* onboarding-grey@2x.png in Resources */,
+				738664B41906B12B0021D1BD /* CommentCell.xib in Resources */,
 				73881FD7188FF6B00052C75F /* actionsheet-openIn@2x.png in Resources */,
 				73B95A9B17A68B7E0099FB84 /* system_notice_info@2x.png in Resources */,
 				73881FE0188FF9290052C75F /* actionsheet-unfavourited.png in Resources */,
 				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				7386816718DC8FBF00F315B8 /* task_done_button_selected@2x.png in Resources */,
+				738664C01906B14C0021D1BD /* SitesCell.xib in Resources */,
 				73B95A9C17A68B7E0099FB84 /* system_notice_warning.png in Resources */,
 				73B95A9D17A68B7E0099FB84 /* system_notice_warning@2x.png in Resources */,
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
@@ -3235,9 +3236,7 @@
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
 				73FF557718ACE2370009CA56 /* large_audio.png in Resources */,
 				73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */,
-				08735D3E18C9DBDC0010334A /* PersonCell.xib in Resources */,
 				73BE420418F4021300DB8912 /* task_priority_high.png in Resources */,
-				0830260D18DC52F400A0D0A0 /* TaskPriorityCell.xib in Resources */,
 				27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */,
 				73BE420618F4021300DB8912 /* task_priority_low.png in Resources */,
 				73FC470C1823BE7400864E80 /* Email Template in Resources */,
@@ -3255,7 +3254,6 @@
 				73FF558D18ACE2370009CA56 /* large_zip.png in Resources */,
 				080A812318561E6D00B79306 /* certificate.png in Resources */,
 				73FF558818ACE2370009CA56 /* large_video@2x.png in Resources */,
-				0888ABC1182B9EAD002FEE2C /* CenterLabelCell.xib in Resources */,
 				73881FD5188FF6B00052C75F /* actionsheet-liked@2x.png in Resources */,
 				27F054DC1891832B00C2454C /* app-icon-58.png in Resources */,
 				7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */,
@@ -3263,10 +3261,10 @@
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
-				0804DCB71819682700E3ACC2 /* AccountCell.xib in Resources */,
 				73FF557D18ACE2370009CA56 /* large_excel.png in Resources */,
 				73FF558918ACE2370009CA56 /* large_word.png in Resources */,
 				0804DCAA1819634000E3ACC2 /* AccountsViewController.xib in Resources */,
+				738664A21906AD840021D1BD /* FileFolderListViewController.xib in Resources */,
 				27E84E8B18AD53510024B658 /* mainmenu-sites@2x.png in Resources */,
 				27E84E8918AD53510024B658 /* mainmenu-sharedfiles@2x.png in Resources */,
 				27F054D91891832B00C2454C /* app-icon-40.png in Resources */,
@@ -3280,14 +3278,16 @@
 				2744022018AA83C400DF23DD /* Settings.bundle in Resources */,
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
 				271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */,
+				738664991906AD740021D1BD /* ActivityViewController.xib in Resources */,
 				7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */,
-				08948C5D1823B62E006D38F5 /* TextFieldCell.xib in Resources */,
+				738664F31906B2420021D1BD /* TaskApproversCell.xib in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73FF557918ACE2370009CA56 /* large_blank_document.png in Resources */,
 				08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */,
 				27E84E7F18AD53510024B658 /* mainmenu-help@2x.png in Resources */,
 				27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
+				738664E11906B2260021D1BD /* CenterLabelCell.xib in Resources */,
 				27E84E7618AD53510024B658 /* mainmenu-about.png in Resources */,
 				73881FCD188FF6B00052C75F /* actionsheet-comments@2x.png in Resources */,
 				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
@@ -3295,12 +3295,14 @@
 				73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */,
 				73B95AB317A68B7E0099FB84 /* site-action-favorite.png in Resources */,
 				7386817018DC9F5200F315B8 /* task_re-assign_button_selected.png in Resources */,
+				7386651A1906B3ED0021D1BD /* AttributedLabelCell.xib in Resources */,
 				27E84E8218AD53510024B658 /* mainmenu-myfiles.png in Resources */,
 				73FF558518ACE2370009CA56 /* large_powerpoint.png in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
 				7319019E1843B614002C82C1 /* onboarding-blue.png in Resources */,
 				271DC76A189C2D250059D1B2 /* status-restricted.png in Resources */,
+				738664F11906B2420021D1BD /* PersonCell.xib in Resources */,
 				73B95AB517A68B7E0099FB84 /* site-action-join.png in Resources */,
 				73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */,
 				73B95AB617A68B7E0099FB84 /* site-action-join@2x.png in Resources */,
@@ -3318,6 +3320,7 @@
 				08B61FA21804132000C827EA /* failed-transfer-detail-button@2x.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
 				732DBFA218E1BC6B00F7A0BF /* small_zip.png in Resources */,
+				738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */,
 				73881FDA188FF6B00052C75F /* actionsheet-unliked@2x.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
 				732DBF9018E1BC6B00F7A0BF /* small_blank.png in Resources */,
@@ -3326,14 +3329,15 @@
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
 				7386815C18DC8EE400F315B8 /* task_done_button.png in Resources */,
+				738664CF1906B1E50021D1BD /* AccountCell.xib in Resources */,
 				73BE41FB18F3FF2900DB8912 /* account-type-cloud@2x.png in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
 				732DBF9118E1BC6B00F7A0BF /* small_blank@2x.png in Resources */,
 				732DBF9618E1BC6B00F7A0BF /* small_notes.png in Resources */,
+				738664C61906B16F0021D1BD /* MetadataCell.xib in Resources */,
 				271DC777189C2D250059D1B2 /* status-sync-synced@2x.png in Resources */,
 				73881F6E188956390052C75F /* WebBrowserViewController.xib in Resources */,
 				27E84E8C18AD53510024B658 /* mainmenu-sync.png in Resources */,
-				08263A7C18E9A7CE00BE84B6 /* NodePickerScopeCell.xib in Resources */,
 				08E1EA2618DB057900F9052F /* TaskHeaderView.xib in Resources */,
 				73B95ABE17A68B7E0099FB84 /* actionButton@2x.png in Resources */,
 				73B95ABF17A68B7E0099FB84 /* comments.png in Resources */,
@@ -3353,11 +3357,9 @@
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
 				73A7665A18C8E2980087E38F /* task_reject_button_selected.png in Resources */,
 				08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */,
-				73B95AFE17A68DF20099FB84 /* AboutViewController.xib in Resources */,
 				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
 				2764ABD518CE09EE003FFBF9 /* actionsheet-edit-properties.png in Resources */,
-				73B95AFF17A68DF20099FB84 /* AboutViewController~ipad.xib in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
 				73B95B0C17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist in Resources */,
@@ -3446,12 +3448,14 @@
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
-				08E799B6182AA3CF0030FD53 /* LabelCell.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
+				738665161906B3ED0021D1BD /* ActivitiesTableViewCellController.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
+				738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
+				738664A61906AD8E0021D1BD /* SitesListViewController.m in Sources */,
 				08E1EA2D18DB057900F9052F /* TaskViewController.m in Sources */,
 				73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
@@ -3464,85 +3468,88 @@
 				0876A04718D99FF60035370A /* NodePickerListViewController.m in Sources */,
 				73B078A0189AB4F800D02C43 /* Reachability.m in Sources */,
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
-				08E799B1182A57850030FD53 /* ButtonCell.m in Sources */,
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
+				738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */,
 				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
 				73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */,
+				738664F21906B2420021D1BD /* TaskApproversCell.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
-				73B9584817A6750F0099FB84 /* ActivitiesTableViewCellController.m in Sources */,
-				73B9584917A6750F0099FB84 /* ActivityTableViewCell.m in Sources */,
 				0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
-				73B9584A17A6750F0099FB84 /* CommentCell.m in Sources */,
+				738664C51906B16F0021D1BD /* MetadataCell.m in Sources */,
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
-				73B9584C17A6750F0099FB84 /* FileFolderCell.m in Sources */,
-				73B9584E17A6750F0099FB84 /* MetadataCell.m in Sources */,
-				73B9585017A6750F0099FB84 /* SitesCell.m in Sources */,
+				738664CE1906B1E50021D1BD /* AccountCell.m in Sources */,
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
-				73B9585217A6750F0099FB84 /* VersionHistoryCell.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
+				738664BF1906B14C0021D1BD /* SitesCell.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
+				738664DE1906B2260021D1BD /* ButtonCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
 				7379733218AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld in Sources */,
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
+				738664E21906B2260021D1BD /* LabelCell.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
 				739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */,
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
+				738664911906AD660021D1BD /* AboutViewController.m in Sources */,
+				738664B31906B12B0021D1BD /* CommentCell.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
 				08E1EA3118DB057900F9052F /* TasksAndAttachmentsViewController.m in Sources */,
+				7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
-				08948C591823B5EC006D38F5 /* TextFieldCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
-				0830260B18DC52D700A0D0A0 /* TaskPriorityCell.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
-				0876A03118D99F800035370A /* BaseFileFolderListViewController.m in Sources */,
 				0876A04518D99FF60035370A /* NodePickerFileFolderListViewController.m in Sources */,
 				08344EF818E2E64E00B061C0 /* DatePickerViewController.m in Sources */,
+				738665171906B3ED0021D1BD /* ActivityTableViewCell.m in Sources */,
+				738665051906B2A60021D1BD /* AlfrescoNodeCell.m in Sources */,
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				7379733818AA8E9B007613B2 /* SyncError.m in Sources */,
 				0876A04818D99FF60035370A /* NodePickerScopeViewController.m in Sources */,
+				738664E41906B2260021D1BD /* SwitchCell.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
-				08344E6618E0458800B061C0 /* NodePickerScopeCell.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
+				738664F41906B2420021D1BD /* TaskPriorityCell.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				739E107D18F6D83600495616 /* SaveBackMetadata.m in Sources */,
 				08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */,
+				738664A01906AD840021D1BD /* BaseFileFolderListViewController.m in Sources */,
+				738664E01906B2260021D1BD /* CenterLabelCell.m in Sources */,
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
-				0833246F17F98FE700EE6AA8 /* AlfrescoNodeCell.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				08E1EA2F18DB057900F9052F /* ProcessTasksCell.m in Sources */,
 				08E1EA3718DB06D100F9052F /* TaskTypeViewController.m in Sources */,
+				738664981906AD740021D1BD /* ActivitiesViewController.m in Sources */,
+				738664FF1906B27C0021D1BD /* NodePickerScopeCell.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
-				0830261018DC5EDA00A0D0A0 /* TaskApproversCell.m in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
-				088364FD180C3EC3008EA97D /* SyncOperation.m in Sources */,
+				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,
 				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
 				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
 				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
-				73B9587317A6750F0099FB84 /* ThumbnailImageView.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
@@ -3550,46 +3557,41 @@
 				7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */,
 				730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */,
 				73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */,
+				738665191906B3ED0021D1BD /* AttributedLabelCell.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				08E1EA2718DB057900F9052F /* TaskDetailsViewController.m in Sources */,
 				7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */,
+				738664F01906B2420021D1BD /* PersonCell.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
+				738664AA1906AE2E0021D1BD /* ThumbnailImageView.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
-				0888ABBF182B9E93002FEE2C /* CenterLabelCell.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
 				739E108018F6F10700495616 /* FileHandlerManager.m in Sources */,
+				738664FD1906B27C0021D1BD /* NodePickerListCell.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
-				08735D3C18C9DBAE0010334A /* PersonCell.m in Sources */,
 				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,
-				0804DCB51819680E00E3ACC2 /* AccountCell.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
 				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
-				08948C601823C24D006D38F5 /* SwitchCell.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
 				08E1EA2A18DB057900F9052F /* TasksCell.m in Sources */,
 				08E1EA2C18DB057900F9052F /* TaskGroupItem.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
+				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
-				73B95AFD17A68DF20099FB84 /* AboutViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
-				73B95B0017A68DF20099FB84 /* ActivitiesViewController.m in Sources */,
 				080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */,
-				73B95B0117A68DF20099FB84 /* FileFolderListViewController.m in Sources */,
-				73B95B0317A68DF20099FB84 /* SitesListViewController.m in Sources */,
 				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
-				08263A7F18E9E00D00BE84B6 /* NodePickerListCell.m in Sources */,
-				088228671843B180006E58A4 /* AttributedLabelCell.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
