@@ -17,6 +17,7 @@
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "NavigationViewController.h"
+#import "AccountInfoViewController.h"
 
 @interface LoginManager()
 
@@ -343,10 +344,12 @@
     }
     else
     {
-        if (completionBlock != NULL)
-        {
-            completionBlock(NO, nil);
-        }
+        [self hideHUD];
+        AccountInfoViewController *accountViewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount];
+        NavigationViewController *nav = [[NavigationViewController alloc] initWithRootViewController:accountViewController];
+        [UniversalDevice displayModalViewController:nav onController:[UniversalDevice containerViewController] withCompletionBlock:^{
+            displayWarningMessageWithTitle(@"We were unable to reach the server that has been accociated with this account. Please ensure that the server address is correct.", @"Unable to reach the host");
+        }];
     }
 }
 
