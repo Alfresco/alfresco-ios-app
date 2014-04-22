@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -56,18 +56,14 @@
                         </constraints>
                         <inset key="separatorInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                     </tableView>
-                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Xu-XX-ft1">
-                        <rect key="frame" x="270" y="26" width="44" height="44"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ButtonBarArrowDown.png" translatesAutoresizingMaskIntoConstraints="NO" id="tMg-bW-Ejd">
+                        <rect key="frame" x="292" y="24" width="20" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="44" id="LSN-2D-zoB"/>
-                            <constraint firstAttribute="height" constant="44" id="uAY-Yd-fnL"/>
+                            <constraint firstAttribute="width" constant="20" id="0dG-N8-cUB"/>
+                            <constraint firstAttribute="height" constant="44" id="6aV-qh-XXc"/>
                         </constraints>
-                        <state key="normal" image="ButtonBarArrowDown.png"/>
-                        <connections>
-                            <action selector="didPressExpandButton:" destination="3" eventType="touchUpInside" id="YZK-kV-4YX"/>
-                        </connections>
-                    </button>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="6" firstAttribute="top" secondItem="5" secondAttribute="bottom" id="4pS-Ho-e5w"/>
@@ -78,7 +74,7 @@
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="CvF-U5-rKE"/>
                     <constraint firstItem="5" firstAttribute="top" secondItem="4" secondAttribute="bottom" id="HLV-Uy-4gO"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="bottom" id="INL-3f-dHt"/>
-                    <constraint firstAttribute="trailing" secondItem="4Xu-XX-ft1" secondAttribute="trailing" constant="6" id="JRh-8f-59E"/>
+                    <constraint firstAttribute="trailing" secondItem="tMg-bW-Ejd" secondAttribute="trailing" constant="8" id="J1A-U3-eCB"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="bottom" id="OnG-RG-fDy"/>
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="5" secondAttribute="trailing" id="QLB-pI-oAI"/>
                     <constraint firstItem="4" firstAttribute="top" secondItem="jqh-eL-sGE" secondAttribute="top" constant="8" id="US1-Oi-4Ue"/>
@@ -86,9 +82,9 @@
                     <constraint firstItem="xDa-DD-V98" firstAttribute="top" secondItem="8" secondAttribute="bottom" constant="8" id="dcL-KX-qtq"/>
                     <constraint firstItem="8" firstAttribute="top" secondItem="7" secondAttribute="bottom" id="ej2-fj-ZT7"/>
                     <constraint firstItem="5" firstAttribute="leading" secondItem="jqh-eL-sGE" secondAttribute="leading" constant="8" id="gzv-iH-YU2"/>
+                    <constraint firstItem="tMg-bW-Ejd" firstAttribute="top" secondItem="jqh-eL-sGE" secondAttribute="top" constant="24" id="kqb-Hv-PHP"/>
                     <constraint firstItem="8" firstAttribute="leading" secondItem="jqh-eL-sGE" secondAttribute="leading" constant="8" id="lnM-Jb-ZlO"/>
                     <constraint firstItem="xDa-DD-V98" firstAttribute="leading" secondItem="jqh-eL-sGE" secondAttribute="leading" id="u10-pd-svh"/>
-                    <constraint firstItem="4Xu-XX-ft1" firstAttribute="top" secondItem="jqh-eL-sGE" secondAttribute="top" constant="26" id="udp-9T-QgU"/>
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="upH-Sf-GsM"/>
                     <constraint firstAttribute="trailing" secondItem="xDa-DD-V98" secondAttribute="trailing" id="wEu-Sm-tE0"/>
                     <constraint firstItem="7" firstAttribute="trailing" secondItem="8" secondAttribute="trailing" id="zui-su-SzN"/>
@@ -97,7 +93,7 @@
             <connections>
                 <outlet property="commentLabel" destination="7" id="12"/>
                 <outlet property="currentVersionLabel" destination="8" id="13"/>
-                <outlet property="expandButton" destination="4Xu-XX-ft1" id="OtY-FM-82h"/>
+                <outlet property="disclosureImageView" destination="tMg-bW-Ejd" id="2kx-NS-gsC"/>
                 <outlet property="lastModifiedByLabel" destination="6" id="11"/>
                 <outlet property="lastModifiedLabel" destination="5" id="10"/>
                 <outlet property="metadataTableview" destination="xDa-DD-V98" id="LGl-WK-d4d"/>
