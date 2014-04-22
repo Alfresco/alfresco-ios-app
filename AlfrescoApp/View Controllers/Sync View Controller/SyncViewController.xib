@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SyncViewController">
             <connections>
-                <outlet property="footerLabel" destination="J6q-cA-LXT" id="ReL-j7-wvp"/>
                 <outlet property="tableView" destination="WDQ-em-wTb" id="6kT-fu-gEf"/>
                 <outlet property="view" destination="K1t-1D-gF3" id="xmS-30-N0l"/>
             </connections>
@@ -18,29 +17,15 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="WDQ-em-wTb">
-                    <rect key="frame" x="0.0" y="0.0" width="300" height="503"/>
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="536"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <label clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6q-cA-LXT">
-                    <rect key="frame" x="0.0" y="504" width="300" height="32"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="32" id="cNt-7X-TFX"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="J6q-cA-LXT" secondAttribute="bottom" id="4ZT-5g-Iel"/>
-                <constraint firstAttribute="trailing" secondItem="J6q-cA-LXT" secondAttribute="trailing" id="89a-RR-NdH"/>
-                <constraint firstItem="J6q-cA-LXT" firstAttribute="top" secondItem="WDQ-em-wTb" secondAttribute="bottom" constant="1" id="AA2-xo-1Fm"/>
+                <constraint firstAttribute="bottom" secondItem="WDQ-em-wTb" secondAttribute="bottom" id="6k2-Zs-PLI"/>
                 <constraint firstItem="WDQ-em-wTb" firstAttribute="leading" secondItem="K1t-1D-gF3" secondAttribute="leading" id="HWW-To-qXK"/>
-                <constraint firstItem="J6q-cA-LXT" firstAttribute="leading" secondItem="K1t-1D-gF3" secondAttribute="leading" id="gvI-1g-rhl"/>
                 <constraint firstItem="WDQ-em-wTb" firstAttribute="top" secondItem="K1t-1D-gF3" secondAttribute="top" id="nus-td-Ruz"/>
                 <constraint firstAttribute="trailing" secondItem="WDQ-em-wTb" secondAttribute="trailing" id="xym-GF-qGv"/>
             </constraints>
