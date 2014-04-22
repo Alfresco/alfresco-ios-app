@@ -439,6 +439,11 @@ static CGFloat kSearchCellHeight = 60.0f;
         [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
+            /**
+             * Site requests have completed which we use as a trigger to allow background requests to start being generated,
+             * e.g. multiple Sync set determination requests.
+             */
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSiteRequestsCompletedNotification object:nil];
         }];
     }
     else if (self == [self.navigationController.viewControllers lastObject])

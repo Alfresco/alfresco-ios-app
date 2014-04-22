@@ -345,7 +345,7 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
             }
             else
             {
-                UIImage *placeholderImage = [UIImage imageNamed:@"stop-transfer.png"];
+                UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
                 processTasksCell.avatarImageView.image = placeholderImage;
                 [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentTask.assigneeIdentifier session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
                     if (avatarImage)

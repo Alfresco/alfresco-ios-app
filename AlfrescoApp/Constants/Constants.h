@@ -64,8 +64,9 @@ extern NSString * const kAppConfigurationSharedFilesKey;
 // App Configuration Notifications
 extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;
 
-// Notificiations
+// Notifications
 extern NSString * const kAlfrescoSessionReceivedNotification;
+extern NSString * const kAlfrescoSiteRequestsCompletedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;
 extern NSString * const kAlfrescoApplicationPolicyUpdatedNotification;
 extern NSString * const kAlfrescoDocumentDownloadedNotification;

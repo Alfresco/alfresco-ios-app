@@ -15,8 +15,7 @@
     self = [super init];
     if (self)
     {
-        NSArray * nib = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil];
-        self = nib.firstObject;
+        self = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil].firstObject;
     }
     return self;
 }

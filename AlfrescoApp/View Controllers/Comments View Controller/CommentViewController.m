@@ -220,7 +220,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     }
     else
     {
-        UIImage *placeholderImage = [UIImage imageNamed:@"stop-transfer.png"];
+        UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
         cell.avatarImageView.image = placeholderImage;
         [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentComment.createdBy session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
             if (avatarImage)
