@@ -107,7 +107,6 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         progressViewFrame.origin.y = navFrame.size.height - progressViewFrame.size.height;
         
         [UIView animateWithDuration:kProgressViewAnimationDuration animations:^{
-            
             self.progressView.frame = progressViewFrame;
         }];
         
@@ -128,7 +127,6 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         progressViewFrame.origin.y = navFrame.size.height;
         
         [UIView animateWithDuration:kProgressViewAnimationDuration animations:^{
-            
             self.progressView.frame = progressViewFrame;
         }];
         

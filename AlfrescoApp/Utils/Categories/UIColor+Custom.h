@@ -14,6 +14,7 @@
 + (UIColor *)mainMenuLabelColor;
 + (UIColor *)appTintColor;
 + (UIColor *)documentActionsTintColor;
++ (UIColor *)syncButtonFailedColor;
 + (UIColor *)borderGreyColor;
 + (UIColor *)systemNoticeBlue;
 + (UIColor *)systemNoticeRed;

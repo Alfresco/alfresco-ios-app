@@ -18,26 +18,12 @@
 
 @implementation ParentListViewController
 
+/**
+ * Designated initializer
+ */
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
 {
     self = [super initWithNibName:nibName bundle:nil];
-    if (self)
-    {
-        self.session = session;
-        self.tableViewData = [NSMutableArray array];
-        self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
-        self.moreItemsAvailable = NO;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(sessionReceived:)
-                                                     name:kAlfrescoSessionReceivedNotification
-                                                   object:nil];
-    }
-    return self;
-}
-
-- (id)initWithSession:(id<AlfrescoSession>)session
-{
-    self = [super init];
     if (self)
     {
         self.session = session;
@@ -54,6 +40,11 @@
                                                    object:nil];
     }
     return self;
+}
+
+- (id)initWithSession:(id<AlfrescoSession>)session
+{
+    return [self initWithNibName:nil andSession:session];
 }
 
 - (void)dealloc
@@ -318,7 +309,6 @@
 - (void)connectivityChanged:(NSNotification *)notification
 {
     BOOL hasInternet = [notification.object boolValue];
-    
     if (hasInternet)
     {
         [self enablePullToRefresh];
