@@ -80,6 +80,21 @@
     return isOnWifi;
 }
 
+- (BOOL)canReachHostName:(NSString *)hostname
+{
+    BOOL canReach = NO;
+    
+    Reachability *reach = [Reachability reachabilityWithHostName:hostname];
+    NetworkStatus status = [reach currentReachabilityStatus];
+    
+    if (status != NotReachable)
+    {
+        canReach = YES;
+    }
+    
+    return canReach;
+}
+
 #pragma mark - Private Functions
 
 - (void)reachabilityChanged:(NSNotification *)notification

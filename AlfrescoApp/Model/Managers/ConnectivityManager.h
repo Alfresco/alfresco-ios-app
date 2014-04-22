@@ -16,4 +16,6 @@
 
 + (id)sharedManager;
 
+- (BOOL)canReachHostName:(NSString *)hostname;
+
 @end
