@@ -78,6 +78,7 @@
         {
             if (!account.password || [account.password isEqualToString:@""])
             {
+                [self hideHUD];
                 [self displayLoginViewControllerWithAccount:account username:account.username];
                 logInSuccessful(NO, nil);
                 return;

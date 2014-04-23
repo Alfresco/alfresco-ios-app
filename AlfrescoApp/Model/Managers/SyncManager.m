@@ -132,6 +132,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 if (array)
                 {
                     [self rearrangeNodesAndSync:array];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kFavoritesListUpdatedNotification object:nil];
                     completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
                 }
             }];

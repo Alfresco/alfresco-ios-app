@@ -24,6 +24,7 @@
 #import "ConnectivityManager.h"
 #import "FileFolderListViewController.h"
 #import "FolderPreviewViewController.h"
+#import "LoginManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
@@ -158,11 +159,11 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
+    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])
     {
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         // Hold off making sync network requests until either the Sites requests have completed, or a timeout period has passed
         self.syncOnSiteRequestsCompletion = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kSyncOnSiteRequestsCompletionTimeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -490,7 +491,17 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 - (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
     [self showLoadingTextInRefreshControl:refreshControl];
-    [self loadSyncNodesForFolder:self.parentNode];
+    
+    if (self.session)
+    {
+        [self loadSyncNodesForFolder:self.parentNode];
+    }
+    else
+    {
+        [self hidePullToRefreshView];
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
+    }
 }
 
 #pragma mark - Private Class Functions
