@@ -47,6 +47,11 @@
     [self localiseUI];
     
     [self updateActionButtons];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateActionButtons)
+                                                 name:kFavoritesListUpdatedNotification
+                                               object:nil];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -126,6 +131,13 @@
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
+        }
+        else
+        {
+            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
+                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavourited.png"};
+            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
         }
     }];
     
