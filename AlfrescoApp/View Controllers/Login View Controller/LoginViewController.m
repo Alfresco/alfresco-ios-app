@@ -209,7 +209,14 @@
 
 - (void)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(loginViewController:didPressCancel:)])
+    {
+        [self.delegate loginViewController:self didPressCancel:sender];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)alfrescoApplicationPolicyUpdated:(NSNotification *)notification
