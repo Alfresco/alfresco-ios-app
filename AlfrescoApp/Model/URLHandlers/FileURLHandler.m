@@ -136,10 +136,6 @@ static NSString * const kHandlerPrefix = @"file://";
     
     // mimetype
     NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.pathExtension];
-    if (!mimeType || [mimeType isEqualToString:@""])
-    {
-        mimeType = @"application/octet-stream";
-    }
     
     // Get the file size
     // It appears that the content size is required by CMIS when creating the content, but not when updating existing content
