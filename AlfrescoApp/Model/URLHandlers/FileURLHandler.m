@@ -151,26 +151,63 @@ static NSString * const kHandlerPrefix = @"file://";
     
     AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:mimeType length:fileLength];
     
+    NSString *fileName = [filePath.lastPathComponent stringByRemovingPercentEncoding];
+    
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:selectionController.navigationController.view];
     [selectionController.navigationController.view addSubview:progressHUD];
     [progressHUD show:YES];
-    [documentFolderService createDocumentWithName:[filePath.lastPathComponent stringByRemovingPercentEncoding] inParentFolder:folder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-        [inputStream close];
+    [documentFolderService createDocumentWithName:fileName inParentFolder:folder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
         [progressHUD hide:YES];
-        if (error)
-        {
-            NSString *title = NSLocalizedString(@"saveback.upload.failed.title", @"Upload Failed");
-            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.failed.message", @"Upload Failed"), filePath.lastPathComponent, folder.name];
-            displayErrorMessageWithTitle(message, title);
-        }
-        else
-        {
+        
+        // success block
+        void (^successBlock)(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) = ^(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) {
+            [creationInputStream close];
             [self deleteItemAtPath:filePath];
             [selectionController dismissViewControllerAnimated:YES completion:^{
                 NSString *title = NSLocalizedString(@"saveback.upload.completed.title", @"Upload Completed");
-                NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.completed.message", @"Upload Completed"), document.name, folder.name];
+                NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.completed.message", @"Upload Completed"), createdDocument.name, folder.name];
                 displayInformationMessageWithTitle(message, title);
             }];
+        };
+        
+        // failure block
+        void (^failureBlock)(NSError *creationError, NSInputStream *creationInputStream) = ^(NSError *creationError, NSInputStream *creationInputStream) {
+            [creationInputStream close];
+            NSString *title = NSLocalizedString(@"saveback.upload.failed.title", @"Upload Failed");
+            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.failed.message", @"Upload Failed"), filePath.lastPathComponent, folder.name];
+            displayErrorMessageWithTitle(message, title);
+        };
+        
+        if (error)
+        {
+            // content already exists, then append the current time to it and try again.
+            if (error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists)
+            {
+                NSString *updatedFileName = fileNameAppendedWithDate(fileName);
+                NSInputStream *retryInputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
+                [retryInputStream open];
+                AlfrescoContentStream *retryContentStream = [[AlfrescoContentStream alloc] initWithStream:retryInputStream mimeType:mimeType length:fileLength];
+                [documentFolderService createDocumentWithName:updatedFileName inParentFolder:folder contentStream:retryContentStream properties:nil completionBlock:^(AlfrescoDocument *renamedDocument, NSError *renamedError) {
+                    if (renamedError)
+                    {
+                        failureBlock(renamedError, retryInputStream);
+                    }
+                    else
+                    {
+                        successBlock(renamedDocument, retryInputStream);
+                    }
+                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                    //
+                }];
+            }
+            else
+            {
+                failureBlock(error, inputStream);
+            }
+        }
+        else
+        {
+            successBlock(document, inputStream);
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
         //

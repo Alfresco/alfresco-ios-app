@@ -291,7 +291,14 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views)
 NSString *fileNameAppendedWithDate(NSString *name)
 {
     NSString *dateString = [[Utility dateFormatter] stringFromDate:[NSDate date]];
+    NSString *fileExtension = name.pathExtension;
     NSString *fileName = [NSString stringWithFormat:@"%@_%@", name.stringByDeletingPathExtension, dateString];
+    
+    if (fileExtension && ![fileExtension isEqualToString:@""])
+    {
+        fileName = [fileName stringByAppendingPathExtension:fileExtension];
+    }
+    
     return fileName;
 }
 
