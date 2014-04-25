@@ -12,6 +12,7 @@
 @protocol MainMenuViewControllerDelegate <NSObject>
 
 - (void)didSelectMenuItem:(MainMenuItem *)mainMenuItem;
+- (UIViewController *)currentlyDisplayedController;
 
 @end
 

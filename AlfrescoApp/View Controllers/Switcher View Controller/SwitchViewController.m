@@ -83,4 +83,9 @@
     [rootViewController collapseViewController];
 }
 
+- (UIViewController *)currentlyDisplayedController
+{
+    return self.displayedViewController;
+}
+
 @end

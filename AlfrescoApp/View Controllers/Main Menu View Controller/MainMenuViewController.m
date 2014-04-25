@@ -542,14 +542,25 @@ static NSUInteger const kAccountsRowNumber = 0;
         // select Sites tab if exists otherwise default to Accounts
         NSInteger indexOfItemDisplayed = NSNotFound;
         
-        if ([self existingMenuItemWithType:NavigationControllerTypeSites])
+        UINavigationController *currentlyDisplayedController = [self currentlyDisplayedNavigationController];
+        
+        // If currently displayed view is Sync view then Sync view is displayed after session renewal e.g User Pulled to refresh
+        if ([currentlyDisplayedController.viewControllers.firstObject isKindOfClass:[SyncViewController class]])
         {
-            [self displayViewControllerWithType:NavigationControllerTypeSites];
-            indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];
+            [self displayViewControllerWithType:NavigationControllerTypeSync];
+            indexOfItemDisplayed = [repositoryMenuItems indexOfObject:favoritesMenuItem];
         }
         else
         {
-            [self displayViewControllerWithType:NavigationControllerTypeAccounts];
+            if ([self existingMenuItemWithType:NavigationControllerTypeSites])
+            {
+                [self displayViewControllerWithType:NavigationControllerTypeSites];
+                indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];
+            }
+            else
+            {
+                [self displayViewControllerWithType:NavigationControllerTypeAccounts];
+            }
         }
         
         // select cell for displayed menu item
@@ -601,6 +612,16 @@ static NSUInteger const kAccountsRowNumber = 0;
     {
         [self.delegate didSelectMenuItem:menuItem];
     }
+}
+
+- (UINavigationController *)currentlyDisplayedNavigationController
+{
+    UINavigationController *displayedController = nil;
+    if ([self.delegate respondsToSelector:@selector(currentlyDisplayedController)])
+    {
+        displayedController = (UINavigationController *)[self.delegate currentlyDisplayedController];
+    }
+    return displayedController;
 }
 
 - (void)updateRepositoryItems:(NSArray *)repositoryItems

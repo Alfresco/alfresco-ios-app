@@ -24,6 +24,7 @@
 #import "ConnectivityManager.h"
 #import "FileFolderListViewController.h"
 #import "FolderPreviewViewController.h"
+#import "LoginManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
@@ -34,7 +35,6 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-@property (nonatomic, weak) IBOutlet UILabel *footerLabel;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
 @property (nonatomic, assign) BOOL syncOnSiteRequestsCompletion;
 
@@ -73,15 +73,10 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     
     self.title = [self listTitle];
-    self.footerLabel.text = [self tableFooterText];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(statusChanged:)
-                                                 name:kSyncStatusChangeNotification
-                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
@@ -164,11 +159,11 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
+    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])
     {
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         // Hold off making sync network requests until either the Sites requests have completed, or a timeout period has passed
         self.syncOnSiteRequestsCompletion = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kSyncOnSiteRequestsCompletionTimeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -496,26 +491,16 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 - (void)refreshTableView:(UIRefreshControl *)refreshControl
 {
     [self showLoadingTextInRefreshControl:refreshControl];
-    [self loadSyncNodesForFolder:self.parentNode];
-}
-
-#pragma mark - Status Changed Notification Handling
-
-- (void)statusChanged:(NSNotification *)notification
-{
-    NSDictionary *info = notification.userInfo;
     
-    NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
-    NSString *notificationNodeId = [info objectForKey:kSyncStatusNodeIdKey];
-    
-    if ([propertyChanged isEqualToString:kSyncTotalSize])
+    if (self.session)
     {
-        if (!self.parentNode || [self.parentNode.identifier isEqualToString:notificationNodeId])
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.footerLabel.text = [self tableFooterText];
-            });
-        }
+        [self loadSyncNodesForFolder:self.parentNode];
+    }
+    else
+    {
+        [self hidePullToRefreshView];
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
 
@@ -533,49 +518,6 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         UINavigationController *syncObstaclesNavigationController = [[UINavigationController alloc] initWithRootViewController:syncObstaclesController];
         [UniversalDevice displayModalViewController:syncObstaclesNavigationController onController:self withCompletionBlock:nil];
     }
-}
-
-- (NSString *)tableFooterText
-{
-    SyncManager *syncManager = [SyncManager sharedManager];
-    BOOL isSyncOn = [syncManager isSyncPreferenceOn];
-    NSString *footerText = @"";
-    
-    if (isSyncOn)
-    {
-        SyncNodeStatus *nodeStatus = nil;
-        if (!self.parentNode)
-        {
-            NSString *selectedAccountIdentifier = [[[AccountManager sharedManager] selectedAccount] accountIdentifier];
-            nodeStatus = [syncManager syncStatusForNodeWithId:selectedAccountIdentifier];
-        }
-        else
-        {
-            nodeStatus = [syncManager syncStatusForNodeWithId:self.parentNode.identifier];
-        }
-        
-        if (self.tableViewData.count > 0)
-        {
-            NSString *documentsText = @"";
-            
-            switch (self.tableViewData.count)
-            {
-                case 1:
-                {
-                    documentsText = NSLocalizedString(@"downloadview.footer.one-document", @"1 Document");
-                    break;
-                }
-                default:
-                {
-                    documentsText = [NSString stringWithFormat:NSLocalizedString(@"downloadview.footer.multiple-documents", @"%d Documents"), self.tableViewData.count];
-                    break;
-                }
-            }
-            
-            footerText = [NSString stringWithFormat:@"%@ %@", documentsText, stringForLongFileSize(nodeStatus.totalSize)];
-        }
-    }
-    return footerText;
 }
 
 #pragma mark UIAlertView delegate methods
