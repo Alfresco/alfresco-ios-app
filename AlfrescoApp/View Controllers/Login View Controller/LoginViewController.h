@@ -17,6 +17,7 @@
 // both are optional, however, if using - initWithAccount:delegate: you must implemet loginViewController:didPressRequestLoginToAccount:username:password:
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password;
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToServer:(NSString *)server username:(NSString *)username password:(NSString *)password;
+- (void)loginViewController:(LoginViewController *)loginViewController didPressCancel:(UIBarButtonItem *)button;
 
 @end
 

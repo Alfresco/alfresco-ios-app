@@ -609,6 +609,13 @@
 "saveback.completed.message" = "%@ has successfully been saved back";
 "saveback.failed.title" = "SaveBack Failed";
 "saveback.failed.message" = "%@ has been saved to Local Files";
+// Location Picker
+"saveback.locationpicker.title" = "Choose Location";
+"saveback.locationpicker.other" = "Other";
+"saveback.upload.completed.title" = "Upload Completed";
+"saveback.upload.completed.message" = "Upload of %@ successfully uploaded to %@";
+"saveback.upload.failed.title" = "Upload Failed";
+"saveback.upload.failed.message" = "Upload of %@ failed to successfully uploaded to %@";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS

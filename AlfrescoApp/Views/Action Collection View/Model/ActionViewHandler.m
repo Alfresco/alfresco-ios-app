@@ -353,6 +353,10 @@
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
         displayEmailBlock(fileLocation);
     }
+    else if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    {
+        displayEmailBlock(documentPath);
+    }
     else
     {
         if (![previewManager isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])

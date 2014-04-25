@@ -305,6 +305,8 @@
 		738665181906B3ED0021D1BD /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */; };
 		738665191906B3ED0021D1BD /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665141906B3ED0021D1BD /* AttributedLabelCell.m */; };
 		7386651A1906B3ED0021D1BD /* AttributedLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665151906B3ED0021D1BD /* AttributedLabelCell.xib */; };
+		738665231907B9BE0021D1BD /* FileLocationSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665211907B9BE0021D1BD /* FileLocationSelectionViewController.m */; };
+		738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665221907B9BE0021D1BD /* FileLocationSelectionViewController.xib */; };
 		7386815C18DC8EE400F315B8 /* task_done_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815818DC8EE400F315B8 /* task_done_button.png */; };
 		7386815D18DC8EE400F315B8 /* task_done_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815918DC8EE400F315B8 /* task_done_button@2x.png */; };
 		7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816018DC8F1700F315B8 /* task_re-assign_button.png */; };
@@ -959,6 +961,9 @@
 		738665131906B3ED0021D1BD /* AttributedLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedLabelCell.h; sourceTree = "<group>"; };
 		738665141906B3ED0021D1BD /* AttributedLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributedLabelCell.m; sourceTree = "<group>"; };
 		738665151906B3ED0021D1BD /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
+		738665201907B9BE0021D1BD /* FileLocationSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLocationSelectionViewController.h; sourceTree = "<group>"; };
+		738665211907B9BE0021D1BD /* FileLocationSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLocationSelectionViewController.m; sourceTree = "<group>"; };
+		738665221907B9BE0021D1BD /* FileLocationSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileLocationSelectionViewController.xib; sourceTree = "<group>"; };
 		7386815818DC8EE400F315B8 /* task_done_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button.png; sourceTree = "<group>"; };
 		7386815918DC8EE400F315B8 /* task_done_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button@2x.png"; sourceTree = "<group>"; };
 		7386816018DC8F1700F315B8 /* task_re-assign_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button.png"; sourceTree = "<group>"; };
@@ -2240,6 +2245,16 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		7386651F1907B9930021D1BD /* File Handler View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				738665201907B9BE0021D1BD /* FileLocationSelectionViewController.h */,
+				738665211907B9BE0021D1BD /* FileLocationSelectionViewController.m */,
+				738665221907B9BE0021D1BD /* FileLocationSelectionViewController.xib */,
+			);
+			path = "File Handler View Controllers";
+			sourceTree = "<group>";
+		};
 		73881F5E18893BB70052C75F /* Web Browser View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2595,6 +2610,7 @@
 				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
 				73632ADF1802E574007172EE /* Document Preview Controller */,
 				73B95AC817A68DF20099FB84 /* Downloads View Controller */,
+				7386651F1907B9930021D1BD /* File Handler View Controllers */,
 				7386649A1906AD840021D1BD /* FileFolder View Controller */,
 				737972F218A39E59007613B2 /* Folder Preview Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
@@ -3198,6 +3214,7 @@
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
+				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
 				73A6861618C87A9100FF18E0 /* task_reject_button@2x.png in Resources */,
 				27E84E8618AD53510024B658 /* mainmenu-settings.png in Resources */,
 				73B95A9517A68B7E0099FB84 /* expand@2x.png in Resources */,
@@ -3495,6 +3512,7 @@
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
 				738664911906AD660021D1BD /* AboutViewController.m in Sources */,
 				738664B31906B12B0021D1BD /* CommentCell.m in Sources */,
+				738665231907B9BE0021D1BD /* FileLocationSelectionViewController.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,

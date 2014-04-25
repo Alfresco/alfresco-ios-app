@@ -478,6 +478,12 @@ NSString *filenameAppendedWithDateModififed(NSString *filenameOrPath, AlfrescoNo
     {
         CFRelease(pathExtension);
     }
+    
+    if (!mimeType || [mimeType isEqualToString:@""])
+    {
+        mimeType = @"application/octet-stream";
+    }
+    
     return mimeType;
 }
 

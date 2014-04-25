@@ -12,8 +12,16 @@
 #import "Utility.h"
 #import "SyncHelper.h"
 #import "SyncManager.h"
+#import "NavigationViewController.h"
+#import "FileLocationSelectionViewController.h"
+#import "UniversalDevice.h"
+#import "MBProgressHUD.h"
 
 static NSString * const kHandlerPrefix = @"file://";
+
+@interface FileURLHandler () <FileLocationSelectionViewControllerDelegate>
+
+@end
 
 @implementation FileURLHandler
 
@@ -37,22 +45,16 @@ static NSString * const kHandlerPrefix = @"file://";
         
         // Save the file to the original location
         // Delete the old file
-        NSError *removalError = nil;
         NSString *filePath = [metadata.originalFileLocation stringByReplacingOccurrencesOfString:kHandlerPrefix withString:@""];
-        [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:&removalError];
-        
-        if (removalError)
-        {
-            AlfrescoLogError(@"Unable to delete file at path: %@", metadata.originalFileLocation);
-        }
+        [self deleteItemAtPath:filePath];
         
         // Copy the new file into the old location
         NSError *replaceError = nil;
-        [[AlfrescoFileManager sharedManager] copyItemAtPath:url.path toPath:filePath error:&replaceError];
+        [[AlfrescoFileManager sharedManager] moveItemAtPath:url.path toPath:filePath error:&replaceError];
         
         if (replaceError)
         {
-            AlfrescoLogError(@"Unable to copy file at path: %@ to path: %@", metadata.originalFileLocation, url.path);
+            AlfrescoLogError(@"Unable to move file at path: %@ to path: %@", metadata.originalFileLocation, url.path);
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
@@ -99,13 +101,89 @@ static NSString * const kHandlerPrefix = @"file://";
     }
     else
     {
-        // Come from another app, not saveback ...
-        // Save to downloads for the moment
-        [[DownloadManager sharedManager] saveDocument:nil contentPath:url.path completionBlock:nil];
+        // User selection
+        FileLocationSelectionViewController *locationSelectionViewController = [[FileLocationSelectionViewController alloc] initWithFilePath:url.path session:session delegate:self];
+        NavigationViewController *locationNavigationController = [[NavigationViewController alloc] initWithRootViewController:locationSelectionViewController];
+        [UniversalDevice displayModalViewController:locationNavigationController onController:[UniversalDevice containerViewController] withCompletionBlock:nil];
+        
         handled = YES;
     }
     
     return handled;
+}
+
+#pragma mark - Private Functions
+
+- (void)deleteItemAtPath:(NSString *)filePath
+{
+    NSError *deleteError = nil;
+    [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:&deleteError];
+    
+    if (deleteError)
+    {
+        AlfrescoLogError(@"Unable to delete file at path: %@", filePath);
+    }
+}
+
+#pragma mark - FileLocationSelectionViewControllerDelegate Functions
+
+- (void)fileLocationSelectionViewController:(FileLocationSelectionViewController *)selectionController uploadToFolder:(AlfrescoFolder *)folder session:(id<AlfrescoSession>)session filePath:(NSString *)filePath
+{
+    AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    
+    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
+    [inputStream open];
+    
+    // mimetype
+    NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.pathExtension];
+    
+    // Get the file size
+    // It appears that the content size is required by CMIS when creating the content, but not when updating existing content
+    NSError *attributeError = nil;
+    NSDictionary *fileAttributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:filePath error:&attributeError];
+    
+    if (attributeError)
+    {
+        AlfrescoLogError(@"Unable to get the attributes for the item at path: %@", filePath);
+    }
+    
+    unsigned long long fileLength = [(NSNumber *)fileAttributes[kAlfrescoFileSize] unsignedLongLongValue];
+    
+    AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:mimeType length:fileLength];
+    
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:selectionController.navigationController.view];
+    [selectionController.navigationController.view addSubview:progressHUD];
+    [progressHUD show:YES];
+    [documentFolderService createDocumentWithName:[filePath.lastPathComponent stringByRemovingPercentEncoding] inParentFolder:folder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+        [inputStream close];
+        [progressHUD hide:YES];
+        if (error)
+        {
+            NSString *title = NSLocalizedString(@"saveback.upload.failed.title", @"Upload Failed");
+            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.failed.message", @"Upload Failed"), filePath.lastPathComponent, folder.name];
+            displayErrorMessageWithTitle(message, title);
+        }
+        else
+        {
+            [self deleteItemAtPath:filePath];
+            [selectionController dismissViewControllerAnimated:YES completion:^{
+                NSString *title = NSLocalizedString(@"saveback.upload.completed.title", @"Upload Completed");
+                NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.completed.message", @"Upload Completed"), document.name, folder.name];
+                displayInformationMessageWithTitle(message, title);
+            }];
+        }
+    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+        //
+    }];
+}
+
+- (void)fileLocationSelectionViewController:(FileLocationSelectionViewController *)selectionController saveFileAtPathToDownloads:(NSString *)filePath
+{
+    [selectionController dismissViewControllerAnimated:YES completion:^{
+        [[DownloadManager sharedManager] saveDocument:nil contentPath:filePath completionBlock:^(NSString *downloadFilePath) {
+            [self deleteItemAtPath:filePath];
+        }];
+    }];
 }
 
 @end
