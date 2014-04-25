@@ -54,6 +54,10 @@ static CGFloat downloadProgressHeight;
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadStarting:) name:kDocumentPreviewManagerWillStartDownloadNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadProgress:) name:kDocumentPreviewManagerProgressNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileLocallyUpdated:) name:kAlfrescoSaveBackLocalComplete object:nil];
     }
     return self;
 }
@@ -66,10 +70,6 @@ static CGFloat downloadProgressHeight;
         self.document = document;
         self.session = session;
         self.animationController = [[FullScreenAnimationController alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadStarting:) name:kDocumentPreviewManagerWillStartDownloadNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadProgress:) name:kDocumentPreviewManagerProgressNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileLocallyUpdated:) name:kAlfrescoSaveBackLocalComplete object:nil];
     }
     return self;
 }
@@ -399,7 +399,7 @@ static CGFloat downloadProgressHeight;
 {
     NSString *nodeRefUpdated = notification.object;
     
-    if ([nodeRefUpdated isEqualToString:self.document.identifier])
+    if ([nodeRefUpdated isEqualToString:self.document.identifier] || self.document == nil)
     {
         [self.webView reload];
     }
