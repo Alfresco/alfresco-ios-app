@@ -112,7 +112,11 @@
             [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    [cell.image setImage:image withFade:YES];
+                    AlfrescoNodeCell *cellForImage = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (cellForImage)
+                    {
+                        [cellForImage.image setImage:image withFade:YES];
+                    }
                 }
             }];
         }
