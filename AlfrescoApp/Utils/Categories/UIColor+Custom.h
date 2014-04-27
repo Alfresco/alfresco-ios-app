@@ -16,9 +16,9 @@
 + (UIColor *)documentActionsTintColor;
 + (UIColor *)syncButtonFailedColor;
 + (UIColor *)borderGreyColor;
-+ (UIColor *)systemNoticeBlue;
-+ (UIColor *)systemNoticeRed;
-+ (UIColor *)systemNoticeYellow;
++ (UIColor *)systemNoticeInformationColor;
++ (UIColor *)systemNoticeErrorColor;
++ (UIColor *)systemNoticeWarningColor;
 + (UIColor *)taskPriorityHighColor;
 + (UIColor *)taskPriorityMediumColor;
 + (UIColor *)taskPriorityLowColor;
