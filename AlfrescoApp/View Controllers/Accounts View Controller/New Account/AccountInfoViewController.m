@@ -116,7 +116,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 {
     [super viewDidAppear:animated];
     
-    if (self.activityType != AccountActivityTypeEditAccount)
+    if (self.activityType == AccountActivityTypeNewAccount)
     {
         // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
         double delayInSeconds = 0.1;
@@ -338,7 +338,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 - (BOOL)validateAccountFieldsValuesForServer
 {
     BOOL didChangeAndIsValid = YES;
-    BOOL hasAccountPropertiesChanged = NO;
+    BOOL hasAccountPropertiesChanged = (self.activityType == AccountActivityTypeLoginFailed);
     
     if (self.account.accountType == UserAccountTypeOnPremise)
     {

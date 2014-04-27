@@ -15,7 +15,8 @@
 typedef NS_ENUM(NSInteger, AccountActivityType)
 {
     AccountActivityTypeNewAccount,
-    AccountActivityTypeEditAccount
+    AccountActivityTypeEditAccount,
+    AccountActivityTypeLoginFailed
 };
 
 @protocol AccountInfoViewControllerDelegate <NSObject>
