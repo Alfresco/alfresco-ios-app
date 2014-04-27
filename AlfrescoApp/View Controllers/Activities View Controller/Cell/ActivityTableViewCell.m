@@ -10,21 +10,14 @@
 
 @implementation ActivityTableViewCell
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.avatar.layer.cornerRadius = self.avatar.frame.size.width / 2;
-    self.avatar.clipsToBounds = YES;
+    
+    self.activityImage.layer.cornerRadius = self.activityImage.frame.size.width / 2;
+
+    // Circular clipping mask for avatar?
+    self.activityImage.clipsToBounds = self.activityImageIsAvatar;
 }
 
 @end

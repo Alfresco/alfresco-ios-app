@@ -124,7 +124,9 @@
 		2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */; };
 		2764ABD518CE09EE003FFBF9 /* actionsheet-edit-properties.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */; };
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */; };
+		27C2EBF51907044A003B09B9 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27C2EBF71907044A003B09B9 /* Activities.strings */; };
 		27C2EBFE19097D01003B09B9 /* UILabel+Insets.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */; };
+		27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27E84E7618AD53510024B658 /* mainmenu-about.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E5C18AD53510024B658 /* mainmenu-about.png */; };
@@ -465,7 +467,6 @@
 		73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AF317A68DF20099FB84 /* UploadFormViewController.m */; };
 		73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0717A68E770099FB84 /* UserGuide.pdf */; };
 		73B95B0C17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */; };
-		73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0D17A6A8D00099FB84 /* Activities.strings */; };
 		73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
@@ -710,8 +711,12 @@
 		2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties.png"; sourceTree = "<group>"; };
 		2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties@2x.png"; sourceTree = "<group>"; };
 		276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissCompletionProtocol.h; sourceTree = "<group>"; };
+		27C2EBF61907044A003B09B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Activities.strings; sourceTree = "<group>"; };
+		27C2EBF919070452003B09B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Activities.strings; sourceTree = "<group>"; };
 		27C2EBFC19097D01003B09B9 /* UILabel+Insets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Insets.h"; sourceTree = "<group>"; };
 		27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Insets.m"; sourceTree = "<group>"; };
+		27C2EC00190A5A71003B09B9 /* ActivityWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityWrapper.h; sourceTree = "<group>"; };
+		27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityWrapper.m; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -1174,7 +1179,6 @@
 		73B95B0817A68E770099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = en; path = en.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		73B95B0917A68E770099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = fr; path = fr.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SmallThumbnailImageMapping.plist; sourceTree = "<group>"; };
-		73B95B0D17A6A8D00099FB84 /* Activities.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Activities.strings; sourceTree = "<group>"; };
 		73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MetadataDisplayList.plist; sourceTree = "<group>"; };
 		73B95B1917A6AE010099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1886,7 +1890,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				73B95B0D17A6A8D00099FB84 /* Activities.strings */,
+				27C2EBF71907044A003B09B9 /* Activities.strings */,
 				274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */,
 				73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */,
 				73881F87188D87220052C75F /* AlfrescoApp.entitlements */,
@@ -3375,7 +3379,7 @@
 				73B95B0C17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist in Resources */,
 				273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */,
 				732DBFAA18E1BDB600F7A0BF /* small_folder.png in Resources */,
-				73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */,
+				27C2EBF51907044A003B09B9 /* Activities.strings in Resources */,
 				73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */,
 				271DC778189C2D250059D1B2 /* status-sync-waiting-highlighted.png in Resources */,
 				73881FCF188FF6B00052C75F /* actionsheet-delete@2x.png in Resources */,
@@ -3554,6 +3558,7 @@
 				082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
+				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
@@ -3630,6 +3635,15 @@
 				08E89CA217E7593B006936DF /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		27C2EBF71907044A003B09B9 /* Activities.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C2EBF61907044A003B09B9 /* en */,
+				27C2EBF919070452003B09B9 /* fr */,
+			);
+			name = Activities.strings;
 			sourceTree = "<group>";
 		};
 		73B95B0717A68E770099FB84 /* UserGuide.pdf */ = {
