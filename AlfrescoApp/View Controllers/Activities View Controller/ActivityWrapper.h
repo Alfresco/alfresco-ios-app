@@ -13,9 +13,13 @@
 - (id)initWithActivityEntry:(AlfrescoActivityEntry *)activityEntry;
 
 - (NSString *)nodeIdentifier;
+- (BOOL)isDeleteActivity;
 
 @property (nonatomic, strong, readonly) NSString *avatarUserName;
 @property (nonatomic, strong) UIImage *activityImage;
+@property (nonatomic, strong) AlfrescoNode *node;
+@property (nonatomic, strong) AlfrescoPermissions *nodePermissions;
+
 @property (nonatomic, strong, readonly) NSAttributedString *attributedDetailString;
 @property (nonatomic, strong, readonly) NSString *detailString;
 @property (nonatomic, strong, readonly) NSString *dateString;

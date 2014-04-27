@@ -192,7 +192,29 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityWrapper *activityWrapper = self.tableViewData[indexPath.section][indexPath.row];
-    [self displayNode:activityWrapper];
+    if (activityWrapper.nodeIdentifier)
+    {
+        if (activityWrapper.node)
+        {
+            [self displayNodeForActivity:activityWrapper];
+        }
+        else
+        {
+            // Need to retrieve the node first
+            [self retrieveNodeForActivity:activityWrapper completionBlock:^(BOOL success, NSError *error) {
+                if (!success)
+                {
+                    // Display an error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+                else
+                {
+                    [self displayNodeForActivity:activityWrapper];
+                }
+            }];
+        }
+    }
 }
 
 #pragma mark - Private Functions
@@ -306,75 +328,109 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 
 - (void)configureCell:(ActivityTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath isForOffscreenUse:(BOOL)offscreenUse
 {
-    // Offscreen use flag indicates this configuration is for a prototype cell
     ActivityWrapper *activityWrapper = self.tableViewData[indexPath.section][indexPath.row];
     cell.detailsLabel.attributedText = activityWrapper.attributedDetailString;
     cell.dateLabel.text = activityWrapper.dateString;
     
-    if (activityWrapper.activityImage)
+    /**
+     * Offscreen use flag indicates this configuration is for a prototype cell,
+     * so there's no need to perform any processing that doesn't affect cell height.
+     */
+    if (!offscreenUse)
     {
-        cell.activityImageIsAvatar = NO;
-        cell.activityImage.image = activityWrapper.activityImage;
-    }
-    else
-    {
-        cell.activityImageIsAvatar = YES;
-        cell.activityImage.image = [UIImage imageNamed:@"avatar.png"];
-
-        if (!offscreenUse && activityWrapper.avatarUserName)
+        if (activityWrapper.nodeIdentifier && !activityWrapper.isDeleteActivity)
         {
-            [self.personService retrievePersonWithIdentifier:activityWrapper.avatarUserName completionBlock:^(AlfrescoPerson *person, NSError *error) {
-                [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
-                    if (!error)
-                    {
-                        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-                        activityWrapper.activityImage = [UIImage imageWithData:[fileManager dataWithContentsOfURL:contentFile.fileUrl]];
-                        
-                        ActivityTableViewCell *avatarCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                        if (avatarCell)
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+    
+        if (activityWrapper.activityImage)
+        {
+            cell.activityImageIsAvatar = NO;
+            cell.activityImage.image = activityWrapper.activityImage;
+        }
+        else
+        {
+            cell.activityImageIsAvatar = YES;
+            cell.activityImage.image = [UIImage imageNamed:@"avatar.png"];
+
+            if (activityWrapper.avatarUserName)
+            {
+                [self.personService retrievePersonWithIdentifier:activityWrapper.avatarUserName completionBlock:^(AlfrescoPerson *person, NSError *error) {
+                    [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+                        if (!error)
                         {
-                            avatarCell.activityImage.image = activityWrapper.activityImage;
+                            AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+                            activityWrapper.activityImage = [UIImage imageWithData:[fileManager dataWithContentsOfURL:contentFile.fileUrl]];
+                            
+                            ActivityTableViewCell *avatarCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                            if (avatarCell)
+                            {
+                                avatarCell.activityImage.image = activityWrapper.activityImage;
+                            }
                         }
-                    }
+                    }];
                 }];
-            }];
+            }
         }
     }
 }
 
-- (void)displayNode:(ActivityWrapper *)activityWrapper
+- (void)displayNodeForActivity:(ActivityWrapper *)activityWrapper
 {
-    AlfrescoNode *node;
-    if (node)
+    AlfrescoNode *node = activityWrapper.node;
+    AlfrescoPermissions *nodePermissions = activityWrapper.nodePermissions;
+
+    if (node.isDocument)
     {
-        [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-            if (!error)
-            {
-                if (node.isDocument)
-                {
-                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)node
-                                                                                                                           permissions:permissions
-                                                                                                                       contentFilePath:nil
-                                                                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                                                               session:self.session];
-                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
-                }
-                else
-                {
-                    FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node
-                                                                                                                           permissions:permissions
-                                                                                                                               session:self.session];
-                    [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
-                }
-            }
-            else
-            {
-                // display an error
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-        }];
+        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)node
+                                                                                                               permissions:nodePermissions
+                                                                                                           contentFilePath:nil
+                                                                                                          documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                                                   session:self.session];
+        [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
     }
+    else if (node.isFolder)
+    {
+        FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node
+                                                                                                               permissions:nodePermissions
+                                                                                                                   session:self.session];
+        [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+    }
+}
+
+- (void)retrieveNodeForActivity:(ActivityWrapper *)activityWrapper completionBlock:(void(^)(BOOL success, NSError *error))completionBlock
+{
+    [AlfrescoErrors assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
+
+    if (!activityWrapper.nodeIdentifier)
+    {
+        return completionBlock(NO, nil);
+    }
+    
+    [self.documentFolderService retrieveNodeWithIdentifier:activityWrapper.nodeIdentifier completionBlock:^(AlfrescoNode *node, NSError *nodeError) {
+        if (nodeError)
+        {
+            return completionBlock(NO, nodeError);
+        }
+        
+        [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *permissionsError) {
+            if (permissionsError)
+            {
+                return completionBlock(NO, permissionsError);
+            }
+            
+            activityWrapper.node = node;
+            activityWrapper.nodePermissions = permissions;
+            
+            completionBlock(YES, nil);
+        }];
+    }];
 }
 
 #pragma mark - Session received notification handler

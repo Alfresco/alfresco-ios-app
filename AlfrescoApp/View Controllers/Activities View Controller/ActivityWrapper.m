@@ -85,6 +85,11 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
     return self.activityEntry.nodeIdentifier;
 }
 
+- (BOOL)isDeleteActivity
+{
+    return self.activityEntry.isDeleted;
+}
+
 - (NSString *)description
 {
     if (self.activityEntry)
