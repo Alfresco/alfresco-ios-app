@@ -103,7 +103,7 @@ UIImage *smallImageForType(NSString *type)
     
     if (!imageName)
     {
-        imageName = @"generic.png";
+        imageName = @"small_document.png";
     }
     
     return [UIImage imageNamed:imageName];
@@ -123,7 +123,7 @@ UIImage *largeImageForType(NSString *type)
     
     if (!imageName)
     {
-        imageName = @"generic.png";
+        imageName = @"large_document.png";
     }
     
     return [UIImage imageNamed:imageName];
