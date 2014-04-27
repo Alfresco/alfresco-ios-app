@@ -14,16 +14,6 @@
 
 @implementation BaseFileFolderListViewController
 
-- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
-{
-    self = [super initWithNibName:nibName andSession:session];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];

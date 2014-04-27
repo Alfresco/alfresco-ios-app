@@ -130,6 +130,8 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     if (folder)
     {
         self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
+        [self reloadTableView];
+        [self hidePullToRefreshView];
     }
     else
     {
@@ -137,13 +139,11 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
             if (syncedNodes)
             {
                 self.tableViewData = syncedNodes;
-                [self.tableView reloadData];
+                [self reloadTableView];
                 [self hidePullToRefreshView];
             }
         }];
     }
-    [self hidePullToRefreshView];
-    [self.tableView reloadData];
 }
 
 - (NSString *)listTitle
@@ -268,7 +268,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     else if (notificationAccount == selectedAccount)
     {
-        [self.tableView reloadData];
+        [self reloadTableView];
     }
 }
 

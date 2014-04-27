@@ -29,44 +29,11 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 @property (nonatomic, strong) AlfrescoActivityStreamService *activityService;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
-@property (nonatomic, strong) ActivitiesEmptyTableViewDelegate *emptyTableViewDelegate;
 @property (nonatomic, strong) ActivityTableViewCell *prototypeCell;
 @property (nonatomic, strong) NSMutableArray *tableSectionHeaders;
 
 @end
 
-/**
- * ActivitiesEmptyTableViewDelegate
- */
-@implementation ActivitiesEmptyTableViewDelegate
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [[AttributedLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ActivitiesEmptyCell"];
-    cell.textLabel.font = [UIFont systemFontOfSize:24.0];
-    cell.textLabel.insetTop = -(tableView.frame.size.height / 3.0);
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.text = NSLocalizedStringFromTable(@"activity.no-activities", @"Activities", @"No Activities");
-    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [UIColor grayColor];
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return tableView.frame.size.height;
-}
-
-@end
-
-/**
- * ActivitiesViewController
- */
 @implementation ActivitiesViewController
 
 - (id)initWithSession:(id<AlfrescoSession>)session
@@ -85,14 +52,10 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"activities.title", @"Title");
-    self.emptyTableViewDelegate = [ActivitiesEmptyTableViewDelegate new];
+    self.emptyMessage = NSLocalizedString(@"activities.empty", @"No Activities");
     
     UINib *cellNib = [UINib nibWithNibName:@"ActivityTableViewCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kActivityCellIdentifier];
-
-    self.tableView.dataSource = self.emptyTableViewDelegate;
-    self.tableView.delegate = self.emptyTableViewDelegate;
-    self.tableView.allowsSelection = NO;
 
     if (self.session)
     {
@@ -232,10 +195,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (error || [pagingResult.objects count] == 0)
         {
-            self.tableView.dataSource = self.emptyTableViewDelegate;
-            self.tableView.delegate = self.emptyTableViewDelegate;
-            self.tableView.allowsSelection = NO;
-            [self.tableView reloadData];
+            [self reloadTableView];
             
             if (error)
             {

@@ -17,10 +17,7 @@ static NSInteger const kDeleteCertificateGroup = 1;
 static CGFloat const kTableViewCellHeight = 54.0f;
 
 @interface ClientCertificateViewController ()
-
-@property (nonatomic, strong) NSArray *tableGroups;
 @property (nonatomic, strong) UserAccount *account;
-
 @end
 
 @implementation ClientCertificateViewController
@@ -30,7 +27,7 @@ static CGFloat const kTableViewCellHeight = 54.0f;
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self)
     {
-        _account = account;
+        self.account = account;
     }
     return self;
 }
@@ -40,24 +37,23 @@ static CGFloat const kTableViewCellHeight = 54.0f;
     [super viewWillAppear:animated];
     
     [self constructTableGroups];
-    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.tableGroups.count;
+    return self.tableViewData.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.tableGroups[section] count];
+    return [self.tableViewData[section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.tableGroups[indexPath.section][indexPath.row];
+    return self.tableViewData[indexPath.section][indexPath.row];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -113,7 +109,7 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         addCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-add.png"];
         
         NSArray *tableGroup = @[addCertificateCell];
-        self.tableGroups = @[tableGroup];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[tableGroup]];
     }
     else
     {
@@ -130,8 +126,10 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         
         NSArray *identityGroup = @[identityCell];
         NSArray *deleteGroup = @[deleteCertificateCell];
-        self.tableGroups = @[identityGroup, deleteGroup];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[identityGroup, deleteGroup]];
     }
+
+    [self reloadTableView];
 }
 
 - (void)deleteCertificate
@@ -148,7 +146,6 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         {
             self.account.accountCertificate = nil;
             [self constructTableGroups];
-            [self.tableView reloadData];
         }
     }];
 }

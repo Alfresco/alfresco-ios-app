@@ -22,12 +22,10 @@ static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
 static NSString * const kServiceDocument = @"/alfresco";
 
-static NSInteger const kAdvancedSectionNumber = 1;
-static NSInteger const kAccountInfoCertificateRow = 2;
+static NSInteger const kTagCertificateCell = 1;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
-@property (nonatomic, strong) NSArray *tableGroups;
 @property (nonatomic, strong) NSArray *tableGroupHeaders;
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -54,14 +52,14 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     {
         if (account)
         {
-            _account = account;
+            self.account = account;
         }
         else
         {
-            _account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
+            self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
         }
-        _activityType = activityType;
-        _formBackupAccount = [_account copy];
+        self.activityType = activityType;
+        self.formBackupAccount = [self.account copy];
     }
     return self;
 }
@@ -168,7 +166,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
                 }
             }];
         }
-        
     }];
 }
 
@@ -190,12 +187,12 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.tableGroups.count;
+    return self.tableViewData.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.tableGroups[section] count];
+    return [self.tableViewData[section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -203,34 +200,26 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     return NSLocalizedString(self.tableGroupHeaders[section], @"Section Header");
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return nil;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.tableGroups[indexPath.section][indexPath.row];
+    return self.tableViewData[indexPath.section][indexPath.row];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == kAdvancedSectionNumber && indexPath.row == kAccountInfoCertificateRow)
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.tag == kTagCertificateCell)
     {
         [self.activeTextField resignFirstResponder];
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
         [self.navigationController pushViewController:clientCertificate animated:YES];
-    }
-    else
-    {
-        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-        selectedCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
 
 - (void)constructTableCellsForAlfrescoServer
 {
     TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
     descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
     descriptionCell.valueTextField.delegate = self;
     descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
@@ -239,6 +228,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     self.descriptionTextField.text = self.formBackupAccount.accountDescription;
     
     SwitchCell *syncPreferenceCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+    syncPreferenceCell.selectionStyle = UITableViewCellSelectionStyleNone;
     syncPreferenceCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.syncPreference", @"Sync Favorite Content");
     self.syncPreferenceSwitch = syncPreferenceCell.valueSwitch;
     [self.syncPreferenceSwitch addTarget:self action:@selector(syncPreferenceChanged:) forControlEvents:UIControlEventValueChanged];
@@ -247,6 +237,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
         TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
         usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
         usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
         usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
@@ -255,6 +246,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.usernameTextField.text = self.formBackupAccount.username;
         
         TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
         passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
         passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
         passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
@@ -264,6 +256,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.passwordTextField.text = self.formBackupAccount.password;
         
         TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        serverAddressCell.selectionStyle = UITableViewCellSelectionStyleNone;
         serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
         serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
         serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
@@ -272,6 +265,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
         
         SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+        protocolCell.selectionStyle = UITableViewCellSelectionStyleNone;
         protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
         self.protocolSwitch = protocolCell.valueSwitch;
         [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
@@ -279,6 +273,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         [self.protocolSwitch setOn:isHTTPSOn animated:YES];
         
         TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        portCell.selectionStyle = UITableViewCellSelectionStyleNone;
         portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
         portCell.valueTextField.text = kDefaultHTTPPort;
         portCell.valueTextField.returnKeyType = UIReturnKeyNext;
@@ -288,6 +283,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
         
         TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+        serviceDocumentCell.selectionStyle = UITableViewCellSelectionStyleNone;
         serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
         serviceDocumentCell.valueTextField.text = kServiceDocument;
         serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
@@ -296,20 +292,21 @@ static NSInteger const kAccountInfoCertificateRow = 2;
         self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
         
         LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        certificateCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        certificateCell.tag = kTagCertificateCell;
         certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
         certificateCell.valueLabel.text = self.account.accountCertificate.summary;
         self.certificateLabel = certificateCell.valueLabel;
         
-        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        self.tableGroups = @[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                              @[syncPreferenceCell],
-                              @[portCell, serviceDocumentCell, certificateCell]];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                               @[syncPreferenceCell],
+                                                               @[portCell, serviceDocumentCell, certificateCell]]];
         self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.advanced"];
     }
     else
     {
-        self.tableGroups = @[ @[descriptionCell], @[syncPreferenceCell] ];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[descriptionCell], @[syncPreferenceCell]]];
         self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting"];
     }
 }
@@ -446,7 +443,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     {
         [self showHUD];
         [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
-            
             [self hideHUD];
             if (successful)
             {
@@ -457,7 +453,8 @@ static NSInteger const kAccountInfoCertificateRow = 2;
             {
                 UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
                                                                        message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
-                                                                      delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                                      delegate:nil
+                                                             cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
                                                              otherButtonTitles:nil, nil];
                 [failureAlert show];
             }
@@ -473,7 +470,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
     
     if ([portNumber isEqualToString:@""] || [portNumber isEqualToString:kDefaultHTTPPort] || [portNumber isEqualToString:kDefaultHTTPSPort])
     {
-        if (self.protocolSwitch.isOn && self.portTextField.text )
+        if (self.protocolSwitch.isOn && self.portTextField.text)
         {
             self.portTextField.text = kDefaultHTTPSPort;
         }
@@ -543,7 +540,7 @@ static NSInteger const kAccountInfoCertificateRow = 2;
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
+    NSDictionary *info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
     BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);

@@ -36,9 +36,6 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 - (id)init
 {
     self = [super initWithNibName:kDownloadsInterface andSession:nil];
-    if (self)
-    {
-    }
     return self;
 }
 
@@ -47,7 +44,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     self = [self init];
     if (self)
     {
-        _documentFilter = documentFilter;
+        self.documentFilter = documentFilter;
     }
     return self;
 }
@@ -376,7 +373,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     
     self.noDocumentsSaved = filteredDocumentPaths.count == 0;
     self.tableViewData = filteredDocumentPaths;
-    [self.tableView reloadData];
+    [self reloadTableView];
     [self updateBarButtonItems];
     [self selectIndexPathForAlfrescoNodeInDetailView:nil];
 }

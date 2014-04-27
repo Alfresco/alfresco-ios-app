@@ -8,10 +8,6 @@
 
 #import "ParentListViewController.h"
 
-@interface ActivitiesEmptyTableViewDelegate : NSObject<UITableViewDataSource, UITableViewDelegate>
-
-@end
-
 @interface ActivitiesViewController : ParentListViewController
 
 @end

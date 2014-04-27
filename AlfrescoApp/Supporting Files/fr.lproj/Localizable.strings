@@ -1,16 +1,14 @@
-/*
- Localizable.strings
- AlfrescoApp
- 
- Created by Tauseef Mughal on 29/07/2013.
- Copyright (c) 2013 Alfresco. All rights reserved.
- */
+/* 
+  Localizable.strings
+  AlfrescoApp
+
+  Created by Tauseef Mughal on 29/07/2013.
+  Copyright (c) 2013 Alfresco. All rights reserved.
+*/
 
 /**
  * App Wide
  */
-"splitviewcontroller.showmasterbutton" = "Alfresco";
-// button labels
 "Yes" = "Yes";
 "No" = "No";
 "Cancel" = "Cancel";
@@ -20,6 +18,7 @@
 "Upload" = "Upload";
 "Close" = "Close";
 "Next" = "Next";
+"No Items" = "No Items";
 
 /**
  * Relative Dates
@@ -117,6 +116,7 @@
  * Sites View Controller
  */
 "sites.title" = "Sites";
+"sites.empty" = "No Sites";
 "sites.segmentControl.mysites" = "My Sites";
 "sites.segmentControl.favoritesites" = "Favorite Sites";
 "sites.segmentControl.allsites" = "All Sites";
@@ -139,6 +139,7 @@
  * Accounts View Controller
  */
 "accounts.title" = "Accounts";
+"accounts.empty" = "No Accounts";
 "accountdetails.title.newaccount" = "New Account";
 "accountdetails.title.editingaccount" = "Editing Account";
 "accounttype.cloud" = "Alfresco Cloud";
@@ -185,7 +186,7 @@
 
 /**
  * Cloud Signup
- **/
+ */
 "cloudsignup.title" = "Alfresco in the cloud";
 "accountdetails.fields.firstName" = "First Name";
 "accountdetails.fields.lastName" = "Last Name";
@@ -225,7 +226,7 @@
  */
 "companyHome.title" = "Repository";
 
-/** 
+/**
  * Shared Files View Controller
  */
 "sharedFiles.title" = "Shared Files";
@@ -265,7 +266,7 @@
 
 /**
  * Node Picker
- **/
+ */
 "nodes.picker.attachments.select" = "Select attachments...";
 "nodes.picker.list.title" = "Attachments";
 "nodes.picker.list.attachments.section.title" = "Selected Attachments";
@@ -340,6 +341,7 @@
  * Tag Selection Controller
  */
 "tagselection.title" = "Tags";
+"tagselection.empty" = "No Tags";
 "tagselection.newTag.buttonTitle" = "Add New Tag";
 "tagselection.newTag.alertTitle" = "Add New Tag";
 "tagselection.newTag.error.invalidtag.title" = "Invalid Tag";
@@ -499,6 +501,7 @@
  * Tasks
  */
 "tasks.title" = "Tasks";
+"tasks.empty" = "No Tasks";
 "tasks.process.unnamed" = "Unnamed Process";
 "tasks.view.button" = "View";
 "tasks.title.mytasks" = "My Tasks";

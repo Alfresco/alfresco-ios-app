@@ -22,8 +22,6 @@
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 
-- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
-
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session;
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
             usingListingContext:(AlfrescoListingContext *)listingContext

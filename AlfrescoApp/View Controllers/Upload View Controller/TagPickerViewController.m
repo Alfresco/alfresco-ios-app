@@ -53,6 +53,7 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"tagselection.title", @"Tag Title");
+    self.emptyMessage = NSLocalizedString(@"tagselection.empty", @"No Tags");
     
     UIBarButtonItem *addNewTagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tagselection.newTag.buttonTitle", @"Add New Tag")
                                                                         style:UIBarButtonItemStyleBordered
@@ -74,7 +75,7 @@
             {
                 [weakSelf addNewTag:selectedTag];
             }
-            [weakSelf.tableView reloadData];
+            [weakSelf reloadTableView];
         }
         else
         {
@@ -196,7 +197,7 @@
         rowIndexForNewTag = [self.tableViewData indexOfObject:newTag inSortedRange:NSMakeRange(0, self.tableViewData.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
         
         [self.tableViewData insertObject:newTag atIndex:rowIndexForNewTag];
-        [self.tableView reloadData];
+        [self reloadTableView];
     }
     else
     {
