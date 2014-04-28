@@ -30,4 +30,6 @@ typedef NS_ENUM(NSUInteger, MainMenuNavigationControllerType)
 
 @property (strong, nonatomic) UIWindow *window;
 
+- (void)updateAppFirstLaunchFlag;
+
 @end
