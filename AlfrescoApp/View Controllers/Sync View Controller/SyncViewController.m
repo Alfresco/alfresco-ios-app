@@ -36,7 +36,6 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
-@property (nonatomic, assign) BOOL syncOnSiteRequestsCompletion;
 
 @end
 
@@ -63,8 +62,8 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 	
     if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
+        self.didSyncAfterSessionRefresh = YES;
     }
     
     if (self.parentNode != nil || ![[ConnectivityManager sharedManager] hasInternetConnection])
@@ -105,6 +104,18 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
                                              selector:@selector(nodeAdded:)
                                                  name:kAlfrescoNodeAddedOnServerNotification
                                                object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // if view has already loaded, the user changes selected Account, app will try to sync in viewWillAppear so that Alert to sync wouldn't appear on top of other view e.g Sites, Tasks ...
+    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
+    {
+        [self loadSyncNodesForFolder:self.parentNode];
+        self.didSyncAfterSessionRefresh = YES;
+    }
 }
 
 - (void)dealloc
@@ -160,24 +171,30 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     id<AlfrescoSession> session = notification.object;
     self.session = session;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+    self.didSyncAfterSessionRefresh = NO;
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])
     {
         // Hold off making sync network requests until either the Sites requests have completed, or a timeout period has passed
-        self.syncOnSiteRequestsCompletion = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kSyncOnSiteRequestsCompletionTimeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.syncOnSiteRequestsCompletion = NO;
-            [self loadSyncNodesForFolder:self.parentNode];
+            
+            if (!self.didSyncAfterSessionRefresh)
+            {
+                [self loadSyncNodesForFolder:self.parentNode];
+                self.didSyncAfterSessionRefresh = YES;
+            }
         });
-        self.didSyncAfterSessionRefresh = YES;
     }
 }
 
 - (void)siteRequestsCompleted:(NSNotification *)notification
 {
-    self.syncOnSiteRequestsCompletion = NO;
-    [self loadSyncNodesForFolder:self.parentNode];
+    if (![[SyncManager sharedManager] isFirstUse])
+    {
+        [self loadSyncNodesForFolder:self.parentNode];
+        self.didSyncAfterSessionRefresh = YES;
+    }
 }
 
 - (void)didAddNodeToFavourites:(NSNotification *)notification

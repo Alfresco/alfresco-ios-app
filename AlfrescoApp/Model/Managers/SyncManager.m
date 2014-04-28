@@ -21,8 +21,6 @@
 #import "ConnectivityManager.h"
 #import "PreferenceManager.h"
 
-static NSString * const kDidAskToSync = @"didAskToSync";
-
 static NSString * const kSyncQueueName = @"syncQueue";
 static NSUInteger const kSyncMaxConcurrentOperations = 2;
 
@@ -247,37 +245,40 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         return NO;
     };
     
-    if ([self isSyncPreferenceOn])
-    {
-        [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
-            
-            if (!hasFolder(nodes))
-            {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
-                });
-            }
-            else
-            {
-                // retrieve nodes for top level sync nodes
-                for (AlfrescoNode *node in nodes)
+    [self showSyncAlertWithCompletionBlock:^(BOOL completed) {
+        
+        if ([self isSyncPreferenceOn])
+        {
+            [self retrievePermissionsForNodes:nodes withCompletionBlock:^{
+                
+                if (!hasFolder(nodes))
                 {
-                    if (node.isFolder)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                    });
+                }
+                else
+                {
+                    // retrieve nodes for top level sync nodes
+                    for (AlfrescoNode *node in nodes)
                     {
-                        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                            
-                            if (self.nodeChildrenRequestsCount == 0)
-                            {
-                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
-                                });
-                            }
-                        }];
+                        if (node.isFolder)
+                        {
+                            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                                
+                                if (self.nodeChildrenRequestsCount == 0)
+                                {
+                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                        [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                                    });
+                                }
+                            }];
+                        }
                     }
                 }
-            }
-        }];
-    }
+            }];
+        }
+    }];
 }
 
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -462,7 +463,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                    delegate:nil
                                                           cancelButtonTitle:NSLocalizedString(@"sync.downloadsize.prompt.cancel", @"Don't Sync")
                                                           otherButtonTitles:NSLocalizedString(@"sync.downloadsize.prompt.confirm", @"Sync Now"), nil];
-
+                    
                     [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
                         if (!isCancelButton)
                         {
@@ -752,8 +753,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    NSString *selectedAccountIdentifier = [self selectedAccountIdentifier];
-    BOOL isSyncNodesInfoInMemory = ([self.syncNodesInfo objectForKey:selectedAccountIdentifier] != nil);
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccount.accountIdentifier];
+    BOOL isSyncNodesInfoInMemory = (topLevelSyncNodes != nil);
+    
     
     void (^syncNode)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
     {
@@ -766,23 +769,36 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     };
     
-    [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
-        
-        if (isSyncNodesInfoInMemory)
-        {
-            NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccountIdentifier];
-            [topLevelSyncNodes addObject:node];
-        }
-        else
-        {
-            self.syncNodesInfo = [NSMutableDictionary dictionary];
-            [self.syncNodesInfo setValue:@[node] forKey:selectedAccountIdentifier];
-        }
-        
-        if (node.isFolder)
-        {
-            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                if (self.nodeChildrenRequestsCount == 0)
+    if (selectedAccount.isSyncOn)
+    {
+        [self showSyncAlertWithCompletionBlock:^(BOOL completed) {
+            
+            [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
+                
+                if (isSyncNodesInfoInMemory)
+                {
+                    [topLevelSyncNodes addObject:node];
+                }
+                else
+                {
+                    self.syncNodesInfo = [NSMutableDictionary dictionary];
+                    [self.syncNodesInfo setValue:@[node] forKey:selectedAccount.accountIdentifier];
+                }
+                
+                if (node.isFolder)
+                {
+                    [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                        if (self.nodeChildrenRequestsCount == 0)
+                        {
+                            syncNode(node);
+                            if (completionBlock != NULL)
+                            {
+                                completionBlock(YES);
+                            }
+                        }
+                    }];
+                }
+                else
                 {
                     syncNode(node);
                     if (completionBlock != NULL)
@@ -791,16 +807,12 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                     }
                 }
             }];
-        }
-        else
-        {
-            syncNode(node);
-            if (completionBlock != NULL)
-            {
-                completionBlock(YES);
-            }
-        }
-    }];
+        }];
+    }
+    else
+    {
+        [topLevelSyncNodes addObject:node];
+    }
 }
 
 - (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -1135,8 +1147,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (BOOL)isFirstUse
 {
-    BOOL didAskToSync = [[NSUserDefaults standardUserDefaults] boolForKey:kDidAskToSync];
-    return !didAskToSync;
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    return !selectedAccount.didAskToSync;
 }
 
 /*
@@ -1166,6 +1178,41 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     UserAccount *userAccount = [[AccountManager sharedManager] selectedAccount];
     return userAccount.isSyncOn;
+}
+
+- (void)showSyncAlertWithCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    AccountManager *accountManager = [AccountManager sharedManager];
+    UserAccount *selectedAccount = accountManager.selectedAccount;
+    
+    if ([self isFirstUse] && !selectedAccount.isSyncOn)
+    {
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
+        [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
+                                        message:message
+                                completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                                    
+                                    selectedAccount.didAskToSync = YES;
+                                    selectedAccount.isSyncOn = !isCancelButton;
+                                    [accountManager saveAccountsToKeychain];
+                                    
+                                    completionBlock(YES);
+                                }];
+    }
+    else
+    {
+        completionBlock(YES);
+    }
+}
+
+- (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    [alert showWithCompletionBlock:completionBlock];
 }
 
 #pragma mark - UIAlertview Methods
