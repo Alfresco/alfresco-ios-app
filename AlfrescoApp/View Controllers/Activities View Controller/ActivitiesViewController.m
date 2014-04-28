@@ -17,6 +17,8 @@
 #import "Utility.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
+#import "AvatarManager.h"
+#import "ThumbnailDownloader.h"
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
 static NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
@@ -308,35 +310,82 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-    
+
+        BOOL isActivityDocumentOrFolder = activityWrapper.isDocument || activityWrapper.isFolder;
+        cell.activityImageIsAvatar = !isActivityDocumentOrFolder;
+        
         if (activityWrapper.activityImage)
         {
-            cell.activityImageIsAvatar = NO;
+            // We already have an image for this activity
             cell.activityImage.image = activityWrapper.activityImage;
         }
         else
         {
-            cell.activityImageIsAvatar = YES;
-            cell.activityImage.image = [UIImage imageNamed:@"avatar.png"];
-
-            if (activityWrapper.avatarUserName)
+            if (isActivityDocumentOrFolder)
             {
-                [self.personService retrievePersonWithIdentifier:activityWrapper.avatarUserName completionBlock:^(AlfrescoPerson *person, NSError *error) {
-                    [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
-                        if (!error)
+                if (activityWrapper.isDocument)
+                {
+                    // TODO: Ability to get a (cached) thumbnail from an objectId instead of requiring an AlfrescoDocument object
+                    activityWrapper.activityImage = smallImageForType([activityWrapper.nodeName pathExtension]);
+                    
+//                    AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
+//                    
+//                    UIImage *cachedThumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+//                    if (cachedThumbnail)
+//                    {
+//                        activityWrapper.activityImage = cachedThumbnail;
+//                        cell.activityImage.image = activityWrapper.activityImage;
+//                    }
+//                    else
+//                    {
+//                        activityWrapper.activityImage = smallImageForType([documentNode.name pathExtension]);
+//                        cell.activityImage.image = activityWrapper.activityImage;
+//                        
+//                        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+//                            if (image)
+//                            {
+//                                ActivityTableViewCell *thumbnailCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//                                if (thumbnailCell)
+//                                {
+//                                    activityWrapper.activityImage = image;
+//                                    thumbnailCell.activityImage.image = image;
+//                                }
+//                            }
+//                        }];
+//                    }
+                }
+                else
+                {
+                    activityWrapper.activityImage = [UIImage imageNamed:@"folder.png"];
+                }
+            }
+            else if (activityWrapper.avatarUserName)
+            {
+                UIImage *cachedImage = [[AvatarManager sharedManager] avatarForIdentifier:activityWrapper.avatarUserName];
+                if (cachedImage)
+                {
+                    activityWrapper.activityImage = cachedImage;
+                }
+                else
+                {
+                    activityWrapper.activityImage = [UIImage imageNamed:@"avatar.png"];
+
+                    [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:activityWrapper.avatarUserName session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+                        if (avatarImage)
                         {
-                            AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-                            activityWrapper.activityImage = [UIImage imageWithData:[fileManager dataWithContentsOfURL:contentFile.fileUrl]];
-                            
                             ActivityTableViewCell *avatarCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
                             if (avatarCell)
                             {
+                                activityWrapper.activityImage = avatarImage;
                                 avatarCell.activityImage.image = activityWrapper.activityImage;
                             }
                         }
                     }];
-                }];
+                }
             }
+
+            // We'll always have *something* by the time the code gets here
+            cell.activityImage.image = activityWrapper.activityImage;
         }
     }
 }

@@ -13,6 +13,9 @@
 - (id)initWithActivityEntry:(AlfrescoActivityEntry *)activityEntry;
 
 - (NSString *)nodeIdentifier;
+- (NSString *)nodeName;
+- (BOOL)isDocument;
+- (BOOL)isFolder;
 - (BOOL)isDeleteActivity;
 
 @property (nonatomic, strong, readonly) NSString *avatarUserName;

@@ -85,6 +85,21 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
     return self.activityEntry.nodeIdentifier;
 }
 
+- (NSString *)nodeName
+{
+    return self.title;
+}
+
+- (BOOL)isDocument
+{
+    return self.activityEntry.isDocument;
+}
+
+- (BOOL)isFolder
+{
+    return self.activityEntry.isFolder;
+}
+
 - (BOOL)isDeleteActivity
 {
     return self.activityEntry.isDeleted;
@@ -145,15 +160,6 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
     // TODO: Resolve this into a site title
     self.siteTitle = self.activityEntry.siteShortName;
     self.avatarUserName = self.activityEntry.createdBy;
-    
-    if (self.activityEntry.isDocument)
-    {
-        self.activityImage = smallImageForType([self.title pathExtension]);
-    }
-    else if (self.activityEntry.isFolder)
-    {
-        self.activityImage = [UIImage imageNamed:@"folder.png"];
-    }
     
     self.custom0 = summary[kActivitySummaryCustom0];
     self.custom1 = summary[kActivitySummaryCustom1];

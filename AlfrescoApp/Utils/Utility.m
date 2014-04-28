@@ -302,11 +302,15 @@ NSString *fileNameAppendedWithDate(NSString *name)
     return fileName;
 }
 
-NSString *filenameAppendedWithDateModififed(NSString *filenameOrPath, AlfrescoNode *node)
+NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNode *node)
 {
     NSString *dateString = [[Utility dateFormatter] stringFromDate:node.modifiedAt];
     NSString *fileExtension = filenameOrPath.pathExtension;
-    NSString *filePathOrName = [[NSString stringWithFormat:@"%@%@", filenameOrPath.stringByDeletingPathExtension, dateString] stringByAppendingPathExtension:fileExtension];
+    NSString *filePathOrName = [NSString stringWithFormat:@"%@_%@", filenameOrPath.stringByDeletingPathExtension, dateString];
+    if (fileExtension.length > 0)
+    {
+        filePathOrName = [filePathOrName stringByAppendingPathExtension:fileExtension];
+    }
     return filePathOrName;
 }
 
