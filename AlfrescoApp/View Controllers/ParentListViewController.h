@@ -14,6 +14,16 @@
 @class AlfrescoPagingResult;
 @protocol AlfrescoSession;
 
+/**
+ * ParentListEmptyTableViewController
+ */
+@interface ParentListEmptyTableViewController : NSObject<UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong) NSString *emptyMessage;
+@end
+
+/**
+ * ParentListViewController
+ */
 @interface ParentListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
@@ -22,11 +32,13 @@
 @property (nonatomic, assign) BOOL moreItemsAvailable;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) NSString *emptyMessage;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
 - (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
 - (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
+- (void)reloadTableView;
 - (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
 - (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 - (void)addAlfrescoNodes:(NSArray *)alfrescoNodes withRowAnimation:(UITableViewRowAnimation)rowAnimation;

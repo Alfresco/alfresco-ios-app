@@ -14,16 +14,6 @@
 
 @implementation BaseFileFolderListViewController
 
-- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
-{
-    self = [super initWithNibName:nibName andSession:session];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
@@ -112,7 +102,11 @@
             [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    [cell.image setImage:image withFade:YES];
+                    AlfrescoNodeCell *cellForImage = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (cellForImage)
+                    {
+                        [cellForImage.image setImage:image withFade:YES];
+                    }
                 }
             }];
         }

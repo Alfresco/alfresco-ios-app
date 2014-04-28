@@ -38,7 +38,7 @@ CGFloat hiddenYOrigin;
         switch (style)
         {
             case SystemNoticeStyleInformation:
-                self.systemNoticeBackgroundColour = [UIColor systemNoticeBlue];
+                self.systemNoticeBackgroundColour = [UIColor systemNoticeInformationColor];
                 self.icon = @"system_notice_info";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
@@ -46,7 +46,7 @@ CGFloat hiddenYOrigin;
                 break;
                 
             case SystemNoticeStyleError:
-                self.systemNoticeBackgroundColour = [UIColor systemNoticeRed];
+                self.systemNoticeBackgroundColour = [UIColor systemNoticeErrorColor];
                 self.icon = @"system_notice_error";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
@@ -55,7 +55,7 @@ CGFloat hiddenYOrigin;
                 break;
             
             case SystemNoticeStyleWarning:
-                self.systemNoticeBackgroundColour = [UIColor systemNoticeYellow];
+                self.systemNoticeBackgroundColour = [UIColor systemNoticeWarningColor];
                 self.icon = @"system_notice_warning";
                 self.labelColor = [UIColor blackColor];
                 self.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];

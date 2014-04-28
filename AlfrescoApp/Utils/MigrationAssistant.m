@@ -12,6 +12,7 @@
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "KeychainUtils.h"
+#import "AppDelegate.h"
 
 static NSString * const kOldAccountListIdentifier = @"AccountList";
 
@@ -28,6 +29,7 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
     if ([self shouldStartMigration])
     {
         [self migrateAccounts];
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate] updateAppFirstLaunchFlag];
     }
 }
 
@@ -83,6 +85,8 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
     if ([oldAccount.multitenant boolValue])
     {
         account.accountType = UserAccountTypeCloud;
+        account.cloudAccountId = oldAccount.cloudId;
+        account.cloudAccountKey = oldAccount.cloudKey;
     }
     else
     {

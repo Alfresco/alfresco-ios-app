@@ -26,18 +26,6 @@
                                     [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     
     self.buildDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"about.build.date.time", @"Build Date: %s %s"), __DATE__, __TIME__];
-    
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(doneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-}
-
-- (void)doneButtonPressed:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.navigationController popToRootViewControllerAnimated:NO];
-    }];
 }
 
 @end

@@ -62,6 +62,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
+    self.emptyMessage = NSLocalizedString(@"tasks.empty", @"No Tasks");
     
     UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tasks.view.button", @"View") style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
     self.filterButton = filterButton;
@@ -134,7 +135,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             if (weakSelf.displayedTaskFilter == TaskFilterTask)
             {
                 weakSelf.tableViewData = weakSelf.myTasks.tasksAfterFiltering;
-                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakSelf reloadTableView];
             }
         }
     }];
@@ -151,7 +152,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             if (weakSelf.displayedTaskFilter == TaskFilterProcess)
             {
                 weakSelf.tableViewData = weakSelf.tasksIStarted.tasksAfterFiltering;
-                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakSelf reloadTableView];
             }
         }
     }];
@@ -218,7 +219,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     else
     {
         self.tableViewData = groupToSwitchTo.tasksAfterFiltering;
-        [self.tableView reloadData];
+        [self reloadTableView];
     }
 }
 
@@ -322,7 +323,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             break;
         }
         
-        [self.tableView reloadData];
+        [self reloadTableView];
     }
 }
 
@@ -334,7 +335,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];;
         currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
         self.tableViewData = currentGroupedItem.tasksAfterFiltering;
-        [self.tableView reloadData];
+        [self reloadTableView];
     }
 }
 
