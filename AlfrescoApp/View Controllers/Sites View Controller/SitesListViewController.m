@@ -116,6 +116,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"sites.title", @"Sites Title");
+    self.emptyMessage = NSLocalizedString(@"site.empty", @"No Sites");
     
     if (!IS_IPAD)
     {

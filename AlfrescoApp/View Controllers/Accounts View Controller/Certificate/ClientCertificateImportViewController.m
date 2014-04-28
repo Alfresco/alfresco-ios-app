@@ -13,7 +13,6 @@
 
 @interface ClientCertificateImportViewController ()
 
-@property (nonatomic, strong) NSArray *tableGroups;
 @property (nonatomic, strong) NSArray *tableHeaders;
 @property (nonatomic, strong) NSArray *tableFooters;
 @property (nonatomic, strong) UserAccount *account;
@@ -30,8 +29,8 @@
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self)
     {
-        _account = account;
-        _certificatePath = certificatePath;
+        self.account = account;
+        self.certificatePath = certificatePath;
     }
     return self;
 }
@@ -66,17 +65,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.tableGroups.count;
+    return self.tableViewData.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.tableGroups[section] count];
+    return [self.tableViewData[section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.tableGroups[indexPath.section][indexPath.row];
+    return self.tableViewData[indexPath.section][indexPath.row];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -104,7 +103,7 @@
     self.tableHeaders = @[NSLocalizedString(@"certificate-import.tableHeader", @"Table header for the Import Certificate View")];
     self.tableFooters = @[NSLocalizedString(@"certificate-import.tableFooter", @"Table footer for the Import Certificate View")];
     NSArray *tableGroup = @[passcodeCell];
-    self.tableGroups = @[tableGroup];
+    self.tableViewData = [NSMutableArray arrayWithArray:@[tableGroup]];
 }
 
 - (void)importButtonAction:(id)sender

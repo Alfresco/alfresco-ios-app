@@ -10,8 +10,10 @@
 
 @interface ActivityTableViewCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UIImageView *avatar;
-@property (nonatomic, weak) IBOutlet UILabel *summaryLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *activityImage;
 @property (nonatomic, weak) IBOutlet UILabel *detailsLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+
+@property (nonatomic, assign) BOOL activityImageIsAvatar;
 
 @end

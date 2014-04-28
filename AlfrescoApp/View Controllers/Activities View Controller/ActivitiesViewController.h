@@ -2,11 +2,10 @@
 //  ActivitiesViewController.h
 //  AlfrescoApp
 //
-//  Created by Tauseef Mughal on 29/07/2013
-//  Copyright (c) 2013 Alfresco. All rights reserved.
+//  Created by Mike Hatfield on 24/04/2014
+//  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
 
 @interface ActivitiesViewController : ParentListViewController

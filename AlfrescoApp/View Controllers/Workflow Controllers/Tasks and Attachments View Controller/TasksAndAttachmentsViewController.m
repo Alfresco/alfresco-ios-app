@@ -19,7 +19,7 @@
 #import "ProcessTasksCell.h"
 
 static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier CONTAINS '$start'";
-static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
+static CGFloat const kNoTasksAndAttachmentFontSize = 16.0f;
 
 @interface TasksAndAttachmentsViewController ()
 
@@ -324,7 +324,8 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 14.0f;
         {
             attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.noattachments", @"No Attachments");
             attachmentCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            attachmentCell.textLabel.font = [UIFont boldSystemFontOfSize:kNoTasksAndAttachmentFontSize];
+            attachmentCell.textLabel.font = [UIFont systemFontOfSize:kNoTasksAndAttachmentFontSize];
+            attachmentCell.textLabel.textColor = [UIColor textDefaultColor];
             attachmentCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         

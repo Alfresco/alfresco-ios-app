@@ -165,7 +165,9 @@ typedef NS_ENUM(NSUInteger, RenditionType)
 
 - (NSString *)identifierForDocument:(AlfrescoDocument *)document
 {
-    return filenameAppendedWithDateModififed(document.identifier, document);
+    // Remove version identifier component
+    NSString *identifier = [document.identifier componentsSeparatedByString:@";"][0];
+    return filenameAppendedWithDateModified(identifier, document);
 }
 
 - (UIImage *)thumbnailForDocument:(AlfrescoDocument *)document renditionType:(NSString *)rendition

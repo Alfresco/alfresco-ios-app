@@ -66,7 +66,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
 
 - (NSString *)filePathForDocument:(AlfrescoDocument *)document
 {
-    return [self.downloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModififed(document.name, document)];
+    return [self.downloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
 }
 
 - (NSString *)documentIdentifierForDocument:(AlfrescoDocument *)document
@@ -92,7 +92,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
     {
         if (![self.downloadDocumentIdentifiers containsObject:documentIdentifier])
         {
-            NSString *downloadLocation = [self.tmpDownloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModififed(document.name, document)];
+            NSString *downloadLocation = [self.tmpDownloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerWillStartDownloadNotification
                                                                 object:document
@@ -102,7 +102,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
             request = [self downloadDocument:document toPath:downloadLocation session:session completionBlock:^(NSString *filePath) {
                 // move out of temp location
                 AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-                NSString *finalDestinationPath = [weakSelf.downloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModififed(document.name, document)];
+                NSString *finalDestinationPath = [weakSelf.downloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
                 
                 NSError *movingError = nil;
                 [fileManager moveItemAtPath:filePath toPath:finalDestinationPath error:&movingError];

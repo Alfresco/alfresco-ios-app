@@ -8,19 +8,59 @@
 
 #import "ParentListViewController.h"
 #import "ConnectivityManager.h"
+#import "AttributedLabelCell.h"
+#import "UIColor+Custom.h"
 
+/**
+ * ParentListEmptyTableViewController
+ */
+@implementation ParentListEmptyTableViewController
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.emptyMessage = NSLocalizedString(@"No Items", @"No Items");
+    }
+    return self;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [[AttributedLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ParentListEmptyCell"];
+    cell.textLabel.font = [UIFont systemFontOfSize:24.0];
+    cell.textLabel.insetTop = -(tableView.frame.size.height / 3.0);
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.text = self.emptyMessage;
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [UIColor textDefaultColor];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return tableView.frame.size.height;
+}
+
+@end
+
+/**
+ * ParentListViewController
+ */
 @interface ParentListViewController ()
-
 @property (nonatomic, strong) NSDictionary *imageMappings;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
-
+@property (nonatomic, strong) ParentListEmptyTableViewController *emptyTableViewDelegate;
 @end
 
 @implementation ParentListViewController
 
-/**
- * Designated initializer
- */
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
 {
     self = [super initWithNibName:nibName bundle:nil];
@@ -28,6 +68,7 @@
     {
         self.session = session;
         self.tableViewData = [NSMutableArray array];
+        self.emptyTableViewDelegate = [ParentListEmptyTableViewController new];
         self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
         self.moreItemsAvailable = NO;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -111,6 +152,12 @@
 
 #pragma mark - Public Functions
 
+- (void)setEmptyMessage:(NSString *)emptyMessage
+{
+    _emptyMessage = emptyMessage;
+    self.emptyTableViewDelegate.emptyMessage = emptyMessage;
+}
+
 - (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
 {
     [self reloadTableViewWithPagingResult:pagingResult data:nil error:error];
@@ -122,12 +169,30 @@
     {
         self.tableViewData = (data != nil) ? data : [pagingResult.objects mutableCopy];
         self.moreItemsAvailable = pagingResult.hasMoreItems;
-        [self.tableView reloadData];
+        [self reloadTableView];
     }
     else
     {
         // display error
     }
+}
+
+- (void)reloadTableView
+{
+    if (self.tableViewData.count == 0)
+    {
+        self.tableView.delegate = self.emptyTableViewDelegate;
+        self.tableView.dataSource = self.emptyTableViewDelegate;
+        self.tableView.allowsSelection = NO;
+    }
+    else
+    {
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.allowsSelection = YES;
+    }
+
+    [self.tableView reloadData];
 }
 
 - (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error

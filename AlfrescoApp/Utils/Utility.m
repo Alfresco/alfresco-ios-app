@@ -103,7 +103,7 @@ UIImage *smallImageForType(NSString *type)
     
     if (!imageName)
     {
-        imageName = @"generic.png";
+        imageName = @"small_document.png";
     }
     
     return [UIImage imageNamed:imageName];
@@ -123,7 +123,7 @@ UIImage *largeImageForType(NSString *type)
     
     if (!imageName)
     {
-        imageName = @"generic.png";
+        imageName = @"large_document.png";
     }
     
     return [UIImage imageNamed:imageName];
@@ -302,11 +302,15 @@ NSString *fileNameAppendedWithDate(NSString *name)
     return fileName;
 }
 
-NSString *filenameAppendedWithDateModififed(NSString *filenameOrPath, AlfrescoNode *node)
+NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNode *node)
 {
     NSString *dateString = [[Utility dateFormatter] stringFromDate:node.modifiedAt];
     NSString *fileExtension = filenameOrPath.pathExtension;
-    NSString *filePathOrName = [[NSString stringWithFormat:@"%@%@", filenameOrPath.stringByDeletingPathExtension, dateString] stringByAppendingPathExtension:fileExtension];
+    NSString *filePathOrName = [NSString stringWithFormat:@"%@_%@", filenameOrPath.stringByDeletingPathExtension, dateString];
+    if (fileExtension.length > 0)
+    {
+        filePathOrName = [filePathOrName stringByAppendingPathExtension:fileExtension];
+    }
     return filePathOrName;
 }
 

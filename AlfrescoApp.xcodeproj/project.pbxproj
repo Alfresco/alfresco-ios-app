@@ -124,6 +124,9 @@
 		2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */; };
 		2764ABD518CE09EE003FFBF9 /* actionsheet-edit-properties.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */; };
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */; };
+		27C2EBF51907044A003B09B9 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27C2EBF71907044A003B09B9 /* Activities.strings */; };
+		27C2EBFE19097D01003B09B9 /* UILabel+Insets.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */; };
+		27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27E84E7618AD53510024B658 /* mainmenu-about.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E5C18AD53510024B658 /* mainmenu-about.png */; };
@@ -189,8 +192,8 @@
 		73217436187AC0CC008B330D /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73217435187AC0CC008B330D /* CommentViewController.xib */; };
 		732DBF8E18E1BC6B00F7A0BF /* small_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7818E1BC6B00F7A0BF /* small_audio.png */; };
 		732DBF8F18E1BC6B00F7A0BF /* small_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7918E1BC6B00F7A0BF /* small_audio@2x.png */; };
-		732DBF9018E1BC6B00F7A0BF /* small_blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7A18E1BC6B00F7A0BF /* small_blank.png */; };
-		732DBF9118E1BC6B00F7A0BF /* small_blank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7B18E1BC6B00F7A0BF /* small_blank@2x.png */; };
+		732DBF9018E1BC6B00F7A0BF /* small_document.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7A18E1BC6B00F7A0BF /* small_document.png */; };
+		732DBF9118E1BC6B00F7A0BF /* small_document@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7B18E1BC6B00F7A0BF /* small_document@2x.png */; };
 		732DBF9218E1BC6B00F7A0BF /* small_excel.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7C18E1BC6B00F7A0BF /* small_excel.png */; };
 		732DBF9318E1BC6B00F7A0BF /* small_excel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7D18E1BC6B00F7A0BF /* small_excel@2x.png */; };
 		732DBF9418E1BC6B00F7A0BF /* small_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7E18E1BC6B00F7A0BF /* small_image.png */; };
@@ -259,7 +262,7 @@
 		738664921906AD660021D1BD /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386648F1906AD660021D1BD /* AboutViewController.xib */; };
 		738664931906AD660021D1BD /* AboutViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664901906AD660021D1BD /* AboutViewController~ipad.xib */; };
 		738664981906AD740021D1BD /* ActivitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664961906AD740021D1BD /* ActivitiesViewController.m */; };
-		738664991906AD740021D1BD /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664971906AD740021D1BD /* ActivityViewController.xib */; };
+		738664991906AD740021D1BD /* ActivitiesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664971906AD740021D1BD /* ActivitiesViewController.xib */; };
 		738664A01906AD840021D1BD /* BaseFileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */; };
 		738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386649E1906AD840021D1BD /* FileFolderListViewController.m */; };
 		738664A21906AD840021D1BD /* FileFolderListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386649F1906AD840021D1BD /* FileFolderListViewController.xib */; };
@@ -300,7 +303,6 @@
 		738665061906B2A60021D1BD /* AlfrescoNodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665041906B2A60021D1BD /* AlfrescoNodeCell.xib */; };
 		7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665091906B2D10021D1BD /* VersionHistoryCell.m */; };
 		7386650C1906B2D10021D1BD /* VersionHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7386650A1906B2D10021D1BD /* VersionHistoryCell.xib */; };
-		738665161906B3ED0021D1BD /* ActivitiesTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7386650F1906B3ED0021D1BD /* ActivitiesTableViewCellController.m */; };
 		738665171906B3ED0021D1BD /* ActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665111906B3ED0021D1BD /* ActivityTableViewCell.m */; };
 		738665181906B3ED0021D1BD /* ActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */; };
 		738665191906B3ED0021D1BD /* AttributedLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738665141906B3ED0021D1BD /* AttributedLabelCell.m */; };
@@ -465,7 +467,6 @@
 		73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AF317A68DF20099FB84 /* UploadFormViewController.m */; };
 		73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0717A68E770099FB84 /* UserGuide.pdf */; };
 		73B95B0C17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */; };
-		73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0D17A6A8D00099FB84 /* Activities.strings */; };
 		73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
@@ -494,8 +495,8 @@
 		73FC470C1823BE7400864E80 /* Email Template in Resources */ = {isa = PBXBuildFile; fileRef = 73FC470B1823BE7400864E80 /* Email Template */; };
 		73FF557718ACE2370009CA56 /* large_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF555F18ACE2370009CA56 /* large_audio.png */; };
 		73FF557818ACE2370009CA56 /* large_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556018ACE2370009CA56 /* large_audio@2x.png */; };
-		73FF557918ACE2370009CA56 /* large_blank_document.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556118ACE2370009CA56 /* large_blank_document.png */; };
-		73FF557A18ACE2370009CA56 /* large_blank_document@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556218ACE2370009CA56 /* large_blank_document@2x.png */; };
+		73FF557918ACE2370009CA56 /* large_document.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556118ACE2370009CA56 /* large_document.png */; };
+		73FF557A18ACE2370009CA56 /* large_document@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556218ACE2370009CA56 /* large_document@2x.png */; };
 		73FF557D18ACE2370009CA56 /* large_excel.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556518ACE2370009CA56 /* large_excel.png */; };
 		73FF557E18ACE2370009CA56 /* large_excel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556618ACE2370009CA56 /* large_excel@2x.png */; };
 		73FF557F18ACE2370009CA56 /* large_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556718ACE2370009CA56 /* large_image.png */; };
@@ -710,6 +711,12 @@
 		2764ABD318CE09EE003FFBF9 /* actionsheet-edit-properties.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties.png"; sourceTree = "<group>"; };
 		2764ABD418CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit-properties@2x.png"; sourceTree = "<group>"; };
 		276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissCompletionProtocol.h; sourceTree = "<group>"; };
+		27C2EBF61907044A003B09B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Activities.strings; sourceTree = "<group>"; };
+		27C2EBF919070452003B09B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Activities.strings; sourceTree = "<group>"; };
+		27C2EBFC19097D01003B09B9 /* UILabel+Insets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Insets.h"; sourceTree = "<group>"; };
+		27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Insets.m"; sourceTree = "<group>"; };
+		27C2EC00190A5A71003B09B9 /* ActivityWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityWrapper.h; sourceTree = "<group>"; };
+		27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityWrapper.m; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -787,8 +794,8 @@
 		73217435187AC0CC008B330D /* CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		732DBF7818E1BC6B00F7A0BF /* small_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_audio.png; sourceTree = "<group>"; };
 		732DBF7918E1BC6B00F7A0BF /* small_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small_audio@2x.png"; sourceTree = "<group>"; };
-		732DBF7A18E1BC6B00F7A0BF /* small_blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_blank.png; sourceTree = "<group>"; };
-		732DBF7B18E1BC6B00F7A0BF /* small_blank@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small_blank@2x.png"; sourceTree = "<group>"; };
+		732DBF7A18E1BC6B00F7A0BF /* small_document.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_document.png; sourceTree = "<group>"; };
+		732DBF7B18E1BC6B00F7A0BF /* small_document@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small_document@2x.png"; sourceTree = "<group>"; };
 		732DBF7C18E1BC6B00F7A0BF /* small_excel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_excel.png; sourceTree = "<group>"; };
 		732DBF7D18E1BC6B00F7A0BF /* small_excel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small_excel@2x.png"; sourceTree = "<group>"; };
 		732DBF7E18E1BC6B00F7A0BF /* small_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_image.png; sourceTree = "<group>"; };
@@ -890,7 +897,7 @@
 		738664901906AD660021D1BD /* AboutViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AboutViewController~ipad.xib"; sourceTree = "<group>"; };
 		738664951906AD740021D1BD /* ActivitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesViewController.h; sourceTree = "<group>"; };
 		738664961906AD740021D1BD /* ActivitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesViewController.m; sourceTree = "<group>"; };
-		738664971906AD740021D1BD /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
+		738664971906AD740021D1BD /* ActivitiesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivitiesViewController.xib; sourceTree = "<group>"; };
 		7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderListViewController.h; sourceTree = "<group>"; };
 		7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
 		7386649D1906AD840021D1BD /* FileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderListViewController.h; sourceTree = "<group>"; };
@@ -953,8 +960,6 @@
 		738665081906B2D10021D1BD /* VersionHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryCell.h; sourceTree = "<group>"; };
 		738665091906B2D10021D1BD /* VersionHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryCell.m; sourceTree = "<group>"; };
 		7386650A1906B2D10021D1BD /* VersionHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionHistoryCell.xib; sourceTree = "<group>"; };
-		7386650E1906B3ED0021D1BD /* ActivitiesTableViewCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesTableViewCellController.h; sourceTree = "<group>"; };
-		7386650F1906B3ED0021D1BD /* ActivitiesTableViewCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesTableViewCellController.m; sourceTree = "<group>"; };
 		738665101906B3ED0021D1BD /* ActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityTableViewCell.h; sourceTree = "<group>"; };
 		738665111906B3ED0021D1BD /* ActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityTableViewCell.m; sourceTree = "<group>"; };
 		738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityTableViewCell.xib; sourceTree = "<group>"; };
@@ -1174,7 +1179,6 @@
 		73B95B0817A68E770099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = en; path = en.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		73B95B0917A68E770099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = fr; path = fr.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SmallThumbnailImageMapping.plist; sourceTree = "<group>"; };
-		73B95B0D17A6A8D00099FB84 /* Activities.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Activities.strings; sourceTree = "<group>"; };
 		73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MetadataDisplayList.plist; sourceTree = "<group>"; };
 		73B95B1917A6AE010099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1211,8 +1215,8 @@
 		73FC470B1823BE7400864E80 /* Email Template */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Email Template"; sourceTree = "<group>"; };
 		73FF555F18ACE2370009CA56 /* large_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_audio.png; sourceTree = "<group>"; };
 		73FF556018ACE2370009CA56 /* large_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_audio@2x.png"; sourceTree = "<group>"; };
-		73FF556118ACE2370009CA56 /* large_blank_document.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_blank_document.png; sourceTree = "<group>"; };
-		73FF556218ACE2370009CA56 /* large_blank_document@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_blank_document@2x.png"; sourceTree = "<group>"; };
+		73FF556118ACE2370009CA56 /* large_document.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_document.png; sourceTree = "<group>"; };
+		73FF556218ACE2370009CA56 /* large_document@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_document@2x.png"; sourceTree = "<group>"; };
 		73FF556518ACE2370009CA56 /* large_excel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_excel.png; sourceTree = "<group>"; };
 		73FF556618ACE2370009CA56 /* large_excel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_excel@2x.png"; sourceTree = "<group>"; };
 		73FF556718ACE2370009CA56 /* large_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_image.png; sourceTree = "<group>"; };
@@ -1886,7 +1890,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				73B95B0D17A6A8D00099FB84 /* Activities.strings */,
+				27C2EBF71907044A003B09B9 /* Activities.strings */,
 				274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */,
 				73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */,
 				73881F87188D87220052C75F /* AlfrescoApp.entitlements */,
@@ -1963,8 +1967,8 @@
 			children = (
 				73FF555F18ACE2370009CA56 /* large_audio.png */,
 				73FF556018ACE2370009CA56 /* large_audio@2x.png */,
-				73FF556118ACE2370009CA56 /* large_blank_document.png */,
-				73FF556218ACE2370009CA56 /* large_blank_document@2x.png */,
+				73FF556118ACE2370009CA56 /* large_document.png */,
+				73FF556218ACE2370009CA56 /* large_document@2x.png */,
 				73FF556518ACE2370009CA56 /* large_excel.png */,
 				73FF556618ACE2370009CA56 /* large_excel@2x.png */,
 				73FF556718ACE2370009CA56 /* large_image.png */,
@@ -1992,8 +1996,8 @@
 			children = (
 				732DBF7818E1BC6B00F7A0BF /* small_audio.png */,
 				732DBF7918E1BC6B00F7A0BF /* small_audio@2x.png */,
-				732DBF7A18E1BC6B00F7A0BF /* small_blank.png */,
-				732DBF7B18E1BC6B00F7A0BF /* small_blank@2x.png */,
+				732DBF7A18E1BC6B00F7A0BF /* small_document.png */,
+				732DBF7B18E1BC6B00F7A0BF /* small_document@2x.png */,
 				732DBF7C18E1BC6B00F7A0BF /* small_excel.png */,
 				732DBF7D18E1BC6B00F7A0BF /* small_excel@2x.png */,
 				732DBFA818E1BDB600F7A0BF /* small_folder.png */,
@@ -2065,10 +2069,12 @@
 		738664941906AD740021D1BD /* Activities View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7386650D1906B3ED0021D1BD /* Cell */,
 				738664951906AD740021D1BD /* ActivitiesViewController.h */,
 				738664961906AD740021D1BD /* ActivitiesViewController.m */,
-				738664971906AD740021D1BD /* ActivityViewController.xib */,
+				738664971906AD740021D1BD /* ActivitiesViewController.xib */,
+				27C2EC00190A5A71003B09B9 /* ActivityWrapper.h */,
+				27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */,
+				7386650D1906B3ED0021D1BD /* Cell */,
 			);
 			path = "Activities View Controller";
 			sourceTree = "<group>";
@@ -2233,8 +2239,6 @@
 		7386650D1906B3ED0021D1BD /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				7386650E1906B3ED0021D1BD /* ActivitiesTableViewCellController.h */,
-				7386650F1906B3ED0021D1BD /* ActivitiesTableViewCellController.m */,
 				738665101906B3ED0021D1BD /* ActivityTableViewCell.h */,
 				738665111906B3ED0021D1BD /* ActivityTableViewCell.m */,
 				738665121906B3ED0021D1BD /* ActivityTableViewCell.xib */,
@@ -2573,6 +2577,8 @@
 				73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */,
 				73881F5418883BE10052C75F /* UIColor+Custom.h */,
 				73881F5518883BE10052C75F /* UIColor+Custom.m */,
+				27C2EBFC19097D01003B09B9 /* UILabel+Insets.h */,
+				27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */,
 				73881F51188831410052C75F /* UIView+DrawingUtils.h */,
 				73881F52188831410052C75F /* UIView+DrawingUtils.m */,
 				73697A8118B22D9700021B02 /* UIViewController+Swizzled.h */,
@@ -3155,7 +3161,7 @@
 				73A7665818C8E2980087E38F /* task_approve_button_selected.png in Resources */,
 				73B95A8817A68B7E0099FB84 /* Default-Landscape@2x~ipad.png in Resources */,
 				271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */,
-				73FF557A18ACE2370009CA56 /* large_blank_document@2x.png in Resources */,
+				73FF557A18ACE2370009CA56 /* large_document@2x.png in Resources */,
 				27E84E7718AD53510024B658 /* mainmenu-about@2x.png in Resources */,
 				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
 				27E84E7D18AD53510024B658 /* mainmenu-favourites@2x.png in Resources */,
@@ -3287,11 +3293,11 @@
 				2744022018AA83C400DF23DD /* Settings.bundle in Resources */,
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
 				271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */,
-				738664991906AD740021D1BD /* ActivityViewController.xib in Resources */,
+				738664991906AD740021D1BD /* ActivitiesViewController.xib in Resources */,
 				7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */,
 				738664F31906B2420021D1BD /* TaskApproversCell.xib in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
-				73FF557918ACE2370009CA56 /* large_blank_document.png in Resources */,
+				73FF557918ACE2370009CA56 /* large_document.png in Resources */,
 				08885FF118BCB43C008CBE66 /* SettingLabelCell.xib in Resources */,
 				27E84E7F18AD53510024B658 /* mainmenu-help@2x.png in Resources */,
 				27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */,
@@ -3331,7 +3337,7 @@
 				738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */,
 				73881FDA188FF6B00052C75F /* actionsheet-unliked@2x.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
-				732DBF9018E1BC6B00F7A0BF /* small_blank.png in Resources */,
+				732DBF9018E1BC6B00F7A0BF /* small_document.png in Resources */,
 				27F054D71891832B00C2454C /* app-icon-152.png in Resources */,
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
@@ -3340,7 +3346,7 @@
 				738664CF1906B1E50021D1BD /* AccountCell.xib in Resources */,
 				73BE41FB18F3FF2900DB8912 /* account-type-cloud@2x.png in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
-				732DBF9118E1BC6B00F7A0BF /* small_blank@2x.png in Resources */,
+				732DBF9118E1BC6B00F7A0BF /* small_document@2x.png in Resources */,
 				732DBF9618E1BC6B00F7A0BF /* small_notes.png in Resources */,
 				738664C61906B16F0021D1BD /* MetadataCell.xib in Resources */,
 				271DC777189C2D250059D1B2 /* status-sync-synced@2x.png in Resources */,
@@ -3373,7 +3379,7 @@
 				73B95B0C17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist in Resources */,
 				273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */,
 				732DBFAA18E1BDB600F7A0BF /* small_folder.png in Resources */,
-				73B95B0E17A6A8D00099FB84 /* Activities.strings in Resources */,
+				27C2EBF51907044A003B09B9 /* Activities.strings in Resources */,
 				73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */,
 				271DC778189C2D250059D1B2 /* status-sync-waiting-highlighted.png in Resources */,
 				73881FCF188FF6B00052C75F /* actionsheet-delete@2x.png in Resources */,
@@ -3458,7 +3464,6 @@
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
-				738665161906B3ED0021D1BD /* ActivitiesTableViewCellController.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
@@ -3476,6 +3481,7 @@
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
 				0876A04718D99FF60035370A /* NodePickerListViewController.m in Sources */,
 				73B078A0189AB4F800D02C43 /* Reachability.m in Sources */,
+				27C2EBFE19097D01003B09B9 /* UILabel+Insets.m in Sources */,
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
 				738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */,
@@ -3552,6 +3558,7 @@
 				082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
+				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
@@ -3628,6 +3635,15 @@
 				08E89CA217E7593B006936DF /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		27C2EBF71907044A003B09B9 /* Activities.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C2EBF61907044A003B09B9 /* en */,
+				27C2EBF919070452003B09B9 /* fr */,
+			);
+			name = Activities.strings;
 			sourceTree = "<group>";
 		};
 		73B95B0717A68E770099FB84 /* UserGuide.pdf */ = {

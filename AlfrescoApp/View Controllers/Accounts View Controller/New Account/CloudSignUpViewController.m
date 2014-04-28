@@ -40,7 +40,6 @@ static NSString * const kSourceKey = @"source";
 static NSString * const kSource = @"mobile";
 
 @interface CloudSignUpViewController ()
-@property (nonatomic, strong) NSArray *tableGroups;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UITextField *firstNameTextField;
 @property (nonatomic, strong) UITextField *LastNameTextField;
@@ -132,12 +131,12 @@ static NSString * const kSource = @"mobile";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.tableGroups.count;
+    return self.tableViewData.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.tableGroups[section] count];
+    return [self.tableViewData[section] count];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -164,7 +163,7 @@ static NSString * const kSource = @"mobile";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.tableGroups[indexPath.section][indexPath.row];
+    return self.tableViewData[indexPath.section][indexPath.row];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -267,7 +266,7 @@ static NSString * const kSource = @"mobile";
         group1 = @[firstNameCell, lastNameCell, emailCell, passwordCell, confirmPasswordCell];
         group2 = @[termsCell, policyCell];
         group3 = @[signUpCell];
-        self.tableGroups = @[group1, group2, group3];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[group1, group2, group3]];
     }
     else if (self.account.accountStatus == UserAccountStatusAwaitingVerification)
     {
@@ -284,7 +283,7 @@ static NSString * const kSource = @"mobile";
         group2 = @[refreshCell];
         group3 = @[resendEmailCell];
         group4 = @[customerCare];
-        self.tableGroups = @[group1, group2, group3, group4];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[group1, group2, group3, group4]];
     }
 }
 
