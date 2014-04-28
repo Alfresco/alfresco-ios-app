@@ -213,16 +213,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return syncError.errorDescription;
 }
 
-- (void)updateAllSyncNodeStatusWithStatus:(SyncStatus)status
-{
-    NSArray *nodeStatusKeys = [self.syncNodesStatus allKeys];
-    for (NSString *nodeStatusKey in nodeStatusKeys)
-    {
-        SyncNodeStatus *nodeStatus = self.syncNodesStatus[nodeStatusKey];
-        nodeStatus.status = status;
-    }
-}
-
 #pragma mark - Private Methods
 
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
@@ -1380,8 +1370,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             [self cancelAllSyncOperations];
         }
-        [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-        [self updateAllSyncNodeStatusWithStatus:SyncStatusRemoved];
+        [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier syncNodeStatuses:self.syncNodesStatus inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
     }
 }
 
@@ -1395,8 +1384,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         [self cancelAllSyncOperations];
     }
-    [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-    [self updateAllSyncNodeStatusWithStatus:SyncStatusRemoved];
+    [syncHelper removeSyncContentAndInfoForAccountWithId:notificationAccount.accountIdentifier syncNodeStatuses:self.syncNodesStatus inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
 }
 
 #pragma mark - Reachibility Changed Notification

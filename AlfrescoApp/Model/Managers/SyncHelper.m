@@ -282,7 +282,7 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     [self.syncCoreDataHelper saveContextForManagedObjectContext:managedContext];
 }
 
-- (void)removeSyncContentAndInfoForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (void)removeSyncContentAndInfoForAccountWithId:(NSString *)accountId syncNodeStatuses:(NSDictionary *)nodeStatuses inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     NSString *accountContentDirectory = [self syncContentDirectoryPathForAccountWithId:accountId];
     NSError *error = nil;
@@ -291,7 +291,16 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     if (!error)
     {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@", accountId];
-        [self.syncCoreDataHelper deleteRecordsWithPredicate:predicate inTable:kSyncNodeInfoManagedObject inManagedObjectContext:managedContext];
+        
+        NSArray *nodesToBeRemoved = [self.syncCoreDataHelper retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
+        
+        for (SyncNodeInfo *nodeInfo in nodesToBeRemoved)
+        {
+            [self.syncCoreDataHelper deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
+            
+            SyncNodeStatus *nodeStatus = nodeStatuses[nodeInfo.syncNodeInfoId];
+            nodeStatus.status = SyncStatusRemoved;
+        }
     }
 }
 

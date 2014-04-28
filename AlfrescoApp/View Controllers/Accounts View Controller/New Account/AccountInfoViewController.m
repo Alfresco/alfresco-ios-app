@@ -159,7 +159,6 @@ static NSInteger const kAccountInfoCertificateRow = 2;
                 {
                     [accountManager saveAccountsToKeychain];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session];
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])

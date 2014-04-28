@@ -31,7 +31,7 @@ extern NSString * const kSyncReloadContentKey;
 - (void)deleteNodeFromSync:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (void)deleteNodesFromSync:(NSArray *)array inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (void)removeSyncContentAndInfoInManagedObjectContext:(NSManagedObjectContext *)managedContext;
-- (void)removeSyncContentAndInfoForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (void)removeSyncContentAndInfoForAccountWithId:(NSString *)accountId syncNodeStatuses:(NSDictionary *)nodeStatuses inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses;
 
