@@ -517,6 +517,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 - (void)deleteDocument:(NSNotification *)notification
 {
     [self deleteDocumentFromDownloads:notification.object];
+    [self refreshData];
 }
 
 - (void)renamedDocument:(NSNotification *)notification
