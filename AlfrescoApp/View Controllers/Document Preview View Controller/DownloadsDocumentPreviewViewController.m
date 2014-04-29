@@ -134,7 +134,7 @@
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
     {
-        [self.actionHandler pressedDeleteActionItem:actionItem];
+        [self.actionHandler pressedDeleteLocalFileActionItem:actionItem documentPath:self.documentContentFilePath];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierRename])
     {

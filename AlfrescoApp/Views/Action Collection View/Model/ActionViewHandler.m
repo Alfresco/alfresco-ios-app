@@ -465,6 +465,21 @@
     return deleteRequest;
 }
 
+- (void)pressedDeleteLocalFileActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath
+{
+    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
+                                                              message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeleteLocalDocumentNotification object:documentPath];
+        }
+    }];
+}
+
 - (AlfrescoRequest *)pressedCreateSubFolderActionItem:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder
 {
     __block AlfrescoRequest *createFolderRequest = nil;

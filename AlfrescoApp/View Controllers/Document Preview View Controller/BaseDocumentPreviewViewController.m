@@ -92,4 +92,11 @@
     }
 }
 
+#pragma mark - DocumentInDetailView Protocol functions
+
+- (NSString *)detailViewItemIdentifier
+{
+    return (self.document) ? self.document.identifier : nil;
+}
+
 @end
