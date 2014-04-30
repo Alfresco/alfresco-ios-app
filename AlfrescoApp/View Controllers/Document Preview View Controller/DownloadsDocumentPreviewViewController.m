@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
     
-    self.title = self.documentContentFilePath.lastPathComponent;
+    self.title = (self.documentLocation == InAppDocumentLocationLocalFiles) ? self.documentContentFilePath.lastPathComponent : self.document.name;
     
     [self.pagingSegmentControl removeAllSegments];
     [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
@@ -94,7 +94,10 @@
     
     NSMutableArray *items = [NSMutableArray array];
 
-    [items addObject:[ActionCollectionItem renameItem]];
+    if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    {
+        [items addObject:[ActionCollectionItem renameItem]];
+    }
     
     if (!isRestricted)
     {
@@ -111,7 +114,10 @@
         [items addObject:[ActionCollectionItem openInItem]];
     }
     
-    [items addObject:[ActionCollectionItem deleteItem]];
+    if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    {
+        [items addObject:[ActionCollectionItem deleteItem]];
+    }
     
     self.actionMenuView.items = items;
 }
