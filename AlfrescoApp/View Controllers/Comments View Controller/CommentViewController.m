@@ -53,7 +53,8 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"comments.title", @"Comments Title");
+    self.title = NSLocalizedString(@"comments.title", @"Comments");
+    self.emptyMessage = NSLocalizedString(@"comments.empty", @"No Comments");
     
     if (!self.permissions.canComment)
     {

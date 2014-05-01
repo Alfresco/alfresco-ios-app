@@ -59,7 +59,8 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     
     [self disablePullToRefresh];
     
-    self.title = NSLocalizedString(@"version.history.title", @"Version History Title");
+    self.title = NSLocalizedString(@"version.history.title", @"Version History");
+    self.emptyMessage = NSLocalizedString(@"version.history.empty", @"No Version History");
     
     [self showHUD];
     [self loadVersionsForDocument:self.document listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
