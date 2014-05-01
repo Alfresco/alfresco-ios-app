@@ -25,14 +25,14 @@
     return [UIColor colorWithRed:(CGFloat)56.0/255.0 green:(CGFloat)170.0/255.0 blue:(CGFloat)218.0/255.0 alpha:1.0];
 }
 
-+ (UIColor *)textDefaultColor
++ (UIColor *)textDimmedColor
 {
-    return [UIColor darkGrayColor];
+    return [UIColor colorWithWhite:0.4 alpha:1.0];
 }
 
-+ (UIColor *)textHighlightColor
++ (UIColor *)textDefaultColor
 {
-    return [UIColor blackColor];
+    return [UIColor darkTextColor];
 }
 
 + (UIColor *)documentActionsTintColor

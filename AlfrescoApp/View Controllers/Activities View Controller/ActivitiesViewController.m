@@ -19,6 +19,7 @@
 #import "AccountManager.h"
 #import "AvatarManager.h"
 #import "ThumbnailDownloader.h"
+#import "UIColor+Custom.h"
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
 static NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";

@@ -225,11 +225,11 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
 - (NSAttributedString *)attributedStringForTemplate:(NSString *)template withReplacements:(NSArray *)replacements
 {
     // Base format attributes
-    NSDictionary *baseAttributes = @{ NSForegroundColorAttributeName: [UIColor darkGrayColor] };
+    NSDictionary *baseAttributes = @{ NSForegroundColorAttributeName: [UIColor textDimmedColor] };
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:template attributes:baseAttributes];
     
     // Token replacement format attributes
-    NSDictionary *tokenAttributes = @{ NSForegroundColorAttributeName: [UIColor blackColor] };
+    NSDictionary *tokenAttributes = @{ NSForegroundColorAttributeName: [UIColor textDefaultColor] };
     
     for (NSInteger index = 0; index < replacements.count; index++)
     {
