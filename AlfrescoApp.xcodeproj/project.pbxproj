@@ -117,6 +117,8 @@
 		271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */; };
 		2739574F1900B12B00169BEB /* sync-button-stop-all.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574D1900B12B00169BEB /* sync-button-stop-all.png */; };
 		273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */; };
+		273DD714191261320081B01D /* eggShell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 273DD713191261320081B01D /* eggShell.framework */; };
+		273DD716191261710081B01D /* eggShellSettings_iPhone.storyboardc in Resources */ = {isa = PBXBuildFile; fileRef = 273DD715191261710081B01D /* eggShellSettings_iPhone.storyboardc */; };
 		2744022018AA83C400DF23DD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2744021F18AA83C400DF23DD /* Settings.bundle */; };
 		274E61B6189DD22300202572 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FC17A66E9400869949 /* CoreGraphics.framework */; };
 		274E61B7189DD22300202572 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7373B4FA17A66E9400869949 /* Foundation.framework */; };
@@ -704,6 +706,9 @@
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
 		2739574D1900B12B00169BEB /* sync-button-stop-all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all.png"; sourceTree = "<group>"; };
 		2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all@2x.png"; sourceTree = "<group>"; };
+		273DD712191260F10081B01D /* eggShell.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = eggShell.bundle; sourceTree = "<group>"; };
+		273DD713191261320081B01D /* eggShell.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = eggShell.framework; path = "AlfrescoApp/Third Party Libraries/eggOn/eggShell.bundle/eggShell.framework"; sourceTree = "<group>"; };
+		273DD715191261710081B01D /* eggShellSettings_iPhone.storyboardc */ = {isa = PBXFileReference; lastKnownFileType = wrapper.storyboardc; name = eggShellSettings_iPhone.storyboardc; path = "AlfrescoApp/Third Party Libraries/eggOn/eggShell.bundle/eggShellSettings_iPhone.storyboardc"; sourceTree = "<group>"; };
 		2744021F18AA83C400DF23DD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
 		2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload.png"; sourceTree = "<group>"; };
@@ -1260,7 +1265,6 @@
 				73B959E717A684B10099FB84 /* CoreLocation.framework in Frameworks */,
 				73B959E517A6848C0099FB84 /* CoreText.framework in Frameworks */,
 				274E61B7189DD22300202572 /* Foundation.framework in Frameworks */,
-				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
 				73B959E317A684690099FB84 /* ImageIO.framework in Frameworks */,
 				73B959E917A684CE0099FB84 /* MediaPlayer.framework in Frameworks */,
 				73FC470A18227F1700864E80 /* MessageUI.framework in Frameworks */,
@@ -1268,8 +1272,10 @@
 				73B959DF17A6844C0099FB84 /* QuartzCore.framework in Frameworks */,
 				73E9E20F17E7446400A198B4 /* Security.framework in Frameworks */,
 				73B959EB17A684FB0099FB84 /* SystemConfiguration.framework in Frameworks */,
-				730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */,
 				7373B4F917A66E9400869949 /* UIKit.framework in Frameworks */,
+				273DD714191261320081B01D /* eggShell.framework in Frameworks */,
+				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
+				730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */,
 				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1593,6 +1599,14 @@
 			path = "Node Cell";
 			sourceTree = "<group>";
 		};
+		273DD710191260CB0081B01D /* eggOn */ = {
+			isa = PBXGroup;
+			children = (
+				273DD712191260F10081B01D /* eggShell.bundle */,
+			);
+			path = eggOn;
+			sourceTree = "<group>";
+		};
 		27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */ = {
 			isa = PBXGroup;
 			children = (
@@ -1848,23 +1862,24 @@
 		7373B4F717A66E9400869949 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				73FC470918227F1700864E80 /* MessageUI.framework */,
+				73B959E017A684550099FB84 /* AVFoundation.framework */,
 				08E89CF617EB3921006936DF /* CoreData.framework */,
-				73F4316E17EB3731002FAFCA /* QuickLook.framework */,
-				73E9E20E17E7446400A198B4 /* Security.framework */,
-				73B959EC17A685090099FB84 /* MobileCoreServices.framework */,
-				73B959EA17A684FA0099FB84 /* SystemConfiguration.framework */,
-				73B959E817A684CE0099FB84 /* MediaPlayer.framework */,
+				7373B4FC17A66E9400869949 /* CoreGraphics.framework */,
 				73B959E617A684B10099FB84 /* CoreLocation.framework */,
 				73B959E417A6848B0099FB84 /* CoreText.framework */,
-				73B959E217A684690099FB84 /* ImageIO.framework */,
-				73B959E017A684550099FB84 /* AVFoundation.framework */,
-				73B959DE17A6844B0099FB84 /* QuartzCore.framework */,
-				7373B4F817A66E9400869949 /* UIKit.framework */,
+				273DD713191261320081B01D /* eggShell.framework */,
 				7373B4FA17A66E9400869949 /* Foundation.framework */,
-				7373B4FC17A66E9400869949 /* CoreGraphics.framework */,
-				08E89C9A17E7593B006936DF /* XCTest.framework */,
+				73B959E217A684690099FB84 /* ImageIO.framework */,
 				9DB5D92344964A91B3E95A3F /* libPods.a */,
+				73B959E817A684CE0099FB84 /* MediaPlayer.framework */,
+				73FC470918227F1700864E80 /* MessageUI.framework */,
+				73B959EC17A685090099FB84 /* MobileCoreServices.framework */,
+				73B959DE17A6844B0099FB84 /* QuartzCore.framework */,
+				73F4316E17EB3731002FAFCA /* QuickLook.framework */,
+				73E9E20E17E7446400A198B4 /* Security.framework */,
+				73B959EA17A684FA0099FB84 /* SystemConfiguration.framework */,
+				7373B4F817A66E9400869949 /* UIKit.framework */,
+				08E89C9A17E7593B006936DF /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2677,6 +2692,7 @@
 		73B959CD17A67A760099FB84 /* Third Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				273DD710191260CB0081B01D /* eggOn */,
 				730B444718EC393B008A0977 /* Flurry */,
 				27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */,
 				73B0789D189AB4F800D02C43 /* Reachability */,
@@ -3059,6 +3075,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				273DD716191261710081B01D /* eggShellSettings_iPhone.storyboardc in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comments.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
@@ -3774,7 +3791,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3792,6 +3809,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
+					"-lz",
+					"-lc++",
 					"-all_load",
 					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0.a\"",
 				);
@@ -3902,7 +3921,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3920,6 +3939,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
+					"-lz",
+					"-lc++",
 					"-all_load",
 					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0-debug.a\"",
 				);
@@ -3939,7 +3960,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/HockeySDK.embeddedframework",
+					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
@@ -3957,6 +3978,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
+					"-lz",
+					"-lc++",
 					"-all_load",
 					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.0.a\"",
 				);
