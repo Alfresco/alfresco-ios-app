@@ -25,6 +25,7 @@
 #import "FileFolderListViewController.h"
 #import "FolderPreviewViewController.h"
 #import "LoginManager.h"
+#import "DownloadsDocumentPreviewViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
@@ -366,11 +367,25 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
         {
-            DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                   permissions:syncNodePermissions
-                                                                                                               contentFilePath:filePath
-                                                                                                              documentLocation:InAppDocumentLocationSync
-                                                                                                                       session:self.session];
+            UIViewController *previewController = nil;
+            if ([[ConnectivityManager sharedManager] hasInternetConnection])
+            {
+                previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                        permissions:syncNodePermissions
+                                                                                    contentFilePath:filePath
+                                                                                   documentLocation:InAppDocumentLocationSync
+                                                                                            session:self.session];
+                
+            }
+            else
+            {
+                previewController = [[DownloadsDocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                                 permissions:nil
+                                                                                             contentFilePath:filePath
+                                                                                            documentLocation:InAppDocumentLocationSync
+                                                                                                     session:self.session];
+            }
+            
             previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }

@@ -49,6 +49,13 @@
     // Migrate any old accounts if required
     [MigrationAssistant runMigrationAssistant];
     
+    BOOL isFirstLaunch = [self isAppFirstLaunch];
+    if (isFirstLaunch)
+    {
+        [[AccountManager sharedManager] removeAllAccounts];
+        [self updateAppFirstLaunchFlag];
+    }
+    
     // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil];
     self.window.tintColor = [UIColor appTintColor];
@@ -64,15 +71,6 @@
     [self.window makeKeyAndVisible];
 
     [AppConfigurationManager sharedManager];
-    
-    // If a selected account is selected, attempt a login
-    AccountManager *accountManager = [AccountManager sharedManager];
-    if (accountManager.selectedAccount)
-    {
-        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
-        }];
-    }
     
     // HockeyApp SDK - only for non-dev builds to avoid update prompt
     NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
@@ -134,11 +132,13 @@
         rootRevealViewController.detailViewController = splitViewController;
     }
     
-    BOOL isFirstLaunch = [self isAppFirstLaunch];
-    if (isFirstLaunch)
+    // If there is a selected Account, attempt login
+    AccountManager *accountManager = [AccountManager sharedManager];
+    if (accountManager.selectedAccount)
     {
-        [[AccountManager sharedManager] removeAllAccounts];
-        [self updateAppFirstLaunchFlag];
+        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+        }];
     }
     
     // check accounts and add this if applicable

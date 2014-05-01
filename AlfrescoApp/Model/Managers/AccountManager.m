@@ -92,6 +92,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 - (void)removeAllAccounts
 {
     [self.accountsFromKeychain removeAllObjects];
+    self.selectedAccount = nil;
     NSError *deleteError = nil;
     [KeychainUtils deleteSavedAccountsForListIdentifier:kKeychainAccountListIdentifier error:&deleteError];
     
