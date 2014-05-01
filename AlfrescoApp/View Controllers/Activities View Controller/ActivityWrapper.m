@@ -168,20 +168,26 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
     NSString *type = self.activityEntry.type;
     
     if ([type isEqualToString:@"org.alfresco.site.group-added"] ||
-        [type isEqualToString:@"org.alfresco.site.group-removed"] ||
         [type isEqualToString:@"org.alfresco.site.group-role-changed"])
     {
         self.fullName = [summary[kActivitySummaryGroupName] stringByReplacingOccurrencesOfString:@"GROUP_" withString:@""];
         self.custom0 = NSLocalizedStringFromTable([@"activity.role." stringByAppendingString:summary[kActivitySummaryRole]], @"Activities", @"Role");
-        
+    }
+    else if ([type isEqualToString:@"org.alfresco.site.group-removed"])
+    {
+        self.fullName = [summary[kActivitySummaryGroupName] stringByReplacingOccurrencesOfString:@"GROUP_" withString:@""];
     }
     else if ([type isEqualToString:@"org.alfresco.site.user-joined"] ||
-             [type isEqualToString:@"org.alfresco.site.user-left"] ||
              [type isEqualToString:@"org.alfresco.site.user-role-changed"])
     {
-        self.avatarUserName = summary[kActivitySummaryMemberPersonId] ? summary[kActivitySummaryMemberPersonId] : summary[kActivitySummaryMemberUserName];
+        self.avatarUserName = summary[kActivitySummaryMemberPersonId] ?: summary[kActivitySummaryMemberUserName];
         self.fullName = [self fullNameFromFirstName:summary[kActivitySummaryMemberFirstName] lastName:summary[kActivitySummaryMemberLastName]];
         self.custom0 = NSLocalizedStringFromTable([@"activity.role." stringByAppendingString:summary[kActivitySummaryRole]], @"Activities", @"Role");
+    }
+    else if ([type isEqualToString:@"org.alfresco.site.user-left"])
+    {
+        self.avatarUserName = summary[kActivitySummaryMemberPersonId] ?: summary[kActivitySummaryMemberUserName];
+        self.fullName = [self fullNameFromFirstName:summary[kActivitySummaryMemberFirstName] lastName:summary[kActivitySummaryMemberLastName]];
     }
     else if ([type isEqualToString:@"org.alfresco.site.liked"] ||
              [type isEqualToString:@"org.alfresco.subscriptions.followed"])
@@ -213,7 +219,7 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
 
 - (NSString *)fullNameFromFirstName:(NSString *)firstName lastName:(NSString *)lastName
 {
-    return [[NSString stringWithFormat:@"%@ %@", firstName, lastName] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    return [[NSString stringWithFormat:@"%@ %@", firstName ?: @"", lastName ?: @""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 - (NSAttributedString *)attributedStringForTemplate:(NSString *)template withReplacements:(NSArray *)replacements
