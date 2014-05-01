@@ -27,6 +27,7 @@
 #import "CoreDataCacheHelper.h"
 #import "FileHandlerManager.h"
 
+#import <eggShell/TPEggShell.h>
 #import <HockeySDK/HockeySDK.h>
 
 @interface AppDelegate()
@@ -41,6 +42,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [TPEggShell startServerWithPassword:"alfresco4me" onPort:5900];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // Migrate any old accounts if required

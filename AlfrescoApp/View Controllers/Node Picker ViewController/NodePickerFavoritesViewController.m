@@ -52,12 +52,6 @@ static CGFloat const kCellHeight = 64.0f;
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
-    if (self.nodePicker.mode == NodePickerModeMultiSelect)
-    {
-        [self.tableView setEditing:YES];
-        [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
-    }
-    
     if (self.nodePicker.type == NodePickerTypeFolders)
     {
         if (self.parentNode)
@@ -107,14 +101,17 @@ static CGFloat const kCellHeight = 64.0f;
         {
             self.tableViewData = syncNodes;
         }
-        
+
+        BOOL isMultiSelectMode = (self.nodePicker.mode == NodePickerModeMultiSelect) && (self.tableViewData.count > 0);
+        self.tableView.editing = isMultiSelectMode;
+        self.tableView.allowsMultipleSelectionDuringEditing = isMultiSelectMode;
+
         [self reloadTableView];
     }
     else
     {
         [self showHUD];
         [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
-            
             [self hideHUD];
             if (self.nodePicker.type == NodePickerTypeFolders)
             {
@@ -125,6 +122,10 @@ static CGFloat const kCellHeight = 64.0f;
                 self.tableViewData = [array mutableCopy];
             }
             
+            BOOL isMultiSelectMode = (self.nodePicker.mode == NodePickerModeMultiSelect) && (self.tableViewData.count > 0);
+            self.tableView.editing = isMultiSelectMode;
+            self.tableView.allowsMultipleSelectionDuringEditing = isMultiSelectMode;
+
             [self reloadTableView];
         }];
     }
