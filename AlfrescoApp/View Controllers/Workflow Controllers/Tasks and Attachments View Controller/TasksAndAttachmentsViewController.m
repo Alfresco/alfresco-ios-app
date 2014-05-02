@@ -19,7 +19,6 @@
 #import "ProcessTasksCell.h"
 
 static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier CONTAINS '$start'";
-static CGFloat const kNoTasksAndAttachmentFontSize = 16.0f;
 
 @interface TasksAndAttachmentsViewController ()
 
@@ -322,10 +321,10 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 16.0f;
         }
         else
         {
-            attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.noattachments", @"No Attachments");
+            attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.empty", @"No Attachments");
             attachmentCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            attachmentCell.textLabel.font = [UIFont systemFontOfSize:kNoTasksAndAttachmentFontSize];
-            attachmentCell.textLabel.textColor = [UIColor textDefaultColor];
+            attachmentCell.textLabel.font = [UIFont systemFontOfSize:kNoItemsLabelFontSize];
+            attachmentCell.textLabel.textColor = [UIColor noItemsTextColor];
             attachmentCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
@@ -360,9 +359,10 @@ static CGFloat const kNoTasksAndAttachmentFontSize = 16.0f;
         }
         else
         {
-            processTasksCell.textLabel.text = NSLocalizedString(@"tasks.tasks.notasks", @"No Tasks");
+            processTasksCell.textLabel.text = NSLocalizedString(@"tasks.tasks.empty", @"No Tasks");
             processTasksCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            processTasksCell.textLabel.font = [UIFont boldSystemFontOfSize:kNoTasksAndAttachmentFontSize];
+            processTasksCell.textLabel.font = [UIFont boldSystemFontOfSize:kNoItemsLabelFontSize];
+            processTasksCell.textLabel.textColor = [UIColor noItemsTextColor];
         }
         
         processTasksCell.selectionStyle = UITableViewCellSelectionStyleNone;

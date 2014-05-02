@@ -513,8 +513,8 @@
 "tasks.priority.medium" = "Medium Priority";
 "tasks.priority.low" = "Low Priority";
 "tasks.textview.addcomment.placeholder" = "Add Comment";
-"tasks.attachments.noattachments" = "No attachments";
-"tasks.tasks.notasks" = "No tasks";
+"tasks.attachments.empty" = "No attachments";
+"tasks.tasks.empty" = "No tasks";
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 // Cell
