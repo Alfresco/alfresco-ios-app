@@ -36,6 +36,9 @@ extern NSString * const kRenditionImageImagePreview;
 extern NSString * const kEditableDocumentExtensions;
 extern NSString * const kEditableDocumentMimeTypes;
 
+// "No Items" font size
+extern CGFloat const kNoItemsLabelFontSize;
+
 extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;

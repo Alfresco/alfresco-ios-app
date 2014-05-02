@@ -399,7 +399,6 @@
  */
 "comments.title" = "Comments";
 "comments.empty" = "No Comments";
-"comments.footer.multiple.comments" = "%i Comments";
 "comments.post.button" = "Post";
 "comments.placeholder.text" = "Add a comment ...";
 
@@ -514,8 +513,8 @@
 "tasks.priority.medium" = "Medium Priority";
 "tasks.priority.low" = "Low Priority";
 "tasks.textview.addcomment.placeholder" = "Add Comment";
-"tasks.attachments.noattachments" = "No attachments";
-"tasks.tasks.notasks" = "No tasks";
+"tasks.attachments.empty" = "No attachments";
+"tasks.tasks.empty" = "No tasks";
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 // Cell

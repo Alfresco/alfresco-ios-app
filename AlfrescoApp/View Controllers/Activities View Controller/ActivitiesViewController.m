@@ -367,7 +367,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
                 }
                 else
                 {
-                    activityWrapper.activityImage = [UIImage imageNamed:@"folder.png"];
+                    activityWrapper.activityImage = [UIImage imageNamed:@"small_folder.png"];
                 }
             }
             else if (activityWrapper.avatarUserName)
