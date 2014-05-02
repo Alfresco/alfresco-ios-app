@@ -22,7 +22,7 @@
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
 #import "AppConfigurationManager.h"
-#import "UIColor+Custom.h"
+
 #import "AnalyticsManager.h"
 #import "CoreDataCacheHelper.h"
 #import "FileHandlerManager.h"

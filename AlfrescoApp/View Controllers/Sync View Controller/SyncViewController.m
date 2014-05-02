@@ -131,7 +131,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     if (folder)
     {
         self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
-        [self reloadTableView];
+        [self.tableView reloadData];
         [self hidePullToRefreshView];
     }
     else
@@ -140,7 +140,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
             if (syncedNodes)
             {
                 self.tableViewData = syncedNodes;
-                [self reloadTableView];
+                [self.tableView reloadData];
                 [self hidePullToRefreshView];
             }
         }];
@@ -150,15 +150,18 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 - (NSString *)listTitle
 {
     NSString *title = @"";
+    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+
     if (self.parentNode)
     {
         title = self.parentNode.name;
     }
     else
     {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
         title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
     }
+    
+    self.tableView.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
     return title;
 }
 
@@ -269,7 +272,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     else if (notificationAccount == selectedAccount)
     {
-        [self reloadTableView];
+        [self.tableView reloadData];
     }
 }
 
@@ -336,8 +339,10 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *nodeCell = (AlfrescoNodeCell *)cell;
-    [nodeCell removeNotifications];
+    if ([cell isKindOfClass:AlfrescoNodeCell.class])
+    {
+        [(AlfrescoNodeCell *)cell removeNotifications];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

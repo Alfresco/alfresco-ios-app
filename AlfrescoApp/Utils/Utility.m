@@ -16,7 +16,7 @@
 #import "DetailSplitViewController.h"
 #import "UniversalDevice.h"
 #import "ContainerViewController.h"
-#import "UIColor+Custom.h"
+
 
 static NSDictionary *smallIconMappings;
 static NSDictionary *largeIconMappings;

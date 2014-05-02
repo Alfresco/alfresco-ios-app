@@ -38,7 +38,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"accounts.title", @"Accounts");
-    self.emptyMessage = NSLocalizedString(@"accounts.empty", @"No Accounts");
+    self.tableView.emptyMessage = NSLocalizedString(@"accounts.empty", @"No Accounts");
     [self updateAccountList];
     
     UIBarButtonItem *addAccount = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -84,7 +84,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
         }
     }
     
-    [self reloadTableView];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Notification Methods
@@ -315,7 +315,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
                 self.session = nil;
             }
             [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
-            [self reloadTableView];
+            [self.tableView reloadData];
         }];
     }
 }

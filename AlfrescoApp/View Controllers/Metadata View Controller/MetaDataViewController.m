@@ -10,7 +10,7 @@
 #import "MetadataCell.h"
 #import "ConnectivityManager.h"
 #import "TableviewUnderlinedHeaderView.h"
-#import "UIColor+Custom.h"
+
 
 static NSString * kMetadataToDisplayPlistName = @"MetadataDisplayList";
 static NSString * kDateFormat = @"d MMM yyyy HH:mm";

@@ -13,8 +13,9 @@
 + (UIColor *)mainMenuBackgroundColor;
 + (UIColor *)mainMenuLabelColor;
 + (UIColor *)appTintColor;
++ (UIColor *)noItemsTextColor;
++ (UIColor *)textDimmedColor;
 + (UIColor *)textDefaultColor;
-+ (UIColor *)textHighlightColor;
 + (UIColor *)documentActionsTintColor;
 + (UIColor *)syncButtonFailedColor;
 + (UIColor *)borderGreyColor;

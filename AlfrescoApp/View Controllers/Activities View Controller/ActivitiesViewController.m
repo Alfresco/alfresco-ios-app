@@ -20,6 +20,7 @@
 #import "AvatarManager.h"
 #import "ThumbnailDownloader.h"
 
+
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
 static NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
 static NSString * const kActivityTableSectionOlder = @"activities.section.older";
@@ -54,7 +55,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"activities.title", @"Title");
-    self.emptyMessage = NSLocalizedString(@"activities.empty", @"No Activities");
+    self.tableView.emptyMessage = NSLocalizedString(@"activities.empty", @"No Activities");
     
     UINib *cellNib = [UINib nibWithNibName:@"ActivityTableViewCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kActivityCellIdentifier];
@@ -156,28 +157,32 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityWrapper *activityWrapper = self.tableViewData[indexPath.section][indexPath.row];
-    if (activityWrapper.nodeIdentifier)
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator)
     {
-        if (activityWrapper.node)
+        ActivityWrapper *activityWrapper = self.tableViewData[indexPath.section][indexPath.row];
+        if (activityWrapper.nodeIdentifier)
         {
-            [self displayNodeForActivity:activityWrapper];
-        }
-        else
-        {
-            // Need to retrieve the node first
-            [self retrieveNodeForActivity:activityWrapper completionBlock:^(BOOL success, NSError *error) {
-                if (!success)
-                {
-                    // Display an error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-                else
-                {
-                    [self displayNodeForActivity:activityWrapper];
-                }
-            }];
+            if (activityWrapper.node)
+            {
+                [self displayNodeForActivity:activityWrapper];
+            }
+            else
+            {
+                // Need to retrieve the node first
+                [self retrieveNodeForActivity:activityWrapper completionBlock:^(BOOL success, NSError *error) {
+                    if (!success)
+                    {
+                        // Display an error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    else
+                    {
+                        [self displayNodeForActivity:activityWrapper];
+                    }
+                }];
+            }
         }
     }
 }
@@ -193,11 +198,14 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 
 - (void)loadActivities
 {
+    self.tableViewData = nil;
+    self.tableSectionHeaders = nil;
+
     [self showHUD];
     [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (error || [pagingResult.objects count] == 0)
         {
-            [self reloadTableView];
+            [self.tableView reloadData];
             
             if (error)
             {
@@ -220,10 +228,13 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     }];
 }
 
+/**
+ * Note: This method currently assumes activities arrive in reverse date order only.
+ */
 - (NSMutableArray *)constructTableGroups:(AlfrescoPagingResult *)pagingResult
 {
-    NSMutableArray *tableSections = self.tableViewData ? self.tableViewData : [NSMutableArray new];
-    self.tableSectionHeaders = self.tableSectionHeaders ? self.tableSectionHeaders : [NSMutableArray new];
+    NSMutableArray *tableSections = self.tableViewData ?: [NSMutableArray new];
+    self.tableSectionHeaders = self.tableSectionHeaders ?: [NSMutableArray new];
 
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *todayComponents = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
@@ -325,7 +336,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
             {
                 if (activityWrapper.isDocument)
                 {
-                    // TODO: Ability to get a (cached) thumbnail from an objectId instead of requiring an AlfrescoDocument object
+                    // TODO - MOBILE-2526: It should be possible to request the latest cached thumbnail given an objectId
                     activityWrapper.activityImage = smallImageForType([activityWrapper.nodeName pathExtension]);
                     
 //                    AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;

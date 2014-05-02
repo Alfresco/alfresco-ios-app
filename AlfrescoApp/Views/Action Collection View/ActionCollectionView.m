@@ -11,7 +11,7 @@
 #import "UICollectionView+AutoLayout.h"
 #import "Utility.h"
 #import "UIView+DrawingUtils.h"
-#import "UIColor+Custom.h"
+
 
 static CGFloat const kSpacingBetweenSections = 8.0f;
 static CGFloat const kSpacingBetweenCells = 15.0f;

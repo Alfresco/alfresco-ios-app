@@ -6,7 +6,7 @@
 
 #import "SystemNotice.h"
 #import "SystemNoticeManager.h"
-#import "UIColor+Custom.h"
+
 
 static CGFloat const kSystemNoticeAlpha = 0.95f;
 

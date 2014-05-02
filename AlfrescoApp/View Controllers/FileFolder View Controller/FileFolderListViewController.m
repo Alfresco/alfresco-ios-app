@@ -21,7 +21,7 @@
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
 #import "FolderPreviewViewController.h"
-#import "UIColor+Custom.h"
+
 #import "FailedTransferDetailViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;

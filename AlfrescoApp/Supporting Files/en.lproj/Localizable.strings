@@ -44,7 +44,9 @@
  * Sync
  */
 "favourites.title" = "Favorites";
+"favourites.empty" = "No Favorites";
 "sync.title" = "Synced Content";
+"sync.empty" = "No Synced Content";
 "sync.downloadsize.prompt.title" = "Download Size";
 "sync.downloadsize.prompt.message" = "Sync download size %@. Do you want to proceed?";
 "sync.downloadsize.prompt.cancel" = "Don't Sync";
@@ -381,9 +383,7 @@
  * Download View Controller
  */
 "downloads.title" = "Local Files";
-"downloadview.footer.one-document" = "1 Document";
-"downloadview.footer.multiple-documents" = "%d Documents";
-"downloadview.footer.no-documents" = "No Local Files";
+"downloads.empty" = "No Local Files";
 
 /**
  * DownloadManager
@@ -398,6 +398,7 @@
  * Comments View Controller
  */
 "comments.title" = "Comments";
+"comments.empty" = "No Comments";
 "comments.footer.multiple.comments" = "%i Comments";
 "comments.post.button" = "Post";
 "comments.placeholder.text" = "Add a comment ...";
@@ -453,6 +454,7 @@
  * Version History View Controller
  */
 "version.history.title" = "Version History";
+"version.history.empty" = "No Version History";
 "version.history.version.cell.text" = "Version: %@";
 "version.history.last.modified.cell.text" = "Last Modified: %@";
 "version.history.last.modified.by.cell.text" = "Last Modified By: %@";

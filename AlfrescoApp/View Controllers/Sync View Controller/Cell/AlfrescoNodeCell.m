@@ -9,7 +9,7 @@
 #import "AlfrescoNodeCell.h"
 #import "SyncNodeStatus.h"
 #import "Utility.h"
-#import "UIColor+Custom.h"
+
 
 static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 

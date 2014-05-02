@@ -75,7 +75,7 @@ static CGFloat const kCellHeight = 64.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self reloadTableView];
+    [self.tableView reloadData];
 }
 
 - (void)cancelButtonPressed:(id)sender
@@ -105,8 +105,7 @@ static CGFloat const kCellHeight = 64.0f;
         BOOL isMultiSelectMode = (self.nodePicker.mode == NodePickerModeMultiSelect) && (self.tableViewData.count > 0);
         self.tableView.editing = isMultiSelectMode;
         self.tableView.allowsMultipleSelectionDuringEditing = isMultiSelectMode;
-
-        [self reloadTableView];
+        [self.tableView reloadData];
     }
     else
     {
@@ -125,8 +124,7 @@ static CGFloat const kCellHeight = 64.0f;
             BOOL isMultiSelectMode = (self.nodePicker.mode == NodePickerModeMultiSelect) && (self.tableViewData.count > 0);
             self.tableView.editing = isMultiSelectMode;
             self.tableView.allowsMultipleSelectionDuringEditing = isMultiSelectMode;
-
-            [self reloadTableView];
+            [self.tableView reloadData];
         }];
     }
 }
@@ -255,7 +253,7 @@ static CGFloat const kCellHeight = 64.0f;
     AlfrescoNode *selectedNode = selectedNode = self.tableViewData[indexPath.row];
     
     [self.nodePicker deselectNode:selectedNode];
-    [self reloadTableView];
+    [self.tableView reloadData];
 }
 
 @end

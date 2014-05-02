@@ -7,7 +7,7 @@
 //
 
 #import "MainMenuItemCell.h"
-#import "UIColor+Custom.h"
+
 
 static NSString * const kMainMenuItemCellIdentifier = @"MainMenuItemCellIdentifier";
 static CGFloat const kMainMenuItemCellHeight = 50.0f;

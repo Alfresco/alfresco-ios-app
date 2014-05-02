@@ -23,7 +23,7 @@
 #import "SettingsViewController.h"
 #import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
-#import "UIColor+Custom.h"
+
 #import "AvatarManager.h"
 #import "DismissCompletionProtocol.h"
 

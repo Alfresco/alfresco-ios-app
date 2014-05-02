@@ -11,7 +11,7 @@
 #import "CommentCell.h"
 #import "AvatarManager.h"
 #import "TextView.h"
-#import "UIColor+Custom.h"
+
 
 static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
@@ -53,7 +53,8 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"comments.title", @"Comments Title");
+    self.title = NSLocalizedString(@"comments.title", @"Comments");
+    self.tableView.emptyMessage = NSLocalizedString(@"comments.empty", @"No Comments");
     
     if (!self.permissions.canComment)
     {

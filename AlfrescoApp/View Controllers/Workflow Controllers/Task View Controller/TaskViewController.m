@@ -11,7 +11,7 @@
 #import "AccountManager.h"
 #import "TasksCell.h"
 #import "TaskGroupItem.h"
-#import "UIColor+Custom.h"
+
 #import "Utility.h"
 #import "TaskDetailsViewController.h"
 #import "UniversalDevice.h"
@@ -42,10 +42,9 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 
 - (id)initWithSession:(id<AlfrescoSession>)session
 {
-    self = [super initWithSession:session];
+    self = [super initWithNibName:NSStringFromClass(self.class) andSession:session];
     if (self)
     {
-        self.session = session;
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -62,7 +61,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
-    self.emptyMessage = NSLocalizedString(@"tasks.empty", @"No Tasks");
+    self.tableView.emptyMessage = NSLocalizedString(@"tasks.empty", @"No Tasks");
     
     UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tasks.view.button", @"View") style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
     self.filterButton = filterButton;
@@ -135,7 +134,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             if (weakSelf.displayedTaskFilter == TaskFilterTask)
             {
                 weakSelf.tableViewData = weakSelf.myTasks.tasksAfterFiltering;
-                [weakSelf reloadTableView];
+                [weakSelf.tableView reloadData];
             }
         }
     }];
@@ -152,7 +151,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             if (weakSelf.displayedTaskFilter == TaskFilterProcess)
             {
                 weakSelf.tableViewData = weakSelf.tasksIStarted.tasksAfterFiltering;
-                [weakSelf reloadTableView];
+                [weakSelf.tableView reloadData];
             }
         }
     }];
@@ -219,7 +218,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     else
     {
         self.tableViewData = groupToSwitchTo.tasksAfterFiltering;
-        [self reloadTableView];
+        [self.tableView reloadData];
     }
 }
 
@@ -323,7 +322,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
             break;
         }
         
-        [self reloadTableView];
+        [self.tableView reloadData];
     }
 }
 
@@ -335,7 +334,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
         [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];;
         currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
         self.tableViewData = currentGroupedItem.tasksAfterFiltering;
-        [self reloadTableView];
+        [self.tableView reloadData];
     }
 }
 

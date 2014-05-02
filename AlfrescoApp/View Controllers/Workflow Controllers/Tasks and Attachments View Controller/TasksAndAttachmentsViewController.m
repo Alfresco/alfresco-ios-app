@@ -13,7 +13,7 @@
 #import "Utility.h"
 #import "DocumentPreviewViewController.h"
 #import "TableviewUnderlinedHeaderView.h"
-#import "UIColor+Custom.h"
+
 #import "AvatarManager.h"
 #import "AlfrescoNodeCell.h"
 #import "ProcessTasksCell.h"
