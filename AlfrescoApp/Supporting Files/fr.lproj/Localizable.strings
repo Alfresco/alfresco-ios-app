@@ -399,7 +399,6 @@
  */
 "comments.title" = "Comments";
 "comments.empty" = "No Comments";
-"comments.footer.multiple.comments" = "%i Comments";
 "comments.post.button" = "Post";
 "comments.placeholder.text" = "Add a comment ...";
 
