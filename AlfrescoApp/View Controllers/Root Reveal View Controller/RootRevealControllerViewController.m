@@ -203,25 +203,19 @@ static const CGFloat kAnimationSpeed = 0.2f;
         
         if (translation.x > 0)
         {
-            if (translation.x > kDeviceSpecificRevealWidth)
-            {
-                self.detailViewContainer.frame = CGRectMake(MIN(self.dragStartRect.origin.x + translation.x, kMasterViewWidth),
+            self.detailViewContainer.frame = CGRectMake(MIN(self.dragStartRect.origin.x + translation.x, kMasterViewWidth),
                                                             self.dragStartRect.origin.y,
                                                             self.detailViewContainer.frame.size.width,
                                                             self.detailViewContainer.frame.size.height);
-                self.shouldExpandOrCollapse = translation.x > (kMasterViewWidth / 3);
-            }
+            self.shouldExpandOrCollapse = translation.x > (kMasterViewWidth / 3);
         }
         else
         {
-            if (translation.x < kDeviceSpecificRevealWidth)
-            {
-                self.detailViewContainer.frame = CGRectMake(MAX(self.dragStartRect.origin.x + translation.x, kDeviceSpecificRevealWidth),
+            self.detailViewContainer.frame = CGRectMake(MAX(self.dragStartRect.origin.x + translation.x, kDeviceSpecificRevealWidth),
                                                             self.dragStartRect.origin.y,
                                                             self.detailViewContainer.frame.size.width,
                                                             self.detailViewContainer.frame.size.height);
-                self.shouldExpandOrCollapse = (translation.x * -1) > (kMasterViewWidth / 3);
-            }
+            self.shouldExpandOrCollapse = (translation.x * -1) > (kMasterViewWidth / 3);
         }
     }
     else if (panGesture.state == UIGestureRecognizerStateEnded)
