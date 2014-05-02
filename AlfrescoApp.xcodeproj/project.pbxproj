@@ -318,8 +318,6 @@
 		738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738665221907B9BE0021D1BD /* FileLocationSelectionViewController.xib */; };
 		7386815C18DC8EE400F315B8 /* task_done_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815818DC8EE400F315B8 /* task_done_button.png */; };
 		7386815D18DC8EE400F315B8 /* task_done_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386815918DC8EE400F315B8 /* task_done_button@2x.png */; };
-		7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816018DC8F1700F315B8 /* task_re-assign_button.png */; };
-		7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */; };
 		7386816618DC8FBF00F315B8 /* task_done_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816418DC8FBF00F315B8 /* task_done_button_selected.png */; };
 		7386816718DC8FBF00F315B8 /* task_done_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */; };
 		7386817018DC9F5200F315B8 /* task_re-assign_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */; };
@@ -981,8 +979,6 @@
 		738665221907B9BE0021D1BD /* FileLocationSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileLocationSelectionViewController.xib; sourceTree = "<group>"; };
 		7386815818DC8EE400F315B8 /* task_done_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button.png; sourceTree = "<group>"; };
 		7386815918DC8EE400F315B8 /* task_done_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button@2x.png"; sourceTree = "<group>"; };
-		7386816018DC8F1700F315B8 /* task_re-assign_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button.png"; sourceTree = "<group>"; };
-		7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button@2x.png"; sourceTree = "<group>"; };
 		7386816418DC8FBF00F315B8 /* task_done_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_done_button_selected.png; sourceTree = "<group>"; };
 		7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_done_button_selected@2x.png"; sourceTree = "<group>"; };
 		7386816E18DC9F5200F315B8 /* task_re-assign_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_re-assign_button_selected.png"; sourceTree = "<group>"; };
@@ -2432,8 +2428,6 @@
 				73A6861018C87A9100FF18E0 /* task_approve_button@2x.png */,
 				73A6861118C87A9100FF18E0 /* task_reject_button.png */,
 				73A6861218C87A9100FF18E0 /* task_reject_button@2x.png */,
-				7386816018DC8F1700F315B8 /* task_re-assign_button.png */,
-				7386816118DC8F1700F315B8 /* task_re-assign_button@2x.png */,
 				7386816418DC8FBF00F315B8 /* task_done_button_selected.png */,
 				7386816518DC8FBF00F315B8 /* task_done_button_selected@2x.png */,
 				73A7665418C8E2980087E38F /* task_approve_button_selected.png */,
@@ -3293,7 +3287,6 @@
 				73881FD5188FF6B00052C75F /* actionsheet-liked@2x.png in Resources */,
 				733638B91913BA1600472A57 /* system_notice_explanation.png in Resources */,
 				27F054DC1891832B00C2454C /* app-icon-58.png in Resources */,
-				7386816218DC8F1700F315B8 /* task_re-assign_button.png in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
 				08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
@@ -3315,7 +3308,6 @@
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
 				271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */,
 				738664991906AD740021D1BD /* ActivitiesViewController.xib in Resources */,
-				7386816318DC8F1700F315B8 /* task_re-assign_button@2x.png in Resources */,
 				738664F31906B2420021D1BD /* TaskApproversCell.xib in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
 				73FF557918ACE2370009CA56 /* large_document.png in Resources */,
