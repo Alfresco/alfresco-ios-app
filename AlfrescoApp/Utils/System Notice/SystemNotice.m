@@ -47,7 +47,7 @@ CGFloat hiddenYOrigin;
                 
             case SystemNoticeStyleError:
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeErrorColor];
-                self.icon = @"system_notice_explanation.png";
+                self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
                 self.defaultTitle = NSLocalizedString(@"An Error Occurred", @"Default title for error notification");
@@ -56,7 +56,7 @@ CGFloat hiddenYOrigin;
             
             case SystemNoticeStyleWarning:
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeWarningColor];
-                self.icon = @"system_notice_explanation.png";
+                self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor blackColor];
                 self.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
                 self.displayTime = 3.0f;
