@@ -247,7 +247,7 @@ static NSInteger const kTagCertificateCell = 1;
         TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
         passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-        passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.optional", @"Optional");
+        passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Required");
         passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
         passwordCell.valueTextField.secureTextEntry = YES;
         passwordCell.valueTextField.delegate = self;
@@ -342,6 +342,7 @@ static NSInteger const kTagCertificateCell = 1;
         NSString *hostname = self.serverAddressTextField.text;
         NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *password = self.passwordTextField.text;
         NSString *serviceDoc = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
@@ -349,9 +350,10 @@ static NSInteger const kTagCertificateCell = 1;
         BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
         BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
         BOOL usernameError = [username isEqualToString:@""];
+        BOOL passwordError = [password isEqualToString:@""] || password == nil;
         BOOL serviceDocError = [serviceDoc isEqualToString:@""];
         
-        didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !serviceDocError;
+        didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !passwordError && !serviceDocError;
         
         if (self.activityType == AccountActivityTypeEditAccount && didChangeAndIsValid)
         {
