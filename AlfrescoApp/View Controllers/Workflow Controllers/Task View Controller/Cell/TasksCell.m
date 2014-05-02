@@ -8,7 +8,7 @@
 
 #import "TasksCell.h"
 #import "Utility.h"
-#import "UIColor+Custom.h"
+
 
 static CGFloat const kMinimumCellHeight = 70.0f;
 

@@ -15,7 +15,7 @@
 #import "SyncViewController.h"
 #import "SyncManager.h"
 #import "NodePickerScopeCell.h"
-#import "UIColor+Custom.h"
+
 
 static CGFloat const kCellHeight = 64.0f;
 

@@ -8,7 +8,7 @@
 
 #import "ActivityWrapper.h"
 #import "Utility.h"
-#import "UIColor+Custom.h"
+
 
 static NSString * const kActivitySummaryTitle = @"title";
 static NSString * const kActivitySummaryFirstName = @"firstName";

@@ -13,6 +13,7 @@
 + (UIColor *)mainMenuBackgroundColor;
 + (UIColor *)mainMenuLabelColor;
 + (UIColor *)appTintColor;
++ (UIColor *)noItemsTextColor;
 + (UIColor *)textDimmedColor;
 + (UIColor *)textDefaultColor;
 + (UIColor *)documentActionsTintColor;

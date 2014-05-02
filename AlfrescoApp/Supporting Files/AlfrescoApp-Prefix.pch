@@ -31,5 +31,7 @@
 #import "Constants.h"
 #import "Notifier.h"
 #import "AlfrescoFileManager+Extensions.h"
+#import "ALFTableView.h"
+#import "UIColor+Custom.h"
 #import "UILabel+Insets.h"
 #import "UIViewController+Swizzled.h"

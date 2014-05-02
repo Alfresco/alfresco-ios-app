@@ -19,7 +19,7 @@
 #import "AccountManager.h"
 #import "AvatarManager.h"
 #import "ThumbnailDownloader.h"
-#import "UIColor+Custom.h"
+
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
 static NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
@@ -55,7 +55,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"activities.title", @"Title");
-    self.emptyMessage = NSLocalizedString(@"activities.empty", @"No Activities");
+    self.tableView.emptyMessage = NSLocalizedString(@"activities.empty", @"No Activities");
     
     UINib *cellNib = [UINib nibWithNibName:@"ActivityTableViewCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kActivityCellIdentifier];
@@ -205,7 +205,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         if (error || [pagingResult.objects count] == 0)
         {
-            [self reloadTableView];
+            [self.tableView reloadData];
             
             if (error)
             {

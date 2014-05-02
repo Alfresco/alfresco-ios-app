@@ -74,14 +74,15 @@ static CGFloat kSearchCellHeight = 60.0f;
     [view addSubview:self.segmentedControl];
     
     // create and configure the table view
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-                                                                   (view.frame.origin.y + kSegmentControllerHeight),
-                                                                   view.frame.size.width,
-                                                                   (view.frame.size.height - kSegmentControllerHeight))
-                                                  style:UITableViewStylePlain];
+    ALFTableView *tableView = [[ALFTableView alloc] initWithFrame:CGRectMake(view.frame.origin.x,
+                                                                             (view.frame.origin.y + kSegmentControllerHeight),
+                                                                             view.frame.size.width,
+                                                                             (view.frame.size.height - kSegmentControllerHeight))
+                                                            style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    tableView.emptyMessage = NSLocalizedString(@"sites.empty", @"No Sites");
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
@@ -116,7 +117,6 @@ static CGFloat kSearchCellHeight = 60.0f;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"sites.title", @"Sites Title");
-    self.emptyMessage = NSLocalizedString(@"sites.empty", @"No Sites");
     
     if (!IS_IPAD)
     {

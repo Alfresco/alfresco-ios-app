@@ -25,6 +25,11 @@
     return [UIColor colorWithRed:(CGFloat)56.0/255.0 green:(CGFloat)170.0/255.0 blue:(CGFloat)218.0/255.0 alpha:1.0];
 }
 
++ (UIColor *)noItemsTextColor
+{
+    return [UIColor colorWithWhite:0.8 alpha:1.0];
+}
+
 + (UIColor *)textDimmedColor
 {
     return [UIColor colorWithWhite:0.4 alpha:1.0];

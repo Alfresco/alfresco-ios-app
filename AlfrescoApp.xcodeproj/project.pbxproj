@@ -91,6 +91,7 @@
 		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		08E89CF717EB3921006936DF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E89CF617EB3921006936DF /* CoreData.framework */; };
+		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */; };
 		271DC765189C2D250059D1B2 /* status-favourite-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */; };
 		271DC766189C2D250059D1B2 /* status-favourite.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74E189C2D250059D1B2 /* status-favourite.png */; };
@@ -555,7 +556,7 @@
 		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountsViewController.m; path = "Accounts View Controller/AccountsViewController.m"; sourceTree = "<group>"; };
 		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountsViewController.xib; path = "Accounts View Controller/AccountsViewController.xib"; sourceTree = "<group>"; };
 		0804DCBA18197F8600E3ACC2 /* AccountTypeSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountTypeSelectionViewController.h; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.h"; sourceTree = "<group>"; };
-		0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountTypeSelectionViewController.m; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.m"; sourceTree = "<group>"; };
+		0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = AccountTypeSelectionViewController.m; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountTypeSelectionViewController.xib; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.xib"; sourceTree = "<group>"; };
 		0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountInfoViewController.h; path = "Accounts View Controller/New Account/AccountInfoViewController.h"; sourceTree = "<group>"; };
 		0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountInfoViewController.m; path = "Accounts View Controller/New Account/AccountInfoViewController.m"; sourceTree = "<group>"; };
@@ -615,7 +616,7 @@
 		0876A03C18D99FF60035370A /* NodePickerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerListViewController.h; sourceTree = "<group>"; };
 		0876A03D18D99FF60035370A /* NodePickerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerListViewController.m; sourceTree = "<group>"; };
 		0876A03E18D99FF60035370A /* NodePickerScopeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerScopeViewController.h; sourceTree = "<group>"; };
-		0876A03F18D99FF60035370A /* NodePickerScopeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeViewController.m; sourceTree = "<group>"; };
+		0876A03F18D99FF60035370A /* NodePickerScopeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NodePickerScopeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0876A04018D99FF60035370A /* NodePickerSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerSitesViewController.h; sourceTree = "<group>"; };
 		0876A04118D99FF60035370A /* NodePickerSitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerSitesViewController.m; sourceTree = "<group>"; };
 		0876A05418D9A0A80035370A /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
@@ -642,22 +643,22 @@
 		08E1EA0C18DB057900F9052F /* TaskHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskHeaderView.m; sourceTree = "<group>"; };
 		08E1EA0D18DB057900F9052F /* TaskHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskHeaderView.xib; sourceTree = "<group>"; };
 		08E1EA0E18DB057900F9052F /* TaskDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailsViewController.h; sourceTree = "<group>"; };
-		08E1EA0F18DB057900F9052F /* TaskDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDetailsViewController.m; sourceTree = "<group>"; };
+		08E1EA0F18DB057900F9052F /* TaskDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TaskDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		08E1EA1018DB057900F9052F /* TaskDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskDetailsViewController.xib; sourceTree = "<group>"; };
 		08E1EA1118DB057900F9052F /* TaskDetailsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "TaskDetailsViewController~ipad.xib"; sourceTree = "<group>"; };
 		08E1EA1418DB057900F9052F /* TasksCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksCell.h; sourceTree = "<group>"; };
-		08E1EA1518DB057900F9052F /* TasksCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksCell.m; sourceTree = "<group>"; };
+		08E1EA1518DB057900F9052F /* TasksCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TasksCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		08E1EA1618DB057900F9052F /* TasksCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TasksCell.xib; sourceTree = "<group>"; };
 		08E1EA1818DB057900F9052F /* TaskGroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskGroupItem.h; sourceTree = "<group>"; };
 		08E1EA1918DB057900F9052F /* TaskGroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskGroupItem.m; sourceTree = "<group>"; };
 		08E1EA1A18DB057900F9052F /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskViewController.h; sourceTree = "<group>"; };
-		08E1EA1B18DB057900F9052F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskViewController.m; sourceTree = "<group>"; };
+		08E1EA1B18DB057900F9052F /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TaskViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		08E1EA1C18DB057900F9052F /* TaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskViewController.xib; sourceTree = "<group>"; };
 		08E1EA1F18DB057900F9052F /* ProcessTasksCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessTasksCell.h; sourceTree = "<group>"; };
 		08E1EA2018DB057900F9052F /* ProcessTasksCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcessTasksCell.m; sourceTree = "<group>"; };
 		08E1EA2118DB057900F9052F /* ProcessTasksCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessTasksCell.xib; sourceTree = "<group>"; };
 		08E1EA2218DB057900F9052F /* TasksAndAttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksAndAttachmentsViewController.h; sourceTree = "<group>"; };
-		08E1EA2318DB057900F9052F /* TasksAndAttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksAndAttachmentsViewController.m; sourceTree = "<group>"; };
+		08E1EA2318DB057900F9052F /* TasksAndAttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TasksAndAttachmentsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		08E1EA2418DB057900F9052F /* TasksAndAttachmentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TasksAndAttachmentsViewController.xib; sourceTree = "<group>"; };
 		08E1EA3518DB06D100F9052F /* TaskTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskTypeViewController.h; sourceTree = "<group>"; };
 		08E1EA3618DB06D100F9052F /* TaskTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskTypeViewController.m; sourceTree = "<group>"; };
@@ -680,6 +681,8 @@
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		08E89CF617EB3921006936DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
+		2711979D1912ADE60073C3EC /* ALFTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ALFTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted.png"; sourceTree = "<group>"; };
 		271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC74E189C2D250059D1B2 /* status-favourite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite.png"; sourceTree = "<group>"; };
@@ -721,7 +724,7 @@
 		27C2EBFC19097D01003B09B9 /* UILabel+Insets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Insets.h"; sourceTree = "<group>"; };
 		27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Insets.m"; sourceTree = "<group>"; };
 		27C2EC00190A5A71003B09B9 /* ActivityWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityWrapper.h; sourceTree = "<group>"; };
-		27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityWrapper.m; sourceTree = "<group>"; };
+		27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActivityWrapper.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -784,7 +787,7 @@
 		7319019C1843B614002C82C1 /* onboarding-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-blue.png"; sourceTree = "<group>"; };
 		7319019D1843B614002C82C1 /* onboarding-grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-grey.png"; sourceTree = "<group>"; };
 		731901A01844B490002C82C1 /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContainerViewController.h; path = "Container View Controller/ContainerViewController.h"; sourceTree = "<group>"; };
-		731901A11844B490002C82C1 /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContainerViewController.m; path = "Container View Controller/ContainerViewController.m"; sourceTree = "<group>"; };
+		731901A11844B490002C82C1 /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = ContainerViewController.m; path = "Container View Controller/ContainerViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alfrescoColourLogo.png; sourceTree = "<group>"; };
 		731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alfrescoColourLogo@2x.png"; sourceTree = "<group>"; };
 		731901A81844D217002C82C1 /* onboarding-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding-blue@2x.png"; sourceTree = "<group>"; };
@@ -832,7 +835,7 @@
 		734BFE541899606A00692AB4 /* hamburger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hamburger.png; sourceTree = "<group>"; };
 		734BFE551899606A00692AB4 /* hamburger@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hamburger@2x.png"; sourceTree = "<group>"; };
 		73632ACF1802C679007172EE /* ActionCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionView.h; sourceTree = "<group>"; };
-		73632AD01802C679007172EE /* ActionCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionView.m; sourceTree = "<group>"; };
+		73632AD01802C679007172EE /* ActionCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActionCollectionView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73632AD21802C679007172EE /* ActionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionViewCell.h; sourceTree = "<group>"; };
 		73632AD31802C679007172EE /* ActionCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionCollectionViewCell.m; sourceTree = "<group>"; };
 		73632AD41802C679007172EE /* ActionCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -846,7 +849,7 @@
 		73632AEA1806F5D2007172EE /* SwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwitchViewController.h; path = "Switcher View Controller/SwitchViewController.h"; sourceTree = "<group>"; };
 		73632AEB1806F5D2007172EE /* SwitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwitchViewController.m; path = "Switcher View Controller/SwitchViewController.m"; sourceTree = "<group>"; };
 		73632AEE1806F674007172EE /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuViewController.h; path = "Main Menu View Controller/MainMenuViewController.h"; sourceTree = "<group>"; };
-		73632AEF1806F674007172EE /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuViewController.m; path = "Main Menu View Controller/MainMenuViewController.m"; sourceTree = "<group>"; };
+		73632AEF1806F674007172EE /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MainMenuViewController.m; path = "Main Menu View Controller/MainMenuViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73632AF318080E7C007172EE /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItem.h; path = "Main Menu View Controller/Model/MainMenuItem.h"; sourceTree = "<group>"; };
 		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
 		73697A8118B22D9700021B02 /* UIViewController+Swizzled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Swizzled.h"; sourceTree = "<group>"; };
@@ -901,12 +904,12 @@
 		7386648F1906AD660021D1BD /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		738664901906AD660021D1BD /* AboutViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AboutViewController~ipad.xib"; sourceTree = "<group>"; };
 		738664951906AD740021D1BD /* ActivitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivitiesViewController.h; sourceTree = "<group>"; };
-		738664961906AD740021D1BD /* ActivitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivitiesViewController.m; sourceTree = "<group>"; };
+		738664961906AD740021D1BD /* ActivitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActivitiesViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		738664971906AD740021D1BD /* ActivitiesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivitiesViewController.xib; sourceTree = "<group>"; };
 		7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderListViewController.h; sourceTree = "<group>"; };
 		7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderListViewController.m; sourceTree = "<group>"; };
 		7386649D1906AD840021D1BD /* FileFolderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderListViewController.h; sourceTree = "<group>"; };
-		7386649E1906AD840021D1BD /* FileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderListViewController.m; sourceTree = "<group>"; };
+		7386649E1906AD840021D1BD /* FileFolderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FileFolderListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7386649F1906AD840021D1BD /* FileFolderListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderListViewController.xib; sourceTree = "<group>"; };
 		738664A41906AD8E0021D1BD /* SitesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesListViewController.h; sourceTree = "<group>"; };
 		738664A51906AD8E0021D1BD /* SitesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesListViewController.m; sourceTree = "<group>"; };
@@ -960,7 +963,7 @@
 		738664FB1906B27C0021D1BD /* NodePickerScopeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerScopeCell.m; sourceTree = "<group>"; };
 		738664FC1906B27C0021D1BD /* NodePickerScopeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerScopeCell.xib; sourceTree = "<group>"; };
 		738665021906B2A60021D1BD /* AlfrescoNodeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoNodeCell.h; sourceTree = "<group>"; };
-		738665031906B2A60021D1BD /* AlfrescoNodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoNodeCell.m; sourceTree = "<group>"; };
+		738665031906B2A60021D1BD /* AlfrescoNodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AlfrescoNodeCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		738665041906B2A60021D1BD /* AlfrescoNodeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlfrescoNodeCell.xib; sourceTree = "<group>"; };
 		738665081906B2D10021D1BD /* VersionHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryCell.h; sourceTree = "<group>"; };
 		738665091906B2D10021D1BD /* VersionHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryCell.m; sourceTree = "<group>"; };
@@ -985,7 +988,7 @@
 		73881F51188831410052C75F /* UIView+DrawingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DrawingUtils.h"; sourceTree = "<group>"; };
 		73881F52188831410052C75F /* UIView+DrawingUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DrawingUtils.m"; sourceTree = "<group>"; };
 		73881F5418883BE10052C75F /* UIColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Custom.h"; sourceTree = "<group>"; };
-		73881F5518883BE10052C75F /* UIColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Custom.m"; sourceTree = "<group>"; };
+		73881F5518883BE10052C75F /* UIColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "UIColor+Custom.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73881F57188842D60052C75F /* MetaDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetaDataViewController.xib; sourceTree = "<group>"; };
 		73881F69188956390052C75F /* WebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebBrowserViewController.h; path = "Web Browser View Controller/WebBrowserViewController.h"; sourceTree = "<group>"; };
 		73881F6A188956390052C75F /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebBrowserViewController.m; path = "Web Browser View Controller/WebBrowserViewController.m"; sourceTree = "<group>"; };
@@ -1030,7 +1033,7 @@
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
 		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
 		739B0A2B18CF7C9B00239584 /* TableviewUnderlinedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableviewUnderlinedHeaderView.h; sourceTree = "<group>"; };
-		739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableviewUnderlinedHeaderView.m; sourceTree = "<group>"; };
+		739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TableviewUnderlinedHeaderView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableviewUnderlinedHeaderView.xib; sourceTree = "<group>"; };
 		739C1CAF1859D1390068DB6E /* AlfrescoFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoFileManager+Extensions.h"; sourceTree = "<group>"; };
 		739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoFileManager+Extensions.m"; sourceTree = "<group>"; };
@@ -1046,7 +1049,7 @@
 		73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+AutoLayout.h"; sourceTree = "<group>"; };
 		73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+AutoLayout.m"; sourceTree = "<group>"; };
 		73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItemCell.h; path = "Main Menu View Controller/Cell/MainMenuItemCell.h"; sourceTree = "<group>"; };
-		73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItemCell.m; path = "Main Menu View Controller/Cell/MainMenuItemCell.m"; sourceTree = "<group>"; };
+		73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MainMenuItemCell.m; path = "Main Menu View Controller/Cell/MainMenuItemCell.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73A6860F18C87A9100FF18E0 /* task_approve_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_approve_button.png; sourceTree = "<group>"; };
@@ -1063,13 +1066,13 @@
 		73B0789F189AB4F800D02C43 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
-		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; };
+		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		73B957C517A6728A0099FB84 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		73B957C617A6728A0099FB84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		73B957C817A673A90099FB84 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		73B957C917A673A90099FB84 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		73B957C917A673A90099FB84 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B957CB17A673A90099FB84 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		73B957CC17A673A90099FB84 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		73B957D117A6750E0099FB84 /* ConnectivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectivityManager.h; sourceTree = "<group>"; };
@@ -1093,19 +1096,19 @@
 		73B957FF17A6750E0099FB84 /* UniversalDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversalDevice.h; sourceTree = "<group>"; };
 		73B9580017A6750E0099FB84 /* UniversalDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalDevice.m; sourceTree = "<group>"; };
 		73B9580117A6750E0099FB84 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
-		73B9580217A6750E0099FB84 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		73B9580217A6750E0099FB84 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Utility.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9580417A6750E0099FB84 /* AlfrescoDocument+ALF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocument+ALF.h"; sourceTree = "<group>"; };
 		73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoDocument+ALF.m"; sourceTree = "<group>"; };
 		73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+ALF.h"; sourceTree = "<group>"; };
 		73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+ALF.m"; sourceTree = "<group>"; };
 		73B9580917A6750E0099FB84 /* SystemNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotice.h; sourceTree = "<group>"; };
-		73B9580A17A6750E0099FB84 /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotice.m; sourceTree = "<group>"; };
+		73B9580A17A6750E0099FB84 /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SystemNotice.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9580D17A6750E0099FB84 /* SystemNoticeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeManager.h; sourceTree = "<group>"; };
 		73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeManager.m; sourceTree = "<group>"; };
 		73B9582617A6750E0099FB84 /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
 		73B9582717A6750E0099FB84 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
 		73B9582817A6750E0099FB84 /* ParentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentListViewController.h; sourceTree = "<group>"; };
-		73B9582917A6750E0099FB84 /* ParentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentListViewController.m; sourceTree = "<group>"; };
+		73B9582917A6750E0099FB84 /* ParentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ParentListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9583E17A6750F0099FB84 /* MultiSelectActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionItem.h; sourceTree = "<group>"; };
 		73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionItem.m; sourceTree = "<group>"; };
 		73B9584017A6750F0099FB84 /* MultiSelectActionsToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionsToolbar.h; sourceTree = "<group>"; };
@@ -1168,13 +1171,13 @@
 		73B95A5F17A68B7E0099FB84 /* download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download.png; sourceTree = "<group>"; };
 		73B95A6017A68B7E0099FB84 /* download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "download@2x.png"; sourceTree = "<group>"; };
 		73B95AC617A68DF20099FB84 /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
-		73B95AC717A68DF20099FB84 /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
+		73B95AC717A68DF20099FB84 /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CommentViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B95AC917A68DF20099FB84 /* DownloadsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadsViewController.h; sourceTree = "<group>"; };
 		73B95ACA17A68DF20099FB84 /* DownloadsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadsViewController.m; sourceTree = "<group>"; };
 		73B95AD017A68DF20099FB84 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		73B95AD117A68DF20099FB84 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		73B95AD317A68DF20099FB84 /* MetaDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaDataViewController.h; sourceTree = "<group>"; };
-		73B95AD417A68DF20099FB84 /* MetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaDataViewController.m; sourceTree = "<group>"; };
+		73B95AD417A68DF20099FB84 /* MetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MetaDataViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderViewController.h; sourceTree = "<group>"; };
 		73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderViewController.m; sourceTree = "<group>"; };
 		73B95AF017A68DF20099FB84 /* TagPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagPickerViewController.h; sourceTree = "<group>"; };
@@ -1566,6 +1569,15 @@
 				08E89CA617E7593B006936DF /* AlfrescoApp Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2711979A1912AD860073C3EC /* Subclasses */ = {
+			isa = PBXGroup;
+			children = (
+				2711979C1912ADE60073C3EC /* ALFTableView.h */,
+				2711979D1912ADE60073C3EC /* ALFTableView.m */,
+			);
+			path = Subclasses;
 			sourceTree = "<group>";
 		};
 		271DC74B189C2D250059D1B2 /* Node Cell */ = {
@@ -2552,6 +2564,7 @@
 			isa = PBXGroup;
 			children = (
 				73B9580317A6750E0099FB84 /* Categories */,
+				2711979A1912AD860073C3EC /* Subclasses */,
 				73B9580817A6750E0099FB84 /* System Notice */,
 				080675E917EC44AA004AF3A2 /* CoreDataHelper.h */,
 				080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */,
@@ -3601,6 +3614,7 @@
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
+				2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,

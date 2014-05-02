@@ -383,9 +383,7 @@
  * Download View Controller
  */
 "downloads.title" = "Local Files";
-"downloadview.footer.one-document" = "1 Document";
-"downloadview.footer.multiple-documents" = "%d Documents";
-"downloadview.footer.no-documents" = "No Local Files";
+"downloads.empty" = "No Local Files";
 
 /**
  * DownloadManager

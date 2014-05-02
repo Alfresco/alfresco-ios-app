@@ -16,13 +16,11 @@
 #import "FileFolderCell.h"
 
 static NSInteger const kCellHeight = 60;
-static CGFloat const kFooterHeight = 32.0f;
 static CGFloat const kPullToRefreshDelay = 0.2f;
 static NSString * const kDownloadsInterface = @"DownloadsViewController";
 
 @interface DownloadsViewController ()
 
-@property (nonatomic, strong) NSString *downloadsFooterTitle;
 @property (nonatomic) BOOL noDocumentsSaved;
 @property (nonatomic) float totalFilesSize;
 @property (nonatomic, strong) id<DocumentFilter> documentFilter;
@@ -53,8 +51,8 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"downloads.title", @"downloads title");
-    self.downloadsFooterTitle = NSLocalizedString(@"downloadview.footer.no-documents", @"No Downloaded Documents");
+    self.title = NSLocalizedString(@"downloads.title", @"Local Files");
+    self.tableView.emptyMessage = NSLocalizedString(@"downloads.empty", @"No Local Files");
     [self refreshData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -154,14 +152,6 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 //            cell.accessoryView = nil;
 //        }
     }
-    else
-    {
-        title = self.downloadsFooterTitle;
-        cell.imageView.image = nil;
-        details = nil;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        tableView.allowsSelection = NO;
-    }
     
     cell.nodeNameLabel.text = title;
     cell.nodeDetailLabel.text = details;
@@ -173,38 +163,6 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.tableViewData.count;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
-    NSString *footerText = @"";
-    
-    if (self.tableViewData.count > 0)
-    {
-        NSString *documentsText = @"";
-        
-        switch (self.tableViewData.count)
-        {
-            case 1:
-            {
-                documentsText = NSLocalizedString(@"downloadview.footer.one-document", @"1 Document");
-                break;
-            }
-            default:
-            {
-                documentsText = [NSString stringWithFormat:NSLocalizedString(@"downloadview.footer.multiple-documents", @"%d Documents"), self.tableViewData.count];
-                break;
-            }
-        }
-        
-        footerText = [NSString stringWithFormat:@"%@ %@", documentsText, stringForLongFileSize(self.totalFilesSize)];
-    }
-    else
-    {
-        footerText = self.downloadsFooterTitle;
-    }
-    
-    return footerText;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -223,22 +181,6 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return kCellHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return kFooterHeight;
-}
-
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UILabel *footerBackground = [[UILabel alloc] init];
-    
-    footerBackground.text = [self tableView:tableView titleForFooterInSection:section];
-    footerBackground.backgroundColor = [UIColor whiteColor];
-    footerBackground.textAlignment = NSTextAlignmentCenter;
-    
-    return footerBackground;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -373,7 +315,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     
     self.noDocumentsSaved = filteredDocumentPaths.count == 0;
     self.tableViewData = filteredDocumentPaths;
-    [self reloadTableView];
+    [self.tableView reloadData];
     [self updateBarButtonItems];
     [self selectIndexPathForAlfrescoNodeInDetailView:nil];
 }

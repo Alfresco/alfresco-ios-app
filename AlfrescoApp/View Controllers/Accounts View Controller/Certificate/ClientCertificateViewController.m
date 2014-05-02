@@ -129,7 +129,7 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         self.tableViewData = [NSMutableArray arrayWithArray:@[identityGroup, deleteGroup]];
     }
 
-    [self reloadTableView];
+    [self.tableView reloadData];
 }
 
 - (void)deleteCertificate

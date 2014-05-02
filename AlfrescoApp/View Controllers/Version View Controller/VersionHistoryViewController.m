@@ -41,7 +41,7 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // create and configure the table view
-    self.tableView = [[UITableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
+    self.tableView = [[ALFTableView alloc] initWithFrame:view.frame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -60,7 +60,7 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     [self disablePullToRefresh];
     
     self.title = NSLocalizedString(@"version.history.title", @"Version History");
-    self.emptyMessage = NSLocalizedString(@"version.history.empty", @"No Version History");
+    self.tableView.emptyMessage = NSLocalizedString(@"version.history.empty", @"No Version History");
     
     [self showHUD];
     [self loadVersionsForDocument:self.document listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {

@@ -11,7 +11,7 @@
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "CloudSignUpViewController.h"
-#import "UIColor+Custom.h"
+
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
