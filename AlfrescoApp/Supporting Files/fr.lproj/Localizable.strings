@@ -517,6 +517,7 @@
 "tasks.tasks.empty" = "No tasks";
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
+"task.reassign.button.title" = "Reassign";
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";

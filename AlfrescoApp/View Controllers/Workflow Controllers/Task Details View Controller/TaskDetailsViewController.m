@@ -37,7 +37,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *doneButtonWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *approveButtonWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *rejectButtonWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reassignButtonWidthConstraint;
 
 //// Data Models ////
 // Models
@@ -60,7 +59,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 @property (nonatomic, weak) IBOutlet UIButton *doneButton;
 @property (nonatomic, weak) IBOutlet UIButton *approveButton;
 @property (nonatomic, weak) IBOutlet UIButton *rejectButton;
-@property (nonatomic, weak) IBOutlet UIButton *reassignButton;
 
 @end
 
@@ -110,6 +108,10 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     
     // configure the view
     [self configureForFilter:self.taskFilter];
+    
+    // Add reassign button
+    UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
+    self.navigationItem.rightBarButtonItem = reassignButton;
 
     // dismiss keyboard gesture
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapView:)];
@@ -319,7 +321,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     self.doneButton.enabled = NO;
     self.approveButton.enabled = NO;
     self.rejectButton.enabled = NO;
-    self.reassignButton.enabled = NO;
 }
 
 - (void)enableActionButtons
@@ -327,7 +328,13 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     self.doneButton.enabled = YES;
     self.approveButton.enabled = YES;
     self.rejectButton.enabled = YES;
-    self.reassignButton.enabled = YES;
+}
+
+- (void)pressedReassignButton:(id)sender
+{
+    PeoplePicker *peoplePicker = [[PeoplePicker alloc] initWithSession:self.session navigationController:self.navigationController delegate:self];
+    [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelect modally:YES];
+    self.peoplePickerManager = peoplePicker;
 }
 
 #pragma mark - IBActions
@@ -378,13 +385,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     }
     
     [self completeTaskWithProperties:properties];
-}
-
-- (IBAction)pressedReassignButton:(id)sender
-{
-    PeoplePicker *peoplePicker = [[PeoplePicker alloc] initWithSession:self.session navigationController:self.navigationController delegate:self];
-    [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelect modally:YES];
-    self.peoplePickerManager = peoplePicker;
 }
 
 #pragma mark - TextViewDelegate Functions

@@ -12,8 +12,6 @@
                 <outlet property="detailsContainerView" destination="V4E-8E-aDA" id="8sw-yW-Bhs"/>
                 <outlet property="doneButton" destination="gsP-rK-SdK" id="XPa-WR-ZyT"/>
                 <outlet property="doneButtonWidthConstraint" destination="NCb-ef-8Ne" id="wkW-J8-vbB"/>
-                <outlet property="reassignButton" destination="Llg-Bu-Jag" id="mVo-EI-xSr"/>
-                <outlet property="reassignButtonWidthConstraint" destination="5tH-nJ-Abb" id="K5f-zt-hGc"/>
                 <outlet property="rejectButton" destination="bgJ-Qh-Kgm" id="pvT-BZ-fiv"/>
                 <outlet property="rejectButtonWidthConstraint" destination="n9q-Aj-ofU" id="fjK-ZD-A5F"/>
                 <outlet property="taskHeaderViewContainer" destination="745-eY-Hok" id="iqC-2N-uP0"/>
@@ -45,7 +43,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" text="ADD COMMENT HERE" translatesAutoresizingMaskIntoConstraints="NO" id="vj1-md-79u" customClass="TextView">
-                            <rect key="frame" x="10" y="10" width="580" height="30"/>
+                            <rect key="frame" x="10" y="10" width="620" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -59,7 +57,7 @@
                             </connections>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgJ-Qh-Kgm" userLabel="Reject Button">
-                            <rect key="frame" x="678" y="9" width="40" height="32"/>
+                            <rect key="frame" x="718" y="9" width="40" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="eTH-yo-gfk"/>
@@ -74,7 +72,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWH-UH-CWF" userLabel="Approve Buttton">
-                            <rect key="frame" x="638" y="9" width="40" height="32"/>
+                            <rect key="frame" x="678" y="9" width="40" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="ZFV-aC-Yeh"/>
@@ -88,23 +86,8 @@
                                 <action selector="pressedApproveButton:" destination="-1" eventType="touchUpInside" id="9tD-VN-XdG"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Llg-Bu-Jag" userLabel="Reassign Button">
-                            <rect key="frame" x="718" y="9" width="40" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="40" id="5tH-nJ-Abb"/>
-                                <constraint firstAttribute="height" constant="32" id="eii-sA-Cib"/>
-                            </constraints>
-                            <state key="normal" image="task_re-assign_button.png">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <state key="selected" image="task_re-assign_button_selected.png"/>
-                            <connections>
-                                <action selector="pressedReassignButton:" destination="-1" eventType="touchUpInside" id="0uo-7R-eF8"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gsP-rK-SdK" userLabel="Done Button">
-                            <rect key="frame" x="598" y="9" width="40" height="32"/>
+                            <rect key="frame" x="638" y="9" width="40" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="1V4-lB-Jp2"/>
@@ -121,16 +104,14 @@
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstItem="Llg-Bu-Jag" firstAttribute="leading" secondItem="bgJ-Qh-Kgm" secondAttribute="trailing" id="98n-JL-2rV"/>
+                        <constraint firstAttribute="trailing" secondItem="bgJ-Qh-Kgm" secondAttribute="trailing" constant="10" id="0HI-N0-ppb"/>
                         <constraint firstAttribute="centerY" secondItem="gsP-rK-SdK" secondAttribute="centerY" id="Enb-tY-pct"/>
                         <constraint firstAttribute="centerY" secondItem="gWH-UH-CWF" secondAttribute="centerY" id="K4R-7a-xIq"/>
                         <constraint firstAttribute="bottom" secondItem="vj1-md-79u" secondAttribute="bottom" priority="750" constant="10" id="NDC-jk-5HT"/>
-                        <constraint firstAttribute="centerY" secondItem="Llg-Bu-Jag" secondAttribute="centerY" id="lPW-lz-ULB"/>
                         <constraint firstItem="gsP-rK-SdK" firstAttribute="leading" secondItem="vj1-md-79u" secondAttribute="trailing" constant="8" id="mv5-bo-AaH"/>
                         <constraint firstItem="gWH-UH-CWF" firstAttribute="leading" secondItem="gsP-rK-SdK" secondAttribute="trailing" id="prh-12-u5t"/>
                         <constraint firstAttribute="centerY" secondItem="bgJ-Qh-Kgm" secondAttribute="centerY" id="q7f-eJ-Ad2"/>
                         <constraint firstItem="vj1-md-79u" firstAttribute="top" secondItem="Eq1-wA-1fn" secondAttribute="top" priority="750" constant="10" id="rTJ-c2-0az"/>
-                        <constraint firstAttribute="trailing" secondItem="Llg-Bu-Jag" secondAttribute="trailing" constant="10" id="vX8-vB-2Yj"/>
                         <constraint firstItem="vj1-md-79u" firstAttribute="leading" secondItem="Eq1-wA-1fn" secondAttribute="leading" constant="10" id="vfS-jI-hys"/>
                         <constraint firstItem="bgJ-Qh-Kgm" firstAttribute="leading" secondItem="gWH-UH-CWF" secondAttribute="trailing" id="w3l-Vn-Bp5"/>
                         <constraint firstAttribute="height" constant="50" id="wpD-I5-3we"/>
@@ -157,8 +138,6 @@
         <image name="task_approve_button_selected.png" width="32" height="32"/>
         <image name="task_done_button.png" width="32" height="32"/>
         <image name="task_done_button_selected.png" width="32" height="32"/>
-        <image name="task_re-assign_button.png" width="32" height="32"/>
-        <image name="task_re-assign_button_selected.png" width="32" height="32"/>
         <image name="task_reject_button.png" width="32" height="32"/>
         <image name="task_reject_button_selected.png" width="32" height="32"/>
     </resources>

@@ -63,7 +63,7 @@
 
 + (UIColor *)systemNoticeErrorColor
 {
-    return [UIColor colorWithRed:(CGFloat)220.0/255.0 green:0 blue:0 alpha:1.0];
+    return [UIColor colorWithRed:(CGFloat)230.0/255.0 green:(CGFloat)93.0/255.0 blue:(CGFloat)93.0/255.0 alpha:1.0];
 }
 + (UIColor *)systemNoticeWarningColor
 {
