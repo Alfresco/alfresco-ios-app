@@ -604,8 +604,12 @@ static NSString * const kAudioFileName = @"audio.m4a";
         name = [name stringByAppendingPathExtension:[Utility fileExtensionFromMimeType:self.contentFile.mimeType]];
     }
     
+    [self showHUDWithMode:MBProgressHUDModeDeterminate];
+    
     __weak typeof(self) weakSelf = self;
     [self.documentService createDocumentWithName:name inParentFolder:self.uploadToFolder contentFile:self.contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+        [weakSelf hideHUD];
+
         if (document)
         {
             NSError *deleteAfterUploadError = nil;
@@ -666,7 +670,8 @@ static NSString * const kAudioFileName = @"audio.m4a";
             completionBlock(NO);
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        //
+        // Update progress HUD
+        weakSelf.progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
     }];
 }
 
@@ -687,13 +692,6 @@ static NSString * const kAudioFileName = @"audio.m4a";
             mimeType = [Utility mimeTypeForFileExtension:weakSelf.fileExtension];
         }
         
-        // force the mimetype to audio/mp4 as the repo does not recognise audio/x-m4a
-        // as a result it applies both audio and image aspects
-        if ([mimeType isEqualToString:@"audio/x-m4a"])
-        {
-            mimeType = @"audio/mp4";
-        }
-        
         // create the content file
         AlfrescoContentFile *contentFile = nil;
         
@@ -706,11 +704,11 @@ static NSString * const kAudioFileName = @"audio.m4a";
             contentFile = [[AlfrescoContentFile alloc] initWithUrl:weakSelf.documentURL];
         }
         
+        [weakSelf showHUDWithMode:MBProgressHUDModeDeterminate];
+
         // create the read stream
         NSString *pathToTempFile = [contentFile.fileUrl path];
         NSInputStream *readStream = [[AlfrescoFileManager sharedManager] inputStreamWithFilePath:pathToTempFile];
-        
-        [weakSelf showHUD];
         AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:readStream mimeType:mimeType length:contentFile.length];
         
         [weakSelf.documentService createDocumentWithName:documentNameWithPathExtension inParentFolder:weakSelf.uploadToFolder contentStream:contentStream properties:nil aspects:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
@@ -774,7 +772,8 @@ static NSString * const kAudioFileName = @"audio.m4a";
                 completionBlock(NO);
             }
         } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-            //
+            // Update progress HUD
+            weakSelf.progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
         }];
     };
     

@@ -109,7 +109,7 @@
     AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:mimeType length:fileLength];
     NSString *fileName = [filePath.lastPathComponent stringByRemovingPercentEncoding];
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:selectionController.navigationController.view];
-    progressHUD.mode = MBProgressHUDModeAnnularDeterminate;
+    progressHUD.mode = MBProgressHUDModeDeterminate;
     
     [selectionController.navigationController.view addSubview:progressHUD];
     [progressHUD show:YES];
@@ -158,7 +158,7 @@
                     }
                 } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                     // Update progress HUD
-                    progressHUD.progress = (bytesTotal != 0) ? (float)(bytesTransferred / bytesTotal) : 0;
+                    progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
                 }];
             }
             else
@@ -172,7 +172,7 @@
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
         // Update progress HUD
-        progressHUD.progress = (bytesTotal != 0) ? (float)(bytesTransferred / bytesTotal) : 0;
+        progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
     }];
 }
 
