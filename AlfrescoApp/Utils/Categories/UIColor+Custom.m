@@ -90,4 +90,9 @@
     return [UIColor redColor];
 }
 
++ (UIColor *)onboardingOffWhiteColor
+{
+    return [UIColor colorWithRed:(CGFloat)244.0/255.0 green:(CGFloat)244.0/255.0 blue:(CGFloat)244.0/255.0 alpha:1.0];
+}
+
 @end

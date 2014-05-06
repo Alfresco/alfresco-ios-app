@@ -26,5 +26,6 @@
 + (UIColor *)taskPriorityMediumColor;
 + (UIColor *)taskPriorityLowColor;
 + (UIColor *)taskOverdueColor;
++ (UIColor *)onboardingOffWhiteColor;
 
 @end
