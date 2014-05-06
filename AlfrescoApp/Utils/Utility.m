@@ -27,11 +27,10 @@ static CGFloat const kZoomAnimationSpeed = 0.2f;
  * TaskPriority lightweight class
  */
 @implementation TaskPriority
-+ (id)taskPriorityWithImageName:(NSString *)imageName tintColor:(UIColor *)tintColor summary:(NSString *)summary
++ (id)taskPriorityWithImageName:(NSString *)imageName summary:(NSString *)summary
 {
     TaskPriority *taskPriority = [TaskPriority new];
     taskPriority.image = [UIImage imageNamed:imageName];
-    taskPriority.tintColor = tintColor;
     taskPriority.summary = summary;
     return taskPriority;
 }
@@ -574,15 +573,15 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     switch (priority.integerValue)
     {
         case 1:
-            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_high.png" tintColor:[UIColor taskPriorityHighColor] summary:NSLocalizedString(@"tasks.priority.high", @"High Priority")];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_high.png" summary:NSLocalizedString(@"tasks.priority.high", @"High Priority")];
             break;
             
         case 2:
-            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_medium.png" tintColor:[UIColor taskPriorityMediumColor] summary:NSLocalizedString(@"tasks.priority.medium", @"Medium Priority")];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_medium.png" summary:NSLocalizedString(@"tasks.priority.medium", @"Medium Priority")];
             break;
 
         case 3:
-            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_low.png" tintColor:[UIColor taskPriorityLowColor] summary:NSLocalizedString(@"tasks.priority.low", @"Low Priority")];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_low.png" summary:NSLocalizedString(@"tasks.priority.low", @"Low Priority")];
             break;
             
         default:

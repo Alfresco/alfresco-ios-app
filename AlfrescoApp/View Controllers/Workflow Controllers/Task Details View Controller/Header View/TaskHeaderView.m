@@ -61,8 +61,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 - (void)setPriorityLevel:(NSNumber *)priority
 {
     TaskPriority *taskPriority = [Utility taskPriorityForPriority:priority];
-    self.taskPriorityImageView.image = [taskPriority.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.taskPriorityImageView.tintColor = taskPriority.tintColor;
+    self.taskPriorityImageView.image = taskPriority.image;
     self.taskPriorityLabel.text = taskPriority.summary;
 }
 

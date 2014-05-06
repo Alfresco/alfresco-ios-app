@@ -51,8 +51,7 @@ static CGFloat const kMinimumCellHeight = 70.0f;
 - (void)setPriorityLevel:(NSNumber *)priority
 {
     TaskPriority *taskPriority = [Utility taskPriorityForPriority:priority];
-    self.taskPriorityImageView.image = [taskPriority.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.taskPriorityImageView.tintColor = taskPriority.tintColor;
+    self.taskPriorityImageView.image = taskPriority.image;
 }
 
 - (void)setTaskOverdue:(BOOL)overdue
