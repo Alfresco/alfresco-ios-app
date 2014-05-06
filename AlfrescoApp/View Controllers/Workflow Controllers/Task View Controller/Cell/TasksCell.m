@@ -10,43 +10,16 @@
 #import "Utility.h"
 
 
-static CGFloat const kMinimumCellHeight = 70.0f;
-
 @interface TasksCell ()
-
 @property (nonatomic, weak) IBOutlet UIImageView *taskPriorityImageView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizonalPaddingBetweenContentViewAndPriorityIndicator;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *priorityIndicatiorWidth;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizonalPaddingBetweenPriorityIndicatorAndTextLabel;
-
+@property (nonatomic, weak) IBOutlet UILabel *taskNameTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *taskDueDateTextLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *dueDateHeightConstraint;
 @end
 
 @implementation TasksCell
 
-#pragma mark - Private Functions
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    [self.contentView layoutSubviews];
-    
-    CGFloat horizonalPaddingBetweenContentViewAndPriorityIndicator = self.horizonalPaddingBetweenContentViewAndPriorityIndicator.constant;
-    CGFloat priorityIndicatorWidth = self.priorityIndicatiorWidth.constant;
-    CGFloat horizonalPaddingBetweenPriorityIndicatorAndTextLabel = self.horizonalPaddingBetweenPriorityIndicatorAndTextLabel.constant;
-    
-    CGFloat leftPadding = horizonalPaddingBetweenContentViewAndPriorityIndicator + priorityIndicatorWidth + horizonalPaddingBetweenPriorityIndicatorAndTextLabel;
-    CGFloat rightPadding = horizonalPaddingBetweenContentViewAndPriorityIndicator;
-    
-    self.taskNameTextLabel.preferredMaxLayoutWidth = self.contentView.frame.size.width - (leftPadding + rightPadding);
-}
-
 #pragma mark - Public Functions
-
-+ (CGFloat)minimumCellHeight
-{
-    return kMinimumCellHeight;
-}
 
 - (void)setPriorityLevel:(NSNumber *)priority
 {
@@ -54,9 +27,22 @@ static CGFloat const kMinimumCellHeight = 70.0f;
     self.taskPriorityImageView.image = taskPriority.image;
 }
 
+- (void)setTaskName:(NSString *)taskName
+{
+    self.taskNameTextLabel.text = taskName;
+}
+
+- (void)setDueDate:(NSDate *)dueDate
+{
+    NSString *dateString = relativeDateFromDate(dueDate);
+    
+    self.taskDueDateTextLabel.text = dateString;
+    [self.dueDateHeightConstraint setConstant:(dateString.length == 0 ? 0 : 16.0f)];
+}
+
 - (void)setTaskOverdue:(BOOL)overdue
 {
-    self.taskDueDateTextLabel.textColor = overdue ? [UIColor taskOverdueColor] : [UIColor blackColor];
+    self.taskDueDateTextLabel.textColor = overdue ? [UIColor taskOverdueLabelColor] : [UIColor textDimmedColor];
 }
 
 @end

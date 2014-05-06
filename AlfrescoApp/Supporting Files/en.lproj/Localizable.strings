@@ -23,14 +23,33 @@
 /**
  * Relative Dates
  */
-"relative.date.just-now" = "just now";
-"relative.date.less-than-a-minute-ago" = "less than a minute ago";
-"relative.date.one-minute-ago" = "1 minute ago";
-"relative.date.n-minutes-ago" = "%d minutes ago";
-"relative.date.one-hour-ago" = "1 hour ago";
-"relative.date.n-hours-ago" = "%d hours ago";
-"relative.date.one-day-ago" = "1 day ago";
-"relative.date.n-days-ago" = "%d days ago";
+"relative.date.past.n-years" = "%d years ago";
+"relative.date.past.one-year" = "A year ago";
+"relative.date.past.n-months" = "%d months ago";
+"relative.date.past.one-month" = "A month ago";
+"relative.date.past.n-weeks" = "%d weeks ago";
+"relative.date.past.one-week" = "A week ago";
+"relative.date.past.n-days" = "%d days ago";
+"relative.date.past.one-day" = "Yesterday";
+"relative.date.past.n-hours" = "%d hours ago";
+"relative.date.past.one-hour" = "An hour ago";
+"relative.date.past.n-minutes" = "%d minutes ago";
+"relative.date.past.one-minute" = "A minute ago";
+"relative.date.past.n-seconds" = "%d seconds ago";
+"relative.date.just-now" = "Just now";
+"relative.date.future.n-seconds" = "%d seconds from now";
+"relative.date.future.one-minute" = "A minute from now";
+"relative.date.future.n-minutes" = "%d minutes from now";
+"relative.date.future.one-hour" = "An hour from now";
+"relative.date.future.n-hours" = "%d hours from now";
+"relative.date.future.one-day" = "Tomorrow";
+"relative.date.future.n-days" = "%d days from now";
+"relative.date.future.one-week" = "A week from now";
+"relative.date.future.n-weeks" = "%d weeks from now";
+"relative.date.future.one-month" = "A month from now";
+"relative.date.future.n-months" = "%d months from now";
+"relative.date.future.one-year" = "A year from now";
+"relative.date.future.n-years" = "%d years from now";
 
 /**
  * File Sizes

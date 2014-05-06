@@ -22,10 +22,7 @@
 + (UIColor *)systemNoticeInformationColor;
 + (UIColor *)systemNoticeErrorColor;
 + (UIColor *)systemNoticeWarningColor;
-+ (UIColor *)taskPriorityHighColor;
-+ (UIColor *)taskPriorityMediumColor;
-+ (UIColor *)taskPriorityLowColor;
-+ (UIColor *)taskOverdueColor;
++ (UIColor *)taskOverdueLabelColor;
 + (UIColor *)onboardingOffWhiteColor;
 
 @end
