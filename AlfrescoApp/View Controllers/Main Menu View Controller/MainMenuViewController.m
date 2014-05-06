@@ -307,7 +307,7 @@ static NSUInteger const kAccountsRowNumber = 0;
                                                       viewController:downloadsNavigationController
                                                      displayInDetail:NO];
     
-    return [@[settingsMenuItem, downloadsMenuItem, helpMenuItem] mutableCopy];
+    return [@[downloadsMenuItem, settingsMenuItem, helpMenuItem] mutableCopy];
 }
 
 - (void)configureLocalMainMenuItems:(AppConfigurationManager *)configurationManager
@@ -350,6 +350,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         BOOL repositoryMenuItemsChanged = NO;
         NSInteger nextIndex = 0;
         
+        // Activites
         BOOL showActivities = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationActivitiesKey];
         MainMenuItem *activitiesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeActivities];
         if (showActivities && !activitiesMenuItem)
@@ -372,50 +373,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         NSInteger itemIndex = [repositoryMenuItems indexOfObject:activitiesMenuItem];  // find index for recent item and setup nextIndex for next item
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
-        BOOL showRepository = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationRepositoryKey];
-        MainMenuItem *companyHomeMenuItem = [self existingMenuItemWithType:NavigationControllerTypeRepository];
-        if (showRepository && !companyHomeMenuItem)
-        {
-            FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:self.alfrescoSession];
-            NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
-            companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
-                                                                     imageName:@"mainmenu-repository.png"
-                                                             localizedTitleKey:@"companyHome.title"
-                                                                viewController:companyHomeNavigationController
-                                                               displayInDetail:NO];
-            [repositoryMenuItems insertObject:companyHomeMenuItem atIndex:nextIndex];
-            repositoryMenuItemsChanged = YES;
-        }
-        else if (!showRepository && companyHomeMenuItem)
-        {
-            [repositoryMenuItems removeObject:companyHomeMenuItem];
-            repositoryMenuItemsChanged = YES;
-        }
-        itemIndex = [repositoryMenuItems indexOfObject:companyHomeMenuItem];
-        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
-        
-        BOOL showSites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSitesKey];
-        MainMenuItem *sitesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSites];
-        if (showSites && !sitesMenuItem)
-        {
-            SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.alfrescoSession];
-            NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
-            sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
-                                                               imageName:@"mainmenu-sites.png"
-                                                       localizedTitleKey:@"sites.title"
-                                                          viewController:sitesListNavigationController
-                                                         displayInDetail:NO];
-            [repositoryMenuItems insertObject:sitesMenuItem atIndex:nextIndex];
-            repositoryMenuItemsChanged = YES;
-        }
-        else if (!showSites && sitesMenuItem)
-        {
-            [repositoryMenuItems removeObject:sitesMenuItem];
-            repositoryMenuItemsChanged = YES;
-        }
-        itemIndex = [repositoryMenuItems indexOfObject:sitesMenuItem];
-        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
-        
+        // Tasks
         BOOL showTasks = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationTasksKey];
         MainMenuItem *tasksMenuItem = [self existingMenuItemWithType:NavigationControllerTypeTasks];
         if (showTasks && !tasksMenuItem)
@@ -438,6 +396,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         itemIndex = [repositoryMenuItems indexOfObject:tasksMenuItem];
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
+        // Favourites
         BOOL showFavorites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationFavoritesKey];
         MainMenuItem *favoritesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSync];
         if (showFavorites)
@@ -477,6 +436,60 @@ static NSUInteger const kAccountsRowNumber = 0;
         itemIndex = [repositoryMenuItems indexOfObject:favoritesMenuItem];
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
+        // Sites
+        BOOL showSites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSitesKey];
+        MainMenuItem *sitesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSites];
+        if (showSites && !sitesMenuItem)
+        {
+            SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.alfrescoSession];
+            NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
+            sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
+                                                               imageName:@"mainmenu-sites.png"
+                                                       localizedTitleKey:@"sites.title"
+                                                          viewController:sitesListNavigationController
+                                                         displayInDetail:NO];
+            [repositoryMenuItems insertObject:sitesMenuItem atIndex:nextIndex];
+            repositoryMenuItemsChanged = YES;
+        }
+        else if (!showSites && sitesMenuItem)
+        {
+            [repositoryMenuItems removeObject:sitesMenuItem];
+            repositoryMenuItemsChanged = YES;
+        }
+        itemIndex = [repositoryMenuItems indexOfObject:sitesMenuItem];
+        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
+        
+        // My Files
+        BOOL showMyFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
+        MainMenuItem *myFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeMyFiles];
+        if (showMyFiles)
+        {
+            if (myFilesMenuItem)
+            {
+                [repositoryMenuItems removeObject:myFilesMenuItem];
+            }
+            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
+                                                                                                     folderPermissions:nil
+                                                                                                     folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
+                                                                                                               session:self.alfrescoSession];
+            NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
+            myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeMyFiles
+                                                                 imageName:@"mainmenu-myfiles.png"
+                                                         localizedTitleKey:@"myFiles.title"
+                                                            viewController:myFilesNavigationController
+                                                           displayInDetail:NO];
+            [repositoryMenuItems insertObject:myFilesMenuItem atIndex:nextIndex];
+            repositoryMenuItemsChanged = YES;
+        }
+        else if (!showMyFiles && myFilesMenuItem)
+        {
+            [repositoryMenuItems removeObject:myFilesMenuItem];
+            repositoryMenuItemsChanged = YES;
+        }
+        itemIndex = [repositoryMenuItems indexOfObject:sitesMenuItem];
+        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
+        
+        // Shared Files
         BOOL showSharedFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSharedFilesKey];
         MainMenuItem *sharedFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSharedFiles];
         if (showSharedFiles)
@@ -506,32 +519,28 @@ static NSUInteger const kAccountsRowNumber = 0;
         itemIndex = [repositoryMenuItems indexOfObject:sharedFilesMenuItem];
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
-        BOOL showMyFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
-        MainMenuItem *myFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeMyFiles];
-        if (showMyFiles)
+        // Repository
+        BOOL showRepository = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationRepositoryKey];
+        MainMenuItem *companyHomeMenuItem = [self existingMenuItemWithType:NavigationControllerTypeRepository];
+        if (showRepository && !companyHomeMenuItem)
         {
-            if (myFilesMenuItem)
-            {
-                [repositoryMenuItems removeObject:myFilesMenuItem];
-            }
-            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
-                                                                                                     folderPermissions:nil
-                                                                                                     folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
-                                                                                                               session:self.alfrescoSession];
-            NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
-            myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeMyFiles
-                                                                 imageName:@"mainmenu-myfiles.png"
-                                                         localizedTitleKey:@"myFiles.title"
-                                                            viewController:myFilesNavigationController
-                                                           displayInDetail:NO];
-            [repositoryMenuItems insertObject:myFilesMenuItem atIndex:nextIndex];
+            FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:self.alfrescoSession];
+            NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
+            companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
+                                                                     imageName:@"mainmenu-repository.png"
+                                                             localizedTitleKey:@"companyHome.title"
+                                                                viewController:companyHomeNavigationController
+                                                               displayInDetail:NO];
+            [repositoryMenuItems insertObject:companyHomeMenuItem atIndex:nextIndex];
             repositoryMenuItemsChanged = YES;
         }
-        else if (!showMyFiles && myFilesMenuItem)
+        else if (!showRepository && companyHomeMenuItem)
         {
-            [repositoryMenuItems removeObject:myFilesMenuItem];
+            [repositoryMenuItems removeObject:companyHomeMenuItem];
             repositoryMenuItemsChanged = YES;
         }
+        itemIndex = [repositoryMenuItems indexOfObject:companyHomeMenuItem];
+        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
         if (repositoryMenuItems.count == 0)
         {
