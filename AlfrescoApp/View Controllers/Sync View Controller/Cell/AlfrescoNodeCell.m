@@ -150,7 +150,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 - (void)statusChanged:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
-    if ([[info objectForKey:kSyncStatusNodeIdKey] isEqualToString:self.node.identifier])
+    if ([self.node.identifier hasPrefix:[info objectForKey:kSyncStatusNodeIdKey]])
     {
         SyncNodeStatus *nodeStatus = notification.object;
         self.nodeStatus = nodeStatus;

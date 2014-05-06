@@ -17,6 +17,8 @@ NSString * const kSyncNodeKey = @"node";
 NSString * const kSyncContentPathKey = @"contentPath";
 NSString * const kSyncReloadContentKey = @"reloadContent";
 
+static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId";
+
 @interface SyncHelper ()
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
 @property (nonatomic, strong) CoreDataSyncHelper *syncCoreDataHelper;
@@ -137,10 +139,10 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     for (AlfrescoNode *alfrescoNode in nodes)
     {
         // check if we already have object in managedContext for alfrescoNode
-        SyncNodeInfo *syncNodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:alfrescoNode.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
+        SyncNodeInfo *syncNodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:alfrescoNode] inAccountWithId:accountId inManagedObjectContext:managedContext];
         NSData *archivedNode = [NSKeyedArchiver archivedDataWithRootObject:alfrescoNode];
         NSData *archivedPermissions = nil;
-        AlfrescoPermissions *nodePermissions = [permissions objectForKey:alfrescoNode.identifier];
+        AlfrescoPermissions *nodePermissions = [permissions objectForKey:[self syncIdentifierForNode:alfrescoNode]];
         if (nodePermissions)
         {
             archivedPermissions = [NSKeyedArchiver archivedDataWithRootObject:nodePermissions];
@@ -150,7 +152,7 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         if (!syncNodeInfo)
         {
             syncNodeInfo = [self.syncCoreDataHelper createSyncNodeInfoMangedObjectInManagedObjectContext:managedContext];
-            syncNodeInfo.syncNodeInfoId = alfrescoNode.identifier;
+            syncNodeInfo.syncNodeInfoId = [self syncIdentifierForNode:alfrescoNode];
             syncNodeInfo.isFolder = [NSNumber numberWithBool:alfrescoNode.isFolder];
             syncNodeInfo.account = syncAccount;
         }
@@ -176,9 +178,11 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     }
 }
 
+#pragma mark - Sync Naming and ID Functions
+
 - (NSString *)syncNameForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:node] inAccountWithId:accountId inManagedObjectContext:managedContext];
     
     if (nodeInfo.syncContentPath == nil || [nodeInfo.syncContentPath isEqualToString:@""])
     {
@@ -187,15 +191,42 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
         
         if (nodeExtension == nil || [nodeExtension isEqualToString:@""])
         {
-            newName = [node.identifier lastPathComponent];
+            newName = [[self syncIdentifierForNode:node] lastPathComponent];
         }
         else
         {
-            newName = [NSString stringWithFormat:@"%@.%@", [node.identifier lastPathComponent], nodeExtension];
+            newName = [NSString stringWithFormat:@"%@.%@", [[self syncIdentifierForNode:node] lastPathComponent], nodeExtension];
         }
         return newName;
     }
     return [nodeInfo.syncContentPath lastPathComponent];
+}
+
+- (NSString *)syncIdentifierForNode:(AlfrescoNode *)node
+{
+    return [(AlfrescoProperty *)[node.properties objectForKey:kAlfrescoNodeVersionSeriesIdKey] value];
+}
+
+- (NSMutableArray *)syncIdentifiersForNodes:(NSArray *)nodes
+{
+    NSMutableArray *syncIdentifiers = [NSMutableArray array];
+    
+    for (AlfrescoNode *node in nodes)
+    {
+        [syncIdentifiers addObject:[self syncIdentifierForNode:node]];
+    }
+    return syncIdentifiers;
+}
+
+- (NSString *)identifierWithoutVersionNumber:(NSString *)nodeIdentifier
+{
+    NSString *identifier = nodeIdentifier;
+    NSRange versionNumberRange = [identifier rangeOfString:@";"];
+    if (versionNumberRange.location != NSNotFound)
+    {
+        identifier = [identifier substringToIndex:versionNumberRange.location];
+    }
+    return identifier;
 }
 
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId
@@ -231,14 +262,14 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
 
 - (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:node] inAccountWithId:accountId inManagedObjectContext:managedContext];
     return nodeInfo.lastDownloadedDate;
 }
 
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:document.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:document] inAccountWithId:accountId inManagedObjectContext:managedContext];
     nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
     [self.syncCoreDataHelper saveContextForManagedObjectContext:managedContext];
 }
@@ -268,7 +299,7 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
     
     if (!error)
     {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:node.identifier inAccountWithId:accountId inManagedObjectContext:managedContext];
+        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:node] inAccountWithId:accountId inManagedObjectContext:managedContext];
         [self.syncCoreDataHelper deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
     }
 }
@@ -320,7 +351,8 @@ NSString * const kSyncReloadContentKey = @"reloadContent";
 
 - (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef
 {
-    return [self.syncCoreDataHelper retrieveSyncedAlfrescoDocumentForIdentifier:documentRef managedObjectContext:nil];
+    NSString *syncDocumentRef = [self identifierWithoutVersionNumber:documentRef];
+    return [self.syncCoreDataHelper retrieveSyncedAlfrescoDocumentForIdentifier:syncDocumentRef managedObjectContext:nil];
 }
 
 #pragma mark - Private Interface
