@@ -173,10 +173,10 @@ static NSString * const kTextFileMimeType = @"text/plain";
         else
         {
             MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+            progressHUD.mode = MBProgressHUDModeDeterminate;
             [progressHUD show:YES];
             
             [self.documentFolderService updateContentOfDocument:self.editingDocument contentFile:contentFile completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                
                 [progressHUD hide:YES];
                 if (document)
                 {
@@ -199,7 +199,8 @@ static NSString * const kTextFileMimeType = @"text/plain";
                     }];
                 }
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                
+                // Update progress HUD
+                progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
             }];
         }
     }

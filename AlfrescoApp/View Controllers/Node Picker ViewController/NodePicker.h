@@ -39,25 +39,27 @@ typedef NS_ENUM(NSInteger, NodePickerMode)
 @property (nonatomic, weak) id<NodePickerDelegate> delegate;
 
 /*
- * initiate Node Picker giving it reference to nav controller so it can push viewcontrollers e.g sites, repository, favorites
- * @param NavigationController
+ * Initiate Node Picker giving it reference to nav controller so it can push viewcontrollers e.g sites, repository, favorites
+ * @param session - Current AlfrescoSession
+ * @param navigationController - UINavigationController instance
  */
 - (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController;
 
 /*
- * start nodes picker
- * @param Node Picker Type
- * @param Node Picker Mode
+ * Start node picker
+ * @param nodes - Array of objectIds (NSString) or nodes (AlfrescoNode) objects
+ * @param type -  Node Picker Type
+ * @param mode - Node Picker Mode
  */
 - (void)startWithNodes:(NSMutableArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode;
 
 /*
- * cancel nodes picker
+ * Cancel node picker
  */
 - (void)cancel;
 
 /*
- * Bellow methods are internal to NodePicker controllers (accessed from node picker sites, favorites, repository)
+ * Below methods are internal to NodePicker controllers (accessed from node picker sites, favorites, repository)
  */
 - (BOOL)isNodeSelected:(AlfrescoNode *)node;
 - (BOOL)isSelectionEnabledForNode:(AlfrescoNode *)node;

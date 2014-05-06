@@ -44,7 +44,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, assign) TaskFilter taskFilter;
-@property (nonatomic, strong) PeoplePicker *peoplePickerManager;
+@property (nonatomic, strong) PeoplePicker *peoplePicker;
 // Services
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
@@ -168,7 +168,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
         // retrieve the process definition for the header view
         [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
     }
-    else // if (filter == TaskFilterProcess)
+    else /* if (filter == TaskFilterProcess) */ // Suppress static analyser warning
     {
         // configure the header view for the process
         [self.taskHeaderView configureViewForProcess:self.process];
@@ -288,14 +288,14 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.view addSubview:completingProgressHUD];
     [completingProgressHUD show:YES];
     
-    [self disableActionButtons];
+    [self enableActionButtons:NO];
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
     [self.workflowService completeTask:self.task variables:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
         [completingProgressHUD hide:YES];
         completingProgressHUD = nil;
-        [weakSelf enableActionButtons];
+        [weakSelf enableActionButtons:YES];
         
         if (error)
         {
@@ -316,25 +316,18 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.textView resignFirstResponder];
 }
 
-- (void)disableActionButtons
+- (void)enableActionButtons:(BOOL)enabled
 {
-    self.doneButton.enabled = NO;
-    self.approveButton.enabled = NO;
-    self.rejectButton.enabled = NO;
-}
-
-- (void)enableActionButtons
-{
-    self.doneButton.enabled = YES;
-    self.approveButton.enabled = YES;
-    self.rejectButton.enabled = YES;
+    self.doneButton.enabled = enabled;
+    self.approveButton.enabled = enabled;
+    self.rejectButton.enabled = enabled;
 }
 
 - (void)pressedReassignButton:(id)sender
 {
     PeoplePicker *peoplePicker = [[PeoplePicker alloc] initWithSession:self.session navigationController:self.navigationController delegate:self];
     [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelect modally:YES];
-    self.peoplePickerManager = peoplePicker;
+    self.peoplePicker = peoplePicker;
 }
 
 #pragma mark - IBActions
@@ -416,10 +409,10 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     {
         AlfrescoPerson *reassignee = selectedPeople[0];
         
-        [self disableActionButtons];
+        [self enableActionButtons:NO];
         __weak typeof(self) weakSelf = self;
         [self.workflowService reassignTask:self.task toAssignee:reassignee completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
-            [weakSelf enableActionButtons];
+            [weakSelf enableActionButtons:YES];
             if (error)
             {
                 displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.complete.process", @"Unable To Complete Task Process"), [ErrorDescriptions descriptionForError:error]]);

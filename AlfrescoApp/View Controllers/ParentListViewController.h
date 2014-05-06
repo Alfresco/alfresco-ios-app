@@ -25,6 +25,7 @@
 @property (nonatomic, assign) BOOL moreItemsAvailable;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong, readonly) MBProgressHUD *progressHUD;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
@@ -34,6 +35,7 @@
 - (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 - (void)addAlfrescoNodes:(NSArray *)alfrescoNodes withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 - (void)showHUD;
+- (void)showHUDWithMode:(MBProgressHUDMode)mode;
 - (void)hideHUD;
 - (void)hidePullToRefreshView;
 - (BOOL)shouldRefresh;
