@@ -929,13 +929,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     NSString *syncNameForNode = [self.syncHelper syncNameForNode:document inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
     SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inSyncNodesStatus:self.syncNodesStatus];
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
     nodeStatus.status = SyncStatusLoading;
     
     NSString *destinationPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
     
     SyncOperation *downloadOperation = [[SyncOperation alloc] initWithDocumentFolderService:self.documentFolderService downloadDocument:document outputStream:outputStream downloadCompletionBlock:^(BOOL succeeded, NSError *error) {
+        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
         if (succeeded)
         {
             nodeStatus.status = SyncStatusSuccessful;
@@ -1002,7 +1002,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSString *syncNameForNode = [self.syncHelper syncNameForNode:document inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
     NSString *nodeExtension = [document.name pathExtension];
     SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inSyncNodesStatus:self.syncNodesStatus];
-    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:nil];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:[self selectedAccountIdentifier]] stringByAppendingPathComponent:syncNameForNode];
     NSString *mimeType = @"application/octet-stream";
@@ -1020,6 +1019,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                            uploadDocument:document
                                                                               inputStream:contentStream
                                                                     uploadCompletionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
+                                                                        
+                                                                        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document]
+                                                                                                                                      inAccountWithId:[self selectedAccountIdentifier]
+                                                                                                                               inManagedObjectContext:nil];
                                                                         if (uploadedDocument)
                                                                         {
                                                                             nodeStatus.status = SyncStatusSuccessful;
