@@ -206,8 +206,11 @@ static NSUInteger const kAccountsRowNumber = 0;
 - (void)appConfigurationUpdated:(NSNotification *)notification
 {
     AppConfigurationManager *configurationManager = (AppConfigurationManager *)notification.object;
-    [self configureRepositoryMainMenuItems:configurationManager];
-    [self configureLocalMainMenuItems:configurationManager];
+    // add a slight delay before configuring to ensure animations are smooth
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self configureRepositoryMainMenuItems:configurationManager];
+        [self configureLocalMainMenuItems:configurationManager];
+    });
 }
 
 - (void)accountListEmpty:(NSNotification *)notification
