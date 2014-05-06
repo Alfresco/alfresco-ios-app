@@ -64,8 +64,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 
 - (void)retrieveAppConfigurationWithCompletionBlock:(void (^)())completionBlock
 {
-    void (^processError)(NSError *) = ^(NSError *error)
-    {
+    void (^processError)(NSError *) = ^(NSError *error) {
         if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
         {
             [self updateAppUsingDefaultConfiguration];
@@ -85,11 +84,9 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     };
     
     [self appDataDictionaryPathWithCompletionBlock:^(NSString *dataDictionaryPath) {
-        
         if (dataDictionaryPath)
         {
             [self.documentService retrieveNodeWithFolderPath:dataDictionaryPath completionBlock:^(AlfrescoNode *node, NSError *nodeRetrievalError) {
-                
                 if (node)
                 {
                     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -100,14 +97,14 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
                         [userDefaults removeObjectForKey:kRepositoryDownloadedConfigurationFileLastUpdatedDate];
                         [userDefaults synchronize];
                     }
+
                     NSDate *downloadedConfigurationFileLastModificationDate = [userDefaults objectForKey:kRepositoryDownloadedConfigurationFileLastUpdatedDate];
-                    
                     BOOL downloadConfigurationFile = downloadedConfigurationFileLastModificationDate ? ([downloadedConfigurationFileLastModificationDate compare:node.modifiedAt] == NSOrderedAscending) : YES;
                     if (downloadConfigurationFile)
                     {
                         NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
+
                         [self.documentService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *documentRetrievalError) {
-                            
                             if (succeeded)
                             {
                                 [self updateAppConfigurationUsingFileURL:[NSURL fileURLWithPath:destinationPath]];

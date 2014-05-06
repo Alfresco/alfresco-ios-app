@@ -15,6 +15,8 @@
 #import "RootRevealControllerViewController.h"
 #import "WebBrowserViewController.h"
 
+static CGFloat const kButtonCornerRadius = 5.0f;
+
 @interface OnboardingViewController () <CloudSignUpViewControllerDelegate, AccountTypeSelectionViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *createCloudAccountButton;
@@ -31,8 +33,18 @@
 {
     [super viewDidLoad];
     
-    [self.createCloudAccountButton setBackgroundImage:[[UIImage imageNamed:@"onboarding-blue.png"] stretchableImageWithLeftCapWidth:12.0f topCapHeight:12.0f] forState:UIControlStateNormal];
-    [self.useExistingAccountButton setBackgroundImage:[[UIImage imageNamed:@"onboarding-grey.png"] stretchableImageWithLeftCapWidth:12.0f topCapHeight:12.0f] forState:UIControlStateNormal];
+    self.useExistingAccountButton.backgroundColor = [UIColor appTintColor];
+    self.useExistingAccountButton.layer.cornerRadius = kButtonCornerRadius;
+    
+    self.createCloudAccountButton.backgroundColor = [UIColor whiteColor];
+    self.createCloudAccountButton.layer.cornerRadius = kButtonCornerRadius;
+    
+    [self.closeWelcomeScreenButton setImage:[[UIImage imageNamed:@"closeButton.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    self.closeWelcomeScreenButton.tintColor = [UIColor blackColor];
+    
+    [self.helpButton setTitleColor:[UIColor appTintColor] forState:UIControlStateNormal];
+    
+    self.view.backgroundColor = [UIColor onboardingOffWhiteColor];
     
     [self localiseUI];
 }

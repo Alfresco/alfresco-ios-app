@@ -494,7 +494,16 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     {
         mimeType = @"application/octet-stream";
     }
-    
+
+    /**
+     * Force the mimetype to audio/mp4 it iOS determined it should be audio/x-m4a
+     * Otherwise the repo applies both audio and exif aspects to the node
+     */
+    if ([mimeType isEqualToString:@"audio/x-m4a"])
+    {
+        mimeType = @"audio/mp4";
+    }
+
     return mimeType;
 }
 
