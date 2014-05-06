@@ -84,7 +84,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
     else
     {
         self.calendarMonthLabel.text = NSLocalizedString(@"tasks.calendar.no-due-date", @"No Date");
-        self.calendarDateLabel.text = @"?";
+        self.calendarDateLabel.text = @"";
     }
     self.taskNameLabel.text = (process.name) ? process.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
     self.taskTypeLabel.text = @"";
@@ -104,7 +104,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
     else
     {
         self.calendarMonthLabel.text = NSLocalizedString(@"tasks.calendar.no-due-date", @"No Date");
-        self.calendarDateLabel.text = @"?";
+        self.calendarDateLabel.text = @"";
     }
     self.taskNameLabel.text = (task.name) ? task.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
     self.taskTypeLabel.text = @"";
