@@ -569,7 +569,7 @@
  * Onboarding View Controller
  */
 "onboarding.setup.cloud.button.title" = "Sign up for Alfresco Cloud";
-"onboarding.setup.existing.account.button.title" = "I already have an account";
+"onboarding.setup.existing.account.button.title" = "Login";
 "onboarding.help.button.title" = "Help";
 
 /**

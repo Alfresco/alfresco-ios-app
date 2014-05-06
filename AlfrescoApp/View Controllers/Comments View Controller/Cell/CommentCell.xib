@@ -33,11 +33,11 @@
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M71-Vy-aGA" customClass="UIImageView">
-                        <rect key="frame" x="57" y="8" width="65" height="21"/>
+                        <rect key="frame" x="57" y="8" width="75" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Content" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="45" translatesAutoresizingMaskIntoConstraints="NO" id="Zkf-fD-ffN">
-                                <rect key="frame" x="10" y="5" width="45" height="11"/>
+                                <rect key="frame" x="15" y="8" width="45" height="5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -47,10 +47,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Zkf-fD-ffN" secondAttribute="trailing" constant="10" id="OJp-UH-2eu"/>
-                            <constraint firstItem="Zkf-fD-ffN" firstAttribute="top" secondItem="M71-Vy-aGA" secondAttribute="top" constant="5" id="a5q-2q-cHA"/>
-                            <constraint firstAttribute="bottom" secondItem="Zkf-fD-ffN" secondAttribute="bottom" constant="5" id="ieM-7G-iHt"/>
-                            <constraint firstItem="Zkf-fD-ffN" firstAttribute="leading" secondItem="M71-Vy-aGA" secondAttribute="leading" constant="10" id="m4y-O7-Vua"/>
+                            <constraint firstAttribute="trailing" secondItem="Zkf-fD-ffN" secondAttribute="trailing" constant="15" id="OJp-UH-2eu"/>
+                            <constraint firstItem="Zkf-fD-ffN" firstAttribute="top" secondItem="M71-Vy-aGA" secondAttribute="top" constant="8" id="a5q-2q-cHA"/>
+                            <constraint firstAttribute="bottom" secondItem="Zkf-fD-ffN" secondAttribute="bottom" constant="8" id="ieM-7G-iHt"/>
+                            <constraint firstItem="Zkf-fD-ffN" firstAttribute="leading" secondItem="M71-Vy-aGA" secondAttribute="leading" constant="15" id="m4y-O7-Vua"/>
                         </constraints>
                     </view>
                 </subviews>
