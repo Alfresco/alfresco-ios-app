@@ -394,6 +394,8 @@
         [self hideHUD];
         if (successful)
         {
+            account.password = password;
+            [[AccountManager sharedManager] saveAccountsToKeychain];
             [loginViewController dismissViewControllerAnimated:YES completion:nil];
         }
         else

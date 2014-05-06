@@ -39,7 +39,7 @@ CGFloat hiddenYOrigin;
         {
             case SystemNoticeStyleInformation:
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeInformationColor];
-                self.icon = @"system_notice_info";
+                self.icon = @"system_notice_tick.png";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
                 self.displayTime = 2.0f;
@@ -47,7 +47,7 @@ CGFloat hiddenYOrigin;
                 
             case SystemNoticeStyleError:
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeErrorColor];
-                self.icon = @"system_notice_error";
+                self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor whiteColor];
                 self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
                 self.defaultTitle = NSLocalizedString(@"An Error Occurred", @"Default title for error notification");
@@ -56,7 +56,7 @@ CGFloat hiddenYOrigin;
             
             case SystemNoticeStyleWarning:
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeWarningColor];
-                self.icon = @"system_notice_warning";
+                self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor blackColor];
                 self.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
                 self.displayTime = 3.0f;
@@ -115,9 +115,7 @@ CGFloat hiddenYOrigin;
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, originY, viewWidth - 70.0, 16.0)];
     titleLabel.textColor = self.labelColor;
-    titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    titleLabel.shadowColor = self.shadowColor;
-    titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    titleLabel.font = [UIFont systemFontOfSize:14.0];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.text = (self.title != nil) ? self.title : self.defaultTitle;
     
@@ -126,10 +124,8 @@ CGFloat hiddenYOrigin;
     if (self.message)
     {
         messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 10.0 + 10.0, viewWidth - 70.0, messageLineHeight)];
-        messageLabel.font = [UIFont systemFontOfSize:13.0];
+        messageLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f];
         messageLabel.textColor = self.labelColor;
-        messageLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        messageLabel.shadowColor = self.shadowColor;
         messageLabel.backgroundColor = [UIColor clearColor];
         messageLabel.text = self.message;
         messageLabel.numberOfLines = 0;
@@ -162,8 +158,9 @@ CGFloat hiddenYOrigin;
     [self.viewToDisplayOn addSubview:self];
     
     // Icon view
-    UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0, statusBarHeight, 20.0, 30.0)];
-    iconView.image = [UIImage imageNamed:self.icon];
+    UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(12.0, statusBarHeight, 32.0, 32.0)];
+    iconView.tintColor = self.labelColor;
+    iconView.image = [[UIImage imageNamed:self.icon] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.alpha = 0.9;
     [self addSubview:iconView];
@@ -175,13 +172,6 @@ CGFloat hiddenYOrigin;
     // Message label
     [self addSubview:messageLabel];
     self.messageLabel = messageLabel;
-    
-    // Drop shadow
-    CALayer *noticeLayer = self.layer;
-    noticeLayer.shadowColor = [[UIColor blackColor] CGColor];
-    noticeLayer.shadowOffset = CGSizeMake(0.0, 3);
-    noticeLayer.shadowOpacity = 0.5f;
-    noticeLayer.masksToBounds = NO;
     
     // Invisible button to manually dismiss the notice
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
