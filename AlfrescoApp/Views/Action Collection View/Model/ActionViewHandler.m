@@ -9,8 +9,6 @@
 #import "ActionViewHandler.h"
 #import "FavouriteManager.h"
 #import "ActionCollectionView.h"
-#import <MessageUI/MessageUI.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 #import "UniversalDevice.h"
 #import "Utility.h"
 #import "ErrorDescriptions.h"
@@ -26,6 +24,9 @@
 #import "TextFileViewController.h"
 #import "AccountManager.h"
 #import "SaveBackMetadata.h"
+
+#import <MessageUI/MessageUI.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -320,7 +321,7 @@
 
 - (AlfrescoRequest *)pressedOpenInActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location presentFromView:(UIView *)view inView:(UIView *)inView
 {
-    void (^displayEmailBlock)(NSString *filePath) = ^(NSString *filePath) {
+    void (^displayOpenInBlock)(NSString *filePath) = ^(NSString *filePath) {
         if (filePath)
         {
             NSURL *fileURL = [NSURL fileURLWithPath:filePath];
@@ -351,11 +352,11 @@
     if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
-        displayEmailBlock(fileLocation);
+        displayOpenInBlock(fileLocation);
     }
     else if (self.documentLocation == InAppDocumentLocationLocalFiles)
     {
-        displayEmailBlock(documentPath);
+        displayOpenInBlock(documentPath);
     }
     else
     {
@@ -363,7 +364,7 @@
         {
             request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
         }
-        [self addCompletionBlock:displayEmailBlock];
+        [self addCompletionBlock:displayOpenInBlock];
     }
     return request;
 }
@@ -621,11 +622,12 @@
 - (void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
 {
     NSDictionary *annotationDictionary = nil;
+    NSString *filePath = controller.URL.path;
     
     if ([application hasPrefix:kQuickofficeApplicationBundleIdentifierPrefix])
     {
         UserAccount *currentAccount = [[AccountManager sharedManager] selectedAccount];
-        SaveBackMetadata *savebackMetadata = [[SaveBackMetadata alloc] initWithAccountID:currentAccount.accountIdentifier nodeRef:self.node.identifier originalFileLocation:controller.URL.absoluteString documentLocation:self.documentLocation];
+        SaveBackMetadata *savebackMetadata = [[SaveBackMetadata alloc] initWithAccountID:currentAccount.accountIdentifier nodeRef:self.node.identifier originalFileLocation:filePath documentLocation:self.documentLocation];
         
         annotationDictionary = @{kQuickofficeApplicationSecretUUIDKey : ALFRESCO_QUICKOFFICE_PARTNER_KEY,
                                  kQuickofficeApplicationInfoKey : @{kAlfrescoInfoMetadataKey : savebackMetadata.dictionaryRepresentation},

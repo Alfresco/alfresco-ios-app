@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "URLHandlerProtocol.h"
+#import "BaseInboundURLHandler.h"
 
-@interface FileURLHandler : NSObject<URLHandlerProtocol>
+@interface FileURLHandler : BaseInboundURLHandler
 
 @end
