@@ -24,6 +24,9 @@ extern NSString * const kSyncReloadContentKey;
           permissions:(NSDictionary *)permissions inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (NSString *)syncNameForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSString *)syncIdentifierForNode:(AlfrescoNode *)node;
+- (NSMutableArray *)syncIdentifiersForNodes:(NSArray *)nodes;
+- (NSString *)identifierWithoutVersionNumber:(NSString *)nodeIdentifier;
 
 - (AlfrescoNode *)localNodeForNodeId:(NSString *)nodeId inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
