@@ -57,7 +57,7 @@
     }
     
     // Setup the app and build it's UI
-    self.window.rootViewController = [self buildMainAppUIWithSession:nil];
+    self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];
     self.window.tintColor = [UIColor appTintColor];
     
     // Clean up cache
@@ -102,7 +102,7 @@
 
 #pragma mark - Private Functions
 
-- (UIViewController *)buildMainAppUIWithSession:(id<AlfrescoSession>)session
+- (UIViewController *)buildMainAppUIWithSession:(id<AlfrescoSession>)session displayingMainMenu:(BOOL)displayMainMenu
 {
     RootRevealControllerViewController *rootRevealViewController = nil;
     
@@ -146,6 +146,12 @@
     {
         OnboardingViewController *onboardingViewController = [[OnboardingViewController alloc] init];
         [rootRevealViewController addOverlayedViewController:onboardingViewController];
+    }
+    
+    // Expand the main menu if required
+    if (displayMainMenu)
+    {
+        [rootRevealViewController expandViewController];
     }
     
     // add reveal controller to the container
