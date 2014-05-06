@@ -13,6 +13,7 @@
 #import "DownloadManager.h"
 #import "SyncManager.h"
 #import "MBProgressHud.h"
+#import "ConnectivityManager.h"
 
 static NSString * const kTextFileMimeType = @"text/plain";
 
@@ -166,8 +167,11 @@ static NSString * const kTextFileMimeType = @"text/plain";
         
         if (isSyncDocument)
         {
+            if ([[ConnectivityManager sharedManager] hasInternetConnection])
+            {
+                [syncManager retrySyncForDocument:self.editingDocument];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
-            [syncManager retrySyncForDocument:self.editingDocument];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
