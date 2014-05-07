@@ -380,6 +380,11 @@
 "document.segment.comments.hasmore.title" = "Comments (%d+)";
 
 /**
+ * Downloads Document Preview Controller
+ */
+"document.segment.repository.metadata.title" = "Repository Metadata";
+
+/**
  * Document Preview Controller
  */
 "document.video.not.supported" = "Playback is not available";
@@ -414,6 +419,7 @@
 "download.success.message" = "Document Saved";
 "download.success-as.message" = "Document Saved as %@";
 "download.failure.message" = "Failed to save the document";
+"download.delete.failure.message" = "Failed to delete local file";
 
 /**
  * Comments View Controller

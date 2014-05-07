@@ -18,10 +18,9 @@ static NSString * kNodeTagsKey = @"nodeTags";
 static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 @interface MetaDataViewController ()
-
-@property (nonatomic, strong) NSDictionary *propertiesToDisplayWithValues;
+@property (nonatomic, strong) NSMutableDictionary *propertiesToDisplayWithValues;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
-
+@property (nonatomic, strong) AlfrescoTaggingService *tagService;
 @end
 
 @implementation MetaDataViewController
@@ -31,8 +30,9 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     self = [super initWithSession:session];
     if (self)
     {
+        // setup tag service first as it's used in setNode
+        self.tagService = [[AlfrescoTaggingService alloc] initWithSession:session];
         self.node = node;
-        [self setupMetadataToDisplayWithNode:node];
     }
     return self;
 }
@@ -86,6 +86,18 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     
     self.tableViewData = metadataToDisplayKeys;
     self.propertiesToDisplayWithValues = metadataToDisplayWithValues;
+    
+    // fetch any tags the node may have in the background
+    __weak typeof(self) weakSelf = self;
+    [self.tagService retrieveTagsForNode:node completionBlock:^(NSArray *array, NSError *error) {
+        if (array.count > 0 && self.tableViewData.count > 0)
+        {
+            NSString *tags = [[array valueForKeyPath:@"value"] componentsJoinedByString:@", "];
+            weakSelf.propertiesToDisplayWithValues[kNodeTagsKey] = tags;
+            [weakSelf.tableViewData[0] addObject:kNodeTagsKey];
+            [weakSelf.tableView reloadData];
+        }
+    }];
 }
 
 #pragma mark - Table view data source
