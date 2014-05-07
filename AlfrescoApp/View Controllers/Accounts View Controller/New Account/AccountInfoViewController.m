@@ -269,6 +269,10 @@ static NSInteger const kTagCertificateCell = 1;
         self.protocolSwitch = protocolCell.valueSwitch;
         [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
         BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
+        if (self.activityType == AccountActivityTypeNewAccount)
+        {
+            isHTTPSOn = YES;
+        }
         [self.protocolSwitch setOn:isHTTPSOn animated:YES];
         
         TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -280,6 +284,10 @@ static NSInteger const kTagCertificateCell = 1;
         portCell.valueTextField.delegate = self;
         self.portTextField = portCell.valueTextField;
         self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
+        if (self.activityType == AccountActivityTypeNewAccount)
+        {
+            self.portTextField.text = kDefaultHTTPSPort;
+        }
         
         TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         serviceDocumentCell.selectionStyle = UITableViewCellSelectionStyleNone;
