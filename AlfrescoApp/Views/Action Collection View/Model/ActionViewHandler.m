@@ -195,20 +195,19 @@
         }
         else
         {
-            downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:tempPath session:self.session];
-            
-            NSError *deleteError = nil;
-            [fileManager removeItemAtPath:tempPath error:&deleteError];
-            
-            if (deleteError)
-            {
-                AlfrescoLogError(@"Unable to delete file at path: %@", tempPath);
-            }
+            downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:tempPath session:self.session completionBlock:^(NSString *filePath) {
+                // delete the copied file in the completion block to avoid deleting it too early (MOBILE-2533)
+                NSError *deleteError = nil;
+                if (![fileManager removeItemAtPath:tempPath error:&deleteError])
+                {
+                    AlfrescoLogError(@"Unable to delete file at path: %@", tempPath);
+                }
+            }];
         }
     }
     else
     {
-        downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:nil session:self.session];
+        downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:nil session:self.session completionBlock:nil];
     }
     
     return downloadRequest;
