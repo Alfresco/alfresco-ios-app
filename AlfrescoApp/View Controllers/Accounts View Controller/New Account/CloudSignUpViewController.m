@@ -252,10 +252,10 @@ static NSString * const kSource = @"mobile";
         self.confirmPasswordTextField = confirmPasswordCell.valueTextField;
         
         CenterLabelCell *termsCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
-        termsCell.titleLabel.text = NSLocalizedString(@"cloudsignup.footer.termsOfService", @"");
+        termsCell.titleLabel.text = NSLocalizedString(@"cloudsignup.label.termsOfService", @"");
         
         CenterLabelCell *policyCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
-        policyCell.titleLabel.text = NSLocalizedString(@"cloudsignup.footer.privacyPolicy", @"");
+        policyCell.titleLabel.text = NSLocalizedString(@"cloudsignup.label.privacyPolicy", @"");
         
         ButtonCell *signUpCell = (ButtonCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([ButtonCell class]) owner:self options:nil] lastObject];
         [signUpCell.button setTitle:NSLocalizedString(@"cloudsignup.button.signup", @"Sign Up") forState:UIControlStateNormal];
