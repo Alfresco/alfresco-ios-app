@@ -160,6 +160,8 @@ NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
 
 // Workflow
 NSString * const kAlfrescoTaskAddedNotification = @"AlfrescoTaskAddedNotification";
+NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
+NSString * const kAlfrescoWorkflowJBPMEngine = @"jbpm$";
 
 // Google Quickoffice
 NSString * const kQuickofficeApplicationSecretUUIDKey = @"PartnerApplicationSecretUUID";

@@ -1,4 +1,12 @@
-/* Localized versions of Info.plist keys */
+/**
+ * InfoPlist.strings
+ * AlfrescoApp
+ *
+ * English (en)
+ *
+ * Copyright (c) 2014 Alfresco. All rights reserved.
+ */
 
+/* Localized versions of Info.plist keys */
 NSLocationUsageDescription = "Your location will be used to geotag photos taken with this device.";
 NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to the repository.";

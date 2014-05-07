@@ -1,10 +1,11 @@
-/* 
-  Localizable.strings
-  AlfrescoApp
-
-  Created by Tauseef Mughal on 29/07/2013.
-  Copyright (c) 2013 Alfresco. All rights reserved.
-*/
+/**
+ * Localizable.strings
+ * AlfrescoApp
+ *
+ * English (en)
+ *
+ * Copyright (c) 2014 Alfresco. All rights reserved.
+ */
 
 /**
  * App Wide
@@ -220,10 +221,8 @@
 "cloudsignup.button.signup" = "Sign Up";
 "cloudsignup.footer.firstLine" = "By tapping Sign Up, you are agreeing to the";
 "cloudsignup.footer.secondLine" = "Alfresco Terms of Service and Privacy Policy";
-/** NOTE TO TRANSLATORS: the phrase "cloudsignup.footer.termsOfService" must match a phrase in the "cloudsignup.footer.secondLine" string above. */
-"cloudsignup.footer.termsOfService" = "Terms of Service";
-/** NOTE TO TRANSLATORS: the phrase "cloudsignup.footer.privacyPolicy" must match a phrase in the "cloudsignup.footer.secondLine" string above. */
-"cloudsignup.footer.privacyPolicy" = "Privacy Policy";
+"cloudsignup.label.termsOfService" = "Terms of Service";
+"cloudsignup.label.privacyPolicy" = "Privacy Policy";
 "cloudsignup.alert.title" = "Alfresco in the cloud Sign Up";
 "cloudsignup.unsuccessful.message" = "The cloud sign up was unsuccessful, please try again later";
 
@@ -541,6 +540,13 @@
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";
+// Process definition titles - these match workflow-message.properties in the repository
+"tasks.process.activitiAdhoc" = "New Task";
+"tasks.process.activitiParallelReview" = "Send Document(s) For Review";
+"tasks.process.activitiReview" = "Review And Approve";
+"tasks.process.jbpm$wf:adhoc" = "Adhoc Workflow";
+"tasks.process.jbpm$wf:parallelreview" = "Parallel Review And Approve";
+"tasks.process.jbpm$wf:review" = "Review And Approve";
 
 /**
  * Create Tasks
