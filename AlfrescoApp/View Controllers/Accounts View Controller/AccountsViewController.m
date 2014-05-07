@@ -205,7 +205,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
         else if ((account.accountType == UserAccountTypeCloud) && (account.accountNetworks.count == 0))
         {
             [self showHUD];
-            [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+            [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                 [self hideHUD];
                 if (successful)
                 {
@@ -306,16 +306,18 @@ static CGFloat const kDefaultFontSize = 18.0f;
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
         [self showHUD];
-        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
-            
+        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             [self hideHUD];
             
             if (!successful)
             {
                 self.session = nil;
             }
-            [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
-            [self.tableView reloadData];
+            else
+            {
+                [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
+                [self.tableView reloadData];
+            }
         }];
     }
 }
