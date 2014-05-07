@@ -37,7 +37,7 @@
     
     [self.pagingSegmentControl removeAllSegments];
     [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
-    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
+    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
     
     if (!self.document)
     {
@@ -56,7 +56,7 @@
 - (void)localiseUI
 {
     [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeFilePreview];
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
+    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
 }
 
 - (void)setupPagingScrollView
