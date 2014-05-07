@@ -331,7 +331,7 @@ static NSString * const kSource = @"mobile";
                 [accountManager saveAccountsToKeychain];
                 displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.verified", @"The Account is now..."));
                 
-                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     
                     if (successful)
                     {

@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, InAppDocumentLocation)
 };
 
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
+typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
 
 extern int const kMaxItemsPerListingRetrieve;
 

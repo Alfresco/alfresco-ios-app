@@ -105,7 +105,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
         UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
         account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         
-        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationConroller:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationConroller:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
                 AccountManager *accountManager = [AccountManager sharedManager];

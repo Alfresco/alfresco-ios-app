@@ -467,7 +467,7 @@ static NSInteger const kTagCertificateCell = 1;
     else
     {
         [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             [self hideHUD];
             if (successful)
             {

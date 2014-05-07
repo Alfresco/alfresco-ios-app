@@ -25,7 +25,7 @@
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
 @property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
-@property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession);
+@property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 @end
 
 @implementation LoginManager
@@ -59,13 +59,13 @@
     return self;
 }
 
-- (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))loginCompletionBlock
+- (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
-    void (^logInSuccessful)(BOOL, id<AlfrescoSession>) = ^(BOOL successful, id<AlfrescoSession> session)
+    void (^logInSuccessful)(BOOL, id<AlfrescoSession>, NSError *) = ^(BOOL successful, id<AlfrescoSession> session, NSError *error)
     {
         if (loginCompletionBlock != NULL)
         {
-            loginCompletionBlock(successful, session);
+            loginCompletionBlock(successful, session, error);
         }
     };
     
@@ -80,25 +80,25 @@
             {
                 [self hideHUD];
                 [self displayLoginViewControllerWithAccount:account username:account.username];
-                logInSuccessful(NO, nil);
+                logInSuccessful(NO, nil, nil);
                 return;
             }
             
             
-            [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+            [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                if (!successful)
+                if (!successful && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
                 }
-                logInSuccessful(successful, session);
+                logInSuccessful(successful, session, error);
             }];
         }
         else
         {
-            [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+            [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                logInSuccessful(successful, session);
+                logInSuccessful(successful, session, error);
             }];
         }
     }
@@ -107,7 +107,7 @@
         NSString *messageTitle = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Error Title");
         NSString *messageBody = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Error Message");
         displayErrorMessageWithTitle(messageBody, messageTitle);
-        logInSuccessful(NO, nil);
+        logInSuccessful(NO, nil, nil);
     }
 }
 
@@ -116,15 +116,15 @@
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
              navigationConroller:(UINavigationController *)navigationController
-                 completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))authenticationCompletionBlock
+                 completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock
 {
     self.authenticationCompletionBlock = authenticationCompletionBlock;
-    void (^authenticationComplete)(id<AlfrescoSession>) = ^(id<AlfrescoSession> session) {
+    void (^authenticationComplete)(id<AlfrescoSession>, NSError *error) = ^(id<AlfrescoSession> session, NSError *error) {
         if (!session)
         {
             if (authenticationCompletionBlock != NULL)
             {
-                authenticationCompletionBlock(NO, session);
+                authenticationCompletionBlock(NO, session, error);
             }
         }
         else
@@ -151,14 +151,14 @@
                     
                     if (authenticationCompletionBlock != NULL)
                     {
-                        authenticationCompletionBlock(YES, session);
+                        authenticationCompletionBlock(YES, session, error);
                     }
                 }
                 else
                 {
                     if (authenticationCompletionBlock != NULL)
                     {
-                        authenticationCompletionBlock(NO, nil);
+                        authenticationCompletionBlock(NO, nil, error);
                     }
                 }
             }];
@@ -183,12 +183,12 @@
                         [self.loginController dismissViewControllerAnimated:YES completion:nil];
                     }
                     
-                    authenticationComplete(session);
+                    authenticationComplete(session, error);
                 }];
             }
             else
             {
-                authenticationComplete(nil);
+                authenticationComplete(nil, error);
             }
         }];
         
@@ -230,7 +230,7 @@
                                 self.loginController = showOAuthLoginViewController();
                                 self.loginController.oauthDelegate = self;
                             }
-                            authenticationComplete(nil);
+                            authenticationComplete(nil, refreshError);
                         }
                         else
                         {
@@ -239,19 +239,19 @@
                             
                             // try to connect once OAuthData is refreshed
                             [self connectWithOAuthData:refreshedOAuthData networkId:networkId completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                                authenticationComplete(session);
+                                authenticationComplete(session, refreshError);
                             }];
                         }
                     }];
                 }
                 else
                 {
-                    authenticationComplete(nil);
+                    authenticationComplete(nil, connectionError);
                 }
             }
             else
             {
-                authenticationComplete(cloudSession);
+                authenticationComplete(cloudSession, connectionError);
             }
         }];
     }
@@ -279,7 +279,7 @@
     [self.loginController dismissViewControllerAnimated:YES completion:^{
         if (self.authenticationCompletionBlock != NULL)
         {
-            self.authenticationCompletionBlock(NO, nil);
+            self.authenticationCompletionBlock(NO, nil, nil);
         }
     }];
 }
@@ -302,7 +302,7 @@
     [UniversalDevice displayModalViewController:loginNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
 }
 
-- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock
+- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock
 {
     NSDictionary *sessionParameters = [@{kAlfrescoMetadataExtraction : @YES,
                                          kAlfrescoThumbnailCreation : @YES} mutableCopy];
@@ -331,14 +331,14 @@
                 
                 if (completionBlock != NULL)
                 {
-                    completionBlock(YES, session);
+                    completionBlock(YES, session, nil);
                 }
             }
             else
             {
                 if (completionBlock != NULL)
                 {
-                    completionBlock(NO, nil);
+                    completionBlock(NO, nil, error);
                 }
             }
         }];
@@ -358,10 +358,22 @@
 {
     MBProgressHUD *progress = [[MBProgressHUD alloc] initWithView:view];
     progress.labelText = NSLocalizedString(@"login.hud.label", @"Connecting...");
+    progress.detailsLabelText = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedCancelLoginRequest:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [progress addGestureRecognizer:tap];
+    
     [view addSubview:progress];
     [progress show:YES];
     
     self.progressHUD = progress;
+}
+
+- (void)tappedCancelLoginRequest:(UIGestureRecognizer *)gesture
+{
+    [self cancelLoginRequest];
 }
 
 - (void)hideHUD
@@ -390,7 +402,7 @@
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self authenticateOnPremiseAccount:account password:(NSString *)password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession) {
+    [self authenticateOnPremiseAccount:account password:(NSString *)password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         [self hideHUD];
         if (successful)
         {

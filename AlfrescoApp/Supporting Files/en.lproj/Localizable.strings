@@ -403,6 +403,7 @@
 "login.password.cell.label" = "Password";
 "login.password.textfield.placeholder" = "Password";
 "login.hud.label" = "Connecting...";
+"login.hud.cancel.label" = "Tap to cancel";
 
 /**
  * Download View Controller

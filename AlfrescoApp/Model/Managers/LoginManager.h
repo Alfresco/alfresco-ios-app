@@ -14,11 +14,11 @@
 @interface LoginManager : NSObject <LoginViewControllerDelegate, AlfrescoOAuthLoginDelegate>
 
 + (id)sharedManager;
-- (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))loginCompletionBlock;
-- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))completionBlock;
+- (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock;
+- (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
              navigationConroller:(UINavigationController *)navigationController
-                 completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> alfrescoSession))authenticationCompletionBlock;
+                 completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock;
 
 @end
