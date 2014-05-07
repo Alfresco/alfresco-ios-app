@@ -518,6 +518,7 @@
 "tasks.view.button" = "View";
 "tasks.title.mytasks" = "My Tasks";
 "tasks.title.taskistarted" = "Tasks I Started";
+"tasks.list.no-due-date" = "No due date";
 // Details
 "tasks.calendar.no-due-date" = "No Date";
 "tasks.priority.high" = "High Priority";

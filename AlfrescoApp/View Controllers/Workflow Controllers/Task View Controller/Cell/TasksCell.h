@@ -10,9 +10,9 @@
 
 @interface TasksCell : UITableViewCell
 
-- (void)setPriorityLevel:(NSNumber *)priority;
-- (void)setTaskName:(NSString *)taskName;
-- (void)setDueDate:(NSDate *)dueDate;
-- (void)setTaskOverdue:(BOOL)overdue;
+@property (nonatomic, strong) NSNumber *priority;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSDate *dueDate;
+@property (nonatomic, strong) NSString *processType;
 
 @end

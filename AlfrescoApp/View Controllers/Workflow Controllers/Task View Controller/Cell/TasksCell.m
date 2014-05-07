@@ -9,40 +9,45 @@
 #import "TasksCell.h"
 #import "Utility.h"
 
-
 @interface TasksCell ()
 @property (nonatomic, weak) IBOutlet UIImageView *taskPriorityImageView;
 @property (nonatomic, weak) IBOutlet UILabel *taskNameTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taskDueDateTextLabel;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *dueDateHeightConstraint;
+@property (nonatomic, weak) IBOutlet UILabel *processTypeTextLabel;
 @end
 
 @implementation TasksCell
 
 #pragma mark - Public Functions
 
-- (void)setPriorityLevel:(NSNumber *)priority
+- (void)setPriority:(NSNumber *)priority
 {
+    _priority = priority;
     TaskPriority *taskPriority = [Utility taskPriorityForPriority:priority];
     self.taskPriorityImageView.image = taskPriority.image;
 }
 
-- (void)setTaskName:(NSString *)taskName
+- (void)setTitle:(NSString *)title
 {
-    self.taskNameTextLabel.text = taskName;
+    _title = title;
+    self.taskNameTextLabel.text = title ?: NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
 }
 
 - (void)setDueDate:(NSDate *)dueDate
 {
+    _dueDate = dueDate;
     NSString *dateString = relativeDateFromDate(dueDate);
+    BOOL overdue = [dueDate timeIntervalSinceNow] < 0;
     
-    self.taskDueDateTextLabel.text = dateString;
-    [self.dueDateHeightConstraint setConstant:(dateString.length == 0 ? 0 : 16.0f)];
+    self.taskDueDateTextLabel.text = dateString.length == 0 ? NSLocalizedString(@"tasks.list.no-due-date", @"No due date") : dateString;
+    self.taskDueDateTextLabel.textColor = overdue ? [UIColor taskOverdueLabelColor] : [UIColor textDimmedColor];
 }
 
-- (void)setTaskOverdue:(BOOL)overdue
+- (void)setProcessType:(NSString *)processType
 {
-    self.taskDueDateTextLabel.textColor = overdue ? [UIColor taskOverdueLabelColor] : [UIColor textDimmedColor];
+    _processType = processType;
+    self.processTypeTextLabel.text = processType;
+    self.processTypeTextLabel.textColor = [UIColor textDimmedColor];
 }
 
 @end
