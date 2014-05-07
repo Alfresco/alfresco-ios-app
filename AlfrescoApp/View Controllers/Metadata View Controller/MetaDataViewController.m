@@ -258,6 +258,10 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
                 
                 metadataCell.propertyValueLabel.text = labelText;
             }
+            else
+            {
+                metadataCell.propertyValueLabel.text = [currentPropertyValue stringValue];
+            }
         }
     }
     

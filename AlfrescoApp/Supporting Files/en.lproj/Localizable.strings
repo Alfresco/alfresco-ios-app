@@ -380,6 +380,11 @@
 "document.segment.comments.hasmore.title" = "Comments (%d+)";
 
 /**
+ * Downloads Document Preview Controller
+ */
+"document.segment.repository.metadata.title" = "Repository Metadata";
+
+/**
  * Document Preview Controller
  */
 "document.video.not.supported" = "Playback is not available";
