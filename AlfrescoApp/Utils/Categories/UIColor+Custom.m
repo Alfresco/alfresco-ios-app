@@ -75,6 +75,16 @@
     return [UIColor colorWithRed:(CGFloat)240.0/255.0 green:0.2 blue:0.2 alpha:1.0];
 }
 
++ (UIColor *)taskTransitionApproveColor
+{
+    return [UIColor colorWithRed:0.27 green:0.85 blue:0.42 alpha:1.0];
+}
+
++ (UIColor *)taskTransitionRejectColor
+{
+    return [UIColor appTintColor];
+}
+
 + (UIColor *)onboardingOffWhiteColor
 {
     return [UIColor colorWithRed:(CGFloat)244.0/255.0 green:(CGFloat)244.0/255.0 blue:(CGFloat)244.0/255.0 alpha:1.0];

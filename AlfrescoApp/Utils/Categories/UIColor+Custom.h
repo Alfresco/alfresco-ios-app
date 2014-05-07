@@ -23,6 +23,8 @@
 + (UIColor *)systemNoticeErrorColor;
 + (UIColor *)systemNoticeWarningColor;
 + (UIColor *)taskOverdueLabelColor;
++ (UIColor *)taskTransitionApproveColor;
++ (UIColor *)taskTransitionRejectColor;
 + (UIColor *)onboardingOffWhiteColor;
 
 @end

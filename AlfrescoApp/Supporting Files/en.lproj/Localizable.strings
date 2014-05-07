@@ -537,6 +537,10 @@
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 "task.reassign.button.title" = "Reassign";
+"task.transition.approve" = "Approve";
+"task.transition.reject" = "Reject";
+"task.transition.done" = "Done";
+
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";

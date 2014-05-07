@@ -38,7 +38,7 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
     return self;
 }
 
--(void) awakeFromNib
+- (void)awakeFromNib
 {
     [self setup];
 }
@@ -47,14 +47,7 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
 
 - (BOOL)hasText
 {
-    BOOL hasText = NO;
-    
-    if (![self.text isEqualToString:self.placeholderText] && self.text.length > 0)
-    {
-        hasText = YES;
-    }
-    
-    return hasText;
+    return ![self.text isEqualToString:self.placeholderText] && self.text.length > 0;
 }
 
 #pragma mark - Custom Getters/Setters
@@ -63,6 +56,7 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
 {
     _placeholderText = placeholderText;
     self.text = placeholderText;
+    self.textColor = [UIColor textDimmedColor];
 }
 
 #pragma mark - Private Functions
@@ -108,9 +102,7 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize intrinsicContentSize = self.contentSize;
-    
-    return intrinsicContentSize;
+    return self.contentSize;
 }
 
 #pragma mark - UITextViewDelegate Functions
@@ -120,6 +112,7 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
     if ([textView.text isEqualToString:self.placeholderText])
     {
         textView.text = @"";
+        textView.textColor = [UIColor textDefaultColor];
     }
 }
 
@@ -142,6 +135,7 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
 {
     if (textView.text.length == 0)
     {
+        textView.textColor = [UIColor textDimmedColor];
         textView.text = self.placeholderText;
     }
 }
