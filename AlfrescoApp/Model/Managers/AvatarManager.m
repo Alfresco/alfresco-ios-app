@@ -8,6 +8,7 @@
 
 #import "AvatarManager.h"
 #import "CoreDataCacheHelper.h"
+#import "Utility.h"
 
 @interface AvatarManager ()
 
@@ -99,7 +100,12 @@
                             NSManagedObjectContext *childManagedObjectContext = [self.coreDataCacheHelper createChildManagedObjectContext];
                             AvatarImageCache *imageCache = [self.coreDataCacheHelper createAvatarObjectInManagedObjectContext:childManagedObjectContext];
                             imageCache.identifier = identifier;
-                            imageCache.avatarImageData = [NSData dataWithContentsOfURL:contentFile.fileUrl];
+                            
+                            // Crop the avatar
+                            UIImage *uncroppedAvatar = [UIImage imageWithContentsOfFile:contentFile.fileUrl.path];
+                            UIImage *croppedAvatar = [Utility cropImageIntoSquare:uncroppedAvatar];
+                            
+                            imageCache.avatarImageData = UIImagePNGRepresentation(croppedAvatar);
                             imageCache.dateAdded = [NSDate date];
                             [self.coreDataCacheHelper saveContextForManagedObjectContext:childManagedObjectContext];
                             
