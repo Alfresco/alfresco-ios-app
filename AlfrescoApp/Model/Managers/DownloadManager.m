@@ -34,6 +34,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 }
 
 - (AlfrescoRequest *)downloadDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath session:(id<AlfrescoSession>)alfrescoSession
+                      completionBlock:(DownloadManagerFileSavedBlock)completionBlock
 {
     if (!document)
     {
@@ -51,7 +52,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
     else
     {
-        [self saveDocument:document contentPath:contentPath completionBlock:NULL];
+        [self saveDocument:document contentPath:contentPath completionBlock:completionBlock];
     }
     
     return request;
@@ -309,7 +310,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     NSString *destinationFilename = (overwrite ? contentPath.lastPathComponent : [self safeFilenameBySuffixing:contentPath.lastPathComponent error:error]);
     if (destinationFilename != nil)
     {
-        if ([self copyDocumentFrom:contentPath destinationFilename:destinationFilename error:error])
+        if ([self copyDocumentFrom:contentPath destinationFilename:destinationFilename overwriteExisting:overwrite error:error])
         {
             // Note: we're assuming that there will be no problem saving the metadata if the content saves successfully
             [self saveDocumentInfo:document forDocument:destinationFilename error:nil];
@@ -359,13 +360,22 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }];
 }
 
-- (BOOL)copyDocumentFrom:(NSString *)filePath destinationFilename:(NSString *)destinationFilename error:(NSError **)error
+- (BOOL)copyDocumentFrom:(NSString *)filePath destinationFilename:(NSString *)destinationFilename overwriteExisting:(BOOL)overwrite error:(NSError **)error
 {
     NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
 
-    [self.fileManager copyItemAtPath:filePath toPath:downloadPath error:error];
-
-    return (error == NULL || *error == nil);
+    if (overwrite && [self.fileManager fileExistsAtPath:downloadPath isDirectory:NO])
+    {
+        // remove the file to be overwritten first
+        if (![self.fileManager removeItemAtPath:downloadPath error:error])
+        {
+            // copy will fail if remove failed
+            return NO;
+        }
+    }
+    
+    // copy the file
+    return [self.fileManager copyItemAtPath:filePath toPath:downloadPath error:error];
 }
 
 - (NSString *)moveFileToDownloadsFolderFromAbsolutePath:(NSString *)absolutePath overwriteExisting:(BOOL)overwrite error:(NSError **)error
