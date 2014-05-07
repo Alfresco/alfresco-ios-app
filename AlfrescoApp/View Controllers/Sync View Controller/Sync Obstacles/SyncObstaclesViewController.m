@@ -86,7 +86,7 @@
     {
         NSString *headerText = NSLocalizedString([self.sectionHeaders objectForKey:key], @"TableView Header Section Descriptions");
         CGRect rect = [headerText boundingRectWithSize:CGSizeMake(300, 2000)
-                                               options:NSStringDrawingTruncatesLastVisibleLine
+                                               options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
                                             attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0f]}
                                                context:nil];
         returnHeight = rect.size.height;

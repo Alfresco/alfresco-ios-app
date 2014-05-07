@@ -565,30 +565,32 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
             // check if there is any problem with removing the node from local sync
             
-            [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
-                
-                totalChecksForObstacles--;
-                
-                if (encounteredObstacle == NO)
-                {
-                    // if no problem with removing the node from local sync then delete the node from local sync nodes
-                    [self.syncHelper deleteNodeFromSync:localNode inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:managedContext];
-                }
-                else
-                {
-                    // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
-                    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
-                    nodeInfo.parentNode = nil;
-                }
-                
-                if (totalChecksForObstacles == 0)
-                {
-                    if (completionBlock != NULL)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
+                    
+                    totalChecksForObstacles--;
+                    
+                    if (encounteredObstacle == NO)
                     {
-                        completionBlock(YES);
+                        // if no problem with removing the node from local sync then delete the node from local sync nodes
+                        [self.syncHelper deleteNodeFromSync:localNode inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:managedContext];
                     }
-                }
-            }];
+                    else
+                    {
+                        // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
+                        nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
+                        nodeInfo.parentNode = nil;
+                    }
+                    
+                    if (totalChecksForObstacles == 0)
+                    {
+                        if (completionBlock != NULL)
+                        {
+                            completionBlock(YES);
+                        }
+                    }
+                }];
+            });
         }
     }
     else
@@ -672,8 +674,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
     else
     {
-        [[DownloadManager sharedManager] saveDocument:document contentPath:contentPath completionBlock:^(NSString *filePath) {
+        // copying to temporary location in order to rename the file to original name (sync uses node identifier as document name)
+        NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:document.name];
+        [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
+        
+        [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
             [self.fileManager removeItemAtPath:contentPath error:nil];
+            [self.fileManager removeItemAtPath:temporaryPath error:nil];
             [self.syncHelper resolvedObstacleForDocument:document inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
         }];
     }
@@ -695,8 +702,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSString *contentPath = [self contentPathForNode:document];
     NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
     
-    [[DownloadManager sharedManager] saveDocument:document contentPath:contentPath completionBlock:^(NSString *filePath) {
+    // copying to temporary location in order to rename the file to original name (sync uses node identifier as document name)
+    NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:document.name];
+    [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
+    
+    [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
         [self.fileManager removeItemAtPath:contentPath error:nil];
+        [self.fileManager removeItemAtPath:temporaryPath error:nil];
         [self.syncHelper resolvedObstacleForDocument:document inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
     }];
     
