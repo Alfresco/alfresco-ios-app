@@ -583,4 +583,29 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return taskPriority;
 }
 
++ (UIImage *)cropImageIntoSquare:(UIImage *)originalImage
+{
+    UIImage *croppedImage = nil;
+    
+    float originalImageWidth = originalImage.size.width;
+    float originalImageHeight = originalImage.size.height;
+    
+    float cropWidthHeight = fminf(originalImageWidth, originalImageHeight);
+    
+    float startXPosition = (originalImageWidth - cropWidthHeight) / 2;
+    float startYPosition = (originalImageHeight - cropWidthHeight) / 2;
+    
+    CGRect cropRect = CGRectMake(startXPosition, startYPosition, cropWidthHeight, cropWidthHeight);
+    
+    CGImageRef image = CGImageCreateWithImageInRect([originalImage CGImage], cropRect);
+    
+    if (image != NULL)
+    {
+        croppedImage = [UIImage imageWithCGImage:image scale:originalImage.scale orientation:originalImage.imageOrientation];
+        CGImageRelease(image);
+    }
+    
+    return croppedImage;
+}
+
 @end
