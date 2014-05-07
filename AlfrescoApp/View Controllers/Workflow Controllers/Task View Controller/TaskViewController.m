@@ -452,7 +452,8 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 {
     TasksCell *cell = (TasksCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     [cell layoutIfNeeded];
-    return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    // "4.0f" hack value to resolve an issue between UILabel sizing and auto-layout
+    return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 4.0f;
 }
 
 #pragma mark - UIRefreshControl Functions

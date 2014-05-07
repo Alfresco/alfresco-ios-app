@@ -8,9 +8,6 @@
 
 #import "WorkflowHelper.h"
 
-static NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
-static NSString * const kAlfrescoWorkflowJBPMEngine = @"jbpm$";
-
 static NSString * const kAlfrescoActivitiWorkflowTypeAdhoc = @"activitiAdhoc";
 static NSString * const kAlfrescoActivitiWorkflowTypeParallelReview = @"activitiParallelReview";
 static NSString * const kAlfrescoActivitiWorkflowTypeReview = @"activitiReview";

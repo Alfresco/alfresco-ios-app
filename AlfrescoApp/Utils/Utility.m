@@ -626,6 +626,26 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return taskPriority;
 }
 
++ (NSString *)displayNameForProcessDefinition:(NSString *)processDefinitionIdentifier
+{
+    NSString *displayNameKey = @"tasks.process.unnamed";
+    
+    if ([processDefinitionIdentifier hasPrefix:kAlfrescoWorkflowJBPMEngine])
+    {
+        displayNameKey = [NSString stringWithFormat:@"tasks.process.%@", processDefinitionIdentifier];
+    }
+    else
+    {
+        NSArray *components = [processDefinitionIdentifier componentsSeparatedByString:@":"];
+        if (components.count == 3)
+        {
+            displayNameKey = [NSString stringWithFormat:@"tasks.process.%@", components[0]];
+        }
+    }
+    
+    return NSLocalizedString(displayNameKey, @"Localized process name");
+}
+
 + (UIImage *)cropImageIntoSquare:(UIImage *)originalImage
 {
     UIImage *croppedImage = nil;

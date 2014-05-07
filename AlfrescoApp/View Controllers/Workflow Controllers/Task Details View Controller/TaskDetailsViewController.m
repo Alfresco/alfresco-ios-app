@@ -165,8 +165,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
         attachmentViewController = [[TasksAndAttachmentsViewController alloc] initWithTask:self.task session:self.session];
         // set the tableview inset to ensure the content isn't behind the comment view
         attachmentViewController.tableViewInsets = UIEdgeInsetsMake(0, 0, self.textViewContainerHeightConstraint.constant, 0);
-        // retrieve the process definition for the header view
-        [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
     }
     else /* if (filter == TaskFilterProcess) */ // Suppress static analyser warning
     {
@@ -176,8 +174,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
         attachmentViewController = [[TasksAndAttachmentsViewController alloc] initWithProcess:self.process session:self.session];
         // hide the comment view
         self.textViewContainerHeightConstraint.constant = 0;
-        // retrieve the process definition for the header view
-        [self retrieveProcessDefinitionNameForIdentifier:self.process.processDefinitionIdentifier];
     }
     
     // add the attachment controller
@@ -270,16 +266,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.taskHeaderViewContainer addConstraints:horizontalConstraints];
     [self.taskHeaderViewContainer addConstraints:verticalContraints];
     self.taskHeaderView = taskHeaderView;
-}
-
-- (void)retrieveProcessDefinitionNameForIdentifier:(NSString *)identifier
-{
-    [self.workflowService retrieveProcessDefinitionWithIdentifier:identifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
-        if (processDefinition)
-        {
-            [self.taskHeaderView updateTaskFilterLabelToString:processDefinition.name];
-        }
-    }];
 }
 
 - (void)completeTaskWithProperties:(NSDictionary *)properties

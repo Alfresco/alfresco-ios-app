@@ -13,18 +13,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="272" translatesAutoresizingMaskIntoConstraints="NO" id="RWB-0G-Mmr" userLabel="TASK NAME">
-                        <rect key="frame" x="36" y="10" width="272" height="55"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="TASK NAME" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="272" translatesAutoresizingMaskIntoConstraints="NO" id="RWB-0G-Mmr" userLabel="TASK NAME">
+                        <rect key="frame" x="36" y="8" width="272" height="55"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <attributedString key="attributedText">
-                            <fragment content="TASK NAME">
-                                <attributes>
-                                    <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <font key="NSFont" size="16" name="HelveticaNeue"/>
-                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                </attributes>
-                            </fragment>
-                        </attributedString>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DUE DATE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECz-cR-Xvv" userLabel="DUE DATE">
@@ -54,15 +46,15 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="1rg-OO-kVH" secondAttribute="trailing" constant="12" id="1Th-x5-AVW"/>
-                    <constraint firstAttribute="bottom" secondItem="1rg-OO-kVH" secondAttribute="bottom" constant="10" id="1m0-YQ-GKg"/>
                     <constraint firstItem="RWB-0G-Mmr" firstAttribute="leading" secondItem="ECz-cR-Xvv" secondAttribute="leading" id="3Sx-LO-BJL"/>
                     <constraint firstItem="RWB-0G-Mmr" firstAttribute="leading" secondItem="EoK-TX-dZA" secondAttribute="trailing" constant="12" id="4Bd-3B-dUn"/>
                     <constraint firstItem="EoK-TX-dZA" firstAttribute="leading" secondItem="jOn-o3-uFW" secondAttribute="leading" constant="12" id="6uo-Sc-rI7"/>
                     <constraint firstItem="1rg-OO-kVH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ECz-cR-Xvv" secondAttribute="trailing" constant="22" id="C7E-R1-qAV"/>
-                    <constraint firstItem="RWB-0G-Mmr" firstAttribute="top" secondItem="jOn-o3-uFW" secondAttribute="top" constant="10" id="K1B-qW-IYA"/>
+                    <constraint firstItem="1rg-OO-kVH" firstAttribute="top" secondItem="RWB-0G-Mmr" secondAttribute="bottom" constant="10" id="GU4-ii-88F"/>
+                    <constraint firstItem="RWB-0G-Mmr" firstAttribute="top" secondItem="jOn-o3-uFW" secondAttribute="top" constant="8" id="K1B-qW-IYA"/>
                     <constraint firstAttribute="bottom" secondItem="ECz-cR-Xvv" secondAttribute="bottom" constant="10" id="SAR-h1-53o"/>
                     <constraint firstAttribute="trailing" secondItem="RWB-0G-Mmr" secondAttribute="trailing" constant="12" id="dnW-RH-NSA"/>
-                    <constraint firstItem="ECz-cR-Xvv" firstAttribute="top" secondItem="RWB-0G-Mmr" secondAttribute="bottom" constant="8" id="pQc-nt-uIM"/>
+                    <constraint firstItem="ECz-cR-Xvv" firstAttribute="top" secondItem="RWB-0G-Mmr" secondAttribute="bottom" constant="10" id="pQc-nt-uIM"/>
                     <constraint firstItem="EoK-TX-dZA" firstAttribute="top" secondItem="jOn-o3-uFW" secondAttribute="top" constant="10" id="yMK-h7-eeI"/>
                 </constraints>
             </tableViewCellContentView>

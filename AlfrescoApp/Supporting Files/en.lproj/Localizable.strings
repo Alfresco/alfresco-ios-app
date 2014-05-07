@@ -5,7 +5,7 @@
  * English (en)
  *
  * Copyright (c) 2014 Alfresco. All rights reserved.
-*/
+ */
 
 /**
  * App Wide
@@ -542,6 +542,13 @@
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";
+// Process definition titles - these match workflow-message.properties in the repository
+"tasks.process.activitiAdhoc" = "New Task";
+"tasks.process.activitiParallelReview" = "Send Document(s) For Review";
+"tasks.process.activitiReview" = "Review And Approve";
+"tasks.process.jbpm$wf:adhoc" = "Adhoc Workflow";
+"tasks.process.jbpm$wf:parallelreview" = "Parallel Review And Approve";
+"tasks.process.jbpm$wf:review" = "Review And Approve";
 
 /**
  * Create Tasks

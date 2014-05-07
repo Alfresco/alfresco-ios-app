@@ -175,6 +175,8 @@ extern NSString * const kAlfrescoHelpURLString;
 
 // Workflow
 extern NSString * const kAlfrescoTaskAddedNotification;
+extern NSString * const kAlfrescoWorkflowActivitiEngine;
+extern NSString * const kAlfrescoWorkflowJBPMEngine;
 
 // Google Quickoffice
 extern NSString * const kQuickofficeApplicationSecretUUIDKey;

@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
         self.calendarDateLabel.text = @"";
     }
     self.taskNameLabel.text = (process.name) ? process.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
-    self.taskTypeLabel.text = @"";
+    self.taskTypeLabel.text = [Utility displayNameForProcessDefinition:process.processDefinitionIdentifier];
     self.taskInitiatorLabel.text = process.initiatorUsername;
     [self setPriorityLevel:process.priority];
 }
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
         self.calendarDateLabel.text = @"";
     }
     self.taskNameLabel.text = (task.name) ? task.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
-    self.taskTypeLabel.text = @"";
+    self.taskTypeLabel.text = [Utility displayNameForProcessDefinition:task.processDefinitionIdentifier];
     self.taskInitiatorLabel.text = task.assigneeIdentifier;
     [self setPriorityLevel:task.priority];
 }
