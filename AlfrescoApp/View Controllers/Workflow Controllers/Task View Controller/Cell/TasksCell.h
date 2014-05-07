@@ -10,11 +10,9 @@
 
 @interface TasksCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *taskNameTextLabel;
-@property (nonatomic, weak) IBOutlet UILabel *taskDueDateTextLabel;
-
-+ (CGFloat)minimumCellHeight;
-- (void)setPriorityLevel:(NSNumber *)priority;
-- (void)setTaskOverdue:(BOOL)overdue;
+@property (nonatomic, strong) NSNumber *priority;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSDate *dueDate;
+@property (nonatomic, strong) NSString *processType;
 
 @end

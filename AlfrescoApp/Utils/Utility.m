@@ -27,11 +27,10 @@ static CGFloat const kZoomAnimationSpeed = 0.2f;
  * TaskPriority lightweight class
  */
 @implementation TaskPriority
-+ (id)taskPriorityWithImageName:(NSString *)imageName tintColor:(UIColor *)tintColor summary:(NSString *)summary
++ (id)taskPriorityWithImageName:(NSString *)imageName summary:(NSString *)summary
 {
     TaskPriority *taskPriority = [TaskPriority new];
     taskPriority.image = [UIImage imageNamed:imageName];
-    taskPriority.tintColor = tintColor;
     taskPriority.summary = summary;
     return taskPriority;
 }
@@ -143,46 +142,81 @@ UIImage *resizeImage(UIImage *image, CGSize size)
     return destImage;
 }
 
-
-NSString *relativeDateFromDate(NSDate *objDate)
+NSString *relativeDateFromDate(NSDate *date)
 {
-    if (nil == objDate)
+    if (nil == date)
     {
 		return @"";
 	}
+
+    NSDate *today = [NSDate date];
+    NSDate *earliest = [today earlierDate:date];
+    BOOL isTodayEarlierDate = (today == earliest);
+    NSDate *latest = isTodayEarlierDate ? date : today;
+
+    NSString *(^relativeDateString)(NSString *key, NSInteger param) = ^NSString *(NSString *key, NSInteger param) {
+        NSString *dateKey = [NSString stringWithFormat:@"relative.date.%@.%@", isTodayEarlierDate ? @"future" : @"past", key];
+        return [NSString stringWithFormat:NSLocalizedString(dateKey, @"Date string"), param];
+    };
+
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger unitFlags = NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *components = [calendar components:unitFlags fromDate:earliest toDate:latest options:0];
     
-    NSDate *todayDate = [NSDate date];
-    double ti = [objDate timeIntervalSinceDate:todayDate];
-    ti = ti * -1;
-    
-    NSString *key = nil;
-    int diff = 0;
-    
-    if (ti < 1)
+    if (components.year >= 2)
     {
-        key = @"relative.date.just-now";
+        return relativeDateString(@"n-years", components.year);
     }
-    else if (ti < 60)
+    else if (components.year >= 1)
     {
-        key = @"relative.date.less-than-a-minute-ago";
+        return relativeDateString(@"one-year", components.year);
     }
-    else if (ti < 3600)
+    else if (components.month >= 2)
     {
-        diff = round(ti / 60);
-        key = (diff > 1) ? @"relative.date.n-minutes-ago" : @"relative.date.one-minute-ago";
+        return relativeDateString(@"n-months", components.month);
     }
-    else if (ti < 86400)
+    else if (components.month >= 1)
     {
-        diff = round(ti / 60 / 60);
-        key = (diff > 1) ? @"relative.date.n-hours-ago" : @"relative.date.one-hour-ago";
+        return relativeDateString(@"one-month", components.month);
     }
-    else
+    else if (components.week >= 2)
     {
-        diff = round(ti / 60 / 60 / 24);
-        key = (diff > 1) ? @"relative.date.n-days-ago" : @"relative.date.one-day-ago";
+        return relativeDateString(@"n-weeks", components.week);
     }
-    
-    return [NSString stringWithFormat:NSLocalizedString(key, @"Localized relative date string"), diff];
+    else if (components.week >= 1)
+    {
+        return relativeDateString(@"one-week", components.week);
+    }
+    else if (components.day >= 2)
+    {
+        return relativeDateString(@"n-days", components.day);
+    }
+    else if (components.day >= 1)
+    {
+        return relativeDateString(@"one-day", components.day);
+    }
+    else if (components.hour >= 2)
+    {
+        return relativeDateString(@"n-hours", components.hour);
+    }
+    else if (components.hour >= 1)
+    {
+        return relativeDateString(@"one-hour", components.hour);
+    }
+    else if (components.minute >= 2)
+    {
+        return relativeDateString(@"n-minutes", components.minute);
+    }
+    else if (components.minute >= 1)
+    {
+        return relativeDateString(@"one-minute", components.minute);
+    }
+    else if (components.second >= 2)
+    {
+        return relativeDateString(@"n-seconds", components.second);
+    }
+
+    return NSLocalizedString(@"relative.date.just-now", @"Just now");
 }
 
 NSString *stringForLongFileSize(unsigned long long size)
@@ -574,15 +608,15 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     switch (priority.integerValue)
     {
         case 1:
-            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_high.png" tintColor:[UIColor taskPriorityHighColor] summary:NSLocalizedString(@"tasks.priority.high", @"High Priority")];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_high.png" summary:NSLocalizedString(@"tasks.priority.high", @"High Priority")];
             break;
             
         case 2:
-            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_medium.png" tintColor:[UIColor taskPriorityMediumColor] summary:NSLocalizedString(@"tasks.priority.medium", @"Medium Priority")];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_medium.png" summary:NSLocalizedString(@"tasks.priority.medium", @"Medium Priority")];
             break;
 
         case 3:
-            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_low.png" tintColor:[UIColor taskPriorityLowColor] summary:NSLocalizedString(@"tasks.priority.low", @"Low Priority")];
+            taskPriority = [TaskPriority taskPriorityWithImageName:@"task_priority_low.png" summary:NSLocalizedString(@"tasks.priority.low", @"Low Priority")];
             break;
             
         default:

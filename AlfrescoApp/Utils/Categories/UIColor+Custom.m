@@ -70,24 +70,9 @@
     return [UIColor yellowColor];
 }
 
-+ (UIColor *)taskPriorityHighColor
++ (UIColor *)taskOverdueLabelColor
 {
-    return [UIColor redColor];
-}
-
-+ (UIColor *)taskPriorityMediumColor
-{
-    return [UIColor darkGrayColor];
-}
-
-+ (UIColor *)taskPriorityLowColor
-{
-    return [UIColor lightGrayColor];
-}
-
-+ (UIColor *)taskOverdueColor
-{
-    return [UIColor redColor];
+    return [UIColor colorWithRed:(CGFloat)240.0/255.0 green:0.2 blue:0.2 alpha:1.0];
 }
 
 + (UIColor *)onboardingOffWhiteColor
