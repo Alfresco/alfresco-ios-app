@@ -75,5 +75,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)colorButtonsForActionSheet:(UIActionSheet *)actionSheet tintColor:(UIColor *)tintColor;
 + (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority;
++ (UIImage *)cropImageIntoSquare:(UIImage *)originalImage;
 
 @end
