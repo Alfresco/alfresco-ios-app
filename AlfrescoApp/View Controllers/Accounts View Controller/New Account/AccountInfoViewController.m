@@ -27,6 +27,7 @@ static NSInteger const kTagCertificateCell = 1;
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroupHeaders;
+@property (nonatomic, strong) NSArray *tableGroupFooters;
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UITextField *serverAddressTextField;
@@ -199,6 +200,11 @@ static NSInteger const kTagCertificateCell = 1;
     return NSLocalizedString(self.tableGroupHeaders[section], @"Section Header");
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return NSLocalizedString(self.tableGroupFooters[section], @"Section Footer");
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.tableViewData[indexPath.section][indexPath.row];
@@ -306,15 +312,25 @@ static NSInteger const kTagCertificateCell = 1;
         certificateCell.valueLabel.text = self.account.accountCertificate.summary;
         self.certificateLabel = certificateCell.valueLabel;
         
+        /**
+         * Note: Additional account-specific settings should be in their own group with an empty header string.
+         * This will allow a description footer to be added under each setting if required.
+         */
         self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
                                                                @[syncPreferenceCell],
                                                                @[portCell, serviceDocumentCell, certificateCell]]];
         self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.advanced"];
+        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer", @""];
     }
     else
     {
+        /**
+         * Note: Additional account-specific settings should be in their own group with an empty header string.
+         * This will allow a description footer to be added under each setting if required.
+         */
         self.tableViewData = [NSMutableArray arrayWithArray:@[ @[descriptionCell], @[syncPreferenceCell]]];
         self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting"];
+        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer"];
     }
 }
 

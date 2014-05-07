@@ -37,6 +37,9 @@ extern NSString * const kRenditionImageImagePreview;
 extern NSString * const kEditableDocumentExtensions;
 extern NSString * const kEditableDocumentMimeTypes;
 
+// "No Items" font size
+extern CGFloat const kNoItemsLabelFontSize;
+
 extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;
 extern NSString * const kProtocolHTTPS;
@@ -173,7 +176,7 @@ extern NSString * const kAlfrescoHelpURLString;
 // Workflow
 extern NSString * const kAlfrescoTaskAddedNotification;
 
-// Quickoffice
+// Google Quickoffice
 extern NSString * const kQuickofficeApplicationSecretUUIDKey;
 extern NSString * const kQuickofficeApplicationInfoKey;
 extern NSString * const kQuickofficeApplicationIdentifierKey;
@@ -181,7 +184,7 @@ extern NSString * const kQuickofficeApplicationDocumentExtension;
 extern NSString * const kQuickofficeApplicationDocumentExtensionKey;
 extern NSString * const kQuickofficeApplicationDocumentUTI;
 extern NSString * const kQuickofficeApplicationDocumentUTIKey;
-// custom
+// Custom
 extern NSString * const kQuickofficeApplicationBundleIdentifierPrefix;
 extern NSString * const kAlfrescoInfoMetadataKey;
 extern NSString * const kAppIdentifier;

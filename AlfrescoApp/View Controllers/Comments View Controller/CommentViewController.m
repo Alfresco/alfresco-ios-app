@@ -23,7 +23,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 @property (nonatomic, weak) IBOutlet UIView *addCommentContainerView;
 @property (nonatomic, weak) IBOutlet TextView *addCommentTextView;
 @property (nonatomic, weak) IBOutlet UIButton *postCommentButton;
-@property (nonatomic, strong) UILabel *sectionFooterLabel;
 @property (nonatomic, weak, readwrite) id<CommentViewControllerDelegate> delegate;
 
 @end
@@ -109,7 +108,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         if (completionBlock != NULL)
         {
             completionBlock(pagingResult, error);
-            [self updateCommentCountFooter];
+            [self updateCommentCount];
         }
     }];
 }
@@ -154,21 +153,8 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     [self.postCommentButton setTitle:NSLocalizedString(@"comments.post.button", @"Post Button") forState:UIControlStateNormal];
 }
 
-- (NSString *)titleForCommentsInSection:(NSInteger)section
+- (void)updateCommentCount
 {
-    NSString *footerText = nil;
-    
-    if (self.tableViewData.count == 0)
-    {
-        footerText = [NSString stringWithFormat:NSLocalizedString(@"comments.footer.multiple.comments", @"%i Comments"), self.tableViewData.count];
-    }
-    
-    return footerText;
-}
-
-- (void)updateCommentCountFooter
-{
-    self.sectionFooterLabel.text = [self titleForCommentsInSection:0];
     [self.delegate commentViewController:self didUpdateCommentCount:self.tableViewData.count hasMoreComments:self.moreItemsAvailable];
 }
 
@@ -266,20 +252,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    if (!self.sectionFooterLabel)
-    {
-        self.sectionFooterLabel = [[UILabel alloc] init];
-        self.sectionFooterLabel.font = [UIFont systemFontOfSize:14.0f];
-        self.sectionFooterLabel.backgroundColor = [UIColor whiteColor];
-        self.sectionFooterLabel.textAlignment = NSTextAlignmentCenter;
-        [self updateCommentCountFooter];
-    }
-    
-    return self.sectionFooterLabel;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CommentCell *cell = (CommentCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -333,7 +305,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
                 [weakSelf.tableViewData insertObject:comment atIndex:0];
                 NSIndexPath *insertIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                 [weakSelf.tableView insertRowsAtIndexPaths:@[insertIndexPath] withRowAnimation:UITableViewRowAnimationTop];
-                [weakSelf updateCommentCountFooter];
+                [weakSelf updateCommentCount];
                 weakSelf.addCommentTextView.text = [weakSelf placeholderText];
             }
             else

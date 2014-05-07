@@ -243,6 +243,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     {
         [self reloadAccountSection];
         [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kAccountsRowNumber inSection:kAccountsSectionNumber] animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self configureRepositoryMainMenuItems:[AppConfigurationManager sharedManager]];
     }
 }
 

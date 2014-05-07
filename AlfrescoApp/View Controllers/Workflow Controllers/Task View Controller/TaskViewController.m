@@ -24,13 +24,18 @@ static NSString * const kActivitiToDo = @"activitiAdhoc";
 static NSString * const kJBPMReview = @"wf:review";
 static NSString * const kJBPMParallelReview = @"wf:parallelreview";
 static NSString * const kJBPMToDo = @"wf:adhoc";
-static NSString * const kSupportedTasksPredicateFormat = @"(processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@) OR (processDefinitionIdentifier CONTAINS %@)";
+static NSString * const kSupportedTasksPredicateFormat = @"processDefinitionIdentifier CONTAINS %@";
+static NSString * const kAdhocProcessTypePredicateFormat = @"SELF CONTAINS[cd] %@";
 static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername like %@";
+
+static NSString * const kTaskCellIdentifier = @"TaskCell";
 
 @interface TaskViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSPredicate *supportedTasksPredicate;
+@property (nonatomic, strong) NSPredicate *adhocProcessTypePredicate;
 @property (nonatomic, assign) TaskFilter displayedTaskFilter;
 @property (nonatomic, strong) TaskGroupItem *myTasks;
 @property (nonatomic, strong) TaskGroupItem *tasksIStarted;
@@ -47,10 +52,7 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     {
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(taskCompleted:)
-                                                     name:kAlfrescoWorkflowTaskDidComplete
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskCompleted:) name:kAlfrescoWorkflowTaskDidComplete object:nil];
         [self createWorkflowServicesWithSession:session];
     }
     return self;
@@ -66,11 +68,12 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tasks.view.button", @"View") style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
     self.filterButton = filterButton;
     
-    UIBarButtonItem *addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                   target:self
-                                                                                   action:@selector(createTask:)];
+    UIBarButtonItem *addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createTask:)];
     self.navigationItem.rightBarButtonItem = addTaskButton;
     self.navigationItem.leftBarButtonItem = filterButton;
+
+    UINib *cellNib = [UINib nibWithNibName:@"TasksCell" bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:kTaskCellIdentifier];
     
     if (self.session)
     {
@@ -101,7 +104,6 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
     if (self.session)
     {
         [self createWorkflowServicesWithSession:session];
-        
         [self.myTasks clearAllTasks];
         [self.tasksIStarted clearAllTasks];
         
@@ -160,13 +162,34 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 - (void)createWorkflowServicesWithSession:(id<AlfrescoSession>)session
 {
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
+
+    if (!self.supportedTasksPredicate)
+    {
+        NSArray *supportedProcessIdentifiers = @[kActivitiReview, kActivitiParallelReview, kActivitiToDo, kJBPMReview, kJBPMParallelReview, kJBPMToDo];
+        NSMutableArray *tasksSubpredicates = [[NSMutableArray alloc] init];
+        [supportedProcessIdentifiers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [tasksSubpredicates addObject:[NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, obj]];
+        }];
+        
+        self.supportedTasksPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tasksSubpredicates];
+    }
     
-    NSPredicate *myTasksPredicate = [NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, kActivitiReview, kActivitiParallelReview, kActivitiToDo, kJBPMReview, kJBPMParallelReview, kJBPMToDo];
-    NSPredicate *tasksIStartedPredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
-    self.myTasks = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")
-                                     filteringPredicate:myTasksPredicate];
-    self.tasksIStarted = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")
-                                           filteringPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[myTasksPredicate, tasksIStartedPredicate]]];
+    if (!self.adhocProcessTypePredicate)
+    {
+        NSArray *supportedProcessIdentifiers = @[kActivitiToDo, kJBPMToDo];
+        NSMutableArray *tasksSubpredicates = [[NSMutableArray alloc] init];
+        [supportedProcessIdentifiers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [tasksSubpredicates addObject:[NSPredicate predicateWithFormat:kAdhocProcessTypePredicateFormat, obj]];
+        }];
+        
+        self.adhocProcessTypePredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tasksSubpredicates];
+    }
+    
+    NSPredicate *initiatorSubpredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
+    NSPredicate *tasksIStartedPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[self.supportedTasksPredicate, initiatorSubpredicate]];
+
+    self.myTasks = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title") filteringPredicate:self.supportedTasksPredicate];
+    self.tasksIStarted = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title") filteringPredicate:tasksIStartedPredicate];
 }
 
 - (TaskGroupItem *)taskGroupItemForType:(TaskFilter)taskType
@@ -347,38 +370,34 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    TasksCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell)
-    {
-        cell = (TasksCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TasksCell class]) owner:self options:nil] lastObject];
-    }
-    
+    TasksCell *cell = [tableView dequeueReusableCellWithIdentifier:kTaskCellIdentifier];
+    NSString *processDefinitionIdentifier;
+
     switch (self.displayedTaskFilter)
     {
         case TaskFilterTask:
         {
             AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
-            NSString *taskTitle = (currentTask.name) ? currentTask.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
-            cell.taskNameTextLabel.text = taskTitle;
-            cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentTask.dueAt];
-            [cell setTaskOverdue:([currentTask.dueAt timeIntervalSinceNow] < 0)];
-            [cell setPriorityLevel:currentTask.priority];
+            processDefinitionIdentifier = currentTask.processDefinitionIdentifier;
+            cell.title = currentTask.name;
+            cell.dueDate = currentTask.dueAt;
+            cell.priority = currentTask.priority;
         }
         break;
             
         case TaskFilterProcess:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
-            NSString *processTitle = (currentProcess.name) ? currentProcess.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
-            cell.taskNameTextLabel.text = processTitle;
-            cell.taskDueDateTextLabel.text = [self.dateFormatter stringFromDate:currentProcess.dueAt];
-            [cell setTaskOverdue:([currentProcess.dueAt timeIntervalSinceNow] < 0)];
-            [cell setPriorityLevel:currentProcess.priority];
+            processDefinitionIdentifier = currentProcess.processDefinitionIdentifier;
+            cell.title = currentProcess.name;
+            cell.dueDate = currentProcess.dueAt;
+            cell.priority = currentProcess.priority;
         }
         break;
     }
+
+    BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:processDefinitionIdentifier];
+    cell.processType = NSLocalizedString(isAdhocProcessType ? @"task.type.workflow.todo" : @"task.type.workflow.review.and.approve", @"Process type");
     
     return cell;
 }
@@ -432,10 +451,8 @@ static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TasksCell *cell = (TasksCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    
-    return (height < [TasksCell minimumCellHeight]) ? [TasksCell minimumCellHeight] : height;
+    [cell layoutIfNeeded];
+    return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 }
 
 #pragma mark - UIRefreshControl Functions

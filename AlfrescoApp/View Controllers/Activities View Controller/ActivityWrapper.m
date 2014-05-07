@@ -238,7 +238,7 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
         
         if (indexRange.location != NSNotFound)
         {
-            NSAttributedString *tokenString = [[NSAttributedString alloc] initWithString:replacements[index] attributes:tokenAttributes];
+            NSAttributedString *tokenString = [[NSAttributedString alloc] initWithString:[replacements[index] description] attributes:tokenAttributes];
             [attrString replaceCharactersInRange:indexRange withAttributedString:tokenString];
         }
     }

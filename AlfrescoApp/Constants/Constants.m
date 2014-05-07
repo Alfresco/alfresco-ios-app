@@ -22,6 +22,9 @@ NSString * const kEditableDocumentExtensions = @"txt,htm,html,xml,css,js,ftl,jav
 // In addition, all "text/..." mimetypes are allowed to be edited
 NSString * const kEditableDocumentMimeTypes = @"application/xml,application/javascript";
 
+// "No Items" font size
+CGFloat const kNoItemsLabelFontSize = 24.0f;
+
 // App RevealController
 CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 
@@ -158,7 +161,7 @@ NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
 // Workflow
 NSString * const kAlfrescoTaskAddedNotification = @"AlfrescoTaskAddedNotification";
 
-// Quickoffice
+// Google Quickoffice
 NSString * const kQuickofficeApplicationSecretUUIDKey = @"PartnerApplicationSecretUUID";
 NSString * const kQuickofficeApplicationInfoKey = @"PartnerApplicationInfo";
 NSString * const kQuickofficeApplicationIdentifierKey = @"PartnerApplicationIdentifier";

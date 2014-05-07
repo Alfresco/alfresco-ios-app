@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "NodePicker.h"
-#import "PeoplePicker.h"
 
 @interface NodePickerListViewController : UITableViewController
 

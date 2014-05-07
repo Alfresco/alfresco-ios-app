@@ -18,7 +18,6 @@
  */
 @interface TaskPriority : NSObject
 @property (nonatomic, retain) UIImage *image;
-@property (nonatomic, retain) UIColor *tintColor;
 @property (nonatomic, retain) NSString *summary;
 @end
 

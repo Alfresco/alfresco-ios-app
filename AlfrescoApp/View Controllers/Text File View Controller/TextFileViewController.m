@@ -13,6 +13,7 @@
 #import "DownloadManager.h"
 #import "SyncManager.h"
 #import "MBProgressHud.h"
+#import "ConnectivityManager.h"
 
 static NSString * const kTextFileMimeType = @"text/plain";
 
@@ -166,17 +167,20 @@ static NSString * const kTextFileMimeType = @"text/plain";
         
         if (isSyncDocument)
         {
+            if ([[ConnectivityManager sharedManager] hasInternetConnection])
+            {
+                [syncManager retrySyncForDocument:self.editingDocument];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
-            [syncManager retrySyncForDocument:self.editingDocument];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
             MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+            progressHUD.mode = MBProgressHUDModeDeterminate;
             [progressHUD show:YES];
             
             [self.documentFolderService updateContentOfDocument:self.editingDocument contentFile:contentFile completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                
                 [progressHUD hide:YES];
                 if (document)
                 {
@@ -199,7 +203,8 @@ static NSString * const kTextFileMimeType = @"text/plain";
                     }];
                 }
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                
+                // Update progress HUD
+                progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
             }];
         }
     }

@@ -23,14 +23,33 @@
 /**
  * Relative Dates
  */
-"relative.date.just-now" = "just now";
-"relative.date.less-than-a-minute-ago" = "less than a minute ago";
-"relative.date.one-minute-ago" = "1 minute ago";
-"relative.date.n-minutes-ago" = "%d minutes ago";
-"relative.date.one-hour-ago" = "1 hour ago";
-"relative.date.n-hours-ago" = "%d hours ago";
-"relative.date.one-day-ago" = "1 day ago";
-"relative.date.n-days-ago" = "%d days ago";
+"relative.date.past.n-years" = "%d years ago";
+"relative.date.past.one-year" = "A year ago";
+"relative.date.past.n-months" = "%d months ago";
+"relative.date.past.one-month" = "A month ago";
+"relative.date.past.n-weeks" = "%d weeks ago";
+"relative.date.past.one-week" = "A week ago";
+"relative.date.past.n-days" = "%d days ago";
+"relative.date.past.one-day" = "Yesterday";
+"relative.date.past.n-hours" = "%d hours ago";
+"relative.date.past.one-hour" = "An hour ago";
+"relative.date.past.n-minutes" = "%d minutes ago";
+"relative.date.past.one-minute" = "A minute ago";
+"relative.date.past.n-seconds" = "%d seconds ago";
+"relative.date.just-now" = "Just now";
+"relative.date.future.n-seconds" = "%d seconds from now";
+"relative.date.future.one-minute" = "A minute from now";
+"relative.date.future.n-minutes" = "%d minutes from now";
+"relative.date.future.one-hour" = "An hour from now";
+"relative.date.future.n-hours" = "%d hours from now";
+"relative.date.future.one-day" = "Tomorrow";
+"relative.date.future.n-days" = "%d days from now";
+"relative.date.future.one-week" = "A week from now";
+"relative.date.future.n-weeks" = "%d weeks from now";
+"relative.date.future.one-month" = "A month from now";
+"relative.date.future.n-months" = "%d months from now";
+"relative.date.future.one-year" = "A year from now";
+"relative.date.future.n-years" = "%d years from now";
 
 /**
  * File Sizes
@@ -161,8 +180,9 @@
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service Document";
 "accountdetails.fields.syncPreference" = "Sync Favorite Content";
+"accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
-"accountdetails.header.authentication" = "Account Authentication";
+"accountdetails.header.authentication" = "Account Details";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
 
@@ -400,7 +420,6 @@
  */
 "comments.title" = "Comments";
 "comments.empty" = "No Comments";
-"comments.footer.multiple.comments" = "%i Comments";
 "comments.post.button" = "Post";
 "comments.placeholder.text" = "Add a comment ...";
 
@@ -476,14 +495,6 @@
 "document.edit.dismiss.confirmation.message" = "Are you sure you want to cancel changes made to the file?";
 
 /**
- * Saveback
- */
-"saveback.hud.message" = "Saving...";
-"saveback.saved.successfully.message" = "The document %@ was successfully saved.";
-"saveback.failed.title" = "Saveback Failed";
-"saveback.failed.message" = "The attempt to saveback %@ failed. Would you like to retry?";
-
-/**
  * Policy Updated
  */
 "policy.updated.title" = "Policy Update";
@@ -509,14 +520,15 @@
 "tasks.view.button" = "View";
 "tasks.title.mytasks" = "My Tasks";
 "tasks.title.taskistarted" = "Tasks I Started";
+"tasks.list.no-due-date" = "No due date";
 // Details
 "tasks.calendar.no-due-date" = "No Date";
 "tasks.priority.high" = "High Priority";
 "tasks.priority.medium" = "Medium Priority";
 "tasks.priority.low" = "Low Priority";
 "tasks.textview.addcomment.placeholder" = "Add Comment";
-"tasks.attachments.noattachments" = "No attachments";
-"tasks.tasks.notasks" = "No tasks";
+"tasks.attachments.empty" = "No attachments";
+"tasks.tasks.empty" = "No tasks";
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 "task.reassign.button.title" = "Reassign";
@@ -612,9 +624,13 @@
 /**
  * SaveBack
  */
-"saveback.completed.title" = "SaveBack Completed";
+"saveback.hud.message" = "Saving...";
+"saveback.saved.successfully.message" = "The document %@ was successfully saved.";
+"saveback.failed.title" = "Save back Failed";
+"saveback.failed.message" = "The attempt to save back %@ failed. Would you like to retry?";
+"saveback.completed.title" = "Save back Completed";
 "saveback.completed.message" = "%@ has successfully been saved back";
-"saveback.failed.title" = "SaveBack Failed";
+"saveback.failed.title" = "Save back Failed";
 "saveback.failed.message" = "%@ has been saved to Local Files";
 // Location Picker
 "saveback.locationpicker.title" = "Choose Location";

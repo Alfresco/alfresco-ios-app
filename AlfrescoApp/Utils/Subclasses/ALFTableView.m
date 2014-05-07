@@ -51,7 +51,7 @@
     if (!self.alfEmptyLabel)
     {
         UILabel *emptyLabel = [[UILabel alloc] init];
-        emptyLabel.font = [UIFont systemFontOfSize:24.0];
+        emptyLabel.font = [UIFont systemFontOfSize:kNoItemsLabelFontSize];
         emptyLabel.numberOfLines = 0;
         emptyLabel.textAlignment = NSTextAlignmentCenter;
         emptyLabel.textColor = [UIColor noItemsTextColor];

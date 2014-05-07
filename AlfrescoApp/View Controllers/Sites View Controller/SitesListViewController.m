@@ -310,10 +310,9 @@ static CGFloat kSearchCellHeight = 60.0f;
     }
     else
     {
+        [self showHUDWithMode:MBProgressHUDModeDeterminate];
+        
         AlfrescoNode *selectedNode = [self.searchResults objectAtIndex:indexPath.row];
-        
-        [self showHUD];
-        
         NSString *downloadDestinationPath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:selectedNode.name];
         NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadDestinationPath append:NO];
         
@@ -332,7 +331,8 @@ static CGFloat kSearchCellHeight = 60.0f;
                     [Notifier notifyWithAlfrescoError:error];
                 }
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                // progress indicator update
+                // Update progress HUD
+                self.progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
             }];
         }];
     }

@@ -12,7 +12,7 @@
 
 @interface ParentListViewController ()
 @property (nonatomic, strong) NSDictionary *imageMappings;
-@property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, strong, readwrite) MBProgressHUD *progressHUD;
 @end
 
 @implementation ParentListViewController
@@ -228,12 +228,18 @@
 
 - (void)showHUD
 {
+    [self showHUDWithMode:MBProgressHUDModeIndeterminate];
+}
+
+- (void)showHUDWithMode:(MBProgressHUDMode)mode
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (!self.progressHUD)
         {
             self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
             [self.view addSubview:self.progressHUD];
         }
+        self.progressHUD.mode = mode;
         [self.progressHUD show:YES];
     });
 }
@@ -242,6 +248,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressHUD hide:YES];
+        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     });
 }
 
