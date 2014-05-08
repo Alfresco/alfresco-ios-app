@@ -8,6 +8,13 @@
 
 #import "AttributedLabelCell.h"
 
+static NSString * const kAttributedCellIdentifier = @"AttributedCellIdentifier";
+
 @implementation AttributedLabelCell
+
++ (NSString *)cellIdentifier
+{
+    return kAttributedCellIdentifier;
+}
 
 @end

@@ -27,7 +27,7 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
     [super layoutSubviews];
     
     [self.contentView layoutSubviews];
-    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width/2;
+    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2;
     self.avatarImageView.clipsToBounds = YES;
     
     CGFloat horizonalPaddingBetweenContentViewAndAvatarImageView = self.horizonalPaddingBetweenContentViewAndAvatarImageView.constant;
