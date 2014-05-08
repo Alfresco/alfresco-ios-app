@@ -61,7 +61,7 @@
 
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
-    void (^logInSuccessful)(BOOL, id<AlfrescoSession>, NSError *) = ^(BOOL successful, id<AlfrescoSession> session, NSError *error)
+    self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error)
     {
         if (loginCompletionBlock != NULL)
         {
@@ -80,7 +80,7 @@
             {
                 [self hideHUD];
                 [self displayLoginViewControllerWithAccount:account username:account.username];
-                logInSuccessful(NO, nil, nil);
+                self.authenticationCompletionBlock(NO, nil, nil);
                 return;
             }
             
@@ -91,14 +91,14 @@
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
                 }
-                logInSuccessful(successful, session, error);
+                self.authenticationCompletionBlock(successful, session, error);
             }];
         }
         else
         {
             [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                logInSuccessful(successful, session, error);
+                self.authenticationCompletionBlock(successful, session, error);
             }];
         }
     }
@@ -107,7 +107,7 @@
         NSString *messageTitle = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Error Title");
         NSString *messageBody = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Error Message");
         displayErrorMessageWithTitle(messageBody, messageTitle);
-        logInSuccessful(NO, nil, nil);
+        self.authenticationCompletionBlock(NO, nil, nil);
     }
 }
 
@@ -408,6 +408,10 @@
         {
             account.password = password;
             [[AccountManager sharedManager] saveAccountsToKeychain];
+            if (self.authenticationCompletionBlock != NULL)
+            {
+                self.authenticationCompletionBlock(YES, alfrescoSession, error);
+            }
             [loginViewController dismissViewControllerAnimated:YES completion:nil];
         }
         else
