@@ -28,15 +28,16 @@
 static NSString * const kJBPMReviewTask = @"wf:reviewTask";
 static NSString * const kActivitiReviewTask = @"wf:activitiReviewTask";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
+static UILayoutPriority const kHighPriority = 950;
+static UILayoutPriority const kLowPriority = 250;
 
 @interface TaskDetailsViewController () <TextViewDelegate, UIGestureRecognizerDelegate, PeoplePickerDelegate>
 
 //// Layout Constraints ////
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *textViewContainerHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpacingOfTextViewContainerConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *doneButtonWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *approveButtonWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *rejectButtonWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizontalSpaceFromDoneButtonToCommentTextConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingSpaceFromCommentTextToContainerConstraint;
 
 //// Data Models ////
 // Models
@@ -59,6 +60,7 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 @property (nonatomic, weak) IBOutlet UIButton *doneButton;
 @property (nonatomic, weak) IBOutlet UIButton *approveButton;
 @property (nonatomic, weak) IBOutlet UIButton *rejectButton;
+@property (nonatomic, weak) IBOutlet UIButton *cancelButton;
 
 @end
 
@@ -112,13 +114,15 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     // Add reassign button
     UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
     self.navigationItem.rightBarButtonItem = reassignButton;
+    
+    [self.cancelButton addTarget:self action:@selector(cancelCommentAction:) forControlEvents:UIControlEventTouchUpInside];
 
-    // dismiss keyboard gesture
+    // Dismiss keyboard gesture
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapView:)];
     tapGesture.delegate = self;
     [self.view addGestureRecognizer:tapGesture];
     
-    // localise UI
+    // Localise UI
     [self localiseUI];
 }
 
@@ -126,7 +130,8 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 
 - (void)localiseUI
 {
-    self.textView.placeholderText = NSLocalizedString(@"tasks.textview.addcomment.placeholder", @"Ad comment placeholder");
+    self.textView.placeholderText = NSLocalizedString(@"tasks.textview.addcomment.placeholder", @"Add comment placeholder");
+    [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"Cancel") forState:UIControlStateNormal];
 }
 
 - (void)registerForNotifications
@@ -157,27 +162,35 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     
     if (filter == TaskFilterTask)
     {
+        [self.workflowService retrieveProcessWithIdentifier:self.task.processIdentifier completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
+            if (process && self.taskHeaderView)
+            {
+                self.taskHeaderView.taskInitiator = process.initiatorUsername;
+            }
+        }];
+        
         // configure the header view for the task
         [self.taskHeaderView configureViewForTask:self.task];
+        
         // configure the transition buttons
         [self configureTransitionButtonsForTask:self.task];
+        
         // init the attachment controller
         attachmentViewController = [[TasksAndAttachmentsViewController alloc] initWithTask:self.task session:self.session];
+        
         // set the tableview inset to ensure the content isn't behind the comment view
         attachmentViewController.tableViewInsets = UIEdgeInsetsMake(0, 0, self.textViewContainerHeightConstraint.constant, 0);
-        // retrieve the process definition for the header view
-        [self retrieveProcessDefinitionNameForIdentifier:self.task.processDefinitionIdentifier];
     }
     else /* if (filter == TaskFilterProcess) */ // Suppress static analyser warning
     {
         // configure the header view for the process
         [self.taskHeaderView configureViewForProcess:self.process];
+        
         // init the attachment controller
         attachmentViewController = [[TasksAndAttachmentsViewController alloc] initWithProcess:self.process session:self.session];
+        
         // hide the comment view
         self.textViewContainerHeightConstraint.constant = 0;
-        // retrieve the process definition for the header view
-        [self retrieveProcessDefinitionNameForIdentifier:self.process.processDefinitionIdentifier];
     }
     
     // add the attachment controller
@@ -195,36 +208,57 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     
     // setup the comments text view
     self.textView.maximumHeight = kMaxCommentTextViewHeight;
-    self.textView.layer.cornerRadius = 5.0f;
+    self.textView.layer.cornerRadius = 4.0f;
     self.textView.layer.borderColor = [[UIColor borderGreyColor] CGColor];
-    self.textView.layer.borderWidth = 0.5f;
-    self.textView.font = [UIFont systemFontOfSize:12.0f];
+    self.textView.layer.borderWidth = 1;
 }
 
 - (void)configureTransitionButtonsForTask:(AlfrescoWorkflowTask *)task
 {
     if ([self shouldDisplayApproveAndRejectButtonsForTask:task])
     {
-        self.doneButtonWidthConstraint.constant = 0;
+        self.doneButton.hidden = YES;
+        [self configureTransitionButton:self.approveButton label:NSLocalizedString(@"task.transition.approve", @"Approve") color:[UIColor taskTransitionApproveColor]];
+        [self configureTransitionButton:self.rejectButton label:NSLocalizedString(@"task.transition.reject", @"Reject") color:[UIColor taskTransitionRejectColor]];
     }
     else
     {
-        self.approveButtonWidthConstraint.constant = 0;
-        self.rejectButtonWidthConstraint.constant = 0;
+        self.approveButton.hidden = YES;
+        self.rejectButton.hidden = YES;
+        [self configureTransitionButton:self.doneButton label:NSLocalizedString(@"task.transition.done", @"Done") color:[UIColor taskTransitionApproveColor]];
+
+        // Bump the priority of this constraint to tie the text box to the Done button (iPad layout only)
+        self.horizontalSpaceFromDoneButtonToCommentTextConstraint.priority = kHighPriority;
     }
+
+    [self.view layoutIfNeeded];
+}
+
+- (void)configureTransitionButton:(UIButton *)button label:(NSString *)label color:(UIColor *)color
+{
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = color.CGColor;
+    button.layer.cornerRadius = 4.0f;
+    button.layer.masksToBounds = YES;
+    
+    UIGraphicsBeginImageContextWithOptions(button.frame.size, YES, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [color setFill];
+    CGContextFillRect(context, CGRectMake(0, 0, button.frame.size.width, button.frame.size.height));
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [button setTitle:[label uppercaseString] forState:UIControlStateNormal];
+    [button setTitle:[label uppercaseString] forState:UIControlStateHighlighted];
+    [button setTitleColor:color forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [button setBackgroundImage:image forState:UIControlStateHighlighted];
 }
 
 - (BOOL)shouldDisplayApproveAndRejectButtonsForTask:(AlfrescoWorkflowTask *)task
 {
-    BOOL displayApproveAndReject = NO;
-    
     // It's a review and approve task if the task type matches
-    if ([task.type isEqualToString:kJBPMReviewTask] || [task.type isEqualToString:kActivitiReviewTask])
-    {
-        displayApproveAndReject = YES;
-    }
-    
-    return displayApproveAndReject;
+    return [task.type isEqualToString:kJBPMReviewTask] || [task.type isEqualToString:kActivitiReviewTask];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -242,7 +276,12 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [UIView animateWithDuration:animationSpeed.doubleValue delay:0.0f options:animationCurve.unsignedIntegerValue animations:^{
         self.bottomSpacingOfTextViewContainerConstraint.constant = kbSize.height;
         [self.view layoutIfNeeded];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        // Shrink the comment text view to make room for the cancel button (iPhone only)
+        self.trailingSpaceFromCommentTextToContainerConstraint.priority = kLowPriority;
+        self.cancelButton.hidden = NO;
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -255,7 +294,12 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [UIView animateWithDuration:animationSpeed.doubleValue delay:0.0f options:animationCurve.unsignedIntegerValue animations:^{
         self.bottomSpacingOfTextViewContainerConstraint.constant = 0;
         [self.view layoutIfNeeded];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        // Allow the comment text view to stretch to the container width (iPhone only)
+        self.trailingSpaceFromCommentTextToContainerConstraint.priority = kHighPriority;
+        self.cancelButton.hidden = YES;
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)createTaskHeaderView
@@ -270,16 +314,6 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     [self.taskHeaderViewContainer addConstraints:horizontalConstraints];
     [self.taskHeaderViewContainer addConstraints:verticalContraints];
     self.taskHeaderView = taskHeaderView;
-}
-
-- (void)retrieveProcessDefinitionNameForIdentifier:(NSString *)identifier
-{
-    [self.workflowService retrieveProcessDefinitionWithIdentifier:identifier completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
-        if (processDefinition)
-        {
-            [self.taskHeaderView updateTaskFilterLabelToString:processDefinition.name];
-        }
-    }];
 }
 
 - (void)completeTaskWithProperties:(NSDictionary *)properties
@@ -321,6 +355,11 @@ static CGFloat const kMaxCommentTextViewHeight = 60.0f;
     self.doneButton.enabled = enabled;
     self.approveButton.enabled = enabled;
     self.rejectButton.enabled = enabled;
+}
+
+- (void)cancelCommentAction:(id)sender
+{
+    [self.view endEditing:YES];
 }
 
 - (void)pressedReassignButton:(id)sender

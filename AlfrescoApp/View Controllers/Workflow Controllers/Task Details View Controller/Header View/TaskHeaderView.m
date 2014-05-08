@@ -26,7 +26,6 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 @property (nonatomic, weak) IBOutlet UIView *calendarBackgroundView;
 @property (nonatomic, weak) IBOutlet UILabel *calendarMonthLabel;
 @property (nonatomic, weak) IBOutlet UILabel *calendarDateLabel;
-@property (nonatomic, weak) IBOutlet UILabel *taskNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taskTypeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taskInitiatorLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *taskPriorityImageView;
@@ -67,6 +66,19 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 #pragma mark - Public Functions
 
+- (void)setTaskInitiator:(NSString *)taskInitiator
+{
+    _taskInitiator = taskInitiator;
+
+    CATransition *animation = [CATransition animation];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.type = kCATransitionFade;
+    animation.duration = 0.3;
+    [self.taskInitiatorLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
+    
+    self.taskInitiatorLabel.text = [NSString stringWithFormat:NSLocalizedString(@"tasks.initiated-by", @"Initiated by"), taskInitiator];
+}
+
 - (void)updateTaskFilterLabelToString:(NSString *)taskTypeString
 {
     self.taskTypeLabel.text = taskTypeString;
@@ -86,9 +98,9 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
         self.calendarMonthLabel.text = NSLocalizedString(@"tasks.calendar.no-due-date", @"No Date");
         self.calendarDateLabel.text = @"";
     }
-    self.taskNameLabel.text = (process.name) ? process.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
-    self.taskTypeLabel.text = @"";
-    self.taskInitiatorLabel.text = process.initiatorUsername;
+    self.taskTypeLabel.text = [Utility displayNameForProcessDefinition:process.processDefinitionIdentifier];
+    // Currently no value in displaying this - it's always the current user
+    self.taskInitiatorLabel.text = @"";
     [self setPriorityLevel:process.priority];
 }
 
@@ -106,9 +118,9 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
         self.calendarMonthLabel.text = NSLocalizedString(@"tasks.calendar.no-due-date", @"No Date");
         self.calendarDateLabel.text = @"";
     }
-    self.taskNameLabel.text = (task.name) ? task.name : NSLocalizedString(@"tasks.process.unnamed", @"Unnamed process");
-    self.taskTypeLabel.text = @"";
-    self.taskInitiatorLabel.text = task.assigneeIdentifier;
+    self.taskTypeLabel.text = [Utility displayNameForProcessDefinition:task.processDefinitionIdentifier];
+    // Need to request the process details to see who initiated this task
+    self.taskInitiatorLabel.text = [NSString stringWithFormat:NSLocalizedString(@"tasks.initiated-by", @"Initiated by"), @""];
     [self setPriorityLevel:task.priority];
 }
 

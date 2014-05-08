@@ -12,4 +12,6 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *attributedLabel;
 
++ (NSString *)cellIdentifier;
+
 @end
