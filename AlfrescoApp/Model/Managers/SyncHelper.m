@@ -204,7 +204,12 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
 
 - (NSString *)syncIdentifierForNode:(AlfrescoNode *)node
 {
-    return [(AlfrescoProperty *)[node.properties objectForKey:kAlfrescoNodeVersionSeriesIdKey] value];
+    NSString *syncIdentifier = [(AlfrescoProperty *)[node.properties objectForKey:kAlfrescoNodeVersionSeriesIdKey] value];
+    if (!syncIdentifier)
+    {
+        syncIdentifier = [self identifierWithoutVersionNumber:node.identifier];
+    }
+    return syncIdentifier;
 }
 
 - (NSMutableArray *)syncIdentifiersForNodes:(NSArray *)nodes
