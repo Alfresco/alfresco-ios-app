@@ -8,7 +8,6 @@
 
 #import "AccountsViewController.h"
 #import "AccountManager.h"
-#import "AccountCell.h"
 #import "AccountTypeSelectionViewController.h"
 #import "NavigationViewController.h"
 #import "AccountInfoViewController.h"
@@ -26,6 +25,9 @@ static NSInteger const kAccountRowNumber = 0;
 static NSInteger const kNetworksStartRowNumber = 1;
 
 static CGFloat const kDefaultFontSize = 18.0f;
+
+static CGFloat const kAccountCellHeight = 60.0f;
+static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 @interface AccountsViewController ()
 @property (nonatomic, assign) NSInteger expandedSection;
@@ -141,13 +143,26 @@ static CGFloat const kDefaultFontSize = 18.0f;
     return 0.0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat cellHeight = kAccountCellHeight;
+    
+    if (indexPath.row >= kNetworksStartRowNumber)
+    {
+        cellHeight = kAccountNetworkCellHeight;
+    }
+    
+    return cellHeight;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"AccountCell";
-    AccountCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *cellIdentifier = @"AccountCellIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
     if (nil == cell)
     {
-        cell = (AccountCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AccountCell class]) owner:self options:nil] lastObject];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     cell.accessoryView = [self createAccountSelectionButton];
     
@@ -179,9 +194,10 @@ static CGFloat const kDefaultFontSize = 18.0f;
     {
         NSString *networkIdentifier = self.tableViewData[indexPath.section][indexPath.row];
         
-        cell.textLabel.font = (indexPath.row == kNetworksStartRowNumber) ? [UIFont boldSystemFontOfSize:[UIFont systemFontSize]] : [UIFont systemFontOfSize:[UIFont systemFontSize]];
+        cell.textLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         cell.textLabel.text = networkIdentifier;
-        cell.imageView.image = [UIImage imageNamed:@"empty_icon"];
+        cell.imageView.image = [UIImage imageNamed:@"empty_icon.png"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UserAccount *account = self.tableViewData[indexPath.section][kAccountRowNumber];
         BOOL isSelectedNetwork = [account.selectedNetworkId isEqualToString:networkIdentifier];
@@ -265,7 +281,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
     return button;
 }
 
-- (void)updateAccountSelectionButtonImageForCell:(AccountCell *)cell isSelected:(BOOL)isSelected
+- (void)updateAccountSelectionButtonImageForCell:(UITableViewCell *)cell isSelected:(BOOL)isSelected
 {
     UIImage *selectionImage = isSelected ? [UIImage imageNamed:@"green_selected_circle"] : [UIImage imageNamed:@"unselected_circle"];
     [(UIButton *)cell.accessoryView setBackgroundImage:selectionImage forState:UIControlStateNormal];
@@ -273,14 +289,14 @@ static CGFloat const kDefaultFontSize = 18.0f;
 
 - (void)selectAccountButtonClicked:(UIButton *)sender
 {
-    AccountCell *selectedCell = (AccountCell*)sender.superview;
+    UITableViewCell *selectedCell = (UITableViewCell *)sender.superview;
     
     BOOL foundAcccountCell = NO;
     while (!foundAcccountCell)
     {
         if (![selectedCell isKindOfClass:[UITableViewCell class]])
         {
-            selectedCell = (AccountCell *)selectedCell.superview;
+            selectedCell = (UITableViewCell *)selectedCell.superview;
         }
         else
         {
