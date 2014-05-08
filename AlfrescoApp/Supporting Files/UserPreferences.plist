@@ -38,6 +38,15 @@
 					<key>LocalizedCellTitleKey</key>
 					<string>settings.sync.on.cellular</string>
 				</dict>
+			</array>
+			<key>GroupFooterLocalizedKey</key>
+			<string>settings.sync.on.cellular.description</string>
+		</dict>
+		<dict>
+			<key>GroupHeaderLocalizedKey</key>
+			<string></string>
+			<key>GroupCells</key>
+			<array>
 				<dict>
 					<key>PreferenceIdentifier</key>
 					<string>SettingsSendDiagnosticsIdentifier</string>
@@ -49,6 +58,8 @@
 					<string>settings.send.diagnostics</string>
 				</dict>
 			</array>
+			<key>GroupFooterLocalizedKey</key>
+			<string>settings.send.diagnostics.description</string>
 		</dict>
 	</array>
 </dict>

@@ -595,7 +595,9 @@
 "settings.title" = "Settings";
 "settings.general.title" = "General";
 "settings.sync.on.cellular" = "Cellular Sync";
+"settings.sync.on.cellular.description" = "Switch off to only sync favorite content when you have a Wi-Fi connection.";
 "settings.send.diagnostics" = "Send Diagnostics";
+"settings.send.diagnostics.description" = "To help us improve Alfresco Mobile, we collect anonymous technical diagnostic data. Switch off if preferred.";
 
 /**
  * Onboarding View Controller

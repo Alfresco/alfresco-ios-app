@@ -86,7 +86,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
             NSArray *allCellsInfo = [sectionDictionary valueForKey:kSettingsGroupCells];
             for (NSDictionary *cellInfo in allCellsInfo)
             {
-                NSString *preferenceIdentifier = [cellInfo valueForKey:kSettingsCellPerferenceIdentifier];
+                NSString *preferenceIdentifier = [cellInfo valueForKey:kSettingsCellPreferenceIdentifier];
                 id defaultValue = [cellInfo valueForKey:kSettingsCellValue];
                 
                 [self.preferences setObject:defaultValue forKey:preferenceIdentifier];
