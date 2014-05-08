@@ -27,7 +27,19 @@
 - (void)addAndApplyFilteringToTasks:(NSArray *)tasks;
 {
     [self.tasksBeforeFiltering addObjectsFromArray:tasks];
-    self.tasksAfterFiltering = [[self.tasksBeforeFiltering filteredArrayUsingPredicate:self.filteringPredicate] mutableCopy];
+
+    NSArray *filteredTasks = [self.tasksBeforeFiltering filteredArrayUsingPredicate:self.filteringPredicate];
+    
+    // Primary sort: priority
+    NSSortDescriptor *prioritySortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:YES];
+    
+    // Seconday sort: due date
+    NSSortDescriptor *dueDateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dueAt" ascending:NO comparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
+        // Note reversed logic here along with "ascending:NO" to get nil dates sorted to the bottom
+        return [obj2 compare:obj1];
+    }];
+    
+    self.tasksAfterFiltering = [[filteredTasks sortedArrayUsingDescriptors:@[prioritySortDescriptor, dueDateSortDescriptor]] mutableCopy];
 }
 
 - (void)removeTasks:(NSArray *)tasks

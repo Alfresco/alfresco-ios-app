@@ -52,6 +52,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     {
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskAdded:) name:kAlfrescoTaskAddedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskCompleted:) name:kAlfrescoWorkflowTaskDidComplete object:nil];
         [self createWorkflowServicesWithSession:session];
     }
@@ -80,7 +81,6 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         [self showHUD];
         [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
-            [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
@@ -118,7 +118,17 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
 }
 
+- (void)taskAdded:(NSNotification *)notification
+{
+    [self reloadDataForAllTaskFilters];
+}
+
 - (void)taskCompleted:(NSNotification *)notification
+{
+    [self reloadDataForAllTaskFilters];
+}
+
+- (void)reloadDataForAllTaskFilters
 {
     // reload tasks and workflows following completion
     __weak typeof(self) weakSelf = self;
@@ -208,11 +218,11 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     return returnGroupItem;
 }
 
-- (void)loadTasksForTaskFilter:(TaskFilter)taskType listingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
+- (void)loadTasksForTaskFilter:(TaskFilter)taskFilter listingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
-    TaskGroupItem *groupToSwitchTo = [self taskGroupItemForType:taskType];
+    TaskGroupItem *groupToSwitchTo = [self taskGroupItemForType:taskFilter];
     
-    self.displayedTaskFilter = taskType;
+    self.displayedTaskFilter = taskFilter;
     self.title = groupToSwitchTo.title;
     
     if (groupToSwitchTo.hasDisplayableTasks == NO || forceRefresh || groupToSwitchTo.hasMoreItems)
@@ -223,7 +233,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [groupToSwitchTo clearAllTasks];
         }
         
-        switch (taskType)
+        switch (taskFilter)
         {
             case TaskFilterTask:
             {
@@ -464,7 +474,6 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     if (self.session)
     {
         [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self hideHUD];
             [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];

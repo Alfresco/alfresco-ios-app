@@ -120,7 +120,7 @@ static NSInteger const kSearchResultsIndex = 0;
     
     if ([item isKindOfClass:[AlfrescoPerson class]])
     {
-        PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:kCustomCellReuseIdentifier forIndexPath:indexPath];
+        PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:kCustomCellReuseIdentifier];
         AlfrescoPerson *person = (AlfrescoPerson *)item;
         cell.nameLabel.text = person.fullName;
         
