@@ -16,7 +16,7 @@ static NSInteger const kListSectionNumber = 1;
 static NSInteger const kDefaultNumberOfRows = 1;
 
 #import "NodePickerListViewController.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "Utility.h"
 #import "NodePickerScopeViewController.h"
 #import "NodePickerListCell.h"
@@ -128,7 +128,7 @@ static NSInteger const kDefaultNumberOfRows = 1;
         customCell.label.text = node.name;
         if (node.isDocument)
         {
-            UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib];
+            UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib];
             if (thumbnail)
             {
                 [customCell.thumbnail setImage:thumbnail withFade:NO];
@@ -137,7 +137,7 @@ static NSInteger const kDefaultNumberOfRows = 1;
             {
                 UIImage *placeholderImage = smallImageForType([node.name pathExtension]);
                 customCell.thumbnail.image = placeholderImage;
-                [[ThumbnailDownloader sharedManager] retrieveImageForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                [[ThumbnailManager sharedManager] retrieveImageForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                     if (image)
                     {
                         [customCell.thumbnail setImage:image withFade:YES];

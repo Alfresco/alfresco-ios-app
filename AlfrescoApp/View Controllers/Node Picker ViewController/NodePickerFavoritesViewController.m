@@ -12,7 +12,7 @@
 #import "NodePickerFileFolderListViewController.h"
 #import "AlfrescoNodeCell.h"
 #import "Utility.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -182,7 +182,7 @@ static CGFloat const kCellHeight = 64.0f;
         nodeCell.accessoryType = UITableViewCellAccessoryNone;
         
         AlfrescoDocument *document = (AlfrescoDocument *)node;
-        ThumbnailDownloader *thumbnailManager = [ThumbnailDownloader sharedManager];
+        ThumbnailManager *thumbnailManager = [ThumbnailManager sharedManager];
         UIImage *thumbnail = [thumbnailManager thumbnailForDocument:document renditionType:kRenditionImageDocLib];
         
         if (thumbnail)

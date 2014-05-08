@@ -10,7 +10,7 @@
 #import "TaskHeaderView.h"
 #import "MBProgressHUD.h"
 #import "PagedScrollView.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "Utility.h"
 #import "AlfrescoNodeCell.h"
 #import "SyncManager.h"

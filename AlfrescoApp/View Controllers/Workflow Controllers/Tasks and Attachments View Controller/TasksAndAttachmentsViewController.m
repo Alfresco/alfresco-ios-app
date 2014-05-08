@@ -8,7 +8,7 @@
 
 #import "TasksAndAttachmentsViewController.h"
 #import "SyncManager.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "Utility.h"
 #import "DocumentPreviewViewController.h"
@@ -302,7 +302,7 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
             
             AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
             
-            UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+            UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
             if (thumbnail)
             {
                 [attachmentCell.image setImage:thumbnail withFade:NO];
@@ -311,7 +311,7 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
             {
                 UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
                 attachmentCell.image.image = placeholderImage;
-                [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                     if (image)
                     {
                         [attachmentCell.image setImage:image withFade:YES];

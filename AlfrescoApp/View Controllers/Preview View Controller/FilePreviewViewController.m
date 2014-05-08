@@ -8,7 +8,7 @@
 
 #import "FilePreviewViewController.h"
 #import "ThumbnailImageView.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "Utility.h"
 #import "ErrorDescriptions.h"
 #import <MediaPlayer/MediaPlayer.h>
@@ -118,7 +118,7 @@ static CGFloat downloadProgressHeight;
         else
         {
             // Try and obtain the document thumbnail from the cache
-            UIImage *placeholderImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];;
+            UIImage *placeholderImage = [[ThumbnailManager sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];;
             
             __weak typeof(self) weakSelf = self;
             if (!placeholderImage)
@@ -292,7 +292,7 @@ static CGFloat downloadProgressHeight;
 
 - (void)requestThumbnailForDocument:(AlfrescoDocument *)document completionBlock:(ImageCompletionBlock)completionBlock
 {
-    [[ThumbnailDownloader sharedManager] retrieveImageForDocument:self.document renditionType:kRenditionImageImagePreview session:self.session completionBlock:^(UIImage *image, NSError *error) {
+    [[ThumbnailManager sharedManager] retrieveImageForDocument:self.document renditionType:kRenditionImageImagePreview session:self.session completionBlock:^(UIImage *image, NSError *error) {
         if (completionBlock != NULL)
         {
             completionBlock(image, error);

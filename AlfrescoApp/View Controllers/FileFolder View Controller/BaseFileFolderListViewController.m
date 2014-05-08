@@ -90,7 +90,7 @@
     {
         AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
         
-        UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+        UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
         if (thumbnail)
         {
             [cell.image setImage:thumbnail withFade:NO];
@@ -99,7 +99,7 @@
         {
             UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
             cell.image.image = placeholderImage;
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+            [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
                     AlfrescoNodeCell *cellForImage = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];

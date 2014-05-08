@@ -14,7 +14,7 @@
 #import "LoginManager.h"
 #import "FileFolderCell.h"
 #import "MetaDataViewController.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "AccountManager.h"
 #import "FilePreviewViewController.h"
 
@@ -190,7 +190,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         searchCell.nodeNameLabel.text = documentNode.name;
         searchCell.nodeImageView.image = smallImageForType([documentNode.name pathExtension]);
         
-        UIImage *thumbnailImage = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+        UIImage *thumbnailImage = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
         
         if (thumbnailImage)
         {
@@ -202,7 +202,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
             searchCell.nodeImageView.image = placeholderImage;
             
-            [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+            [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
                     if (searchCell.nodeImageView.image == placeholderImage)

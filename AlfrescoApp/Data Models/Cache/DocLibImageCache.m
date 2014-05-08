@@ -12,6 +12,7 @@
 
 @dynamic docLibImageData;
 @dynamic dateAdded;
+@dynamic dateModified;
 @dynamic identifier;
 
 - (UIImage *)docLibImage

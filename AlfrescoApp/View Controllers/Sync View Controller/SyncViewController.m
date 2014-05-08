@@ -18,7 +18,7 @@
 #import "FailedTransferDetailViewController.h"
 #import "AccountManager.h"
 #import "UserAccount.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "Constants.h"
 #import "PreferenceManager.h"
 #import "ConnectivityManager.h"
@@ -315,7 +315,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     else if (node.isDocument)
     {
         AlfrescoDocument *document = (AlfrescoDocument *)node;
-        ThumbnailDownloader *thumbnailManager = [ThumbnailDownloader sharedManager];
+        ThumbnailManager *thumbnailManager = [ThumbnailManager sharedManager];
         UIImage *thumbnail = [thumbnailManager thumbnailForDocument:document renditionType:kRenditionImageDocLib];
         
         if (thumbnail)
