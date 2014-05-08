@@ -11,7 +11,7 @@
 #import "SyncManager.h"
 #import "FavouriteManager.h"
 #import "Utility.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 
 @interface BaseFileFolderListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate>
 

@@ -374,7 +374,7 @@
 		73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D417A6750E0099FB84 /* DownloadManager.m */; };
 		73B9584417A6750F0099FB84 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D617A6750E0099FB84 /* LocationManager.m */; };
 		73B9584517A6750F0099FB84 /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D817A6750E0099FB84 /* LoginManager.m */; };
-		73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */; };
+		73B9584617A6750F0099FB84 /* ThumbnailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957DA17A6750E0099FB84 /* ThumbnailManager.m */; };
 		73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957DD17A6750E0099FB84 /* FileURLHandler.m */; };
 		73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */; };
 		73B9585517A6750F0099FB84 /* Notifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957FE17A6750E0099FB84 /* Notifier.m */; };
@@ -1064,8 +1064,8 @@
 		73B957D617A6750E0099FB84 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		73B957D717A6750E0099FB84 /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
 		73B957D817A6750E0099FB84 /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
-		73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailDownloader.h; sourceTree = "<group>"; };
-		73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailDownloader.m; sourceTree = "<group>"; };
+		73B957D917A6750E0099FB84 /* ThumbnailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailManager.h; sourceTree = "<group>"; };
+		73B957DA17A6750E0099FB84 /* ThumbnailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailManager.m; sourceTree = "<group>"; };
 		73B957DC17A6750E0099FB84 /* FileURLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileURLHandler.h; sourceTree = "<group>"; };
 		73B957DD17A6750E0099FB84 /* FileURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileURLHandler.m; sourceTree = "<group>"; };
 		73B957DE17A6750E0099FB84 /* URLHandlerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLHandlerProtocol.h; sourceTree = "<group>"; };
@@ -1167,6 +1167,7 @@
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73B95B1F17A6AE860099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		73BA7CB4191B929E00E866E3 /* AlfrescoCache 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AlfrescoCache 2.xcdatamodel"; sourceTree = "<group>"; };
 		73BE41EA18F2AFF500DB8912 /* DocumentPreviewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreviewManager.h; sourceTree = "<group>"; };
 		73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreviewManager.m; sourceTree = "<group>"; };
 		73BE41F118F3FCF000DB8912 /* actionsheet-review.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-review.png"; sourceTree = "<group>"; };
@@ -2480,8 +2481,8 @@
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
 				08E89C9317E7488C006936DF /* SyncManager.m */,
-				73B957D917A6750E0099FB84 /* ThumbnailDownloader.h */,
-				73B957DA17A6750E0099FB84 /* ThumbnailDownloader.m */,
+				73B957D917A6750E0099FB84 /* ThumbnailManager.h */,
+				73B957DA17A6750E0099FB84 /* ThumbnailManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -3444,7 +3445,7 @@
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
 				738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */,
-				73B9584617A6750F0099FB84 /* ThumbnailDownloader.m in Sources */,
+				73B9584617A6750F0099FB84 /* ThumbnailManager.m in Sources */,
 				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
 				73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */,
 				738664F21906B2420021D1BD /* TaskApproversCell.m in Sources */,
@@ -3989,9 +3990,10 @@
 		7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				73BA7CB4191B929E00E866E3 /* AlfrescoCache 2.xcdatamodel */,
 				7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */,
 			);
-			currentVersion = 7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */;
+			currentVersion = 73BA7CB4191B929E00E866E3 /* AlfrescoCache 2.xcdatamodel */;
 			path = AlfrescoCache.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

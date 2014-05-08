@@ -8,7 +8,7 @@
 
 #import "DocumentPreviewViewController.h"
 #import "ActionCollectionView.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "MBProgressHUD.h"
 #import "ErrorDescriptions.h"
 #import "UniversalDevice.h"

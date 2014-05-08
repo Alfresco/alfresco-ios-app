@@ -18,7 +18,7 @@
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "AvatarManager.h"
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";

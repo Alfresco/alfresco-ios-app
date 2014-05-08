@@ -12,6 +12,7 @@
 
 @dynamic documentPreviewImageData;
 @dynamic dateAdded;
+@dynamic dateModified;
 @dynamic identifier;
 
 - (UIImage *)documentPreviewImage

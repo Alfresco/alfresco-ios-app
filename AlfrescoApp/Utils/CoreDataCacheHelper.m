@@ -85,6 +85,32 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     if (nodes.count > 0)
     {
         returnedImageCacheObject = nodes[0];
+        
+        // if more than one is returned, get the latest
+        for (DocLibImageCache *docLibCacheObject in nodes)
+        {
+            if ([docLibCacheObject.dateModified compare:returnedImageCacheObject.dateModified] == NSOrderedDescending)
+            {
+                returnedImageCacheObject = docLibCacheObject;
+            }
+        }
+    }
+    return returnedImageCacheObject;
+}
+
+- (DocLibImageCache *)retrieveDocLibForDocument:(AlfrescoDocument *)document inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@ AND dateModified == %@", document.identifier, document.modifiedAt];
+    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocLibImageCache class]) withPredicate:predicate inManagedObjectContext:managedContext];
+    DocLibImageCache *returnedImageCacheObject = nil;
+    if (nodes.count > 0)
+    {
+        returnedImageCacheObject = nodes[0];
     }
     return returnedImageCacheObject;
 }
@@ -97,6 +123,32 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     }
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
+    NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocumentPreviewImageCache class]) withPredicate:predicate inManagedObjectContext:managedContext];
+    DocumentPreviewImageCache *returnedImageCacheObject = nil;
+    if (nodes.count > 0)
+    {
+        returnedImageCacheObject = nodes[0];
+        
+        // if more than one is returned, get the latest
+        for (DocumentPreviewImageCache *previewImageCacheObject in nodes)
+        {
+            if ([previewImageCacheObject.dateModified compare:returnedImageCacheObject.dateModified] == NSOrderedDescending)
+            {
+                returnedImageCacheObject = previewImageCacheObject;
+            }
+        }
+    }
+    return returnedImageCacheObject;
+}
+
+- (DocumentPreviewImageCache *)retrieveDocumentPreviewForDocument:(AlfrescoDocument *)document inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@ AND dateModified == %@", document.identifier, document.modifiedAt];
     NSArray *nodes = [self retrieveRecordsForTable:NSStringFromClass([DocumentPreviewImageCache class]) withPredicate:predicate inManagedObjectContext:managedContext];
     DocumentPreviewImageCache *returnedImageCacheObject = nil;
     if (nodes.count > 0)

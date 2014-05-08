@@ -1,12 +1,12 @@
 //
-//  ThumbnailDownloader.m
+//  ThumbnailManager.m
 //  AlfrescoApp
 //
 //  Created by Tauseef Mughal on 29/07/2013
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import "ThumbnailDownloader.h"
+#import "ThumbnailManager.h"
 #import "Utility.h"
 #import "CoreDataCacheHelper.h"
 
@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, RenditionType)
     RenditionTypeImgPreview
 };
 
-@interface ThumbnailDownloader ()
+@interface ThumbnailManager ()
 
 @property (nonatomic, strong, readwrite) AlfrescoDocumentFolderService *thumbnailService;
 @property (nonatomic, strong) id<AlfrescoSession> session;
@@ -26,12 +26,12 @@ typedef NS_ENUM(NSUInteger, RenditionType)
 
 @end
 
-@implementation ThumbnailDownloader
+@implementation ThumbnailManager
 
 + (id)sharedManager
 {
     static dispatch_once_t onceToken;
-    static ThumbnailDownloader *sharedThumbnailDownloader = nil;
+    static ThumbnailManager *sharedThumbnailDownloader = nil;
     dispatch_once(&onceToken, ^{
         sharedThumbnailDownloader = [[self alloc] init];
     });
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, RenditionType)
         self.session = session;
     }
     
-    NSString *identifier = [self identifierForDocument:document];
+    NSString *identifier = document.identifier;
     UIImage *retrievedImage = [self thumbnailForDocument:document renditionType:rendition];
     
     if (retrievedImage)
@@ -86,6 +86,7 @@ typedef NS_ENUM(NSUInteger, RenditionType)
                         docLibImageObject.identifier = identifier;
                         docLibImageObject.docLibImageData = [NSData dataWithContentsOfURL:contentFile.fileUrl];
                         docLibImageObject.dateAdded = [NSDate date];
+                        docLibImageObject.dateModified = document.modifiedAt;
                         thumbnailImage = [docLibImageObject docLibImage];
                     }
                     else if (renditionType == RenditionTypeImgPreview)
@@ -94,6 +95,7 @@ typedef NS_ENUM(NSUInteger, RenditionType)
                         documentPreviewObject.identifier = identifier;
                         documentPreviewObject.documentPreviewImageData = [NSData dataWithContentsOfURL:contentFile.fileUrl];
                         documentPreviewObject.dateAdded = [NSDate date];
+                        documentPreviewObject.dateModified = document.modifiedAt;
                         thumbnailImage = [documentPreviewObject documentPreviewImage];
                     }
                     
@@ -163,13 +165,6 @@ typedef NS_ENUM(NSUInteger, RenditionType)
     [self.requestedThumbnailCompletionBlocks removeObjectForKey:key];
 }
 
-- (NSString *)identifierForDocument:(AlfrescoDocument *)document
-{
-    // Remove version identifier component
-    NSString *identifier = [document.identifier componentsSeparatedByString:@";"][0];
-    return filenameAppendedWithDateModified(identifier, document);
-}
-
 - (UIImage *)thumbnailForDocument:(AlfrescoDocument *)document renditionType:(NSString *)rendition
 {
     UIImage *returnedImage = nil;
@@ -179,17 +174,45 @@ typedef NS_ENUM(NSUInteger, RenditionType)
     {
         case RenditionTypeDocLib:
         {
-            DocLibImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocLibForIdentifier:[self identifierForDocument:document] inManagedObjectContext:nil];
+            DocLibImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocLibForDocument:document inManagedObjectContext:nil];
             returnedImage = [retrievedImageCacheObject docLibImage];
         }
         break;
             
         case RenditionTypeImgPreview:
         {
-            DocumentPreviewImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocumentPreviewForIdentifier:[self identifierForDocument:document] inManagedObjectContext:nil];
+            DocumentPreviewImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocumentPreviewForDocument:document inManagedObjectContext:nil];
             returnedImage = [retrievedImageCacheObject documentPreviewImage];
         }
         break;
+            
+        default:
+            break;
+    }
+    
+    return returnedImage;
+}
+
+- (UIImage *)thumbnailForDocumentIdentifier:(NSString *)documentIdentifier renditionType:(NSString *)rendition
+{
+    UIImage *returnedImage = nil;
+    RenditionType renditionType = [self renditionTypeFromRenditionString:rendition];
+    
+    switch (renditionType)
+    {
+        case RenditionTypeDocLib:
+        {
+            DocLibImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocLibForIdentifier:documentIdentifier inManagedObjectContext:nil];
+            returnedImage = [retrievedImageCacheObject docLibImage];
+        }
+            break;
+            
+        case RenditionTypeImgPreview:
+        {
+            DocumentPreviewImageCache *retrievedImageCacheObject = [self.coreDataCacheHelper retrieveDocumentPreviewForIdentifier:documentIdentifier inManagedObjectContext:nil];
+            returnedImage = [retrievedImageCacheObject documentPreviewImage];
+        }
+            break;
             
         default:
             break;

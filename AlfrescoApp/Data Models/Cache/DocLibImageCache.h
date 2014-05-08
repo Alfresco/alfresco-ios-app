@@ -10,6 +10,7 @@
 
 @property (nonatomic, retain) NSData *docLibImageData;
 @property (nonatomic, retain) NSDate *dateAdded;
+@property (nonatomic, retain) NSDate *dateModified;
 @property (nonatomic, retain) NSString *identifier;
 
 - (UIImage *)docLibImage;
