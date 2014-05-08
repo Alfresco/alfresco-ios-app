@@ -281,8 +281,6 @@
 		738664C01906B14C0021D1BD /* SitesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664BE1906B14C0021D1BD /* SitesCell.xib */; };
 		738664C51906B16F0021D1BD /* MetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664C31906B16F0021D1BD /* MetadataCell.m */; };
 		738664C61906B16F0021D1BD /* MetadataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664C41906B16F0021D1BD /* MetadataCell.xib */; };
-		738664CE1906B1E50021D1BD /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664C91906B1E50021D1BD /* AccountCell.m */; };
-		738664CF1906B1E50021D1BD /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664CA1906B1E50021D1BD /* AccountCell.xib */; };
 		738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664CC1906B1E50021D1BD /* TextFieldCell.m */; };
 		738664D11906B1E50021D1BD /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738664CD1906B1E50021D1BD /* TextFieldCell.xib */; };
 		738664DE1906B2260021D1BD /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 738664D31906B2260021D1BD /* ButtonCell.m */; };
@@ -926,9 +924,6 @@
 		738664C21906B16F0021D1BD /* MetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataCell.h; sourceTree = "<group>"; };
 		738664C31906B16F0021D1BD /* MetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataCell.m; sourceTree = "<group>"; };
 		738664C41906B16F0021D1BD /* MetadataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataCell.xib; sourceTree = "<group>"; };
-		738664C81906B1E50021D1BD /* AccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCell.h; sourceTree = "<group>"; };
-		738664C91906B1E50021D1BD /* AccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCell.m; sourceTree = "<group>"; };
-		738664CA1906B1E50021D1BD /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		738664CB1906B1E50021D1BD /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		738664CC1906B1E50021D1BD /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		738664CD1906B1E50021D1BD /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
@@ -2155,9 +2150,6 @@
 		738664C71906B1E50021D1BD /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				738664C81906B1E50021D1BD /* AccountCell.h */,
-				738664C91906B1E50021D1BD /* AccountCell.m */,
-				738664CA1906B1E50021D1BD /* AccountCell.xib */,
 				738664D21906B2260021D1BD /* ButtonCell.h */,
 				738664D31906B2260021D1BD /* ButtonCell.m */,
 				738664D41906B2260021D1BD /* ButtonCell.xib */,
@@ -3304,7 +3296,6 @@
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
 				73B95ABC17A68B7E0099FB84 /* site-action-unfavorite@2x.png in Resources */,
-				738664CF1906B1E50021D1BD /* AccountCell.xib in Resources */,
 				73BE41FB18F3FF2900DB8912 /* account-type-cloud@2x.png in Resources */,
 				73B95ABD17A68B7E0099FB84 /* actionButton.png in Resources */,
 				732DBF9118E1BC6B00F7A0BF /* small_document@2x.png in Resources */,
@@ -3455,7 +3446,6 @@
 				738664C51906B16F0021D1BD /* MetadataCell.m in Sources */,
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
-				738664CE1906B1E50021D1BD /* AccountCell.m in Sources */,
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
