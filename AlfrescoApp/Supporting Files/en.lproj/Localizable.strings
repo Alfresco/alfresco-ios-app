@@ -528,12 +528,14 @@
 "tasks.list.no-due-date" = "No due date";
 // Details
 "tasks.calendar.no-due-date" = "No Date";
+"tasks.attachments.empty" = "No attachments";
+"tasks.tasks.empty" = "No tasks";
+"tasks.initiated-by" = "Initiated by %@";
 "tasks.priority.high" = "High Priority";
 "tasks.priority.medium" = "Medium Priority";
 "tasks.priority.low" = "Low Priority";
 "tasks.textview.addcomment.placeholder" = "Add Comment";
-"tasks.attachments.empty" = "No attachments";
-"tasks.tasks.empty" = "No tasks";
+"task.details.section.header.details" = "Details";
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 "task.reassign.button.title" = "Reassign";

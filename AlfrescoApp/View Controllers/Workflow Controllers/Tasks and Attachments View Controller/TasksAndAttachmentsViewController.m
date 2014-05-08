@@ -15,10 +15,19 @@
 #import "TableviewUnderlinedHeaderView.h"
 
 #import "AvatarManager.h"
+#import "AttributedLabelCell.h"
 #import "AlfrescoNodeCell.h"
 #import "ProcessTasksCell.h"
 
 static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier CONTAINS '$start'";
+
+typedef NS_ENUM(NSUInteger, TableSections)
+{
+    TableSectionDetails,
+    TableSectionTasks,
+    TableSectionAttachments,
+    TableSections_MAX
+};
 
 @interface TasksAndAttachmentsViewController ()
 
@@ -29,7 +38,7 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskFilter taskType;
+@property (nonatomic, assign) TaskFilter taskFilter;
 @property (nonatomic, strong) NSMutableArray *tasks;
 @property (nonatomic, strong) NSMutableArray *attachments;
 
@@ -57,13 +66,13 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
     return self;
 }
 
-- (instancetype)initWithTaskFilter:(TaskFilter)taskType session:(id<AlfrescoSession>)session
+- (instancetype)initWithTaskFilter:(TaskFilter)taskFilter session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.session = session;
-        self.taskType = taskType;
+        self.taskFilter = taskFilter;
         self.attachments = [NSMutableArray array];
         self.tasks = [NSMutableArray array];
         [self createServicesWithSession:session];
@@ -88,11 +97,14 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
         [self populateTableView];
     }
     
-    // register cells
-    UINib *attachmentCellNib = [UINib nibWithNibName:NSStringFromClass([AlfrescoNodeCell class]) bundle:nil];
+    // Register cells
+    UINib *detailCellNib = [UINib nibWithNibName:@"AttributedLabelCell" bundle:nil];
+    [self.tableView registerNib:detailCellNib forCellReuseIdentifier:[AttributedLabelCell cellIdentifier]];
+    
+    UINib *attachmentCellNib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:attachmentCellNib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
-    UINib *processTaskCellNib = [UINib nibWithNibName:NSStringFromClass([ProcessTasksCell class]) bundle:nil];
+    UINib *processTaskCellNib = [UINib nibWithNibName:@"ProcessTasksCell" bundle:nil];
     [self.tableView registerNib:processTaskCellNib forCellReuseIdentifier:[ProcessTasksCell cellIdentifier]];
 }
 
@@ -101,7 +113,6 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 - (void)setTableViewInsets:(UIEdgeInsets)tableViewInsets
 {
     _tableViewInsets = tableViewInsets;
-    
     self.tableView.contentInset = tableViewInsets;
 }
 
@@ -111,30 +122,22 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 {
     __weak typeof(self) weakSelf = self;
     
-    [self showHUD];
     [self loadAttachmentsWithCompletionBlock:^(NSArray *array, NSError *error) {
-        [weakSelf hideHUD];
         if (array && array.count > 0)
         {
-            [weakSelf.attachments removeAllObjects];
-            [weakSelf.attachments addObjectsFromArray:array];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[weakSelf sectionForArray:weakSelf.attachments]];
-            [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+            weakSelf.attachments = [array mutableCopy];
+            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:TableSectionAttachments] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }];
     
-    if (self.taskType == TaskFilterProcess)
+    if (self.taskFilter == TaskFilterProcess)
     {
         [self loadTasksWithCompletionBlock:^(NSArray *array, NSError *error) {
-            [weakSelf hideHUD];
             if (array)
             {
-                [weakSelf.tasks removeAllObjects];
                 NSPredicate *filteredArrayPredicate = [NSPredicate predicateWithFormat:kStartTaskRemovalPredicateFormat];
-                NSArray *filteredTasks = [array filteredArrayUsingPredicate:filteredArrayPredicate];
-                [weakSelf.tasks addObjectsFromArray:filteredTasks];
-                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[weakSelf sectionForArray:weakSelf.tasks]];
-                [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+                weakSelf.tasks = [[array filteredArrayUsingPredicate:filteredArrayPredicate] mutableCopy];
+                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:TableSectionTasks] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
         }];
     }
@@ -161,11 +164,11 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 
 - (void)loadAttachmentsWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskType == TaskFilterTask)
+    if (self.taskFilter == TaskFilterTask)
     {
         [self.workflowService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
     }
-    else if (self.taskType == TaskFilterProcess)
+    else if (self.taskFilter == TaskFilterProcess)
     {
         [self.workflowService retrieveAttachmentsForProcess:self.process completionBlock:completionBlock];
     }
@@ -173,102 +176,79 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 
 - (void)loadTasksWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskType == TaskFilterProcess)
+    if (self.taskFilter == TaskFilterProcess)
     {
         [self.workflowService retrieveTasksForProcess:self.process completionBlock:completionBlock];
     }
 }
 
-- (NSArray *)currentArrayForSection:(NSUInteger)section
-{
-    NSArray *currentArray = nil;
-    
-    if (self.taskType == TaskFilterTask)
-    {
-        currentArray = self.attachments;
-    }
-    else
-    {
-        switch (section)
-        {
-            case 0:
-                currentArray = self.tasks;
-                break;
-                
-            case 1:
-                currentArray = self.attachments;
-                break;
-        }
-    }
-    
-    return currentArray;
-}
-
-- (NSUInteger)sectionForArray:(NSArray *)array
-{
-    NSUInteger section = 0;
-    
-    if (array == self.tasks)
-    {
-        section = 0;
-    }
-    else if (array == self.attachments)
-    {
-        if (self.taskType == TaskFilterTask)
-        {
-            section = 0;
-        }
-        else if (self.taskType == TaskFilterProcess)
-        {
-            section = 1;
-        }
-    }
-    
-    return section;
-}
-
-#pragma mark - Table view data source
+#pragma mark - UITableView data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (self.taskFilter == TaskFilterTask && section == TableSectionTasks)
+    {
+        return 0;
+    }
     return [TableviewUnderlinedHeaderView headerViewHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    TableviewUnderlinedHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TableviewUnderlinedHeaderView class]) owner:self options:nil] lastObject];
+    TableviewUnderlinedHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"TableviewUnderlinedHeaderView" owner:self options:nil] lastObject];
     headerView.headerTitleTextLabel.textColor = [UIColor appTintColor];
     
-    NSArray *currentArray = [self currentArrayForSection:section];
-    
     NSString *headerTitleText = nil;
-    if (currentArray == self.attachments)
+    switch (section)
     {
-        headerTitleText = NSLocalizedString(@"task.details.section.header.attachments", @"Attachments Section Header");
-    }
-    else if (currentArray == self.tasks)
-    {
-        headerTitleText = NSLocalizedString(@"task.details.section.header.tasks", @"Tasks Section Header");
+        case TableSectionDetails:
+            headerTitleText = NSLocalizedString(@"task.details.section.header.details", @"Details Section Header");
+            break;
+        
+        case TableSectionTasks:
+            headerTitleText = NSLocalizedString(@"task.details.section.header.tasks", @"Tasks Section Header");
+            break;
+        
+        case TableSectionAttachments:
+            headerTitleText = NSLocalizedString(@"task.details.section.header.attachments", @"Attachments Section Header");
+            break;
+            
+        default:
+            break;
     }
     
     headerView.headerTitleTextLabel.text = [headerTitleText uppercaseString];
-    
     return headerView;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return (self.taskType == TaskFilterTask) ? 1 : 2;
+    return TableSections_MAX;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *currentArray = [self currentArrayForSection:section];
-    NSInteger numberOfRows = currentArray.count;
-    
-    if (currentArray.count == 0)
+    NSInteger numberOfRows = 1;
+
+    switch (section)
     {
-        numberOfRows = 1;
+        case TableSectionTasks:
+            if (self.taskFilter == TaskFilterTask)
+            {
+                numberOfRows = 0;
+            }
+            else
+            {
+                numberOfRows = MAX(1, self.tasks.count);
+            }
+            break;
+            
+        case TableSectionAttachments:
+            numberOfRows = MAX(1, self.attachments.count);
+            break;
+            
+        default:
+            break;
     }
     
     return numberOfRows;
@@ -278,96 +258,119 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 {
     UITableViewCell *cell = nil;
     
-    NSArray *currentArray = [self currentArrayForSection:indexPath.section];
-    
-    if (currentArray == self.attachments)
+    switch (indexPath.section)
     {
-        AlfrescoNodeCell *attachmentCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
-        
-        if (currentArray.count > 0)
+        case TableSectionDetails:
         {
-            AlfrescoNode *currentNode = currentArray[indexPath.row];
-            
-            SyncManager *syncManager = [SyncManager sharedManager];
-            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-            
-            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
-            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-            [attachmentCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-            [attachmentCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-            
-            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-                [attachmentCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
-            }];
-            
-            AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-            
-            UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-            if (thumbnail)
+            AttributedLabelCell *detailCell = [tableView dequeueReusableCellWithIdentifier:[AttributedLabelCell cellIdentifier]];
+            if (self.taskFilter == TaskFilterTask)
             {
-                [attachmentCell.image setImage:thumbnail withFade:NO];
+                detailCell.attributedLabel.text = self.task.name;
             }
             else
             {
-                UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-                attachmentCell.image.image = placeholderImage;
-                [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                    if (image)
-                    {
-                        [attachmentCell.image setImage:image withFade:YES];
-                    }
-                }];
+                detailCell.attributedLabel.text = self.process.name;
             }
+
+            detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell = detailCell;
         }
-        else
-        {
-            attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.empty", @"No Attachments");
-            attachmentCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            attachmentCell.textLabel.font = [UIFont systemFontOfSize:kNoItemsLabelFontSize];
-            attachmentCell.textLabel.textColor = [UIColor noItemsTextColor];
-            attachmentCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell = attachmentCell;
-    }
-    else
-    {
-        ProcessTasksCell *processTasksCell = [tableView dequeueReusableCellWithIdentifier:[ProcessTasksCell cellIdentifier]];
-        
-        if (currentArray.count > 0)
-        {
-            AlfrescoWorkflowTask *currentTask = currentArray[indexPath.row];
+            break;
             
-            UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:currentTask.assigneeIdentifier];
-            if (avatar)
+        case TableSectionTasks:
+        {
+            ProcessTasksCell *processTasksCell = [tableView dequeueReusableCellWithIdentifier:[ProcessTasksCell cellIdentifier]];
+            
+            if (self.tasks.count > 0)
             {
-                [processTasksCell.avatarImageView setImage:avatar withFade:NO];
+                AlfrescoWorkflowTask *currentTask = self.tasks[indexPath.row];
+                
+                UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:currentTask.assigneeIdentifier];
+                if (avatar)
+                {
+                    [processTasksCell.avatarImageView setImage:avatar withFade:NO];
+                }
+                else
+                {
+                    UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
+                    processTasksCell.avatarImageView.image = placeholderImage;
+                    [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentTask.assigneeIdentifier session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+                        if (avatarImage)
+                        {
+                            [processTasksCell.avatarImageView setImage:avatarImage withFade:YES];
+                        }
+                    }];
+                }
+                
+                [processTasksCell updateStatusLabelUsingTask:currentTask];
             }
             else
             {
-                UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-                processTasksCell.avatarImageView.image = placeholderImage;
-                [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentTask.assigneeIdentifier session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
-                    if (avatarImage)
-                    {
-                        [processTasksCell.avatarImageView setImage:avatarImage withFade:YES];
-                    }
-                }];
+                processTasksCell.textLabel.text = NSLocalizedString(@"tasks.tasks.empty", @"No Tasks");
+                processTasksCell.textLabel.textAlignment = NSTextAlignmentCenter;
+                processTasksCell.textLabel.font = [UIFont boldSystemFontOfSize:kNoItemsLabelFontSize];
+                processTasksCell.textLabel.textColor = [UIColor noItemsTextColor];
             }
             
-            [processTasksCell updateStatusLabelUsingTask:currentTask];
+            processTasksCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell = processTasksCell;
         }
-        else
+            break;
+            
+        case TableSectionAttachments:
         {
-            processTasksCell.textLabel.text = NSLocalizedString(@"tasks.tasks.empty", @"No Tasks");
-            processTasksCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            processTasksCell.textLabel.font = [UIFont boldSystemFontOfSize:kNoItemsLabelFontSize];
-            processTasksCell.textLabel.textColor = [UIColor noItemsTextColor];
+            AlfrescoNodeCell *attachmentCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
+            
+            if (self.attachments.count > 0)
+            {
+                AlfrescoNode *currentNode = self.attachments[indexPath.row];
+
+                SyncManager *syncManager = [SyncManager sharedManager];
+                FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+                
+                BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+                SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+                [attachmentCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+                [attachmentCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+                
+                [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+                    [attachmentCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+                }];
+                
+                AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
+                
+                UIImage *thumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+                if (thumbnail)
+                {
+                    [attachmentCell.image setImage:thumbnail withFade:NO];
+                }
+                else
+                {
+                    UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
+                    attachmentCell.image.image = placeholderImage;
+                    [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                        if (image)
+                        {
+                            [attachmentCell.image setImage:image withFade:YES];
+                        }
+                    }];
+                }
+            }
+            else
+            {
+                attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.empty", @"No Attachments");
+                attachmentCell.textLabel.textAlignment = NSTextAlignmentCenter;
+                attachmentCell.textLabel.font = [UIFont systemFontOfSize:kNoItemsLabelFontSize];
+                attachmentCell.textLabel.textColor = [UIColor noItemsTextColor];
+                attachmentCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            
+            cell = attachmentCell;
         }
-        
-        processTasksCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell = processTasksCell;
+            break;
+            
+        default:
+            break;
     }
     
     return cell;
@@ -375,21 +378,8 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *currentArray = [self currentArrayForSection:indexPath.section];
-    
-    UITableViewCell *cell = nil;
-    
-    if (currentArray == self.attachments)
-    {
-        cell = (AlfrescoNodeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    }
-    else if (currentArray == self.tasks)
-    {
-        cell = (ProcessTasksCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    }
-    
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    return height;
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 }
 
 #pragma mark - Table view delegate
@@ -397,12 +387,10 @@ static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSArray *currentArray = [self currentArrayForSection:indexPath.section];
-    
-    if (currentArray == self.attachments && currentArray.count > 0)
+
+    if (indexPath.section == TableSectionAttachments && self.attachments.count > 0)
     {
-        AlfrescoDocument *selectedDocument = [currentArray objectAtIndex:indexPath.row];
+        AlfrescoDocument *selectedDocument = [self.attachments objectAtIndex:indexPath.row];
         [self.documentService retrievePermissionsOfNode:selectedDocument completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
             if (permissions)
             {

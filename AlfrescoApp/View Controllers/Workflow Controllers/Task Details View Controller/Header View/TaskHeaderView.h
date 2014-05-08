@@ -10,6 +10,8 @@
 
 @interface TaskHeaderView : UIView
 
+@property (nonatomic, strong) NSString *taskInitiator;
+
 - (void)updateTaskFilterLabelToString:(NSString *)taskTypeString;
 - (void)configureViewForProcess:(AlfrescoWorkflowProcess *)process;
 - (void)configureViewForTask:(AlfrescoWorkflowTask *)task;

@@ -11,38 +11,32 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Yp-w3-DEt" userLabel="DETAILS">
-                    <rect key="frame" x="95" y="21" width="346" height="88"/>
+                    <rect key="frame" x="86" y="32" width="355" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QUp-en-YjS">
-                            <rect key="frame" x="0.0" y="8" width="85" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOb-14-U15">
-                            <rect key="frame" x="0.0" y="29" width="64" height="17"/>
+                            <rect key="frame" x="0.0" y="2" width="64" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Initiator" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHN-i7-XDW">
-                            <rect key="frame" x="0.0" y="46" width="82" height="17"/>
+                            <rect key="frame" x="0.0" y="23" width="82" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1o-rg-esF">
-                            <rect key="frame" x="20" y="66" width="46" height="17"/>
+                            <rect key="frame" x="20" y="45" width="46" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QjU-2O-mwE">
-                            <rect key="frame" x="0.0" y="64" width="15" height="20"/>
+                            <rect key="frame" x="0.0" y="44" width="15" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="S5n-ad-FEI"/>
@@ -53,46 +47,43 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="HHN-i7-XDW" firstAttribute="leading" secondItem="6Yp-w3-DEt" secondAttribute="leading" id="A3C-5B-C52"/>
-                        <constraint firstItem="o1o-rg-esF" firstAttribute="top" secondItem="HHN-i7-XDW" secondAttribute="bottom" constant="3" id="AAE-4G-5PM"/>
+                        <constraint firstItem="o1o-rg-esF" firstAttribute="top" secondItem="HHN-i7-XDW" secondAttribute="bottom" constant="5" id="AAE-4G-5PM"/>
                         <constraint firstItem="QjU-2O-mwE" firstAttribute="leading" secondItem="6Yp-w3-DEt" secondAttribute="leading" id="Dnq-yg-OPc"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="o1o-rg-esF" secondAttribute="trailing" constant="8" id="Fmd-h2-wWb"/>
-                        <constraint firstItem="HHN-i7-XDW" firstAttribute="top" secondItem="sOb-14-U15" secondAttribute="bottom" id="H7l-gb-kUm"/>
-                        <constraint firstItem="QUp-en-YjS" firstAttribute="leading" secondItem="6Yp-w3-DEt" secondAttribute="leading" id="HPY-oh-ygB"/>
+                        <constraint firstItem="HHN-i7-XDW" firstAttribute="top" secondItem="sOb-14-U15" secondAttribute="bottom" constant="4" id="H7l-gb-kUm"/>
                         <constraint firstItem="o1o-rg-esF" firstAttribute="leading" secondItem="QjU-2O-mwE" secondAttribute="trailing" constant="5" id="Its-Ml-J5G"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QUp-en-YjS" secondAttribute="trailing" constant="8" id="Kbc-Cr-biN"/>
+                        <constraint firstItem="sOb-14-U15" firstAttribute="top" secondItem="6Yp-w3-DEt" secondAttribute="top" constant="2" id="KKu-ZN-E0w"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sOb-14-U15" secondAttribute="trailing" constant="8" id="MTp-pI-1OP"/>
-                        <constraint firstItem="QUp-en-YjS" firstAttribute="top" secondItem="6Yp-w3-DEt" secondAttribute="top" constant="8" id="NcL-ce-A4f"/>
-                        <constraint firstItem="QjU-2O-mwE" firstAttribute="top" secondItem="HHN-i7-XDW" secondAttribute="bottom" constant="1" id="VpP-e9-2Hj"/>
+                        <constraint firstItem="QjU-2O-mwE" firstAttribute="top" secondItem="HHN-i7-XDW" secondAttribute="bottom" constant="4" id="VpP-e9-2Hj"/>
                         <constraint firstAttribute="bottom" secondItem="o1o-rg-esF" secondAttribute="bottom" constant="5" id="egA-i5-Zb9"/>
                         <constraint firstItem="sOb-14-U15" firstAttribute="leading" secondItem="6Yp-w3-DEt" secondAttribute="leading" id="faL-r5-dnG"/>
-                        <constraint firstItem="sOb-14-U15" firstAttribute="top" secondItem="QUp-en-YjS" secondAttribute="bottom" id="gUM-nq-UGB"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HHN-i7-XDW" secondAttribute="trailing" constant="8" id="nxT-Ys-f9J"/>
                     </constraints>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyE-AQ-15f" userLabel="CALENDAR">
-                    <rect key="frame" x="0.0" y="23" width="85" height="85"/>
+                    <rect key="frame" x="0.0" y="27" width="76" height="76"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="MMMMM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dsj-8O-USu">
-                            <rect key="frame" x="10" y="8" width="65" height="19"/>
+                            <rect key="frame" x="10" y="8" width="57" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ffe-D3-KzW">
-                            <rect key="frame" x="19" y="27" width="47" height="50"/>
+                            <rect key="frame" x="19" y="25" width="38" height="43"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="35"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Ffe-D3-KzW" firstAttribute="top" secondItem="Dsj-8O-USu" secondAttribute="bottom" id="3AY-oQ-zHD"/>
-                        <constraint firstAttribute="width" constant="85" id="6Hr-jA-5qC"/>
-                        <constraint firstAttribute="height" constant="85" id="Fwv-RS-YTR"/>
+                        <constraint firstAttribute="width" constant="76" id="6Hr-jA-5qC"/>
+                        <constraint firstAttribute="height" constant="76" id="Fwv-RS-YTR"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Dsj-8O-USu" secondAttribute="trailing" constant="5" id="LKd-uf-wsC"/>
                         <constraint firstAttribute="centerX" secondItem="Dsj-8O-USu" secondAttribute="centerX" id="bs5-FZ-ydb"/>
                         <constraint firstAttribute="bottom" secondItem="Ffe-D3-KzW" secondAttribute="bottom" constant="8" id="ha5-9s-LlH"/>
@@ -118,7 +109,6 @@
                 <outlet property="calendarDateLabel" destination="Ffe-D3-KzW" id="3RT-h8-98o"/>
                 <outlet property="calendarMonthLabel" destination="Dsj-8O-USu" id="NO8-84-pXC"/>
                 <outlet property="taskInitiatorLabel" destination="HHN-i7-XDW" id="nBW-XO-Svp"/>
-                <outlet property="taskNameLabel" destination="QUp-en-YjS" id="XE7-34-qeX"/>
                 <outlet property="taskPriorityImageView" destination="QjU-2O-mwE" id="iF5-33-agf"/>
                 <outlet property="taskPriorityLabel" destination="o1o-rg-esF" id="HKL-VT-2ef"/>
                 <outlet property="taskTypeLabel" destination="sOb-14-U15" id="bk8-g5-L96"/>

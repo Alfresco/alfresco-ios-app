@@ -162,6 +162,13 @@ static UILayoutPriority const kLowPriority = 250;
     
     if (filter == TaskFilterTask)
     {
+        [self.workflowService retrieveProcessWithIdentifier:self.task.processIdentifier completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
+            if (process && self.taskHeaderView)
+            {
+                self.taskHeaderView.taskInitiator = process.initiatorUsername;
+            }
+        }];
+        
         // configure the header view for the task
         [self.taskHeaderView configureViewForTask:self.task];
         
