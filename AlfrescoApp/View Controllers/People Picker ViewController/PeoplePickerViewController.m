@@ -127,7 +127,6 @@ static NSInteger const kSearchResultsIndex = 0;
         AvatarManager *avatarManager = [AvatarManager sharedManager];
         
         [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
-            
             cell.avatarImageView.image = image;
         }];
         
@@ -200,7 +199,6 @@ static NSInteger const kSearchResultsIndex = 0;
     
     __block BOOL personExists = NO;
     [selectedPeople enumerateObjectsUsingBlock:^(AlfrescoPerson *person, NSUInteger index, BOOL *stop) {
-        
         if ([person.identifier isEqualToString:selectedPerson.identifier])
         {
             personExists = YES;
@@ -225,7 +223,6 @@ static NSInteger const kSearchResultsIndex = 0;
     [progressHUD show:YES];
     
     [self.personService searchWithKeywords:self.searchBar.text completionBlock:^(NSArray *array, NSError *error) {
-        
         [progressHUD hide:YES];
         
         NSMutableArray *searchResults = self.tableViewData[kSearchResultsIndex];
