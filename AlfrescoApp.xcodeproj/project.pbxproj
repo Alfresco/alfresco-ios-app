@@ -244,7 +244,6 @@
 		737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972F918A3DCC3007613B2 /* ActionViewHandler.m */; };
 		7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */; };
 		7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */; };
-		7379733218AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */; };
 		7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732418AA8E9B007613B2 /* AvatarImageCache.m */; };
 		7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732618AA8E9B007613B2 /* DocLibImageCache.m */; };
 		7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7379732818AA8E9B007613B2 /* DocumentPreviewImageCache.m */; };
@@ -450,6 +449,7 @@
 		73B95B1017A6A9A90099FB84 /* MetadataDisplayList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
+		73BA7CBE191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73BA7CBC191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld */; };
 		73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */; };
 		73BE41F318F3FCF100DB8912 /* actionsheet-review.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41F118F3FCF000DB8912 /* actionsheet-review.png */; };
 		73BE41F418F3FCF100DB8912 /* actionsheet-review@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE41F218F3FCF000DB8912 /* actionsheet-review@2x.png */; };
@@ -863,7 +863,6 @@
 		7379730D18A9295B007613B2 /* CoreDataSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataSyncHelper.m; sourceTree = "<group>"; };
 		7379731018AA2E55007613B2 /* CoreDataCacheHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataCacheHelper.h; sourceTree = "<group>"; };
 		7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataCacheHelper.m; sourceTree = "<group>"; };
-		7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoCache.xcdatamodel; sourceTree = "<group>"; };
 		7379732318AA8E9B007613B2 /* AvatarImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarImageCache.h; sourceTree = "<group>"; };
 		7379732418AA8E9B007613B2 /* AvatarImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarImageCache.m; sourceTree = "<group>"; };
 		7379732518AA8E9B007613B2 /* DocLibImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocLibImageCache.h; sourceTree = "<group>"; };
@@ -1162,7 +1161,7 @@
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73B95B1F17A6AE860099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		73BA7CB4191B929E00E866E3 /* AlfrescoCache 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AlfrescoCache 2.xcdatamodel"; sourceTree = "<group>"; };
+		73BA7CBD191D1F5100E866E3 /* AlfrescoCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoCache.xcdatamodel; sourceTree = "<group>"; };
 		73BE41EA18F2AFF500DB8912 /* DocumentPreviewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreviewManager.h; sourceTree = "<group>"; };
 		73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreviewManager.m; sourceTree = "<group>"; };
 		73BE41F118F3FCF000DB8912 /* actionsheet-review.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-review.png"; sourceTree = "<group>"; };
@@ -1924,7 +1923,7 @@
 		7379732018AA8E9B007613B2 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */,
+				73BA7CBC191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld */,
 				7379732318AA8E9B007613B2 /* AvatarImageCache.h */,
 				7379732418AA8E9B007613B2 /* AvatarImageCache.m */,
 				7379732518AA8E9B007613B2 /* DocLibImageCache.h */,
@@ -3442,6 +3441,7 @@
 				738664F21906B2420021D1BD /* TaskApproversCell.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */,
+				73BA7CBE191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				738664C51906B16F0021D1BD /* MetadataCell.m in Sources */,
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
@@ -3459,7 +3459,6 @@
 				738664DE1906B2260021D1BD /* ButtonCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
-				7379733218AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld in Sources */,
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
 				738664E21906B2260021D1BD /* LabelCell.m in Sources */,
@@ -3977,17 +3976,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		7379732118AA8E9B007613B2 /* AlfrescoCache.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				73BA7CB4191B929E00E866E3 /* AlfrescoCache 2.xcdatamodel */,
-				7379732218AA8E9B007613B2 /* AlfrescoCache.xcdatamodel */,
-			);
-			currentVersion = 73BA7CB4191B929E00E866E3 /* AlfrescoCache 2.xcdatamodel */;
-			path = AlfrescoCache.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
 		7379732A18AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
@@ -3995,6 +3983,16 @@
 			);
 			currentVersion = 7379732B18AA8E9B007613B2 /* AlfrescoSync.xcdatamodel */;
 			path = AlfrescoSync.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		73BA7CBC191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				73BA7CBD191D1F5100E866E3 /* AlfrescoCache.xcdatamodel */,
+			);
+			currentVersion = 73BA7CBD191D1F5100E866E3 /* AlfrescoCache.xcdatamodel */;
+			path = AlfrescoCache.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
