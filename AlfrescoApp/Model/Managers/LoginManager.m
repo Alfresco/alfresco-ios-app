@@ -98,7 +98,7 @@
         {
             [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                self.authenticationCompletionBlock(successful, session, error);
+                loginCompletionBlock(successful, session, error);
             }];
         }
     }
