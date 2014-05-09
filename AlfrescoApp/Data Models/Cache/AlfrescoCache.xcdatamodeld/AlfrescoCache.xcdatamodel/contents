@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AvatarImageCache" representedClassName="AvatarImageCache" syncable="YES">
         <attribute name="avatarImageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="dateAdded" optional="YES" attributeType="Date" syncable="YES"/>
@@ -7,17 +7,19 @@
     </entity>
     <entity name="DocLibImageCache" representedClassName="DocLibImageCache" syncable="YES">
         <attribute name="dateAdded" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="docLibImageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DocumentPreviewImageCache" representedClassName="DocumentPreviewImageCache" syncable="YES">
         <attribute name="dateAdded" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="documentPreviewImageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AvatarImageCache" positionX="160" positionY="192" width="128" height="88"/>
-        <element name="DocLibImageCache" positionX="286" positionY="-81" width="128" height="88"/>
-        <element name="DocumentPreviewImageCache" positionX="412" positionY="135" width="128" height="88"/>
+        <element name="AvatarImageCache" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="DocLibImageCache" positionX="286" positionY="-81" width="128" height="105"/>
+        <element name="DocumentPreviewImageCache" positionX="412" positionY="135" width="128" height="105"/>
     </elements>
 </model>
