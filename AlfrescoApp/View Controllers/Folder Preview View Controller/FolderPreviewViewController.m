@@ -13,6 +13,7 @@
 #import "ActionCollectionView.h"
 #import "FavouriteManager.h"
 #import "ActionViewHandler.h"
+#import "ConnectivityManager.h"
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
@@ -98,15 +99,23 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 - (void)setupPagingScrollView
 {
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.folder session:self.session];
-    CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.folder permissions:self.permissions session:self.session delegate:self];
     
-    for (int i = 0; i < PagingScrollViewSegmentFolderType_MAX; i++)
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        [self.pagingControllers addObject:[NSNull null]];
+        CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.folder permissions:self.permissions session:self.session delegate:self];
+        for (int i = 0; i < PagingScrollViewSegmentFolderType_MAX; i++)
+        {
+            [self.pagingControllers addObject:[NSNull null]];
+        }
+        
+        [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
+        [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentFolderTypeComments];
     }
-    
-    [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
-    [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentFolderTypeComments];
+    else
+    {
+        [self.segmentControl removeSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments animated:NO];
+        [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
+    }
     
     for (int i = 0; i < self.pagingControllers.count; i++)
     {
