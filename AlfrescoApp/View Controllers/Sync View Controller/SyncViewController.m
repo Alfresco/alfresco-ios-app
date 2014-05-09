@@ -176,6 +176,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     self.session = session;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     self.didSyncAfterSessionRefresh = NO;
+    self.title = [self listTitle];
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])

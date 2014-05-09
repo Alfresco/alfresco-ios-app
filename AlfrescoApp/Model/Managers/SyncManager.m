@@ -1200,7 +1200,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                     selectedAccount.didAskToSync = YES;
                                     selectedAccount.isSyncOn = !isCancelButton;
                                     [accountManager saveAccountsToKeychain];
-                                    
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:selectedAccount];
                                     completionBlock(YES);
                                 }];
     }
