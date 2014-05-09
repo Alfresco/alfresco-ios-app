@@ -11,6 +11,7 @@
 @interface ThumbnailImageView : UIImageView
 
 - (void)setImage:(UIImage *)image withFade:(BOOL)fadeAnimation;
+- (void)setImage:(UIImage *)image withFade:(BOOL)fadeAnimation switchingToContentMode:(UIViewContentMode)contentMode;
 - (void)setImageAtPath:(NSString *)imagePath withFade:(BOOL)fadeAnimation;
 
 @end

@@ -130,7 +130,7 @@ static CGFloat downloadProgressHeight;
                 // request thumbnail
                 [self requestThumbnailForDocument:self.document completionBlock:^(UIImage *image, NSError *error) {
                     // update the image with a fade
-                    [weakSelf.previewThumbnailImageView setImage:image withFade:YES];
+                    [weakSelf.previewThumbnailImageView setImage:image withFade:YES switchingToContentMode:UIViewContentModeTopLeft];
                     
                     // request the document download
                     weakSelf.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
@@ -138,7 +138,7 @@ static CGFloat downloadProgressHeight;
             }
             else
             {
-                [self.previewThumbnailImageView setImage:placeholderImage withFade:NO];
+                [self.previewThumbnailImageView setImage:placeholderImage withFade:NO switchingToContentMode:UIViewContentModeTopLeft];
                 
                 // request the document download
                 self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
