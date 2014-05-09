@@ -365,7 +365,7 @@ static UILayoutPriority const kLowPriority = 250;
 - (void)pressedReassignButton:(id)sender
 {
     PeoplePicker *peoplePicker = [[PeoplePicker alloc] initWithSession:self.session navigationController:self.navigationController delegate:self];
-    [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelect modally:YES];
+    [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelectManualConfirm modally:YES];
     self.peoplePicker = peoplePicker;
 }
 
@@ -444,7 +444,7 @@ static UILayoutPriority const kLowPriority = 250;
 
 - (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople
 {
-    if (selectedPeople && selectedPeople.count > 0)
+    if (selectedPeople.count > 0)
     {
         AlfrescoPerson *reassignee = selectedPeople[0];
         

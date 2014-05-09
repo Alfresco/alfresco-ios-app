@@ -111,14 +111,6 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                object:nil];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    if (self.titleField.text.length == 0 && !self.titleField.isFirstResponder)
-    {
-        [self.titleField becomeFirstResponder];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -331,6 +323,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
             }
             titleCell.valueTextField.returnKeyType = UIReturnKeyDone;
             titleCell.valueTextField.delegate = self;
+            titleCell.shouldBecomeFirstResponder = YES;
             self.titleField = titleCell.valueTextField;
             cell = titleCell;
             break;
@@ -472,7 +465,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         }
         case CreateTaskRowTypeAssignees:
         {
-            PeoplePickerMode peoplePickerMode = (self.workflowType == WorkflowTypeAdHoc) ? PeoplePickerModeSingleSelect : PeoplePickerModeMultiSelect;
+            PeoplePickerMode peoplePickerMode = (self.workflowType == WorkflowTypeAdHoc) ? PeoplePickerModeSingleSelectAutoConfirm : PeoplePickerModeMultiSelect;
             [self.peoplePicker startWithPeople:self.assignees mode:peoplePickerMode modally:NO];
             break;
         }

@@ -14,7 +14,8 @@
 typedef NS_ENUM(NSInteger, PeoplePickerMode)
 {
     PeoplePickerModeMultiSelect,
-    PeoplePickerModeSingleSelect
+    PeoplePickerModeSingleSelectAutoConfirm,
+    PeoplePickerModeSingleSelectManualConfirm
 };
 
 @protocol PeoplePickerDelegate <NSObject>

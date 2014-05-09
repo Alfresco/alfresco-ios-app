@@ -23,6 +23,7 @@ static NSInteger const kSearchResultsIndex = 0;
 @property (nonatomic, weak) PeoplePicker *peoplePicker;
 @property (nonatomic, strong) NSArray *tableViewData;
 @property (nonatomic, strong) NSArray *groupHeaderTitles;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
@@ -50,15 +51,19 @@ static NSInteger const kSearchResultsIndex = 0;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.searchBar.delegate = self;
-    [self.searchBar becomeFirstResponder];
     
     self.title = NSLocalizedString(@"people.picker.title", @"Choose Assignee");
     self.searchBar.placeholder = NSLocalizedString(@"people.picker.search.title", @"Search People");
+    [self.searchBar becomeFirstResponder];
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(doneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = doneButton;
+    if (self.peoplePicker.mode != PeoplePickerModeSingleSelectAutoConfirm)
+    {
+        self.doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                        target:self
+                                                                        action:@selector(doneButtonPressed:)];
+        self.doneButton.enabled = NO;
+        self.navigationItem.rightBarButtonItem = self.doneButton;
+    }
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self
@@ -147,6 +152,15 @@ static NSInteger const kSearchResultsIndex = 0;
     return tableCell;
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.peoplePicker.mode == PeoplePickerModeSingleSelectManualConfirm)
+    {
+        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:NO];
+    }
+    return indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id item = self.tableViewData[indexPath.section][indexPath.row];
@@ -154,18 +168,24 @@ static NSInteger const kSearchResultsIndex = 0;
     if ([item isKindOfClass:[AlfrescoPerson class]])
     {
         AlfrescoPerson *person = (AlfrescoPerson *)item;
-        if (self.peoplePicker.mode == PeoplePickerModeSingleSelect)
-        {
-            [self.peoplePicker deselectAllPeople];
-            [self.peoplePicker selectPerson:person];
-            [self.peoplePicker pickingPeopleComplete];
-        }
-        else
+        if (self.peoplePicker.mode == PeoplePickerModeMultiSelect)
         {
             [self.peoplePicker selectPerson:person];
             [self updateSelectedPeopleSectionData:person];
         }
+        else
+        {
+            [self.peoplePicker deselectAllPeople];
+            [self.peoplePicker selectPerson:person];
+
+            if (self.peoplePicker.mode == PeoplePickerModeSingleSelectAutoConfirm)
+            {
+                [self.peoplePicker pickingPeopleComplete];
+            }
+        }
     }
+    
+    self.doneButton.enabled = self.peoplePicker.selectedPeople.count > 0;
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -178,6 +198,8 @@ static NSInteger const kSearchResultsIndex = 0;
         [self.peoplePicker deselectPerson:person];
         [tableView reloadData];
     }
+
+    self.doneButton.enabled = self.peoplePicker.selectedPeople.count > 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

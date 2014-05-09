@@ -10,20 +10,14 @@
 
 @implementation TextFieldCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (void)layoutSubviews
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
+    [super layoutSubviews];
+    if (self.shouldBecomeFirstResponder && self.valueTextField.text.length == 0 && !self.valueTextField.isFirstResponder)
+    {
+        self.shouldBecomeFirstResponder = NO;
+        [self.valueTextField becomeFirstResponder];
     }
-    return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end
