@@ -239,33 +239,24 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     
     NSError *error = nil;
     syncPersistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self syncManagedObjectModel]];
-    if (![syncPersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES};
+    if (![syncPersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])
     {
         /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
-         @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
+         * Unable to automatically migrate the store using lightweight migration.
+         *
+         * We should do some manual migration here, should it be needed. However, we currently don't have any versioned sync models
+         * so a manual migration is not required. We no not want to delete the existing data store as this will lead to loss of data.
+         * Instead, just log the error (for now).
+         *
+         * There are no other requirements on how the app should react if synced content is corrupted or is not accessible.
          */
         AlfrescoLogError(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        
+        #if DEBUG
+            abort();
+        #endif
     }
     
     return syncPersistenceStoreCoordinator;
