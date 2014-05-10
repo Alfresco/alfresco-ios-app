@@ -437,6 +437,10 @@ static CGFloat kSearchCellHeight = 60.0f;
     if ([self shouldRefresh])
     {
         [self showHUD];
+        
+        self.tableViewData = nil;
+        [self.tableView reloadData];
+        
         [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
