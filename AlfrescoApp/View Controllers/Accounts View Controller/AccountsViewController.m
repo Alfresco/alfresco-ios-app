@@ -321,10 +321,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
-        [self showHUD];
         [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            [self hideHUD];
-            
             if (!successful)
             {
                 self.session = nil;

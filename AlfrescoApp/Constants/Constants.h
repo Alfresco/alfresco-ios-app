@@ -86,7 +86,7 @@ extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
 extern NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally;
-extern NSString * const kAlfrescoWorkflowTaskDidComplete;
+extern NSString * const kAlfrescoWorkflowTaskListDidChangeNotification;
 extern NSString * const kAlfrescoDocumentEditedNotification;
 // Saveback
 extern NSString * const kAlfrescoSaveBackLocalComplete;
@@ -174,7 +174,6 @@ extern NSString * const kAlfrescoCloudAPIAccountID;
 extern NSString * const kAlfrescoHelpURLString;
 
 // Workflow
-extern NSString * const kAlfrescoTaskAddedNotification;
 extern NSString * const kAlfrescoWorkflowActivitiEngine;
 extern NSString * const kAlfrescoWorkflowJBPMEngine;
 

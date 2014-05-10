@@ -52,8 +52,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     {
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskAdded:) name:kAlfrescoTaskAddedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskCompleted:) name:kAlfrescoWorkflowTaskDidComplete object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskListDidChange:) name:kAlfrescoWorkflowTaskListDidChangeNotification object:nil];
         [self createWorkflowServicesWithSession:session];
     }
     return self;
@@ -118,12 +117,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
 }
 
-- (void)taskAdded:(NSNotification *)notification
-{
-    [self reloadDataForAllTaskFilters];
-}
-
-- (void)taskCompleted:(NSNotification *)notification
+- (void)taskListDidChange:(NSNotification *)notification
 {
     [self reloadDataForAllTaskFilters];
 }
@@ -270,41 +264,12 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
                                                                                         sortAscending:listingContext.sortAscending
                                                                                         listingFilter:filter];
     
-    [self.workflowService retrieveProcessesWithListingContext:filteredListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (error)
-        {
-            AlfrescoLogError(@"Error: %@", error.localizedDescription);
-        }
-        else
-        {
-            if (completionBlock != NULL)
-            {
-                completionBlock(pagingResult, error);
-            }
-        }
-    }];
+    [self.workflowService retrieveProcessesWithListingContext:filteredListingContext completionBlock:completionBlock];
 }
 
 - (void)loadTasksWithListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock
 {
-    if (!listingContext)
-    {
-        listingContext = self.defaultListingContext;
-    }
-    
-    [self.workflowService retrieveTasksWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (error)
-        {
-            AlfrescoLogError(@"Error: %@", error.localizedDescription);
-        }
-        else
-        {
-            if (completionBlock != NULL)
-            {
-                completionBlock(pagingResult, error);
-            }
-        }
-    }];
+    [self.workflowService retrieveTasksWithListingContext:(listingContext ?: self.defaultListingContext) completionBlock:completionBlock];
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event

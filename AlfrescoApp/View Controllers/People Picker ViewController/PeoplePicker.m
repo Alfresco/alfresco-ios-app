@@ -72,10 +72,19 @@
 
 - (void)cancel
 {
+    [self cancelWithCompletionBlock:nil];
+}
+
+- (void)cancelWithCompletionBlock:(PeoplePickerDismissedCompletionBlock)completionBlock
+{
     if (self.peoplePickerNavigationController.viewControllers.firstObject == self.peoplePickerViewController)
     {
         [self.peoplePickerViewController dismissViewControllerAnimated:YES completion:^{
             self.peoplePickerNavigationController = nil;
+            if (completionBlock)
+            {
+                completionBlock(self);
+            }
         }];
     }
     else
@@ -173,7 +182,10 @@
 
 - (void)pickingPeopleComplete
 {
-    [self cancel];
+    if (!self.shouldSuppressAutoCloseWhenDone)
+    {
+        [self cancel];
+    }
     
     if ([self.delegate respondsToSelector:@selector(peoplePicker:didSelectPeople:)])
     {

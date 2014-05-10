@@ -13,4 +13,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UITextField *valueTextField;
 
+@property (nonatomic, assign) BOOL shouldBecomeFirstResponder;
+
 @end

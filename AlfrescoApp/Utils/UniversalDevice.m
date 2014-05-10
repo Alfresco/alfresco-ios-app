@@ -13,6 +13,7 @@
 #import "ItemInDetailViewProtocol.h"
 #import "PlaceholderViewController.h"
 #import "ContainerViewController.h"
+#import "SwitchViewController.h"
 
 @implementation UniversalDevice
 
@@ -73,8 +74,18 @@
 
 + (void)clearDetailViewController
 {
-    PlaceholderViewController *viewController = [[PlaceholderViewController alloc] init];
-    [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:nil animated:NO];
+    if (IS_IPAD)
+    {
+        PlaceholderViewController *viewController = [[PlaceholderViewController alloc] init];
+        [UniversalDevice pushToDisplayViewController:viewController usingNavigationController:nil animated:NO];
+    }
+    else
+    {
+        RootRevealControllerViewController *rootRevealViewController = (RootRevealControllerViewController *)[self revealViewController];
+        SwitchViewController *switchViewController = (SwitchViewController *)[rootRevealViewController detailViewController];
+        UINavigationController *navController = (UINavigationController *)[switchViewController displayedViewController];
+        [navController popViewControllerAnimated:NO];
+    }
 }
 
 + (UIViewController *)controllerDisplayedInDetailNavigationController
