@@ -71,7 +71,7 @@ NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDo
 NSString * const kAlfrescoNodeAddedOnServerParentFolderKey = @"AlfrescoNodeAddedOnServerParentFolderKey";
 NSString * const kAlfrescoNodeAddedOnServerSubNodeKey = @"AlfrescoNodeAddedOnServerSubNodeKey";
 NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally = @"AlfrescoNodeAddedOnServerContentLocationLocally";
-NSString * const kAlfrescoWorkflowTaskDidComplete = @"AlfrescoWorkflowTaskDidComplete";
+NSString * const kAlfrescoWorkflowTaskListDidChangeNotification = @"AlfrescoWorkflowTaskListDidChange";
 NSString * const kAlfrescoDocumentEditedNotification = @"AlfrescoDocumentEditedNotification";
 // Saveback
 NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
@@ -159,7 +159,6 @@ NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";
 NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
 
 // Workflow
-NSString * const kAlfrescoTaskAddedNotification = @"AlfrescoTaskAddedNotification";
 NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
 NSString * const kAlfrescoWorkflowJBPMEngine = @"jbpm$";
 

@@ -183,7 +183,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                        }
                                                        else
                                                        {
-                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoTaskAddedNotification object:process];
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:process];
                                                            [self dismissViewControllerAnimated:YES completion:^{
                                                                displayInformationMessage(NSLocalizedString(@"task.create.created", @"Task Created"));
                                                            }];

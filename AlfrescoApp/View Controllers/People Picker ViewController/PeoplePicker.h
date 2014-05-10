@@ -18,6 +18,8 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
     PeoplePickerModeSingleSelectManualConfirm
 };
 
+typedef void(^PeoplePickerDismissedCompletionBlock)(PeoplePicker *peoplePicker);
+
 @protocol PeoplePickerDelegate <NSObject>
 
 @optional
@@ -29,32 +31,38 @@ typedef NS_ENUM(NSInteger, PeoplePickerMode)
 
 @property (nonatomic, assign) PeoplePickerMode mode;
 @property (nonatomic, weak) id<PeoplePickerDelegate> delegate;
+/// If set to YES it is the caller's responsibility to call "cancel" after picker completion
+@property (nonatomic, assign) BOOL shouldSuppressAutoCloseWhenDone;
 
 /*
  * Initiate People Picker giving it reference to nav controller so it can push viewcontrollers e.g people controller
+ * @param AlfrescoSession
  * @param NavigationController
  */
 - (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController;
 
 /*
  * Initiate People Picker giving it reference to nav controller so it can push viewcontrollers e.g people controller
+ * @param AlfrescoSession
  * @param NavigationController
  * @param delegate - call back object comforming to PeoplePickerDelegate
  */
 - (instancetype)initWithSession:(id<AlfrescoSession>)session navigationController:(UINavigationController *)navigationController delegate:(id<PeoplePickerDelegate>)delegate;
 
 /*
- * start people picker
- * @param People Picker Mode
+ * Start people picker
+ * @param Array of initally-selected AlfrescoPerson objects or nil
+ * @param PeoplePickerMode
  * @param modally - whether or not to display the picker modally
  */
 - (void)startWithPeople:(NSArray *)people mode:(PeoplePickerMode)mode modally:(BOOL)modally;
 
 /*
- * cancel people picker
+ * Cancel people picker
  */
 - (void)cancel;
-
+// Cancel picker but invoke completion block when UI has dismissed
+- (void)cancelWithCompletionBlock:(PeoplePickerDismissedCompletionBlock)completionBlock;
 
 /*
  * Bellow methods are internal to PeoplePicker controllers (accessed from PeoplePickerViewController)

@@ -339,7 +339,7 @@ static UILayoutPriority const kLowPriority = 250;
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskDidComplete object:task];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
             [UniversalDevice clearDetailViewController];
         }
     }];
@@ -365,6 +365,7 @@ static UILayoutPriority const kLowPriority = 250;
 - (void)pressedReassignButton:(id)sender
 {
     PeoplePicker *peoplePicker = [[PeoplePicker alloc] initWithSession:self.session navigationController:self.navigationController delegate:self];
+    peoplePicker.shouldSuppressAutoCloseWhenDone = YES;
     [peoplePicker startWithPeople:nil mode:PeoplePickerModeSingleSelectManualConfirm modally:YES];
     self.peoplePicker = peoplePicker;
 }
@@ -451,16 +452,18 @@ static UILayoutPriority const kLowPriority = 250;
         [self enableActionButtons:NO];
         __weak typeof(self) weakSelf = self;
         [self.workflowService reassignTask:self.task toAssignee:reassignee completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
-            [weakSelf enableActionButtons:YES];
             if (error)
             {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.complete.process", @"Unable To Complete Task Process"), [ErrorDescriptions descriptionForError:error]]);
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.reassign.task", @"Unable to reassign task"), [ErrorDescriptions descriptionForError:error]]);
                 [Notifier notifyWithAlfrescoError:error];
-                [weakSelf.textView becomeFirstResponder];
             }
             else
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskDidComplete object:task];
+                [peoplePicker cancelWithCompletionBlock:^(PeoplePicker *peoplePicker) {
+                    displayInformationMessage(NSLocalizedString(@"task.reassign.success.message", @"Task reassigned"));
+                }];
+                [weakSelf enableActionButtons:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
                 [UniversalDevice clearDetailViewController];
             }
         }];

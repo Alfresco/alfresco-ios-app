@@ -121,13 +121,14 @@
 "error.version.history.unable.to.retrieve" = "Unable to retrieve version history. Error: %@";
 "error.version.history.no.latest.version" = "Latest version of the document could not be found.";
 "error.alfresco.node.notfound" = "Document not found";
-// internet connection error
+// Internet connection error
 "error.no.internet.access.title" = "A connection couldn't be made";
 "error.no.internet.access.message" = "Please check that you're connected to the internet and try again. You can still access your downloaded documents without having a connection.";
 "error.access.permissions.message" = "Please ensure that you have access rights for this operation";
 "error.retrieving.metadata" = "Metadata for %@ could not be retrieved.";
-// workflow
+// Workflow
 "error.workflow.unable.to.complete.process" = "Unable to complete process on task. Error: %@";
+"error.workflow.unable.to.reassign.task" = "Unable to reassign task. Error: %@";
 
 /**
  * Custom error descriptions
@@ -539,6 +540,7 @@
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 "task.reassign.button.title" = "Reassign";
+"task.reassign.success.message" = "Task Reassigned";
 "task.transition.approve" = "Approve";
 "task.transition.reject" = "Reject";
 "task.transition.done" = "Done";
