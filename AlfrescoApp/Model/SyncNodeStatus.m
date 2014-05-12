@@ -26,7 +26,7 @@ NSString * const kSyncLocalModificationDate = @"localModificationDate";
     if (self)
     {
         self.nodeId = nodeId;
-        self.status = SyncStatusDisabled;
+        self.status = SyncStatusSuccessful;
         self.activityType = SyncActivityTypeIdle;
         self.totalSize = 0;
         
