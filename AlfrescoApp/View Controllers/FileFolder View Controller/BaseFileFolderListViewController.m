@@ -85,6 +85,7 @@
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
     {
         cell.image.image = smallImageForType(@"folder");
+        cell.image.contentMode = UIViewContentModeCenter;
     }
     else
     {
@@ -99,6 +100,8 @@
         {
             UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
             cell.image.image = placeholderImage;
+            cell.image.contentMode = UIViewContentModeCenter;
+            
             [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
