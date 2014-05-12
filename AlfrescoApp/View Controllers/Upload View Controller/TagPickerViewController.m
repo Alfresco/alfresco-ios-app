@@ -71,7 +71,9 @@
         if (array)
         {
             weakSelf.tableViewData = [[array valueForKeyPath:@"value"] mutableCopy];
-            for (NSString *selectedTag in weakSelf.selectedTags)
+            
+            NSSet *selectedTags = [NSSet setWithSet:weakSelf.selectedTags];
+            for (NSString *selectedTag in selectedTags)
             {
                 [weakSelf addNewTag:selectedTag];
             }
