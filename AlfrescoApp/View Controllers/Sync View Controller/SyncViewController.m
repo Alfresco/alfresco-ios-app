@@ -64,6 +64,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 	
     if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
         self.didSyncAfterSessionRefresh = YES;
     }
@@ -375,6 +376,12 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     else
     {
+        if (nodeStatus.status == SyncStatusLoading)
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            return;
+        }
+        
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
@@ -401,13 +408,8 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
             previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
-        else
+        else if ([[ConnectivityManager sharedManager] hasInternetConnection])
         {
-            if (nodeStatus.status == SyncStatusLoading)
-            {
-                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                return;
-            }
             [self showHUD];
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 

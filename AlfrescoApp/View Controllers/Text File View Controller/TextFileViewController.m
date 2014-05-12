@@ -167,10 +167,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
         
         if (isSyncDocument)
         {
-            if ([[ConnectivityManager sharedManager] hasInternetConnection])
-            {
-                [syncManager retrySyncForDocument:self.editingDocument];
-            }
+            [syncManager retrySyncForDocument:self.editingDocument];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
