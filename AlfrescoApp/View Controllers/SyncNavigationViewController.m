@@ -111,6 +111,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         }];
         
         self.isProgressViewShowing = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:nil];
     }
 }
 
@@ -131,6 +132,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         }];
         
         self.isProgressViewShowing = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:nil];
     }
 }
 
@@ -144,6 +146,18 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         self.progressView.progressInfoLabel.text =[NSString stringWithFormat:NSLocalizedString(@"sync.progress.label", @"Syncing %d %@, %@ left"), self.numberOfSyncOperations, progressText, leftToUpload];
         self.progressView.progressBar.progress = percentTransfered;
     });
+}
+
+#pragma mark - Public Methods
+
+- (BOOL)isProgressViewVisible
+{
+    return self.isProgressViewShowing;
+}
+
+- (CGFloat)progressViewHeight
+{
+    return self.progressView.frame.size.height;
 }
 
 @end

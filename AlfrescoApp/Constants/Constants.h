@@ -117,6 +117,7 @@ extern NSString * const kSyncOnCellular;
 extern NSString * const kSyncStatusChangeNotification;
 extern NSString * const kSyncObstaclesNotification;
 extern NSString * const kFavoritesListUpdatedNotification;
+extern NSString * const kSyncProgressViewVisiblityChangeNotification;
 
 // Local Files Notification
 extern NSString * const kAlfrescoLocalDocumentNewName;
