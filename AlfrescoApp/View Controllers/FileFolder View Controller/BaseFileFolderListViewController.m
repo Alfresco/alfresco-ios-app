@@ -84,8 +84,7 @@
     
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
     {
-        cell.image.image = smallImageForType(@"folder");
-        cell.image.contentMode = UIViewContentModeCenter;
+        [cell.image setImage:smallImageForType(@"folder") withFade:NO];
     }
     else
     {
@@ -98,17 +97,15 @@
         }
         else
         {
-            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-            cell.image.image = placeholderImage;
-            cell.image.contentMode = UIViewContentModeCenter;
+            [cell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
             
             [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    AlfrescoNodeCell *cellForImage = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
-                    if (cellForImage)
+                    AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (updateCell)
                     {
-                        [cellForImage.image setImage:image withFade:YES];
+                        [updateCell.image setImage:image withFade:YES];
                     }
                 }
             }];

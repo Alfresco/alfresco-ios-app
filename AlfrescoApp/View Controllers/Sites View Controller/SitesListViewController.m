@@ -179,8 +179,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
         siteCell.siteNameLabelView.text = currentSite.title;
         siteCell.siteImageView.image = smallImageForType(@"site");
-        siteCell.expandButton
-        .transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
+        siteCell.expandButton.transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
         
         [siteCell updateCellStateWithSite:currentSite];
     }
@@ -190,10 +189,9 @@ static CGFloat kSearchCellHeight = 60.0f;
         
         AlfrescoDocument *documentNode = [self.searchResults objectAtIndex:indexPath.row];
         searchCell.nodeNameLabel.text = documentNode.name;
-        searchCell.nodeImageView.image = smallImageForType([documentNode.name pathExtension]);
         
         UIImage *thumbnailImage = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-        
+
         if (thumbnailImage)
         {
             [searchCell.nodeImageView setImage:thumbnailImage withFade:NO];
@@ -201,15 +199,15 @@ static CGFloat kSearchCellHeight = 60.0f;
         else
         {
             // set a placeholder image
-            UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-            searchCell.nodeImageView.image = placeholderImage;
+            [searchCell.nodeImageView setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
             
             [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    if (searchCell.nodeImageView.image == placeholderImage)
+                    FileFolderCell *updateCell = (FileFolderCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (updateCell)
                     {
-                        [searchCell.nodeImageView setImage:image withFade:YES];
+                        [updateCell.nodeImageView setImage:image withFade:YES];
                     }
                 }
             }];

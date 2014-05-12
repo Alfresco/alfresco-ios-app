@@ -346,12 +346,15 @@ typedef NS_ENUM(NSUInteger, TableSections)
                 }
                 else
                 {
-                    UIImage *placeholderImage = smallImageForType([documentNode.name pathExtension]);
-                    attachmentCell.image.image = placeholderImage;
+                    [attachmentCell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
                     [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                         if (image)
                         {
-                            [attachmentCell.image setImage:image withFade:YES];
+                            AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                            if (updateCell)
+                            {
+                                [updateCell.image setImage:image withFade:YES];
+                            }
                         }
                     }];
                 }
