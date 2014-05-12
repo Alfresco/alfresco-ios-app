@@ -156,7 +156,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         self.nodeStatus = nodeStatus;
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self.isSyncNode)
+            if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
             {
                 [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite animate:YES];
             }
