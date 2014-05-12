@@ -179,6 +179,8 @@ static CGFloat kSearchCellHeight = 60.0f;
         AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
         siteCell.siteNameLabelView.text = currentSite.title;
         siteCell.siteImageView.image = smallImageForType(@"site");
+        siteCell.expandButton
+        .transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
         
         [siteCell updateCellStateWithSite:currentSite];
     }
@@ -247,24 +249,11 @@ static CGFloat kSearchCellHeight = 60.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat returnHeight = 0;
     if (tableView == self.searchController.searchResultsTableView)
     {
-        returnHeight = kSearchCellHeight;
+        return kSearchCellHeight;
     }
-    else
-    {
-        if ([indexPath isEqual:self.expandedCellIndexPath])
-        {
-            returnHeight = SitesCellExpandedHeight;
-        }
-        else
-        {
-            returnHeight = SitesCellDefaultHeight;
-        }
-    }
-    
-    return returnHeight;
+    return [indexPath isEqual:self.expandedCellIndexPath] ? SitesCellExpandedHeight : SitesCellDefaultHeight;
 }
 
 #pragma mark - Table view delegate
@@ -279,10 +268,8 @@ static CGFloat kSearchCellHeight = 60.0f;
         
         [self showHUD];
         [self.siteService retrieveDocumentLibraryFolderForSite:selectedSite.shortName completionBlock:^(AlfrescoFolder *folder, NSError *error) {
-            [self hideHUD];
             if (folder)
             {
-                [self showHUD];
                 [self.documentService retrievePermissionsOfNode:folder completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                     [self hideHUD];
                     if (permissions)
@@ -302,6 +289,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             else
             {
                 // show error
+                [self hideHUD];
                 displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.documentlibrary.failed", @"Doc Library Retrieval"), [ErrorDescriptions descriptionForError:error]]);
                 [Notifier notifyWithAlfrescoError:error];
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -342,18 +330,27 @@ static CGFloat kSearchCellHeight = 60.0f;
 
 - (void)setExpandedCellIndexPath:(NSIndexPath *)expandedCellIndexPath
 {
+    NSMutableArray *indexPaths = [NSMutableArray new];
     SitesCell *siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:_expandedCellIndexPath];
-    [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+    if (siteCell)
+    {
+        [indexPaths addObject:_expandedCellIndexPath];
+        [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+    }
     
     _expandedCellIndexPath = expandedCellIndexPath;
     
     siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:expandedCellIndexPath];
     if (siteCell)
     {
+        [indexPaths addObject:expandedCellIndexPath];
         [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:M_PI];
     }
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    
+    if (indexPaths.count > 0)
+    {
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 #pragma mark - Private Functions
