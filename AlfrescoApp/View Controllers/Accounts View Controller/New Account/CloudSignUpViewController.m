@@ -591,24 +591,22 @@ static NSString * const kSource = @"mobile";
 
 - (void)showActiveTextField
 {
-    UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
+    UITableViewCell *cell = (UITableViewCell *)[self.activeTextField superview];
     
-    BOOL foundTableViewCell = NO;
-    while (!foundTableViewCell)
+    while (cell)
     {
-        if (![cell isKindOfClass:[UITableViewCell class]])
+        if ([cell isKindOfClass:[UITableViewCell class]])
         {
-            cell = (UITableViewCell *)cell.superview;
+            if (!CGRectContainsPoint(self.tableViewVisibleRect, cell.frame.origin))
+            {
+                [self.tableView scrollRectToVisible:cell.frame animated:YES];
+            }
+            break;
         }
         else
         {
-            foundTableViewCell = YES;
+            cell = (UITableViewCell *)cell.superview;
         }
-    }
-    
-    if (!CGRectContainsPoint(self.tableViewVisibleRect, cell.frame.origin) )
-    {
-        [self.tableView scrollRectToVisible:cell.frame animated:YES];
     }
 }
 
