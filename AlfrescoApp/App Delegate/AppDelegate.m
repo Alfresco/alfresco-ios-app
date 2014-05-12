@@ -69,6 +69,15 @@
     
     // Make the window visible
     [self.window makeKeyAndVisible];
+    
+    // If there is a selected Account, attempt login
+    AccountManager *accountManager = [AccountManager sharedManager];
+    if (accountManager.selectedAccount)
+    {
+        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+        }];
+    }
 
     [AppConfigurationManager sharedManager];
     
@@ -130,15 +139,6 @@
         
         rootRevealViewController.masterViewController = mainMenuController;
         rootRevealViewController.detailViewController = splitViewController;
-    }
-    
-    // If there is a selected Account, attempt login
-    AccountManager *accountManager = [AccountManager sharedManager];
-    if (accountManager.selectedAccount)
-    {
-        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
-        }];
     }
     
     // check accounts and add this if applicable
