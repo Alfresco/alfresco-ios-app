@@ -22,8 +22,8 @@ NSString * const kEditableDocumentExtensions = @"txt,htm,html,xml,css,js,ftl,jav
 // In addition, all "text/..." mimetypes are allowed to be edited
 NSString * const kEditableDocumentMimeTypes = @"application/xml,application/javascript";
 
-// "No Items" font size
-CGFloat const kNoItemsLabelFontSize = 24.0f;
+// "No Files" font size
+CGFloat const kEmptyListLabelFontSize = 24.0f;
 
 // App RevealController
 CGFloat const kRevealControllerMasterViewWidth = 300.0f;

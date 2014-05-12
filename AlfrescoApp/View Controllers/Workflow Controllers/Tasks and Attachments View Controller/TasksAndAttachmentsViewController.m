@@ -308,7 +308,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 processTasksCell.textLabel.text = NSLocalizedString(@"tasks.tasks.empty", @"No Tasks");
                 processTasksCell.textLabel.textAlignment = NSTextAlignmentCenter;
-                processTasksCell.textLabel.font = [UIFont boldSystemFontOfSize:kNoItemsLabelFontSize];
+                processTasksCell.textLabel.font = [UIFont boldSystemFontOfSize:kEmptyListLabelFontSize];
                 processTasksCell.textLabel.textColor = [UIColor noItemsTextColor];
             }
             
@@ -363,7 +363,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.empty", @"No Attachments");
                 attachmentCell.textLabel.textAlignment = NSTextAlignmentCenter;
-                attachmentCell.textLabel.font = [UIFont systemFontOfSize:kNoItemsLabelFontSize];
+                attachmentCell.textLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
                 attachmentCell.textLabel.textColor = [UIColor noItemsTextColor];
                 attachmentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
