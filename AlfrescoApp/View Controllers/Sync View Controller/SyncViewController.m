@@ -26,6 +26,7 @@
 #import "FolderPreviewViewController.h"
 #import "LoginManager.h"
 #import "DownloadsDocumentPreviewViewController.h"
+#import "SyncNavigationViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
@@ -73,6 +74,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     
     self.title = [self listTitle];
+    [self adjustTableViewForProgressView];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
@@ -104,6 +106,10 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(nodeAdded:)
                                                  name:kAlfrescoNodeAddedOnServerNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adjustTableViewForProgressView)
+                                                 name:kSyncProgressViewVisiblityChangeNotification
                                                object:nil];
 }
 
@@ -597,6 +603,22 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     {
         AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
         [self addAlfrescoNodes:@[subnode] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (void)adjustTableViewForProgressView
+{
+    id navigationController = self.navigationController;
+    if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
+    {
+        SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
+        
+        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+        if ([syncNavigationController isProgressViewVisible])
+        {
+            edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
+        }
+        self.tableView.contentInset = edgeInset;
     }
 }
 

@@ -102,6 +102,7 @@ NSString * const kSyncOnCellular = @"SyncOnCellular";
 NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification";
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 NSString * const kFavoritesListUpdatedNotification = @"kFavoritesListUpdatedNotification";
+NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressViewVisiblityChangeNotification";
 
 // Local Files Notification
 NSString * const kAlfrescoLocalDocumentNewName = @"AlfrescoLocalDocumentNewName";
