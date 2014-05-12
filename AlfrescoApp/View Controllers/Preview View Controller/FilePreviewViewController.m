@@ -20,16 +20,18 @@
 static CGFloat const kAnimationSpeed = 0.2f;
 static CGFloat const kAnimationFadeSpeed = 0.5f;
 static CGFloat downloadProgressHeight;
+static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 @interface FilePreviewViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate>
 
 // Constraints
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightForDownloadContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentForProgressContainer;
 
 // Data Models
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, weak) AlfrescoRequest *downloadRequest;
+@property (nonatomic, strong) AlfrescoRequest *downloadRequest;
 @property (nonatomic, strong) MPMoviePlayerController *mediaPlayerController;
 @property (nonatomic, strong) FullScreenAnimationController *animationController;
 // Used for the file path initialiser
@@ -43,6 +45,8 @@ static CGFloat downloadProgressHeight;
 @property (nonatomic, weak) IBOutlet UIProgressView *downloadProgressView;
 @property (nonatomic, weak) IBOutlet UIView *downloadProgressContainer;
 @property (nonatomic, weak) IBOutlet UIView *moviePlayerContainer;
+
+@property (nonatomic, strong) UIGestureRecognizer *previewThumbnailSingleTapRecognizer;
 
 @end
 
@@ -117,32 +121,11 @@ static CGFloat downloadProgressHeight;
         }
         else
         {
-            // Try and obtain the document thumbnail from the cache
-            UIImage *placeholderImage = [[ThumbnailManager sharedManager] thumbnailForDocument:self.document renditionType:kRenditionImageImagePreview];;
+            // Display a static placeholder image
+            [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
             
-            __weak typeof(self) weakSelf = self;
-            if (!placeholderImage)
-            {
-                // set a placeholder image
-                placeholderImage = largeImageForType(self.document.name.pathExtension);
-                [self.previewThumbnailImageView setImage:placeholderImage withFade:NO];
-                
-                // request thumbnail
-                [self requestThumbnailForDocument:self.document completionBlock:^(UIImage *image, NSError *error) {
-                    // update the image with a fade
-                    [weakSelf.previewThumbnailImageView setImage:image withFade:YES switchingToContentMode:UIViewContentModeTopLeft];
-                    
-                    // request the document download
-                    weakSelf.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-                }];
-            }
-            else
-            {
-                [self.previewThumbnailImageView setImage:placeholderImage withFade:NO switchingToContentMode:UIViewContentModeTopLeft];
-                
-                // request the document download
-                self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-            }
+            // request the document download
+            self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
         }
     }
 }
@@ -154,6 +137,14 @@ static CGFloat downloadProgressHeight;
     [self.downloadRequest cancel];
     [self hideProgressViewAnimated:YES];
     self.downloadProgressView.progress = 0.0f;
+
+    // Add single tap "re-download" action to thumbnail view
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleThumbnailSingleTap:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    self.previewThumbnailSingleTapRecognizer = singleTap;
+    self.previewThumbnailImageView.userInteractionEnabled = YES;
+    [self.previewThumbnailImageView addGestureRecognizer:singleTap];
 }
 
 #pragma mark - Private Functions
@@ -166,13 +157,13 @@ static CGFloat downloadProgressHeight;
     
     // Tap gestures
     // Single
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleWebViewSingleTap:)];
     singleTap.numberOfTapsRequired = 1;
     singleTap.numberOfTouchesRequired = 1;
     singleTap.delegate = self;
     [self.webView addGestureRecognizer:singleTap];
     // Double
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleWebViewDoubleTap:)];
     doubleTap.numberOfTapsRequired = 2;
     doubleTap.numberOfTouchesRequired = 1;
     doubleTap.delegate = self;
@@ -203,7 +194,16 @@ static CGFloat downloadProgressHeight;
     self.mediaPlayerController = mediaPlayer;
 }
 
-- (void)handleSingleTap:(UIGestureRecognizer *)gesture
+- (void)handleThumbnailSingleTap:(UIGestureRecognizer *)gesture
+{
+    [self.previewThumbnailImageView removeGestureRecognizer:gesture];
+    
+    // Restart the document download
+    self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+
+}
+
+- (void)handleWebViewSingleTap:(UIGestureRecognizer *)gesture
 {
     if (self.presentingViewController)
     {
@@ -218,7 +218,7 @@ static CGFloat downloadProgressHeight;
     }
 }
 
-- (void)handleDoubleTap:(UIGestureRecognizer *)gesture
+- (void)handleWebViewDoubleTap:(UIGestureRecognizer *)gesture
 {
     if (!self.presentingViewController)
     {
@@ -307,12 +307,14 @@ static CGFloat downloadProgressHeight;
         [self.downloadProgressContainer layoutIfNeeded];
         [UIView animateWithDuration:kAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
             self.heightForDownloadContainer.constant = downloadProgressHeight;
+            self.centerYAlignmentForProgressContainer.constant = (self.previewThumbnailImageView.image.size.height / 2) + kPlaceholderToProcessVerticalOffset;
             [self.downloadProgressContainer layoutIfNeeded];
         } completion:nil];
     }
     else
     {
         self.heightForDownloadContainer.constant = downloadProgressHeight;
+        self.centerYAlignmentForProgressContainer.constant = (self.previewThumbnailImageView.image.size.height / 2) + kPlaceholderToProcessVerticalOffset;
     }
     self.downloadProgressContainer.hidden = NO;
 }
