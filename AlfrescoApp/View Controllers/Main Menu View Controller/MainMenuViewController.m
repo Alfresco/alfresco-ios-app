@@ -540,8 +540,6 @@ static NSUInteger const kAccountsRowNumber = 0;
             [repositoryMenuItems removeObject:companyHomeMenuItem];
             repositoryMenuItemsChanged = YES;
         }
-        itemIndex = [repositoryMenuItems indexOfObject:companyHomeMenuItem];
-        nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
         if (repositoryMenuItems.count == 0)
         {
