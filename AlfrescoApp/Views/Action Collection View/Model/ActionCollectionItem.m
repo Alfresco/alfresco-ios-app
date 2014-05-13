@@ -35,7 +35,8 @@ NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionId
 @property (nonatomic, strong, readwrite) NSString *itemIdentifier;
 @property (nonatomic, strong, readwrite) UIImage *itemImage;
 @property (nonatomic, strong, readwrite) NSString *itemTitle;
-
+@property (nonatomic, strong, readwrite) UIImage *itemImageHighlightedImage;
+@property (nonatomic, strong, readwrite) UIColor *itemTitleHighlightedColor;
 @end
 
 @implementation ActionCollectionItem
@@ -129,6 +130,8 @@ NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionId
         self.itemImage = itemImage;
         self.itemImage = [itemImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.itemTitle = itemTitle;
+        self.itemImageHighlightedImage = [self highlightedImageFromImage:itemImage];
+        self.itemTitleHighlightedColor = [UIColor documentActionsHighlightColor];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
     }
     return self;
@@ -160,6 +163,19 @@ NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionId
     self.itemIdentifier = identifer;
     self.itemImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.itemTitle = localisedTitle;
+    self.itemImageHighlightedImage = [self highlightedImageFromImage:self.itemImage];
+}
+
+- (UIImage *)highlightedImageFromImage:(UIImage *)image
+{
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
+    CGRect drawRect = CGRectMake(0, 0, image.size.width, image.size.height);
+    [image drawInRect:drawRect];
+    [[UIColor documentActionsHighlightColor] set];
+    UIRectFillUsingBlendMode(drawRect, kCGBlendModeSourceAtop);
+    UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return tintedImage;
 }
 
 @end

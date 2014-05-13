@@ -45,6 +45,11 @@
     return [UIColor colorWithRed:(CGFloat)53.0/255.0 green:(CGFloat)53.0/255.0 blue:(CGFloat)55.0/255.0 alpha:1.0];
 }
 
++ (UIColor *)documentActionsHighlightColor
+{
+    return [UIColor appTintColor];
+}
+
 + (UIColor *)syncButtonFailedColor
 {
     // Matches status-sync-failed.png
