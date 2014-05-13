@@ -41,8 +41,8 @@ NSString * const kAppConfigurationRepositoryKey = @"com.alfresco.repository";
 NSString * const kAppConfigurationSearchKey = @"com.alfresco.search";
 NSString * const kAppConfigurationSitesKey = @"com.alfresco.sites";
 NSString * const kAppConfigurationTasksKey = @"com.alfresco.tasks";
-NSString * const kAppConfigurationMyFilesKey = @"com.alfresco.myFiles";
-NSString * const kAppConfigurationSharedFilesKey = @"com.alfresco.sharedFiles";
+NSString * const kAppConfigurationMyFilesKey = @"com.alfresco.repository.userhome";
+NSString * const kAppConfigurationSharedFilesKey = @"com.alfresco.repository.shared";
 
 // App Configuration Notifications
 NSString * const kAlfrescoAppConfigurationUpdatedNotification = @"AlfrescoAppConfigurationUpdatedNotification";
