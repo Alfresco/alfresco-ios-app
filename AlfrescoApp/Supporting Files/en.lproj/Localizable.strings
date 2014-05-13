@@ -211,12 +211,12 @@
  * Cloud Signup
  */
 "cloudsignup.title" = "Alfresco in the cloud";
-"accountdetails.fields.firstName" = "First Name";
-"accountdetails.fields.lastName" = "Last Name";
-"accountdetails.fields.username" = "Username";
+"accountdetails.fields.firstName" = "First name";
+"accountdetails.fields.lastName" = "Last name";
+"accountdetails.fields.username" = "User name";
 "accountdetails.fields.email" = "Email";
 "accountdetails.fields.password" = "Password";
-"accountdetails.fields.confirmPassword" = "Confirm Password";
+"accountdetails.fields.confirmPassword" = "Confirm password";
 "accountdetails.placeholder.password.requirement" = "6 characters min.";
 "cloudsignup.button.signup" = "Sign Up";
 "cloudsignup.footer.firstLine" = "By tapping Sign Up, you are agreeing to the";
@@ -396,12 +396,14 @@
  */
 "login.title" = "Login";
 "login.server.cell.label" = "Server";
-"login.username.cell.label" = "Username";
-"login.username.textfield.placeholder" = "Username";
+"login.username.cell.label" = "User name";
+"login.username.textfield.placeholder" = "User name";
 "login.password.cell.label" = "Password";
 "login.password.textfield.placeholder" = "Password";
 "login.hud.label" = "Connecting...";
 "login.hud.cancel.label" = "Tap to cancel";
+"login.host.unreachable.title" = "Connection Error";
+"login.host.unreachable.message" = "Your hostname value seems to be wrong or you may need to activate your VPN. Please check your account settings.";
 
 /**
  * Download View Controller
