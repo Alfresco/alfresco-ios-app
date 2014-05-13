@@ -817,6 +817,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     else
     {
         [topLevelSyncNodes addObject:node];
+        if (completionBlock != NULL)
+        {
+            completionBlock(YES);
+        }
     }
 }
 
