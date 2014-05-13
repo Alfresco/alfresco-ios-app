@@ -35,6 +35,8 @@ extern NSString * const kActionCollectionIdentifierSendForReview;
 @property (nonatomic, strong, readonly) NSString *itemIdentifier;
 @property (nonatomic, strong, readonly) UIImage *itemImage;
 @property (nonatomic, strong, readonly) NSString *itemTitle;
+@property (nonatomic, strong, readonly) UIImage *itemImageHighlightedImage;
+@property (nonatomic, strong, readonly) UIColor *itemTitleHighlightedColor;
 
 + (instancetype)emailItem;
 + (instancetype)emailAsLinkItem;

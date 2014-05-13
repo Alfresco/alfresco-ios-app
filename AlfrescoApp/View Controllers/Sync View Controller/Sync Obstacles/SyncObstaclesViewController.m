@@ -164,7 +164,6 @@
         standardCell.textLabel.font = [UIFont systemFontOfSize:17.0f];
         standardCell.textLabel.text = document.name;
         standardCell.imageView.image = smallImageForType([document.name pathExtension]);
-        
         cell = standardCell;
     }
     else

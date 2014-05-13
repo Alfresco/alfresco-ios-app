@@ -187,7 +187,8 @@ static NSString * const kAudioFileName = @"audio.m4a";
         [previewCell.contentView addSubview:imagePreviewImageView];
     }
     else if (self.uploadFormType == UploadFormTypeDocument ||
-             (self.uploadFormType == UploadFormTypeVideoCreated || self.uploadFormType == UploadFormTypeVideoPhotoLibrary))
+             self.uploadFormType == UploadFormTypeVideoCreated ||
+             self.uploadFormType == UploadFormTypeVideoPhotoLibrary)
     {
         // Preview cell for documents
         nameTextField.text = [self.documentURL.lastPathComponent stringByDeletingPathExtension];

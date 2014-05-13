@@ -318,7 +318,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     
     if (node.isFolder)
     {
-        nodeCell.image.image = smallImageForType(@"folder");
+        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
     }
     else if (node.isDocument)
     {
@@ -332,12 +332,15 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         }
         else
         {
-            UIImage *placeholderImage = smallImageForType([document.name pathExtension]);
-            nodeCell.image.image = placeholderImage;
+            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    [nodeCell.image setImage:image withFade:YES];
+                    AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (updateCell)
+                    {
+                        [updateCell.image setImage:image withFade:YES];
+                    }
                 }
             }];
         }

@@ -11,7 +11,7 @@
 
 @interface NodePickerScopeCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UIImageView *thumbnail;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *thumbnail;
 @property (nonatomic, weak) IBOutlet UILabel *label;
 
 @end
