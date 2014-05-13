@@ -339,6 +339,7 @@ static UILayoutPriority const kLowPriority = 250;
         }
         else
         {
+            displayInformationMessage(NSLocalizedString(@"task.completed.success.message", @"Task completed"));
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
             [UniversalDevice clearDetailViewController];
         }
