@@ -542,6 +542,7 @@
 "task.transition.approve" = "Approve";
 "task.transition.reject" = "Reject";
 "task.transition.done" = "Done";
+"task.completed.success.message" = "Task Completed";
 
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";

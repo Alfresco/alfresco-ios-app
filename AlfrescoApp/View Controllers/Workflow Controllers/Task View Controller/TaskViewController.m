@@ -305,6 +305,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         {
             case TaskFilterTask:
             {
+                [self.myTasks clearAllTasks];
                 [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
                 self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
                 self.tableViewData = self.myTasks.tasksAfterFiltering;
@@ -313,6 +314,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
                 
             case TaskFilterProcess:
             {
+                [self.tasksIStarted clearAllTasks];
                 [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
                 self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
                 self.tableViewData = self.tasksIStarted.tasksAfterFiltering;
