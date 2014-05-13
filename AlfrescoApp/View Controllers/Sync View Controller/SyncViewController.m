@@ -54,6 +54,18 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
                                                  selector:@selector(siteRequestsCompleted:)
                                                      name:kAlfrescoSiteRequestsCompletedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didAddNodeToFavourites:)
+                                                     name:kFavouritesDidAddNodeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didRemoveNodeFromFavourites:)
+                                                     name:kFavouritesDidRemoveNodeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentDeleted:)
+                                                     name:kAlfrescoDocumentDeletedOnServerNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -83,18 +95,6 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didAddNodeToFavourites:)
-                                                 name:kFavouritesDidAddNodeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didRemoveNodeFromFavourites:)
-                                                 name:kFavouritesDidRemoveNodeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(documentDeleted:)
-                                                 name:kAlfrescoDocumentDeletedOnServerNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didUpdatePreference:)
