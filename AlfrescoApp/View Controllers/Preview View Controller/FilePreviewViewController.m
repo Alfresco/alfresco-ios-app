@@ -38,6 +38,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 @property (nonatomic, assign) BOOL shouldLoadFromFileAndRunCompletionBlock;
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
 @property (nonatomic, copy) void (^loadingCompleteBlock)(UIWebView *webView, BOOL loadedIntoWebView);
+@property (nonatomic, assign) BOOL fullScreenMode;
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *previewThumbnailImageView;
@@ -128,6 +129,16 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
             self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
         }
     }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    BOOL shouldHideStatusBar = NO;
+    if (self.fullScreenMode)
+    {
+        shouldHideStatusBar = YES;
+    }
+    return shouldHideStatusBar;
 }
 
 #pragma mark - IBOutlets
@@ -232,7 +243,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         {
             presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil loadingCompletionBlock:nil];
         }
-        
+        presentationViewController.fullScreenMode = YES;
+        presentationViewController.useControllersPreferStatusBarHidden = YES;
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")

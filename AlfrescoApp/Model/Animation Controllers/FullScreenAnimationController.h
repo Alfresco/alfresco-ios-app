@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol FullScreenAnimationControllerProtocol <NSObject>
+
+@property (nonatomic, assign) BOOL useControllersPreferStatusBarHidden;
+
+@end
+
 @interface FullScreenAnimationController : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign) BOOL isGoingIntoFullscreenMode;
