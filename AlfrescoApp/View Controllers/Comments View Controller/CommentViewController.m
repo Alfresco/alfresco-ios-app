@@ -351,6 +351,8 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     self.permissions = permissions;
     self.session = session;
     
+    [self updateCommentsContainerViewHeightForNode:node];
+    
     [self showHUD];
     [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [self hideHUD];
