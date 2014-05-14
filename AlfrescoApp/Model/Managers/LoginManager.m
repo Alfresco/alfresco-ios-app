@@ -120,7 +120,7 @@
 {
     self.authenticationCompletionBlock = authenticationCompletionBlock;
     void (^authenticationComplete)(id<AlfrescoSession>, NSError *error) = ^(id<AlfrescoSession> session, NSError *error) {
-        if (!session)
+        if (error)
         {
             if (authenticationCompletionBlock != NULL)
             {
@@ -129,7 +129,7 @@
         }
         else
         {
-            [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *networks, NSError *error) {
+            self.currentLoginRequest = [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *networks, NSError *error) {
                 
                 if (networks && error == nil)
                 {
@@ -173,7 +173,7 @@
             {
                 account.oauthData = oauthData;
                 
-                [self connectWithOAuthData:oauthData networkId:networkId completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                self.currentLoginRequest = [self connectWithOAuthData:oauthData networkId:networkId completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                     if (navigationController)
                     {
                         [navigationController popViewControllerAnimated:YES];
@@ -213,7 +213,7 @@
     
     if (account.oauthData)
     {
-        [self connectWithOAuthData:account.oauthData networkId:networkId completionBlock:^(id<AlfrescoSession> cloudSession, NSError *connectionError) {
+        self.currentLoginRequest = [self connectWithOAuthData:account.oauthData networkId:networkId completionBlock:^(id<AlfrescoSession> cloudSession, NSError *connectionError) {
             [navigationController popViewControllerAnimated:YES];
             if (nil == cloudSession)
             {
@@ -221,7 +221,7 @@
                 {
                     // refresh token
                     AlfrescoOAuthHelper *oauthHelper = [[AlfrescoOAuthHelper alloc] initWithParameters:nil delegate:self];
-                    [oauthHelper refreshAccessToken:account.oauthData completionBlock:^(AlfrescoOAuthData *refreshedOAuthData, NSError *refreshError) {
+                    self.currentLoginRequest = [oauthHelper refreshAccessToken:account.oauthData completionBlock:^(AlfrescoOAuthData *refreshedOAuthData, NSError *refreshError) {
                         if (nil == refreshedOAuthData)
                         {
                             // if refresh token is expired or invalid present OAuth LoginView
@@ -238,8 +238,8 @@
                             [[AccountManager sharedManager] saveAccountsToKeychain];
                             
                             // try to connect once OAuthData is refreshed
-                            [self connectWithOAuthData:refreshedOAuthData networkId:networkId completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                                authenticationComplete(session, refreshError);
+                            self.currentLoginRequest = [self connectWithOAuthData:refreshedOAuthData networkId:networkId completionBlock:^(id<AlfrescoSession> retrySession, NSError *retryError) {
+                                authenticationComplete(retrySession, retryError);
                             }];
                         }
                     }];
@@ -262,16 +262,20 @@
     }
 }
 
-- (void)connectWithOAuthData:(AlfrescoOAuthData *)oauthData networkId:(NSString *)networkId completionBlock:(AlfrescoSessionCompletionBlock)completionBlock
+- (AlfrescoRequest *)connectWithOAuthData:(AlfrescoOAuthData *)oauthData networkId:(NSString *)networkId completionBlock:(AlfrescoSessionCompletionBlock)completionBlock
 {
+    AlfrescoRequest *cloudRequest = nil;
+    
     if (networkId)
     {
-        [AlfrescoCloudSession connectWithOAuthData:oauthData networkIdentifer:networkId completionBlock:completionBlock];
+        cloudRequest = [AlfrescoCloudSession connectWithOAuthData:oauthData networkIdentifer:networkId completionBlock:completionBlock];
     }
     else
     {
-        [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:completionBlock];
+        cloudRequest = [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:completionBlock];
     }
+    
+    return cloudRequest;
 }
 
 - (void)cancelCloudAuthentication:(id)sender
