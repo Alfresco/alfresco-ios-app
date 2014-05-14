@@ -51,7 +51,7 @@
     if (!self.alfEmptyLabel)
     {
         UILabel *emptyLabel = [[UILabel alloc] init];
-        emptyLabel.font = [UIFont systemFontOfSize:kNoItemsLabelFontSize];
+        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
         emptyLabel.numberOfLines = 0;
         emptyLabel.textAlignment = NSTextAlignmentCenter;
         emptyLabel.textColor = [UIColor noItemsTextColor];
@@ -67,7 +67,7 @@
     frame.size.height -= self.contentInset.top;
 
     self.alfEmptyLabel.frame = frame;
-    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Items", @"No Items");
+    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
     self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
     self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
 

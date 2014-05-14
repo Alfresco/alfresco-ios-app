@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "ThumbnailImageView.h"
 
 @interface ActivityTableViewCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UIImageView *activityImage;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *activityImage;
 @property (nonatomic, weak) IBOutlet UILabel *detailsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
 

@@ -22,8 +22,8 @@ NSString * const kEditableDocumentExtensions = @"txt,htm,html,xml,css,js,ftl,jav
 // In addition, all "text/..." mimetypes are allowed to be edited
 NSString * const kEditableDocumentMimeTypes = @"application/xml,application/javascript";
 
-// "No Items" font size
-CGFloat const kNoItemsLabelFontSize = 24.0f;
+// "No Files" font size
+CGFloat const kEmptyListLabelFontSize = 24.0f;
 
 // App RevealController
 CGFloat const kRevealControllerMasterViewWidth = 300.0f;
@@ -41,8 +41,8 @@ NSString * const kAppConfigurationRepositoryKey = @"com.alfresco.repository";
 NSString * const kAppConfigurationSearchKey = @"com.alfresco.search";
 NSString * const kAppConfigurationSitesKey = @"com.alfresco.sites";
 NSString * const kAppConfigurationTasksKey = @"com.alfresco.tasks";
-NSString * const kAppConfigurationMyFilesKey = @"com.alfresco.myFiles";
-NSString * const kAppConfigurationSharedFilesKey = @"com.alfresco.sharedFiles";
+NSString * const kAppConfigurationMyFilesKey = @"com.alfresco.repository.userhome";
+NSString * const kAppConfigurationSharedFilesKey = @"com.alfresco.repository.shared";
 
 // App Configuration Notifications
 NSString * const kAlfrescoAppConfigurationUpdatedNotification = @"AlfrescoAppConfigurationUpdatedNotification";
@@ -71,7 +71,7 @@ NSString * const kAlfrescoDocumentDownloadedIdentifierKey = @"AlfrescoDocumentDo
 NSString * const kAlfrescoNodeAddedOnServerParentFolderKey = @"AlfrescoNodeAddedOnServerParentFolderKey";
 NSString * const kAlfrescoNodeAddedOnServerSubNodeKey = @"AlfrescoNodeAddedOnServerSubNodeKey";
 NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally = @"AlfrescoNodeAddedOnServerContentLocationLocally";
-NSString * const kAlfrescoWorkflowTaskDidComplete = @"AlfrescoWorkflowTaskDidComplete";
+NSString * const kAlfrescoWorkflowTaskListDidChangeNotification = @"AlfrescoWorkflowTaskListDidChange";
 NSString * const kAlfrescoDocumentEditedNotification = @"AlfrescoDocumentEditedNotification";
 // Saveback
 NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
@@ -102,6 +102,7 @@ NSString * const kSyncOnCellular = @"SyncOnCellular";
 NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification";
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 NSString * const kFavoritesListUpdatedNotification = @"kFavoritesListUpdatedNotification";
+NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressViewVisiblityChangeNotification";
 
 // Local Files Notification
 NSString * const kAlfrescoLocalDocumentNewName = @"AlfrescoLocalDocumentNewName";
@@ -159,7 +160,6 @@ NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";
 NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
 
 // Workflow
-NSString * const kAlfrescoTaskAddedNotification = @"AlfrescoTaskAddedNotification";
 NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
 NSString * const kAlfrescoWorkflowJBPMEngine = @"jbpm$";
 

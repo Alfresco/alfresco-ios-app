@@ -174,7 +174,7 @@ static CGFloat const kCellHeight = 64.0f;
     
     if (node.isFolder)
     {
-        nodeCell.image.image = smallImageForType(@"folder");
+        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
         nodeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     else if (node.isDocument)
@@ -191,12 +191,15 @@ static CGFloat const kCellHeight = 64.0f;
         }
         else
         {
-            UIImage *placeholderImage = smallImageForType([document.name pathExtension]);
-            nodeCell.image.image = placeholderImage;
+            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    [nodeCell.image setImage:image withFade:YES];
+                    AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (updateCell)
+                    {
+                        [updateCell.image setImage:image withFade:YES];
+                    }
                 }
             }];
         }

@@ -77,7 +77,6 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
 - (AlfrescoRequest *)downloadDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session
 {
     AlfrescoRequest *request = nil;
-    
     NSString *documentIdentifier = [self documentIdentifierForDocument:document];
     
     if ([self hasLocalContentOfDocument:document])
@@ -117,7 +116,6 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
                                                                   userInfo:@{kDocumentPreviewManagerDocumentIdentifierNotificationKey : documentIdentifier}];
                 
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerProgressNotification
                                                                     object:document
                                                                   userInfo:@{kDocumentPreviewManagerDocumentIdentifierNotificationKey : documentIdentifier,

@@ -328,7 +328,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
         if (activityWrapper.activityImage)
         {
             // We already have an image for this activity
-            cell.activityImage.image = activityWrapper.activityImage;
+            [cell.activityImage setImage:activityWrapper.activityImage withFade:NO];
         }
         else
         {
@@ -336,38 +336,38 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
             {
                 if (activityWrapper.isDocument)
                 {
-                    // TODO - MOBILE-2526: It should be possible to request the latest cached thumbnail given an objectId
-                    activityWrapper.activityImage = smallImageForType([activityWrapper.nodeName pathExtension]);
-                    
-//                    AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-//                    
-//                    UIImage *cachedThumbnail = [[ThumbnailDownloader sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-//                    if (cachedThumbnail)
-//                    {
-//                        activityWrapper.activityImage = cachedThumbnail;
-//                        cell.activityImage.image = activityWrapper.activityImage;
-//                    }
-//                    else
-//                    {
-//                        activityWrapper.activityImage = smallImageForType([documentNode.name pathExtension]);
-//                        cell.activityImage.image = activityWrapper.activityImage;
-//                        
-//                        [[ThumbnailDownloader sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-//                            if (image)
-//                            {
-//                                ActivityTableViewCell *thumbnailCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-//                                if (thumbnailCell)
-//                                {
-//                                    activityWrapper.activityImage = image;
-//                                    thumbnailCell.activityImage.image = image;
-//                                }
-//                            }
-//                        }];
-//                    }
+                    UIImage *cachedThumbnail = [[ThumbnailManager sharedManager] thumbnailForDocumentIdentifier:activityWrapper.nodeIdentifier renditionType:kRenditionImageDocLib];
+                    if (cachedThumbnail)
+                    {
+                        activityWrapper.activityImage = cachedThumbnail;
+                        [cell.activityImage setImage:activityWrapper.activityImage withFade:NO];
+                    }
+                    else
+                    {
+                        activityWrapper.activityImage = smallImageForType([activityWrapper.nodeName pathExtension]);
+                        [cell.activityImage setImage:activityWrapper.activityImage withFade:NO];
+                        
+                        [self retrieveNodeForActivity:activityWrapper completionBlock:^(BOOL success, NSError *error) {
+                            if (success)
+                            {
+                                [[ThumbnailManager sharedManager] retrieveImageForDocument:(AlfrescoDocument *)activityWrapper.node renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                                    if (image)
+                                    {
+                                        ActivityTableViewCell *thumbnailCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                                        if (thumbnailCell)
+                                        {
+                                            activityWrapper.activityImage = image;
+                                            [thumbnailCell.activityImage setImage:image withFade:YES];
+                                        }
+                                    }
+                                }];
+                            }
+                        }];
+                    }
                 }
                 else
                 {
-                    activityWrapper.activityImage = [UIImage imageNamed:@"small_folder.png"];
+                    activityWrapper.activityImage = smallImageForType(@"folder");
                 }
             }
             else if (activityWrapper.avatarUserName)
@@ -396,7 +396,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
             }
 
             // We'll always have *something* by the time the code gets here
-            cell.activityImage.image = activityWrapper.activityImage;
+            [cell.activityImage setImage:activityWrapper.activityImage withFade:NO];
         }
     }
 }

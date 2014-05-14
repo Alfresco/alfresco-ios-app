@@ -12,4 +12,7 @@
 
 @interface SyncNavigationViewController : NavigationViewController <SyncManagerProgressDelegate>
 
+- (BOOL)isProgressViewVisible;
+- (CGFloat)progressViewHeight;
+
 @end

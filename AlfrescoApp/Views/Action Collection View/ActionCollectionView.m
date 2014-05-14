@@ -112,12 +112,13 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ActionCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ActionCell" forIndexPath:indexPath];
-
     ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
     
     cell.imageView.image = itemSelected.itemImage;
-    cell.titleLabel.text = itemSelected.itemTitle;
+    cell.imageView.highlightedImage = itemSelected.itemImageHighlightedImage;
     cell.imageView.tintColor = [UIColor documentActionsTintColor];
+    cell.titleLabel.text = itemSelected.itemTitle;
+    cell.titleLabel.highlightedTextColor = itemSelected.itemTitleHighlightedColor;
     
     return cell;
 }
@@ -127,10 +128,10 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
-    
     UICollectionViewCell *selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
     
     [self.delegate didPressActionItem:itemSelected cell:selectedCell inView:collectionView];
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

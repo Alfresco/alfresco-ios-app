@@ -21,6 +21,7 @@ static CGFloat const kSystemNoticeAlpha = 0.95f;
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) UILabel *messageLabel;
 @property (nonatomic, assign) CGFloat offsetY;
+@property (nonatomic, strong) UIDynamicAnimator *animator;
 @end
 
 @implementation SystemNotice
@@ -182,13 +183,19 @@ CGFloat hiddenYOrigin;
 
 - (void)displayNotice
 {
-    [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        CGRect newFrame = self.frame;
-        newFrame.origin.y = self.offsetY;
-        self.frame = newFrame;
-    } completion:^(BOOL finished){
-        [self performSelector:@selector(dismissNotice) withObject:nil afterDelay:self.displayTime];
-    }];
+    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.viewToDisplayOn];
+    self.animator.delegate = self;
+    
+    UIGravityBehavior *gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self]];
+    [self.animator addBehavior:gravityBehavior];
+
+    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self]];
+    elasticityBehavior.elasticity = 0.5f;
+    [self.animator addBehavior:elasticityBehavior];
+    
+    UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self]];
+    [collisionBehavior addBoundaryWithIdentifier:@"boundary" fromPoint:CGPointMake(self.frame.origin.x, self.frame.size.height) toPoint:CGPointMake(self.frame.size.width, self.frame.size.height)];
+    [self.animator addBehavior:collisionBehavior];
 }
 
 - (void)dismissNotice
@@ -228,6 +235,13 @@ CGFloat hiddenYOrigin;
     {
         [self dismissNotice];
     }
+}
+
+#pragma mark - UIDynamicAnimatorDelegate
+
+- (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator
+{
+    [self performSelector:@selector(dismissNotice) withObject:nil afterDelay:self.displayTime];
 }
 
 #pragma mark - Class Methods

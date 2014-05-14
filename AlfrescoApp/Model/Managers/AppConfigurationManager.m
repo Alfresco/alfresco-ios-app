@@ -155,6 +155,11 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     {
         // We do not currently support creating or querying workflows for Alfresco in the cloud
         visible = ([self.alfrescoSession isKindOfClass:[AlfrescoRepositorySession class]]);
+        
+        if (visible)
+        {
+            visible = [self visibilityInfoInAppConfigurationForMenuItem:menuItemKey];
+        }
     }
     else if (!self.useDefaultConfiguration)
     {

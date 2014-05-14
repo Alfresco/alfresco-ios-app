@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SystemNotice : UIView
+@interface SystemNotice : UIView <UIDynamicAnimatorDelegate>
 
 typedef enum
 {

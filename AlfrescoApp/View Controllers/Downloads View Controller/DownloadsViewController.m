@@ -140,7 +140,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         AlfrescoDocument *currentDocument = [[DownloadManager sharedManager] infoForDocument:pathToCurrentDocument];
         
         UIImage *thumbnail = [self thumbnailFromDiskForDocument:currentDocument];
-        iconImage = thumbnail ? thumbnail : smallImageForType([fileURLString pathExtension]);
+        iconImage = thumbnail ?: smallImageForType([fileURLString pathExtension]);
 
         // Removed rendering of the accessory view as part of MOBILE-1709
 //        if (!self.isDownloadPickerEnabled && currentDocument)
@@ -155,7 +155,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     
     cell.nodeNameLabel.text = title;
     cell.nodeDetailLabel.text = details;
-    cell.nodeImageView.image = iconImage;
+    [cell.nodeImageView setImage:iconImage withFade:NO];
     
     return cell;
 }
@@ -172,7 +172,6 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         NSString *fileToDeletePath = [self.tableViewData objectAtIndex:indexPath.row];
         
         [self deleteDocumentFromDownloads:fileToDeletePath];
-        [self refreshData];
     }
 }
 

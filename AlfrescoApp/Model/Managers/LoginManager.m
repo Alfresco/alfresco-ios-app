@@ -349,7 +349,7 @@
         AccountInfoViewController *accountViewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeLoginFailed];
         NavigationViewController *nav = [[NavigationViewController alloc] initWithRootViewController:accountViewController];
         [UniversalDevice displayModalViewController:nav onController:[UniversalDevice containerViewController] withCompletionBlock:^{
-            displayErrorMessageWithTitle(@"We were unable to reach the server that has been associated with this account. Please ensure that the server address is correct.", @"Unable to reach the host");
+            displayErrorMessageWithTitle(NSLocalizedString(@"login.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"login.host.unreachable.title", @"Connection error"));
         }];
     }
 }

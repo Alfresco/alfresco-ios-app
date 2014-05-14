@@ -13,7 +13,7 @@
 
 - (void)updateCellForCellInfo:(NSDictionary *)cellInfo value:(id)cellValue delegate:(id<SettingsCellProtocol>)delegate
 {
-    self.preferenceIdentifier = [cellInfo objectForKey:kSettingsCellPerferenceIdentifier];
+    self.preferenceIdentifier = [cellInfo objectForKey:kSettingsCellPreferenceIdentifier];
     NSString *cellTitle = NSLocalizedString([cellInfo objectForKey:kSettingsCellLocalizedTitleKey], @"Cell text");
     self.cellTitle.text = cellTitle;
     self.delegate = delegate;

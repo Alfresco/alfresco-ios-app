@@ -11,6 +11,8 @@
 
 @interface SwitchViewController : UIViewController <MainMenuViewControllerDelegate>
 
+@property (nonatomic, strong, readonly) UIViewController *displayedViewController;
+
 - (instancetype)initWithInitialViewController:(UIViewController *)viewController;
 
 @end

@@ -37,8 +37,8 @@ extern NSString * const kRenditionImageImagePreview;
 extern NSString * const kEditableDocumentExtensions;
 extern NSString * const kEditableDocumentMimeTypes;
 
-// "No Items" font size
-extern CGFloat const kNoItemsLabelFontSize;
+// "No Files" font size
+extern CGFloat const kEmptyListLabelFontSize;
 
 extern NSInteger const kRequestTimeOutInterval;
 extern NSString * const kProtocolHTTP;
@@ -86,7 +86,7 @@ extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
 extern NSString * const kAlfrescoNodeAddedOnServerSubNodeKey;
 extern NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally;
-extern NSString * const kAlfrescoWorkflowTaskDidComplete;
+extern NSString * const kAlfrescoWorkflowTaskListDidChangeNotification;
 extern NSString * const kAlfrescoDocumentEditedNotification;
 // Saveback
 extern NSString * const kAlfrescoSaveBackLocalComplete;
@@ -117,6 +117,7 @@ extern NSString * const kSyncOnCellular;
 extern NSString * const kSyncStatusChangeNotification;
 extern NSString * const kSyncObstaclesNotification;
 extern NSString * const kFavoritesListUpdatedNotification;
+extern NSString * const kSyncProgressViewVisiblityChangeNotification;
 
 // Local Files Notification
 extern NSString * const kAlfrescoLocalDocumentNewName;
@@ -174,7 +175,6 @@ extern NSString * const kAlfrescoCloudAPIAccountID;
 extern NSString * const kAlfrescoHelpURLString;
 
 // Workflow
-extern NSString * const kAlfrescoTaskAddedNotification;
 extern NSString * const kAlfrescoWorkflowActivitiEngine;
 extern NSString * const kAlfrescoWorkflowJBPMEngine;
 

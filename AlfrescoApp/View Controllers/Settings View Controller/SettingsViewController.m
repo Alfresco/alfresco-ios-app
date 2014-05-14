@@ -127,6 +127,13 @@ static NSUInteger const kCellLeftInset = 10;
     return NSLocalizedString(groupHeaderTitle, @"Section header title");
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:section];
+    NSString *groupHeaderTitle = [groupInfoDictionary objectForKey:kSettingsGroupFooterLocalizedKey];
+    return NSLocalizedString(groupHeaderTitle, @"Section footer title");
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:indexPath.section];
@@ -144,7 +151,7 @@ static NSUInteger const kCellLeftInset = 10;
         cell.delegate = self;
     }
     
-    id preferenceValue = [[PreferenceManager sharedManager] preferenceForIdentifier:[currentCellInfo valueForKey:kSettingsCellPerferenceIdentifier]];
+    id preferenceValue = [[PreferenceManager sharedManager] preferenceForIdentifier:[currentCellInfo valueForKey:kSettingsCellPreferenceIdentifier]];
     
     [cell updateCellForCellInfo:currentCellInfo value:preferenceValue delegate:self];
     

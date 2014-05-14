@@ -19,7 +19,7 @@
 "Upload" = "Upload";
 "Close" = "Close";
 "Next" = "Next";
-"No Items" = "No Items";
+"No Files" = "No Files";
 
 /**
  * Relative Dates
@@ -68,16 +68,15 @@
 "sync.title" = "Synced Content";
 "sync.empty" = "No Synced Content";
 "sync.downloadsize.prompt.title" = "Download Size";
-"sync.downloadsize.prompt.message" = "Sync download size %@. Do you want to proceed?";
+"sync.downloadsize.prompt.message" = "Sync download size %@. Do you want to continue?";
 "sync.downloadsize.prompt.cancel" = "Don't Sync";
 "sync.downloadsize.prompt.confirm" = "Sync Now";
-"sync.enable.title" = "Sync Documents";
-"sync.enable.message" = "Would you like to automatically keep your favorite documents in sync with this %@?";
+"sync.enable.title" = "Sync Files";
+"sync.enable.message" = "Would you like to automatically keep your favorite files in sync with this %@?";
 "sync.state.waiting-to-sync" = "Waiting to sync...";
 "sync.state.failed-to-sync" = "Sync Failed";
-"sync.progress.label" = "Syncing %d %@, %@ left"; // example final string: "Syncing 5 items, 238.3 MB left"
-"sync.items.singular" = "item";
-"sync.items.plural" = "items";
+"sync.progress.label.singular" = "Syncing 1 file, %@ left"; // example: "Syncing 1 file, 238.3 MB left"
+"sync.progress.label.plural" = "Syncing %d files, %@ left"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Sync";
 "sync.cancelAll.alert.message" = "Would you like to cancel all sync operations?";
 "sync.cancelAll.alert.button.continue" = "Continue";
@@ -87,9 +86,9 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Sync Errors";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following documents have been unfavorited on the server but have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Local Files\"";
-"sync-errors.deleted-on-server-with-local-changes.header" = "The following documents have been deleted on the server but copies have been saved to your \"Local Files\"";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following documents are pending sync and have local changes. Please select how you would like to proceed for each file.\n\nPlease note that files will be saved to \"Local Files\"";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following files have been unfavorited on the server but have local changes. Select how to proceed for each file.\n\nPlease note that files will be saved to \"Local Files\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "The following files have been deleted on the server but copies have been saved to your \"Local Files\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following files are pending sync and have local changes. Select how to proceed for each file.\n\nFiles will be saved to \"Local Files\"";
 "sync-errors.button.sync" = "Sync";
 "sync-errors.button.save" = "Save";
 
@@ -98,19 +97,19 @@
  */
 "error.filefolder.rootfolder.notfound" = "Root folder could not be loaded. Error: %@.";
 "error.filefolder.permission.notfound" = "Permission for the node was not found. Error: %@.";
-"error.filefolder.content.failedtodownload" = "Document failed to download. Error: %@.";
+"error.filefolder.content.failedtodownload" = "File failed to download. Error: %@.";
 "error.filefolder.search.searchfailed" = "The search failed. Error: %@.";
 "error.filefolder.createfolder.createfolder" = "The folder was not created. Error: %@.";
 "error.filefolder.content.failedtoretrieve" = "Retrieval of content failed. Error: %@.";
 "error.filefolder.unable.to.delete" = "Unable to delete. Error: %@";
-"error.sites.documentlibrary.failed" = "Unable to get Document Library. Error: %@.";
-"error.sites.retrieval.failed" = "Unable to retrieve Sites. Error: %@.";
-"error.sites.folder.failed" = "Unable to retrieve Sites folder. Error: %@.";
-"error.sites.search.failed" = "Unable to search across Sites. Error: %@.";
-"error.upload.failed" = "Uploading of the document failed. Error: %@.";
-"error.upload.addtags.failed" = "Adding tags to the document failed. Error: %@.";
+"error.sites.documentlibrary.failed" = "Unable to access Document Library. Error: %@.";
+"error.sites.retrieval.failed" = "Unable to retrieve sites. Error: %@.";
+"error.sites.folder.failed" = "Unable to retrieve sites folder. Error: %@.";
+"error.sites.search.failed" = "Unable to search across sites. Error: %@.";
+"error.upload.failed" = "Uploading of the file failed. Error: %@.";
+"error.upload.addtags.failed" = "Adding tags to the file failed. Error: %@.";
 "error.tags.retrieve.failed" = "Failed to retrieve tags. Error: %@.";
-"error.login.failed" = "Login failed, please ensure your username and password are correct.";
+"error.login.failed" = "Login failed, please ensure your user name and password are correct.";
 "error.comments.retrieve.failed" = "Unable to retrieve comments. Error: %@";
 "error.add.comment.failed" = "Unable to add comment. Error: %@";
 "error.sites.unable.to.favorite" = "Unable to favorite %@";
@@ -119,15 +118,16 @@
 "error.sites.unable.to.cancel.request" = "Unable to cancel join request to %@";
 "error.sites.unable.to.leave" = "Unable to leave %@";
 "error.version.history.unable.to.retrieve" = "Unable to retrieve version history. Error: %@";
-"error.version.history.no.latest.version" = "Latest version of the document could not be found.";
-"error.alfresco.node.notfound" = "Document not found";
-// internet connection error
+"error.version.history.no.latest.version" = "Latest version of the file could not be found.";
+"error.alfresco.node.notfound" = "File not found";
+// Internet connection error
 "error.no.internet.access.title" = "A connection couldn't be made";
-"error.no.internet.access.message" = "Please check that you're connected to the internet and try again. You can still access your downloaded documents without having a connection.";
-"error.access.permissions.message" = "Please ensure that you have access rights for this operation";
-"error.retrieving.metadata" = "Metadata for %@ could not be retrieved.";
-// workflow
+"error.no.internet.access.message" = "Check that you're connected to the internet and try again. You can still access your downloaded files without having a connection.";
+"error.access.permissions.message" = "Check that you have access rights to do this";
+"error.retrieving.metadata" = "Properties for %@ could not be retrieved.";
+// Workflow
 "error.workflow.unable.to.complete.process" = "Unable to complete process on task. Error: %@";
+"error.workflow.unable.to.reassign.task" = "Unable to reassign task. Error: %@";
 
 /**
  * Custom error descriptions
@@ -175,7 +175,7 @@
 "accountdetails.placeholder.optional" = "Optional";
 "accountdetails.fields.email" = "Email";
 "accountdetails.placeholder.email" = "example@acme.com";
-"accountdetails.fields.hostname" = "Server Address";
+"accountdetails.fields.hostname" = "Hostname";
 "accountdetails.fields.description" = "Description";
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
@@ -211,12 +211,12 @@
  * Cloud Signup
  */
 "cloudsignup.title" = "Alfresco in the cloud";
-"accountdetails.fields.firstName" = "First Name";
-"accountdetails.fields.lastName" = "Last Name";
-"accountdetails.fields.username" = "Username";
+"accountdetails.fields.firstName" = "First name";
+"accountdetails.fields.lastName" = "Last name";
+"accountdetails.fields.username" = "User name";
 "accountdetails.fields.email" = "Email";
 "accountdetails.fields.password" = "Password";
-"accountdetails.fields.confirmPassword" = "Confirm Password";
+"accountdetails.fields.confirmPassword" = "Confirm password";
 "accountdetails.placeholder.password.requirement" = "6 characters min.";
 "cloudsignup.button.signup" = "Sign Up";
 "cloudsignup.footer.firstLine" = "By tapping Sign Up, you are agreeing to the";
@@ -262,12 +262,12 @@
  */
 "browser.actionsheet.addfolder" = "Create Folder";
 "browser.actionsheet.upload" = "Upload";
-"browser.actionsheet.upload.existingPhotos" = "Choose Photos";
-"browser.actionsheet.upload.existingPhotosOrVideos" = "Choose Photos or Videos";
-"browser.actionsheet.upload.documents" = "Choose Document";
+"browser.actionsheet.upload.existingPhotos" = "Select Photos";
+"browser.actionsheet.upload.existingPhotosOrVideos" = "Select Photos or Videos";
+"browser.actionsheet.upload.documents" = "Choose Local File";
 "browser.actionsheet.takephoto" = "Take Photo";
 "browser.actionsheet.takephotovideo" = "Take Photo or Video";
-"browser.actionsheet.createfile" = "Create A File";
+"browser.actionsheet.createfile" = "Create File";
 
 "browser.alertview.addfolder.title" = "Create Folder";
 "browser.alertview.addfolder.message" = "Create folder with the name:";
@@ -280,10 +280,10 @@
  */
 "multiselect.button.delete" = "Delete";
 "multiselect.button.delete.counter" = "Delete (%u)";
-"multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 item from the server?";
-"multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d items from the server?";
-"multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 item from local files?";
-"multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d items from local files?";
+"multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 file from the server?";
+"multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d files from the server?";
+"multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 file from local files?";
+"multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d files from local files?";
 
 /**
  * Node Picker
@@ -292,18 +292,17 @@
 "nodes.picker.list.title" = "Attachments";
 "nodes.picker.list.attachments.section.title" = "Selected Attachments";
 "nodes.picker.list.attachments.section.footer" = "Swipe to delete";
-"nodes.picker.button.select.documents" = "Select Document(s)";
-"nodes.picker.button.select.documents.counter" = "Select %u Document(s)";
+"nodes.picker.button.select.documents" = "Select File(s)";
+"nodes.picker.button.select.documents.counter" = "Select %u File(s)";
 "nodes.picker.button.deselectAll" = "Deselect All";
 "nodes.picker.button.deselectAll.counter" = "Deselect All";
 "nodes.picker.button.select.folder" = "Select this folder";
 "nodes.picker.button.select.folder.counter" = "Select this folder";
-"nodes.picker.scope.title" = "Nodes Picker Scope";
 
 /**
  * People Picker
  */
-"people.picker.title" = "Choose assignee";
+"people.picker.title" = "Select Assignee";
 "people.picker.assignees.select" = "Select assignees...";
 "people.picker.assignee.select" = "Select assignee...";
 "people.picker.list.title" = "Assignees";
@@ -316,7 +315,7 @@
  * About View Controller
  */
 "about.title" = "About";
-"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the cloud and Alfresco on premise servers (3.4.8 and above) to provide safe access to your corporate documents on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
+"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the cloud and Alfresco on-premise servers (3.4.8 and above) to provide safe access to your corporate files on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
 "about.version.number" = "Version: %@ (%@)";
 "about.build.date.time" = "Build Date: %s %s";
 
@@ -333,7 +332,7 @@
  * Upload Form Controller
  */
 "upload.photo.title" = "Upload Image";
-"upload.document.title" = "Upload Document";
+"upload.document.title" = "Upload File";
 "upload.video.title" = "Upload Video";
 "upload.audio.title" = "Upload Audio";
 "upload.photo.namecell.title" = "Name";
@@ -342,7 +341,7 @@
 "upload.photo.photocell.title" = "Photo";
 "upload.photo.qualitycell.title" = "Quality";
 "upload.photo.tagscell.title" = "Tags";
-"upload.documentTitleCell.label" = "Document";
+"upload.documentTitleCell.label" = "File";
 "upload.videoTitleCell.label" = "Video";
 "upload.default.video.name" = "Video %@";
 // audio
@@ -351,12 +350,12 @@
 "upload.audio.cell.button.play" = "Play";
 "upload.audio.cell.button.stop" = "Stop";
 "upload.audio.setting.disabled.title" = "Permissions";
-"upload.audio.setting.disabled.message" = "This app does not have permission to access the microphone.\n\nThis permission level can be toggled from Settings -> Privacy -> Microphone.";
+"upload.audio.setting.disabled.message" = "This app does not have permission to access the microphone.\n\nChange this in Settings -> Privacy -> Microphone.";
 // confirmation
 "upload.confirm.dismissal.title" = "Unsaved Content";
 "upload.confirm.dismissal.message" = "Do you want to upload this content? Your content will be lost if you don't upload now.";
 "upload.confirm.dismissal.cancel" = "Don't Upload";
-"upload.success-as.message" = "Document uploaded as %@";
+"upload.success-as.message" = "File uploaded as %@";
 
 /**
  * Tag Selection Controller
@@ -372,7 +371,7 @@
  * Document Node Preview Controller
  */
 "document.segment.preview.title" = "Preview";
-"document.segment.metadata.title" = "Metadata";
+"document.segment.metadata.title" = "Properties";
 "document.segment.version.history.title" = "History";
 "document.segment.nocomments.title" = "Comments";
 "document.segment.comments.title" = "Comments (%d)";
@@ -381,7 +380,7 @@
 /**
  * Downloads Document Preview Controller
  */
-"document.segment.repository.metadata.title" = "Repository Metadata";
+"document.segment.repository.metadata.title" = "Repository Properties";
 
 /**
  * Document Preview Controller
@@ -397,12 +396,14 @@
  */
 "login.title" = "Login";
 "login.server.cell.label" = "Server";
-"login.username.cell.label" = "Username";
-"login.username.textfield.placeholder" = "Username";
+"login.username.cell.label" = "User name";
+"login.username.textfield.placeholder" = "User name";
 "login.password.cell.label" = "Password";
 "login.password.textfield.placeholder" = "Password";
 "login.hud.label" = "Connecting...";
 "login.hud.cancel.label" = "Tap to cancel";
+"login.host.unreachable.title" = "Connection Error";
+"login.host.unreachable.message" = "Your hostname value seems to be wrong or you may need to activate your VPN. Please check your account settings.";
 
 /**
  * Download View Controller
@@ -415,9 +416,9 @@
  */
 "download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "There is already a local file with the same name. Do you want to overwrite the existing one?";
-"download.success.message" = "Document Saved";
-"download.success-as.message" = "Document Saved as %@";
-"download.failure.message" = "Failed to save the document";
+"download.success.message" = "File Saved";
+"download.success-as.message" = "File Saved as %@";
+"download.failure.message" = "Failed to save the file";
 "download.delete.failure.message" = "Failed to delete local file";
 
 /**
@@ -495,8 +496,8 @@
 "createtextfile.dismiss.confirmation.message" = "Are you sure you want to cancel the creation of this text file?\n\nPlease not, all work will be discarded.";
 "document.edit.button.discard" = "Discard Changes";
 "document.edit.button.save" = "Save";
-"document.edit.failed.title" = "Save Document";
-"document.edit.savefailed.message" = "Could not save document on the server. Do you want to save the document to your Downloads?";
+"document.edit.failed.title" = "Save File";
+"document.edit.savefailed.message" = "Could not save file on the server. Do you want to save the file to your Local Files?";
 "document.edit.dismiss.confirmation.message" = "Are you sure you want to cancel changes made to the file?";
 
 /**
@@ -539,16 +540,18 @@
 "task.details.section.header.attachments" = "Attachments";
 "task.details.section.header.tasks" = "Tasks";
 "task.reassign.button.title" = "Reassign";
+"task.reassign.success.message" = "Task Reassigned";
 "task.transition.approve" = "Approve";
 "task.transition.reject" = "Reject";
 "task.transition.done" = "Done";
+"task.completed.success.message" = "Task Completed";
 
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task %@";
 "tasks.cell.tasknotcompleted" = "%@ has not completed this task";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "New Task";
-"tasks.process.activitiParallelReview" = "Send Document(s) For Review";
+"tasks.process.activitiParallelReview" = "Send File(s) For Review";
 "tasks.process.activitiReview" = "Review And Approve";
 "tasks.process.jbpm$wf:adhoc" = "Adhoc Workflow";
 "tasks.process.jbpm$wf:parallelreview" = "Parallel Review And Approve";
@@ -558,10 +561,10 @@
  * Create Tasks
  */
 "task.choose.task.type.title" = "Choose task type";
-"task.type.workflow.todo" = "Todo";
+"task.type.workflow.todo" = "To do";
 "task.type.workflow.review.and.approve" = "Review & Approve";
 "task.type.workflow.todo.footer" = "Assign a task to a person.";
-"task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve documents.";
+"task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve files.";
 
 "task.create.title" = "Create Task";
 "task.create.button" = "Create";
@@ -595,7 +598,9 @@
 "settings.title" = "Settings";
 "settings.general.title" = "General";
 "settings.sync.on.cellular" = "Cellular Sync";
+"settings.sync.on.cellular.description" = "Switch off to only sync favorite content when you have a Wi-Fi connection.";
 "settings.send.diagnostics" = "Send Diagnostics";
+"settings.send.diagnostics.description" = "To help us improve Alfresco Mobile, we collect anonymous technical diagnostic data. Switch off if preferred.";
 
 /**
  * Onboarding View Controller
@@ -609,7 +614,7 @@
  */
 "action.email" = "Email";
 "action.emailAsLink" = "Email Link";
-"action.open.in" = "Open In";
+"action.open.in" = "Open in...";
 "action.like" = "Like";
 "action.unlike" = "Unlike";
 "action.favourite" = "Favorite";
@@ -624,7 +629,7 @@
 "action.edit" = "Edit";
 // alerts
 "action.rename.alert.title" = "Rename";
-"action.rename.alert.message" = "Rename document to:";
+"action.rename.alert.message" = "Rename file to:";
 "action.rename.success.title" = "Rename Successful";
 "action.rename.success.message" = "Successfully renamed %@ to %@.";
 "action.subfolder.success.title" = "Added Subfolder";
@@ -632,7 +637,7 @@
 "action.subfolder.failure.title" = "Unable to create subfolder";
 "action.delete" = "Delete";
 "action.delete.confirmation.title" = "Delete Confirmation";
-"action.delete.confirmation.message" = "Are you sure you want to delete this document?";
+"action.delete.confirmation.message" = "Are you sure you want to delete this file?";
 "action.delete.success.title" = "Delete Successful";
 "action.delete.success.message" = "Successfully deleted %@.";
 "action.delete.success.message.sync" = "Successfully deleted %@, Copy is saved to Local Files";
@@ -643,7 +648,7 @@
  * SaveBack
  */
 "saveback.hud.message" = "Saving...";
-"saveback.saved.successfully.message" = "The document %@ was successfully saved.";
+"saveback.saved.successfully.message" = "The file %@ was successfully saved.";
 "saveback.failed.title" = "Save back Failed";
 "saveback.failed.message" = "The attempt to save back %@ failed. Would you like to retry?";
 "saveback.completed.title" = "Save back Completed";

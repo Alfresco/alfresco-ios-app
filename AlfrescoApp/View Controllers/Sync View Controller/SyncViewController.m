@@ -26,6 +26,7 @@
 #import "FolderPreviewViewController.h"
 #import "LoginManager.h"
 #import "DownloadsDocumentPreviewViewController.h"
+#import "SyncNavigationViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
@@ -53,6 +54,18 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
                                                  selector:@selector(siteRequestsCompleted:)
                                                      name:kAlfrescoSiteRequestsCompletedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didAddNodeToFavourites:)
+                                                     name:kFavouritesDidAddNodeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didRemoveNodeFromFavourites:)
+                                                     name:kFavouritesDidRemoveNodeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentDeleted:)
+                                                     name:kAlfrescoDocumentDeletedOnServerNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -63,6 +76,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 	
     if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
         self.didSyncAfterSessionRefresh = YES;
     }
@@ -73,6 +87,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     
     self.title = [self listTitle];
+    [self adjustTableViewForProgressView];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
@@ -80,18 +95,6 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didAddNodeToFavourites:)
-                                                 name:kFavouritesDidAddNodeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didRemoveNodeFromFavourites:)
-                                                 name:kFavouritesDidRemoveNodeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(documentDeleted:)
-                                                 name:kAlfrescoDocumentDeletedOnServerNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didUpdatePreference:)
@@ -104,6 +107,10 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(nodeAdded:)
                                                  name:kAlfrescoNodeAddedOnServerNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adjustTableViewForProgressView)
+                                                 name:kSyncProgressViewVisiblityChangeNotification
                                                object:nil];
 }
 
@@ -176,6 +183,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     self.session = session;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     self.didSyncAfterSessionRefresh = NO;
+    self.title = [self listTitle];
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     if (![[SyncManager sharedManager] isFirstUse])
@@ -310,7 +318,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     
     if (node.isFolder)
     {
-        nodeCell.image.image = smallImageForType(@"folder");
+        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
     }
     else if (node.isDocument)
     {
@@ -324,12 +332,15 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         }
         else
         {
-            UIImage *placeholderImage = smallImageForType([document.name pathExtension]);
-            nodeCell.image.image = placeholderImage;
+            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    [nodeCell.image setImage:image withFade:YES];
+                    AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    if (updateCell)
+                    {
+                        [updateCell.image setImage:image withFade:YES];
+                    }
                 }
             }];
         }
@@ -368,6 +379,12 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     }
     else
     {
+        if (nodeStatus.status == SyncStatusLoading)
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            return;
+        }
+        
         NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
@@ -394,13 +411,8 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
             previewController.hidesBottomBarWhenPushed = YES;
             [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
-        else
+        else if ([[ConnectivityManager sharedManager] hasInternetConnection])
         {
-            if (nodeStatus.status == SyncStatusLoading)
-            {
-                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                return;
-            }
             [self showHUD];
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 
@@ -596,6 +608,22 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     {
         AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
         [self addAlfrescoNodes:@[subnode] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (void)adjustTableViewForProgressView
+{
+    id navigationController = self.navigationController;
+    if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
+    {
+        SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
+        
+        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+        if ([syncNavigationController isProgressViewVisible])
+        {
+            edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
+        }
+        self.tableView.contentInset = edgeInset;
     }
 }
 

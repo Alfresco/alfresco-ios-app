@@ -17,6 +17,7 @@
 + (UIColor *)textDimmedColor;
 + (UIColor *)textDefaultColor;
 + (UIColor *)documentActionsTintColor;
++ (UIColor *)documentActionsHighlightColor;
 + (UIColor *)syncButtonFailedColor;
 + (UIColor *)borderGreyColor;
 + (UIColor *)systemNoticeInformationColor;

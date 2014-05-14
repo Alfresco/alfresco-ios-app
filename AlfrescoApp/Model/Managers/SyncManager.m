@@ -26,6 +26,8 @@ static NSUInteger const kSyncMaxConcurrentOperations = 2;
 
 static NSString * const kSyncProgressSizeKey = @"syncProgressSize";
 
+static NSUInteger const kSyncOperationCancelledErrorCode = 1800;
+
 /*
  * Sync Obstacle keys
  */
@@ -815,6 +817,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     else
     {
         [topLevelSyncNodes addObject:node];
+        if (completionBlock != NULL)
+        {
+            completionBlock(YES);
+        }
     }
 }
 
@@ -842,7 +848,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             {
                 nodeStatus.totalSize = 0;
                 nodeStatus.status = SyncStatusRemoved;
-                [self.syncNodesStatus removeObjectForKey:[self.syncHelper syncIdentifierForNode:node]];
             }
             else
             {
@@ -966,7 +971,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             nodeStatus.status = SyncStatusFailed;
             nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
             
-            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:[self selectedAccountIdentifier] ifNotExistsCreateNew:YES inManagedObjectContext:nil];
+            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document]
+                                                                     inAccountWithId:[self selectedAccountIdentifier]
+                                                                ifNotExistsCreateNew:YES
+                                                              inManagedObjectContext:nil];
             syncError.errorCode = @(error.code);
             syncError.errorDescription = [error localizedDescription];
             
@@ -1092,6 +1100,17 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     [self.syncOperations removeObjectForKey:syncDocumentIdentifier];
     nodeStatus.status = SyncStatusFailed;
     
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:syncDocumentIdentifier
+                                                                  inAccountWithId:[self selectedAccountIdentifier]
+                                                           inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:syncDocumentIdentifier
+                                                             inAccountWithId:[self selectedAccountIdentifier]
+                                                        ifNotExistsCreateNew:YES
+                                                      inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    syncError.errorCode = @(kSyncOperationCancelledErrorCode);
+    nodeInfo.syncError = syncError;
+    [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+    
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     self.totalSyncSize -= nodeStatus.totalSize;
     self.syncProgressSize -= nodeStatus.bytesTransfered;
@@ -1102,20 +1121,31 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 {
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
     
-    self.totalSyncSize += document.contentLength;
-    [self notifyProgressDelegateAboutCurrentProgress];
-    
-    if (nodeStatus.activityType == SyncActivityTypeDownload)
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-            [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-        }];
+        self.totalSyncSize += document.contentLength;
+        [self notifyProgressDelegateAboutCurrentProgress];
+        
+        if (nodeStatus.activityType == SyncActivityTypeDownload)
+        {
+            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+                [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            }];
+        }
+        else
+        {
+            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
+                [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+            }];
+        }
     }
     else
     {
-        [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
-            [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-        }];
+        if (nodeStatus.activityType != SyncActivityTypeDownload)
+        {
+            nodeStatus.status = SyncStatusWaiting;
+            nodeStatus.activityType = SyncActivityTypeUpload;
+        }
     }
 }
 
@@ -1200,7 +1230,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                     selectedAccount.didAskToSync = YES;
                                     selectedAccount.isSyncOn = !isCancelButton;
                                     [accountManager saveAccountsToKeychain];
-                                    
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:selectedAccount];
                                     completionBlock(YES);
                                 }];
     }
@@ -1249,6 +1279,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (checkIfModified && nodeStatus.activityType != SyncActivityTypeUpload)
                 {
+                    SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node]
+                                                                             inAccountWithId:[self selectedAccountIdentifier]
+                                                                        ifNotExistsCreateNew:NO
+                                                                      inManagedObjectContext:nil];
+                    if (syncError || (nodeInfo.syncContentPath == nil))
+                    {
+                        nodeStatus.status = SyncStatusFailed;
+                    }
                     BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inManagedObjectContext:privateManagedObjectContext];
                     if (isModifiedLocally)
                     {

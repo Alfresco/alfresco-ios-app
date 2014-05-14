@@ -161,7 +161,6 @@
     
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
-    [items addObject:[ActionCollectionItem downloadItem]];
     
     if ([self.session isKindOfClass:[AlfrescoRepositorySession class]])
     {
@@ -169,6 +168,11 @@
         [items addObject:[ActionCollectionItem sendForReview]];
     }
 
+    if (self.documentPermissions.canComment)
+    {
+        [items addObject:[ActionCollectionItem commentItem]];
+    }
+    
     if (self.documentPermissions.canEdit)
     {
        NSArray *editableDocumentExtensions = [kEditableDocumentExtensions componentsSeparatedByString:@","];
@@ -182,13 +186,10 @@
        }
     }
     
-    if (self.documentPermissions.canComment)
-    {
-        [items addObject:[ActionCollectionItem commentItem]];
-    }
-    
     if (!isRestricted)
     {
+        [items addObject:[ActionCollectionItem openInItem]];
+
         if ([MFMailComposeViewController canSendMail])
         {
             [items addObject:[ActionCollectionItem emailItem]];
@@ -198,9 +199,9 @@
         {
             [items addObject:[ActionCollectionItem printItem]];
         }
-        
-        [items addObject:[ActionCollectionItem openInItem]];
     }
+    
+    [items addObject:[ActionCollectionItem downloadItem]];
     
     if (self.documentPermissions.canDelete)
     {

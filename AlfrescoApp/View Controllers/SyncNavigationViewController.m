@@ -111,6 +111,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         }];
         
         self.isProgressViewShowing = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:nil];
     }
 }
 
@@ -131,19 +132,37 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         }];
         
         self.isProgressViewShowing = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:nil];
     }
 }
 
 - (void)updateProgressDetails
 {
-    NSString *progressText = self.numberOfSyncOperations == 1 ? NSLocalizedString(@"sync.items.singular", @"item") : NSLocalizedString(@"sync.items.plural", @"items");
     NSString *leftToUpload = stringForLongFileSize(self.totalSyncSize - self.syncedSize);
-    float percentTransfered = (float)self.syncedSize / (float)self.totalSyncSize;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.progressView.progressInfoLabel.text =[NSString stringWithFormat:NSLocalizedString(@"sync.progress.label", @"Syncing %d %@, %@ left"), self.numberOfSyncOperations, progressText, leftToUpload];
-        self.progressView.progressBar.progress = percentTransfered;
+        if (self.numberOfSyncOperations == 1)
+        {
+            self.progressView.progressInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"sync.progress.label.singular", @"1 file, %@ left"), leftToUpload];
+        }
+        else
+        {
+            self.progressView.progressInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"sync.progress.label.plural", @"%d file, %@ left"), self.numberOfSyncOperations, leftToUpload];
+        }
+        self.progressView.progressBar.progress = (float)self.syncedSize / (float)self.totalSyncSize;
     });
+}
+
+#pragma mark - Public Methods
+
+- (BOOL)isProgressViewVisible
+{
+    return self.isProgressViewShowing;
+}
+
+- (CGFloat)progressViewHeight
+{
+    return self.progressView.frame.size.height;
 }
 
 @end

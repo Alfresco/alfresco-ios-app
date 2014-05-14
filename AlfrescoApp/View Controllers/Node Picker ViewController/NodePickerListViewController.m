@@ -135,19 +135,22 @@ static NSInteger const kDefaultNumberOfRows = 1;
             }
             else
             {
-                UIImage *placeholderImage = smallImageForType([node.name pathExtension]);
-                customCell.thumbnail.image = placeholderImage;
+                [customCell.thumbnail setImage:smallImageForType([node.name pathExtension]) withFade:NO];
                 [[ThumbnailManager sharedManager] retrieveImageForDocument:(AlfrescoDocument *)node renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                     if (image)
                     {
-                        [customCell.thumbnail setImage:image withFade:YES];
+                        NodePickerListCell *updateCell = (NodePickerListCell *)[tableView cellForRowAtIndexPath:indexPath];
+                        if (updateCell)
+                        {
+                            [updateCell.thumbnail setImage:image withFade:YES];
+                        }
                     }
                 }];
             }
         }
         else
         {
-            customCell.thumbnail.image = smallImageForType(@"folder");
+            [customCell.thumbnail setImage:smallImageForType(@"folder") withFade:NO];
         }
         customCell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell = customCell;

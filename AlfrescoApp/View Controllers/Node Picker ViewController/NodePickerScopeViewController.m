@@ -172,7 +172,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     MainMenuItem *currentItem = self.tableViewData[indexPath.row];
     cell.label.text = NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title");
     cell.thumbnail.tintColor = [UIColor appTintColor];
-    cell.thumbnail.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [cell.thumbnail setImage:[[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] withFade:NO];
     
     return cell;
 }
