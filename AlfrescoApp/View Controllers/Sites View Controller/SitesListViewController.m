@@ -329,20 +329,30 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)setExpandedCellIndexPath:(NSIndexPath *)expandedCellIndexPath
 {
     NSMutableArray *indexPaths = [NSMutableArray new];
-    SitesCell *siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:_expandedCellIndexPath];
-    if (siteCell)
+    SitesCell *siteCell;
+
+    if (self.expandedCellIndexPath)
     {
-        [indexPaths addObject:_expandedCellIndexPath];
-        [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+        // Start collapsing an existing expanded cell
+        siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:_expandedCellIndexPath];
+        if (siteCell)
+        {
+            [indexPaths addObject:_expandedCellIndexPath];
+            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+        }
     }
     
     _expandedCellIndexPath = expandedCellIndexPath;
     
-    siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:expandedCellIndexPath];
-    if (siteCell)
+    if (expandedCellIndexPath)
     {
-        [indexPaths addObject:expandedCellIndexPath];
-        [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:M_PI];
+        // Start expanding the new cell
+        siteCell = (SitesCell *)[self.tableView cellForRowAtIndexPath:expandedCellIndexPath];
+        if (siteCell)
+        {
+            [indexPaths addObject:expandedCellIndexPath];
+            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:M_PI];
+        }
     }
     
     if (indexPaths.count > 0)
