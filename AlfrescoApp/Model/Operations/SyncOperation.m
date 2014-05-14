@@ -118,6 +118,8 @@
 
 - (void)dealloc
 {
+    [self cancelOperation];
+    
     self.documentFolderService = nil;
     self.document = nil;
     self.stream = nil;

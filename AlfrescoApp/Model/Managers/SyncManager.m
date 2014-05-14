@@ -119,6 +119,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock
 {
+    if (self.alfrescoSession != alfrescoSession)
+    {
+        [self cancelAllSyncOperations];
+    }
+    
     if (self.syncQueue.operationCount == 0)
     {
         self.alfrescoSession = alfrescoSession;
