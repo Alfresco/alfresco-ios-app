@@ -11,35 +11,22 @@
 
 @implementation UIViewController (Swizzled)
 
-- (void)presentViewController_swizzled:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
-{
-    [self presentViewController_swizzled:viewControllerToPresent animated:flag completion:completion];
-    
-    if (!IS_IPAD || viewControllerToPresent.modalPresentationStyle == UIModalPresentationFullScreen)
-    {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    }
-}
-
-- (void)dismissViewControllerAnimated_swizzled:(BOOL)flag completion:(void (^)(void))completion
-{
-    [self dismissViewControllerAnimated_swizzled:flag completion:completion];
-    
-    if (!IS_IPAD || self.modalPresentationStyle == UIModalPresentationFullScreen)
-    {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    }
-}
-
 + (void)load
 {
-    Method defaultPresentViewControllerMethod = class_getInstanceMethod(self, @selector(presentViewController:animated:completion:));
-    Method swizzledPresentViewControllerMethod = class_getInstanceMethod(self, @selector(presentViewController_swizzled:animated:completion:));
-    method_exchangeImplementations(defaultPresentViewControllerMethod, swizzledPresentViewControllerMethod);
+    Method defaultPreferredStatusBarStyleMethod = class_getInstanceMethod(self, @selector(preferredStatusBarStyle));
+    Method swizzledPreferredStatusBarStyleMethod = class_getInstanceMethod(self, @selector(preferredStatusBarStyle_swizzled));
+    method_exchangeImplementations(defaultPreferredStatusBarStyleMethod, swizzledPreferredStatusBarStyleMethod);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle_swizzled
+{
+    UIStatusBarStyle statusBarStyle = UIStatusBarStyleLightContent;
     
-    Method defaultDismissViewControllerAnimatedMethod = class_getInstanceMethod(self, @selector(dismissViewControllerAnimated:completion:));
-    Method swizzledDismissViewControllerAnimatedMethod = class_getInstanceMethod(self, @selector(dismissViewControllerAnimated_swizzled:completion:));
-    method_exchangeImplementations(defaultDismissViewControllerAnimatedMethod, swizzledDismissViewControllerAnimatedMethod);
+    if (self.presentedViewController == self && (!IS_IPAD || self.modalPresentationStyle == UIModalPresentationFullScreen))
+    {
+        statusBarStyle = UIStatusBarStyleDefault;
+    }
+    return statusBarStyle;
 }
 
 @end

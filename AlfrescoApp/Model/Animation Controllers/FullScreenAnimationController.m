@@ -48,19 +48,34 @@
     
     [containerView addSubview:toViewController.view];
     
+    // Ask the presented view controller if the status bar should be displayed
+    void (^checkAndCallIfStatusBarShouldBeDisplayed)(UIViewController *) = ^(UIViewController *controller) {
+        if ([controller conformsToProtocol:@protocol(FullScreenAnimationControllerProtocol)])
+        {
+            [controller setNeedsStatusBarAppearanceUpdate];
+        }
+        else
+        {
+            @throw ([NSException exceptionWithName:@"Protocol Conformance"
+                                            reason:[NSString stringWithFormat:@"View controllers that use %@ must conform to %@", NSStringFromClass([self class]), NSStringFromProtocol(@protocol(FullScreenAnimationControllerProtocol))]
+                                          userInfo:nil]);
+        }
+    };
+    
     if ([toViewController isKindOfClass:[UINavigationController class]])
     {
         ((UINavigationController *)toViewController).navigationBar.translucent = YES;
+        checkAndCallIfStatusBarShouldBeDisplayed([[(UINavigationController *)toViewController viewControllers] lastObject]);
     }
     else
     {
         toViewController.navigationController.navigationBar.translucent = YES;
+        checkAndCallIfStatusBarShouldBeDisplayed(toViewController);
     }
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     [UIView animateWithDuration:self.presentationSpeed delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         toViewController.view.alpha = 1.0f;
-        fromViewController.view.alpha = 0.6;
+        fromViewController.view.alpha = 0.6f;
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:YES];
     }];
@@ -75,8 +90,11 @@
         toViewController.view.alpha = 1.0f;
         fromViewController.view.alpha = 0.0f;
     } completion:^(BOOL finished) {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [transitionContext completeTransition:YES];
+        // Once the presented controller is dismissed, we ask the presenting controller if the statusbar should be displayed
+        [UIView animateWithDuration:0.1f animations:^{
+            [toViewController setNeedsStatusBarAppearanceUpdate];
+        }];
     }];
 }
 

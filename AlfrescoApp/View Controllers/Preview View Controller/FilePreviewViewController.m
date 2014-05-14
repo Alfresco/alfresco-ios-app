@@ -36,6 +36,7 @@ static CGFloat downloadProgressHeight;
 @property (nonatomic, assign) BOOL shouldLoadFromFileAndRunCompletionBlock;
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
 @property (nonatomic, copy) void (^loadingCompleteBlock)(UIWebView *webView, BOOL loadedIntoWebView);
+@property (nonatomic, assign) BOOL fullScreenMode;
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *previewThumbnailImageView;
@@ -147,6 +148,16 @@ static CGFloat downloadProgressHeight;
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    BOOL shouldHideStatusBar = NO;
+    if (self.fullScreenMode)
+    {
+        shouldHideStatusBar = YES;
+    }
+    return shouldHideStatusBar;
+}
+
 #pragma mark - IBOutlets
 
 - (IBAction)didPressCancelDownload:(id)sender
@@ -232,7 +243,8 @@ static CGFloat downloadProgressHeight;
         {
             presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil loadingCompletionBlock:nil];
         }
-        
+        presentationViewController.fullScreenMode = YES;
+        presentationViewController.useControllersPreferStatusBarHidden = YES;
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")

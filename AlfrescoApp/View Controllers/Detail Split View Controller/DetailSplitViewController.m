@@ -11,6 +11,7 @@
 #import "AccountManager.h"
 #import "UniversalDevice.h"
 
+static const CGFloat kStatusBarHeight = 20.0f;
 static const CGFloat kAnimationSpeed = 0.2f;
 
 @interface DetailSplitViewController () <UIGestureRecognizerDelegate>
@@ -43,15 +44,18 @@ static const CGFloat kAnimationSpeed = 0.2f;
     UIView *view = [[UIView alloc] initWithFrame:screenBounds];
     
     UIView *masterViewContainer = [[UIView alloc] initWithFrame:CGRectMake(screenBounds.origin.x,
-                                                                           screenBounds.origin.y,
+                                                                           screenBounds.origin.y + kStatusBarHeight,
                                                                            kRevealControllerMasterViewWidth,
-                                                                           screenBounds.size.height)];
+                                                                           screenBounds.size.height - kStatusBarHeight)];
     masterViewContainer.autoresizesSubviews = YES;
     masterViewContainer.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [view addSubview:masterViewContainer];
     self.masterViewContainer = masterViewContainer;
     
-    UIView *detailViewContainer = [[UIView alloc] initWithFrame:screenBounds];
+    UIView *detailViewContainer = [[UIView alloc] initWithFrame:CGRectMake(screenBounds.origin.x,
+                                                                           screenBounds.origin.y + kStatusBarHeight,
+                                                                           screenBounds.size.width,
+                                                                           screenBounds.size.height - kStatusBarHeight)];
     detailViewContainer.autoresizesSubviews = YES;
     detailViewContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     detailViewContainer.backgroundColor = [UIColor lightGrayColor];
