@@ -20,7 +20,6 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
-#import "FolderPreviewViewController.h"
 
 #import "FailedTransferDetailViewController.h"
 
@@ -498,8 +497,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
             if (permissions)
             {
-                FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)selectedNode permissions:permissions session:self.session];
-                [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+                [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)selectedNode
+                                                                             permissions:permissions
+                                                                                 session:self.session
+                                                                    navigationController:self.navigationController
+                                                                                animated:YES];
             }
             else
             {

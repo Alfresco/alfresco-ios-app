@@ -23,7 +23,6 @@
 #import "PreferenceManager.h"
 #import "ConnectivityManager.h"
 #import "FileFolderListViewController.h"
-#import "FolderPreviewViewController.h"
 #import "LoginManager.h"
 #import "DownloadsDocumentPreviewViewController.h"
 #import "SyncNavigationViewController.h"
@@ -465,16 +464,22 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
             AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:node];
             if (syncNodePermissions)
             {
-                FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node permissions:syncNodePermissions session:self.session];
-                [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+                [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
+                                                                             permissions:syncNodePermissions
+                                                                                 session:self.session
+                                                                    navigationController:self.navigationController
+                                                                                animated:YES];
             }
             else
             {
                 [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                     if (permissions)
                     {
-                        FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node permissions:permissions session:self.session];
-                        [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+                        [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
+                                                                                     permissions:permissions
+                                                                                         session:self.session
+                                                                            navigationController:self.navigationController
+                                                                                        animated:YES];
                     }
                     else
                     {

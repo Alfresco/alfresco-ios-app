@@ -241,6 +241,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     {
         segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
     }
+    else if (commentDisplayedCount == 0)
+    {
+        segmentCommentText = NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title");
+    }
     else
     {
         segmentCommentText = [self.segmentControl titleForSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
@@ -270,6 +274,32 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 - (void)hideProgressIndicator
 {
     [self hideHUD];
+}
+
+#pragma mark - NodeUpdatableProtocol Function Implementation
+
+- (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+{
+    self.folder = (AlfrescoFolder *)node;
+    self.permissions = permissions;
+    self.session = session;
+    
+    self.title = node.name;
+    
+    self.actionHandler.node = node;
+    self.actionHandler.session = session;
+    
+    [self setupActionCollectionView];
+    [self updateActionButtons];
+    
+    for (UIViewController *pagingController in self.pagingControllers)
+    {
+        if ([pagingController conformsToProtocol:@protocol(NodeUpdatableProtocol)])
+        {
+            UIViewController<NodeUpdatableProtocol> *conformingController = (UIViewController<NodeUpdatableProtocol> *)pagingController;
+            [conformingController updateToAlfrescoNode:node permissions:permissions session:session];
+        }
+    }
 }
 
 @end

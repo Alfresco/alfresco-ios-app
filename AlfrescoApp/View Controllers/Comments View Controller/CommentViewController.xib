@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentViewController">
             <connections>
                 <outlet property="addCommentContainerView" destination="Rag-u7-uCY" id="IfO-gP-a9L"/>
+                <outlet property="addCommentContainerViewHeightConstraint" destination="5pN-JO-LdT" id="UTW-Wp-R75"/>
                 <outlet property="addCommentTextView" destination="RZv-md-4XZ" id="AuM-e0-aNg"/>
                 <outlet property="postCommentButton" destination="GJC-wF-92f" id="QCp-9g-AV0"/>
                 <outlet property="tableView" destination="27y-fM-wub" id="GlS-57-Vdr"/>
@@ -19,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rag-u7-uCY">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rag-u7-uCY" userLabel="Comment View Container">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -52,6 +53,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="5pN-JO-LdT"/>
                         <constraint firstItem="RZv-md-4XZ" firstAttribute="top" secondItem="Rag-u7-uCY" secondAttribute="top" constant="8" id="C1T-IA-WZ8"/>
                         <constraint firstAttribute="bottom" secondItem="GJC-wF-92f" secondAttribute="bottom" constant="8" id="EeQ-oX-dx3"/>
                         <constraint firstItem="RZv-md-4XZ" firstAttribute="leading" secondItem="Rag-u7-uCY" secondAttribute="leading" constant="10" id="JBc-hZ-1WM"/>

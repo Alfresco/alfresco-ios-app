@@ -18,6 +18,9 @@
 
 @interface ActionViewHandler : NSObject
 
+@property (nonatomic, strong) AlfrescoNode *node;
+@property (nonatomic, strong) id<AlfrescoSession> session;
+
 - (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session controller:(UIViewController *)controller;
 - (AlfrescoRequest *)pressedLikeActionItem:(ActionCollectionItem *)actionItem;
 - (AlfrescoRequest *)pressedUnlikeActionItem:(ActionCollectionItem *)actionItem;

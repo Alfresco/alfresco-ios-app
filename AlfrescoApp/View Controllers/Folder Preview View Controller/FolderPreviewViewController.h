@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NodeUpdatableProtocol.h"
 
-@interface FolderPreviewViewController : UIViewController
+@interface FolderPreviewViewController : UIViewController <NodeUpdatableProtocol>
 
 - (instancetype)initWithAlfrescoFolder:(AlfrescoFolder *)folder permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
 

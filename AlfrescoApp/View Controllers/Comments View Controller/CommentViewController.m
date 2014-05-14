@@ -12,18 +12,24 @@
 #import "AvatarManager.h"
 #import "TextView.h"
 
-
 static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
 @interface CommentViewController () <TextViewDelegate>
 
+// NSLayoutConstarints
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *addCommentContainerViewHeightConstraint;
+
+// Data Model
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) AlfrescoPermissions *permissions;
 @property (nonatomic, strong) AlfrescoCommentService *commentService;
+@property (nonatomic, assign) CGFloat addCommentContainerViewHeight;
+@property (nonatomic, weak, readwrite) id<CommentViewControllerDelegate> delegate;
+
+// Views
 @property (nonatomic, weak) IBOutlet UIView *addCommentContainerView;
 @property (nonatomic, weak) IBOutlet TextView *addCommentTextView;
 @property (nonatomic, weak) IBOutlet UIButton *postCommentButton;
-@property (nonatomic, weak, readwrite) id<CommentViewControllerDelegate> delegate;
 
 @end
 
@@ -55,15 +61,10 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     self.title = NSLocalizedString(@"comments.title", @"Comments");
     self.tableView.emptyMessage = NSLocalizedString(@"comments.empty", @"No Comments");
     
-    if (!self.permissions.canComment)
-    {
-        [self.view removeConstraints:self.view.constraints];
-        [self.addCommentContainerView removeFromSuperview];
-        UITableView *tableView = self.tableView;
-        NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|" options:NSLayoutFormatAlignAllTop | NSLayoutFormatAlignAllBottom metrics:nil views:views]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
-    }
+    // save the actual height for future use
+    self.addCommentContainerViewHeight = self.addCommentContainerViewHeightConstraint.constant;
+
+    [self updateCommentsContainerViewHeightForNode:self.node];
 
     [self showHUD];
     [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
@@ -86,6 +87,18 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     self.addCommentTextView.font = [UIFont systemFontOfSize:12.0f];
     
     [self localiseUI];
+}
+
+- (void)updateCommentsContainerViewHeightForNode:(AlfrescoNode *)node
+{
+    if (!self.permissions.canComment)
+    {
+        self.addCommentContainerViewHeightConstraint.constant = 0.0f;
+    }
+    else
+    {
+        self.addCommentContainerViewHeightConstraint.constant = self.addCommentContainerViewHeight;
+    }
 }
 
 #pragma mark - Private Functions
@@ -328,6 +341,29 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 - (void)textViewHeightDidChange:(TextView *)textView
 {
     [self.view sizeToFit];
+}
+
+#pragma mark - NodeUpdatableProtocal Function Implementation
+
+- (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session
+{
+    self.node = node;
+    self.permissions = permissions;
+    self.session = session;
+    
+    [self showHUD];
+    [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self hideHUD];
+        if (pagingResult)
+        {
+            [self reloadTableViewWithPagingResult:pagingResult error:error];
+        }
+        else
+        {
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.comments.retrieve.failed", @"Comment retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
+        }
+    }];
 }
 
 @end

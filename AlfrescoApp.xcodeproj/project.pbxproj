@@ -1166,6 +1166,7 @@
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73B95B1F17A6AE860099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73BA7CBD191D1F5100E866E3 /* AlfrescoCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlfrescoCache.xcdatamodel; sourceTree = "<group>"; };
+		73BA7CC01923A9E000E866E3 /* NodeUpdatableProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeUpdatableProtocol.h; sourceTree = "<group>"; };
 		73BE41EA18F2AFF500DB8912 /* DocumentPreviewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreviewManager.h; sourceTree = "<group>"; };
 		73BE41EB18F2AFF500DB8912 /* DocumentPreviewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreviewManager.m; sourceTree = "<group>"; };
 		73BE41F118F3FCF000DB8912 /* actionsheet-review.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-review.png"; sourceTree = "<group>"; };
@@ -2502,6 +2503,7 @@
 				080A812D18573AD700B79306 /* DocumentFilter.h */,
 				276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */,
 				73B957E017A6750E0099FB84 /* ItemInDetailViewProtocol.h */,
+				73BA7CC01923A9E000E866E3 /* NodeUpdatableProtocol.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

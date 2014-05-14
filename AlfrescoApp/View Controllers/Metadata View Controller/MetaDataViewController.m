@@ -303,4 +303,12 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     return (self.node) ? self.node.identifier : nil;
 }
 
+#pragma mark - NodeUpdatableProtocal Function Implementation
+
+- (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+{
+    self.node = node;
+    [self.tableView reloadData];
+}
+
 @end

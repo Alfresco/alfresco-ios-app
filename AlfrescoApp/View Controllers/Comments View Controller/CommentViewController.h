@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
+#import "NodeUpdatableProtocol.h"
 
-@class AlfrescoNode;
-@class AlfrescoPermissions;
 @class CommentViewController;
 
 @protocol CommentViewControllerDelegate <NSObject>
@@ -19,7 +18,7 @@
 
 @end
 
-@interface CommentViewController : ParentListViewController
+@interface CommentViewController : ParentListViewController <NodeUpdatableProtocol>
 
 @property (nonatomic, weak, readonly) id<CommentViewControllerDelegate> delegate;
 
