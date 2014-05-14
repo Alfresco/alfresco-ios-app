@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
 #import "ItemInDetailViewProtocol.h"
+#import "NodeUpdatableProtocol.h"
 
-@class AlfrescoNode;
-
-@interface MetaDataViewController : ParentListViewController <ItemInDetailViewProtocol>
+@interface MetaDataViewController : ParentListViewController <ItemInDetailViewProtocol, NodeUpdatableProtocol>
 
 @property (nonatomic, strong) AlfrescoNode *node;
 

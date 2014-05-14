@@ -33,9 +33,7 @@
 @property (nonatomic, weak) UIViewController<ActionViewDelegate> *controller;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoRatingService *ratingService;
-@property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
-@property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) NSMutableArray *queuedCompletionBlocks;
 @property (nonatomic, assign) InAppDocumentLocation documentLocation;

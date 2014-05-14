@@ -14,8 +14,47 @@
 #import "PlaceholderViewController.h"
 #import "ContainerViewController.h"
 #import "SwitchViewController.h"
+#import "FolderPreviewViewController.h"
+#import "DocumentPreviewViewController.h"
+
+static FolderPreviewViewController *folderPreviewController;
+static DocumentPreviewViewController *documentPreviewController;
 
 @implementation UniversalDevice
+
++ (void)pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)folder
+                                                    permissions:(AlfrescoPermissions *)permissions
+                                                        session:(id<AlfrescoSession>)session
+                                           navigationController:(UINavigationController *)navigationController
+                                                       animated:(BOOL)animated
+{
+    if (folderPreviewController != nil && [self controllerDisplayedInDetailNavigationController] == folderPreviewController)
+    {
+        [folderPreviewController updateToAlfrescoNode:folder permissions:permissions session:session];
+    }
+    else
+    {
+        if (folderPreviewController == nil)
+        {
+            folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:folder permissions:permissions session:session];
+        }
+        else
+        {
+            [folderPreviewController updateToAlfrescoNode:folder permissions:permissions session:session];
+        }
+        
+        [self pushToDisplayViewController:folderPreviewController usingNavigationController:navigationController animated:animated];
+    }
+}
+
++ (void)pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)document
+                                                      permissions:(AlfrescoPermissions *)permissions
+                                                          session:(id<AlfrescoSession>)session
+                                             navigationController:(UINavigationController *)navigationController
+                                                         animated:(BOOL)animated
+{
+    // TODO
+}
 
 + (void)pushToDisplayViewController:(UIViewController *)viewController usingNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated;
 {

@@ -11,7 +11,6 @@
 #import "ActivityTableViewCell.h"
 #import "AttributedLabelCell.h"
 #import "DocumentPreviewViewController.h"
-#import "FolderPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
 #import "Utility.h"
@@ -417,10 +416,11 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     }
     else if (node.isFolder)
     {
-        FolderPreviewViewController *folderPreviewController = [[FolderPreviewViewController alloc] initWithAlfrescoFolder:(AlfrescoFolder *)node
-                                                                                                               permissions:nodePermissions
-                                                                                                                   session:self.session];
-        [UniversalDevice pushToDisplayViewController:folderPreviewController usingNavigationController:self.navigationController animated:YES];
+        [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
+                                                                     permissions:nodePermissions
+                                                                         session:self.session
+                                                            navigationController:self.navigationController
+                                                                        animated:YES];
     }
 }
 
