@@ -12,9 +12,27 @@
 
 @interface DownloadsDocumentPreviewViewController ()
 
+@property (nonatomic, strong) NSMutableArray *displayedPagingControllers;
+
 @end
 
 @implementation DownloadsDocumentPreviewViewController
+
+- (instancetype)initWithAlfrescoDocument:(AlfrescoDocument *)document
+                             permissions:(AlfrescoPermissions *)permissions
+                         contentFilePath:(NSString *)contentFilePath
+                        documentLocation:(InAppDocumentLocation)documentLocation
+                                 session:(id<AlfrescoSession>)session
+{
+    self = [super initWithAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+    if (self)
+    {
+        self.pagingControllers = [NSMutableArray array];
+        self.displayedPagingControllers = [NSMutableArray array];
+        self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:nil session:nil controller:self];
+    }
+    return self;
+}
 
 - (instancetype)initWithFilePath:(NSString *)filePath
 {
@@ -24,6 +42,7 @@
         self.documentContentFilePath = filePath;
         self.documentLocation = InAppDocumentLocationLocalFiles;
         self.pagingControllers = [NSMutableArray array];
+        self.displayedPagingControllers = [NSMutableArray array];
         self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:nil session:nil controller:self];
     }
     return self;
@@ -33,11 +52,13 @@
 {
     [super viewDidLoad];
     
+    [self setupPagingScrollView];
+    [self refreshViewController];
+}
+
+- (void)refreshViewController
+{
     self.title = (self.documentLocation == InAppDocumentLocationLocalFiles) ? self.documentContentFilePath.lastPathComponent : self.document.name;
-    
-    [self.pagingSegmentControl removeAllSegments];
-    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
-    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
     
     if (!self.document)
     {
@@ -45,9 +66,7 @@
         self.pagingSegmentControl.hidden = YES;
     }
     
-    self.pagingSegmentControl.selectedSegmentIndex = PagingScrollViewSegmentTypeFilePreview;
-    
-    [self setupPagingScrollView];
+    [self refreshPagingScrollView];
     [self setupActionCollectionView];
     
     [self localiseUI];
@@ -61,31 +80,49 @@
 
 - (void)setupPagingScrollView
 {
-    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:nil loadingCompletionBlock:nil];
-  
-    for (int i = 0; i < PagingScrollViewSegmentType_MAX; i++)
-    {
-        [self.pagingControllers addObject:[NSNull null]];
-    }
-
-    [self.pagingControllers insertObject:filePreviewController atIndex:PagingScrollViewSegmentTypeFilePreview];
+    [self.pagingSegmentControl removeAllSegments];
+    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
+    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
     
-    if (self.document)
+    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:nil loadingCompletionBlock:nil];
+    [self.pagingControllers insertObject:filePreviewController atIndex:PagingScrollViewSegmentTypeFilePreview];
+    MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:nil];
+    [self.pagingControllers insertObject:metadataViewController atIndex:PagingScrollViewSegmentTypeMetadata];
+}
+
+ - (void)refreshPagingScrollView
+{
+    NSUInteger currentlySelectedTabIndex = self.pagingScrollView.selectedPageIndex;
+    
+    // Remove all existing views in the scroll view
+    NSArray *shownControllers = [NSArray arrayWithArray:self.displayedPagingControllers];
+    
+    for (UIViewController *displayedController in shownControllers)
     {
-        MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:nil];
-        [self.pagingControllers insertObject:metadataViewController atIndex:PagingScrollViewSegmentTypeMetadata];
+        [displayedController willMoveToParentViewController:nil];
+        [displayedController.view removeFromSuperview];
+        [displayedController removeFromParentViewController];
+        
+        [self.displayedPagingControllers removeObject:displayedController];
     }
-  
-    for (int i = 0; i < self.pagingControllers.count; i++)
+    
+    // Add them back and refresh the segment control.
+    // If the document object is nil, we must not disiplay the MetaDataViewController
+    for (UIViewController *pagingController in self.pagingControllers)
     {
-        if (![self.pagingControllers[i] isKindOfClass:[NSNull class]])
+        if (self.document == nil && [pagingController isKindOfClass:[MetaDataViewController class]])
         {
-            UIViewController *currentController = self.pagingControllers[i];
-            [self addChildViewController:currentController];
-            [self.pagingScrollView addSubview:currentController.view];
-            [currentController didMoveToParentViewController:self];
+            break;
         }
+        [self addChildViewController:pagingController];
+        [self.pagingScrollView addSubview:pagingController.view];
+        [pagingController didMoveToParentViewController:self];
+        
+        [self.displayedPagingControllers addObject:pagingController];
     }
+    
+    self.pagingSegmentControl.selectedSegmentIndex = currentlySelectedTabIndex;
+    [self.pagingScrollView scrollToDisplayViewAtIndex:currentlySelectedTabIndex animated:NO];
 }
 
 - (void)setupActionCollectionView
@@ -145,6 +182,41 @@
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierRename])
     {
         [self.actionHandler pressedRenameActionItem:actionItem atPath:self.documentContentFilePath];
+    }
+}
+
+#pragma mark - NodeUpdatableProtocal Functions
+
+- (void)updateToAlfrescoDocument:(AlfrescoDocument *)node
+                     permissions:(AlfrescoPermissions *)permissions
+                 contentFilePath:(NSString *)contentFilePath
+                documentLocation:(InAppDocumentLocation)documentLocation
+                         session:(id<AlfrescoSession>)session
+{
+    self.document = node;
+    self.documentContentFilePath = contentFilePath;
+    self.documentLocation = documentLocation;
+    self.session = session;
+    
+    self.actionHandler.node = node;
+    self.actionHandler.session = session;
+    
+    [self refreshViewController];
+    
+    for (UIViewController *pagingController in self.displayedPagingControllers)
+    {
+        if ([pagingController conformsToProtocol:@protocol(NodeUpdatableProtocol)])
+        {
+            UIViewController<NodeUpdatableProtocol> *conformingController = (UIViewController<NodeUpdatableProtocol> *)pagingController;
+            if ([conformingController respondsToSelector:@selector(updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session:)])
+            {
+                [conformingController updateToAlfrescoDocument:node permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+            }
+            else if ([conformingController respondsToSelector:@selector(updateToAlfrescoNode:permissions:session:)])
+            {
+                [conformingController updateToAlfrescoNode:node permissions:permissions session:session];
+            }
+        }
     }
 }
 

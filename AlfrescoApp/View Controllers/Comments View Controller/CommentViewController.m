@@ -343,7 +343,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     [self.view sizeToFit];
 }
 
-#pragma mark - NodeUpdatableProtocal Function Implementation
+#pragma mark - NodeUpdatableProtocal Functions
 
 - (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session
 {

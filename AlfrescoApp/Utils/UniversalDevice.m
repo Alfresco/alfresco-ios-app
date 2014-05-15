@@ -16,9 +16,11 @@
 #import "SwitchViewController.h"
 #import "FolderPreviewViewController.h"
 #import "DocumentPreviewViewController.h"
+#import "DownloadsDocumentPreviewViewController.h"
 
 static FolderPreviewViewController *folderPreviewController;
 static DocumentPreviewViewController *documentPreviewController;
+static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController;
 
 @implementation UniversalDevice
 
@@ -30,7 +32,10 @@ static DocumentPreviewViewController *documentPreviewController;
 {
     if (folderPreviewController != nil && [self controllerDisplayedInDetailNavigationController] == folderPreviewController)
     {
-        [folderPreviewController updateToAlfrescoNode:folder permissions:permissions session:session];
+        if ([folderPreviewController respondsToSelector:@selector(updateToAlfrescoNode:permissions:session:)])
+        {
+            [folderPreviewController updateToAlfrescoNode:folder permissions:permissions session:session];
+        }
     }
     else
     {
@@ -40,7 +45,10 @@ static DocumentPreviewViewController *documentPreviewController;
         }
         else
         {
-            [folderPreviewController updateToAlfrescoNode:folder permissions:permissions session:session];
+            if ([folderPreviewController respondsToSelector:@selector(updateToAlfrescoNode:permissions:session:)])
+            {
+                [folderPreviewController updateToAlfrescoNode:folder permissions:permissions session:session];
+            }
         }
         
         [self pushToDisplayViewController:folderPreviewController usingNavigationController:navigationController animated:animated];
@@ -49,11 +57,68 @@ static DocumentPreviewViewController *documentPreviewController;
 
 + (void)pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)document
                                                       permissions:(AlfrescoPermissions *)permissions
+                                                      contentFile:(NSString *)contentFilePath
+                                                 documentLocation:(InAppDocumentLocation)documentLocation
                                                           session:(id<AlfrescoSession>)session
                                              navigationController:(UINavigationController *)navigationController
-                                                         animated:(BOOL)animated
+                                                         animated:(BOOL)animated;
 {
-    // TODO
+    if (documentPreviewController != nil && [self controllerDisplayedInDetailNavigationController] == documentPreviewController)
+    {
+        if ([documentPreviewController respondsToSelector:@selector(updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session:)])
+        {
+            [documentPreviewController updateToAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+        }
+    }
+    else
+    {
+        if (documentPreviewController == nil)
+        {
+            documentPreviewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+        }
+        else
+        {
+            if ([documentPreviewController respondsToSelector:@selector(updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session:)])
+            {
+                [documentPreviewController updateToAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+            }
+        }
+        
+        [self pushToDisplayViewController:documentPreviewController usingNavigationController:navigationController animated:animated];
+    }
+}
+
++ (void)pushToDisplayDownloadDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)document
+                                                              permissions:(AlfrescoPermissions *)permissions
+                                                              contentFile:(NSString *)contentFilePath
+                                                         documentLocation:(InAppDocumentLocation)documentLocation
+                                                                  session:(id<AlfrescoSession>)session
+                                                     navigationController:(UINavigationController *)navigationController
+                                                                 animated:(BOOL)animated
+{
+    if (downloadDocumentPreviewController != nil && [self controllerDisplayedInDetailNavigationController] == downloadDocumentPreviewController)
+    {
+        if ([downloadDocumentPreviewController respondsToSelector:@selector(updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session:)])
+        {
+            [downloadDocumentPreviewController updateToAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+        }
+    }
+    else
+    {
+        if (downloadDocumentPreviewController == nil)
+        {
+            downloadDocumentPreviewController = [[DownloadsDocumentPreviewViewController alloc] initWithAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+        }
+        else
+        {
+            if ([downloadDocumentPreviewController respondsToSelector:@selector(updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session:)])
+            {
+                [downloadDocumentPreviewController updateToAlfrescoDocument:document permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+            }
+        }
+        
+        [self pushToDisplayViewController:downloadDocumentPreviewController usingNavigationController:navigationController animated:animated];
+    }
 }
 
 + (void)pushToDisplayViewController:(UIViewController *)viewController usingNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated;

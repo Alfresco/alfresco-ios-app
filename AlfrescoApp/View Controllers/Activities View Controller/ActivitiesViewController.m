@@ -407,12 +407,13 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 
     if (node.isDocument)
     {
-        DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)node
-                                                                                                               permissions:nodePermissions
-                                                                                                           contentFilePath:nil
-                                                                                                          documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                                                   session:self.session];
-        [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+        [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)node
+                                                                       permissions:nodePermissions
+                                                                       contentFile:nil
+                                                                  documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                           session:self.session
+                                                              navigationController:self.navigationController
+                                                                          animated:YES];
     }
     else if (node.isFolder)
     {

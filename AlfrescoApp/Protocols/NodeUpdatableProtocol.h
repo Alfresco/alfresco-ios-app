@@ -10,6 +10,22 @@
 
 @protocol NodeUpdatableProtocol <NSObject>
 
-- (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+/*
+ * Both are optional, however, one should be implemented. If the controller deals with a document
+ * it is recommened that the AlfrescoDocument specific method be implemented.
+ *
+ * If -updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session: is implemented,
+ * it is called instead of -updateToAlfrescoNode:permissions:session:
+ */
+@optional
+- (void)updateToAlfrescoNode:(AlfrescoNode *)node
+                 permissions:(AlfrescoPermissions *)permissions
+                     session:(id<AlfrescoSession>)session;
+
+- (void)updateToAlfrescoDocument:(AlfrescoDocument *)node
+                     permissions:(AlfrescoPermissions *)permissions
+                 contentFilePath:(NSString *)contentFilePath
+                documentLocation:(InAppDocumentLocation)documentLocation
+                         session:(id<AlfrescoSession>)session;
 
 @end

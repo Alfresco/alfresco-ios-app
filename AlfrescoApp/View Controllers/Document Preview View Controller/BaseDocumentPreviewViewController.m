@@ -99,4 +99,16 @@
     return (self.document) ? self.document.identifier : nil;
 }
 
+#pragma mark - NodeUpdatableProtocol Functions
+
+- (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session
+{
+    AlfrescoLogError(@"You need to implement %@", _cmd);
+}
+
+- (void)updateToAlfrescoDocument:(AlfrescoDocument *)node permissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath documentLocation:(InAppDocumentLocation)documentLocation session:(id<AlfrescoSession>)session
+{
+    AlfrescoLogError(@"You need to implement %@", _cmd);
+}
+
 @end

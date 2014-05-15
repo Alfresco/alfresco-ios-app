@@ -14,6 +14,7 @@
 #import <MessageUI/MessageUI.h>
 #import "MBProgressHUD.h"
 #import "ItemInDetailViewProtocol.h"
+#import "NodeUpdatableProtocol.h"
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 {
@@ -24,7 +25,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     PagingScrollViewSegmentType_MAX
 };
 
-@interface BaseDocumentPreviewViewController : UIViewController <ActionCollectionViewDelegate, PagedScrollViewDelegate, ActionViewDelegate, ItemInDetailViewProtocol>
+@interface BaseDocumentPreviewViewController : UIViewController <ActionCollectionViewDelegate, PagedScrollViewDelegate, ActionViewDelegate, ItemInDetailViewProtocol, NodeUpdatableProtocol>
 
 // LayoutConstraints
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *segmentControlHeightConstraint;
