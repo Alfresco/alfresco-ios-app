@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ParentListViewController.h"
+#import "NodeUpdatableProtocol.h"
 
 @class AlfrescoDocument;
 
-@interface VersionHistoryViewController : ParentListViewController
+@interface VersionHistoryViewController : ParentListViewController <NodeUpdatableProtocol>
 
 - (id)initWithDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session;
 

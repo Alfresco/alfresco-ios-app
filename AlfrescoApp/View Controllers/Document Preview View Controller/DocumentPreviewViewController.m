@@ -309,12 +309,52 @@
     {
         segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
     }
+    else if (commentDisplayedCount == 0)
+    {
+        segmentCommentText = NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title");
+    }
     else
     {
         segmentCommentText = [self.pagingSegmentControl titleForSegmentAtIndex:PagingScrollViewSegmentTypeComments];
     }
     
     [self.pagingSegmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+}
+
+#pragma mark - NodeUpdatableProtocol Functions
+
+- (void)updateToAlfrescoDocument:(AlfrescoDocument *)node permissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath documentLocation:(InAppDocumentLocation)documentLocation session:(id<AlfrescoSession>)session
+{
+    self.document = (AlfrescoDocument *)node;
+    self.documentPermissions = permissions;
+    self.documentContentFilePath = contentFilePath;
+    self.documentLocation = documentLocation;
+    self.session = session;
+    
+    self.actionHandler.node = node;
+    self.actionHandler.session = session;
+    
+    self.title = self.document.name;
+    
+    // collection view
+    [self setupActionCollectionView];
+    [self updateActionButtons];
+    
+    for (UIViewController *pagingController in self.pagingControllers)
+    {
+        if ([pagingController conformsToProtocol:@protocol(NodeUpdatableProtocol)])
+        {
+            UIViewController<NodeUpdatableProtocol> *conformingController = (UIViewController<NodeUpdatableProtocol> *)pagingController;
+            if ([conformingController respondsToSelector:@selector(updateToAlfrescoDocument:permissions:contentFilePath:documentLocation:session:)])
+            {
+                [conformingController updateToAlfrescoDocument:node permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
+            }
+            else if ([conformingController respondsToSelector:@selector(updateToAlfrescoNode:permissions:session:)])
+            {
+                [conformingController updateToAlfrescoNode:node permissions:permissions session:session];
+            }
+        }
+    }
 }
 
 @end

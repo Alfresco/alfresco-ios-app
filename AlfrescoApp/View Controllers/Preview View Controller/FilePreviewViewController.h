@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "FullScreenAnimationController.h"
+#import "NodeUpdatableProtocol.h"
 
-@interface FilePreviewViewController : UIViewController <FullScreenAnimationControllerProtocol>
+@interface FilePreviewViewController : UIViewController <FullScreenAnimationControllerProtocol, NodeUpdatableProtocol>
 
 @property (nonatomic, assign) BOOL useControllersPreferStatusBarHidden;
 

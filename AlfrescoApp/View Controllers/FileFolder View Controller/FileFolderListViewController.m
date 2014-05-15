@@ -872,13 +872,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
                 else
                 {
-                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                           permissions:permissions
-                                                                                                                       contentFilePath:nil
-                                                                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                                                               session:self.session];
-                    previewController.hidesBottomBarWhenPushed = YES;
-                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                   permissions:permissions
+                                                                                   contentFile:nil
+                                                                              documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                       session:self.session
+                                                                          navigationController:self.navigationController
+                                                                                      animated:YES];
                 }
             }];
         }

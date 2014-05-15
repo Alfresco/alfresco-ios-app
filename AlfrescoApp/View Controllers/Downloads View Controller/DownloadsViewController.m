@@ -198,24 +198,28 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         else
         {
             AlfrescoDocument *documentToDisplay = [[DownloadManager sharedManager] infoForDocument:contentFullPath];
-            DownloadsDocumentPreviewViewController *previewController = nil;
             if (documentToDisplay)
             {
                 // Additional property added by category
                 documentToDisplay.isDownloaded = YES;
-                previewController = [[DownloadsDocumentPreviewViewController alloc] initWithAlfrescoDocument:documentToDisplay
-                                                                                                 permissions:nil
-                                                                                             contentFilePath:contentFullPath
-                                                                                            documentLocation:InAppDocumentLocationLocalFiles
-                                                                                                     session:self.session];
+                [UniversalDevice pushToDisplayDownloadDocumentPreviewControllerForAlfrescoDocument:documentToDisplay
+                                                                                       permissions:nil
+                                                                                       contentFile:contentFullPath
+                                                                                  documentLocation:InAppDocumentLocationLocalFiles
+                                                                                           session:self.session
+                                                                              navigationController:self.navigationController
+                                                                                          animated:YES];
             }
             else
             {
-                previewController = [[DownloadsDocumentPreviewViewController alloc] initWithFilePath:contentFullPath];
+                [UniversalDevice pushToDisplayDownloadDocumentPreviewControllerForAlfrescoDocument:nil
+                                                                                       permissions:nil
+                                                                                       contentFile:contentFullPath
+                                                                                  documentLocation:InAppDocumentLocationLocalFiles
+                                                                                           session:self.session
+                                                                              navigationController:self.navigationController
+                                                                                          animated:YES];
             }
-            
-            previewController.hidesBottomBarWhenPushed = YES;
-            [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
     }
 }

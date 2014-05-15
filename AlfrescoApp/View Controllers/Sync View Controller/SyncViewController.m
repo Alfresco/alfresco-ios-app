@@ -388,27 +388,26 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
         {
-            UIViewController *previewController = nil;
             if ([[ConnectivityManager sharedManager] hasInternetConnection])
             {
-                previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                        permissions:syncNodePermissions
-                                                                                    contentFilePath:filePath
-                                                                                   documentLocation:InAppDocumentLocationSync
-                                                                                            session:self.session];
-                
+                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                               permissions:syncNodePermissions
+                                                                               contentFile:filePath
+                                                                          documentLocation:InAppDocumentLocationSync
+                                                                                   session:self.session
+                                                                      navigationController:self.navigationController
+                                                                                  animated:YES];
             }
             else
             {
-                previewController = [[DownloadsDocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                 permissions:nil
-                                                                                             contentFilePath:filePath
-                                                                                            documentLocation:InAppDocumentLocationSync
-                                                                                                     session:self.session];
+                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                               permissions:nil
+                                                                               contentFile:filePath
+                                                                          documentLocation:InAppDocumentLocationSync
+                                                                                   session:self.session
+                                                                      navigationController:self.navigationController
+                                                                                  animated:YES];
             }
-            
-            previewController.hidesBottomBarWhenPushed = YES;
-            [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
         }
         else if ([[ConnectivityManager sharedManager] hasInternetConnection])
         {
@@ -418,13 +417,13 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
                 [self hideHUD];
                 if (!error)
                 {
-                    DocumentPreviewViewController *previewController = [[DocumentPreviewViewController alloc] initWithAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                                                           permissions:permissions
-                                                                                                                       contentFilePath:filePath
-                                                                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                                                               session:self.session];
-                    previewController.hidesBottomBarWhenPushed = YES;
-                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                   permissions:permissions
+                                                                                   contentFile:filePath
+                                                                              documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                       session:self.session
+                                                                          navigationController:self.navigationController
+                                                                                      animated:YES];
                 }
                 else
                 {

@@ -105,30 +105,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     [self configureWebView];
     [self configureMediaPlayer];
     
-    downloadProgressHeight = self.heightForDownloadContainer.constant;
-    self.downloadProgressView.progress = 0.0f;
-    [self hideProgressViewAnimated:NO];
-    
-    if (self.shouldLoadFromFileAndRunCompletionBlock)
-    {
-        [self displayFileAtPath:self.filePathForFileToLoad];
-    }
-    else
-    {
-        if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:self.document])
-        {
-            NSString *filePathToLoad = [[DocumentPreviewManager sharedManager] filePathForDocument:self.document];
-            [self displayFileAtPath:filePathToLoad];
-        }
-        else
-        {
-            // Display a static placeholder image
-            [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
-            
-            // request the document download
-            self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-        }
-    }
+    [self refreshViewController];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -159,6 +136,34 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 }
 
 #pragma mark - Private Functions
+
+- (void)refreshViewController
+{
+    downloadProgressHeight = self.heightForDownloadContainer.constant;
+    self.downloadProgressView.progress = 0.0f;
+    [self hideProgressViewAnimated:NO];
+    
+    if (self.shouldLoadFromFileAndRunCompletionBlock)
+    {
+        [self displayFileAtPath:self.filePathForFileToLoad];
+    }
+    else
+    {
+        if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:self.document])
+        {
+            NSString *filePathToLoad = [[DocumentPreviewManager sharedManager] filePathForDocument:self.document];
+            [self displayFileAtPath:filePathToLoad];
+        }
+        else
+        {
+            // Display a static placeholder image
+            [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
+            
+            // request the document download
+            self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+        }
+    }
+}
 
 - (void)configureWebView
 {
@@ -359,9 +364,14 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self showMediaPlayerAnimated:YES];
         
         [self hideProgressViewAnimated:YES];
+        
+        self.moviePlayerContainer.hidden = NO;
+        self.webView.hidden = YES;
     }
     else
     {
+        self.moviePlayerContainer.hidden = YES;
+        self.webView.hidden = NO;
         [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePathToDisplay]]];
     }
 }
@@ -466,6 +476,17 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 {
     self.animationController.isGoingIntoFullscreenMode = NO;
     return self.animationController;
+}
+
+#pragma mark - NodeUpdatableProtocol Functions
+
+- (void)updateToAlfrescoDocument:(AlfrescoDocument *)node permissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath documentLocation:(InAppDocumentLocation)documentLocation session:(id<AlfrescoSession>)session
+{
+    self.document = (AlfrescoDocument *)node;
+    self.filePathForFileToLoad = contentFilePath;
+    self.session = session;
+    
+    [self refreshViewController];
 }
 
 @end
