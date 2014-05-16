@@ -432,11 +432,14 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     BOOL filePathIsVideo = NO;
     CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[filePath pathExtension], NULL);
     
-    if (UTTypeConformsTo(UTI, (__bridge CFStringRef)@"public.movie"))
+    if (UTI != NULL)
     {
-        filePathIsVideo = YES;
+        if (UTTypeConformsTo(UTI, (__bridge CFStringRef)@"public.movie"))
+        {
+            filePathIsVideo = YES;
+        }
+        CFRelease(UTI);
     }
-    CFRelease(UTI);
     
     return filePathIsVideo;
 }
@@ -446,11 +449,14 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     BOOL filePathIsAudio = NO;
     CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[filePath pathExtension], NULL);
     
-    if (UTTypeConformsTo(UTI, (__bridge CFStringRef)@"public.audio"))
+    if (UTI != NULL)
     {
-        filePathIsAudio = YES;
+        if (UTTypeConformsTo(UTI, (__bridge CFStringRef)@"public.audio"))
+        {
+            filePathIsAudio = YES;
+        }
+        CFRelease(UTI);
     }
-    CFRelease(UTI);
     
     return filePathIsAudio;
 }
