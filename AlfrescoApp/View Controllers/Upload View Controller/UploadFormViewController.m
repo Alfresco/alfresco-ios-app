@@ -513,7 +513,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
         [self updateButton:self.playButton withText:NSLocalizedString(@"upload.audio.cell.button.play", @"Play Button") forControlState:UIControlStateNormal];
         self.recordButton.enabled = YES;
     }
-    else if ([[NSFileManager defaultManager] fileExistsAtPath:filePathString])
+    else if ([[AlfrescoFileManager sharedManager] fileExistsAtPath:filePathString])
     {
         NSError *playbackSessionError = nil;
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&playbackSessionError];
