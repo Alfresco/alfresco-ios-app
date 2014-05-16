@@ -138,7 +138,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 - (void)moveFileIntoSecureContainer:(NSString *)absolutePath completionBlock:(DownloadManagerFileSavedBlock)completionBlock
 {
     // Check source content exists
-    if (absolutePath == nil || ![[NSFileManager defaultManager] fileExistsAtPath:absolutePath])
+    if (absolutePath == nil || ![[AlfrescoFileManager sharedManager] fileExistsAtPath:absolutePath])
     {
         AlfrescoLogError(@"Move operation attempted with no valid source document");
     }

@@ -1492,7 +1492,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
                 
                 NSError *error = nil;
-                [[NSFileManager defaultManager] copyItemAtURL:contentLocation toURL:destinationURL error:&error];
+                [[AlfrescoFileManager sharedManager] copyItemAtURL:contentLocation toURL:destinationURL error:&error];
                 
                 nodeStatus.totalSize = [(AlfrescoDocument *)subNode contentLength];
                 if (error)

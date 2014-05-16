@@ -70,7 +70,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
             [self updateAppUsingDefaultConfiguration];
             
             NSError *error = nil;
-            [[NSFileManager defaultManager] removeItemAtPath:[self localConfigurationFilePathForSelectedAccount] error:&error];
+            [[AlfrescoFileManager sharedManager] removeItemAtPath:[self localConfigurationFilePathForSelectedAccount] error:&error];
             
             if (error)
             {
@@ -92,7 +92,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
                     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                     NSString *destinationPath = [self localConfigurationFilePathForSelectedAccount];
                     // if config file does not exist at destination clear last downloaded date in user defaults
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:destinationPath])
+                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:destinationPath])
                     {
                         [userDefaults removeObjectForKey:kRepositoryDownloadedConfigurationFileLastUpdatedDate];
                         [userDefaults synchronize];
@@ -176,7 +176,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     {
         self.showRepositorySpecificItems = YES;
         NSString *configurationFilePath = [self localConfigurationFilePathForSelectedAccount];
-        BOOL configurationFileExists = [[NSFileManager defaultManager] fileExistsAtPath:configurationFilePath];
+        BOOL configurationFileExists = [[AlfrescoFileManager sharedManager] fileExistsAtPath:configurationFilePath];
         if (configurationFileExists)
         {
             [self updateAppConfigurationUsingFileURL:[NSURL fileURLWithPath:configurationFilePath]];
@@ -284,7 +284,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     }
     
     NSError *error = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:[self localConfigurationFilePathForSelectedAccount] error:&error];
+    [[AlfrescoFileManager sharedManager] removeItemAtPath:[self localConfigurationFilePathForSelectedAccount] error:&error];
     
     if (error)
     {

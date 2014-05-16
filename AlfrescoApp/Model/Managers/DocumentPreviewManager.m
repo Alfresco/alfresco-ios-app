@@ -186,7 +186,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
                     }
                     else
                     {
-                        [[NSFileManager defaultManager] removeItemAtPath:downloadPath error:nil];
+                        [[AlfrescoFileManager sharedManager] removeItemAtPath:downloadPath error:nil];
                         [Notifier notifyWithAlfrescoError:error];
                     }
                 } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
