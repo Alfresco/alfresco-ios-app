@@ -109,11 +109,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.tableView.contentOffset = CGPointMake(0., 40.);
     }
     
-    if (self.session)
-    {
-        [self loadContentOfFolder];
-    }
-    
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // create searchBar
@@ -432,7 +427,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 else
                 {
                     // display error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.root-folder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
                     [Notifier notifyWithAlfrescoError:error];
                 }
             }];
