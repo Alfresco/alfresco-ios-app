@@ -19,7 +19,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 @implementation PreferenceManager
 
-+ (instancetype)sharedManager
++ (PreferenceManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static PreferenceManager *sharedPreferenceManager = nil;

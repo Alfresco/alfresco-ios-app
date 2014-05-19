@@ -29,7 +29,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
 
 @implementation DocumentPreviewManager
 
-+ (instancetype)sharedManager
++ (DocumentPreviewManager *)sharedManager
 {
     static dispatch_once_t predicate = 0;
     static DocumentPreviewManager *sharedManager = nil;

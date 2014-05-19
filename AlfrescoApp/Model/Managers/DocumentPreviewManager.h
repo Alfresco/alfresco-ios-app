@@ -22,7 +22,7 @@ extern NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey
 
 @interface DocumentPreviewManager : NSObject
 
-+ (instancetype)sharedManager;
++ (DocumentPreviewManager *)sharedManager;
 
 /*
  * This method returns true if the document passed in is currently being downloaded

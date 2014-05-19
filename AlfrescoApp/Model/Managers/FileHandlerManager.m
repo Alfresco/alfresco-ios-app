@@ -18,7 +18,7 @@
 
 @implementation FileHandlerManager
 
-+ (instancetype)sharedManager
++ (FileHandlerManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static FileHandlerManager *sharedManager = nil;

@@ -13,7 +13,7 @@
 
 @interface LoginManager : NSObject <LoginViewControllerDelegate, AlfrescoOAuthLoginDelegate>
 
-+ (id)sharedManager;
++ (LoginManager *)sharedManager;
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock;
 - (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
 - (void)authenticateCloudAccount:(UserAccount *)account

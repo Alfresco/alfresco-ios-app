@@ -11,16 +11,18 @@
 #import "MultiSelectActionsToolbar.h"
 #import "DocumentFilter.h"
 
+@class DownloadsViewController;
+
 @protocol DownloadsPickerDelegate <NSObject>
 @optional
-- (void)downloadPicker:(id)picker didPickDocument:(NSString *)documentPath;
+- (void)downloadPicker:(DownloadsViewController *)picker didPickDocument:(NSString *)documentPath;
 - (void)downloadPickerDidCancel;
 @end
 
 @interface DownloadsViewController : ParentListViewController <MultiSelectActionsDelegate, UIActionSheetDelegate>
 
 @property (nonatomic) BOOL isDownloadPickerEnabled;
-@property (nonatomic, weak) id <DownloadsPickerDelegate> downloadPickerDelegate;
+@property (nonatomic, weak) id<DownloadsPickerDelegate> downloadPickerDelegate;
 
 - (id)initWithDocumentFilter:(id<DocumentFilter>)documentFilter;
 

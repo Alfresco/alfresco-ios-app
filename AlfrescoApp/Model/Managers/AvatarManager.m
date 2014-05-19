@@ -22,7 +22,7 @@
 
 @implementation AvatarManager
 
-+ (instancetype)sharedManager
++ (AvatarManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static AvatarManager *sharedManager = nil;

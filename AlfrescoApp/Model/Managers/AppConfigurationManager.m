@@ -39,7 +39,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 
 @implementation AppConfigurationManager
 
-+ (instancetype)sharedManager
++ (AppConfigurationManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static AppConfigurationManager *sharedConfigurationManager = nil;
