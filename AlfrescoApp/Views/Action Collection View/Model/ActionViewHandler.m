@@ -647,7 +647,7 @@
 
 #pragma mark - DocumentPickerDelegate Functions
 
-- (void)downloadPicker:(id)picker didPickDocument:(NSString *)documentPath
+- (void)downloadPicker:(DownloadsViewController *)picker didPickDocument:(NSString *)documentPath
 {
     UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session
                                                                                     uploadDocumentPath:documentPath

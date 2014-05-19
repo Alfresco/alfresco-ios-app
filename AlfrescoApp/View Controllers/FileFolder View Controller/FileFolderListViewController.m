@@ -1189,7 +1189,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 #pragma mark - DownloadPickerDelegate Functions
 
-- (void)downloadPicker:(id)picker didPickDocument:(NSString *)documentPath
+- (void)downloadPicker:(DownloadsViewController *)picker didPickDocument:(NSString *)documentPath
 {
     UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session
                                                                                           uploadDocumentPath:documentPath
