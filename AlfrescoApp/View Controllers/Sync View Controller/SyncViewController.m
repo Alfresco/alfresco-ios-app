@@ -157,7 +157,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 {
     NSString *title = @"";
     BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-
+    
     if (self.parentNode)
     {
         title = self.parentNode.name;
@@ -443,52 +443,58 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
     AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    switch (nodeStatus.status)
+    if (node.isFolder)
     {
-        case SyncStatusLoading:
-            [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
-            break;
-            
-        case SyncStatusFailed:
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        
+        AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:node];
+        if (syncNodePermissions)
         {
-            self.retrySyncNode = node;
-            [self showPopoverForFailedSyncNodeAtIndexPath:indexPath];
-            break;
+            [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
+                                                                         permissions:syncNodePermissions
+                                                                             session:self.session
+                                                                navigationController:self.navigationController
+                                                                            animated:YES];
         }
-            
-        default:
+        else
         {
-            [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-            
-            AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:node];
-            if (syncNodePermissions)
+            [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                if (permissions)
+                {
+                    [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
+                                                                                 permissions:permissions
+                                                                                     session:self.session
+                                                                        navigationController:self.navigationController
+                                                                                    animated:YES];
+                }
+                else
+                {
+                    NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), node.name];
+                    displayErrorMessage(permissionRetrievalErrorMessage);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
+        }
+    }
+    else
+    {
+        switch (nodeStatus.status)
+        {
+            case SyncStatusLoading:
             {
-                [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
-                                                                             permissions:syncNodePermissions
-                                                                                 session:self.session
-                                                                    navigationController:self.navigationController
-                                                                                animated:YES];
+                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
+                break;
             }
-            else
+            case SyncStatusFailed:
             {
-                [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                    if (permissions)
-                    {
-                        [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
-                                                                                     permissions:permissions
-                                                                                         session:self.session
-                                                                            navigationController:self.navigationController
-                                                                                        animated:YES];
-                    }
-                    else
-                    {
-                        NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), node.name];
-                        displayErrorMessage(permissionRetrievalErrorMessage);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                }];
+                self.retrySyncNode = node;
+                [self showPopoverForFailedSyncNodeAtIndexPath:indexPath];
+                break;
             }
-            break;
+            default:
+            {
+                break;
+            }
         }
     }
 }
