@@ -13,7 +13,7 @@
 
 @property (nonatomic, readonly, assign, getter = isTrackingLocation) BOOL trackingLocation;
 
-+ (id)sharedManager;
++ (LocationManager *)sharedManager;
 - (CLLocationCoordinate2D)currentLocationCoordinates;
 - (BOOL)usersLocationAuthorisation;
 - (void)startLocationUpdates;

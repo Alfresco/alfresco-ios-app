@@ -23,7 +23,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 @implementation AccountManager
 
-+ (instancetype)sharedManager
++ (AccountManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static AccountManager *sharedAccountManager = nil;

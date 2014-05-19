@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, RenditionType)
 
 @implementation ThumbnailManager
 
-+ (id)sharedManager
++ (ThumbnailManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static ThumbnailManager *sharedThumbnailDownloader = nil;

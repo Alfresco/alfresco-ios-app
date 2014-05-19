@@ -27,7 +27,7 @@ static CGFloat const kZoomAnimationSpeed = 0.2f;
  * TaskPriority lightweight class
  */
 @implementation TaskPriority
-+ (id)taskPriorityWithImageName:(NSString *)imageName summary:(NSString *)summary
++ (TaskPriority *)taskPriorityWithImageName:(NSString *)imageName summary:(NSString *)summary
 {
     TaskPriority *taskPriority = [TaskPriority new];
     taskPriority.image = [UIImage imageNamed:imageName];

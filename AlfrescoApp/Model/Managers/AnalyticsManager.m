@@ -19,7 +19,7 @@
 
 @implementation AnalyticsManager
 
-+ (instancetype)sharedManager
++ (AnalyticsManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static AnalyticsManager *sharedManager = nil;

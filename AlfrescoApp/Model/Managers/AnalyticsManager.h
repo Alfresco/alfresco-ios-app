@@ -12,7 +12,7 @@
 
 @property (nonatomic, assign, readonly) BOOL analyticsAreActive;
 
-+ (instancetype)sharedManager;
++ (AnalyticsManager *)sharedManager;
 - (void)startAnalytics;
 - (void)stopAnalytics;
 

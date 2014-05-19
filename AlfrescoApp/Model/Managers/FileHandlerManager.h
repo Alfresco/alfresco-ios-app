@@ -10,7 +10,7 @@
 
 @interface FileHandlerManager : NSObject
 
-+ (instancetype)sharedManager;
++ (FileHandlerManager *)sharedManager;
 
 - (BOOL)handleURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation session:(id<AlfrescoSession>)session;
 

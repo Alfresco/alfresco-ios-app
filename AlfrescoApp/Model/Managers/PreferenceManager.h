@@ -11,7 +11,7 @@
 
 @interface PreferenceManager : NSObject
 
-+ (instancetype)sharedManager;
++ (PreferenceManager *)sharedManager;
 
 // Convenience Methods
 - (BOOL)shouldSyncOnCellular;

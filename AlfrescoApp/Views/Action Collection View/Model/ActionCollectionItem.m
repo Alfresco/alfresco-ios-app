@@ -41,82 +41,82 @@ NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionId
 
 @implementation ActionCollectionItem
 
-+ (instancetype)emailItem
++ (ActionCollectionItem *)emailItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-email.png"] title:NSLocalizedString(@"action.email", @"Email") identifier:kActionCollectionIdentifierEmail];
 }
 
-+ (instancetype)emailAsLinkItem
++ (ActionCollectionItem *)emailAsLinkItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.emailAsLink", @"Email As Link") identifier:kActionCollectionIdentifierEmailAsLink];
 }
 
-+ (instancetype)openInItem
++ (ActionCollectionItem *)openInItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-openIn.png"] title:NSLocalizedString(@"action.open.in", @"Open In") identifier:kActionCollectionIdentifierOpenIn];
 }
 
-+ (instancetype)likeItem
++ (ActionCollectionItem *)likeItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unliked.png"] title:NSLocalizedString(@"action.like", @"Like") identifier:kActionCollectionIdentifierLike];
 }
 
-+ (instancetype)unlikeItem
++ (ActionCollectionItem *)unlikeItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-liked.png"] title:NSLocalizedString(@"action.unlike", @"Unlike") identifier:kActionCollectionIdentifierUnlike];
 }
 
-+ (instancetype)favouriteItem
++ (ActionCollectionItem *)favouriteItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
 }
 
-+ (instancetype)unfavouriteItem
++ (ActionCollectionItem *)unfavouriteItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
 }
 
-+ (instancetype)commentItem
++ (ActionCollectionItem *)commentItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-comments.png"] title:NSLocalizedString(@"action.comment", @"Comment") identifier:kActionCollectionIdentifierComment];
 }
 
-+ (instancetype)editItem
++ (ActionCollectionItem *)editItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit-properties.png"] title:NSLocalizedString(@"action.edit", @"Edit") identifier:kActionCollectionIdentifierEdit];
 }
 
-+ (instancetype)downloadItem
++ (ActionCollectionItem *)downloadItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-download.png"] title:NSLocalizedString(@"action.download", @"Download") identifier:kActionCollectionIdentifierDownload];
 }
 
-+ (instancetype)printItem
++ (ActionCollectionItem *)printItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-print.png"] title:NSLocalizedString(@"action.print", @"Print") identifier:kActionCollectionIdentifierPrint];
 }
 
-+ (instancetype)deleteItem
++ (ActionCollectionItem *)deleteItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-delete.png"] title:NSLocalizedString(@"action.delete", @"Delete") identifier:kActionCollectionIdentifierDelete];
 }
 
-+ (instancetype)renameItem
++ (ActionCollectionItem *)renameItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit-properties.png"] title:NSLocalizedString(@"action.rename", @"Rename") identifier:kActionCollectionIdentifierRename];
 }
 
-+ (instancetype)subfolderItem
++ (ActionCollectionItem *)subfolderItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-add-folder.png"] title:NSLocalizedString(@"action.subfolder", @"subfolder") identifier:kActionCollectionIdentifierCreateSubfolder];
 }
 
-+ (instancetype)uploadItem
++ (ActionCollectionItem *)uploadItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-upload.png"] title:NSLocalizedString(@"action.upload", @"Upload") identifier:kActionCollectionIdentifierUploadDocument];
 }
 
-+ (instancetype)sendForReview
++ (ActionCollectionItem *)sendForReview
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-review.png"] title:NSLocalizedString(@"action.review", @"Send For Review") identifier:kActionCollectionIdentifierSendForReview];
 }

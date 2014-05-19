@@ -32,7 +32,7 @@
 
 #pragma mark - Public Functions
 
-+ (id)sharedManager
++ (LoginManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static LoginManager *sharedLoginManager = nil;

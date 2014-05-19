@@ -17,6 +17,6 @@
 - (void)checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration;
 - (BOOL)visibilityForMainMenuItemWithKey:(NSString *)menuItemKey;
 
-+ (instancetype)sharedManager;
++ (AppConfigurationManager *)sharedManager;
 
 @end

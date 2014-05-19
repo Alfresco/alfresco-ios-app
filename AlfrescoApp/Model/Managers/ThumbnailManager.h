@@ -11,7 +11,7 @@
 /*
  * Returns the shared object.
  */
-+ (id)sharedManager;
++ (ThumbnailManager *)sharedManager;
 
 /*
  * Returns the cached image for the given document identifier.
