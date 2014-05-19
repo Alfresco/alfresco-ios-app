@@ -1073,7 +1073,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
     {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        NSString *selectedImageExtension = [[[[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
+        NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
         NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
         
         // determine if the content was created or picked
@@ -1120,7 +1120,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         // move the video file into the container
         // read from default file system
-        NSString *filePathInDefaultFileSystem = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+        NSString *filePathInDefaultFileSystem = [(NSURL *)[info objectForKey:UIImagePickerControllerMediaURL] path];
         
         // construct the file name
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
