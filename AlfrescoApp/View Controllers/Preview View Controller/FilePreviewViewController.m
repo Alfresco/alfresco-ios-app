@@ -84,7 +84,6 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     self = [self init];
     if (self)
     {
-        self.shouldLoadFromFileAndRunCompletionBlock = YES;
         self.filePathForFileToLoad = filePath;
         self.document = document;
         self.animationController = [[FullScreenAnimationController alloc] init];
@@ -139,6 +138,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)refreshViewController
 {
+    self.shouldLoadFromFileAndRunCompletionBlock = self.filePathForFileToLoad != nil;
     downloadProgressHeight = self.heightForDownloadContainer.constant;
     self.downloadProgressView.progress = 0.0f;
     [self hideProgressViewAnimated:NO];
@@ -433,7 +433,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)editingDocumentCompleted:(NSNotification *)notification
 {
-    [self.webView reload];
+    [self refreshViewController];
 }
 
 #pragma mark - UIWebViewDelegate Functions
