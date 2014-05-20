@@ -8,6 +8,7 @@
 
 #import "RequestHandler.h"
 #import "Constants.h"
+#import "ConnectivityManager.h"
 
 static NSString * const kJSONContentType = @"application/json";
 static NSString * const kContentTypeHeaderKey = @"Content-Type";
@@ -50,7 +51,17 @@ static NSString * const kContentTypeHeaderKey = @"Content-Type";
     
     self.responseData = nil;
     self.connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO];
-    [self.connection start];
+    [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        [self.connection start];
+    }
+    else
+    {
+        NSError *noConnectionError = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeNoInternetConnection];
+        [self connection:self.connection didFailWithError:noConnectionError];
+    }
 }
 
 - (void)cancelRequest

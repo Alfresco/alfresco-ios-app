@@ -175,6 +175,8 @@
 		730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B444D18EC3A96008A0977 /* AnalyticsManager.m */; };
 		730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B445618ED7B96008A0977 /* FilePreviewViewController.m */; };
 		730B445918ED7B96008A0977 /* FilePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730B445718ED7B96008A0977 /* FilePreviewViewController.xib */; };
+		730D1EB3192BB55E00C85C55 /* green_selected_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 730D1EB2192BB55E00C85C55 /* green_selected_circle@2x.png */; };
+		730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 730D1EB4192BB56900C85C55 /* unselected_circle@2x.png */; };
 		73190191183CDF26002C82C1 /* DocumentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190190183CDF26002C82C1 /* DocumentOverlayView.m */; };
 		73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73190194184365AA002C82C1 /* OnboardingViewController.m */; };
 		73190197184365AA002C82C1 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73190195184365AA002C82C1 /* OnboardingViewController.xib */; };
@@ -759,6 +761,8 @@
 		730B445518ED7B96008A0977 /* FilePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePreviewViewController.h; sourceTree = "<group>"; };
 		730B445618ED7B96008A0977 /* FilePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePreviewViewController.m; sourceTree = "<group>"; };
 		730B445718ED7B96008A0977 /* FilePreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilePreviewViewController.xib; sourceTree = "<group>"; };
+		730D1EB2192BB55E00C85C55 /* green_selected_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green_selected_circle@2x.png"; sourceTree = "<group>"; };
+		730D1EB4192BB56900C85C55 /* unselected_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unselected_circle@2x.png"; sourceTree = "<group>"; };
 		7319018F183CDF26002C82C1 /* DocumentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentOverlayView.h; path = "Document Overlay View/DocumentOverlayView.h"; sourceTree = "<group>"; };
 		73190190183CDF26002C82C1 /* DocumentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentOverlayView.m; path = "Document Overlay View/DocumentOverlayView.m"; sourceTree = "<group>"; };
 		73190193184365AA002C82C1 /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnboardingViewController.h; path = "Onboarding View Controller/OnboardingViewController.h"; sourceTree = "<group>"; };
@@ -1252,7 +1256,9 @@
 				080A811F18561E6D00B79306 /* certificate.png */,
 				080A812018561E6D00B79306 /* certificate@2x.png */,
 				0808B9DD183BB40B000A8984 /* green_selected_circle.png */,
+				730D1EB2192BB55E00C85C55 /* green_selected_circle@2x.png */,
 				0808B9DE183BB40B000A8984 /* unselected_circle.png */,
+				730D1EB4192BB56900C85C55 /* unselected_circle@2x.png */,
 				0808B9E1183D1083000A8984 /* empty_icon.png */,
 			);
 			path = Accounts;
@@ -3072,6 +3078,7 @@
 				271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */,
 				73FF557A18ACE2370009CA56 /* large_document@2x.png in Resources */,
 				27E84E7718AD53510024B658 /* mainmenu-about@2x.png in Resources */,
+				730D1EB3192BB55E00C85C55 /* green_selected_circle@2x.png in Resources */,
 				73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */,
 				27E84E7D18AD53510024B658 /* mainmenu-favourites@2x.png in Resources */,
 				27F054D41891832B00C2454C /* app-icon-114.png in Resources */,
@@ -3128,6 +3135,7 @@
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
+				730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */,
 				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
 				27E84E8618AD53510024B658 /* mainmenu-settings.png in Resources */,
 				733638BB1913BA1600472A57 /* system_notice_tick.png in Resources */,
