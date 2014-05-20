@@ -482,7 +482,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         {
             case SyncStatusLoading:
             {
-                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
+                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier inAccountWithId:[[[AccountManager sharedManager] selectedAccount] accountIdentifier]];
                 break;
             }
             case SyncStatusFailed:

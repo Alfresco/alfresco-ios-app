@@ -28,6 +28,7 @@
 		080A8129185628DE00B79306 /* ClientCertificateImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */; };
 		080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A813018573CBC00B79306 /* CertificateDocumentFilter.m */; };
 		080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */; };
+		08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 08244AAE192B99AE00228AD6 /* AccountSyncProgress.m */; };
 		082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 082ED88818EC21A100518216 /* WorkflowHelper.m */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
@@ -545,6 +546,8 @@
 		080A813018573CBC00B79306 /* CertificateDocumentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CertificateDocumentFilter.m; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.m"; sourceTree = "<group>"; };
 		080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConfigurationManager.h; sourceTree = "<group>"; };
 		080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppConfigurationManager.m; sourceTree = "<group>"; };
+		08244AAD192B99AE00228AD6 /* AccountSyncProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSyncProgress.h; sourceTree = "<group>"; };
+		08244AAE192B99AE00228AD6 /* AccountSyncProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSyncProgress.m; sourceTree = "<group>"; };
 		082ED88718EC21A100518216 /* WorkflowHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkflowHelper.h; sourceTree = "<group>"; };
 		082ED88818EC21A100518216 /* WorkflowHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkflowHelper.m; sourceTree = "<group>"; };
 		0833244217F19D6800EE6AA8 /* SyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncHelper.h; sourceTree = "<group>"; };
@@ -2411,6 +2414,8 @@
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
 				08E89C9317E7488C006936DF /* SyncManager.m */,
+				08244AAD192B99AE00228AD6 /* AccountSyncProgress.h */,
+				08244AAE192B99AE00228AD6 /* AccountSyncProgress.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailManager.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailManager.m */,
 			);
@@ -3393,6 +3398,7 @@
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
+				08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
