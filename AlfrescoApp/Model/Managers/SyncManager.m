@@ -47,6 +47,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) CoreDataSyncHelper *syncCoreDataHelper;
 @property (nonatomic, strong) SyncHelper *syncHelper;
 @property (nonatomic, strong) NSMutableDictionary *accountsSyncProgress;
+@property (nonatomic, strong) NSOperationQueue *currentQueue;
 @end
 
 @implementation SyncManager
@@ -116,6 +117,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock
 {
+    [self.currentQueue setSuspended:YES];
+    
     NSString *selectedAccountId = [self selectedAccountIdentifier];
     NSOperationQueue *syncQueue = self.syncQueues[selectedAccountId];
     
@@ -131,6 +134,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         AccountSyncProgress *syncProgress = [[AccountSyncProgress alloc] initWithObserver:self];
         [self.accountsSyncProgress setObject:syncProgress forKey:selectedAccountId];
     }
+    [syncQueue setSuspended:NO];
+    self.currentQueue = syncQueue;
+    [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     
     if (syncQueue.operationCount == 0)
     {

@@ -150,6 +150,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
                 [self hidePullToRefreshView];
             }
         }];
+        [self.tableView reloadData];
     }
 }
 
