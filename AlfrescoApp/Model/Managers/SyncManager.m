@@ -80,6 +80,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         _syncQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
         _syncOperations = [NSMutableDictionary dictionary];
         
+        // syncNodesInfo will hold mutable dictionaries for each account
+        _syncNodesInfo = [NSMutableDictionary dictionary];
+        
         _syncObstacles = @{kDocumentsRemovedFromSyncOnServerWithLocalChanges: [NSMutableArray array],
                            kDocumentsDeletedOnServerWithLocalChanges: [NSMutableArray array],
                            kDocumentsToBeDeletedLocallyAfterUpload: [NSMutableArray array]};
@@ -119,16 +122,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock
 {
-    if (self.alfrescoSession != alfrescoSession)
-    {
-        [self cancelAllSyncOperations];
-    }
-    
     if (self.syncQueue.operationCount == 0)
     {
         self.alfrescoSession = alfrescoSession;
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
-        self.syncNodesInfo = [NSMutableDictionary dictionary];
         self.syncNodesStatus = [NSMutableDictionary dictionary];
         
         if (self.documentFolderService)
@@ -154,8 +151,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder
 {
+    NSMutableDictionary *syncNodesInfoForSelectedAccount = self.syncNodesInfo[[self selectedAccountIdentifier]];
     NSString *folderKey = folder ? [self.syncHelper syncIdentifierForNode:folder] : [self selectedAccountIdentifier];
-    NSMutableArray *syncNodes = [[self.syncNodesInfo objectForKey:folderKey] mutableCopy];
+    NSMutableArray *syncNodes = [syncNodesInfoForSelectedAccount[folderKey] mutableCopy];
     
     if (!syncNodes)
     {
@@ -229,7 +227,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     // top level sync nodes are held in self.syncNodesInfo with key account Identifier
     if (nodes)
     {
-        [self.syncNodesInfo setValue:[nodes mutableCopy] forKey:[self selectedAccountIdentifier]];
+        NSMutableDictionary *nodesInfoForSelectedAccount = [NSMutableDictionary dictionary];
+        [self.syncNodesInfo setValue:nodesInfoForSelectedAccount forKey:[self selectedAccountIdentifier]];
+        [nodesInfoForSelectedAccount setValue:[nodes mutableCopy] forKey:[self selectedAccountIdentifier]];
     }
     
     BOOL (^hasFolder)(NSArray *) = ^ BOOL (NSArray *nodesArray)
@@ -282,14 +282,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    if (node.isFolder && ([self.syncNodesInfo objectForKey:[self.syncHelper syncIdentifierForNode:node]] == nil))
+    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo[[self selectedAccountIdentifier]];
+    
+    if (node.isFolder && ([nodesInfoForSelectedAccount objectForKey:[self.syncHelper syncIdentifierForNode:node]] == nil))
     {
         self.nodeChildrenRequestsCount++;
         [self.documentFolderService retrieveChildrenInFolder:(AlfrescoFolder *)node completionBlock:^(NSArray *array, NSError *error) {
             
             self.nodeChildrenRequestsCount--;
-            // nodes for each folder are held in self.syncNodesInfo with keys folder identifiers
-            [self.syncNodesInfo setValue:array forKey:[self.syncHelper syncIdentifierForNode:node]];
+            // nodes for each folder are held in with keys folder identifiers
+            [nodesInfoForSelectedAccount setValue:array forKey:[self.syncHelper syncIdentifierForNode:node]];
             [self retrievePermissionsForNodes:array withCompletionBlock:^{
                 
                 for (AlfrescoNode *node in array)
@@ -317,18 +319,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
  */
 - (NSArray *)allRemoteSyncDocuments
 {
-    NSArray * (^documentsInContainer)(NSString *) = ^ NSArray * (NSString *containerId)
+    NSArray * (^documentsInNodes)(NSArray *) = ^ NSArray * (NSArray *nodes)
     {
-        NSArray *folderNodes = [self.syncNodesInfo objectForKey:containerId];
-        
-        NSMutableArray *documents = [NSMutableArray array];
-        for (AlfrescoNode *node in folderNodes)
-        {
-            if (node.isDocument)
-            {
-                [documents addObject:node];
-            }
-        }
+        NSPredicate *documentsPredicate = [NSPredicate predicateWithFormat:@"SELF.isDocument == YES"];
+        NSMutableArray *documents = [[nodes filteredArrayUsingPredicate:documentsPredicate] mutableCopy];
         return documents;
     };
     
@@ -346,15 +340,16 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     };
     
     NSMutableArray *allDocuments = [NSMutableArray array];
-    NSMutableArray *syncNodesInfoKeys = [[self.syncNodesInfo allKeys] mutableCopy];
+    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo[[self selectedAccountIdentifier]];
+    NSMutableArray *syncNodesInfoKeys = [[nodesInfoForSelectedAccount allKeys] mutableCopy];
     [syncNodesInfoKeys removeObject:[self selectedAccountIdentifier]];
     
-    NSArray *topLevelDocuments = documentsInContainer([self selectedAccountIdentifier]);
+    NSArray *topLevelDocuments = documentsInNodes(nodesInfoForSelectedAccount[[self selectedAccountIdentifier]]);
     [allDocuments addObjectsFromArray:topLevelDocuments];
     
     for (NSString *syncFolderInfoKey in syncNodesInfoKeys)
     {
-        NSArray *folderDocuments = documentsInContainer(syncFolderInfoKey);
+        NSArray *folderDocuments = documentsInNodes(nodesInfoForSelectedAccount[syncFolderInfoKey]);
         
         for (AlfrescoDocument *document in folderDocuments)
         {
@@ -436,13 +431,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         // block to syncs info and content for qualified nodes
         void (^syncInfoandContent)(void) = ^ void (void)
         {
-            [self.syncHelper updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo
-                                              forAccountWithId:[self selectedAccountIdentifier]
+            NSString *accountId = [self selectedAccountIdentifier];
+            [self.syncHelper updateLocalSyncInfoWithRemoteInfo:self.syncNodesInfo[accountId]
+                                              forAccountWithId:accountId
                                                   preserveInfo:infoToBePreservedInNewNodes
                                                    permissions:self.permissions
                                       refreshExistingSyncNodes:includeExistingSyncNodes
                                         inManagedObjectContext:privateManagedObjectContext];
-            self.syncNodesInfo = nil;
+            [self.syncNodesInfo removeObjectForKey:accountId];
             self.permissions = nil;
             
             [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
@@ -518,7 +514,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         
         // getting downloaded file locally updated Date
         NSError *dateError = nil;
-        NSString *pathToSyncedFile = [self contentPathForNode:(AlfrescoDocument *)node];
+        
+        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:node] inAccountWithId:[self selectedAccountIdentifier] inManagedObjectContext:managedContext];
+        NSString *pathToSyncedFile = nodeInfo.syncContentPath;
         NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
         localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
     }
@@ -764,7 +762,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
-    NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:selectedAccount.accountIdentifier];
+    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo[selectedAccount.accountIdentifier];
+    NSMutableArray *topLevelSyncNodes = [nodesInfoForSelectedAccount objectForKey:selectedAccount.accountIdentifier];
     BOOL isSyncNodesInfoInMemory = (topLevelSyncNodes != nil);
     
     
@@ -791,8 +790,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
                 else
                 {
-                    self.syncNodesInfo = [NSMutableDictionary dictionary];
-                    [self.syncNodesInfo setValue:@[node] forKey:selectedAccount.accountIdentifier];
+                    NSMutableDictionary *nodesInfoForSelectedAccount = [NSMutableDictionary dictionary];
+                    [self.syncNodesInfo setValue:nodesInfoForSelectedAccount forKey:selectedAccount.accountIdentifier];
+                    [nodesInfoForSelectedAccount setValue:[node mutableCopy] forKey:selectedAccount.accountIdentifier];
                 }
                 
                 if (node.isFolder)
@@ -832,10 +832,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)removeNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
+    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo[[self selectedAccountIdentifier]];
     
-    if (self.syncNodesInfo)
+    if (nodesInfoForSelectedAccount)
     {
-        NSMutableArray *topLevelSyncNodes = [self.syncNodesInfo objectForKey:[self selectedAccountIdentifier]];
+        NSMutableArray *topLevelSyncNodes = nodesInfoForSelectedAccount[[self selectedAccountIdentifier]];
         NSMutableArray *topLevelSyncNodeIdentifiers = [self.syncHelper syncIdentifiersForNodes:topLevelSyncNodes];
         NSInteger nodeIndex = [topLevelSyncNodeIdentifiers indexOfObject:[self.syncHelper syncIdentifierForNode:node]];
         if (nodeIndex != NSNotFound)
