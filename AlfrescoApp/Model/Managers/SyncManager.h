@@ -48,7 +48,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 
-- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier inAccountWithId:(NSString *)accountId;
 - (void)cancelAllSyncOperations;
 - (void)retrySyncForDocument: (AlfrescoDocument *)document;
 /*
