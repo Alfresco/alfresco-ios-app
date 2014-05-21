@@ -440,8 +440,10 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [self showWebViewAnimated:YES];
-    [self hideProgressViewAnimated:YES];
+    if (!self.downloadProgressContainer.hidden)
+    {
+        [self hideProgressViewAnimated:YES];
+    }
     
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
