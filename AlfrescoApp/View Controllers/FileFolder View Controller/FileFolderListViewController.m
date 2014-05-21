@@ -100,6 +100,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [super viewDidLoad];
     
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    {
+        self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
+    }
+    
     self.title = self.folderDisplayName;
     self.nodePermissions = [[NSMutableDictionary alloc] init];
     

@@ -23,6 +23,7 @@ CGFloat kSegmentVerticalPadding = 10.0f;
 CGFloat kSegmentControllerHeight = 40.0f;
 
 static CGFloat const kExpandButtonRotationSpeed = 0.2f;
+static CGFloat const kSearchBarSpeed = 0.3f;
 
 static NSString * const kSitesFolderLocation = @"/Sites";
 static NSString * const kSitesPreviousSearchThumbnailMappingsFileName = @"SitesSearchMappings";
@@ -602,18 +603,26 @@ static CGFloat kSearchCellHeight = 60.0f;
 
 #pragma mark - UISearchDisplayDelegate Functions
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller;
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.origin.y -= kSegmentControllerHeight;
-    self.tableView.frame = tableViewFrame;
+    [UIView animateWithDuration:kSearchBarSpeed animations:^{
+        CGRect tableViewFrame = self.tableView.frame;
+        tableViewFrame.origin.y -= kSegmentControllerHeight;
+        self.tableView.frame = tableViewFrame;
+    } completion:^(BOOL finished) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }];
 }
 
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller;
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller;
 {
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.origin.y += kSegmentControllerHeight;
-    self.tableView.frame = tableViewFrame;
+    [UIView animateWithDuration:kSearchBarSpeed animations:^{
+        CGRect tableViewFrame = self.tableView.frame;
+        tableViewFrame.origin.y += kSegmentControllerHeight;
+        self.tableView.frame = tableViewFrame;
+    } completion:^(BOOL finished) {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }];
 }
 
 #pragma mark - UIRefreshControl Functions
