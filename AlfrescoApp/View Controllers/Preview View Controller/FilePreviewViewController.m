@@ -488,6 +488,9 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     self.filePathForFileToLoad = contentFilePath;
     self.session = session;
     
+    self.webView.hidden = YES;
+    self.moviePlayerContainer.hidden = YES;
+    
     [self refreshViewController];
 }
 
