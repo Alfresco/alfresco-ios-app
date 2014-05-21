@@ -809,6 +809,11 @@ static NSString * const kAudioFileName = @"audio.m4a";
     {
         [self uploadDocumentUsingContentFileWithName:documentName completionBlock:^(BOOL filenameExistsInParentFolder) {
             uploadButton.enabled = YES;
+            if (filenameExistsInParentFolder)
+            {
+                documentName = fileNameAppendedWithDate(documentName);
+                [self uploadDocumentUsingContentFileWithName:documentName completionBlock:nil];
+            }
         }];
     }
     else
