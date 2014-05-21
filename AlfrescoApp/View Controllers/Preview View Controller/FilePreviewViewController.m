@@ -290,6 +290,22 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     }
 }
 
+- (void)hideWebViewAnimated:(BOOL)animated
+{
+    if (animated)
+    {
+        self.webView.hidden = YES;
+        [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
+            self.previewThumbnailImageView.alpha = 0.0f;
+            self.webView.alpha = 0.0f;
+        }];
+    }
+    else
+    {
+        self.webView.hidden = YES;
+    }
+}
+
 - (void)showMediaPlayerAnimated:(BOOL)animated
 {
     if (animated)
@@ -304,6 +320,22 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     else
     {
         self.moviePlayerContainer.hidden = NO;
+    }
+}
+
+- (void)hideMediaPlayerAnimated:(BOOL)animated
+{
+    if (animated)
+    {
+        self.moviePlayerContainer.hidden = YES;
+        [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
+            self.previewThumbnailImageView.alpha = 0.0f;
+            self.moviePlayerContainer.alpha = 0.0f;
+        }];
+    }
+    else
+    {
+        self.moviePlayerContainer.hidden = YES;
     }
 }
 
@@ -364,14 +396,9 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self showMediaPlayerAnimated:YES];
         
         [self hideProgressViewAnimated:YES];
-        
-        self.moviePlayerContainer.hidden = NO;
-        self.webView.hidden = YES;
     }
     else
     {
-        self.moviePlayerContainer.hidden = YES;
-        self.webView.hidden = NO;
         [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePathToDisplay]]];
     }
 }
@@ -445,6 +472,11 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self hideProgressViewAnimated:YES];
     }
     
+    if (self.webView.hidden)
+    {
+        [self showWebViewAnimated:YES];
+    }
+    
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(webView, YES);
@@ -488,8 +520,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     self.filePathForFileToLoad = contentFilePath;
     self.session = session;
     
-    self.webView.hidden = YES;
-    self.moviePlayerContainer.hidden = YES;
+    [self hideWebViewAnimated:NO];
+    [self hideMediaPlayerAnimated:NO];
     
     [self refreshViewController];
 }
