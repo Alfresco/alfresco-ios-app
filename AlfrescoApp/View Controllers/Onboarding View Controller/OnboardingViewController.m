@@ -112,10 +112,16 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 
 - (IBAction)helpButtonPressed:(id)sender
 {
-    NSString *errorWebPage = [[NSBundle mainBundle] pathForResource:@"HelpErrorPage" ofType:@"html" inDirectory:@"Help Error"];
-    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:kAlfrescoHelpURLString
-                                                                                          initialTitle:NSLocalizedString(@"help.title", @"Help Title")
-                                                                                 errorLoadingURLString:errorWebPage];
+    NSURL *helpGuideURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"UserGuide" ofType:@"pdf"]];
+    NSURL *errorWebPageURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"HelpErrorPage" ofType:@"html" inDirectory:@"Help Error"]];
+    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:helpGuideURL
+                                                                                    initialTitle:NSLocalizedString(@"help.title", @"Help Title")
+                                                                                 errorLoadingURL:errorWebPageURL];
+    // This will need to be readded once we use online help
+//    NSString *errorWebPage = [[NSBundle mainBundle] pathForResource:@"HelpErrorPage" ofType:@"html" inDirectory:@"Help Error"];
+//    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:kAlfrescoHelpURLString
+//                                                                                          initialTitle:NSLocalizedString(@"help.title", @"Help Title")
+//                                                                                 errorLoadingURLString:errorWebPage];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     
     [self presentViewController:helpNavigationController animated:YES completion:nil];

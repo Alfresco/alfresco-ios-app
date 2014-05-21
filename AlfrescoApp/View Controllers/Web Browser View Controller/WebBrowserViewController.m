@@ -49,14 +49,18 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
     
     self.title = self.initalTitle;
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ButtonBarArrowLeft.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed:)];
-    backButton.enabled = NO;
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = kSpacingBetweenButtons;
-    UIBarButtonItem *forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ButtonBarArrowRight.png"] style:UIBarButtonItemStylePlain target:self action:@selector(forwardButtonPressed:)];
-    forwardButton.enabled = NO;
-
-    NSMutableArray *webViewButtons = [NSMutableArray arrayWithObjects:backButton, fixedSpace, forwardButton, nil];
+    NSMutableArray *webViewButtons = nil;
+    if (!self.url.filePathURL)
+    {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ButtonBarArrowLeft.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed:)];
+        backButton.enabled = NO;
+        UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        fixedSpace.width = kSpacingBetweenButtons;
+        UIBarButtonItem *forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ButtonBarArrowRight.png"] style:UIBarButtonItemStylePlain target:self action:@selector(forwardButtonPressed:)];
+        forwardButton.enabled = NO;
+        
+        webViewButtons = [NSMutableArray arrayWithObjects:backButton, fixedSpace, forwardButton, nil];
+    }
     
     // dismiss button
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser_close.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissHelp:)];
@@ -128,8 +132,11 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    self.navigationItem.title = title;
+    if (!self.url.isFileURL)
+    {
+        NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+        self.navigationItem.title = title;
+    }
     
     [self updateButtons];
 }
