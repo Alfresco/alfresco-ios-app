@@ -606,6 +606,7 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
+    [self.tableView reloadData];
 }
 
 #pragma mark - UISearchDisplayDelegate Functions
