@@ -105,6 +105,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     [self configureWebView];
     [self configureMediaPlayer];
     
+    downloadProgressHeight = self.heightForDownloadContainer.constant;
+    
     [self refreshViewController];
 }
 
@@ -139,9 +141,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)refreshViewController
 {
-    downloadProgressHeight = self.heightForDownloadContainer.constant;
     self.downloadProgressView.progress = 0.0f;
-    [self hideProgressViewAnimated:NO];
     
     if (self.shouldLoadFromFileAndRunCompletionBlock)
     {
@@ -387,6 +387,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)displayFileAtPath:(NSString *)filePathToDisplay
 {
+    [self hideProgressViewAnimated:YES];
+    
     if ([Utility isAudioOrVideo:filePathToDisplay])
     {
         self.mediaPlayerController.contentURL = [NSURL fileURLWithPath:filePathToDisplay];
@@ -394,8 +396,6 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self.mediaPlayerController prepareToPlay];
         
         [self showMediaPlayerAnimated:YES];
-        
-        [self hideProgressViewAnimated:YES];
     }
     else
     {
@@ -412,6 +412,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     if ([displayedDocumentIdentifier isEqualToString:notificationDocumentIdentifier])
     {
+        self.previewThumbnailImageView.alpha = 1.0f;
         [self showProgressViewAnimated:YES];
     }
 }
@@ -442,6 +443,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     if ([displayedDocumentIdentifier isEqualToString:notificationDocumentIdentifier])
     {
+        [self hideProgressViewAnimated:YES];
         [self displayFileAtPath:[[DocumentPreviewManager sharedManager] filePathForDocument:self.document]];
     }
 }
@@ -485,6 +487,9 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+    [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
+    self.previewThumbnailImageView.alpha = 1.0f;
+
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(nil, NO);
@@ -522,6 +527,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     [self hideWebViewAnimated:NO];
     [self hideMediaPlayerAnimated:NO];
+    [self showProgressViewAnimated:NO];
     
     [self refreshViewController];
 }
