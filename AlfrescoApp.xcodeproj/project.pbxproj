@@ -37,8 +37,7 @@
 		0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */; };
 		0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */; };
 		0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */; };
-		0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */; };
-		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */; };
+		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */; };
 		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		08344EF818E2E64E00B061C0 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08344EF618E2E64E00B061C0 /* DatePickerViewController.m */; };
@@ -558,8 +557,7 @@
 		0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncObstaclesViewController.xib; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.xib"; sourceTree = "<group>"; };
 		0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncObstacleTableViewCell.h; sourceTree = "<group>"; };
 		0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncObstacleTableViewCell.m; sourceTree = "<group>"; };
-		0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncObstacleTableViewCell.xib; sourceTree = "<group>"; };
-		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SyncObstacleTableViewCell~ipad.xib"; sourceTree = "<group>"; };
+		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncObstacleTableViewCell.xib; sourceTree = "<group>"; };
 		0833248817FF0DC200EE6AA8 /* blue-button-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30.png"; sourceTree = "<group>"; };
 		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		08344EF518E2E64E00B061C0 /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
@@ -1307,8 +1305,7 @@
 			children = (
 				0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */,
 				0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */,
-				0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */,
-				0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */,
+				0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */,
 			);
 			name = FavoritesErrorTableViewCell;
 			path = "Sync View Controller/Sync Obstacles/FavoritesErrorTableViewCell";
@@ -3118,7 +3115,6 @@
 				738664B41906B12B0021D1BD /* CommentCell.xib in Resources */,
 				73881FD7188FF6B00052C75F /* actionsheet-openIn@2x.png in Resources */,
 				73881FE0188FF9290052C75F /* actionsheet-unfavourited.png in Resources */,
-				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				738664C01906B14C0021D1BD /* SitesCell.xib in Resources */,
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
@@ -3146,7 +3142,7 @@
 				73881FD5188FF6B00052C75F /* actionsheet-liked@2x.png in Resources */,
 				733638B91913BA1600472A57 /* system_notice_exclamation.png in Resources */,
 				27F054DC1891832B00C2454C /* app-icon-58.png in Resources */,
-				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
+				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
 				73FF557D18ACE2370009CA56 /* large_excel.png in Resources */,

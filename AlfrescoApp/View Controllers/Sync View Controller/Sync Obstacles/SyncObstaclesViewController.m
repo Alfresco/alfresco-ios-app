@@ -9,16 +9,16 @@
 #import "SyncObstaclesViewController.h"
 #import "SyncManager.h"
 #import "Utility.h"
+#import "ThumbnailManager.h"
+
+static NSInteger const kSectionDataIndex = 0;
+static NSInteger const kSectionHeaderIndex = 1;
+
+static CGFloat const kHeaderFontSize = 15.0f;
 
 @interface SyncObstaclesViewController ()
-@property (nonatomic, retain) NSMutableDictionary *errorDictionary;
-@property (nonatomic, retain) NSMutableDictionary *sectionHeaders;
-
-- (NSString *)keyForSection:(NSInteger)section;
-- (NSInteger)calculateHeaderHeightForSection:(NSInteger)section;
-- (void)handleSyncObstacles;
-- (void)reloadTableView;
-- (NSInteger)numberOfPopulatedErrorArrays;
+@property (nonatomic, strong) NSMutableDictionary *errorDictionary;
+@property (nonatomic, strong) NSMutableArray *sectionData;
 @end
 
 @implementation SyncObstaclesViewController
@@ -49,19 +49,26 @@
     
     [self.navigationItem setTitle:NSLocalizedString(@"sync-errors.title", @"Sync Error Navigation Bar Title")];
     
-    self.sectionHeaders = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"sync-errors.unfavorited-on-server-with-local-changes.header", @"sync-errors.deleted-on-server-with-local-changes.header", nil]
-                                                             forKeys:[NSArray arrayWithObjects:kDocumentsRemovedFromSyncOnServerWithLocalChanges, kDocumentsDeletedOnServerWithLocalChanges, nil]];
+    NSMutableArray *syncDocumentsRemovedOnServer = self.errorDictionary[kDocumentsRemovedFromSyncOnServerWithLocalChanges];
+    NSMutableArray *syncDocumentDeletedOnServer = self.errorDictionary[kDocumentsDeletedOnServerWithLocalChanges];
+    
+    self.sectionData = [NSMutableArray array];
+    if (syncDocumentsRemovedOnServer.count > 0)
+    {
+        NSString *sectionHeader = @"sync-errors.unfavorited-on-server-with-local-changes.header";
+        [self.sectionData addObject:@[syncDocumentsRemovedOnServer,sectionHeader]];
+    }
+    if (syncDocumentDeletedOnServer.count > 0)
+    {
+        NSString *sectionHeader = @"sync-errors.deleted-on-server-with-local-changes.header";
+        [self.sectionData addObject:@[syncDocumentDeletedOnServer, sectionHeader]];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self handleSyncObstacles];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark - Private Class functions
@@ -71,23 +78,16 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (NSString *)keyForSection:(NSInteger)sectionNumber
-{
-    return [[self.sectionHeaders allKeys] objectAtIndex:sectionNumber];
-}
-
 - (NSInteger)calculateHeaderHeightForSection:(NSInteger)section
 {
-    NSString *key = [self keyForSection:section];
-    
     NSUInteger returnHeight = 0;
     
-    if ([[self.errorDictionary objectForKey:key] count] != 0)
+    if ([self.sectionData[section][kSectionDataIndex] count] != 0)
     {
-        NSString *headerText = NSLocalizedString([self.sectionHeaders objectForKey:key], @"TableView Header Section Descriptions");
+        NSString *headerText = NSLocalizedString(self.sectionData[section][kSectionHeaderIndex], @"TableView Header Section Descriptions");
         CGRect rect = [headerText boundingRectWithSize:CGSizeMake(300, 2000)
                                                options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
-                                            attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0f]}
+                                            attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:kHeaderFontSize]}
                                                context:nil];
         returnHeight = rect.size.height;
     }
@@ -119,9 +119,10 @@
 - (NSInteger)numberOfPopulatedErrorArrays
 {
     int numberOfPopulatedErrorArrays = 0;
-    for (NSString *key in [self.sectionHeaders allKeys])
+    
+    for (NSMutableArray *data in self.sectionData)
     {
-        if ([[self.errorDictionary objectForKey:key] count] > 0)
+        if ([data[kSectionDataIndex] count] > 0)
         {
             numberOfPopulatedErrorArrays++;
         }
@@ -133,13 +134,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.sectionHeaders allKeys] count];
+    return [self numberOfPopulatedErrorArrays];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSString *key = [self keyForSection:section];
-    return [[self.errorDictionary objectForKey:key] count];
+    return [self.sectionData[section][kSectionDataIndex] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -147,12 +147,10 @@
     static NSString *standardCellIdentifier = @"StandardCellIdentifier";
     static NSString *syncErrorCellIdentifier = @"SyncObstacleCellIdentifier";
     
-    NSString *key = [self keyForSection:indexPath.section];
-    NSArray *currentErrorArray = [self.errorDictionary objectForKey:key];
-    AlfrescoDocument *document = currentErrorArray[indexPath.row];
+    AlfrescoDocument *document = self.sectionData[indexPath.section][kSectionDataIndex][indexPath.row];
     UITableViewCell *cell = nil;
     
-    if ([key isEqualToString:kDocumentsDeletedOnServerWithLocalChanges])
+    if ([self.sectionData[indexPath.section][kSectionHeaderIndex] isEqualToString:@"sync-errors.deleted-on-server-with-local-changes.header"])
     {
         UITableViewCell *standardCell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:standardCellIdentifier];
         if (!standardCell)
@@ -163,7 +161,6 @@
         standardCell.selectionStyle = UITableViewCellSelectionStyleNone;
         standardCell.textLabel.font = [UIFont systemFontOfSize:17.0f];
         standardCell.textLabel.text = document.name;
-        standardCell.imageView.image = smallImageForType([document.name pathExtension]);
         cell = standardCell;
     }
     else
@@ -175,17 +172,24 @@
             syncErrorCell = (SyncObstacleTableViewCell *)[nibItems objectAtIndex:0];
             syncErrorCell.delegate = self;
             [syncErrorCell.syncButton setTitle:NSLocalizedString(@"sync-errors.button.sync", @"Sync Button") forState:UIControlStateNormal];
-            [syncErrorCell.syncButton setBackgroundImage:[[UIImage imageNamed:@"blue-button-30.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
             [syncErrorCell.saveButton setTitle:NSLocalizedString(@"sync-errors.button.save", @"Save Button") forState:UIControlStateNormal];
-            [syncErrorCell.saveButton setBackgroundImage:[[UIImage imageNamed:@"blue-button-30.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
             NSAssert(nibItems, @"Failed to load object from NIB");
         }
         
         syncErrorCell.selectionStyle = UITableViewCellSelectionStyleNone;
         syncErrorCell.fileNameTextLabel.text = document.name;
-        syncErrorCell.imageView.image = smallImageForType([document.name pathExtension]);
         
         cell = syncErrorCell;
+    }
+    
+    UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:document renditionType:kRenditionImageDocLib];
+    if (thumbnail)
+    {
+        cell.imageView.image = thumbnail;
+    }
+    else
+    {
+        cell.imageView.image = smallImageForType([document.name pathExtension]);
     }
     
     return cell;
@@ -195,27 +199,26 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *key = [self keyForSection:section];
-    NSArray *syncErrors = [self.errorDictionary objectForKey:key];
+    NSArray *syncErrors = self.sectionData[section][kSectionDataIndex];
     if (syncErrors.count > 0)
     {
         int horizontalMargin = 10;
-        int verticalMargin = 10;
         CGFloat heightRequired = [self calculateHeaderHeightForSection:section];
         
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, heightRequired + (verticalMargin * 2))];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, heightRequired)];
         headerView.backgroundColor = [UIColor clearColor];
         headerView.contentMode = UIViewContentModeScaleAspectFit;
         headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(horizontalMargin, -verticalMargin, tableView.frame.size.width - (horizontalMargin * 2), heightRequired)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(horizontalMargin, 0, tableView.frame.size.width - (horizontalMargin * 2), heightRequired)];
         label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         label.backgroundColor = [UIColor clearColor];
-        label.textAlignment = NSTextAlignmentCenter;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         label.numberOfLines = 0;
-        label.font = [UIFont systemFontOfSize:14.0f];
-        label.text = NSLocalizedString([self.sectionHeaders objectForKey:key], @"TableView Header Section Descriptions");
+        label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1];
+        label.font = [UIFont systemFontOfSize:kHeaderFontSize];
+        
+        label.text = NSLocalizedString(self.sectionData[section][kSectionHeaderIndex], @"TableView Header Section Descriptions");
         
         [headerView addSubview:label];
         return headerView;
@@ -258,9 +261,7 @@
 - (void)didPressSyncButton:(UIButton *)syncButton
 {
     NSIndexPath *cellIndexPath = [self indexPathForButtonPressed:syncButton];
-    // key for section
-    NSString *key = [self keyForSection:cellIndexPath.section];
-    NSArray *currentErrorArray = [self.errorDictionary objectForKey:key];
+    NSArray *currentErrorArray = self.sectionData[cellIndexPath.section][kSectionDataIndex];
     AlfrescoDocument *document = currentErrorArray[cellIndexPath.row];
     [[SyncManager sharedManager] syncFileBeforeRemovingFromSync:document syncToServer:YES];
     [self reloadTableView];
@@ -269,9 +270,7 @@
 - (void)didPressSaveToDownloadsButton:(UIButton *)saveButton
 {
     NSIndexPath *cellIndexPath = [self indexPathForButtonPressed:saveButton];
-    // key for section
-    NSString *key = [self keyForSection:cellIndexPath.section];
-    NSArray *currentErrorArray = [self.errorDictionary objectForKey:key];
+    NSArray *currentErrorArray = self.sectionData[cellIndexPath.section][kSectionDataIndex];
     AlfrescoDocument *document = currentErrorArray[cellIndexPath.row];
     [[SyncManager sharedManager] syncFileBeforeRemovingFromSync:document syncToServer:NO];
     [self reloadTableView];
