@@ -50,7 +50,7 @@
     return [UIColor appTintColor];
 }
 
-+ (UIColor *)syncButtonFailedColor
++ (UIColor *)syncFailedColor
 {
     // Matches status-sync-failed.png
     return [UIColor colorWithRed:0.82 green:0.32 blue:0.34 alpha:1.0];

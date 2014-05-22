@@ -20,7 +20,7 @@
 
 #pragma mark - Initialiser
 
-+ (instancetype)sharedManager
++ (FavouriteManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static FavouriteManager *sharedFavouriteManager;

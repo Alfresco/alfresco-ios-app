@@ -31,7 +31,7 @@ static NSInteger const kDefaultNumberOfRows = 1;
 
 @implementation NodePickerListViewController
 
-- (instancetype)initWithSession:(id<AlfrescoSession>)session items:(NSMutableArray *)items nodePickerController:(id)picker
+- (instancetype)initWithSession:(id<AlfrescoSession>)session items:(NSMutableArray *)items nodePickerController:(NodePicker *)picker
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)

@@ -15,6 +15,8 @@
 #import "ActionViewHandler.h"
 #import "ConnectivityManager.h"
 
+static NSUInteger const kActionViewHeight = 110;
+
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     PagingScrollViewSegmentFolderTypeMetadata = 0,
@@ -34,6 +36,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
 @property (nonatomic, weak) IBOutlet PagedScrollView *pagedScrollView;
 @property (nonatomic, weak) IBOutlet ActionCollectionView *actionView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewHeightConstraint;
 
 @end
 
@@ -67,6 +70,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     [self setupPagingScrollView];
     
     [self updateActionButtons];
+    [self updateActionViewVisibility];
 }
 
 #pragma mark - Private Functions
@@ -176,6 +180,18 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
     }];
+}
+
+- (void)updateActionViewVisibility
+{
+    if (![[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        self.actionViewHeightConstraint.constant = 0;
+    }
+    else
+    {
+        self.actionViewHeightConstraint.constant = kActionViewHeight;
+    }
 }
 
 #pragma mark - IBActions
@@ -291,6 +307,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     
     [self setupActionCollectionView];
     [self updateActionButtons];
+    [self updateActionViewVisibility];
     
     for (UIViewController *pagingController in self.pagingControllers)
     {

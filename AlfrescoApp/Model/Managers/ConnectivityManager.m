@@ -20,7 +20,7 @@
 
 @implementation ConnectivityManager
 
-+ (id)sharedManager
++ (ConnectivityManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static ConnectivityManager *sharedManager = nil;

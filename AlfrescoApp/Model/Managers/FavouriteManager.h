@@ -10,7 +10,7 @@
 
 @interface FavouriteManager : NSObject
 
-+ (instancetype)sharedManager;
++ (FavouriteManager *)sharedManager;
 - (AlfrescoRequest *)addFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock;
 - (AlfrescoRequest *)removeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock;
 - (AlfrescoRequest *)isNodeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL isFavorite, NSError *error))completionBlock;

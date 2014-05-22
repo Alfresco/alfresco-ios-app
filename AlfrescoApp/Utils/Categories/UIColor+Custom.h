@@ -18,7 +18,7 @@
 + (UIColor *)textDefaultColor;
 + (UIColor *)documentActionsTintColor;
 + (UIColor *)documentActionsHighlightColor;
-+ (UIColor *)syncButtonFailedColor;
++ (UIColor *)syncFailedColor;
 + (UIColor *)borderGreyColor;
 + (UIColor *)systemNoticeInformationColor;
 + (UIColor *)systemNoticeErrorColor;

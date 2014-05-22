@@ -227,7 +227,7 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
         * current requirement to carry out manual migration, we will simply delete the existing cache database and create a new one.
         */
         NSError *removalError = nil;
-        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+        [[AlfrescoFileManager sharedManager] removeItemAtURL:storeURL error:&error];
         
         if (removalError)
         {

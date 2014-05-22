@@ -14,7 +14,7 @@
 @property (nonatomic, assign, readonly, getter = isOnCellular) BOOL onCellular;
 @property (nonatomic, assign, readonly, getter = isOnWifi) BOOL onWifi;
 
-+ (id)sharedManager;
++ (ConnectivityManager *)sharedManager;
 
 - (BOOL)canReachHostName:(NSString *)hostname;
 

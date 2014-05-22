@@ -18,7 +18,7 @@
 
 @implementation LocationManager
 
-+ (id)sharedManager
++ (LocationManager *)sharedManager
 {
     static dispatch_once_t onceToken;
     static LocationManager *sharedLocationManager = nil;

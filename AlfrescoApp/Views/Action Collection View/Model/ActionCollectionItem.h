@@ -38,20 +38,20 @@ extern NSString * const kActionCollectionIdentifierSendForReview;
 @property (nonatomic, strong, readonly) UIImage *itemImageHighlightedImage;
 @property (nonatomic, strong, readonly) UIColor *itemTitleHighlightedColor;
 
-+ (instancetype)emailItem;
-+ (instancetype)emailAsLinkItem;
-+ (instancetype)openInItem;
-+ (instancetype)likeItem;
-+ (instancetype)favouriteItem;
-+ (instancetype)commentItem;
-+ (instancetype)editItem;
-+ (instancetype)downloadItem;
-+ (instancetype)printItem;
-+ (instancetype)deleteItem;
-+ (instancetype)renameItem;
-+ (instancetype)subfolderItem;
-+ (instancetype)uploadItem;
-+ (instancetype)sendForReview;
++ (ActionCollectionItem *)emailItem;
++ (ActionCollectionItem *)emailAsLinkItem;
++ (ActionCollectionItem *)openInItem;
++ (ActionCollectionItem *)likeItem;
++ (ActionCollectionItem *)favouriteItem;
++ (ActionCollectionItem *)commentItem;
++ (ActionCollectionItem *)editItem;
++ (ActionCollectionItem *)downloadItem;
++ (ActionCollectionItem *)printItem;
++ (ActionCollectionItem *)deleteItem;
++ (ActionCollectionItem *)renameItem;
++ (ActionCollectionItem *)subfolderItem;
++ (ActionCollectionItem *)uploadItem;
++ (ActionCollectionItem *)sendForReview;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

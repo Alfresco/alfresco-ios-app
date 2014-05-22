@@ -11,7 +11,7 @@
 
 @interface NodePickerListViewController : UITableViewController
 
-- (instancetype)initWithSession:(id<AlfrescoSession>)session items:(NSMutableArray *)items nodePickerController:(id)picker;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session items:(NSMutableArray *)items nodePickerController:(NodePicker *)picker;
 - (void)refreshListWithItems:(NSArray *)items;
 
 @end

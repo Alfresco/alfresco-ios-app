@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 
 @property (nonatomic, strong, readonly) UserAccount *selectedAccount;
 
-+ (instancetype)sharedManager;
++ (AccountManager *)sharedManager;
 - (NSArray *)allAccounts;
 - (void)addAccount:(UserAccount *)account;
 - (void)addAccounts:(NSArray *)accounts;

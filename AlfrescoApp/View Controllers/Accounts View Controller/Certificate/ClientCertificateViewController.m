@@ -83,7 +83,7 @@ static CGFloat const kTableViewCellHeight = 54.0f;
 
 #pragma mark - Downloads Delegates
 
-- (void)downloadPicker:(id)picker didPickDocument:(NSString *)documentPath
+- (void)downloadPicker:(DownloadsViewController *)picker didPickDocument:(NSString *)documentPath
 {
     ClientCertificateImportViewController *certificateImportController = [[ClientCertificateImportViewController alloc] initWithAccount:self.account andCertificatePath:documentPath];
     [self.navigationController popViewControllerAnimated:NO];

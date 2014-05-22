@@ -10,7 +10,6 @@
 #import "SyncNodeStatus.h"
 #import "Utility.h"
 
-
 static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
 static CGFloat const FavoriteIconWidth = 14.0f;
@@ -257,37 +256,37 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     else
     {
-        self.accessoryType = UITableViewCellAccessoryNone;
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *buttonImage;
-        
-        switch (status)
-        {
-            case SyncStatusLoading:
-                buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                button.tintColor = [UIColor appTintColor];
-                break;
-                
-            case SyncStatusFailed:
-                buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                button.tintColor = [UIColor syncButtonFailedColor];
-                break;
-                
-            default:
+    self.accessoryType = UITableViewCellAccessoryNone;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *buttonImage;
+    
+    switch (status)
+    {
+        case SyncStatusLoading:
+            buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            button.tintColor = [UIColor appTintColor];
+            break;
+            
+        case SyncStatusFailed:
+            buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            button.tintColor = [UIColor syncFailedColor];
+            break;
+            
+        default:
                 [self setAccessoryView:nil];
-                break;
-        }
-
-        if (buttonImage)
-        {
-            [button setFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
-            [button setImage:buttonImage forState:UIControlStateNormal];
-            [button setShowsTouchWhenHighlighted:YES];
-            [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-            [self setAccessoryView:button];
-        }
+            break;
     }
+
+    if (buttonImage)
+    {
+        [button setFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
+        [button setImage:buttonImage forState:UIControlStateNormal];
+        [button setShowsTouchWhenHighlighted:YES];
+        [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+        [self setAccessoryView:button];
+    }
+}
 }
 
 - (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus
@@ -319,6 +318,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)updateSyncStatusDetails:(SyncNodeStatus *)nodeStatus
 {
+    self.details.textColor = [UIColor textDefaultColor];
+    
     if (nodeStatus.status == SyncStatusWaiting)
     {
         self.details.text = NSLocalizedString(@"sync.state.waiting-to-sync", @"waiting to sync");
@@ -326,6 +327,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     else if (nodeStatus.status == SyncStatusFailed)
     {
         self.details.text = NSLocalizedString(@"sync.state.failed-to-sync", @"failed to sync");
+        self.details.textColor = [UIColor syncFailedColor];
     }
     else
     {

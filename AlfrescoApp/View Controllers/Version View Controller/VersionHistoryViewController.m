@@ -144,8 +144,10 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     }
     
     AlfrescoDocument *currentDocument = [self.tableViewData objectAtIndex:indexPath.row];
-        
-    versionHistoryCell.versionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.version.cell.text", @"Version Text"), currentDocument.versionLabel];
+    
+    NSString *versionLabel = [currentDocument.versionLabel isEqualToString:@"0.0"] ? @"1.0" : currentDocument.versionLabel;
+    versionHistoryCell.versionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.version.cell.text", @"Version Text"), versionLabel];
+    
     NSString *lastModifiedString = relativeDateFromDate(currentDocument.modifiedAt);
     versionHistoryCell.lastModifiedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.last.modified.cell.text", @"Last Modified Text"), lastModifiedString];
     versionHistoryCell.lastModifiedByLabel.text = [NSString stringWithFormat:NSLocalizedString(@"version.history.last.modified.by.cell.text", @"Last Modified By Text"), currentDocument.modifiedBy];
