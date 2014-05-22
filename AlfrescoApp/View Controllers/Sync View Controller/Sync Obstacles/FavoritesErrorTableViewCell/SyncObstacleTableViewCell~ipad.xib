@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FavoritesErrorCellIdentifier" rowHeight="61" id="3" customClass="SyncObstacleTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="420" height="60"/>
+            <rect key="frame" x="0.0" y="0.0" width="531" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3" id="DTx-2h-pho">
-                <rect key="frame" x="0.0" y="0.0" width="420" height="59"/>
+                <rect key="frame" x="0.0" y="0.0" width="531" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" id="4">
-                        <rect key="frame" x="47" y="19" width="110" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </label>
-                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5">
-                        <rect key="frame" x="165" y="12" width="110" height="36"/>
+                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                        <rect key="frame" x="347" y="16" width="82" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="dRo-VW-Oqy"/>
+                            <constraint firstAttribute="width" constant="82" id="hgA-xW-PGj"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <size key="titleShadowOffset" width="0.0" height="-1"/>
-                        <state key="normal" title="Sync" backgroundImage="blue-button-30.png">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <state key="normal" title="Sync">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <state key="highlighted">
@@ -36,13 +32,16 @@
                             <action selector="pressedSyncButton:" destination="3" eventType="touchUpInside" id="8"/>
                         </connections>
                     </button>
-                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6">
-                        <rect key="frame" x="290" y="12" width="110" height="36"/>
+                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6">
+                        <rect key="frame" x="437" y="16" width="82" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="IZQ-Qk-YR8"/>
+                            <constraint firstAttribute="width" constant="82" id="JEx-wS-32n"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <size key="titleShadowOffset" width="0.0" height="-1"/>
-                        <state key="normal" title="Save" backgroundImage="blue-button-30.png">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <state key="normal" title="Save">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <state key="highlighted">
@@ -52,21 +51,40 @@
                             <action selector="pressedSaveToDownloads:" destination="3" eventType="touchUpInside" id="9"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="center" id="12">
-                        <rect key="frame" x="0.0" y="8" width="44" height="44"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="12">
+                        <rect key="frame" x="10" y="10" width="40" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="daU-5k-TOi"/>
+                            <constraint firstAttribute="height" constant="40" id="mxC-5o-yfG"/>
+                        </constraints>
                     </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Alfresco Node Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mm3-yx-MsV" userLabel="nodeName">
+                        <rect key="frame" x="58" y="19" width="271" height="21"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="12" secondAttribute="centerY" id="NV2-xG-yCo"/>
+                    <constraint firstItem="6" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="8" id="QFx-aU-npT"/>
+                    <constraint firstAttribute="centerY" secondItem="6" secondAttribute="centerY" id="VjI-Yc-Dz8"/>
+                    <constraint firstAttribute="centerY" secondItem="Mm3-yx-MsV" secondAttribute="centerY" id="Wjl-Nb-bzt"/>
+                    <constraint firstItem="12" firstAttribute="leading" secondItem="DTx-2h-pho" secondAttribute="leading" constant="10" id="h4J-fA-Tl8"/>
+                    <constraint firstItem="Mm3-yx-MsV" firstAttribute="leading" secondItem="12" secondAttribute="trailing" constant="8" id="kkN-fw-lTh"/>
+                    <constraint firstAttribute="centerY" secondItem="5" secondAttribute="centerY" id="lxH-9d-haE"/>
+                    <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" constant="12" id="o3p-kl-hHo"/>
+                    <constraint firstItem="5" firstAttribute="leading" secondItem="Mm3-yx-MsV" secondAttribute="trailing" constant="18" id="yYm-dO-863"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="fileNameTextLabel" destination="4" id="7"/>
+                <outlet property="fileNameTextLabel" destination="Mm3-yx-MsV" id="cWp-q6-QcA"/>
                 <outlet property="imageView" destination="12" id="13"/>
                 <outlet property="saveButton" destination="6" id="11"/>
                 <outlet property="syncButton" destination="5" id="10"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="blue-button-30.png" width="11" height="30"/>
-    </resources>
 </document>
