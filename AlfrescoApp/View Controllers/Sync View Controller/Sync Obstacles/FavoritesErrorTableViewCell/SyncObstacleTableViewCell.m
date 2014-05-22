@@ -10,8 +10,6 @@
 
 @implementation SyncObstacleTableViewCell
 
-@dynamic imageView;
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
