@@ -10,11 +10,15 @@
 #import "SyncManager.h"
 #import "Utility.h"
 #import "ThumbnailManager.h"
+#import "AlfrescoNodeCell.h"
 
 static NSInteger const kSectionDataIndex = 0;
 static NSInteger const kSectionHeaderIndex = 1;
 
 static CGFloat const kHeaderFontSize = 15.0f;
+
+static NSString * const kUnfavoritedOnServerSectionHeaderKey = @"sync-errors.unfavorited-on-server-with-local-changes.header";
+static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted-on-server-with-local-changes.header";
 
 @interface SyncObstaclesViewController ()
 @property (nonatomic, strong) NSMutableDictionary *errorDictionary;
@@ -55,13 +59,11 @@ static CGFloat const kHeaderFontSize = 15.0f;
     self.sectionData = [NSMutableArray array];
     if (syncDocumentsRemovedOnServer.count > 0)
     {
-        NSString *sectionHeader = @"sync-errors.unfavorited-on-server-with-local-changes.header";
-        [self.sectionData addObject:@[syncDocumentsRemovedOnServer,sectionHeader]];
+        [self.sectionData addObject:@[syncDocumentsRemovedOnServer, kUnfavoritedOnServerSectionHeaderKey]];
     }
     if (syncDocumentDeletedOnServer.count > 0)
     {
-        NSString *sectionHeader = @"sync-errors.deleted-on-server-with-local-changes.header";
-        [self.sectionData addObject:@[syncDocumentDeletedOnServer, sectionHeader]];
+        [self.sectionData addObject:@[syncDocumentDeletedOnServer, kDeletedOnServerSectionHeaderKey]];
     }
 }
 
@@ -144,23 +146,27 @@ static CGFloat const kHeaderFontSize = 15.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *standardCellIdentifier = @"StandardCellIdentifier";
     static NSString *syncErrorCellIdentifier = @"SyncObstacleCellIdentifier";
     
     AlfrescoDocument *document = self.sectionData[indexPath.section][kSectionDataIndex][indexPath.row];
+    UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:document renditionType:kRenditionImageDocLib];
+    thumbnail = thumbnail ? thumbnail : smallImageForType([document.name pathExtension]);
+    
     UITableViewCell *cell = nil;
     
-    if ([self.sectionData[indexPath.section][kSectionHeaderIndex] isEqualToString:@"sync-errors.deleted-on-server-with-local-changes.header"])
+    if ([self.sectionData[indexPath.section][kSectionHeaderIndex] isEqualToString:kDeletedOnServerSectionHeaderKey])
     {
-        UITableViewCell *standardCell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:standardCellIdentifier];
+        AlfrescoNodeCell *standardCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
         if (!standardCell)
         {
-            standardCell = (UITableViewCell *)[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:standardCellIdentifier];
-            standardCell.imageView.contentMode = UIViewContentModeCenter;
+            NSArray *nibItems = [[NSBundle mainBundle] loadNibNamed:@"AlfrescoNodeCell" owner:self options:nil];
+            standardCell = (AlfrescoNodeCell *)[nibItems objectAtIndex:0];
         }
-        standardCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        standardCell.textLabel.font = [UIFont systemFontOfSize:17.0f];
-        standardCell.textLabel.text = document.name;
+        
+        standardCell.filename.text = document.name;
+        standardCell.details.text = @"";
+        [standardCell.image setImage:thumbnail withFade:NO];
+        
         cell = standardCell;
     }
     else
@@ -178,18 +184,13 @@ static CGFloat const kHeaderFontSize = 15.0f;
         
         syncErrorCell.selectionStyle = UITableViewCellSelectionStyleNone;
         syncErrorCell.fileNameTextLabel.text = document.name;
+        [syncErrorCell.thumbnail setImage:thumbnail withFade:NO];
+        
+        // if imageView image is not set, everything would move right for some reason, so setting the superview's imageView and hidding it resolves the problem
+        syncErrorCell.imageView.image = thumbnail;
+        syncErrorCell.imageView.hidden = YES;
         
         cell = syncErrorCell;
-    }
-    
-    UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:document renditionType:kRenditionImageDocLib];
-    if (thumbnail)
-    {
-        cell.imageView.image = thumbnail;
-    }
-    else
-    {
-        cell.imageView.image = smallImageForType([document.name pathExtension]);
     }
     
     return cell;
