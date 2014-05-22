@@ -9,6 +9,7 @@
 #import "SyncObstaclesViewController.h"
 #import "SyncManager.h"
 #import "Utility.h"
+#import "ThumbnailManager.h"
 
 static NSInteger const kSectionDataIndex = 0;
 static NSInteger const kSectionHeaderIndex = 1;
@@ -160,7 +161,6 @@ static CGFloat const kHeaderFontSize = 15.0f;
         standardCell.selectionStyle = UITableViewCellSelectionStyleNone;
         standardCell.textLabel.font = [UIFont systemFontOfSize:17.0f];
         standardCell.textLabel.text = document.name;
-        standardCell.imageView.image = smallImageForType([document.name pathExtension]);
         cell = standardCell;
     }
     else
@@ -178,9 +178,18 @@ static CGFloat const kHeaderFontSize = 15.0f;
         
         syncErrorCell.selectionStyle = UITableViewCellSelectionStyleNone;
         syncErrorCell.fileNameTextLabel.text = document.name;
-        syncErrorCell.imageView.image = smallImageForType([document.name pathExtension]);
         
         cell = syncErrorCell;
+    }
+    
+    UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:document renditionType:kRenditionImageDocLib];
+    if (thumbnail)
+    {
+        cell.imageView.image = thumbnail;
+    }
+    else
+    {
+        cell.imageView.image = smallImageForType([document.name pathExtension]);
     }
     
     return cell;
