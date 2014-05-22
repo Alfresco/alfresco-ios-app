@@ -449,7 +449,15 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     {
         [self hidePullToRefreshView];
         UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
-        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            if (successful)
+            {
+                [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    [self hidePullToRefreshView];
+                    [self reloadTableViewWithPagingResult:pagingResult error:error];
+                }];
+            }
+        }];
     }
 }
 

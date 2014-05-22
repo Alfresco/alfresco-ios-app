@@ -91,6 +91,10 @@
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
                 }
+                else if (successful)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                }
                 self.authenticationCompletionBlock(successful, session, error);
             }];
         }
@@ -98,6 +102,12 @@
         {
             [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
+                
+                if (successful)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                }
+                
                 if (loginCompletionBlock)
                 {
                     loginCompletionBlock(successful, session, error);

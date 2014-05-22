@@ -490,7 +490,12 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     {
         [self hidePullToRefreshView];
         UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
-        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            if (successful)
+            {
+                [self loadActivities];
+            }
+        }];
     }
 }
 
