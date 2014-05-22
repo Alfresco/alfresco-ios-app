@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ThumbnailImageView.h"
 
 @protocol SyncObstacleTableViewCellDelegate;
 
 @interface SyncObstacleTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel *fileNameTextLabel;
-@property (nonatomic, strong) IBOutlet UIButton *syncButton;
-@property (nonatomic, strong) IBOutlet UIButton *saveButton;
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UILabel *fileNameTextLabel;
+@property (nonatomic, weak) IBOutlet UIButton *syncButton;
+@property (nonatomic, weak) IBOutlet UIButton *saveButton;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *thumbnail;
 @property (nonatomic, assign) id<SyncObstacleTableViewCellDelegate> delegate;
 
 - (IBAction)pressedSyncButton:(id)sender;
