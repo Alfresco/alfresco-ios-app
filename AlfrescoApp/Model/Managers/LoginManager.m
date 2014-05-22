@@ -105,6 +105,11 @@
             }];
         }
     }
+    else if (![[AccountManager sharedManager].selectedAccount.accountIdentifier isEqualToString:account.accountIdentifier])
+    {
+        // Assuming there is no internet connection and the user tries to switch account.
+        self.authenticationCompletionBlock(YES, nil, nil);
+    }
     else
     {
         NSString *messageTitle = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Error Title");

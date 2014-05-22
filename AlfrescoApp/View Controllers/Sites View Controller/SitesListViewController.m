@@ -429,6 +429,13 @@ static CGFloat kSearchCellHeight = 60.0f;
                 break;
         }
     }
+    else
+    {
+        if (completionBlock != NULL)
+        {
+            completionBlock(nil, nil);
+        }
+    }
 }
 
 - (void)sessionReceived:(NSNotification *)notification
