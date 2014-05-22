@@ -63,7 +63,7 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
     }
     
     // dismiss button
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser_close.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissHelp:)];
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissHelp:)];
     
     if (self.toolBar)
     {
@@ -83,9 +83,9 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
         
         self.backButton = self.navigationItem.leftBarButtonItems[0];
         self.forwardButton = self.navigationItem.leftBarButtonItems[2];
-        
-        self.navigationItem.rightBarButtonItem = closeButton;
     }
+    
+    self.navigationItem.rightBarButtonItem = closeButton;
     
     // make inital request
     [self makeInitialRequest];
