@@ -18,6 +18,7 @@
 #import "AccountManager.h"
 #import "AvatarManager.h"
 #import "ThumbnailManager.h"
+#import "ConnectivityManager.h"
 
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
@@ -200,31 +201,34 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     self.tableViewData = nil;
     self.tableSectionHeaders = nil;
 
-    [self showHUD];
-    [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (error || [pagingResult.objects count] == 0)
-        {
-            [self.tableView reloadData];
-            
-            if (error)
+    if ([ConnectivityManager sharedManager].hasInternetConnection)
+    {
+        [self showHUD];
+        [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            if (error || [pagingResult.objects count] == 0)
             {
-                [Notifier notifyWithAlfrescoError:error];
+                [self.tableView reloadData];
+                
+                if (error)
+                {
+                    [Notifier notifyWithAlfrescoError:error];
+                }
             }
-        }
-        else
-        {
-            self.tableView.dataSource = self;
-            self.tableView.delegate = self;
-            self.tableView.allowsSelection = YES;
-            [self reloadTableViewWithPagingResult:pagingResult data:[self constructTableGroups:pagingResult] error:nil];
-
-            // Introduce delay for tableview to settle before cell is selected
-            [self performSelector:@selector(selectIndexPathForAlfrescoNodeInDetailView) withObject:nil afterDelay:0.2];
-        }
-        [self hidePullToRefreshView];
-        [self hideHUD];
-        
-    }];
+            else
+            {
+                self.tableView.dataSource = self;
+                self.tableView.delegate = self;
+                self.tableView.allowsSelection = YES;
+                [self reloadTableViewWithPagingResult:pagingResult data:[self constructTableGroups:pagingResult] error:nil];
+                
+                // Introduce delay for tableview to settle before cell is selected
+                [self performSelector:@selector(selectIndexPathForAlfrescoNodeInDetailView) withObject:nil afterDelay:0.2];
+            }
+            [self hidePullToRefreshView];
+            [self hideHUD];
+            
+        }];
+    }
 }
 
 /**
