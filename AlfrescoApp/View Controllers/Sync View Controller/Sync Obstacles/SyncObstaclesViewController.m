@@ -177,8 +177,9 @@ static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted
             NSArray *nibItems = [[NSBundle mainBundle] loadNibNamed:@"SyncObstacleTableViewCell" owner:self options:nil];
             syncErrorCell = (SyncObstacleTableViewCell *)[nibItems objectAtIndex:0];
             syncErrorCell.delegate = self;
-            [syncErrorCell.syncButton setTitle:NSLocalizedString(@"sync-errors.button.sync", @"Sync Button") forState:UIControlStateNormal];
-            [syncErrorCell.saveButton setTitle:NSLocalizedString(@"sync-errors.button.save", @"Save Button") forState:UIControlStateNormal];
+            
+            [Utility createBorderedButton:syncErrorCell.syncButton label:NSLocalizedString(@"sync-errors.button.sync", @"Sync Button") color:[UIColor appTintColor]];
+            [Utility createBorderedButton:syncErrorCell.saveButton label:NSLocalizedString(@"sync-errors.button.save", @"Save Button") color:[UIColor appTintColor]];
             NSAssert(nibItems, @"Failed to load object from NIB");
         }
         

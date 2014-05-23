@@ -63,11 +63,8 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (BOOL)isVideo:(NSString *)filePath;
 + (BOOL)isAudio:(NSString *)filePath;
 + (BOOL)isAudioOrVideo:(NSString *)filePath;
-//+ (void)writeInputStream:(NSInputStream *)inputStream toOutputStream:(NSOutputStream *)outputStream completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock;
++ (void)writeInputStream:(NSInputStream *)inputStream toOutputStream:(NSOutputStream *)outputStream completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock;
 + (NSString *)randomAlphaNumericStringOfLength:(NSUInteger)length;
-//+ (void)clearDefaultFileSystem;
-//+ (BOOL)isAudioOrVideoAndSupported:(NSString *)filePath;
-//+ (BOOL)isAudioOrVideoAndNotSupported:(NSString *)filePath;
 + (NSString *)mimeTypeForFileExtension:(NSString *)extension;
 + (NSString *)fileExtensionFromMimeType:(NSString *)mimeType;
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account;
@@ -77,5 +74,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority;
 + (NSString *)displayNameForProcessDefinition:(NSString *)task;
 + (UIImage *)cropImageIntoSquare:(UIImage *)originalImage;
++ (void)createBorderedButton:(UIButton *)button label:(NSString *)label color:(UIColor *)color;
 
 @end
