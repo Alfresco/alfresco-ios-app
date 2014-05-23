@@ -64,7 +64,7 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
     UIButton *retryButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [retryButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17.]];
     [retryButton setTitle:NSLocalizedString(@"Retry", @"Retry") forState:UIControlStateNormal];
-    [retryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [retryButton setTitleColor:[UIColor textDefaultColor] forState:UIControlStateNormal];
     UIImage *buttonTemplate = [UIImage imageNamed:@"failed-transfer-detail-button"];
     UIImage *stretchedButtonImage = [buttonTemplate resizableImageWithCapInsets:UIEdgeInsetsMake(7., 5., 37., 5.)];
     [retryButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];

@@ -218,41 +218,20 @@ static UILayoutPriority const kLowPriority = 250;
     if ([self shouldDisplayApproveAndRejectButtonsForTask:task])
     {
         self.doneButton.hidden = YES;
-        [self configureTransitionButton:self.approveButton label:NSLocalizedString(@"task.transition.approve", @"Approve") color:[UIColor taskTransitionApproveColor]];
-        [self configureTransitionButton:self.rejectButton label:NSLocalizedString(@"task.transition.reject", @"Reject") color:[UIColor taskTransitionRejectColor]];
+        [Utility createBorderedButton:self.approveButton label:NSLocalizedString(@"task.transition.approve", @"Approve") color:[UIColor taskTransitionApproveColor]];
+        [Utility createBorderedButton:self.rejectButton label:NSLocalizedString(@"task.transition.reject", @"Reject") color:[UIColor taskTransitionRejectColor]];
     }
     else
     {
         self.approveButton.hidden = YES;
         self.rejectButton.hidden = YES;
-        [self configureTransitionButton:self.doneButton label:NSLocalizedString(@"task.transition.done", @"Done") color:[UIColor taskTransitionApproveColor]];
+        [Utility createBorderedButton:self.doneButton label:NSLocalizedString(@"task.transition.done", @"Done") color:[UIColor taskTransitionApproveColor]];
 
         // Bump the priority of this constraint to tie the text box to the Done button (iPad layout only)
         self.horizontalSpaceFromDoneButtonToCommentTextConstraint.priority = kHighPriority;
     }
 
     [self.view layoutIfNeeded];
-}
-
-- (void)configureTransitionButton:(UIButton *)button label:(NSString *)label color:(UIColor *)color
-{
-    button.layer.borderWidth = 1.0f;
-    button.layer.borderColor = color.CGColor;
-    button.layer.cornerRadius = 4.0f;
-    button.layer.masksToBounds = YES;
-    
-    UIGraphicsBeginImageContextWithOptions(button.frame.size, YES, 0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [color setFill];
-    CGContextFillRect(context, CGRectMake(0, 0, button.frame.size.width, button.frame.size.height));
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    [button setTitle:[label uppercaseString] forState:UIControlStateNormal];
-    [button setTitle:[label uppercaseString] forState:UIControlStateHighlighted];
-    [button setTitleColor:color forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [button setBackgroundImage:image forState:UIControlStateHighlighted];
 }
 
 - (BOOL)shouldDisplayApproveAndRejectButtonsForTask:(AlfrescoWorkflowTask *)task
