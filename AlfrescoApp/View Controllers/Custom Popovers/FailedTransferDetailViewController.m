@@ -41,7 +41,7 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
     
     CGFloat subViewWidth = kFailedTransferDetailWidth - (kFailedTransferDetailPadding * 2);
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kFailedTransferDetailPadding, kFailedTransferDetailPadding, subViewWidth, 0)];
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:19.]];
+    [titleLabel setFont:[UIFont systemFontOfSize:19.0f]];
     [titleLabel setText:self.titleText];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setBackgroundColor:[UIColor clearColor]];
@@ -51,7 +51,7 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
     [containerView addSubview:titleLabel];
     
     UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(kFailedTransferDetailPadding, titleFrame.size.height + (kFailedTransferDetailPadding * 2), subViewWidth, 0)];
-    [descriptionLabel setFont:[UIFont systemFontOfSize:17.]];
+    [descriptionLabel setFont:[UIFont systemFontOfSize:17.0f]];
     [descriptionLabel setNumberOfLines:0];
     [descriptionLabel setText:self.messageText];
     [descriptionLabel setTextAlignment:NSTextAlignmentCenter];
@@ -61,13 +61,15 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
     [descriptionLabel setFrame:descriptionFrame];
     [containerView addSubview:descriptionLabel];
     
+    
     UIButton *retryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [retryButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17.]];
+    [retryButton.titleLabel setFont:[UIFont systemFontOfSize:17.0f]];
+    retryButton.tintColor = [UIColor appTintColor];
     [retryButton setTitle:NSLocalizedString(@"Retry", @"Retry") forState:UIControlStateNormal];
-    [retryButton setTitleColor:[UIColor textDefaultColor] forState:UIControlStateNormal];
-    UIImage *buttonTemplate = [UIImage imageNamed:@"failed-transfer-detail-button"];
-    UIImage *stretchedButtonImage = [buttonTemplate resizableImageWithCapInsets:UIEdgeInsetsMake(7., 5., 37., 5.)];
-    [retryButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    [retryButton setTitleColor:retryButton.tintColor forState:UIControlStateNormal];
+    retryButton.layer.cornerRadius = 4.0f;
+    retryButton.layer.borderWidth = 1.0f;
+    retryButton.layer.borderColor = retryButton.tintColor.CGColor;
     
     CGRect retryButtonFrame = CGRectMake(kFailedTransferDetailPadding, titleFrame.size.height + descriptionFrame.size.height + (kFailedTransferDetailPadding * 3), subViewWidth, 40);
     [retryButton setFrame:retryButtonFrame];
