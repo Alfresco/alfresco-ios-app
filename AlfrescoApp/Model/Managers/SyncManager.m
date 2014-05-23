@@ -406,8 +406,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             if (localNode)
             {
                 // preserve node info until they are successfully downloaded or uploaded
-                localNodeInfoToBePreserved[kLastDownloadedDateKey] = localNodeInfo.lastDownloadedDate;
-                localNodeInfoToBePreserved[kSyncContentPathKey] = localNodeInfo.syncContentPath;
+                if (localNodeInfo.lastDownloadedDate)
+                {
+                    localNodeInfoToBePreserved[kLastDownloadedDateKey] = localNodeInfo.lastDownloadedDate;
+                }
+                if (localNodeInfo.syncContentPath)
+                {
+                    localNodeInfoToBePreserved[kSyncContentPathKey] = localNodeInfo.syncContentPath;
+                }
             }
             infoToBePreservedInNewNodes[[self.syncHelper syncIdentifierForNode:remoteNode]] = localNodeInfoToBePreserved;
             

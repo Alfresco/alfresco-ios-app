@@ -10,23 +10,23 @@
 
 @implementation SyncObstacleTableViewCell
 
-@dynamic imageView;
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (!IS_IPAD)
-    {
-        // Manually override to get better button layout on iPhone, which autosizing doesn't get quite right
-        CGFloat midpointX = (self.contentView.frame.size.width / 2);
-        CGRect buttonFrame = self.syncButton.frame;
-        buttonFrame.origin.x = midpointX - buttonFrame.size.width - 10.0f;
-        [self.syncButton setFrame:buttonFrame];
-        
-        buttonFrame = self.saveButton.frame;
-        buttonFrame.origin.x = midpointX + 10.0f;
-        [self.saveButton setFrame:buttonFrame];
-    }
+    
+    self.syncButton.tintColor = [UIColor appTintColor];
+    self.syncButton.titleEdgeInsets = UIEdgeInsetsMake(2.0f, 0, 0, 0);
+    self.syncButton.layer.cornerRadius = 4.0f;
+    self.syncButton.layer.borderWidth = 1.0f;
+    self.syncButton.layer.borderColor = self.syncButton.tintColor.CGColor;
+    [self.syncButton setTitleColor:self.syncButton.tintColor forState:UIControlStateNormal];
+    
+    self.saveButton.tintColor = [UIColor appTintColor];
+    self.saveButton.titleEdgeInsets = UIEdgeInsetsMake(2.0f, 0, 0, 0);
+    self.saveButton.layer.cornerRadius = 4.0f;
+    self.saveButton.layer.borderWidth = 1.0f;
+    self.saveButton.layer.borderColor = self.saveButton.tintColor.CGColor;
+    [self.saveButton setTitleColor:self.saveButton.tintColor forState:UIControlStateNormal];
 }
 
 #pragma mark - Button event handlers

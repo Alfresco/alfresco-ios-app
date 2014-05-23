@@ -27,5 +27,7 @@
 + (UIColor *)taskTransitionApproveColor;
 + (UIColor *)taskTransitionRejectColor;
 + (UIColor *)onboardingOffWhiteColor;
++ (UIColor *)siteActionsBackgroundColor;
++ (UIColor *)addTagButtonTintColor;
 
 @end

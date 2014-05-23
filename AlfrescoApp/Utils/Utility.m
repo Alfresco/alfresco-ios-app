@@ -348,60 +348,6 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return filePathOrName;
 }
 
-//void clearOutdatedCacheFiles()
-//{
-//    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-//    
-//    void (^removeOldCachedDataBlock)(NSString *filePath) = ^(NSString *filePath) {
-//        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:filePath error:nil];
-//        
-//        NSDate *lastModifiedDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
-//        
-//        NSDate *today = [NSDate date];
-//        NSCalendar *gregorianCalender = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//        NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-//        [offsetComponents setDay:-kNumberOfDaysToKeepCachedData];
-//        NSDate *oldestCacheDate = [gregorianCalender dateByAddingComponents:offsetComponents toDate:today options:0];
-//        
-//        if ([lastModifiedDate compare:oldestCacheDate] == NSOrderedAscending)
-//        {
-//            NSError *deleteError = nil;
-//            [fileManager removeItemAtPath:filePath error:&deleteError];
-//            
-//            if (deleteError)
-//            {
-//                AlfrescoLogError([deleteError localizedDescription]);
-//            }
-//        }
-//    };
-//    
-//    NSString *tmpFolderPath = [fileManager temporaryDirectory];
-//    NSString *thumbnailFolderPath = [[fileManager homeDirectory] stringByAppendingPathComponent:kThumbnailMappingFolder];
-//    
-//    NSError *tmpFolderEnumerationError = nil;
-//    [fileManager enumerateThroughDirectory:tmpFolderPath includingSubDirectories:YES withBlock:removeOldCachedDataBlock error:&tmpFolderEnumerationError];
-//    
-//    if (tmpFolderEnumerationError)
-//    {
-//        AlfrescoLogError([tmpFolderEnumerationError localizedDescription]);
-//    }
-//    
-//    NSError *thumbnailEnumerationError = nil;
-//    [fileManager enumerateThroughDirectory:thumbnailFolderPath includingSubDirectories:YES withBlock:removeOldCachedDataBlock error:&thumbnailEnumerationError];
-//    
-//    if (thumbnailEnumerationError)
-//    {
-//        AlfrescoLogError([thumbnailEnumerationError localizedDescription]);
-//    }
-//}
-//
-//void uncaughtExceptionHandler(NSException *exception)
-//{
-//    [Utility clearDefaultFileSystem];
-//    
-//    NSLog(@"Stack: %@", [exception callStackReturnAddresses]);
-//}
-
 @implementation Utility
 
 + (NSDateFormatter *)dateFormatter
@@ -675,6 +621,35 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     }
     
     return croppedImage;
+}
+
++ (void)createBorderedButton:(UIButton *)button label:(NSString *)label color:(UIColor *)color
+{
+    // Colour-matched rounded border
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = color.CGColor;
+    button.layer.cornerRadius = 4.0f;
+    button.layer.masksToBounds = YES;
+    
+    // Edge inserts
+    button.contentEdgeInsets = UIEdgeInsetsMake(8.0f, 8.0f, 8.0f, 8.0f);
+
+    // Normal and highlight state
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [button setTitle:[label uppercaseString] forState:UIControlStateNormal];
+    [button setTitle:[label uppercaseString] forState:UIControlStateHighlighted];
+    [button setTitleColor:color forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+
+    // Generate highlighted background image
+    UIGraphicsBeginImageContextWithOptions(button.frame.size, YES, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [color setFill];
+    CGContextFillRect(context, CGRectMake(0, 0, button.frame.size.width, button.frame.size.height));
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [button setBackgroundImage:image forState:UIControlStateHighlighted];
 }
 
 + (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier

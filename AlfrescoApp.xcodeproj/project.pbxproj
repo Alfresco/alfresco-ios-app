@@ -37,12 +37,15 @@
 		0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */; };
 		0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */; };
 		0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */; };
-		0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */; };
-		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */; };
+		0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */; };
 		0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248817FF0DC200EE6AA8 /* blue-button-30.png */; };
 		0833248B17FF0DC200EE6AA8 /* blue-button-30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */; };
 		08344EF818E2E64E00B061C0 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08344EF618E2E64E00B061C0 /* DatePickerViewController.m */; };
 		08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08344EF718E2E64E00B061C0 /* DatePickerViewController.xib */; };
+		0837F298192F69A0006BE40C /* sync-button-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F294192F69A0006BE40C /* sync-button-error.png */; };
+		0837F299192F69A0006BE40C /* sync-button-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F295192F69A0006BE40C /* sync-button-error@2x.png */; };
+		0837F29A192F69A0006BE40C /* sync-button-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F296192F69A0006BE40C /* sync-button-stop.png */; };
+		0837F29B192F69A0006BE40C /* sync-button-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F297192F69A0006BE40C /* sync-button-stop@2x.png */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		0876A04218D99FF60035370A /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03518D99FF60035370A /* NodePicker.m */; };
 		0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */; };
@@ -566,13 +569,16 @@
 		0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncObstaclesViewController.xib; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.xib"; sourceTree = "<group>"; };
 		0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncObstacleTableViewCell.h; sourceTree = "<group>"; };
 		0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncObstacleTableViewCell.m; sourceTree = "<group>"; };
-		0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncObstacleTableViewCell.xib; sourceTree = "<group>"; };
-		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SyncObstacleTableViewCell~ipad.xib"; sourceTree = "<group>"; };
+		0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncObstacleTableViewCell.xib; sourceTree = "<group>"; };
 		0833248817FF0DC200EE6AA8 /* blue-button-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30.png"; sourceTree = "<group>"; };
 		0833248917FF0DC200EE6AA8 /* blue-button-30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-30@2x.png"; sourceTree = "<group>"; };
 		08344EF518E2E64E00B061C0 /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		08344EF618E2E64E00B061C0 /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		08344EF718E2E64E00B061C0 /* DatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DatePickerViewController.xib; sourceTree = "<group>"; };
+		0837F294192F69A0006BE40C /* sync-button-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-error.png"; sourceTree = "<group>"; };
+		0837F295192F69A0006BE40C /* sync-button-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-error@2x.png"; sourceTree = "<group>"; };
+		0837F296192F69A0006BE40C /* sync-button-stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop.png"; sourceTree = "<group>"; };
+		0837F297192F69A0006BE40C /* sync-button-stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop@2x.png"; sourceTree = "<group>"; };
 		0871D26617E369CB00F744D0 /* DownloadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadsViewController.xib; sourceTree = "<group>"; };
 		0876A03418D99FF60035370A /* NodePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePicker.h; sourceTree = "<group>"; };
 		0876A03518D99FF60035370A /* NodePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePicker.m; sourceTree = "<group>"; };
@@ -1307,6 +1313,10 @@
 			children = (
 				2739574D1900B12B00169BEB /* sync-button-stop-all.png */,
 				2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */,
+				0837F294192F69A0006BE40C /* sync-button-error.png */,
+				0837F295192F69A0006BE40C /* sync-button-error@2x.png */,
+				0837F296192F69A0006BE40C /* sync-button-stop.png */,
+				0837F297192F69A0006BE40C /* sync-button-stop@2x.png */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -1327,8 +1337,7 @@
 			children = (
 				0833247F17FEB9C400EE6AA8 /* SyncObstacleTableViewCell.h */,
 				0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */,
-				0833248117FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */,
-				0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib */,
+				0833248217FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib */,
 			);
 			name = FavoritesErrorTableViewCell;
 			path = "Sync View Controller/Sync Obstacles/FavoritesErrorTableViewCell";
@@ -3005,6 +3014,8 @@
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
 				73FF558018ACE2370009CA56 /* large_image@2x.png in Resources */,
 				08E1EA3018DB057900F9052F /* ProcessTasksCell.xib in Resources */,
+				0837F298192F69A0006BE40C /* sync-button-error.png in Resources */,
+				0837F29A192F69A0006BE40C /* sync-button-stop.png in Resources */,
 				08E1EA2B18DB057900F9052F /* TasksCell.xib in Resources */,
 				73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */,
 				73B95A6117A68B7E0099FB84 /* AboutLogo.png in Resources */,
@@ -3137,6 +3148,7 @@
 				73B95A9017A68B7E0099FB84 /* authorisationLogo.png in Resources */,
 				732DBF9418E1BC6B00F7A0BF /* small_image.png in Resources */,
 				73B95A9117A68B7E0099FB84 /* authorisationLogo@2x.png in Resources */,
+				0837F29B192F69A0006BE40C /* sync-button-stop@2x.png in Resources */,
 				73D6492418AD855D00333266 /* actionsheet-add-folder.png in Resources */,
 				08E1EA3218DB057900F9052F /* TasksAndAttachmentsViewController.xib in Resources */,
 				08E1EA2818DB057900F9052F /* TaskDetailsViewController.xib in Resources */,
@@ -3168,7 +3180,6 @@
 				738664B41906B12B0021D1BD /* CommentCell.xib in Resources */,
 				73881FD7188FF6B00052C75F /* actionsheet-openIn@2x.png in Resources */,
 				73881FE0188FF9290052C75F /* actionsheet-unfavourited.png in Resources */,
-				0833248617FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				738664C01906B14C0021D1BD /* SitesCell.xib in Resources */,
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
@@ -3196,7 +3207,7 @@
 				73881FD5188FF6B00052C75F /* actionsheet-liked@2x.png in Resources */,
 				733638B91913BA1600472A57 /* system_notice_exclamation.png in Resources */,
 				27F054DC1891832B00C2454C /* app-icon-58.png in Resources */,
-				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell~ipad.xib in Resources */,
+				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
 				73FF557D18ACE2370009CA56 /* large_excel.png in Resources */,
@@ -3275,6 +3286,7 @@
 				73B95ABF17A68B7E0099FB84 /* comments.png in Resources */,
 				73881FD2188FF6B00052C75F /* actionsheet-email.png in Resources */,
 				73881FCA188FF6B00052C75F /* actionsheet-attachments.png in Resources */,
+				0837F299192F69A0006BE40C /* sync-button-error@2x.png in Resources */,
 				27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */,
 				27E84E7E18AD53510024B658 /* mainmenu-help.png in Resources */,
 				732DBF9C18E1BC6B00F7A0BF /* small_video.png in Resources */,

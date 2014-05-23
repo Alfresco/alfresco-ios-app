@@ -60,10 +60,10 @@
                     NSString *title = NSLocalizedString(@"saveback.failed.title", @"SaveBack Failed Title");
                     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"SaveBack Failed Message"), node.name];
                     
-                    if (identifierError.code == kAlfrescoErrorCodeNoInternetConnection)
+                    if (identifierError.code == kAlfrescoErrorCodeNoNetworkConnection)
                     {
                         title = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Title");
-                        message = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Message");;
+                        message = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Message");
                     }
                     
                     displayErrorMessageWithTitle(message, title);
