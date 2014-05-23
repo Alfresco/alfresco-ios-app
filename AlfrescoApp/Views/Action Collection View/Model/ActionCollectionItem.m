@@ -29,6 +29,7 @@ NSString * const kActionCollectionIdentifierRename = @"ActionCollectionIdentifie
 NSString * const kActionCollectionIdentifierCreateSubfolder = @"ActionCollectionIdentifierCreateSubfolder";
 NSString * const kActionCollectionIdentifierUploadDocument = @"ActionCollectionIdentifierUploadDocument";
 NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionIdentifierSendForReview";
+NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectionIdentifierUploadNewVersion";
 
 @interface ActionCollectionItem ()
 
@@ -119,6 +120,11 @@ NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionId
 + (ActionCollectionItem *)sendForReview
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-review.png"] title:NSLocalizedString(@"action.review", @"Send For Review") identifier:kActionCollectionIdentifierSendForReview];
+}
+
++ (ActionCollectionItem *)uploadNewVersion
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-review.png"] title:NSLocalizedString(@"action.new.version", @"Upload New Version") identifier:kActionCollectionIdentifierUploadNewVersion];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

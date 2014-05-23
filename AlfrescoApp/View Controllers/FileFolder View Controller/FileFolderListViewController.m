@@ -651,19 +651,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)documentUpdated:(NSNotification *)notification
 {
-    NSDictionary *updatedDocumentDetails = (NSDictionary *)notification.object;
-    
-    id documentNodeObject = [updatedDocumentDetails valueForKey:kAlfrescoDocumentUpdatedDocumentParameterKey];
+    id updatedDocumentObject = notification.object;
+    id existingDocumentObject = notification.userInfo[kAlfrescoDocumentUpdatedFromDocumentParameterKey];
     
     // this should always be an AlfrescoDocument. If it isn't something has gone terribly wrong...
-    if ([documentNodeObject isKindOfClass:[AlfrescoDocument class]])
+    if ([updatedDocumentObject isKindOfClass:[AlfrescoDocument class]])
     {
-        AlfrescoDocument *updatedDocument = (AlfrescoDocument *)documentNodeObject;
+        AlfrescoDocument *existingDocument = (AlfrescoDocument *)existingDocumentObject;
+        AlfrescoDocument *updatedDocument = (AlfrescoDocument *)updatedDocumentObject;
         
         NSArray *allIdentifiers = [self.tableViewData valueForKey:@"identifier"];
-        if ([allIdentifiers containsObject:updatedDocument.identifier])
+        if ([allIdentifiers containsObject:existingDocument.identifier])
         {
-            NSUInteger index = [allIdentifiers indexOfObject:updatedDocument.identifier];
+            NSUInteger index = [allIdentifiers indexOfObject:existingDocument.identifier];
             [self.tableViewData replaceObjectAtIndex:index withObject:updatedDocument];
             NSIndexPath *indexPathOfDocument = [NSIndexPath indexPathForRow:index inSection:0];
             
@@ -714,7 +714,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)documentUpdatedOnServer:(NSNotification *)notifictaion
 {
     NSString *nodeIdentifierUpdated = notifictaion.object;
-    AlfrescoDocument *updatedDocument = notifictaion.userInfo[kAlfrescoDocumentUpdatedDocumentParameterKey];
+    AlfrescoDocument *updatedDocument = notifictaion.userInfo[kAlfrescoDocumentUpdatedFromDocumentParameterKey];
 
     NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeIdentifierUpdated inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
     

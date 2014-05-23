@@ -80,7 +80,7 @@ extern NSString * const kAlfrescoDocumentUpdatedLocallyNotification;
 extern NSString * const kAlfrescoDocumentDeletedOnServerNotification;
 extern NSString * const kAlfrescoNodeAddedOnServerNotification;
 // parameter keys used in the dictionary of notification object
-extern NSString * const kAlfrescoDocumentUpdatedDocumentParameterKey;
+extern NSString * const kAlfrescoDocumentUpdatedFromDocumentParameterKey;
 extern NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey;
 extern NSString * const kAlfrescoDocumentDownloadedIdentifierKey;
 extern NSString * const kAlfrescoNodeAddedOnServerParentFolderKey;
