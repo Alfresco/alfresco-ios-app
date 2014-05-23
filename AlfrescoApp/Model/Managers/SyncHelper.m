@@ -11,6 +11,7 @@
 #import "SyncAccount.h"
 #import "CoreDataSyncHelper.h"
 #import "SyncNodeStatus.h"
+#import "Utility.h"
 
 NSString * const kLastDownloadedDateKey = @"lastDownloadedDate";
 NSString * const kSyncNodeKey = @"node";
@@ -207,7 +208,7 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
     NSString *syncIdentifier = [(AlfrescoProperty *)[node.properties objectForKey:kAlfrescoNodeVersionSeriesIdKey] value];
     if (!syncIdentifier)
     {
-        syncIdentifier = [self identifierWithoutVersionNumber:node.identifier];
+        syncIdentifier = [Utility nodeRefWithoutVersionID:node.identifier];
     }
     return syncIdentifier;
 }
@@ -221,17 +222,6 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
         [syncIdentifiers addObject:[self syncIdentifierForNode:node]];
     }
     return syncIdentifiers;
-}
-
-- (NSString *)identifierWithoutVersionNumber:(NSString *)nodeIdentifier
-{
-    NSString *identifier = nodeIdentifier;
-    NSRange versionNumberRange = [identifier rangeOfString:@";"];
-    if (versionNumberRange.location != NSNotFound)
-    {
-        identifier = [identifier substringToIndex:versionNumberRange.location];
-    }
-    return identifier;
 }
 
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId
@@ -355,7 +345,7 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
 
 - (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef
 {
-    NSString *syncDocumentRef = [self identifierWithoutVersionNumber:documentRef];
+    NSString *syncDocumentRef = [Utility nodeRefWithoutVersionID:documentRef];
     return [self.syncCoreDataHelper retrieveSyncedAlfrescoDocumentForIdentifier:syncDocumentRef managedObjectContext:nil];
 }
 

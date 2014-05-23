@@ -227,7 +227,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
 {
-    NSString *syncNodeId = [self.syncHelper identifierWithoutVersionNumber:nodeId];
+    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
     SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:syncNodeId inSyncNodesStatus:self.syncNodesStatus];
     return nodeStatus;
 }
@@ -1128,7 +1128,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier inAccountWithId:(NSString *)accountId
 {
-    NSString *syncDocumentIdentifier = [self.syncHelper identifierWithoutVersionNumber:documentIdentifier];
+    NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:syncDocumentIdentifier];
     
     NSMutableDictionary *syncOperationForAccount = self.syncOperations[accountId];
