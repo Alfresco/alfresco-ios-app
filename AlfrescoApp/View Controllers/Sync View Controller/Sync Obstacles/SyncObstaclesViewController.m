@@ -217,7 +217,7 @@ static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted
         label.backgroundColor = [UIColor clearColor];
         label.lineBreakMode = NSLineBreakByWordWrapping;
         label.numberOfLines = 0;
-        label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1];
+        label.textColor = [UIColor textDimmedColor];
         label.font = [UIFont systemFontOfSize:kHeaderFontSize];
         
         label.text = NSLocalizedString(self.sectionData[section][kSectionHeaderIndex], @"TableView Header Section Descriptions");

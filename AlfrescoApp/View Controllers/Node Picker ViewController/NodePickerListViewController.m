@@ -215,7 +215,7 @@ static NSInteger const kDefaultNumberOfRows = 1;
         footerLabel.numberOfLines = 0;
         footerLabel.backgroundColor = self.tableView.backgroundColor;
         footerLabel.textAlignment = NSTextAlignmentCenter;
-        footerLabel.textColor = [UIColor colorWithRed:76.0/255.0f green:86.0/255.0f blue:108.0/255.0f alpha:1.0f];
+        footerLabel.textColor = [UIColor textDimmedColor];
         footerLabel.font = [UIFont systemFontOfSize:15];
         [footerLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
         

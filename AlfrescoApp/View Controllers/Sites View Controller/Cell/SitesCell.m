@@ -19,7 +19,7 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     siteOptionViewFrame.origin.y = self.contentView.frame.size.height;
     self.siteOptionsContainerView.frame = siteOptionViewFrame;
     
-    self.siteOptionsContainerView.backgroundColor = [UIColor colorWithRed:234/255.0f green:235/255.0f blue:237/255.0f alpha:1.0f];
+    self.siteOptionsContainerView.backgroundColor = [UIColor siteActionsBackgroundColor];
     [self.contentView addSubview:self.siteOptionsContainerView];
 }
 

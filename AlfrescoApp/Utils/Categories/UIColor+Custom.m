@@ -95,4 +95,14 @@
     return [UIColor colorWithRed:(CGFloat)244.0/255.0 green:(CGFloat)244.0/255.0 blue:(CGFloat)244.0/255.0 alpha:1.0];
 }
 
++ (UIColor *)siteActionsBackgroundColor
+{
+    return [UIColor colorWithRed:234/255.0f green:235/255.0f blue:237/255.0f alpha:1.0f];
+}
+
++ (UIColor *)addTagButtonTintColor
+{
+    return [UIColor colorWithRed:0 green:0.5 blue:0 alpha:1.0];
+}
+
 @end
