@@ -464,7 +464,7 @@ static NSString * const kSource = @"mobile";
     footerTextView.backgroundColor = [UIColor clearColor];
     footerTextView.numberOfLines = 0;
     footerTextView.textAlignment = NSTextAlignmentCenter;
-    footerTextView.textColor = [UIColor colorWithRed:76/255.0 green:86/255.0 blue:108/255.0 alpha:1.0];
+    footerTextView.textColor = [UIColor textDimmedColor];
     footerTextView.font = [UIFont systemFontOfSize:15];
     footerTextView.text = footerText;
     [footerTextView sizeToFit];
@@ -479,7 +479,7 @@ static NSString * const kSource = @"mobile";
     signupLabel.backgroundColor = [UIColor clearColor];
     signupLabel.numberOfLines = 0;
     signupLabel.textAlignment = NSTextAlignmentCenter;
-    signupLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
+    signupLabel.textColor = [UIColor textDimmedColor];
     signupLabel.font = [UIFont systemFontOfSize:15];
     signupLabel.userInteractionEnabled = YES;
     signupLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -511,7 +511,7 @@ static NSString * const kSource = @"mobile";
     BOOL isFormValid = isValidName && isValidEmail && isValidPassword && isValidPasswordConfirmation;
     
     self.signUpButton.enabled = isFormValid ? YES : NO;
-    self.signUpButton.titleLabel.textColor = isFormValid ? [UIColor blackColor] : [UIColor grayColor];
+    self.signUpButton.titleLabel.textColor = isFormValid ? [UIColor textDefaultColor] : [UIColor textDimmedColor];
     
     return isFormValid;
 }

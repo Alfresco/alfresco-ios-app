@@ -11,6 +11,7 @@
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "CloudSignUpViewController.h"
+#import "Utility.h"
 
 
 static NSInteger const kNumberAccountTypes = 2;
@@ -194,7 +195,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     footerLabel.backgroundColor = self.tableView.backgroundColor;
     footerLabel.userInteractionEnabled = YES;
     footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1];
+    footerLabel.textColor = [UIColor textDimmedColor];
     footerLabel.font = [UIFont systemFontOfSize:15];
     footerLabel.text = footerText;
     [footerLabel sizeToFit];
@@ -211,7 +212,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     signupLabel.numberOfLines = 0;
     signupLabel.userInteractionEnabled = YES;
     signupLabel.textAlignment = NSTextAlignmentCenter;
-    signupLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1];
+    signupLabel.textColor = [UIColor textDimmedColor];
     signupLabel.font = [UIFont systemFontOfSize:15];
     signupLabel.text = signupText;
     [signupLabel sizeToFit];
@@ -234,7 +235,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     footerLabel.backgroundColor = self.tableView.backgroundColor;
     footerLabel.userInteractionEnabled = YES;
     footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1];
+    footerLabel.textColor = [UIColor textDimmedColor];
     footerLabel.font = [UIFont systemFontOfSize:15];
     footerLabel.text = footerText;
     [footerLabel sizeToFit];
@@ -253,27 +254,17 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (UIButton *)createCloudSignUpButton
 {
-    NSString *signUpButtonText = [NSLocalizedString(@"cloudsignup.button.signup", @"Sign up") uppercaseString];
-    UIFont *signUpFont = [UIFont systemFontOfSize:kAccountTypeInlineButtonFontSize];
-    CGSize signUpSize = [signUpButtonText sizeWithAttributes:@{NSFontAttributeName:signUpFont}];
-    
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, signUpSize.width, signUpSize.height)];
-    button.titleLabel.numberOfLines = 0;
-    button.titleLabel.textAlignment = NSTextAlignmentCenter;
-    button.titleLabel.font = signUpFont;
-    button.tintColor = [UIColor appTintColor];
-    
-    [button setTitle:signUpButtonText forState:UIControlStateNormal];
-    [button setTitleColor:button.tintColor forState:UIControlStateNormal];
+    UIFont *labelFont = [UIFont systemFontOfSize:kAccountTypeInlineButtonFontSize];
+    NSString *labelText = [NSLocalizedString(@"cloudsignup.button.signup", @"Sign up") uppercaseString];
+    CGSize labelSize = [labelText sizeWithAttributes:@{NSFontAttributeName:labelFont}];
 
-    [button setFrame:CGRectInset(button.frame, -8.0f, -4.0f)];
-    // drop the button text down 2 pixels
-    button.titleEdgeInsets = UIEdgeInsetsMake(2.0f, 0, 0, 0);
-    button.layer.cornerRadius = 4.0f;
-    button.layer.borderWidth = 1.0f;
-    button.layer.borderColor = button.tintColor.CGColor;
-    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, roundf(labelSize.width), roundf(labelSize.height))];
+    button.titleLabel.font = labelFont;
     [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+    [Utility createBorderedButton:button label:labelText color:[UIColor appTintColor]];
+    [button sizeToFit];
+
     return button;
 }
 

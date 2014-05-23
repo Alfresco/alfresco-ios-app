@@ -177,8 +177,9 @@ static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted
             NSArray *nibItems = [[NSBundle mainBundle] loadNibNamed:@"SyncObstacleTableViewCell" owner:self options:nil];
             syncErrorCell = (SyncObstacleTableViewCell *)[nibItems objectAtIndex:0];
             syncErrorCell.delegate = self;
-            [syncErrorCell.syncButton setTitle:NSLocalizedString(@"sync-errors.button.sync", @"Sync Button") forState:UIControlStateNormal];
-            [syncErrorCell.saveButton setTitle:NSLocalizedString(@"sync-errors.button.save", @"Save Button") forState:UIControlStateNormal];
+            
+            [Utility createBorderedButton:syncErrorCell.syncButton label:NSLocalizedString(@"sync-errors.button.sync", @"Sync Button") color:[UIColor appTintColor]];
+            [Utility createBorderedButton:syncErrorCell.saveButton label:NSLocalizedString(@"sync-errors.button.save", @"Save Button") color:[UIColor appTintColor]];
             NSAssert(nibItems, @"Failed to load object from NIB");
         }
         
@@ -216,7 +217,7 @@ static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted
         label.backgroundColor = [UIColor clearColor];
         label.lineBreakMode = NSLineBreakByWordWrapping;
         label.numberOfLines = 0;
-        label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1];
+        label.textColor = [UIColor textDimmedColor];
         label.font = [UIFont systemFontOfSize:kHeaderFontSize];
         
         label.text = NSLocalizedString(self.sectionData[section][kSectionHeaderIndex], @"TableView Header Section Descriptions");

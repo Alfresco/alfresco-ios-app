@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -13,17 +13,18 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                        <rect key="frame" x="150" y="16" width="72" height="28"/>
+                    <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                        <rect key="frame" x="197" y="14" width="49" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="28" id="dRo-VW-Oqy"/>
-                            <constraint firstAttribute="width" constant="72" id="hgA-xW-PGj"/>
+                            <constraint firstAttribute="height" constant="32" id="dRo-VW-Oqy"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                         <size key="titleShadowOffset" width="0.0" height="-1"/>
                         <state key="normal" title="Sync">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </state>
                         <state key="highlighted">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -32,17 +33,18 @@
                             <action selector="pressedSyncButton:" destination="3" eventType="touchUpInside" id="8"/>
                         </connections>
                     </button>
-                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6">
-                        <rect key="frame" x="240" y="16" width="72" height="28"/>
+                    <button contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6">
+                        <rect key="frame" x="262" y="14" width="50" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="28" id="IZQ-Qk-YR8"/>
-                            <constraint firstAttribute="width" constant="72" id="JEx-wS-32n"/>
+                            <constraint firstAttribute="height" constant="32" id="IZQ-Qk-YR8"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                         <size key="titleShadowOffset" width="0.0" height="-1"/>
                         <state key="normal" title="Save">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </state>
                         <state key="highlighted">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -51,8 +53,8 @@
                             <action selector="pressedSaveToDownloads:" destination="3" eventType="touchUpInside" id="9"/>
                         </connections>
                     </button>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Alfresco Node Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mm3-yx-MsV" userLabel="nodeName">
-                        <rect key="frame" x="56" y="19" width="71" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Filename" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mm3-yx-MsV" userLabel="nodeName">
+                        <rect key="frame" x="56" y="19" width="131" height="21"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -68,15 +70,16 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="6" firstAttribute="width" secondItem="5" secondAttribute="width" id="BPA-iE-fl4"/>
                     <constraint firstItem="Mm3-yx-MsV" firstAttribute="leading" secondItem="aK8-pT-YPw" secondAttribute="trailing" constant="8" id="ON9-cz-RZP"/>
-                    <constraint firstItem="6" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="18" id="QFx-aU-npT"/>
+                    <constraint firstItem="6" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="16" id="QFx-aU-npT"/>
                     <constraint firstAttribute="centerY" secondItem="aK8-pT-YPw" secondAttribute="centerY" id="SLs-aS-4bR"/>
                     <constraint firstAttribute="centerY" secondItem="6" secondAttribute="centerY" id="VjI-Yc-Dz8"/>
                     <constraint firstAttribute="centerY" secondItem="Mm3-yx-MsV" secondAttribute="centerY" id="Wjl-Nb-bzt"/>
                     <constraint firstItem="aK8-pT-YPw" firstAttribute="leading" secondItem="DTx-2h-pho" secondAttribute="leading" constant="8" id="XGW-SO-UWg"/>
                     <constraint firstAttribute="centerY" secondItem="5" secondAttribute="centerY" id="lxH-9d-haE"/>
                     <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" constant="8" id="o3p-kl-hHo"/>
-                    <constraint firstItem="5" firstAttribute="leading" secondItem="Mm3-yx-MsV" secondAttribute="trailing" constant="23" id="yYm-dO-863"/>
+                    <constraint firstItem="5" firstAttribute="leading" secondItem="Mm3-yx-MsV" secondAttribute="trailing" constant="10" id="yYm-dO-863"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
