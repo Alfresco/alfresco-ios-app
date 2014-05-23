@@ -11,7 +11,6 @@
 #import "SyncAccount.h"
 #import "CoreDataSyncHelper.h"
 #import "SyncNodeStatus.h"
-#import "Utility.h"
 
 NSString * const kLastDownloadedDateKey = @"lastDownloadedDate";
 NSString * const kSyncNodeKey = @"node";

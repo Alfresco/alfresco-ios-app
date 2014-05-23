@@ -10,7 +10,6 @@
 #import "AlfrescoNodeCell.h"
 #import "SyncManager.h"
 #import "FavouriteManager.h"
-#import "Utility.h"
 #import "ThumbnailManager.h"
 
 @interface BaseFileFolderListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate>

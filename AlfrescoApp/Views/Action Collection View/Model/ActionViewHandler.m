@@ -10,7 +10,6 @@
 #import "FavouriteManager.h"
 #import "ActionCollectionView.h"
 #import "UniversalDevice.h"
-#import "Utility.h"
 #import "ErrorDescriptions.h"
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"

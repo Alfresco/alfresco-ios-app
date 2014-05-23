@@ -10,7 +10,6 @@
 #import "UniversalDevice.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
-#import "Utility.h"
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"

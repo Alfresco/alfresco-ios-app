@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "UniversalDevice.h"
 #import "LoginManager.h"
-#import "Utility.h"
 #import "LoginViewController.h"
 #import "NavigationViewController.h"
 #import "MBProgressHUD.h"
@@ -341,40 +340,40 @@
     
     BOOL hostIsReachable = [[ConnectivityManager sharedManager] canReachHostName:account.serverAddress];
     if (hostIsReachable)
-    {
-        self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
-        self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-            if (session)
-            {
-                [UniversalDevice clearDetailViewController];
-                
-                self.currentLoginURLString = nil;
-                self.currentLoginRequest = nil;
-                
-                if (completionBlock != NULL)
+        {
+            self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
+            self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                if (session)
                 {
-                    completionBlock(YES, session, nil);
+                    [UniversalDevice clearDetailViewController];
+                    
+                    self.currentLoginURLString = nil;
+                    self.currentLoginRequest = nil;
+                    
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock(YES, session, nil);
+                    }
                 }
-            }
-            else
-            {
-                if (completionBlock != NULL)
+                else
                 {
-                    completionBlock(NO, nil, error);
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock(NO, nil, error);
+                    }
                 }
-            }
-        }];
-    }
-    else
-    {
+            }];
+        }
+        else
+        {
         [self hideHUD];
         AccountInfoViewController *accountViewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeLoginFailed];
         NavigationViewController *nav = [[NavigationViewController alloc] initWithRootViewController:accountViewController];
         [UniversalDevice displayModalViewController:nav onController:[UniversalDevice containerViewController] withCompletionBlock:^{
             displayErrorMessageWithTitle(NSLocalizedString(@"login.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"login.host.unreachable.title", @"Connection error"));
         }];
-    }
-}
+            }
+        }
 
 - (void)showHUDOnView:(UIView *)view
 {

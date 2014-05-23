@@ -7,8 +7,6 @@
 //
 
 #import "ActivityWrapper.h"
-#import "Utility.h"
-
 
 static NSString * const kActivitySummaryTitle = @"title";
 static NSString * const kActivitySummaryFirstName = @"firstName";

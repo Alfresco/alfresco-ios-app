@@ -7,7 +7,6 @@
 //
 
 #import "DocumentPreviewManager.h"
-#import "Utility.h"
 
 static NSString * const kTempFileFolderNamePath = @"tmp";
 // notifictations

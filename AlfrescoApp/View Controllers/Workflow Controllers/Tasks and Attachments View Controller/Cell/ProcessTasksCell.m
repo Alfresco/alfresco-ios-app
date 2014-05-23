@@ -7,7 +7,6 @@
 //
 
 #import "ProcessTasksCell.h"
-#import "Utility.h"
 
 static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifier";
 

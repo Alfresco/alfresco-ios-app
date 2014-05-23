@@ -8,7 +8,6 @@
 
 #import "SyncObstaclesViewController.h"
 #import "SyncManager.h"
-#import "Utility.h"
 #import "ThumbnailManager.h"
 #import "AlfrescoNodeCell.h"
 

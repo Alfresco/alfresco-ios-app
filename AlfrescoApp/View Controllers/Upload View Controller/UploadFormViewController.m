@@ -10,7 +10,6 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "TagPickerViewController.h"
 #import "UniversalDevice.h"
-#import "Utility.h"
 #import "UIAlertView+ALF.h"
 #import <ImageIO/ImageIO.h>
 #import "LocationManager.h"

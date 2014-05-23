@@ -8,7 +8,6 @@
 
 #import "AvatarManager.h"
 #import "CoreDataCacheHelper.h"
-#import "Utility.h"
 
 @interface AvatarManager ()
 

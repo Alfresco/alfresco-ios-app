@@ -17,7 +17,6 @@ static NSInteger const kDefaultNumberOfRows = 1;
 
 #import "NodePickerListViewController.h"
 #import "ThumbnailManager.h"
-#import "Utility.h"
 #import "NodePickerScopeViewController.h"
 #import "NodePickerListCell.h"
 

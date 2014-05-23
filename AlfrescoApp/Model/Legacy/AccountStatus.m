@@ -24,7 +24,6 @@
 //
 
 #import "AccountStatus.h"
-#import "Utility.h"
 
 @implementation AccountStatus
 @synthesize uuid = _uuid;

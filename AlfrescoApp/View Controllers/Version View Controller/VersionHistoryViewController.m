@@ -7,7 +7,6 @@
 //
 
 #import "VersionHistoryViewController.h"
-#import "Utility.h"
 #import "VersionHistoryCell.h"
 #import "MetaDataViewController.h"
 #import "DownloadManager.h"

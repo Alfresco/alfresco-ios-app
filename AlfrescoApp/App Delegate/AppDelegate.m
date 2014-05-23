@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "PlaceholderViewController.h"
-#import "Utility.h"
 #import "LoginManager.h"
 #import "LocationManager.h"
 #import "UserAccount.h"
@@ -74,7 +73,7 @@
     AccountManager *accountManager = [AccountManager sharedManager];
     if (accountManager.selectedAccount)
     {
-        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:nil];
+            [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:nil];
     }
 
     [AppConfigurationManager sharedManager];
@@ -87,7 +86,7 @@
         [[BITHockeyManager sharedHockeyManager] startManager];
         [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
     }
-    
+
     // Start analytics only for non-dev builds
     if (![bundleVersion isEqualToString:@"dev"])
     {

@@ -10,10 +10,8 @@
 #import "SyncManager.h"
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
-#import "Utility.h"
 #import "DocumentPreviewViewController.h"
 #import "TableviewUnderlinedHeaderView.h"
-
 #import "AvatarManager.h"
 #import "AttributedLabelCell.h"
 #import "AlfrescoNodeCell.h"

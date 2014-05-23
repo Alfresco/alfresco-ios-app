@@ -11,7 +11,6 @@
 #import "NewVersionToggleCell.h"
 #import "NewVersionTextViewCell.h"
 #import "DownloadsViewController.h"
-#import "Utility.h"
 
 @interface NewVersionViewController () <DownloadsPickerDelegate>
 

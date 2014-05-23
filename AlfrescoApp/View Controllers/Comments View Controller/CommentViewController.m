@@ -7,7 +7,6 @@
 //
 
 #import "CommentViewController.h"
-#import "Utility.h"
 #import "CommentCell.h"
 #import "AvatarManager.h"
 #import "TextView.h"

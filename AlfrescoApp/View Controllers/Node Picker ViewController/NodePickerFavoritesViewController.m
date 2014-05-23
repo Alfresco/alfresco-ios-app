@@ -11,7 +11,6 @@
 #import "FavouriteManager.h"
 #import "NodePickerFileFolderListViewController.h"
 #import "AlfrescoNodeCell.h"
-#import "Utility.h"
 #import "ThumbnailManager.h"
 
 static CGFloat const kCellHeight = 64.0f;

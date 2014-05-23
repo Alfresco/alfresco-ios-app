@@ -7,7 +7,6 @@
 //
 
 #import "OnboardingViewController.h"
-#import "Utility.h"
 #import "UniversalDevice.h"
 #import "NavigationViewController.h"
 #import "CloudSignUpViewController.h"

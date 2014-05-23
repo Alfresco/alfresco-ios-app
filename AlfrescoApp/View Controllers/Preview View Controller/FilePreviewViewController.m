@@ -9,7 +9,6 @@
 #import "FilePreviewViewController.h"
 #import "ThumbnailImageView.h"
 #import "ThumbnailManager.h"
-#import "Utility.h"
 #import "ErrorDescriptions.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "NavigationViewController.h"

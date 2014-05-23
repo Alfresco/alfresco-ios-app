@@ -7,7 +7,6 @@
 //
 
 #import "TagPickerViewController.h"
-#import "Utility.h"
 #import "UIAlertView+ALF.h"
 
 @interface TagPickerViewController ()
