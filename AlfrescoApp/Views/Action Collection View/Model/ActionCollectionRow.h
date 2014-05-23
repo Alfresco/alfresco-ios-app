@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface ActionCollectionRow : NSObject
 
 @property (nonatomic, strong, readonly) NSArray *rowItems;

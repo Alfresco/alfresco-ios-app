@@ -6,12 +6,13 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import "UploadFormViewController.h"
+#import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+
+#import "UploadFormViewController.h"
 #import "TagPickerViewController.h"
 #import "UniversalDevice.h"
 #import "UIAlertView+ALF.h"
-#import <ImageIO/ImageIO.h>
 #import "LocationManager.h"
 
 NS_ENUM(NSUInteger, UploadFormCellTypes)

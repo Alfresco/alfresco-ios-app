@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 // Notifications
 extern NSString * const kSettingsDidChangeNotification;
 extern NSString * const kSettingChangedFromKey;

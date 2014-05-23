@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
+#import "NodePickerListViewController.h"
+#import "ThumbnailManager.h"
+#import "NodePickerScopeViewController.h"
+#import "NodePickerListCell.h"
+
 static NSString * const kDefaultCellReuseIdentifier = @"PickerListDefaultCell";
 static NSString * const kCustomCellReuseIdentifier = @"PickerListCustomCell";
 
@@ -15,17 +20,10 @@ static NSInteger const kNumberOfTableViewSections = 2;
 static NSInteger const kListSectionNumber = 1;
 static NSInteger const kDefaultNumberOfRows = 1;
 
-#import "NodePickerListViewController.h"
-#import "ThumbnailManager.h"
-#import "NodePickerScopeViewController.h"
-#import "NodePickerListCell.h"
-
 @interface NodePickerListViewController ()
-
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, weak) NodePicker *picker;
-
 @end
 
 @implementation NodePickerListViewController

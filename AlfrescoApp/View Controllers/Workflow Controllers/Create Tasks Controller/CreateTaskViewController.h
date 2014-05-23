@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "WorkflowHelper.h"
 #import "NodePicker.h"
 #import "PeoplePicker.h"

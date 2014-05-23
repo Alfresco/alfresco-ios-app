@@ -2,8 +2,6 @@
 //  SystemNotice.h
 //
 
-#import <Foundation/Foundation.h>
-
 @interface SystemNotice : UIView <UIDynamicAnimatorDelegate>
 
 typedef enum

@@ -26,8 +26,6 @@
 // Currently it's used to store the status enum (active, inactive, error, etc.)
 // and also to store the last account's successful request timestamp
 
-#import <Foundation/Foundation.h>
-
 typedef enum
 {
     FDAccountStatusActive,

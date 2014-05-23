@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ThumbnailImageView.h"
+
 @class SyncNodeStatus;
 
 @interface AlfrescoNodeCell : UITableViewCell

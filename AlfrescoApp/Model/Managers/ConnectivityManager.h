@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface ConnectivityManager : NSObject
 
 @property (nonatomic, assign, readonly, getter = hasInternetConnection) BOOL hasInternetConnection;

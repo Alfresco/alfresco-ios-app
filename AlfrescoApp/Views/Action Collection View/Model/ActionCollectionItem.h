@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 extern NSString * const kActionCollectionItemUpdateNotification;
 extern NSString * const kActionCollectionItemUpdateItemTitleKey;
 extern NSString * const kActionCollectionItemUpdateItemImageKey;

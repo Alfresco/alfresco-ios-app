@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface SaveBackMetadata : NSObject
 
 @property (nonatomic, strong, readonly) NSString *accountID;
