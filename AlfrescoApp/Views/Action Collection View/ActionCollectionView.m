@@ -9,9 +9,7 @@
 #import "ActionCollectionView.h"
 #import "ActionCollectionViewCell.h"
 #import "UICollectionView+AutoLayout.h"
-#import "Utility.h"
 #import "UIView+DrawingUtils.h"
-
 
 static CGFloat const kSpacingBetweenSections = 8.0f;
 static CGFloat const kSpacingBetweenCells = 15.0f;

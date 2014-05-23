@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface KeychainUtils : NSObject
 
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error;

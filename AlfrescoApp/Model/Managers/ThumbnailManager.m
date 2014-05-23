@@ -7,7 +7,6 @@
 //
 
 #import "ThumbnailManager.h"
-#import "Utility.h"
 #import "CoreDataCacheHelper.h"
 
 typedef NS_ENUM(NSUInteger, RenditionType)

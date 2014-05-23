@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface AccountCertificate : NSObject
 
 @property (nonatomic, readonly) SecIdentityRef identityRef;

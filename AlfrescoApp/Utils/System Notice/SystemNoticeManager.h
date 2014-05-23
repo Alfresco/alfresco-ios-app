@@ -2,7 +2,6 @@
 //  SystemNoticeManager.h
 //
 
-#import <Foundation/Foundation.h>
 #import "SystemNotice.h"
 
 @interface SystemNoticeManager : NSObject

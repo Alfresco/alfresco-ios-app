@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 extern NSString * const kSyncStatusNodeIdKey;
 extern NSString * const kSyncStatusPropertyChangedKey;
 extern NSString * const kSyncStatusChangeKey;

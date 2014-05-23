@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+
 #import "PagedScrollView.h"
 #import "ActionCollectionView.h"
 #import "ActionViewHandler.h"
-#import "Utility.h"
-#import <MessageUI/MessageUI.h>
 #import "MBProgressHUD.h"
 #import "ItemInDetailViewProtocol.h"
 #import "NodeUpdatableProtocol.h"

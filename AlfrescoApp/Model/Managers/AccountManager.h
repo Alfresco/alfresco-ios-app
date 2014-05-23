@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "UserAccount.h"
 
 @class RequestHandler;

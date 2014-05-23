@@ -13,7 +13,6 @@
 #import "DocumentPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
-#import "Utility.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "AvatarManager.h"

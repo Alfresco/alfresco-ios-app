@@ -6,15 +6,14 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "FilePreviewViewController.h"
 #import "ThumbnailImageView.h"
 #import "ThumbnailManager.h"
-#import "Utility.h"
 #import "ErrorDescriptions.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import "NavigationViewController.h"
 #import "DocumentPreviewManager.h"
-
 #import "FullScreenAnimationController.h"
 
 static CGFloat const kAnimationSpeed = 0.2f;

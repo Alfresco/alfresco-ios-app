@@ -9,7 +9,6 @@
 #import "LoginViewController.h"
 #import "MBProgressHUD.h"
 #import "UserAccount.h"
-#import "Utility.h"
 
 @interface LoginViewController ()
 

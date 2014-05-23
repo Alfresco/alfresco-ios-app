@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "MainMenuViewController.h"
 
 @interface SwitchViewController : UIViewController <MainMenuViewControllerDelegate>

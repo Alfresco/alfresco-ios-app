@@ -10,7 +10,6 @@
 #import "SyncManager.h"
 #import "FavouriteManager.h"
 #import "AlfrescoNodeCell.h"
-#import "Utility.h"
 #import "DocumentPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"

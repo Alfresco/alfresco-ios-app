@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface ProgressView : UIView
 
 @property (nonatomic, weak) IBOutlet UILabel *progressInfoLabel;

@@ -496,9 +496,9 @@
 /**
  * Text File View Controller
  */
-"createtextfile.title" = "Create File";
+"createtextfile.title" = "Create Text File";
 "createtextfile.dismiss.confirmation.title" = "Dismiss?";
-"createtextfile.dismiss.confirmation.message" = "Are you sure you want to cancel the creation of this text file?\n\nPlease not, all work will be discarded.";
+"createtextfile.dismiss.confirmation.message" = "Are you sure you want to cancel the creation of this text file?\n\nPlease note, all work will be discarded.";
 "document.edit.button.discard" = "Discard Changes";
 "document.edit.button.save" = "Save";
 "document.edit.failed.title" = "Save File";

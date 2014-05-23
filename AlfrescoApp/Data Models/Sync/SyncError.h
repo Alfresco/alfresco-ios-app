@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
-
 @class SyncNodeInfo;
 
 @interface SyncError : NSManagedObject

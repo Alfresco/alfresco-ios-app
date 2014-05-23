@@ -6,11 +6,13 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
+#import <MessageUI/MessageUI.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "ActionViewHandler.h"
 #import "FavouriteManager.h"
 #import "ActionCollectionView.h"
 #import "UniversalDevice.h"
-#import "Utility.h"
 #import "ErrorDescriptions.h"
 #import "DownloadManager.h"
 #import "UIAlertView+ALF.h"
@@ -25,9 +27,6 @@
 #import "AccountManager.h"
 #import "SaveBackMetadata.h"
 #import "NewVersionViewController.h"
-
-#import <MessageUI/MessageUI.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 

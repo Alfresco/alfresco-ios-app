@@ -7,7 +7,6 @@
 //
 
 #import "TaskHeaderView.h"
-#import "Utility.h"
 
 static CGFloat const kCalendarCornerRadius = 10.0f;
 static CGFloat const kCalendarStrokeWidth = 0.5f;

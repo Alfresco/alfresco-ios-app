@@ -9,7 +9,6 @@
 #import "CloudSignUpViewController.h"
 #import "TextFieldCell.h"
 #import "ButtonCell.h"
-#import "Utility.h"
 #import "RequestHandler.h"
 #import "UserAccount.h"
 #import "AccountManager.h"

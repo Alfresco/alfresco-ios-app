@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface VersionHistoryCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *versionLabel;

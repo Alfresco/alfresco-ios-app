@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface TaskPriorityCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;

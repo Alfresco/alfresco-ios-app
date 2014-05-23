@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 typedef void (^DismissCompletionBlock)();
 
 @protocol DismissCompletionProtocol <NSObject>

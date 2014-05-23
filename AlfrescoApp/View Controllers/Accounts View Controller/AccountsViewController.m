@@ -16,7 +16,6 @@
 #import "UniversalDevice.h"
 #import "MainMenuViewController.h"
 #import "CloudSignUpViewController.h"
-#import "Utility.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Alfresco. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 typedef void (^DocumentPreviewManagerFileSavedBlock)(NSString *filePath);
 
 // Download Status Notifications

@@ -7,7 +7,6 @@
 //
 
 #import "TasksCell.h"
-#import "Utility.h"
 
 @interface TasksCell ()
 @property (nonatomic, weak) IBOutlet UIImageView *taskPriorityImageView;

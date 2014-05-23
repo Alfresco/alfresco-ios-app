@@ -8,9 +8,9 @@
 
 #import "CoreDataCacheHelper.h"
 
-static NSManagedObjectContext *cacheManagedObjectContext;
-static NSManagedObjectModel *cacheManagedObjectModel;
-static NSPersistentStoreCoordinator *cachePersistenceStoreCoordinator;
+static NSManagedObjectContext *sCacheManagedObjectContext;
+static NSManagedObjectModel *sCacheManagedObjectModel;
+static NSPersistentStoreCoordinator *sCachePersistenceStoreCoordinator;
 
 static NSString * const kAlfrescoAppDataStore = @".AlfrescoCache.sqlite";
 static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
@@ -179,75 +179,88 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
 
 - (NSManagedObjectContext *)cacheManagedObjectContext
 {
-    if (cacheManagedObjectContext != nil)
+    if (sCacheManagedObjectContext != nil)
     {
-        return cacheManagedObjectContext;
+        return sCacheManagedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self cachePersistenceStoreCoordinator];
     if (coordinator != nil)
     {
-        cacheManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [cacheManagedObjectContext setPersistentStoreCoordinator:coordinator];
+        sCacheManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [sCacheManagedObjectContext setPersistentStoreCoordinator:coordinator];
     }
-    return cacheManagedObjectContext;
+    return sCacheManagedObjectContext;
 }
 
 - (NSManagedObjectModel *)cacheManagedObjectModel
 {
-    if (cacheManagedObjectModel != nil)
+    if (sCacheManagedObjectModel != nil)
     {
-        return cacheManagedObjectModel;
+        return sCacheManagedObjectModel;
     }
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:kAlfrescoAppDataModel withExtension:@"momd"];
-    cacheManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return cacheManagedObjectModel;
+    sCacheManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    return sCacheManagedObjectModel;
 }
 
 - (NSPersistentStoreCoordinator *)cachePersistenceStoreCoordinator
 {
-    if (cachePersistenceStoreCoordinator != nil)
+    static BOOL reentrancyFlag = NO;
+    
+    if (sCachePersistenceStoreCoordinator != nil)
     {
-        return cachePersistenceStoreCoordinator;
+        return sCachePersistenceStoreCoordinator;
     }
     
     NSString *storeURLString = [[[AlfrescoFileManager sharedManager] documentsDirectory] stringByAppendingPathComponent:kAlfrescoAppDataStore];
     NSURL *storeURL = [NSURL fileURLWithPath:storeURLString];
     
     NSError *error = nil;
-    cachePersistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self cacheManagedObjectModel]];
+    sCachePersistenceStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self cacheManagedObjectModel]];
     
     NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES};
-    if (![cachePersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])
+    if (![sCachePersistenceStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])
     {
-        /*
-        * Unable to automatically migrate the store using lightweight migration.
-        *
-        * We should do some manual migration here, should it be needed. However, since the cache model is fairly simple, and there is no
-        * current requirement to carry out manual migration, we will simply delete the existing cache database and create a new one.
-        */
+        /**
+         * Unable to automatically migrate the store using lightweight migration.
+         *
+         * We should do some manual migration here, should it be needed. However, since the cache model is fairly simple, and there is no
+         * current requirement to carry out manual migration, we will simply delete the existing cache database and create a new one.
+         */
         NSError *removalError = nil;
         [[AlfrescoFileManager sharedManager] removeItemAtURL:storeURL error:&error];
         
         if (removalError)
         {
             AlfrescoLogError(@"Unable to remove cache store at path: %@ due to error: %@", storeURL, error.localizedDescription);
+#if DEBUG
+            // If in debug, and we were unable to remove the old cache model, call abort() in order to create a crash log
+            abort();
+#endif
         }
         
-        // Try and recreate the managed object context, which should propagate down into this call again.
-        self.managedObjectContext = [self managedObjectContext];
-        
-        #if DEBUG
-            // If in debug, and we were unable to remove the old cache model, call abort() in order to create a crash log
-            if (removalError)
+        if (!reentrancyFlag)
+        {
+            // Try and recreate the managed object context, which should propagate down into this call again.
+            reentrancyFlag = YES;
+            self.managedObjectContext = [self cacheManagedObjectContext];
+            reentrancyFlag = NO;
+        }
+        else
+        {
+            // If we're reentrant and still have no MOC, then the situation is not recoverable
+            if (!self.managedObjectContext)
             {
-                AlfrescoLogError(@"Unresolved error %@, %@", error, [error userInfo]);
-                abort();
+                @throw ([NSException exceptionWithName:@"CoreData Cache Helper"
+                                                reason:[NSString stringWithFormat:@"Unable to recreate Managed Object Context %@ %@", [self class], NSStringFromSelector(_cmd)]
+                                              userInfo:nil]);
+
             }
-        #endif
+        }
     }
     
-    return cachePersistenceStoreCoordinator;
+    return sCachePersistenceStoreCoordinator;
 }
 
 @end

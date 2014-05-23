@@ -10,7 +10,6 @@
 #import "DownloadsDocumentPreviewViewController.h"
 #import "UniversalDevice.h"
 #import "DownloadManager.h"
-#import "Utility.h"
 #import "MetaDataViewController.h"
 #import "AlfrescoDocument+ALF.h"
 #import "FileFolderCell.h"

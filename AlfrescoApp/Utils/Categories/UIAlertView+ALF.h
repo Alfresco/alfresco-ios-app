@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Alfresco. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 typedef void (^UIAlertViewDismissBlock)(NSUInteger buttonIndex, BOOL isCancelButton);
 
 @interface UIAlertView (ALF) <UIAlertViewDelegate>

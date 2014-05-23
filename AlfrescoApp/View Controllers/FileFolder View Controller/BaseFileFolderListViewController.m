@@ -169,6 +169,7 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
+    [self.tableView reloadData];
 }
 
 @end

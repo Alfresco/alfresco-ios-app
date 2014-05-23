@@ -9,7 +9,6 @@
 #import "ClientCertificateImportViewController.h"
 #import "TextFieldCell.h"
 #import "AccountManager.h"
-#import "Utility.h"
 
 @interface ClientCertificateImportViewController ()
 
