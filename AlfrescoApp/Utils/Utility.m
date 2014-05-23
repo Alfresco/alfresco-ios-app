@@ -677,4 +677,21 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return croppedImage;
 }
 
++ (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier
+{
+    NSString *cleanNodeRef = nil;
+    
+    NSArray *strings = [originalIdentifier componentsSeparatedByString:@";"];
+    if (strings.count > 0)
+    {
+        cleanNodeRef = strings[0];
+    }
+    else
+    {
+        cleanNodeRef = originalIdentifier;
+    }
+    
+    return cleanNodeRef;
+}
+
 @end

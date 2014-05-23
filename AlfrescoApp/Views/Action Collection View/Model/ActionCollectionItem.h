@@ -29,6 +29,7 @@ extern NSString * const kActionCollectionIdentifierRename;
 extern NSString * const kActionCollectionIdentifierCreateSubfolder;
 extern NSString * const kActionCollectionIdentifierUploadDocument;
 extern NSString * const kActionCollectionIdentifierSendForReview;
+extern NSString * const kActionCollectionIdentifierUploadNewVersion;
 
 @interface ActionCollectionItem : NSObject
 
@@ -52,6 +53,7 @@ extern NSString * const kActionCollectionIdentifierSendForReview;
 + (ActionCollectionItem *)subfolderItem;
 + (ActionCollectionItem *)uploadItem;
 + (ActionCollectionItem *)sendForReview;
++ (ActionCollectionItem *)uploadNewVersion;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

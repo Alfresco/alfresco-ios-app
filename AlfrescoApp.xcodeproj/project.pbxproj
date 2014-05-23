@@ -188,6 +188,14 @@
 		731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B1184770F5002C82C1 /* MigrationAssistant.m */; };
 		731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B518477E4E002C82C1 /* AccountInfo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 731901B718477E4E002C82C1 /* AccountStatus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731A8F3D192F528A0099BE7B /* NewVersionViewController.m */; };
+		731A8F41192F52AC0099BE7B /* NewVersionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731A8F40192F52AC0099BE7B /* NewVersionViewController.xib */; };
+		731A8F46192F56470099BE7B /* NewVersionLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 731A8F44192F56470099BE7B /* NewVersionLabelCell.m */; };
+		731A8F47192F56470099BE7B /* NewVersionLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731A8F45192F56470099BE7B /* NewVersionLabelCell.xib */; };
+		731A8F4C192F5A0B0099BE7B /* NewVersionToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 731A8F4A192F5A0B0099BE7B /* NewVersionToggleCell.m */; };
+		731A8F4D192F5A0B0099BE7B /* NewVersionToggleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731A8F4B192F5A0B0099BE7B /* NewVersionToggleCell.xib */; };
+		731A8F51192F5B1F0099BE7B /* NewVersionTextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 731A8F4F192F5B1F0099BE7B /* NewVersionTextViewCell.m */; };
+		731A8F52192F5B1F0099BE7B /* NewVersionTextViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 731A8F50192F5B1F0099BE7B /* NewVersionTextViewCell.xib */; };
 		73217436187AC0CC008B330D /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73217435187AC0CC008B330D /* CommentViewController.xib */; };
 		732DBF8E18E1BC6B00F7A0BF /* small_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7818E1BC6B00F7A0BF /* small_audio.png */; };
 		732DBF8F18E1BC6B00F7A0BF /* small_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBF7918E1BC6B00F7A0BF /* small_audio@2x.png */; };
@@ -776,6 +784,18 @@
 		731901B518477E4E002C82C1 /* AccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfo.m; sourceTree = "<group>"; };
 		731901B618477E4E002C82C1 /* AccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatus.h; sourceTree = "<group>"; };
 		731901B718477E4E002C82C1 /* AccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStatus.m; sourceTree = "<group>"; };
+		731A8F3C192F528A0099BE7B /* NewVersionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewVersionViewController.h; path = "New Version View Controller/NewVersionViewController.h"; sourceTree = "<group>"; };
+		731A8F3D192F528A0099BE7B /* NewVersionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewVersionViewController.m; path = "New Version View Controller/NewVersionViewController.m"; sourceTree = "<group>"; };
+		731A8F40192F52AC0099BE7B /* NewVersionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewVersionViewController.xib; path = "New Version View Controller/NewVersionViewController.xib"; sourceTree = "<group>"; };
+		731A8F43192F56470099BE7B /* NewVersionLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewVersionLabelCell.h; path = "New Version View Controller/Cells/NewVersionLabelCell.h"; sourceTree = "<group>"; };
+		731A8F44192F56470099BE7B /* NewVersionLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewVersionLabelCell.m; path = "New Version View Controller/Cells/NewVersionLabelCell.m"; sourceTree = "<group>"; };
+		731A8F45192F56470099BE7B /* NewVersionLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewVersionLabelCell.xib; path = "New Version View Controller/Cells/NewVersionLabelCell.xib"; sourceTree = "<group>"; };
+		731A8F49192F5A0B0099BE7B /* NewVersionToggleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewVersionToggleCell.h; path = "New Version View Controller/Cells/NewVersionToggleCell.h"; sourceTree = "<group>"; };
+		731A8F4A192F5A0B0099BE7B /* NewVersionToggleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewVersionToggleCell.m; path = "New Version View Controller/Cells/NewVersionToggleCell.m"; sourceTree = "<group>"; };
+		731A8F4B192F5A0B0099BE7B /* NewVersionToggleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewVersionToggleCell.xib; path = "New Version View Controller/Cells/NewVersionToggleCell.xib"; sourceTree = "<group>"; };
+		731A8F4E192F5B1F0099BE7B /* NewVersionTextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewVersionTextViewCell.h; path = "New Version View Controller/Cells/NewVersionTextViewCell.h"; sourceTree = "<group>"; };
+		731A8F4F192F5B1F0099BE7B /* NewVersionTextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewVersionTextViewCell.m; path = "New Version View Controller/Cells/NewVersionTextViewCell.m"; sourceTree = "<group>"; };
+		731A8F50192F5B1F0099BE7B /* NewVersionTextViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewVersionTextViewCell.xib; path = "New Version View Controller/Cells/NewVersionTextViewCell.xib"; sourceTree = "<group>"; };
 		73217435187AC0CC008B330D /* CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		732DBF7818E1BC6B00F7A0BF /* small_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_audio.png; sourceTree = "<group>"; };
 		732DBF7918E1BC6B00F7A0BF /* small_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small_audio@2x.png"; sourceTree = "<group>"; };
@@ -1655,6 +1675,33 @@
 			path = Legacy;
 			sourceTree = "<group>";
 		};
+		731A8F42192F54090099BE7B /* New Version View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				731A8F48192F564D0099BE7B /* Cells */,
+				731A8F3C192F528A0099BE7B /* NewVersionViewController.h */,
+				731A8F3D192F528A0099BE7B /* NewVersionViewController.m */,
+				731A8F40192F52AC0099BE7B /* NewVersionViewController.xib */,
+			);
+			name = "New Version View Controller";
+			sourceTree = "<group>";
+		};
+		731A8F48192F564D0099BE7B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				731A8F43192F56470099BE7B /* NewVersionLabelCell.h */,
+				731A8F44192F56470099BE7B /* NewVersionLabelCell.m */,
+				731A8F45192F56470099BE7B /* NewVersionLabelCell.xib */,
+				731A8F49192F5A0B0099BE7B /* NewVersionToggleCell.h */,
+				731A8F4A192F5A0B0099BE7B /* NewVersionToggleCell.m */,
+				731A8F4B192F5A0B0099BE7B /* NewVersionToggleCell.xib */,
+				731A8F4E192F5B1F0099BE7B /* NewVersionTextViewCell.h */,
+				731A8F4F192F5B1F0099BE7B /* NewVersionTextViewCell.m */,
+				731A8F50192F5B1F0099BE7B /* NewVersionTextViewCell.xib */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		732F275117FAC57C00BAFDDE /* Detail Split View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2531,6 +2578,7 @@
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				73B95AD217A68DF20099FB84 /* Metadata View Controller */,
+				731A8F42192F54090099BE7B /* New Version View Controller */,
 				0876A03318D99FF60035370A /* Node Picker ViewController */,
 				7319019218436504002C82C1 /* Onboarding View Controller */,
 				0876A05918D9A9E30035370A /* People Picker ViewController */,
@@ -3061,6 +3109,7 @@
 				27F054DE1891832B00C2454C /* app-icon-76.png in Resources */,
 				739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */,
 				73881FCB188FF6B00052C75F /* actionsheet-attachments@2x.png in Resources */,
+				731A8F47192F56470099BE7B /* NewVersionLabelCell.xib in Resources */,
 				271DC776189C2D250059D1B2 /* status-sync-synced.png in Resources */,
 				73B95A8917A68B7E0099FB84 /* Default-Landscape~ipad.png in Resources */,
 				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
@@ -3076,6 +3125,7 @@
 				27E84E7918AD53510024B658 /* mainmenu-accounts@2x.png in Resources */,
 				08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */,
 				73B95A8C17A68B7E0099FB84 /* Default.png in Resources */,
+				731A8F52192F5B1F0099BE7B /* NewVersionTextViewCell.xib in Resources */,
 				2764ABD618CE09EE003FFBF9 /* actionsheet-edit-properties@2x.png in Resources */,
 				27F054DA1891832B00C2454C /* app-icon-50.png in Resources */,
 				73B95A8D17A68B7E0099FB84 /* Default@2x.png in Resources */,
@@ -3166,6 +3216,7 @@
 				2744022018AA83C400DF23DD /* Settings.bundle in Resources */,
 				73FF558418ACE2370009CA56 /* large_pdf@2x.png in Resources */,
 				271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */,
+				731A8F4D192F5A0B0099BE7B /* NewVersionToggleCell.xib in Resources */,
 				738664991906AD740021D1BD /* ActivitiesViewController.xib in Resources */,
 				738664F31906B2420021D1BD /* TaskApproversCell.xib in Resources */,
 				73B95AB117A68B7E0099FB84 /* site-action-cancelrequest.png in Resources */,
@@ -3234,6 +3285,7 @@
 				27E84E8018AD53510024B658 /* mainmenu-localfiles.png in Resources */,
 				080A812118561E6D00B79306 /* certificate-add.png in Resources */,
 				27E84E8518AD53510024B658 /* mainmenu-repository@2x.png in Resources */,
+				731A8F41192F52AC0099BE7B /* NewVersionViewController.xib in Resources */,
 				271DC773189C2D250059D1B2 /* status-sync-loading@2x.png in Resources */,
 				73B95AC217A68B7E0099FB84 /* download@2x.png in Resources */,
 				08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */,
@@ -3394,6 +3446,8 @@
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
+				731A8F51192F5B1F0099BE7B /* NewVersionTextViewCell.m in Sources */,
+				731A8F4C192F5A0B0099BE7B /* NewVersionToggleCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
@@ -3428,6 +3482,7 @@
 				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
+				731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,
@@ -3472,6 +3527,7 @@
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
+				731A8F46192F56470099BE7B /* NewVersionLabelCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
 				27DA1B651915362300885F0F /* BaseInboundURLHandler.m in Sources */,

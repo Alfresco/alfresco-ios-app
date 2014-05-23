@@ -52,6 +52,10 @@
                                              selector:@selector(updateActionButtons)
                                                  name:kFavoritesListUpdatedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(documentUpdated:)
+                                                 name:kAlfrescoDocumentUpdatedOnServerNotification
+                                               object:nil];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -186,6 +190,11 @@
        }
     }
     
+    if (self.documentPermissions.canSetContent)
+    {
+        [items addObject:[ActionCollectionItem uploadNewVersion]];
+    }
+    
     if (!isRestricted)
     {
         [items addObject:[ActionCollectionItem openInItem]];
@@ -209,6 +218,35 @@
     }
     
     self.actionMenuView.items = items;
+}
+
+- (void)documentUpdated:(NSNotification *)notification
+{
+    id documentNodeObject = notification.object;
+    
+    // this should always be an AlfrescoDocument. If it isn't something has gone terribly wrong...
+    if ([documentNodeObject isKindOfClass:[AlfrescoDocument class]])
+    {
+        AlfrescoDocument *updatedDocument = (AlfrescoDocument *)documentNodeObject;
+        
+        NSString *cleanExistingNodeRef = [Utility nodeRefWithoutVersionID:self.document.identifier];
+        NSString *cleanUpdatedNodeRef = [Utility nodeRefWithoutVersionID:updatedDocument.identifier];
+        
+        if ([cleanExistingNodeRef isEqualToString:cleanUpdatedNodeRef])
+        {
+            [self updateToAlfrescoDocument:updatedDocument
+                               permissions:self.documentPermissions
+                           contentFilePath:self.documentContentFilePath
+                          documentLocation:self.documentLocation
+                                   session:self.session];
+        }
+    }
+    else
+    {
+        @throw ([NSException exceptionWithName:@"AlfrescoNode update exception in DocumentPreviewController - (void)documentUpdated:"
+                                        reason:@"No document node returned from the edit file service"
+                                      userInfo:nil]);
+    }
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions
@@ -269,6 +307,10 @@
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEdit])
     {
         [self.actionHandler pressedEditActionItem:actionItem forDocumentWithContentPath:self.documentContentFilePath];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUploadNewVersion])
+    {
+        [self.actionHandler pressedUploadNewVersion:actionItem node:self.document];
     }
 }
 

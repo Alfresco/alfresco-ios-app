@@ -77,5 +77,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority;
 + (NSString *)displayNameForProcessDefinition:(NSString *)task;
 + (UIImage *)cropImageIntoSquare:(UIImage *)originalImage;
++ (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier;
 
 @end

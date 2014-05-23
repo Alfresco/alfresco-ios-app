@@ -128,6 +128,11 @@
 // Workflow
 "error.workflow.unable.to.complete.process" = "Unable to complete process on task. Error: %@";
 "error.workflow.unable.to.reassign.task" = "Unable to reassign task. Error: %@";
+// New Version
+"error.new.version.unable.to.checkout.title" = "Unable To Checkout";
+"error.new.version.unable.to.checkout.message" = "Unable to checkout %@. Error: %@";
+"error.new.version.unable.to.checkin.title" = "Unable To Checkin";
+"error.new.version.unable.to.checkin.message" = "Unable to checkin %@. Error: %@";
 
 /**
  * Custom error descriptions
@@ -627,6 +632,7 @@
 "action.upload" = "Upload";
 "action.review" = "Review";
 "action.edit" = "Edit";
+"action.new.version" = "New Version";
 // alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename file to:";
@@ -662,6 +668,19 @@
 "saveback.upload.completed.message" = "Upload of %@ successfully uploaded to %@";
 "saveback.upload.failed.title" = "Upload Failed";
 "saveback.upload.failed.message" = "Upload of %@ failed to successfully uploaded to %@";
+
+/**
+ * New Version View Controller
+ */
+"new.version.title" = "New Version";
+"new.version.upload" = "Upload";
+"new.version.file.title" = "New Version";
+"new.version.file.placeholder" = "No File Selected";
+"new.version.major.version.title" = "Major Change";
+"new.version.comment.title" = "Comment";
+"new.version.commet.placeholder" = "Add A Comment Here (optional)";
+"new.version.upload.successful.title" = "New Version Updated";
+"new.version.upload.successful.message" = "A new version of %@ has been successfully uploaded";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
