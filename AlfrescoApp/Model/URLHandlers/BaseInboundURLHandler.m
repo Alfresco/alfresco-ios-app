@@ -79,7 +79,7 @@
                         // If successful, display a message and let the observers know, else, save it to downloads to ensure no data is lost
                         if (!error)
                         {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackRemoteComplete object:metadata.nodeRef userInfo:@{kAlfrescoDocumentUpdatedDocumentParameterKey : document}];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackRemoteComplete object:metadata.nodeRef userInfo:@{kAlfrescoDocumentUpdatedFromDocumentParameterKey : document}];
                             
                             NSString *title = NSLocalizedString(@"saveback.completed.title", @"SaveBack Completed Title");
                             NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.completed.message", @"SaveBack Completed Message"), node.name];

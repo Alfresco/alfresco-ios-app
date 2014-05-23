@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="75" id="KGk-i7-Jjw" customClass="NewVersionTextViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eI-63-WHQ">
+                        <rect key="frame" x="10" y="11" width="38" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu." textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="qEc-fJ-ZOh" customClass="TextView">
+                        <rect key="frame" x="58" y="9" width="252" height="56"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="pJO-28-tPM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="2eI-63-WHQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="6MI-Xk-QZZ"/>
+                    <constraint firstAttribute="bottom" secondItem="qEc-fJ-ZOh" secondAttribute="bottom" constant="9" id="9QJ-cD-A32"/>
+                    <constraint firstItem="2eI-63-WHQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="Qz0-Df-zaa"/>
+                    <constraint firstItem="qEc-fJ-ZOh" firstAttribute="leading" secondItem="2eI-63-WHQ" secondAttribute="trailing" constant="10" id="a1b-LN-lmL"/>
+                    <constraint firstItem="qEc-fJ-ZOh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="oq2-SF-Y1M"/>
+                    <constraint firstAttribute="trailing" secondItem="qEc-fJ-ZOh" secondAttribute="trailing" constant="10" id="tW3-Ce-XfY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="titleLabel" destination="2eI-63-WHQ" id="QNJ-Ea-gLH"/>
+                <outlet property="valueTextView" destination="qEc-fJ-ZOh" id="5ge-iE-aIJ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

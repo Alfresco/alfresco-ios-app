@@ -24,6 +24,7 @@
 #import "TextFileViewController.h"
 #import "AccountManager.h"
 #import "SaveBackMetadata.h"
+#import "NewVersionViewController.h"
 
 #import <MessageUI/MessageUI.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -567,6 +568,14 @@
     NavigationViewController *createTaskNavigationController = [[NavigationViewController alloc] initWithRootViewController:createTaskViewController];
     createTaskNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.controller presentViewController:createTaskNavigationController animated:YES completion:nil];
+}
+
+- (void)pressedUploadNewVersion:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document
+{
+    NewVersionViewController *newViewController = [[NewVersionViewController alloc] initWithDocument:document session:self.session];
+    NavigationViewController *newVersionNavigationController = [[NavigationViewController alloc] initWithRootViewController:newViewController];
+    newVersionNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.controller presentViewController:newVersionNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks
