@@ -806,17 +806,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        if (self.folderPermissions.canDelete)
+        AlfrescoNode *nodeToDelete = (tableView == self.searchController.searchResultsTableView) ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
+        AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
+        
+        if (permissionsForNodeToDelete.canDelete)
         {
-            AlfrescoNode *nodeToDelete = nil;
-            if (tableView == self.searchController.searchResultsTableView)
-            {
-                nodeToDelete = self.searchResults[indexPath.row];
-            }
-            else
-            {
-                nodeToDelete = self.tableViewData[indexPath.row];
-            }
             [self deleteNode:nodeToDelete completionBlock:nil];
         }
     }
