@@ -201,7 +201,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     
     if ([currentComment.createdBy isEqualToString:self.session.personIdentifier])
     {
-        UIImage *image = [[[UIImage imageNamed:@"bubble_blue.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 15.0f, 7.0f, 15.0f)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *image = [[[UIImage imageNamed:@"bubble_blue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] resizableImageWithCapInsets:UIEdgeInsetsMake(7.0f, 15.0f, 7.0f, 15.0f)];
         cell.speechBubbleImageView.tintColor = [UIColor appTintColor];
         cell.speechBubbleImageView.image = image;
         cell.contentTextLabel.textColor = [UIColor whiteColor];
