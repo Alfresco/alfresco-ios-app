@@ -95,7 +95,7 @@ static NSString * const kSource = @"mobile";
                                                                             action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = cancel;
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     [self constructTableCells];
     [self validateSignUpFields];
 }

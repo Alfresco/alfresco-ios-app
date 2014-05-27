@@ -25,6 +25,7 @@
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong, readonly) MBProgressHUD *progressHUD;
+@property (nonatomic, assign) BOOL allowsPullToRefresh;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;

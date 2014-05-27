@@ -44,7 +44,7 @@ static CGFloat const kCellHeight = 64.0f;
     
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     [self loadSyncNodesForFolder:self.parentNode];
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     
     self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
     

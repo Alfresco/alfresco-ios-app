@@ -71,7 +71,7 @@ static NSInteger const kTagCertificateCell = 1;
     
     self.title = self.account.accountDescription;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     [self constructTableCellsForAlfrescoServer];
     
     if (self.activityType == AccountActivityTypeNewAccount)

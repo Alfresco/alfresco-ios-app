@@ -56,7 +56,7 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 {
     [super viewDidLoad];
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     
     self.title = NSLocalizedString(@"version.history.title", @"Version History");
     self.tableView.emptyMessage = NSLocalizedString(@"version.history.empty", @"No Version History");
