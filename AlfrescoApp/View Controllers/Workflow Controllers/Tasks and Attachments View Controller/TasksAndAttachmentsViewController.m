@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 {
     [super viewDidLoad];
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     
     if (self.session)
     {

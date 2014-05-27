@@ -49,7 +49,7 @@
     
     self.title = NSLocalizedString(@"new.version.title", @"New Version Title");
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     
     [self createCells];
     

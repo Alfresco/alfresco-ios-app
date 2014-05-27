@@ -61,7 +61,7 @@
     addNewTagButton.tintColor = [UIColor addTagButtonTintColor];
     self.navigationItem.rightBarButtonItem = addNewTagButton;
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     [self showHUD];
     
     __weak TagPickerViewController *weakSelf = self;

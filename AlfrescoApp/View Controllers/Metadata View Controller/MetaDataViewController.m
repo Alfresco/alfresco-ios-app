@@ -41,7 +41,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 {
     [super viewDidLoad];
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
