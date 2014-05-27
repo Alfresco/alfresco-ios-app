@@ -16,6 +16,7 @@
 #import "ConnectivityManager.h"
 
 static NSUInteger const kActionViewHeight = 110;
+static CGFloat segmentControlHeight = 0;
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
@@ -26,11 +27,13 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
 @interface FolderPreviewViewController () <CommentViewControllerDelegate, PagedScrollViewDelegate, ActionViewDelegate>
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *segmentControlHeightConstraint;
 @property (nonatomic, strong) AlfrescoFolder *folder;
 @property (nonatomic, strong) AlfrescoPermissions *permissions;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoRatingService *ratingService;
 @property (nonatomic, strong) NSMutableArray *pagingControllers;
+@property (nonatomic, strong) NSMutableArray *displayedPagingControllers;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, strong) ActionViewHandler *actionHandler;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
@@ -51,6 +54,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
         self.permissions = permissions;
         self.session = session;
         self.pagingControllers = [NSMutableArray array];
+        self.displayedPagingControllers = [NSMutableArray array];
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
         self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:self.folder session:session controller:self];
     }
@@ -61,16 +65,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     [super viewDidLoad];
     
-    self.title = self.folder.name;
-    
-    [self localiseUI];
-    
-    [self setupActionCollectionView];
-    
     [self setupPagingScrollView];
-    
-    [self updateActionButtons];
-    [self updateActionViewVisibility];
+    [self refreshViewController];
 }
 
 #pragma mark - Private Functions
@@ -100,35 +96,77 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     [self.segmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
 }
 
-- (void)setupPagingScrollView
+- (void)refreshViewController
 {
-    MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.folder session:self.session];
+    self.title = self.folder.name;
     
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    [self refreshPagingScrollView];
+    [self setupActionCollectionView];
+    [self updateActionButtons];
+    [self updateActionViewVisibility];
+    
+    if (self.displayedPagingControllers.count <= 1)
     {
-        CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.folder permissions:self.permissions session:self.session delegate:self];
-        for (int i = 0; i < PagingScrollViewSegmentFolderType_MAX; i++)
-        {
-            [self.pagingControllers addObject:[NSNull null]];
-        }
-        
-        [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
-        [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentFolderTypeComments];
+        self.segmentControlHeightConstraint.constant = 0;
+        self.segmentControl.hidden = YES;
     }
     else
     {
-        [self.segmentControl removeSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments animated:NO];
-        [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
+        self.segmentControlHeightConstraint.constant = segmentControlHeight;
+        self.segmentControl.hidden = NO;
     }
     
-    for (int i = 0; i < self.pagingControllers.count; i++)
+    [self localiseUI];
+}
+
+- (void)setupPagingScrollView
+{
+    [self.segmentControl removeAllSegments];
+    [self.segmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentFolderTypeMetadata animated:NO];
+    [self.segmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") atIndex:PagingScrollViewSegmentFolderTypeComments animated:NO];
+    
+    MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.folder session:self.session];
+    [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
+    CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.folder permissions:self.permissions session:self.session delegate:self];
+    [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentFolderTypeComments];
+    
+    segmentControlHeight = self.segmentControlHeightConstraint.constant;
+}
+
+- (void)refreshPagingScrollView
+{
+    NSUInteger currentlySelectedTabIndex = self.pagedScrollView.selectedPageIndex;
+    
+    // Remove all existing views in the scroll view
+    NSArray *shownControllers = [NSArray arrayWithArray:self.displayedPagingControllers];
+    
+    for (UIViewController *displayedController in shownControllers)
     {
-        if (![self.pagingControllers[i] isKindOfClass:[NSNull class]])
-        {
-            UIViewController *currentController = self.pagingControllers[i];
-            [self.pagedScrollView addSubview:currentController.view];
-        }
+        [displayedController willMoveToParentViewController:nil];
+        [displayedController.view removeFromSuperview];
+        [displayedController removeFromParentViewController];
+        
+        [self.displayedPagingControllers removeObject:displayedController];
     }
+    
+    // Add them back and refresh the segment control.
+    // If the document object is nil, we must not disiplay the MetaDataViewController
+    for (UIViewController *pagingController in self.pagingControllers)
+    {
+        if (self.folder == nil ||
+            ([pagingController isKindOfClass:[CommentViewController class]] && ![ConnectivityManager sharedManager].hasInternetConnection))
+        {
+            break;
+        }
+        [self addChildViewController:pagingController];
+        [self.pagedScrollView addSubview:pagingController.view];
+        [pagingController didMoveToParentViewController:self];
+        
+        [self.displayedPagingControllers addObject:pagingController];
+    }
+    
+    self.segmentControl.selectedSegmentIndex = currentlySelectedTabIndex;
+    [self.pagedScrollView scrollToDisplayViewAtIndex:currentlySelectedTabIndex animated:NO];
 }
 
 - (void)setupActionCollectionView
@@ -300,16 +338,12 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     self.permissions = permissions;
     self.session = session;
     
-    self.title = node.name;
-    
     self.actionHandler.node = node;
     self.actionHandler.session = session;
     
-    [self setupActionCollectionView];
-    [self updateActionButtons];
-    [self updateActionViewVisibility];
+    [self refreshViewController];
     
-    for (UIViewController *pagingController in self.pagingControllers)
+    for (UIViewController *pagingController in self.displayedPagingControllers)
     {
         if ([pagingController conformsToProtocol:@protocol(NodeUpdatableProtocol)])
         {
