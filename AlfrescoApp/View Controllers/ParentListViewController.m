@@ -26,6 +26,7 @@
         self.tableViewData = [NSMutableArray array];
         self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
         self.moreItemsAvailable = NO;
+        self.allowsPullToRefresh = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(sessionReceived:)
                                                      name:kAlfrescoSessionReceivedNotification
@@ -57,7 +58,7 @@
     self.view.autoresizesSubviews = YES;
     
     // Pull to Refresh
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    if (self.allowsPullToRefresh && [[ConnectivityManager sharedManager] hasInternetConnection])
     {
         [self enablePullToRefresh];
     }
@@ -271,20 +272,23 @@
 
 - (void)enablePullToRefresh
 {
-    UITableViewController *tableViewController = [[UITableViewController alloc] init];
-    tableViewController.tableView = self.tableView;
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
-    [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
-    tableViewController.refreshControl = refreshControl;
-    self.refreshControl = refreshControl;
-    
-    // bug with iOS 7's UIRefreshControl - Displacement of the initial title.
-    // Force a begin and end refresh action to resolve the displacement of text.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.refreshControl beginRefreshing];
-        [self.refreshControl endRefreshing];
-    });
+    if (self.allowsPullToRefresh)
+    {
+        UITableViewController *tableViewController = [[UITableViewController alloc] init];
+        tableViewController.tableView = self.tableView;
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
+        [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
+        tableViewController.refreshControl = refreshControl;
+        self.refreshControl = refreshControl;
+        
+        // bug with iOS 7's UIRefreshControl - Displacement of the initial title.
+        // Force a begin and end refresh action to resolve the displacement of text.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshControl beginRefreshing];
+            [self.refreshControl endRefreshing];
+        });
+    }
 }
 
 - (void)disablePullToRefresh
@@ -300,6 +304,18 @@
     });
 }
 
+#pragma mark - Custom Getters and Setters
+
+- (void)setAllowsPullToRefresh:(BOOL)allowsPullToRefresh
+{
+    _allowsPullToRefresh = allowsPullToRefresh;
+    
+    if (!_allowsPullToRefresh)
+    {
+        [self disablePullToRefresh];
+    }
+}
+
 #pragma mark - Private Functions
 
 - (void)sessionReceived:(NSNotification *)notification
@@ -311,7 +327,7 @@
 - (void)connectivityChanged:(NSNotification *)notification
 {
     BOOL hasInternet = [notification.object boolValue];
-    if (hasInternet)
+    if (hasInternet && self.allowsPullToRefresh)
     {
         [self enablePullToRefresh];
     }

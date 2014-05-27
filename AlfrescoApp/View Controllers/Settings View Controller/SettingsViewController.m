@@ -42,7 +42,7 @@ static NSUInteger const kCellLeftInset = 10;
 {
     [super viewDidLoad];
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
 	
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
     

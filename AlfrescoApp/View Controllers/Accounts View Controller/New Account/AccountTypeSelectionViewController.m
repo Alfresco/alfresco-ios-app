@@ -49,7 +49,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 {
     [super viewDidLoad];
     
-    [self disablePullToRefresh];
+    self.allowsPullToRefresh = NO;
     
     self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
     
