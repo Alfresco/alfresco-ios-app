@@ -144,6 +144,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
+    
+    if (!self.displayFolder)
+    {
+        [self loadContentOfFolder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
