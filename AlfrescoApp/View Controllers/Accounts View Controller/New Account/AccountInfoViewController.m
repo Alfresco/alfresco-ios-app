@@ -566,17 +566,15 @@ static NSInteger const kTagCertificateCell = 1;
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     NSDictionary *info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGRect keyBoardFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    CGFloat height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
     
-    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-    
-    CGFloat height = isPortrait ? kbSize.height : kbSize.width;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
     self.tableView.contentInset = contentInsets;
     self.tableView.scrollIndicatorInsets = contentInsets;
     
     CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height -= kbSize.height;
+    tableViewFrame.size.height -= keyBoardFrame.size.height;
     self.tableViewVisibleRect = tableViewFrame;
     [self showActiveTextField];
 }
@@ -586,6 +584,17 @@ static NSInteger const kTagCertificateCell = 1;
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.tableView.contentInset = contentInsets;
     self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+- (CGFloat)calculateBottomInsetForTextViewUsingKeyboardFrame:(CGRect)keyboardFrame
+{
+    CGRect keyboardRectForView = [self.view convertRect:keyboardFrame fromView:self.view.window];
+    CGSize kbSize = keyboardRectForView.size;
+    UIView *mainAppView = [[UniversalDevice revealViewController] view];
+    CGRect viewFrame = self.view.frame;
+    CGRect viewFrameRelativeToMainController = [self.view convertRect:viewFrame toView:mainAppView];
+    
+    return (viewFrameRelativeToMainController.origin.y + viewFrame.size.height) - (mainAppView.frame.size.height - kbSize.height);
 }
 
 - (void)showActiveTextField
