@@ -582,7 +582,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
     }
     else
     {
-        CGImageDestinationAddImage(imageDataDestination, image.CGImage, (__bridge CFDictionaryRef)metadata);
+        if (metadata)
+        {
+            CGImageDestinationAddImage(imageDataDestination, image.CGImage, (__bridge CFDictionaryRef)metadata);
+        }
+        else
+        {
+            CGImageDestinationAddImage(imageDataDestination, image.CGImage, NULL);
+        }
         
         if (CGImageDestinationFinalize(imageDataDestination) == NO)
         {
