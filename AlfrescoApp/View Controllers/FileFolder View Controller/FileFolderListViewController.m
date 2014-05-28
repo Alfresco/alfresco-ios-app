@@ -22,6 +22,8 @@
 
 #import "FailedTransferDetailViewController.h"
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 static CGFloat const kCellHeight = 64.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
@@ -1076,46 +1078,64 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
     {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
+        __block NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
+        
+        // define an upload block
+        void (^displayUploadForm)(NSDictionary *metadata, BOOL addGPSMetadata) = ^(NSDictionary *metadata, BOOL addGPSMetadata){
+            // determine if the content was created or picked
+            UploadFormType contentFormType = UploadFormTypeImagePhotoLibrary;
+            
+            // iOS camera uses JPEG images
+            if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+            {
+                selectedImageExtension = @"jpg";
+                contentFormType = UploadFormTypeImageCreated;
+                self.capturingMedia = YES;
+            }
+            
+            // add GPS metadata if Location Services are allowed for this app
+            if (addGPSMetadata && [[LocationManager sharedManager] usersLocationAuthorisation])
+            {
+                metadata = [self metadataByAddingGPSToMetadata:metadata];
+            }
+            
+            // location services no longer required
+            if ([[LocationManager sharedManager] isTrackingLocation])
+            {
+                [[LocationManager sharedManager] stopLocationUpdates];
+            }
+            
+            uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadImage:selectedImage fileExtension:selectedImageExtension metadata:metadata inFolder:self.displayFolder uploadFormType:contentFormType delegate:self];
+            uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
+            
+            // display the preview form to upload
+            if (self.capturingMedia)
+            {
+                [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
+                    [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+                }];
+            }
+            else
+            {
+                [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
+                    [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+                }];
+            }
+        };
+        
         NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-        
-        // determine if the content was created or picked
-        UploadFormType contentFormType = UploadFormTypeImagePhotoLibrary;
-                
-        // iOS camera uses JPEG images
-        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+        if (metadata)
         {
-            selectedImageExtension = @"jpg";
-            contentFormType = UploadFormTypeImageCreated;
-            self.capturingMedia = YES;
-        }
-        
-        // add GPS metadata if Location Services are allowed for this app
-        if ([[LocationManager sharedManager] usersLocationAuthorisation])
-        {
-            metadata = [self metadataByAddingGPSToMetadata:metadata];
-        }
-        
-        // location services no longer required
-        if ([[LocationManager sharedManager] isTrackingLocation])
-        {
-            [[LocationManager sharedManager] stopLocationUpdates];
-        }
-                
-        uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadImage:selectedImage fileExtension:selectedImageExtension metadata:metadata inFolder:self.displayFolder uploadFormType:contentFormType delegate:self];
-        uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
-        
-        // display the preview form to upload
-        if (self.capturingMedia)
-        {
-            [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
-                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-            }];
+            displayUploadForm(metadata, YES);
         }
         else
         {
-            [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
-                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
+            ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+            [assetLibrary assetForURL:info[UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
+                NSDictionary *assetMetadata = [[asset defaultRepresentation] metadata];
+                displayUploadForm(assetMetadata, NO);
+            } failureBlock:^(NSError *error) {
+                AlfrescoLogError(@"Unable to extract metadata from item for URL: %@. Error: %@", info[UIImagePickerControllerReferenceURL], error.localizedDescription);
             }];
         }
     }
