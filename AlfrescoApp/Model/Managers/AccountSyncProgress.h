@@ -10,8 +10,8 @@ extern NSString * const kSyncProgressSizeKey;
 
 @interface AccountSyncProgress : NSObject
 
-@property (nonatomic, assign) unsigned long long totalSyncSize;
-@property (nonatomic, assign) unsigned long long syncProgressSize;
+@property (atomic, assign) unsigned long long totalSyncSize;
+@property (atomic, assign) unsigned long long syncProgressSize;
 
 - (id)initWithObserver:(id)observer;
 
