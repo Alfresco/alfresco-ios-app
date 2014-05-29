@@ -319,6 +319,9 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
         
         NSArray *nodesToBeRemoved = [self.syncCoreDataHelper retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
         
+        SyncAccount *syncAccount = [nodesToBeRemoved.firstObject account];
+        [self.syncCoreDataHelper deleteRecordForManagedObject:syncAccount inManagedObjectContext:managedContext];
+        
         for (SyncNodeInfo *nodeInfo in nodesToBeRemoved)
         {
             SyncNodeStatus *nodeStatus = nodeStatuses[nodeInfo.syncNodeInfoId];

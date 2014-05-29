@@ -456,6 +456,8 @@ static NSInteger const kTagCertificateCell = 1;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
         self.account.isSyncOn = temporaryAccount.isSyncOn;
+        // if user turned on Sync while setting up account, didAskToSync is turned ON as well so app does not ask again
+        self.account.didAskToSync = self.account.isSyncOn;
     };
     
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
