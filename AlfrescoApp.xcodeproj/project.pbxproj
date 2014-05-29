@@ -93,6 +93,7 @@
 		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
+		27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */; };
 		271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */; };
 		271DC765189C2D250059D1B2 /* status-favourite-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */; };
 		271DC766189C2D250059D1B2 /* status-favourite.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC74E189C2D250059D1B2 /* status-favourite.png */; };
@@ -638,6 +639,7 @@
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
 		2711979D1912ADE60073C3EC /* ALFTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ALFTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2715E03619300C520049FA32 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ActionCollectionViewCell~ipad.xib"; sourceTree = "<group>"; };
 		271DC74C189C2D250059D1B2 /* status-favourite-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted.png"; sourceTree = "<group>"; };
 		271DC74D189C2D250059D1B2 /* status-favourite-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC74E189C2D250059D1B2 /* status-favourite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-favourite.png"; sourceTree = "<group>"; };
@@ -1699,6 +1701,7 @@
 				73632AD21802C679007172EE /* ActionCollectionViewCell.h */,
 				73632AD31802C679007172EE /* ActionCollectionViewCell.m */,
 				73632AD41802C679007172EE /* ActionCollectionViewCell.xib */,
+				27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2987,6 +2990,7 @@
 				73FF557818ACE2370009CA56 /* large_audio@2x.png in Resources */,
 				73881FD0188FF6B00052C75F /* actionsheet-download.png in Resources */,
 				73881FDF188FF9290052C75F /* actionsheet-unfavorite.png in Resources */,
+				27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */,
 				271DC765189C2D250059D1B2 /* status-favourite-highlighted@2x.png in Resources */,
 				73FF558718ACE2370009CA56 /* large_video.png in Resources */,
 				27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */,

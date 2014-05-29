@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActionCell" id="Wc5-7p-djv" customClass="ActionCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="100" height="101"/>
+            <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="100" height="101"/>
+                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fjf-tX-xno">
-                        <rect key="frame" x="12" y="0.0" width="76" height="76"/>
+                        <rect key="frame" x="10" y="0.0" width="60" height="60"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="76" id="bbV-7n-GOW"/>
-                            <constraint firstAttribute="height" constant="76" id="d7q-fu-xDT"/>
+                            <constraint firstAttribute="width" constant="60" id="bbV-7n-GOW"/>
+                            <constraint firstAttribute="height" constant="60" id="d7q-fu-xDT"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000000000000004" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="AeZ-qF-uJl">
-                        <rect key="frame" x="0.0" y="79" width="100" height="17"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000000000000004" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="AeZ-qF-uJl">
+                        <rect key="frame" x="0.0" y="63" width="80" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -39,7 +39,7 @@
                 <constraint firstItem="AeZ-qF-uJl" firstAttribute="leading" secondItem="Wc5-7p-djv" secondAttribute="leading" id="cgD-P6-maM"/>
                 <constraint firstAttribute="centerX" secondItem="fjf-tX-xno" secondAttribute="centerX" id="jx4-6y-P5h"/>
             </constraints>
-            <size key="customSize" width="101" height="101"/>
+            <size key="customSize" width="81" height="80"/>
             <connections>
                 <outlet property="imageView" destination="fjf-tX-xno" id="SIb-vu-RgZ"/>
                 <outlet property="titleLabel" destination="AeZ-qF-uJl" id="qsv-MB-NjB"/>

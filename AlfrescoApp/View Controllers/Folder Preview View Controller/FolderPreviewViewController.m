@@ -15,8 +15,9 @@
 #import "ActionViewHandler.h"
 #import "ConnectivityManager.h"
 
-static NSUInteger const kActionViewHeight = 110;
+static CGFloat sActionViewHeight = 0;
 static CGFloat segmentControlHeight = 0;
+static CGFloat const kAnimationSpeed = 0.3;
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
@@ -67,6 +68,14 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     
     [self setupPagingScrollView];
     [self refreshViewController];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionViewVisibility) name:kAlfrescoConnectivityChangedNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Private Functions
@@ -193,6 +202,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     }
     
     self.actionView.items = items;
+    sActionViewHeight = self.actionViewHeightConstraint.constant;
 }
 
 - (void)updateActionButtons
@@ -203,8 +213,15 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
+        }
+        else
+        {
+            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
+                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favorite.png"};
+            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
         }
     }];
     
@@ -214,7 +231,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-liked.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unlike.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
     }];
@@ -222,13 +239,15 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
 - (void)updateActionViewVisibility
 {
-    if (![[ConnectivityManager sharedManager] hasInternetConnection])
+    CGFloat currentHeight = self.actionViewHeightConstraint.constant;
+    CGFloat requiredHeight = [[ConnectivityManager sharedManager] hasInternetConnection] ? sActionViewHeight : 0;
+    
+    if (currentHeight != requiredHeight)
     {
-        self.actionViewHeightConstraint.constant = 0;
-    }
-    else
-    {
-        self.actionViewHeightConstraint.constant = kActionViewHeight;
+        [UIView animateWithDuration:kAnimationSpeed animations:^{
+            self.actionViewHeightConstraint.constant = requiredHeight;
+            [self.actionView layoutIfNeeded];
+        }];
     }
 }
 

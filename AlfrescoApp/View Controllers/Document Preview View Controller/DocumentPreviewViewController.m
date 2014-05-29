@@ -48,14 +48,13 @@
     
     [self updateActionButtons];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateActionButtons)
-                                                 name:kFavoritesListUpdatedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(documentUpdated:)
-                                                 name:kAlfrescoDocumentUpdatedOnServerNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -133,14 +132,14 @@
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
         }
         else
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavourited.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
         }
     }];
@@ -151,7 +150,7 @@
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-liked.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unlike.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
     }];

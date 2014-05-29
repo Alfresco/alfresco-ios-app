@@ -69,7 +69,7 @@ NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectio
 
 + (ActionCollectionItem *)favouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourite.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favorite.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
 }
 
 + (ActionCollectionItem *)unfavouriteItem
