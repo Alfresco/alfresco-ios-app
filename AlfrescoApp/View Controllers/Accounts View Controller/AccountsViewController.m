@@ -323,7 +323,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (!successful)
             {
-                self.session = nil;
+                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
             }
             else
             {

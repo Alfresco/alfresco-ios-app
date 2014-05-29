@@ -132,7 +132,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         selectedAccount.selectedNetworkId = networkIdentifier;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
     [self saveAccountsToKeychain];
 }
 

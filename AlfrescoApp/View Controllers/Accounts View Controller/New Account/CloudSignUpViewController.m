@@ -339,6 +339,7 @@ static NSString * const kSource = @"mobile";
                         if (accountManager.totalNumberOfAddedAccounts == 1)
                         {
                             [accountManager selectAccount:self.account selectNetwork:[self.account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                         }
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
                     }

@@ -73,28 +73,28 @@
     AccountManager *accountManager = [AccountManager sharedManager];
     if (accountManager.selectedAccount)
     {
-        [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount
-                                                  networkId:accountManager.selectedAccount.selectedNetworkId
-                                            completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                                                
-                                                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
-                                            }];
+        // Delay to allow the UI to update - reachability check can block the main thread
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                if (!successful)
+                {
+                    displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                }
+            }];
+        });
     }
 
     [AppConfigurationManager sharedManager];
     
-    // HockeyApp SDK - only for non-dev builds to avoid update prompt
     NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     if (![bundleVersion isEqualToString:@"dev"])
     {
+        // HockeyApp SDK
         [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"50a2db26b7e3926dcca100aebc019fdd"];
         [[BITHockeyManager sharedHockeyManager] startManager];
         [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-    }
 
-    // Start analytics only for non-dev builds
-    if (![bundleVersion isEqualToString:@"dev"])
-    {
+        // Flurry Analytics
         [[AnalyticsManager sharedManager] startAnalytics];
     }
 
