@@ -49,42 +49,42 @@ NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectio
 
 + (ActionCollectionItem *)emailAsLinkItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"sync-status-success.png"] title:NSLocalizedString(@"action.emailAsLink", @"Email As Link") identifier:kActionCollectionIdentifierEmailAsLink];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-link.png"] title:NSLocalizedString(@"action.emailAsLink", @"Email As Link") identifier:kActionCollectionIdentifierEmailAsLink];
 }
 
 + (ActionCollectionItem *)openInItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-openIn.png"] title:NSLocalizedString(@"action.open.in", @"Open In") identifier:kActionCollectionIdentifierOpenIn];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-open-in.png"] title:NSLocalizedString(@"action.open.in", @"Open In") identifier:kActionCollectionIdentifierOpenIn];
 }
 
 + (ActionCollectionItem *)likeItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unliked.png"] title:NSLocalizedString(@"action.like", @"Like") identifier:kActionCollectionIdentifierLike];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-like.png"] title:NSLocalizedString(@"action.like", @"Like") identifier:kActionCollectionIdentifierLike];
 }
 
 + (ActionCollectionItem *)unlikeItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-liked.png"] title:NSLocalizedString(@"action.unlike", @"Unlike") identifier:kActionCollectionIdentifierUnlike];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unlike.png"] title:NSLocalizedString(@"action.unlike", @"Unlike") identifier:kActionCollectionIdentifierUnlike];
 }
 
 + (ActionCollectionItem *)favouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavourited.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favorite.png"] title:NSLocalizedString(@"action.favourite", @"Favourite") identifier:kActionCollectionIdentifierFavourite];
 }
 
 + (ActionCollectionItem *)unfavouriteItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-favourited.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unfavorite.png"] title:NSLocalizedString(@"action.unfavourite", @"Unfavourite") identifier:kActionCollectionIdentifierUnfavourite];
 }
 
 + (ActionCollectionItem *)commentItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-comments.png"] title:NSLocalizedString(@"action.comment", @"Comment") identifier:kActionCollectionIdentifierComment];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-comment.png"] title:NSLocalizedString(@"action.comment", @"Comment") identifier:kActionCollectionIdentifierComment];
 }
 
 + (ActionCollectionItem *)editItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit-properties.png"] title:NSLocalizedString(@"action.edit", @"Edit") identifier:kActionCollectionIdentifierEdit];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit.png"] title:NSLocalizedString(@"action.edit", @"Edit") identifier:kActionCollectionIdentifierEdit];
 }
 
 + (ActionCollectionItem *)downloadItem
@@ -104,12 +104,12 @@ NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectio
 
 + (ActionCollectionItem *)renameItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit-properties.png"] title:NSLocalizedString(@"action.rename", @"Rename") identifier:kActionCollectionIdentifierRename];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit.png"] title:NSLocalizedString(@"action.rename", @"Rename") identifier:kActionCollectionIdentifierRename];
 }
 
 + (ActionCollectionItem *)subfolderItem
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-add-folder.png"] title:NSLocalizedString(@"action.subfolder", @"subfolder") identifier:kActionCollectionIdentifierCreateSubfolder];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-folder.png"] title:NSLocalizedString(@"action.subfolder", @"subfolder") identifier:kActionCollectionIdentifierCreateSubfolder];
 }
 
 + (ActionCollectionItem *)uploadItem
@@ -124,7 +124,7 @@ NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectio
 
 + (ActionCollectionItem *)uploadNewVersion
 {
-    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-review.png"] title:NSLocalizedString(@"action.new.version", @"Upload New Version") identifier:kActionCollectionIdentifierUploadNewVersion];
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-upload.png"] title:NSLocalizedString(@"action.new.version", @"Upload New Version") identifier:kActionCollectionIdentifierUploadNewVersion];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

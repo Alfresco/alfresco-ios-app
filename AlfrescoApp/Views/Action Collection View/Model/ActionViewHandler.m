@@ -70,7 +70,7 @@
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-liked.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unlike.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
     }];
@@ -83,7 +83,7 @@
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierLike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.like", @"Like Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unliked.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-like.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnlike userInfo:userInfo];
         }
     }];
@@ -96,7 +96,7 @@
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favourited.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
         }
     }];
@@ -109,7 +109,7 @@
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavourited.png"};
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-favorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
         }
     }];
@@ -321,22 +321,16 @@
     void (^displayOpenInBlock)(NSString *filePath) = ^(NSString *filePath) {
         if (filePath)
         {
-            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-            
             if (!self.documentInteractionController)
             {
-                UIDocumentInteractionController *docController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+                UIDocumentInteractionController *docController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]];
                 docController.delegate = self;
                 self.documentInteractionController = docController;
             }
             
-            BOOL canOpenIn = [self.documentInteractionController presentOpenInMenuFromRect:view.frame inView:inView animated:YES];
-            
-            if (!canOpenIn)
+            if (![self.documentInteractionController presentOpenInMenuFromRect:view.frame inView:inView animated:YES])
             {
-                NSString *cantOpenMessage = NSLocalizedString(@"document.open-in.noapps.message", @"No Apps Message");
-                NSString *cantOpenTitle = NSLocalizedString(@"document.open-in.noapps.title", @"No Apps Title");
-                displayInformationMessageWithTitle(cantOpenMessage, cantOpenTitle);
+                displayWarningMessageWithTitle(NSLocalizedString(@"document.open-in.noapps.message", @"No Apps Message"), NSLocalizedString(@"document.open-in.noapps.title", @"No Apps Title"));
             }
         }
     };
@@ -344,8 +338,8 @@
     self.documentLocation = location;
     
     AlfrescoRequest *request = nil;
-    
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
+
     if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
@@ -369,7 +363,6 @@
 - (AlfrescoRequest *)pressedEditActionItem:(ActionCollectionItem *)actionItem forDocumentWithContentPath:(NSString *)contentPath
 {
     void (^displayEditController)(NSString *filePath) = ^(NSString *filePath) {
-        
         TextFileViewController *textFileController = [[TextFileViewController alloc] initWithEditDocument:(AlfrescoDocument *)self.node contentFilePath:filePath session:self.session];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:textFileController];
         [self.controller presentViewController:navigationController animated:YES completion:nil];
