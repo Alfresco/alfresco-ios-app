@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SyncAccount" representedClassName="SyncRepository" syncable="YES">
         <attribute name="accountId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="account" inverseEntity="SyncNodeInfo" syncable="YES"/>
@@ -24,11 +24,11 @@
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncAccount" inverseName="nodes" inverseEntity="SyncAccount" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="parentNode" inverseEntity="SyncNodeInfo" syncable="YES"/>
         <relationship name="parentNode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncNodeInfo" inverseName="nodes" inverseEntity="SyncNodeInfo" syncable="YES"/>
-        <relationship name="syncError" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SyncError" inverseName="nodeInfo" inverseEntity="SyncError" syncable="YES"/>
+        <relationship name="syncError" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SyncError" inverseName="nodeInfo" inverseEntity="SyncError" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SyncAccount" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SyncError" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SyncNodeInfo" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SyncAccount" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="SyncError" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="SyncNodeInfo" positionX="0" positionY="0" width="128" height="253"/>
     </elements>
 </model>
