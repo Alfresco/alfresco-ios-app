@@ -14,6 +14,6 @@
 
 + (ConnectivityManager *)sharedManager;
 
-- (BOOL)canReachHostName:(NSString *)hostname;
+- (void)canReachHostName:(NSString *)hostname withCompletionBlock:(void(^)(BOOL isReachable))completionBlock;
 
 @end

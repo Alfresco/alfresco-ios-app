@@ -29,6 +29,7 @@
 
 #import <AlfrescoSDK/AlfrescoSDK.h>
 #import "Constants.h"
+#import "ErrorDescriptions.h"
 #import "Notifier.h"
 #import "Utility.h"
 #import "AlfrescoFileManager+Extensions.h"

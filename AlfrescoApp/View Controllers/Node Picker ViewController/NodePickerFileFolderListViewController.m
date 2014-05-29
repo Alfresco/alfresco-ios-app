@@ -30,7 +30,7 @@ static CGFloat const kCellHeight = 64.0f;
     if (self)
     {
         self.nodePicker = nodePicker;
-        self.displayFolder = folder;
+        [self setDisplayFolder:folder];
     }
     return self;
 }
@@ -113,7 +113,7 @@ static CGFloat const kCellHeight = 64.0f;
             [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
                 if (folder)
                 {
-                    self.displayFolder = folder;
+                    [self setDisplayFolder:folder];
                     self.navigationItem.title = folder.name;
                     
                     [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
