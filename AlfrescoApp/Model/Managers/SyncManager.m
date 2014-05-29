@@ -979,46 +979,56 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSOperationQueue *syncQueueForSelectedAccount = self.syncQueues[self.selectedAccountIdentifier];
     NSMutableDictionary *syncOperationsForSelectedAccount = self.syncOperations[self.selectedAccountIdentifier];
     
-    SyncOperation *downloadOperation = [[SyncOperation alloc] initWithDocumentFolderService:self.documentFolderService downloadDocument:document outputStream:outputStream downloadCompletionBlock:^(BOOL succeeded, NSError *error) {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:nil];
-        if (succeeded)
-        {
-            nodeStatus.status = SyncStatusSuccessful;
-            nodeStatus.activityType = SyncActivityTypeIdle;
-            
-            nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
-            nodeInfo.lastDownloadedDate = [NSDate date];
-            nodeInfo.syncContentPath = destinationPath;
-            nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
-            
-            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:self.selectedAccountIdentifier ifNotExistsCreateNew:NO inManagedObjectContext:nil];
-            [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-        }
-        else
-        {
-            nodeStatus.status = SyncStatusFailed;
-            nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
-            
-            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document]
-                                                                     inAccountWithId:self.selectedAccountIdentifier
-                                                                ifNotExistsCreateNew:YES
-                                                              inManagedObjectContext:nil];
-            syncError.errorCode = @(error.code);
-            syncError.errorDescription = [error localizedDescription];
-            
-            nodeInfo.syncError = syncError;
-        }
-        [syncOperationsForSelectedAccount removeObjectForKey:[self.syncHelper syncIdentifierForNode:document]];
-        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-        completionBlock(YES);
-        
-    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[self.selectedAccountIdentifier];
-        syncProgress.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
-        nodeStatus.bytesTransfered = bytesTransferred;
-        nodeStatus.totalBytesToTransfer = bytesTotal;
-    }];
-    syncOperationsForSelectedAccount[[self.syncHelper syncIdentifierForNode:document] ] = downloadOperation;
+    SyncOperation *downloadOperation = [[SyncOperation alloc] initWithDocumentFolderService:self.documentFolderService
+                                                                           downloadDocument:document outputStream:outputStream
+                                                                    downloadCompletionBlock:^(BOOL succeeded, NSError *error) {
+                                                                        
+                                                                        NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
+                                                                        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document]
+                                                                                                                                      inAccountWithId:self.selectedAccountIdentifier
+                                                                                                                               inManagedObjectContext:privateManagedObjectContext];
+                                                                        if (succeeded)
+                                                                        {
+                                                                            nodeStatus.status = SyncStatusSuccessful;
+                                                                            nodeStatus.activityType = SyncActivityTypeIdle;
+                                                                            
+                                                                            nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
+                                                                            nodeInfo.lastDownloadedDate = [NSDate date];
+                                                                            nodeInfo.syncContentPath = destinationPath;
+                                                                            nodeInfo.reloadContent = [NSNumber numberWithBool:NO];
+                                                                            
+                                                                            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document]
+                                                                                                                                     inAccountWithId:self.selectedAccountIdentifier
+                                                                                                                                ifNotExistsCreateNew:NO
+                                                                                                                              inManagedObjectContext:privateManagedObjectContext];
+                                                                            [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:privateManagedObjectContext];
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            nodeStatus.status = SyncStatusFailed;
+                                                                            nodeInfo.reloadContent = [NSNumber numberWithBool:YES];
+                                                                            
+                                                                            SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document]
+                                                                                                                                     inAccountWithId:self.selectedAccountIdentifier
+                                                                                                                                ifNotExistsCreateNew:YES
+                                                                                                                              inManagedObjectContext:privateManagedObjectContext];
+                                                                            syncError.errorCode = @(error.code);
+                                                                            syncError.errorDescription = [error localizedDescription];
+                                                                            
+                                                                            nodeInfo.syncError = syncError;
+                                                                        }
+                                                                        [self.syncCoreDataHelper saveContextForManagedObjectContext:privateManagedObjectContext];
+                                                                        [syncOperationsForSelectedAccount removeObjectForKey:[self.syncHelper syncIdentifierForNode:document]];
+                                                                        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+                                                                        completionBlock(YES);
+                                                                        
+                                                                    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                                                                        AccountSyncProgress *syncProgress = self.accountsSyncProgress[self.selectedAccountIdentifier];
+                                                                        syncProgress.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
+                                                                        nodeStatus.bytesTransfered = bytesTransferred;
+                                                                        nodeStatus.totalBytesToTransfer = bytesTotal;
+                                                                    }];
+    syncOperationsForSelectedAccount[[self.syncHelper syncIdentifierForNode:document]] = downloadOperation;
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     [syncQueueForSelectedAccount addOperation:downloadOperation];
 }
@@ -1074,9 +1084,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                               inputStream:contentStream
                                                                     uploadCompletionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
                                                                         
+                                                                        NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
                                                                         SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document]
                                                                                                                                       inAccountWithId:self.selectedAccountIdentifier
-                                                                                                                               inManagedObjectContext:nil];
+                                                                                                                               inManagedObjectContext:privateManagedObjectContext];
                                                                         if (uploadedDocument)
                                                                         {
                                                                             nodeStatus.status = SyncStatusSuccessful;
@@ -1089,8 +1100,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document]
                                                                                                                                      inAccountWithId:self.selectedAccountIdentifier
                                                                                                                                 ifNotExistsCreateNew:NO
-                                                                                                                              inManagedObjectContext:nil];
-                                                                            [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                                                                                                                              inManagedObjectContext:privateManagedObjectContext];
+                                                                            [self.syncCoreDataHelper deleteRecordForManagedObject:syncError inManagedObjectContext:privateManagedObjectContext];
                                                                         }
                                                                         else
                                                                         {
@@ -1099,13 +1110,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                             SyncError *syncError = [self.syncCoreDataHelper errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document]
                                                                                                                                      inAccountWithId:self.selectedAccountIdentifier
                                                                                                                                 ifNotExistsCreateNew:YES
-                                                                                                                              inManagedObjectContext:nil];
+                                                                                                                              inManagedObjectContext:privateManagedObjectContext];
                                                                             syncError.errorCode = @(error.code);
                                                                             syncError.errorDescription = [error localizedDescription];
                                                                             
                                                                             nodeInfo.syncError = syncError;
                                                                         }
-                                                                        
+                                                                        [self.syncCoreDataHelper saveContextForManagedObjectContext:privateManagedObjectContext];
                                                                         [syncOperationsForSelectedAccount removeObjectForKey:[self.syncHelper syncIdentifierForNode:document]];
                                                                         [self notifyProgressDelegateAboutNumberOfNodesInProgress];
                                                                         if (completionBlock != NULL)
