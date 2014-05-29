@@ -23,6 +23,7 @@
 #import "SettingsViewController.h"
 #import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
+#import "ConnectivityManager.h"
 
 #import "AvatarManager.h"
 #import "DismissCompletionProtocol.h"
@@ -487,7 +488,7 @@ static NSUInteger const kAccountsRowNumber = 0;
             [repositoryMenuItems removeObject:myFilesMenuItem];
             repositoryMenuItemsChanged = YES;
         }
-        itemIndex = [repositoryMenuItems indexOfObject:sitesMenuItem];
+        itemIndex = [repositoryMenuItems indexOfObject:myFilesMenuItem];
         nextIndex = (itemIndex != NSNotFound) ? ++itemIndex : nextIndex;
         
         // Shared Files
@@ -563,7 +564,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         }
         else
         {
-            if ([self existingMenuItemWithType:NavigationControllerTypeSites])
+            if ([[ConnectivityManager sharedManager] hasInternetConnection] && [self existingMenuItemWithType:NavigationControllerTypeSites])
             {
                 [self displayViewControllerWithType:NavigationControllerTypeSites];
                 indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];

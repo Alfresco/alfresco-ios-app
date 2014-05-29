@@ -80,19 +80,17 @@
     return isOnWifi;
 }
 
-- (BOOL)canReachHostName:(NSString *)hostname
+- (void)canReachHostName:(NSString *)hostname withCompletionBlock:(void (^)(BOOL isReachable))completionBlock
 {
-    BOOL canReach = NO;
-    
-    Reachability *reach = [Reachability reachabilityWithHostName:hostname];
-    NetworkStatus status = [reach currentReachabilityStatus];
-    
-    if (status != NotReachable)
+    if (completionBlock != NULL)
     {
-        canReach = YES;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NetworkStatus status = [[Reachability reachabilityWithHostName:hostname] currentReachabilityStatus];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(status != NotReachable);
+            });
+        });
     }
-    
-    return canReach;
 }
 
 #pragma mark - Private Functions

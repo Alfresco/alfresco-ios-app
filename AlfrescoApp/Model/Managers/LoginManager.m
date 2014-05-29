@@ -82,17 +82,23 @@
                 self.authenticationCompletionBlock(NO, nil, nil);
                 return;
             }
-            
-            
+
             [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                if (!successful && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
-                {
-                    [self displayLoginViewControllerWithAccount:account username:account.username];
-                }
-                else if (successful)
+                if (successful)
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                }
+                else
+                {
+                    if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
+                    {
+                        displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
+                    }
+                    else if (error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
+                    {
+                        [self displayLoginViewControllerWithAccount:account username:account.username];
+                    }
                 }
                 self.authenticationCompletionBlock(successful, session, error);
             }];
@@ -101,11 +107,6 @@
         {
             [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                
-                if (successful)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-                }
                 
                 if (loginCompletionBlock)
                 {
@@ -121,10 +122,8 @@
     }
     else
     {
-        NSString *messageTitle = NSLocalizedString(@"error.no.internet.access.title", @"No Internet Error Title");
-        NSString *messageBody = NSLocalizedString(@"error.no.internet.access.message", @"No Internet Error Message");
-        displayErrorMessageWithTitle(messageBody, messageTitle);
-        self.authenticationCompletionBlock(NO, nil, nil);
+        NSError *unreachableError = [NSError errorWithDomain:[NSBundle mainBundle].bundleIdentifier code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
+        self.authenticationCompletionBlock(NO, nil, unreachableError);
     }
 }
 
@@ -338,8 +337,8 @@
                               kAlfrescoClientCertificateCredentials : certificateCredential};
     }
     
-    BOOL hostIsReachable = [[ConnectivityManager sharedManager] canReachHostName:account.serverAddress];
-    if (hostIsReachable)
+    [[ConnectivityManager sharedManager] canReachHostName:account.serverAddress withCompletionBlock:^(BOOL isReachable) {
+        if (isReachable)
         {
             self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
             self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
@@ -366,14 +365,14 @@
         }
         else
         {
-        [self hideHUD];
-        AccountInfoViewController *accountViewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeLoginFailed];
-        NavigationViewController *nav = [[NavigationViewController alloc] initWithRootViewController:accountViewController];
-        [UniversalDevice displayModalViewController:nav onController:[UniversalDevice containerViewController] withCompletionBlock:^{
-            displayErrorMessageWithTitle(NSLocalizedString(@"login.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"login.host.unreachable.title", @"Connection error"));
-        }];
+            if (completionBlock != NULL)
+            {
+                NSError *unreachableError = [NSError errorWithDomain:[NSBundle mainBundle].bundleIdentifier code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
+                completionBlock(NO, nil, unreachableError);
             }
         }
+    }];
+}
 
 - (void)showHUDOnView:(UIView *)view
 {
@@ -434,13 +433,13 @@
                 self.authenticationCompletionBlock(YES, alfrescoSession, error);
             }
             [loginViewController dismissViewControllerAnimated:YES completion:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
         }
         else
         {
             [loginViewController updateUIForFailedLogin];
-            displayErrorMessage(NSLocalizedString(@"error.login.failed", @"Login Failed Message"));
+            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
     }];
 }
 

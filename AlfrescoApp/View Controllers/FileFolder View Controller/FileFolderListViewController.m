@@ -36,7 +36,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) NSString *folderDisplayName;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
-@property (nonatomic, strong) AlfrescoFolder *displayFolder;
+@property (nonatomic, strong) AlfrescoFolder *initialFolder;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
@@ -74,7 +74,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
-        self.displayFolder = folder;
+        self.initialFolder = folder;
         self.folderPermissions = permissions;
         self.folderDisplayName = (displayName) ? displayName : folder.name;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -146,6 +146,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
+    
+    if (self.initialFolder)
+    {
+        [self setDisplayFolder:self.initialFolder];
+    }
+    else
+    {
+        [self loadContentOfFolder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -422,36 +431,47 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if (!self.displayFolder)
         {
             [self showHUD];
-            [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
-                if (folder)
-                {
-                    self.displayFolder = folder;
-                    self.navigationItem.title = folder.name;
-                    [self retrieveAndSetPermissionsOfCurrentFolder];
-                    [self hidePullToRefreshView];
-                }
-                else
-                {
-                    // display error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-            }];
-        }
-        else
-        {
-            // folder permissions not set, retrieve and update the UI
-            if (!self.folderPermissions)
+            AlfrescoFolder *rootFolder = [self.session rootFolder];
+            if (rootFolder)
             {
+                [self setDisplayFolder:rootFolder];
+                self.navigationItem.title = rootFolder.name;
                 [self retrieveAndSetPermissionsOfCurrentFolder];
+                [self hidePullToRefreshView];
             }
             else
             {
-                [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+                    if (folder)
+                    {
+                        [self setDisplayFolder:folder];
+                        self.navigationItem.title = folder.name;
+                        [self retrieveAndSetPermissionsOfCurrentFolder];
+                        [self hidePullToRefreshView];
+                    }
+                    else
+                    {
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                }];
             }
-            
+        }
+        else
+        {
             [self showHUD];
             [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                // folder permissions not set, retrieve and update the UI
+                if (!self.folderPermissions)
+                {
+                    [self retrieveAndSetPermissionsOfCurrentFolder];
+                }
+                else
+                {
+                    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                }
+                
                 [self hideHUD];
                 [self hidePullToRefreshView];
                 [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -462,14 +482,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)sessionReceived:(NSNotification *)notification
 {
-    id <AlfrescoSession> session = notification.object;
+    id<AlfrescoSession> session = notification.object;
     self.session = session;
-    self.displayFolder = nil;
+    [self setDisplayFolder:nil];
     self.tableView.tableHeaderView = nil;
     
     [self createAlfrescoServicesWithSession:session];
     
-    if ([self shouldRefresh])
+    if (session && [self shouldRefresh])
     {
         [self loadContentOfFolder];
     }
@@ -803,17 +823,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        if (self.folderPermissions.canDelete)
+        AlfrescoNode *nodeToDelete = (tableView == self.searchController.searchResultsTableView) ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
+        AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
+        
+        if (permissionsForNodeToDelete.canDelete)
         {
-            AlfrescoNode *nodeToDelete = nil;
-            if (tableView == self.searchController.searchResultsTableView)
-            {
-                nodeToDelete = self.searchResults[indexPath.row];
-            }
-            else
-            {
-                nodeToDelete = self.tableViewData[indexPath.row];
-            }
             [self deleteNode:nodeToDelete completionBlock:nil];
         }
     }

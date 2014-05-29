@@ -12,9 +12,10 @@
 #import "UIView+DrawingUtils.h"
 
 static CGFloat const kSpacingBetweenSections = 8.0f;
-static CGFloat const kSpacingBetweenCells = 15.0f;
+static CGFloat const kiPadSpacingBetweenCells = 15.0f;
+static CGFloat const kiPhoneSpacingBetweenCells = 10.0f;
 static CGFloat const kiPadCellWidth = 76.0f;
-static CGFloat const kiPhoneCellWidth = 76.0f;
+static CGFloat const kiPhoneCellWidth = 60.0f;
 static CGFloat const kLineButtonPadding = 10.0f;
 static CGFloat const kLineSeparatorThickness = 1.0f;
 
@@ -80,7 +81,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     NSDictionary *metrics = @{@"kLineButtonPadding" : [NSNumber numberWithFloat:kLineButtonPadding]};
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|" options:0 metrics:nil views:viewBindings]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kLineButtonPadding-[collectionView]|" options:0 metrics:metrics views:viewBindings]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kLineButtonPadding@750-[collectionView]|" options:0 metrics:metrics views:viewBindings]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
 }
@@ -153,7 +154,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return kSpacingBetweenCells;
+    return IS_IPAD ? kiPadSpacingBetweenCells : kiPhoneSpacingBetweenCells;
 }
 
 @end

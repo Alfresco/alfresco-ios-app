@@ -112,6 +112,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
                     [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])

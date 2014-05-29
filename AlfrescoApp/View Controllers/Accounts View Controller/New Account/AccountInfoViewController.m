@@ -142,6 +142,7 @@ static NSInteger const kTagCertificateCell = 1;
             if (accountManager.totalNumberOfAddedAccounts == 0)
             {
                 [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
             }
             
             if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
@@ -456,23 +457,23 @@ static NSInteger const kTagCertificateCell = 1;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
         self.account.isSyncOn = temporaryAccount.isSyncOn;
+        // if user turned on Sync while setting up account, didAskToSync is turned ON as well so app does not ask again
+        self.account.didAskToSync = self.account.isSyncOn;
     };
     
-    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ((password == nil || [password isEqualToString:@""]))
-    {
-        updateAccountInfo(self.formBackupAccount);
-        completionBlock(YES, nil);
-    }
-    else
-    {
-        [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            [self hideHUD];
-            if (successful)
+    [self showHUD];
+    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        [self hideHUD];
+        if (successful)
+        {
+            updateAccountInfo(self.formBackupAccount);
+            completionBlock(successful, alfrescoSession);
+        }
+        else
+        {
+            if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
             {
-                updateAccountInfo(self.formBackupAccount);
-                completionBlock(successful, alfrescoSession);
+                displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
             }
             else
             {
@@ -483,8 +484,8 @@ static NSInteger const kTagCertificateCell = 1;
                                                              otherButtonTitles:nil, nil];
                 [failureAlert show];
             }
-        }];
-    }
+        }
+    }];
 }
 
 #pragma mark - UITextFieldDelegate Functions
@@ -566,17 +567,15 @@ static NSInteger const kTagCertificateCell = 1;
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     NSDictionary *info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGRect keyBoardFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    CGFloat height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
     
-    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-    
-    CGFloat height = isPortrait ? kbSize.height : kbSize.width;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
     self.tableView.contentInset = contentInsets;
     self.tableView.scrollIndicatorInsets = contentInsets;
     
     CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height -= kbSize.height;
+    tableViewFrame.size.height -= keyBoardFrame.size.height;
     self.tableViewVisibleRect = tableViewFrame;
     [self showActiveTextField];
 }
@@ -586,6 +585,17 @@ static NSInteger const kTagCertificateCell = 1;
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.tableView.contentInset = contentInsets;
     self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+- (CGFloat)calculateBottomInsetForTextViewUsingKeyboardFrame:(CGRect)keyboardFrame
+{
+    CGRect keyboardRectForView = [self.view convertRect:keyboardFrame fromView:self.view.window];
+    CGSize kbSize = keyboardRectForView.size;
+    UIView *mainAppView = [[UniversalDevice revealViewController] view];
+    CGRect viewFrame = self.view.frame;
+    CGRect viewFrameRelativeToMainController = [self.view convertRect:viewFrame toView:mainAppView];
+    
+    return (viewFrameRelativeToMainController.origin.y + viewFrame.size.height) - (mainAppView.frame.size.height - kbSize.height);
 }
 
 - (void)showActiveTextField
