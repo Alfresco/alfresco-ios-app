@@ -243,8 +243,11 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
             break;
     }
     
-    self.syncStatusImageView.image = [UIImage imageNamed:statusImageName];
-    self.syncStatusImageView.highlightedImage = [UIImage imageNamed:[statusImageName stringByAppendingString:@"-highlighted"]];
+    if (statusImageName)
+    {
+        self.syncStatusImageView.image = [UIImage imageNamed:statusImageName];
+        self.syncStatusImageView.highlightedImage = [UIImage imageNamed:[statusImageName stringByAppendingString:@"-highlighted"]];
+    }
 }
 
 - (void)setAccessoryViewForState:(SyncStatus)status
