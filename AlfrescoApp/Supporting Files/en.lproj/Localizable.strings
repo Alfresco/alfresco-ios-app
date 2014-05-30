@@ -683,5 +683,10 @@
 "new.version.upload.successful.message" = "A new version of %@ has been successfully uploaded";
 
 /**
+ * File Preview Controller
+ */
+"file.preview.loading.document.from.file" = "Loading Document";
+
+/**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */

@@ -15,6 +15,7 @@
 #import "NavigationViewController.h"
 #import "DocumentPreviewManager.h"
 #import "FullScreenAnimationController.h"
+#import "MBProgressHUD.h"
 
 static CGFloat const kAnimationSpeed = 0.2f;
 static CGFloat const kAnimationFadeSpeed = 0.5f;
@@ -45,6 +46,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 @property (nonatomic, weak) IBOutlet UIProgressView *downloadProgressView;
 @property (nonatomic, weak) IBOutlet UIView *downloadProgressContainer;
 @property (nonatomic, weak) IBOutlet UIView *moviePlayerContainer;
+// Views
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @property (nonatomic, strong) UIGestureRecognizer *previewThumbnailSingleTapRecognizer;
 
@@ -140,6 +143,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 - (void)refreshViewController
 {
     self.downloadProgressView.progress = 0.0f;
+    
+    [self hideLoadingProgressHUD];
     
     if (self.shouldLoadFromFileAndRunCompletionBlock)
     {
@@ -397,8 +402,25 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     }
     else
     {
+        [self showLoadingProgressHUDAfterDelayInSeconds:1];
         [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePathToDisplay]]];
     }
+}
+
+- (void)showLoadingProgressHUDAfterDelayInSeconds:(float)seconds
+{
+    self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"file.preview.loading.document.from.file", @"Loading Document");
+    [self.view addSubview:self.progressHUD];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.progressHUD show:YES];
+    });
+}
+
+- (void)hideLoadingProgressHUD
+{
+    [self.progressHUD hide:YES];
+    self.progressHUD = nil;
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks
@@ -477,6 +499,11 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self showWebViewAnimated:YES];
     }
     
+    if (self.progressHUD)
+    {
+        [self hideLoadingProgressHUD];
+    }
+    
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(webView, YES);
@@ -487,6 +514,11 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 {
     [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
     self.previewThumbnailImageView.alpha = 1.0f;
+    
+    if (self.progressHUD)
+    {
+        [self hideLoadingProgressHUD];
+    }
 
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
