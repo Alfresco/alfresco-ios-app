@@ -388,7 +388,7 @@
 /**
  * Downloads Document Preview Controller
  */
-"document.segment.repository.metadata.title" = "Repository Properties";
+"document.segment.repository.metadata.title" = "Original Properties";
 
 /**
  * Document Preview Controller
