@@ -197,10 +197,14 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
                     [progressHUD show:YES];
                     [[LoginManager sharedManager] authenticateOnPremiseAccount:selectedAccount password:selectedAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                         [progressHUD hide:YES];
-                        if (successful && alfrescoSession)
+                        if (successful)
                         {
                             [self displayNodePickerWithSession:alfrescoSession navigationContoller:self.navigationController];
                             self.session = alfrescoSession;
+                        }
+                        else
+                        {
+                            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
                         }
                     }];
                 }
@@ -229,10 +233,14 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
     [progressHUD show:YES];
     [[LoginManager sharedManager] authenticateOnPremiseAccount:account password:password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         [progressHUD hide:YES];
-        if (successful && alfrescoSession)
+        if (successful)
         {
             [self displayNodePickerWithSession:alfrescoSession navigationContoller:self.navigationController];
             self.session = alfrescoSession;
+        }
+        else
+        {
+            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
         }
     }];
 }

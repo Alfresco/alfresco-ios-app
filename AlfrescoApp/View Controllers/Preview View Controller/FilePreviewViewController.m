@@ -15,9 +15,11 @@
 #import "NavigationViewController.h"
 #import "DocumentPreviewManager.h"
 #import "FullScreenAnimationController.h"
+#import "MBProgressHUD.h"
 
 static CGFloat const kAnimationSpeed = 0.2f;
 static CGFloat const kAnimationFadeSpeed = 0.5f;
+static float const kLoadingProgressGraceTimerSeconds = 1;
 static CGFloat downloadProgressHeight;
 static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
@@ -45,6 +47,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 @property (nonatomic, weak) IBOutlet UIProgressView *downloadProgressView;
 @property (nonatomic, weak) IBOutlet UIView *downloadProgressContainer;
 @property (nonatomic, weak) IBOutlet UIView *moviePlayerContainer;
+// Views
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @property (nonatomic, strong) UIGestureRecognizer *previewThumbnailSingleTapRecognizer;
 
@@ -125,7 +129,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     [self.downloadRequest cancel];
     [self hideProgressViewAnimated:YES];
     self.downloadProgressView.progress = 0.0f;
-
+    
     // Add single tap "re-download" action to thumbnail view
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleThumbnailSingleTap:)];
     singleTap.numberOfTapsRequired = 1;
@@ -140,6 +144,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 - (void)refreshViewController
 {
     self.downloadProgressView.progress = 0.0f;
+    
+    [self hideLoadingProgressHUD];
     
     if (self.shouldLoadFromFileAndRunCompletionBlock)
     {
@@ -214,7 +220,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     // Restart the document download
     self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-
+    
 }
 
 - (void)handleWebViewSingleTap:(UIGestureRecognizer *)gesture
@@ -397,7 +403,31 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     }
     else
     {
+        [self showLoadingProgressHUDAfterDelayInSeconds:kLoadingProgressGraceTimerSeconds];
         [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePathToDisplay]]];
+    }
+}
+
+- (void)showLoadingProgressHUDAfterDelayInSeconds:(float)seconds
+{
+    if (!self.progressHUD)
+    {
+        self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.progressHUD.graceTime = seconds;
+        self.progressHUD.detailsLabelText = NSLocalizedString(@"file.preview.loading.document.from.file", @"Loading Document");
+        [self.view addSubview:self.progressHUD];
+    }
+    
+    self.progressHUD.taskInProgress = YES;
+    [self.progressHUD show:YES];
+}
+
+- (void)hideLoadingProgressHUD
+{
+    if (self.progressHUD)
+    {
+        self.progressHUD.taskInProgress = NO;
+        [self.progressHUD hide:YES];
     }
 }
 
@@ -477,6 +507,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self showWebViewAnimated:YES];
     }
     
+    [self hideLoadingProgressHUD];
+    
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(webView, YES);
@@ -487,7 +519,9 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 {
     [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
     self.previewThumbnailImageView.alpha = 1.0f;
-
+    
+    [self hideLoadingProgressHUD];
+    
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(nil, NO);

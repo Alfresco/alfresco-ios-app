@@ -142,6 +142,7 @@ static NSInteger const kTagCertificateCell = 1;
             if (accountManager.totalNumberOfAddedAccounts == 0)
             {
                 [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
             }
             
             if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
@@ -463,21 +464,19 @@ static NSInteger const kTagCertificateCell = 1;
         }
     };
     
-    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ((password == nil || [password isEqualToString:@""]))
-    {
-        updateAccountInfo(self.formBackupAccount);
-        completionBlock(YES, nil);
-    }
-    else
-    {
-        [self showHUD];
-        [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            [self hideHUD];
-            if (successful)
+    [self showHUD];
+    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        [self hideHUD];
+        if (successful)
+        {
+            updateAccountInfo(self.formBackupAccount);
+            completionBlock(successful, alfrescoSession);
+        }
+        else
+        {
+            if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
             {
-                updateAccountInfo(self.formBackupAccount);
-                completionBlock(successful, alfrescoSession);
+                displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
             }
             else
             {
@@ -488,8 +487,8 @@ static NSInteger const kTagCertificateCell = 1;
                                                              otherButtonTitles:nil, nil];
                 [failureAlert show];
             }
-        }];
-    }
+        }
+    }];
 }
 
 #pragma mark - UITextFieldDelegate Functions
