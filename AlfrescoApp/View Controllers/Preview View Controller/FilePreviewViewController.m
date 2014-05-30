@@ -15,15 +15,16 @@
 #import "NavigationViewController.h"
 #import "DocumentPreviewManager.h"
 #import "FullScreenAnimationController.h"
-#import "MBProgressHUD.h"
+#import "ALFPreviewController.h"
 
-static CGFloat const kAnimationSpeed = 0.2f;
 static CGFloat const kAnimationFadeSpeed = 0.5f;
-static float const kLoadingProgressGraceTimerSeconds = 1;
-static CGFloat downloadProgressHeight;
+static CGFloat const kAnimationDelayTime = 1.0f;
 static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
+static CGFloat sDownloadProgressHeight;
 
-@interface FilePreviewViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate>
+@interface FilePreviewViewController () <ALFPreviewControllerDelegate,
+                                         QLPreviewControllerDataSource,
+                                         UIViewControllerTransitioningDelegate>
 
 // Constraints
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightForDownloadContainer;
@@ -36,19 +37,16 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 @property (nonatomic, strong) MPMoviePlayerController *mediaPlayerController;
 @property (nonatomic, strong) FullScreenAnimationController *animationController;
 // Used for the file path initialiser
-@property (nonatomic, assign) BOOL shouldLoadFromFileAndRunCompletionBlock;
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
-@property (nonatomic, copy) void (^loadingCompleteBlock)(UIWebView *webView, BOOL loadedIntoWebView);
 @property (nonatomic, assign) BOOL fullScreenMode;
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *previewThumbnailImageView;
-@property (nonatomic, weak) IBOutlet UIWebView *webView;
 @property (nonatomic, weak) IBOutlet UIProgressView *downloadProgressView;
 @property (nonatomic, weak) IBOutlet UIView *downloadProgressContainer;
 @property (nonatomic, weak) IBOutlet UIView *moviePlayerContainer;
 // Views
-@property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) ALFPreviewController *previewController;
 
 @property (nonatomic, strong) UIGestureRecognizer *previewThumbnailSingleTapRecognizer;
 
@@ -61,6 +59,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     self = [super init];
     if (self)
     {
+        self.animationController = [FullScreenAnimationController new];
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadStarting:) name:kDocumentPreviewManagerWillStartDownloadNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadProgress:) name:kDocumentPreviewManagerProgressNotification object:nil];
@@ -77,20 +77,17 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     {
         self.document = document;
         self.session = session;
-        self.animationController = [[FullScreenAnimationController alloc] init];
     }
     return self;
 }
 
-- (instancetype)initWithFilePath:(NSString *)filePath document:(AlfrescoDocument *)document loadingCompletionBlock:(void (^)(UIWebView *, BOOL))loadingCompleteBlock
+- (instancetype)initWithFilePath:(NSString *)filePath document:(AlfrescoDocument *)document
 {
     self = [self init];
     if (self)
     {
         self.filePathForFileToLoad = filePath;
         self.document = document;
-        self.animationController = [[FullScreenAnimationController alloc] init];
-        self.loadingCompleteBlock = loadingCompleteBlock;
     }
     return self;
 }
@@ -104,10 +101,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 {
     [super viewDidLoad];
     
-    [self configureWebView];
-    [self configureMediaPlayer];
-    
-    downloadProgressHeight = self.heightForDownloadContainer.constant;
+    sDownloadProgressHeight = self.heightForDownloadContainer.constant;
     
     [self refreshViewController];
 }
@@ -145,73 +139,22 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 {
     self.downloadProgressView.progress = 0.0f;
     
-    [self hideLoadingProgressHUD];
-    
-    if (self.shouldLoadFromFileAndRunCompletionBlock)
+    if (self.filePathForFileToLoad)
     {
         [self displayFileAtPath:self.filePathForFileToLoad];
     }
+    else if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:self.document])
+    {
+        [self displayFileAtPath:[[DocumentPreviewManager sharedManager] filePathForDocument:self.document]];
+    }
     else
     {
-        if ([[DocumentPreviewManager sharedManager] hasLocalContentOfDocument:self.document])
-        {
-            NSString *filePathToLoad = [[DocumentPreviewManager sharedManager] filePathForDocument:self.document];
-            [self displayFileAtPath:filePathToLoad];
-        }
-        else
-        {
-            // Display a static placeholder image
-            [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
-            
-            // request the document download
-            self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-        }
+        // Display a static placeholder image
+        [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
+        
+        // Request the document download
+        self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
     }
-}
-
-- (void)configureWebView
-{
-    self.webView.scalesPageToFit = YES;
-    self.webView.opaque = NO;
-    self.webView.backgroundColor = [UIColor whiteColor];
-    
-    // Tap gestures
-    // Single
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleWebViewSingleTap:)];
-    singleTap.numberOfTapsRequired = 1;
-    singleTap.numberOfTouchesRequired = 1;
-    singleTap.delegate = self;
-    [self.webView addGestureRecognizer:singleTap];
-    // Double
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleWebViewDoubleTap:)];
-    doubleTap.numberOfTapsRequired = 2;
-    doubleTap.numberOfTouchesRequired = 1;
-    doubleTap.delegate = self;
-    [self.webView addGestureRecognizer:doubleTap];
-}
-
-- (void)configureMediaPlayer
-{
-    MPMoviePlayerController *mediaPlayer = [[MPMoviePlayerController alloc] init];
-    mediaPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
-    mediaPlayer.view.backgroundColor = [UIColor clearColor];
-    mediaPlayer.controlStyle = MPMovieControlStyleDefault;
-    mediaPlayer.allowsAirPlay = YES;
-    mediaPlayer.shouldAutoplay = NO;
-    [mediaPlayer prepareToPlay];
-    [self.moviePlayerContainer addSubview:mediaPlayer.view];
-    
-    // constraints
-    NSDictionary *views = @{@"moviePlayerView" : mediaPlayer.view};
-    [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[moviePlayerView]|"
-                                                                                      options:NSLayoutFormatAlignAllBaseline
-                                                                                      metrics:nil
-                                                                                        views:views]];
-    [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[moviePlayerView]|"
-                                                                                      options:NSLayoutFormatAlignAllCenterX
-                                                                                      metrics:nil
-                                                                                        views:views]];
-    self.mediaPlayerController = mediaPlayer;
 }
 
 - (void)handleThumbnailSingleTap:(UIGestureRecognizer *)gesture
@@ -223,99 +166,93 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
 }
 
-- (void)handleWebViewSingleTap:(UIGestureRecognizer *)gesture
-{
-    if (self.presentingViewController)
-    {
-        if (self.navigationController.navigationBarHidden)
-        {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-        }
-        else
-        {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-        }
-    }
-}
-
-- (void)handleWebViewDoubleTap:(UIGestureRecognizer *)gesture
-{
-    if (!self.presentingViewController)
-    {
-        FilePreviewViewController *presentationViewController = nil;
-        
-        if (!self.shouldLoadFromFileAndRunCompletionBlock)
-        {
-            presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
-        }
-        else
-        {
-            presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil loadingCompletionBlock:nil];
-        }
-        presentationViewController.fullScreenMode = YES;
-        presentationViewController.useControllersPreferStatusBarHidden = YES;
-        NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
-        
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
-                                                                       style:UIBarButtonItemStyleDone
-                                                                      target:self
-                                                                      action:@selector(dismiss:)];
-        [presentationViewController.navigationItem setRightBarButtonItem:doneButton];
-        presentationViewController.title = (self.document) ? self.document.name : self.filePathForFileToLoad.lastPathComponent;
-        
-        navigationPresentationViewController.transitioningDelegate  = self;
-        navigationPresentationViewController.modalPresentationStyle = UIModalPresentationCustom;
-        
-        [self presentViewController:navigationPresentationViewController animated:YES completion:^{
-            [presentationViewController.navigationController setNavigationBarHidden:YES animated:YES];
-        }];
-    }
-}
-
 - (void)dismiss:(UIBarButtonItem *)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)showWebViewAnimated:(BOOL)animated
+/**
+ * Create or destroy an ALFPreviewController
+ */
+
+- (void)createPreviewerForFilePath:(NSString *)filePath animated:(BOOL)animated
 {
+    self.filePathForFileToLoad = filePath;
+
+    ALFPreviewController *previewController = [ALFPreviewController new];
+    previewController.dataSource = self;
+    previewController.gestureDelegate = self;
+    previewController.view.frame = self.view.frame;
+    previewController.view.hidden = YES;
+    previewController.currentPreviewItemIndex = 1;
+    
+    [self.view addSubview:previewController.view];
+    self.previewController = previewController;
+    
     if (animated)
     {
-        self.webView.alpha = 0.0f;
-        self.webView.hidden = NO;
+        previewController.view.alpha = 0.0f;
+        previewController.view.hidden = NO;
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.previewThumbnailImageView.alpha = 0.0f;
-            self.webView.alpha = 1.0f;
+            previewController.view.alpha = 1.0f;
         }];
     }
     else
     {
-        self.webView.hidden = NO;
+        previewController.view.hidden = NO;
+        previewController.view.alpha = 1.0;
     }
 }
 
-- (void)hideWebViewAnimated:(BOOL)animated
+- (void)destroyPreviewerAnimated:(BOOL)animated
 {
     if (animated)
     {
-        self.webView.hidden = YES;
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
-            self.previewThumbnailImageView.alpha = 0.0f;
-            self.webView.alpha = 0.0f;
+            self.previewController.view.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [self.previewController.view removeFromSuperview];
+            self.previewController = nil;
         }];
     }
     else
     {
-        self.webView.hidden = YES;
+        [self.previewController.view removeFromSuperview];
+        self.previewController = nil;
     }
 }
 
-- (void)showMediaPlayerAnimated:(BOOL)animated
+/**
+ * Create or destroy an MPMoviePlayerController
+ */
+
+- (void)createMediaPlayerForFilePath:(NSString *)filePath animated:(BOOL)animated
 {
+    self.moviePlayerContainer.hidden = YES;
+    
+    MPMoviePlayerController *mediaPlayer = [MPMoviePlayerController new];
+    mediaPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
+    mediaPlayer.view.backgroundColor = [UIColor clearColor];
+    mediaPlayer.controlStyle = MPMovieControlStyleDefault;
+    mediaPlayer.allowsAirPlay = YES;
+    mediaPlayer.shouldAutoplay = NO;
+    
+    [self.moviePlayerContainer addSubview:mediaPlayer.view];
+    self.mediaPlayerController = mediaPlayer;
+    
+    NSDictionary *views = @{@"moviePlayerView" : mediaPlayer.view};
+    [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[moviePlayerView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
+    [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[moviePlayerView]|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
+
+    self.mediaPlayerController.contentURL = [NSURL fileURLWithPath:filePath];
+    [self.mediaPlayerController prepareToPlay];
+    
     if (animated)
     {
         self.moviePlayerContainer.alpha = 0.0f;
         self.moviePlayerContainer.hidden = NO;
+
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.previewThumbnailImageView.alpha = 0.0f;
             self.moviePlayerContainer.alpha = 1.0f;
@@ -323,23 +260,27 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     }
     else
     {
+        self.previewThumbnailImageView.alpha = 0.0f;
         self.moviePlayerContainer.hidden = NO;
+        self.moviePlayerContainer.alpha = 1.0f;
     }
 }
 
-- (void)hideMediaPlayerAnimated:(BOOL)animated
+- (void)destroyMediaPlayerAnimated:(BOOL)animated
 {
     if (animated)
     {
-        self.moviePlayerContainer.hidden = YES;
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
-            self.previewThumbnailImageView.alpha = 0.0f;
             self.moviePlayerContainer.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [self.mediaPlayerController.view removeFromSuperview];
+            self.mediaPlayerController = nil;
         }];
     }
     else
     {
-        self.moviePlayerContainer.hidden = YES;
+        [self.mediaPlayerController.view removeFromSuperview];
+        self.mediaPlayerController = nil;
     }
 }
 
@@ -355,38 +296,49 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
 - (void)showProgressViewAnimated:(BOOL)animated
 {
+    NSLog(@"1 %@ %@", [self class], NSStringFromSelector(_cmd));
     if (animated)
     {
         [self.downloadProgressContainer layoutIfNeeded];
-        [UIView animateWithDuration:kAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            self.heightForDownloadContainer.constant = downloadProgressHeight;
+        [UIView animateWithDuration:kAnimationFadeSpeed delay:kAnimationDelayTime options:0 animations:^{
+            self.heightForDownloadContainer.constant = sDownloadProgressHeight;
             self.centerYAlignmentForProgressContainer.constant = (self.previewThumbnailImageView.image.size.height / 2) + kPlaceholderToProcessVerticalOffset;
+            self.downloadProgressContainer.hidden = NO;
             [self.downloadProgressContainer layoutIfNeeded];
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            NSLog(@"2 %@ %@", [self class], NSStringFromSelector(_cmd));
+        }];
     }
     else
     {
-        self.heightForDownloadContainer.constant = downloadProgressHeight;
+        self.heightForDownloadContainer.constant = sDownloadProgressHeight;
         self.centerYAlignmentForProgressContainer.constant = (self.previewThumbnailImageView.image.size.height / 2) + kPlaceholderToProcessVerticalOffset;
+        self.downloadProgressContainer.hidden = NO;
+        [self.downloadProgressContainer layoutIfNeeded];
     }
-    self.downloadProgressContainer.hidden = NO;
 }
 
 - (void)hideProgressViewAnimated:(BOOL)animated
 {
+    NSLog(@"1 %@ %@", [self class], NSStringFromSelector(_cmd));
+    
     if (animated)
     {
         [self.downloadProgressContainer layoutIfNeeded];
-        [UIView animateWithDuration:kAnimationSpeed delay:0.5f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.heightForDownloadContainer.constant = 0;
             [self.downloadProgressContainer layoutIfNeeded];
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            NSLog(@"2 %@ %@", [self class], NSStringFromSelector(_cmd));
+            self.downloadProgressContainer.hidden = YES;
+        }];
     }
     else
     {
         self.heightForDownloadContainer.constant = 0;
+        [self.downloadProgressContainer layoutIfNeeded];
+        self.downloadProgressContainer.hidden = YES;
     }
-    self.downloadProgressContainer.hidden = YES;
 }
 
 - (void)displayFileAtPath:(NSString *)filePathToDisplay
@@ -395,39 +347,11 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     if ([Utility isAudioOrVideo:filePathToDisplay])
     {
-        self.mediaPlayerController.contentURL = [NSURL fileURLWithPath:filePathToDisplay];
-        
-        [self.mediaPlayerController prepareToPlay];
-        
-        [self showMediaPlayerAnimated:YES];
+        [self createMediaPlayerForFilePath:filePathToDisplay animated:YES];
     }
     else
     {
-        [self showLoadingProgressHUDAfterDelayInSeconds:kLoadingProgressGraceTimerSeconds];
-        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePathToDisplay]]];
-    }
-}
-
-- (void)showLoadingProgressHUDAfterDelayInSeconds:(float)seconds
-{
-    if (!self.progressHUD)
-    {
-        self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-        self.progressHUD.graceTime = seconds;
-        self.progressHUD.detailsLabelText = NSLocalizedString(@"file.preview.loading.document.from.file", @"Loading Document");
-        [self.view addSubview:self.progressHUD];
-    }
-    
-    self.progressHUD.taskInProgress = YES;
-    [self.progressHUD show:YES];
-}
-
-- (void)hideLoadingProgressHUD
-{
-    if (self.progressHUD)
-    {
-        self.progressHUD.taskInProgress = NO;
-        [self.progressHUD hide:YES];
+        [self createPreviewerForFilePath:filePathToDisplay animated:YES];
     }
 }
 
@@ -482,7 +406,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     if ([nodeRefUpdated isEqualToString:self.document.identifier] || self.document == nil)
     {
-        [self.webView reload];
+        [self.previewController reloadData];
     }
 }
 
@@ -491,48 +415,6 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 - (void)editingDocumentCompleted:(NSNotification *)notification
 {
     [self refreshViewController];
-}
-
-#pragma mark - UIWebViewDelegate Functions
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    if (!self.downloadProgressContainer.hidden)
-    {
-        [self hideProgressViewAnimated:YES];
-    }
-    
-    if (self.webView.hidden)
-    {
-        [self showWebViewAnimated:YES];
-    }
-    
-    [self hideLoadingProgressHUD];
-    
-    if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
-    {
-        self.loadingCompleteBlock(webView, YES);
-    }
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
-    self.previewThumbnailImageView.alpha = 1.0f;
-    
-    [self hideLoadingProgressHUD];
-    
-    if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
-    {
-        self.loadingCompleteBlock(nil, NO);
-    }
-}
-
-#pragma mark - UIGestureRecognizerDelegate Functions
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
 }
 
 #pragma mark - UIViewControllerAnimatedTransitioning Functions
@@ -557,11 +439,61 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     self.filePathForFileToLoad = contentFilePath;
     self.session = session;
     
-    [self hideWebViewAnimated:NO];
-    [self hideMediaPlayerAnimated:NO];
-    [self showProgressViewAnimated:NO];
+    [self destroyPreviewerAnimated:NO];
+    [self destroyMediaPlayerAnimated:NO];
+    [self showProgressViewAnimated:YES];
     
     [self refreshViewController];
+}
+
+#pragma mark - QLPreviewControllerDataSource
+
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller
+{
+    return 1;
+}
+
+- (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
+{
+    return [NSURL fileURLWithPath:self.filePathForFileToLoad];
+}
+
+#pragma mark - ALFPreviewControllerDelegate
+
+- (void)previewControllerWasTapped:(ALFPreviewController *)controller
+{
+    if (self.presentingViewController)
+    {
+        if (self.navigationController.navigationBarHidden)
+        {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+        }
+        else
+        {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+        }
+    }
+    else
+    {
+        FilePreviewViewController *presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+        presentationViewController.fullScreenMode = YES;
+        presentationViewController.useControllersPreferStatusBarHidden = YES;
+        NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
+        
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(dismiss:)];
+        [presentationViewController.navigationItem setRightBarButtonItem:doneButton];
+        presentationViewController.title = (self.document) ? self.document.name : self.filePathForFileToLoad.lastPathComponent;
+        
+        navigationPresentationViewController.transitioningDelegate  = self;
+        navigationPresentationViewController.modalPresentationStyle = UIModalPresentationCustom;
+        
+        [self presentViewController:navigationPresentationViewController animated:YES completion:^{
+            [presentationViewController.navigationController setNavigationBarHidden:YES animated:YES];
+        }];
+    }
 }
 
 @end

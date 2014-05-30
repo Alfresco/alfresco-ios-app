@@ -84,7 +84,7 @@
     [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
     [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
     
-    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:nil loadingCompletionBlock:nil];
+    FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document];
     [self.pagingControllers insertObject:filePreviewController atIndex:PagingScrollViewSegmentTypeFilePreview];
     MetaDataViewController *metadataViewController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:nil];
     [self.pagingControllers insertObject:metadataViewController atIndex:PagingScrollViewSegmentTypeMetadata];

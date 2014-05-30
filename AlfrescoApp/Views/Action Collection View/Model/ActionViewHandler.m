@@ -273,16 +273,7 @@
             }
             else
             {
-                FilePreviewViewController *hiddenPreviewController = [[FilePreviewViewController alloc] initWithFilePath:filePath document:nil loadingCompletionBlock:^(UIWebView *webView, BOOL loadedIntoWebView) {
-                    if (loadedIntoWebView)
-                    {
-                        printBlock(webView);
-                    }
-                }];
-                hiddenPreviewController.view.hidden = YES;
-                [self.controller addChildViewController:hiddenPreviewController];
-                [self.controller.view addSubview:hiddenPreviewController.view];
-                [hiddenPreviewController didMoveToParentViewController:self.controller];
+                displayWarningMessageWithTitle(NSLocalizedString(@"error.print.failed.message", @"Print failed"), NSLocalizedString(@"action.print", @"Print"));
             }
         }
     };

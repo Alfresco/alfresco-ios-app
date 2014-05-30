@@ -92,7 +92,7 @@
     FilePreviewViewController *filePreviewController = nil;
     if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
     {
-        filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document loadingCompletionBlock:nil];
+        filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document];
     }
     else
     {
