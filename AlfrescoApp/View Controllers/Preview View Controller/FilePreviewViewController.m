@@ -19,6 +19,7 @@
 
 static CGFloat const kAnimationSpeed = 0.2f;
 static CGFloat const kAnimationFadeSpeed = 0.5f;
+static float const kLoadingProgressGraceTimerSeconds = 1;
 static CGFloat downloadProgressHeight;
 static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 
@@ -128,7 +129,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     [self.downloadRequest cancel];
     [self hideProgressViewAnimated:YES];
     self.downloadProgressView.progress = 0.0f;
-
+    
     // Add single tap "re-download" action to thumbnail view
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleThumbnailSingleTap:)];
     singleTap.numberOfTapsRequired = 1;
@@ -219,7 +220,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     
     // Restart the document download
     self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
-
+    
 }
 
 - (void)handleWebViewSingleTap:(UIGestureRecognizer *)gesture
@@ -402,25 +403,32 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     }
     else
     {
-        [self showLoadingProgressHUDAfterDelayInSeconds:1];
+        [self showLoadingProgressHUDAfterDelayInSeconds:kLoadingProgressGraceTimerSeconds];
         [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePathToDisplay]]];
     }
 }
 
 - (void)showLoadingProgressHUDAfterDelayInSeconds:(float)seconds
 {
-    self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    self.progressHUD.detailsLabelText = NSLocalizedString(@"file.preview.loading.document.from.file", @"Loading Document");
-    [self.view addSubview:self.progressHUD];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.progressHUD show:YES];
-    });
+    if (!self.progressHUD)
+    {
+        self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.progressHUD.graceTime = seconds;
+        self.progressHUD.detailsLabelText = NSLocalizedString(@"file.preview.loading.document.from.file", @"Loading Document");
+        [self.view addSubview:self.progressHUD];
+    }
+    
+    self.progressHUD.taskInProgress = YES;
+    [self.progressHUD show:YES];
 }
 
 - (void)hideLoadingProgressHUD
 {
-    [self.progressHUD hide:YES];
-    self.progressHUD = nil;
+    if (self.progressHUD)
+    {
+        self.progressHUD.taskInProgress = NO;
+        [self.progressHUD hide:YES];
+    }
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks
@@ -499,10 +507,7 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
         [self showWebViewAnimated:YES];
     }
     
-    if (self.progressHUD)
-    {
-        [self hideLoadingProgressHUD];
-    }
+    [self hideLoadingProgressHUD];
     
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
@@ -515,11 +520,8 @@ static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
     [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
     self.previewThumbnailImageView.alpha = 1.0f;
     
-    if (self.progressHUD)
-    {
-        [self hideLoadingProgressHUD];
-    }
-
+    [self hideLoadingProgressHUD];
+    
     if (self.shouldLoadFromFileAndRunCompletionBlock && self.loadingCompleteBlock != NULL)
     {
         self.loadingCompleteBlock(nil, NO);

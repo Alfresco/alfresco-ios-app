@@ -672,7 +672,7 @@
 /**
  * New Version View Controller
  */
-"new.version.title" = "Update Document";
+"new.version.title" = "Update File";
 "new.version.upload" = "Upload";
 "new.version.file.title" = "New Version";
 "new.version.file.placeholder" = "No File Selected";
@@ -685,7 +685,7 @@
 /**
  * File Preview Controller
  */
-"file.preview.loading.document.from.file" = "Loading Document";
+"file.preview.loading.document.from.file" = "Loading File";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
