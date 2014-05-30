@@ -672,7 +672,7 @@
 /**
  * New Version View Controller
  */
-"new.version.title" = "Update Document";
+"new.version.title" = "Update File";
 "new.version.upload" = "Upload";
 "new.version.file.title" = "New Version";
 "new.version.file.placeholder" = "No File Selected";
@@ -681,6 +681,11 @@
 "new.version.commet.placeholder" = "Version Comments (optional)";
 "new.version.upload.successful.title" = "New Version Updated";
 "new.version.upload.successful.message" = "A new version of %@ has been successfully uploaded";
+
+/**
+ * File Preview Controller
+ */
+"file.preview.loading.document.from.file" = "Loading File";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
