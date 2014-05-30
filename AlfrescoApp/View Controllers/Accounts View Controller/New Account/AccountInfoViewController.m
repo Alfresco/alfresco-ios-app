@@ -458,7 +458,10 @@ static NSInteger const kTagCertificateCell = 1;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
         self.account.isSyncOn = temporaryAccount.isSyncOn;
         // if user turned on Sync while setting up account, didAskToSync is turned ON as well so app does not ask again
-        self.account.didAskToSync = self.account.isSyncOn;
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
+        }
     };
     
     [self showHUD];

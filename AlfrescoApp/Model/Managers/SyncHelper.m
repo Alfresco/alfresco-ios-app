@@ -326,6 +326,10 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
         {
             SyncNodeStatus *nodeStatus = nodeStatuses[nodeInfo.syncNodeInfoId];
             nodeStatus.status = SyncStatusRemoved;
+            if (nodeInfo.isFolder)
+            {
+                nodeStatus.totalSize = 0;
+            }
             [self.syncCoreDataHelper deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
         }
     }
