@@ -91,11 +91,7 @@
                 }
                 else
                 {
-                    if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
-                    {
-                        displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
-                    }
-                    else if (error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
+                    if (error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
                     {
                         [self displayLoginViewControllerWithAccount:account username:account.username];
                     }
@@ -122,7 +118,7 @@
     }
     else
     {
-        NSError *unreachableError = [NSError errorWithDomain:[NSBundle mainBundle].bundleIdentifier code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
+        NSError *unreachableError = [NSError errorWithDomain:kAlfrescoErrorDomainName code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
         self.authenticationCompletionBlock(NO, nil, unreachableError);
     }
 }
@@ -367,7 +363,7 @@
         {
             if (completionBlock != NULL)
             {
-                NSError *unreachableError = [NSError errorWithDomain:[NSBundle mainBundle].bundleIdentifier code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
+                NSError *unreachableError = [NSError errorWithDomain:kAlfrescoErrorDomainName code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
                 completionBlock(NO, nil, unreachableError);
             }
         }

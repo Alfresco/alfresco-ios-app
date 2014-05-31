@@ -120,6 +120,7 @@
 "error.version.history.unable.to.retrieve" = "Unable to retrieve version history. Error: %@";
 "error.version.history.no.latest.version" = "Latest version of the file could not be found.";
 "error.alfresco.node.notfound" = "File not found";
+"error.print.failed.message" = "Printing this file is not supported";
 // Internet connection error
 "error.no.internet.access.title" = "A connection couldn't be made";
 "error.no.internet.access.message" = "Check that you're connected to the internet and try again. You can still access your downloaded files without having a connection.";
@@ -387,7 +388,7 @@
 /**
  * Downloads Document Preview Controller
  */
-"document.segment.repository.metadata.title" = "Repository Properties";
+"document.segment.repository.metadata.title" = "Original Properties";
 
 /**
  * Document Preview Controller

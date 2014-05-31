@@ -27,6 +27,7 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) NSString *filePath;
 @property (nonatomic, strong) NSArray *accountList;
+@property (nonatomic, strong) NSMutableArray *accountListIndexPaths;
 @property (nonatomic, strong) NodePicker *nodePicker;
 @property (nonatomic, assign) NSUInteger numberOfAccountRows;
 
@@ -58,6 +59,7 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellIdentifier];
     
     self.accountList = [[AccountManager sharedManager] allAccounts];
+    self.accountListIndexPaths = [NSMutableArray array];
     self.numberOfAccountRows = [self numberOfAccountSectionRows];
 }
 
@@ -70,16 +72,26 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
 
 - (NSUInteger)numberOfAccountSectionRows
 {
-    NSArray *cloudAccounts = [self.accountList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.accountType == %i", UserAccountTypeCloud]];
-    NSArray *onPremiseAccounts = [self.accountList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.accountType == %i", UserAccountTypeOnPremise]];
+    NSUInteger accountIndex = 0;
     
-    int totalTenants = 0;
-    for (UserAccount *account in cloudAccounts)
+    for (UserAccount *account in self.accountList)
     {
-        totalTenants += account.accountNetworks.count;
+        NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:accountIndex++];
+
+        if (account.accountType == UserAccountTypeOnPremise)
+        {
+            [self.accountListIndexPaths addObject:indexPath];
+        }
+        else
+        {
+            for (NSUInteger networkIndex = 0; networkIndex < account.accountNetworks.count; networkIndex++)
+            {
+                [self.accountListIndexPaths addObject:[indexPath indexPathByAddingIndex:networkIndex]];
+            }
+        }
     }
     
-    return onPremiseAccounts.count + totalTenants;
+    return self.accountListIndexPaths.count;
 }
 
 - (void)displayNodePickerWithSession:(id<AlfrescoSession>)session navigationContoller:(UINavigationController *)navigationContoller
@@ -98,15 +110,11 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger numberOfRows = 0;
+    NSInteger numberOfRows = 1;
     
     if (section == kAccountsSectionIndex)
     {
         numberOfRows = self.numberOfAccountRows;
-    }
-    else
-    {
-        numberOfRows = 1;
     }
     
     return numberOfRows;
@@ -119,7 +127,8 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
     if (indexPath.section == kAccountsSectionIndex)
     {
         NSInteger rowIndex = indexPath.row;
-        UserAccount *currentAccount = self.accountList[rowIndex];
+        NSIndexPath *indexPath = self.accountListIndexPaths[rowIndex];
+        UserAccount *currentAccount = self.accountList[[indexPath indexAtPosition:0]];
         
         cell.textLabel.text = currentAccount.accountDescription;
         
@@ -127,11 +136,10 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
         if (currentAccount.accountType == UserAccountTypeCloud)
         {
             accountTypeImage = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", currentAccount.accountDescription, currentAccount.accountNetworks[rowIndex]];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", currentAccount.accountDescription, currentAccount.accountNetworks[[indexPath indexAtPosition:1]]];
         }
         
         cell.imageView.image = accountTypeImage;
-        
     }
     else
     {
@@ -166,7 +174,8 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
     
     if (indexPath.section == kAccountsSectionIndex)
     {
-        UserAccount *selectedAccount = self.accountList[indexPath.row];
+        NSIndexPath *accountListIndexPath = self.accountListIndexPaths[indexPath.row];
+        UserAccount *selectedAccount = self.accountList[[accountListIndexPath indexAtPosition:0]];
         UserAccount *activeAccount = [[AccountManager sharedManager] selectedAccount];
         
         if (selectedAccount == activeAccount && self.session != nil)
@@ -179,7 +188,7 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
             [self.navigationController.view addSubview:progressHUD];
             if (selectedAccount.accountType == UserAccountTypeCloud)
             {
-                NSString *networkID = selectedAccount.accountNetworks[indexPath.row];
+                NSString *networkID = selectedAccount.accountNetworks[[accountListIndexPath indexAtPosition:1]];
                 [progressHUD show:YES];
                 [[LoginManager sharedManager] authenticateCloudAccount:selectedAccount networkId:networkID navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     [progressHUD hide:YES];

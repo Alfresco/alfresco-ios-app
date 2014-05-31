@@ -127,6 +127,7 @@
 		2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */; };
 		2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit.png */; };
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit@2x.png */; };
+		277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F16CB1938C0B000884ED6 /* ALFPreviewController.m */; };
 		27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3B1920DC54002C6793 /* preview-download-stop.png */; };
 		27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */; };
 		27C2EBF51907044A003B09B9 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27C2EBF71907044A003B09B9 /* Activities.strings */; };
@@ -707,6 +708,8 @@
 		2764ABD318CE09EE003FFBF9 /* actionsheet-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit.png"; sourceTree = "<group>"; };
 		2764ABD418CE09EE003FFBF9 /* actionsheet-edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-edit@2x.png"; sourceTree = "<group>"; };
 		276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissCompletionProtocol.h; sourceTree = "<group>"; };
+		277F16CA1938C0B000884ED6 /* ALFPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFPreviewController.h; sourceTree = "<group>"; };
+		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
 		27A2DC3B1920DC54002C6793 /* preview-download-stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop.png"; sourceTree = "<group>"; };
 		27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop@2x.png"; sourceTree = "<group>"; };
 		27C2EBF61907044A003B09B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Activities.strings; sourceTree = "<group>"; };
@@ -2821,11 +2824,13 @@
 		73B95AD817A68DF20099FB84 /* Preview View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */,
-				73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */,
+				277F16CA1938C0B000884ED6 /* ALFPreviewController.h */,
+				277F16CB1938C0B000884ED6 /* ALFPreviewController.m */,
 				730B445518ED7B96008A0977 /* FilePreviewViewController.h */,
 				730B445618ED7B96008A0977 /* FilePreviewViewController.m */,
 				730B445718ED7B96008A0977 /* FilePreviewViewController.xib */,
+				73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */,
+				73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */,
 			);
 			path = "Preview View Controller";
 			sourceTree = "<group>";
@@ -3453,6 +3458,7 @@
 				08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */,
 				738664A01906AD840021D1BD /* BaseFileFolderListViewController.m in Sources */,
 				738664E01906B2260021D1BD /* CenterLabelCell.m in Sources */,
+				277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */,
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				08E1EA2F18DB057900F9052F /* ProcessTasksCell.m in Sources */,
