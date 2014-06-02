@@ -104,6 +104,10 @@
             [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
                 
+                if (successful)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                }
                 if (loginCompletionBlock)
                 {
                     loginCompletionBlock(successful, session, error);
