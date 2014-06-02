@@ -48,6 +48,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) NSMutableDictionary *accountsSyncProgress;
 @property (nonatomic, strong) NSOperationQueue *currentQueue;
 @property (nonatomic, strong) NSString *selectedAccountIdentifier;
+@property (nonatomic, assign) BOOL isProcessingSyncNodes;
 @end
 
 @implementation SyncManager
@@ -139,7 +140,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     self.currentQueue = syncQueue;
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     
-    if (syncQueue.operationCount == 0)
+    if (syncQueue.operationCount == 0 && !self.isProcessingSyncNodes)
     {
         self.alfrescoSession = alfrescoSession;
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:alfrescoSession];
@@ -148,6 +149,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         if (self.documentFolderService)
         {
             [self.documentFolderService clear];
+            self.isProcessingSyncNodes = YES;
+            
             [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
                 
                 if (array)
@@ -155,6 +158,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                     [self rearrangeNodesAndSync:array];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kFavoritesListUpdatedNotification object:nil];
                     completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
+                }
+                else
+                {
+                    self.isProcessingSyncNodes = NO;
                 }
             }];
         }
@@ -293,6 +300,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                     }
                 }
             }];
+        }
+        else
+        {
+            self.isProcessingSyncNodes = NO;
         }
     }];
 }
@@ -462,6 +473,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                         inManagedObjectContext:privateManagedObjectContext];
             [self.syncNodesInfo removeObjectForKey:self.selectedAccountIdentifier];
             self.permissions = nil;
+            self.isProcessingSyncNodes = NO;
             
             [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
             
