@@ -90,7 +90,7 @@
 - (void)setupPagingScrollView
 {
     FilePreviewViewController *filePreviewController = nil;
-    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
+    if (self.documentContentFilePath)
     {
         filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document];
     }
