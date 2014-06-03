@@ -45,6 +45,8 @@ static NSInteger const kSearchResultsIndex = 0;
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     

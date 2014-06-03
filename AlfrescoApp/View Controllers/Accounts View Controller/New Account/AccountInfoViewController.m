@@ -128,6 +128,8 @@ static NSInteger const kTagCertificateCell = 1;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self updateFormBackupAccount];
 }
