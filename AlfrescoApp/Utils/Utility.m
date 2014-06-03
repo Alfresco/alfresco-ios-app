@@ -179,13 +179,13 @@ NSString *relativeDateFromDate(NSDate *date)
     {
         return relativeDateString(@"one-month", components.month);
     }
-    else if (components.week >= 2)
+    else if (components.day >= 14)
     {
-        return relativeDateString(@"n-weeks", components.week);
+        return relativeDateString(@"n-weeks", floor(components.day / 7.0));
     }
-    else if (components.week >= 1)
+    else if (components.day >= 7)
     {
-        return relativeDateString(@"one-week", components.week);
+        return relativeDateString(@"one-week", floor(components.day / 7.0));
     }
     else if (components.day >= 2)
     {

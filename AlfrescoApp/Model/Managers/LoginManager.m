@@ -119,6 +119,7 @@
     {
         // Assuming there is no internet connection and the user tries to switch account.
         self.authenticationCompletionBlock(YES, nil, nil);
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:nil userInfo:nil];
     }
     else
     {
