@@ -414,6 +414,7 @@ static CGFloat sDownloadProgressHeight;
 
 - (void)editingDocumentCompleted:(NSNotification *)notification
 {
+    self.document = notification.object;
     [self refreshViewController];
 }
 

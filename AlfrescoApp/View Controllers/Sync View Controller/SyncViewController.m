@@ -29,6 +29,8 @@
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
+static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSeriesId.value";
+
 @interface SyncViewController ()
 
 @property (nonatomic) AlfrescoNode *parentNode;
@@ -110,6 +112,9 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
                                              selector:@selector(adjustTableViewForProgressView)
                                                  name:kSyncProgressViewVisiblityChangeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(editingDocumentCompleted:)
+                                                 name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -241,6 +246,20 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
         [self.tableViewData removeObject:deletedDocument];
         NSIndexPath *indexPathOfDeletedNode = [NSIndexPath indexPathForRow:index inSection:0];
         [self.tableView deleteRowsAtIndexPaths:@[indexPathOfDeletedNode] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)editingDocumentCompleted:(NSNotification *)notifictation
+{
+    AlfrescoDocument *editedDocument = notifictation.object;
+    NSString *editedDocumentIdentifier = [Utility nodeRefWithoutVersionID:editedDocument.identifier];
+    
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocumentIdentifier inNodeIdentifiers:[self.tableViewData valueForKeyPath:kVersionSeriesValueKeyPath]];
+    
+    if (indexPath)
+    {
+        [self.tableViewData replaceObjectAtIndex:indexPath.row withObject:editedDocument];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
@@ -539,7 +558,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
 - (void)retrySyncAndCloseRetryPopover
 {
-    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
+    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
     [self.retrySyncPopover dismissPopoverAnimated:YES];
     self.retrySyncNode = nil;
     self.retrySyncPopover = nil;
@@ -590,7 +609,7 @@ static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 {
     if (buttonIndex != alertView.cancelButtonIndex)
     {
-        [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
+        [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
         self.retrySyncNode = nil;
     }
 }

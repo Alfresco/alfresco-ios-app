@@ -93,6 +93,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                  selector:@selector(documentUpdatedOnServer:)
                                                      name:kAlfrescoSaveBackRemoteComplete
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(editingDocumentCompleted:)
+                                                     name:kAlfrescoDocumentEditedNotification object:nil];
     }
     return self;
 }
@@ -746,6 +749,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
+- (void)editingDocumentCompleted:(NSNotification *)notifictation
+{
+    AlfrescoDocument *editedDocument = notifictation.object;
+    
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocument.name inNodeIdentifiers:[self.tableViewData valueForKey:@"name"]];
+    
+    if (indexPath)
+    {
+        [self.tableViewData replaceObjectAtIndex:indexPath.row withObject:editedDocument];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 - (NSDictionary *)metadataByAddingGPSToMetadata:(NSDictionary *)metadata
 {
     NSMutableDictionary *returnedMetadata = [metadata mutableCopy];
@@ -1372,7 +1388,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)retrySyncAndCloseRetryPopover
 {
-    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode];
+    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
     [self.retrySyncPopover dismissPopoverAnimated:YES];
     self.retrySyncNode = nil;
     self.retrySyncPopover = nil;

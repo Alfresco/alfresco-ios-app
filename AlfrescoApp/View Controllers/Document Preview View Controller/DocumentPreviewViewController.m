@@ -50,6 +50,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
 - (void)dealloc
@@ -246,6 +247,14 @@
                                         reason:@"No document node returned from the edit file service"
                                       userInfo:nil]);
     }
+}
+
+#pragma mark - Document Editing Notification
+
+- (void)editingDocumentCompleted:(NSNotification *)notification
+{
+    self.document = notification.object;
+    self.actionHandler.node = notification.object;
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions

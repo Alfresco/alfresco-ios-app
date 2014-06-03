@@ -244,6 +244,19 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     return syncError.errorDescription;
 }
 
+- (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId
+{
+    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:syncNodeId inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:nil];
+    
+    AlfrescoNode *node = nil;
+    if (nodeInfo.node)
+    {
+        node = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
+    }
+    return node;
+}
+
 #pragma mark - Private Methods
 
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
@@ -995,6 +1008,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                            downloadDocument:document outputStream:outputStream
                                                                     downloadCompletionBlock:^(BOOL succeeded, NSError *error) {
                                                                         
+                                                                        [outputStream close];
                                                                         NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
                                                                         SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document]
                                                                                                                                       inAccountWithId:self.selectedAccountIdentifier
@@ -1096,6 +1110,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                               inputStream:contentStream
                                                                     uploadCompletionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
                                                                         
+                                                                        [readStream close];
                                                                         NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
                                                                         SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document]
                                                                                                                                       inAccountWithId:self.selectedAccountIdentifier
@@ -1177,7 +1192,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     nodeStatus.bytesTransfered = 0;
 }
 
-- (void)retrySyncForDocument: (AlfrescoDocument *)document
+- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
 {
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
     
@@ -1191,12 +1206,20 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
                 [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
             }];
         }
         else
         {
             [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
                 [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
             }];
         }
     }
@@ -1206,6 +1229,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             nodeStatus.status = SyncStatusWaiting;
             nodeStatus.activityType = SyncActivityTypeUpload;
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock();
         }
     }
 }
