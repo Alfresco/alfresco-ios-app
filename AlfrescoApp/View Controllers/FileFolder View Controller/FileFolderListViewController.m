@@ -735,10 +735,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void)documentUpdatedOnServer:(NSNotification *)notifictaion
+- (void)documentUpdatedOnServer:(NSNotification *)notification
 {
-    NSString *nodeIdentifierUpdated = notifictaion.object;
-    AlfrescoDocument *updatedDocument = notifictaion.userInfo[kAlfrescoDocumentUpdatedFromDocumentParameterKey];
+    NSString *nodeIdentifierUpdated = notification.object;
+    AlfrescoDocument *updatedDocument = notification.userInfo[kAlfrescoDocumentUpdatedFromDocumentParameterKey];
 
     NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeIdentifierUpdated inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
     
@@ -749,9 +749,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void)editingDocumentCompleted:(NSNotification *)notifictation
+- (void)editingDocumentCompleted:(NSNotification *)notification
 {
-    AlfrescoDocument *editedDocument = notifictation.object;
+    AlfrescoDocument *editedDocument = notification.object;
     
     NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocument.name inNodeIdentifiers:[self.tableViewData valueForKey:@"name"]];
     

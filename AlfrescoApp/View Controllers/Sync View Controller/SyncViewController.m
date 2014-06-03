@@ -236,9 +236,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
-- (void)documentDeleted:(NSNotification *)notifictation
+- (void)documentDeleted:(NSNotification *)notification
 {
-    AlfrescoDocument *deletedDocument = notifictation.object;
+    AlfrescoDocument *deletedDocument = notification.object;
     
     if ([self.tableViewData containsObject:deletedDocument])
     {
@@ -249,9 +249,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
-- (void)editingDocumentCompleted:(NSNotification *)notifictation
+- (void)editingDocumentCompleted:(NSNotification *)notification
 {
-    AlfrescoDocument *editedDocument = notifictation.object;
+    AlfrescoDocument *editedDocument = notification.object;
     NSString *editedDocumentIdentifier = [Utility nodeRefWithoutVersionID:editedDocument.identifier];
     
     NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocumentIdentifier inNodeIdentifiers:[self.tableViewData valueForKeyPath:kVersionSeriesValueKeyPath]];

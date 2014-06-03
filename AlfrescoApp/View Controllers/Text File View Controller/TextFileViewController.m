@@ -171,9 +171,8 @@ static NSString * const kTextFileMimeType = @"text/plain";
                 
                 AlfrescoDocument *document = (AlfrescoDocument *)[syncManager alfrescoNodeForIdentifier:self.editingDocument.identifier];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
+                [self dismissViewControllerAnimated:YES completion:nil];
             }];
-            
-            [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {

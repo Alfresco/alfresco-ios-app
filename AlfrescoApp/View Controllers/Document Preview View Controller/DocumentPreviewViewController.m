@@ -254,7 +254,6 @@
 - (void)editingDocumentCompleted:(NSNotification *)notification
 {
     self.document = notification.object;
-    self.actionHandler.node = notification.object;
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions
