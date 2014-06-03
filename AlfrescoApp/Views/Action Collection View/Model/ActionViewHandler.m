@@ -336,7 +336,7 @@
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
         displayOpenInBlock(fileLocation);
     }
-    else if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    else if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
     {
         displayOpenInBlock(documentPath);
     }

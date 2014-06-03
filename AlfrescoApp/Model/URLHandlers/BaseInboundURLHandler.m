@@ -43,9 +43,13 @@
     
     AlfrescoDocument *syncedDocument = [[SyncHelper sharedHelper] syncDocumentFromDocumentIdentifier:metadata.nodeRef];
     
-    if (metadata.documentLocation == InAppDocumentLocationSync || syncedDocument)
+    if (syncedDocument)
     {
-        [[SyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:nil];
+        [[SyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
+            
+            AlfrescoDocument *editedDocument = (AlfrescoDocument *)[[SyncManager sharedManager] alfrescoNodeForIdentifier:syncedDocument.identifier];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:editedDocument];
+        }];
     }
     else if (metadata.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
