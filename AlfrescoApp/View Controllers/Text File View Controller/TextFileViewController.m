@@ -167,8 +167,12 @@ static NSString * const kTextFileMimeType = @"text/plain";
         
         if (isSyncDocument)
         {
-            [syncManager retrySyncForDocument:self.editingDocument];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
+            [syncManager retrySyncForDocument:self.editingDocument completionBlock:^{
+                
+                AlfrescoDocument *document = (AlfrescoDocument *)[syncManager alfrescoNodeForIdentifier:self.editingDocument.identifier];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
+            }];
+            
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
@@ -181,7 +185,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
                 [progressHUD hide:YES];
                 if (document)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:self.editingDocument];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
                 else

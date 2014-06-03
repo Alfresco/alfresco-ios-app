@@ -184,7 +184,7 @@
         {
             BOOL matched = NO;
             
-            if ([identifier hasPrefix:nodeIdentifier])
+            if ([nodeIdentifier isKindOfClass:[NSString class]] && [identifier hasPrefix:nodeIdentifier])
             {
                 matched = YES;
                 *stop = YES;

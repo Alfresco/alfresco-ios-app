@@ -45,7 +45,7 @@
     
     if (metadata.documentLocation == InAppDocumentLocationSync || syncedDocument)
     {
-        [[SyncManager sharedManager] retrySyncForDocument:syncedDocument];
+        [[SyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:nil];
     }
     else if (metadata.documentLocation == InAppDocumentLocationFilesAndFolders)
     {

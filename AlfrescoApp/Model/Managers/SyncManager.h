@@ -33,6 +33,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
  */
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document;
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
+- (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId;
 - (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
 - (NSMutableArray *)topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)folder;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
@@ -49,7 +50,7 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier inAccountWithId:(NSString *)accountId;
 - (void)cancelAllSyncOperations;
-- (void)retrySyncForDocument: (AlfrescoDocument *)document;
+- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
 /*
  * Sync Obstacle Methods
  */
