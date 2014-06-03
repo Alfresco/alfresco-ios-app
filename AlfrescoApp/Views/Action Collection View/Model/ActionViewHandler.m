@@ -54,6 +54,7 @@
         self.controller = controller;
         self.queuedCompletionBlocks = [NSMutableArray array];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
     }
     return self;
 }
@@ -61,6 +62,11 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)editingDocumentCompleted:(NSNotification *)notification
+{
+    self.node = notification.object;
 }
 
 - (AlfrescoRequest *)pressedLikeActionItem:(ActionCollectionItem *)actionItem
@@ -336,7 +342,7 @@
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
         displayOpenInBlock(fileLocation);
     }
-    else if (self.documentLocation == InAppDocumentLocationLocalFiles)
+    else if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
     {
         displayOpenInBlock(documentPath);
     }
