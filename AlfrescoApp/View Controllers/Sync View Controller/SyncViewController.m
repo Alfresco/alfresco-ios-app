@@ -429,13 +429,13 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
             }
             else
             {
-                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                               permissions:nil
-                                                                               contentFile:filePath
-                                                                          documentLocation:InAppDocumentLocationSync
-                                                                                   session:self.session
-                                                                      navigationController:self.navigationController
-                                                                                  animated:YES];
+                [UniversalDevice pushToDisplayDownloadDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                       permissions:nil
+                                                                                       contentFile:filePath
+                                                                                  documentLocation:InAppDocumentLocationSync
+                                                                                           session:self.session
+                                                                              navigationController:self.navigationController
+                                                                                          animated:YES];
             }
         }
         else if ([[ConnectivityManager sharedManager] hasInternetConnection])

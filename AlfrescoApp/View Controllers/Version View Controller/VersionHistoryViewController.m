@@ -71,18 +71,21 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     self.title = NSLocalizedString(@"version.history.title", @"Version History");
     self.tableView.emptyMessage = NSLocalizedString(@"version.history.empty", @"No Version History");
     
-    [self showHUD];
-    [self loadVersionsForDocument:self.document listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self hideHUD];
-        if (pagingResult)
-        {
-            [self reloadTableViewWithPagingResult:pagingResult error:error];
-        }
-        else
-        {
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.version.history.unable.to.retrieve", @"Version Retrieve Error"), [ErrorDescriptions descriptionForError:error]]);
-        }
-    }];
+    if (self.session)
+    {
+        [self showHUD];
+        [self loadVersionsForDocument:self.document listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            if (pagingResult)
+            {
+                [self reloadTableViewWithPagingResult:pagingResult error:error];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.version.history.unable.to.retrieve", @"Version Retrieve Error"), [ErrorDescriptions descriptionForError:error]]);
+            }
+        }];
+    }
 }
 
 #pragma mark - Private Functions

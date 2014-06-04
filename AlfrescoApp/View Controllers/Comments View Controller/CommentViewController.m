@@ -75,19 +75,22 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
     [self updateCommentsContainerViewHeightForNode:self.node];
 
-    [self showHUD];
-    [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self hideHUD];
-        if (pagingResult)
-        {
-            [self reloadTableViewWithPagingResult:pagingResult error:error];
-        }
-        else
-        {
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.comments.retrieve.failed", @"Comment retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-    }];
+    if (self.session)
+    {
+        [self showHUD];
+        [self loadCommentsForNode:self.node listingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            if (pagingResult)
+            {
+                [self reloadTableViewWithPagingResult:pagingResult error:error];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.comments.retrieve.failed", @"Comment retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
     
     self.addCommentTextView.maximumHeight = kMaxCommentTextViewHeight;
     self.addCommentTextView.layer.cornerRadius = 5.0f;
