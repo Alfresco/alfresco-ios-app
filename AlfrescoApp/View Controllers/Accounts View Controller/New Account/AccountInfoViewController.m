@@ -144,42 +144,63 @@ static NSInteger const kTagCertificateCell = 1;
     [self updateFormBackupAccount];
 }
 
--(void)saveButtonClicked:(id)sender
+- (void)saveButtonClicked:(id)sender
 {
-    [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
-        if (successful)
-        {
-            AccountManager *accountManager = [AccountManager sharedManager];
-            
-            if (accountManager.totalNumberOfAddedAccounts == 0)
+    if (self.account.accountType == UserAccountTypeOnPremise)
+    {
+        [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+            if (successful)
             {
-                [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-            }
-            
-            if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
-            {
-                [self.delegate accountInfoViewController:self willDismissAfterAddingAccount:self.account];
-            }
-            
-            [self dismissViewControllerAnimated:YES completion:^{
-                if (self.activityType == AccountActivityTypeNewAccount)
+                AccountManager *accountManager = [AccountManager sharedManager];
+                
+                if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
-                    [accountManager addAccount:self.account];
-                }
-                else
-                {
-                    [accountManager saveAccountsToKeychain];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                    [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 }
                 
-                if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
+                if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
                 {
-                    [self.delegate accountInfoViewController:self didDismissAfterAddingAccount:self.account];
+                    [self.delegate accountInfoViewController:self willDismissAfterAddingAccount:self.account];
                 }
-            }];
+                
+                [self dismissViewControllerAnimated:YES completion:^{
+                    if (self.activityType == AccountActivityTypeNewAccount)
+                    {
+                        [accountManager addAccount:self.account];
+                    }
+                    else
+                    {
+                        [accountManager saveAccountsToKeychain];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                    }
+                    
+                    if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
+                    {
+                        [self.delegate accountInfoViewController:self didDismissAfterAddingAccount:self.account];
+                    }
+                }];
+            }
+        }];
+    }
+    else
+    {
+        [self updateFormBackupAccount];
+        
+        self.account.accountDescription = self.formBackupAccount.accountDescription;
+        self.account.isSyncOn = self.formBackupAccount.isSyncOn;
+        // If Sync is now enabled, suppress the prompt in the Favorites view
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
         }
-    }];
+
+        [[AccountManager sharedManager] saveAccountsToKeychain];
+
+        [self dismissViewControllerAnimated:YES completion:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+        }];
+    }
 }
 
 - (void)cancel:(id)sender
@@ -375,7 +396,7 @@ static NSInteger const kTagCertificateCell = 1;
     
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
-        //User input validations
+        // User input validations
         NSString *hostname = self.serverAddressTextField.text;
         NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -469,7 +490,7 @@ static NSInteger const kTagCertificateCell = 1;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
         self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // if user turned on Sync while setting up account, didAskToSync is turned ON as well so app does not ask again
+        // If Sync is now enabled, suppress the prompt in the Favorites view
         if (self.account.isSyncOn)
         {
             self.account.didAskToSync = YES;
