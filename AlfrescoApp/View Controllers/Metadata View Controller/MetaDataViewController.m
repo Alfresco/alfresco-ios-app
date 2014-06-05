@@ -52,9 +52,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     [super viewDidLoad];
     
     self.allowsPullToRefresh = NO;
-    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
     self.title = self.node.name;
 }
 
@@ -293,7 +291,6 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetadataCell *cell = (MetadataCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    
     CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
     
     return height;
@@ -317,6 +314,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 
 - (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
 {
+    self.tagService = [[AlfrescoTaggingService alloc] initWithSession:session];
     self.node = node;
     [self.tableView reloadData];
 }
