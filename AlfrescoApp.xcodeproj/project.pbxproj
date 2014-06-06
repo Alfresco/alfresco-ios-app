@@ -130,6 +130,7 @@
 		277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F16CB1938C0B000884ED6 /* ALFPreviewController.m */; };
 		27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3B1920DC54002C6793 /* preview-download-stop.png */; };
 		27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */; };
+		27B01F37193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B01F36193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m */; };
 		27C2EBF51907044A003B09B9 /* Activities.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27C2EBF71907044A003B09B9 /* Activities.strings */; };
 		27C2EBFE19097D01003B09B9 /* UILabel+Insets.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */; };
 		27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */; };
@@ -712,6 +713,8 @@
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
 		27A2DC3B1920DC54002C6793 /* preview-download-stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop.png"; sourceTree = "<group>"; };
 		27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop@2x.png"; sourceTree = "<group>"; };
+		27B01F35193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoProtectionAwareFileManager.h; sourceTree = "<group>"; };
+		27B01F36193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoProtectionAwareFileManager.m; sourceTree = "<group>"; };
 		27C2EBF61907044A003B09B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Activities.strings; sourceTree = "<group>"; };
 		27C2EBF919070452003B09B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Activities.strings; sourceTree = "<group>"; };
 		27C2EBFC19097D01003B09B9 /* UILabel+Insets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Insets.h"; sourceTree = "<group>"; };
@@ -2432,6 +2435,10 @@
 			children = (
 				73E9E21017E854ED00A198B4 /* AccountManager.h */,
 				73E9E21117E854ED00A198B4 /* AccountManager.m */,
+				08244AAD192B99AE00228AD6 /* AccountSyncProgress.h */,
+				08244AAE192B99AE00228AD6 /* AccountSyncProgress.m */,
+				27B01F35193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.h */,
+				27B01F36193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m */,
 				730B444C18EC3A96008A0977 /* AnalyticsManager.h */,
 				730B444D18EC3A96008A0977 /* AnalyticsManager.m */,
 				080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */,
@@ -2458,8 +2465,6 @@
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
 				08E89C9317E7488C006936DF /* SyncManager.m */,
-				08244AAD192B99AE00228AD6 /* AccountSyncProgress.h */,
-				08244AAE192B99AE00228AD6 /* AccountSyncProgress.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailManager.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailManager.m */,
 			);
@@ -3370,6 +3375,7 @@
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
+				27B01F37193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m in Sources */,
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,

@@ -200,7 +200,7 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
             {
                 NSString *networkID = selectedAccount.accountNetworks[[accountListIndexPath indexAtPosition:1]];
                 [progressHUD show:YES];
-                [[LoginManager sharedManager] authenticateCloudAccount:selectedAccount networkId:networkID navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                [[LoginManager sharedManager] authenticateCloudAccount:selectedAccount networkId:networkID navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     [progressHUD hide:YES];
                     if (successful && alfrescoSession)
                     {

@@ -25,10 +25,8 @@
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 @interface AccountManager ()
-
 @property (nonatomic, strong, readwrite) NSMutableArray *accountsFromKeychain;
 @property (nonatomic, strong, readwrite) UserAccount *selectedAccount;
-
 @end
 
 @implementation AccountManager
@@ -69,10 +67,17 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     [self.accountsFromKeychain insertObject:account atIndex:index];
     [self saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
+    
+    if (account.isPaidAccount && [self numberOfPaidAccounts] == 1)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoFirstPaidAccountAddedNotification object:nil];
+    }
 }
 
 - (void)addAccounts:(NSArray *)accounts
 {
+    NSInteger previousNumberOfPaidAccounts = [self numberOfPaidAccounts];
+    
     for (UserAccount *account in accounts)
     {
         NSComparator comparator = ^(UserAccount *account1, UserAccount *account2)
@@ -86,6 +91,11 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountAddedNotification object:account];
     }
     [self saveAccountsToKeychain];
+    
+    if (previousNumberOfPaidAccounts == 0 && [self numberOfPaidAccounts] > 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoFirstPaidAccountAddedNotification object:nil];
+    }
 }
 
 - (void)removeAccount:(UserAccount *)account
@@ -93,14 +103,22 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     [self.accountsFromKeychain removeObject:account];
     [self saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];
+
     if (self.accountsFromKeychain.count == 0)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
+    }
+    
+    if (account.isPaidAccount && [self numberOfPaidAccounts] == 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoLastPaidAccountRemovedNotification object:nil];
     }
 }
 
 - (void)removeAllAccounts
 {
+    NSInteger previousNumberOfPaidAccounts = [self numberOfPaidAccounts];
+
     [self.accountsFromKeychain removeAllObjects];
     self.selectedAccount = nil;
     NSError *deleteError = nil;
@@ -113,6 +131,11 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     else
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
+    }
+    
+    if (previousNumberOfPaidAccounts > 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoLastPaidAccountRemovedNotification object:nil];
     }
 }
 
@@ -147,7 +170,21 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 - (NSInteger)totalNumberOfAddedAccounts
 {
-    return self.allAccounts.count;
+    return self.accountsFromKeychain.count;
+}
+
+- (NSInteger)numberOfPaidAccounts
+{
+    NSInteger paidAccounts = 0;
+    
+    for (UserAccount *account in self.accountsFromKeychain)
+    {
+        if (account.isPaidAccount)
+        {
+            ++paidAccounts;
+        }
+    }
+    return paidAccounts;
 }
 
 #pragma mark - Certificate Import Methods
@@ -237,7 +274,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     {
         self.accountsFromKeychain = [NSMutableArray array];
     }
-    
+
     for (UserAccount *account in self.accountsFromKeychain)
     {
         if (account.isSelectedAccount)
@@ -248,7 +285,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         if (account.accountType == UserAccountTypeCloud && account.accountStatus == UserAccountStatusAwaitingVerification)
         {
             [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
-                
                 if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
                 {
                     [self saveAccountsToKeychain];

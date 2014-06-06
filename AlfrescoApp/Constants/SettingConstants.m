@@ -25,13 +25,14 @@ NSString * const kSettingChangedToKey = @"SettingChangedToKey";
 
 // Plist keys
 NSString * const kSettingsLocalizedTitleKey = @"LocalizedTitleKey";
+NSString * const kSettingsPaidAccountsOnly = @"PaidAccountsOnly";
 NSString * const kSettingsTableViewData = @"SettingsTableViewData";
 NSString * const kSettingsGroupHeaderLocalizedKey = @"GroupHeaderLocalizedKey";
 NSString * const kSettingsGroupFooterLocalizedKey = @"GroupFooterLocalizedKey";
 NSString * const kSettingsGroupCells = @"GroupCells";
 NSString * const kSettingsCellPreferenceIdentifier = @"PreferenceIdentifier";
 NSString * const kSettingsCellType = @"Type";
-NSString * const kSettingsCellValue = @"Value";
+NSString * const kSettingsCellDefaultValue = @"DefaultValue";
 NSString * const kSettingsCellLocalizedTitleKey = @"LocalizedCellTitleKey";
 
 // Cell types
@@ -44,7 +45,8 @@ NSString * const kSettingsToggleCellReuseIdentifier = @"ToggleCell";
 NSString * const kSettingsTextFieldCellReuseIdentifier = @"TextFieldCell";
 NSString * const kSettingsLabelCellReuseIdentifier = @"LabelCell";
 
-// Setting identifiers - Please note these are referenced in UserPreferences.plist
+// Setting identifiers: Note these are referenced in UserPreferences.plist
 NSString * const kSettingsAboutIdentifier = @"SettingsAboutIdentifier";
 NSString * const kSettingsSyncOnCellularIdentifier = @"SettingsSyncOnCellularIdentifier";
 NSString * const kSettingsSendDiagnosticsIdentifier = @"SettingsSendDiagnosticsIdentifier";
+NSString * const kSettingsFileProtectionIdentifier = @"SettingsFileProtectionIdentifier";

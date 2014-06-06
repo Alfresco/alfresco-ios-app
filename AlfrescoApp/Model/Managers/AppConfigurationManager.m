@@ -27,9 +27,6 @@ static NSUInteger const kRepositorySupportedMajorVersion = 4;
 static NSUInteger const kRepositoryCommunitySupportedMinorVersion = 3;
 static NSUInteger const kRepositoryEnterpriseSupportedMinorVersion = 2;
 
-static NSString * const kRepositoryEditionEnterprise = @"Enterprise";
-static NSString * const kRepositoryEditionCommunity = @"Community";
-
 static NSString * const kRepositoryId = @"{RepositoryId}";
 static NSString * const kRepositoryDataDictionaryPathKey = @"com.alfresco.dataDictionary.{RepositoryId}";
 static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = @"repositoryDownloadedConfigurationFileLastUpdatedDate";

@@ -23,11 +23,11 @@
 #import "SettingConstants.h"
 #import "SettingLabelCell.h"
 #import "AboutViewController.h"
+#import "AccountManager.h"
 
 static NSUInteger const kCellLeftInset = 10;
 
 @interface SettingsViewController () <SettingsCellProtocol>
-
 @end
 
 @implementation SettingsViewController
@@ -55,10 +55,9 @@ static NSUInteger const kCellLeftInset = 10;
     self.allowsPullToRefresh = NO;
 	
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
-    
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
-    self.tableViewData = [dictionary objectForKey:kSettingsTableViewData];
-    
+
+    self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
     self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -68,6 +67,41 @@ static NSUInteger const kCellLeftInset = 10;
 }
 
 #pragma mark - Private Functions
+
+- (NSMutableArray *)filteredPreferences:(NSMutableArray *)unfilteredPreferences
+{
+    BOOL hasPaidAccounts = [[AccountManager sharedManager] numberOfPaidAccounts] > 0;
+    if (!hasPaidAccounts)
+    {
+        // Filter the groups firstpo unfil
+        NSMutableArray *filteredGroups = [NSMutableArray array];
+        for (NSDictionary *unfilteredGroup in unfilteredPreferences)
+        {
+            NSMutableDictionary *filteredGroup = [unfilteredGroup mutableCopy];
+            NSNumber *groupValue = [filteredGroup objectForKey:kSettingsPaidAccountsOnly];
+            if (groupValue == nil || ![groupValue boolValue])
+            {
+                // Filter the items
+                NSMutableArray *filteredItems = [NSMutableArray array];
+                for (NSDictionary *item in filteredGroup[kSettingsGroupCells])
+                {
+                    NSNumber *itemValue = [item objectForKey:kSettingsPaidAccountsOnly];
+                    if (itemValue == nil || ![itemValue boolValue])
+                    {
+                        [filteredItems addObject:item];
+                    }
+                }
+                if (filteredItems.count > 0)
+                {
+                    filteredGroup[kSettingsGroupCells] = filteredItems;
+                    [filteredGroups addObject:filteredGroup];
+                }
+            }
+        }
+        return filteredGroups;
+    }
+    return unfilteredPreferences;
+}
 
 - (void)doneButtonPressed:(id)sender
 {
@@ -186,7 +220,7 @@ static NSUInteger const kCellLeftInset = 10;
 
 #pragma mark - SettingsCellProtocol Functions
 
-- (void)valueDidChangeForCell:(SettingCell *)cell perferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value
+- (void)valueDidChangeForCell:(SettingCell *)cell preferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value
 {
     [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
 }

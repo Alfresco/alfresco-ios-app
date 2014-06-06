@@ -48,7 +48,7 @@
 - (IBAction)switchToggled:(id)sender
 {
     NSNumber *isOn = [NSNumber numberWithBool:[self.toggle isOn]];
-    [self.delegate valueDidChangeForCell:self perferenceIdentifier:self.preferenceIdentifier value:isOn];
+    [self.delegate valueDidChangeForCell:self preferenceIdentifier:self.preferenceIdentifier value:isOn];
 }
 
 @end

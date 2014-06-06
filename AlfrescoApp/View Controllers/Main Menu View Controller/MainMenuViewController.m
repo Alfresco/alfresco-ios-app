@@ -132,6 +132,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     cell.menuTextLabel.text = [NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title") uppercaseString];
     cell.menuTextLabel.textColor = [UIColor mainMenuLabelColor];
     cell.menuImageView.image = [[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    cell.menuAccountNameLabel.text = @"";
     
     if ([currentItem.localizedTitleKey isEqualToString:@"accounts.title"])
     {

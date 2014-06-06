@@ -163,7 +163,7 @@ static NSInteger const kTagCertificateCell = 1;
                 {
                     [self.delegate accountInfoViewController:self willDismissAfterAddingAccount:self.account];
                 }
-                
+
                 [self dismissViewControllerAnimated:YES completion:^{
                     if (self.activityType == AccountActivityTypeNewAccount)
                     {
@@ -495,6 +495,7 @@ static NSInteger const kTagCertificateCell = 1;
         {
             self.account.didAskToSync = YES;
         }
+        self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     
     [self showHUD];

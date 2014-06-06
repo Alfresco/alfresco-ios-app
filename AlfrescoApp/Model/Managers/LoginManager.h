@@ -27,7 +27,7 @@
 - (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
-             navigationConroller:(UINavigationController *)navigationController
+             navigationController:(UINavigationController *)navigationController
                  completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock;
 
 @end
