@@ -16,7 +16,6 @@
  *  limitations under the License.
  ******************************************************************************/
  
-#import "UIAlertView+ALF.h"
 #import <objc/runtime.h>
 
 static char DISMISS_IDENTIFIER;

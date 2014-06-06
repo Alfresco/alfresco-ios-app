@@ -19,7 +19,6 @@
 #import "TextFileViewController.h"
 #import "UniversalDevice.h"
 #import "UploadFormViewController.h"
-#import "UIAlertView+ALF.h"
 #import "DownloadManager.h"
 #import "SyncManager.h"
 #import "MBProgressHud.h"

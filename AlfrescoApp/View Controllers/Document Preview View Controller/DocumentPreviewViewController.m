@@ -30,7 +30,6 @@
 #import "FavouriteManager.h"
 #import "DownloadManager.h"
 #import "SyncManager.h"
-#import "UIAlertView+ALF.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ActionViewHandler.h"
 #import "FilePreviewViewController.h"

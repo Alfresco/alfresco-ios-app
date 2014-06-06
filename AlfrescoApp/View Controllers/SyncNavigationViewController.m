@@ -18,7 +18,6 @@
  
 #import "SyncNavigationViewController.h"
 #import "ProgressView.h"
-#import "UIAlertView+ALF.h"
 
 static CGFloat const kProgressViewAnimationDuration = 0.2f;
 

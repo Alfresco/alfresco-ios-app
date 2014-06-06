@@ -17,7 +17,6 @@
  ******************************************************************************/
  
 #import "DownloadManager.h"
-#import "UIAlertView+ALF.h"
 
 static NSUInteger const kOverwriteConfirmationOptionYes = 0;
 

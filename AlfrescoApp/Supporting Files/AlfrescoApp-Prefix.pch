@@ -34,6 +34,7 @@
 #import "Utility.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "ALFTableView.h"
+#import "UIAlertView+ALF.h"
 #import "UIColor+Custom.h"
 #import "UILabel+Insets.h"
 #import "UIViewController+Swizzled.h"

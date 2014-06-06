@@ -20,7 +20,6 @@
 #import "UserAccount.h"
 #import "CenterLabelCell.h"
 #import "ClientCertificateImportViewController.h"
-#import "UIAlertView+ALF.h"
 #import "CertificateDocumentFilter.h"
 
 static NSInteger const kDeleteCertificateGroup = 1;
