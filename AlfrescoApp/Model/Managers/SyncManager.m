@@ -726,6 +726,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)syncFileBeforeRemovingFromSync:(AlfrescoDocument *)document syncToServer:(BOOL)syncToServer
 {
     NSString *contentPath = [self contentPathForNode:document];
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:document.identifier];
     
     NSMutableArray *syncObstaclesRemovedFromSync = [self.syncObstacles objectForKey:kDocumentsRemovedFromSyncOnServerWithLocalChanges];
     
@@ -733,6 +734,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
             [self.fileManager removeItemAtPath:contentPath error:nil];
+            nodeStatus.status = SyncStatusRemoved;
             [self.syncHelper resolvedObstacleForDocument:document inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
         }];
     }
@@ -745,6 +747,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
             [self.fileManager removeItemAtPath:contentPath error:nil];
             [self.fileManager removeItemAtPath:temporaryPath error:nil];
+            nodeStatus.status = SyncStatusRemoved;
             [self.syncHelper resolvedObstacleForDocument:document inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
         }];
     }

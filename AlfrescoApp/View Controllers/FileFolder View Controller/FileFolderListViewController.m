@@ -914,6 +914,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 else
                 {
                     NSString *contentPath = [[SyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
+                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+                    {
+                        contentPath = nil;
+                    }
                     
                     [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
                                                                                    permissions:permissions
