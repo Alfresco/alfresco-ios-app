@@ -16,7 +16,7 @@
 					<string>SettingsAboutIdentifier</string>
 					<key>Type</key>
 					<string>AlfrescoSettingsLabel</string>
-					<key>Value</key>
+					<key>DefaultValue</key>
 					<string>NO</string>
 					<key>LocalizedCellTitleKey</key>
 					<string>about.title</string>
@@ -33,7 +33,7 @@
 					<string>SettingsSyncOnCellularIdentifier</string>
 					<key>Type</key>
 					<string>AlfrescoSettingsToggle</string>
-					<key>Value</key>
+					<key>DefaultValue</key>
 					<true/>
 					<key>LocalizedCellTitleKey</key>
 					<string>settings.sync.on.cellular</string>
@@ -52,7 +52,7 @@
 					<string>SettingsSendDiagnosticsIdentifier</string>
 					<key>Type</key>
 					<string>AlfrescoSettingsToggle</string>
-					<key>Value</key>
+					<key>DefaultValue</key>
 					<true/>
 					<key>LocalizedCellTitleKey</key>
 					<string>settings.send.diagnostics</string>
@@ -60,6 +60,27 @@
 			</array>
 			<key>GroupFooterLocalizedKey</key>
 			<string>settings.send.diagnostics.description</string>
+		</dict>
+		<dict>
+			<key>GroupHeaderLocalizedKey</key>
+			<string>settings.security.title</string>
+			<key>GroupCells</key>
+			<array>
+				<dict>
+					<key>PaidAccountsOnly</key>
+					<true/>
+					<key>PreferenceIdentifier</key>
+					<string>SettingsFileProtectionIdentifier</string>
+					<key>Type</key>
+					<string>AlfrescoSettingsToggle</string>
+					<key>DefaultValue</key>
+					<string>NO</string>
+					<key>LocalizedCellTitleKey</key>
+					<string>settings.security.file.protection</string>
+				</dict>
+			</array>
+			<key>GroupFooterLocalizedKey</key>
+			<string>settings.security.file.protection.description</string>
 		</dict>
 	</array>
 </dict>

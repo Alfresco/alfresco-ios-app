@@ -23,13 +23,14 @@ extern NSString * const kSettingChangedToKey;
 
 // Plist keys
 extern NSString * const kSettingsLocalizedTitleKey;
+extern NSString * const kSettingsPaidAccountsOnly;
 extern NSString * const kSettingsTableViewData;
 extern NSString * const kSettingsGroupHeaderLocalizedKey;
 extern NSString * const kSettingsGroupFooterLocalizedKey;
 extern NSString * const kSettingsGroupCells;
 extern NSString * const kSettingsCellPreferenceIdentifier;
 extern NSString * const kSettingsCellType;
-extern NSString * const kSettingsCellValue;
+extern NSString * const kSettingsCellDefaultValue;
 extern NSString * const kSettingsCellLocalizedTitleKey;
 
 // Cell types
@@ -42,7 +43,8 @@ extern NSString * const kSettingsToggleCellReuseIdentifier;
 extern NSString * const kSettingsTextFieldCellReuseIdentifier;
 extern NSString * const kSettingsLabelCellReuseIdentifier;
 
-// Setting identifiers - Please note these are referenced in UserPreferences.plist
+// Setting identifiers: Note these are referenced in UserPreferences.plist
 extern NSString * const kSettingsAboutIdentifier;
 extern NSString * const kSettingsSyncOnCellularIdentifier;
 extern NSString * const kSettingsSendDiagnosticsIdentifier;
+extern NSString * const kSettingsFileProtectionIdentifier;

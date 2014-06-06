@@ -23,7 +23,6 @@
 #import "SyncError.h"
 #import "SyncHelper.h"
 #import "DownloadManager.h"
-#import "UIAlertView+ALF.h"
 #import "AccountManager.h"
 #import "UserAccount.h"
 #import "SyncOperation.h"

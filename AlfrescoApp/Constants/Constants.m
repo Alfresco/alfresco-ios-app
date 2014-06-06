@@ -28,6 +28,9 @@ NSString * const kLargeThumbnailImageMappingPlist = @"LargeThumbnailImageMapping
 NSString * const kRenditionImageDocLib = @"doclib";
 NSString * const kRenditionImageImagePreview = @"imgpreview";
 
+NSString * const kRepositoryEditionEnterprise = @"Enterprise";
+NSString * const kRepositoryEditionCommunity = @"Community";
+
 NSString * const kEditableDocumentExtensions = @"txt,htm,html,xml,css,js,ftl,java,properties";
 // In addition, all "text/..." mimetypes are allowed to be edited
 NSString * const kEditableDocumentMimeTypes = @"application/xml,application/javascript";
@@ -92,6 +95,8 @@ NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotif
 NSString * const kAlfrescoAccountRemovedNotification = @"AlfrescoAccountRemovedNotification";
 NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedNotification";
 NSString * const kAlfrescoAccountsListEmptyNotification = @"AlfrescoAccountsListEmptyNotification";
+NSString * const kAlfrescoFirstPaidAccountAddedNotification = @"AlfrescoFirstPaidAccountAddedNotification";
+NSString * const kAlfrescoLastPaidAccountRemovedNotification = @"AlfrescoLastPaidAccountRemovedNotification";
 
 // Application policy constants
 NSString * const kApplicationPolicySettings = @"ApplicationPolicySettings";
@@ -146,7 +151,7 @@ CGFloat const kPickerMultiSelectToolBarHeight = 44.0f;
 NSString * const kFavouritesDidAddNodeNotification = @"FavouritesDidAddNodeNotification";
 NSString * const kFavouritesDidRemoveNodeNotification = @"FavouritesDidRemoveNodeNotification";
 
-// cache
+// Cache
 NSInteger const kNumberOfDaysToKeepCachedData = 7;
 
 NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";

@@ -42,6 +42,9 @@ extern NSString * const kLargeThumbnailImageMappingPlist;
 extern NSString * const kRenditionImageDocLib;
 extern NSString * const kRenditionImageImagePreview;
 
+extern NSString * const kRepositoryEditionEnterprise;
+extern NSString * const kRepositoryEditionCommunity;
+
 extern NSString * const kEditableDocumentExtensions;
 extern NSString * const kEditableDocumentMimeTypes;
 
@@ -105,6 +108,8 @@ extern NSString * const kAlfrescoAccountAddedNotification;
 extern NSString * const kAlfrescoAccountRemovedNotification;
 extern NSString * const kAlfrescoAccountUpdatedNotification;
 extern NSString * const kAlfrescoAccountsListEmptyNotification;
+extern NSString * const kAlfrescoFirstPaidAccountAddedNotification;
+extern NSString * const kAlfrescoLastPaidAccountRemovedNotification;
 
 // Application policy constants
 extern NSString * const kApplicationPolicySettings;

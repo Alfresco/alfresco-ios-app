@@ -46,7 +46,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [self.delegate valueDidChangeForCell:self perferenceIdentifier:self.preferenceIdentifier value:self.textField.text];
+    [self.delegate valueDidChangeForCell:self preferenceIdentifier:self.preferenceIdentifier value:self.textField.text];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

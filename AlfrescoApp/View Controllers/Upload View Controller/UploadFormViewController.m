@@ -22,7 +22,6 @@
 #import "UploadFormViewController.h"
 #import "TagPickerViewController.h"
 #import "UniversalDevice.h"
-#import "UIAlertView+ALF.h"
 #import "LocationManager.h"
 
 NS_ENUM(NSUInteger, UploadFormCellTypes)

@@ -22,9 +22,7 @@
 static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 @interface PreferenceManager ()
-
 @property (nonatomic, strong) NSMutableDictionary *preferences;
-
 @end
 
 @implementation PreferenceManager
@@ -44,7 +42,6 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     self = [super init];
     if (self)
     {
-        self.preferences = [NSMutableDictionary dictionary];
         [self loadPreferences];
     }
     return self;
@@ -80,31 +77,29 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *savedPreferenceData = [defaults valueForKey:kPreferenceKey];
     
-    if (savedPreferenceData)
+    self.preferences = savedPreferenceData ?: [NSMutableDictionary dictionary];
+
+    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
+    NSArray *allSettings = dictionary[kSettingsTableViewData];
+    
+    for (NSDictionary *sectionDictionary in allSettings)
     {
-        self.preferences = savedPreferenceData;
-    }
-    else
-    {
-        NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
-        NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
-        
-        NSArray *allSettings = [dictionary objectForKey:kSettingsTableViewData];
-        
-        for (NSDictionary *sectionDictionary in allSettings)
+        NSArray *allCellsInfo = sectionDictionary[kSettingsGroupCells];
+        for (NSDictionary *cellInfo in allCellsInfo)
         {
-            NSArray *allCellsInfo = [sectionDictionary valueForKey:kSettingsGroupCells];
-            for (NSDictionary *cellInfo in allCellsInfo)
+            NSString *preferenceIdentifier = cellInfo[kSettingsCellPreferenceIdentifier];
+            
+            if (!self.preferences[preferenceIdentifier])
             {
-                NSString *preferenceIdentifier = [cellInfo valueForKey:kSettingsCellPreferenceIdentifier];
-                id defaultValue = [cellInfo valueForKey:kSettingsCellValue];
-                
-                [self.preferences setObject:defaultValue forKey:preferenceIdentifier];
+                // Set the default value
+                self.preferences[preferenceIdentifier] = cellInfo[kSettingsCellDefaultValue];
             }
         }
-        [defaults setObject:self.preferences forKey:kPreferenceKey];
-        [defaults synchronize];
     }
+
+    [defaults setObject:self.preferences forKey:kPreferenceKey];
+    [defaults synchronize];
 }
 
 - (void)savePreferences

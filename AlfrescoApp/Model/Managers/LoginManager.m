@@ -111,7 +111,7 @@
         }
         else
         {
-            [self authenticateCloudAccount:account networkId:networkId navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
+            [self authenticateCloudAccount:account networkId:networkId navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
                 
                 if (successful)
@@ -142,7 +142,7 @@
 
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
-             navigationConroller:(UINavigationController *)navigationController
+             navigationController:(UINavigationController *)navigationController
                  completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock
 {
     self.authenticationCompletionBlock = authenticationCompletionBlock;
@@ -157,24 +157,18 @@
         else
         {
             self.currentLoginRequest = [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *networks, NSError *error) {
-                
                 if (networks && error == nil)
                 {
-                    NSMutableArray *sortedNetworks = [NSMutableArray array];
-                    for (AlfrescoCloudNetwork *network in networks)
-                    {
-                        NSInteger index = 0;
-                        if (!network.isHomeNetwork)
-                        {
-                            NSComparator comparator = ^(NSString *network1, NSString *network2)
-                            {
-                                return (NSComparisonResult)[network1 caseInsensitiveCompare:network2];
-                            };
-                            index = [sortedNetworks indexOfObject:network.identifier inSortedRange:NSMakeRange(0, sortedNetworks.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
-                        }
-                        [sortedNetworks insertObject:network.identifier atIndex:index];
-                    }
-                    account.accountNetworks = sortedNetworks;
+                    // Primary sort: isHomeNetwork
+                    NSSortDescriptor *homeNetworkSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"isHomeNetwork" ascending:NO];
+                    // Seconday sort: alphabetical by identifier
+                    NSSortDescriptor *identifierSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES];
+                    
+                    NSArray *sortedNetworks = [networks sortedArrayUsingDescriptors:@[homeNetworkSortDescriptor, identifierSortDescriptor]];
+                    account.accountNetworks = [sortedNetworks valueForKeyPath:@"identifier"];
+                    
+                    // The home network defines the user's account paid status
+                    account.paidAccount = ((AlfrescoCloudNetwork *)sortedNetworks[0]).isPaidNetwork;
                     
                     if (authenticationCompletionBlock != NULL)
                     {
@@ -195,7 +189,6 @@
     AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthLoginViewController * (void) {
         NavigationViewController *oauthNavigationController = nil;
         AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY secretKey:ALFRESCO_CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
-            
             if (oauthData)
             {
                 account.oauthData = oauthData;
@@ -359,7 +352,9 @@
                     
                     self.currentLoginURLString = nil;
                     self.currentLoginRequest = nil;
-                    
+
+                    account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+
                     if (completionBlock != NULL)
                     {
                         completionBlock(YES, session, nil);

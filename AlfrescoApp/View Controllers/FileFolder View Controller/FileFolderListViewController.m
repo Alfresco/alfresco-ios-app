@@ -23,7 +23,6 @@
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
-#import "UIAlertView+ALF.h"
 #import "LocationManager.h"
 #import <ImageIO/ImageIO.h>
 #import "AccountManager.h"

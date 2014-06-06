@@ -25,7 +25,6 @@
 #import "UniversalDevice.h"
 #import "ErrorDescriptions.h"
 #import "DownloadManager.h"
-#import "UIAlertView+ALF.h"
 #import "DownloadsViewController.h"
 #import "NavigationViewController.h"
 #import "UploadFormViewController.h"

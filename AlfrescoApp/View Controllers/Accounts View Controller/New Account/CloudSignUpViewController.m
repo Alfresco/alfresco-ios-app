@@ -85,24 +85,12 @@ static NSString * const kSource = @"mobile";
     {
         self.title = NSLocalizedString(@"cloudsignup.title", @"New Account");
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textFieldDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWasShown:)
-                                                     name:UIKeyboardDidShowNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillBeHidden:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
     }
     
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                            target:self
-                                                                            action:@selector(cancel:)];
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = cancel;
     
     self.allowsPullToRefresh = NO;
@@ -326,7 +314,6 @@ static NSString * const kSource = @"mobile";
     AccountManager *accountManager = [AccountManager sharedManager];
     [self showHUD];
     [accountManager updateAccountStatusForAccount:self.account completionBlock:^(BOOL successful, NSError *error) {
-        
         [self hideHUD];
         if (successful)
         {
@@ -340,11 +327,12 @@ static NSString * const kSource = @"mobile";
                 [accountManager saveAccountsToKeychain];
                 displayInformationMessage(NSLocalizedString(@"awaitingverification.alert.refresh.verified", @"The Account is now..."));
                 
-                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil navigationConroller:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                    
+                [[LoginManager sharedManager] authenticateCloudAccount:self.account networkId:nil navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     if (successful)
                     {
                         AccountManager *accountManager = [AccountManager sharedManager];
+                        [accountManager saveAccountsToKeychain];
+                        
                         // select this account as selected Account if this is the only account configured
                         if (accountManager.totalNumberOfAddedAccounts == 1)
                         {
@@ -379,7 +367,6 @@ static NSString * const kSource = @"mobile";
     RequestHandler *request = [[RequestHandler alloc] init];
     [self showHUD];
     [request connectWithURL:[NSURL URLWithString:kAlfrescoCloudAPISignUpUrl] method:kHTTPMethodPOST headers:headers requestBody:accountInfoJsonData completionBlock:^(NSData *data, NSError *error) {
-        
         [self hideHUD];
         if (error)
         {
@@ -405,7 +392,6 @@ static NSString * const kSource = @"mobile";
     RequestHandler *request = [[RequestHandler alloc] init];
     [self showHUD];
     [request connectWithURL:[NSURL URLWithString:kAlfrescoCloudAPISignUpUrl] method:kHTTPMethodPOST headers:headers requestBody:accountInfoJsonData completionBlock:^(NSData *data, NSError *error) {
-        
         [self hideHUD];
         if (error)
         {

@@ -60,7 +60,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     [super viewDidLoad];
     
     self.allowsPullToRefresh = NO;
-    
     self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
     
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -114,7 +113,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
         UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
         account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
         
-        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationConroller:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
                 AccountManager *accountManager = [AccountManager sharedManager];
@@ -130,8 +129,9 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
                     [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:YES];
                 }
                 
+                [accountManager addAccount:account];
+
                 [self dismissViewControllerAnimated:YES completion:^{
-                    [accountManager addAccount:account];
                     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
                     {
                         [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:YES];

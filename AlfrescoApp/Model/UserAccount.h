@@ -52,11 +52,14 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSArray *accountNetworks;
 @property (nonatomic, assign) UserAccountStatus accountStatus;
 
-// cloud signup specific properties, needed for refreshing Account Statuses and resending signup request
+// Cloud sign-up properties, needed for refreshing Account Statuses and resending sign-up request
 @property (nonatomic, strong) NSString *firstName;
 @property (nonatomic, strong) NSString *lastName;
 @property (nonatomic, strong) NSString *cloudAccountId;
 @property (nonatomic, strong) NSString *cloudAccountKey;
+
+// Paid account tracking
+@property (nonatomic, assign, getter = isPaidAccount) BOOL paidAccount;
 
 - (instancetype)initWithAccountType:(UserAccountType)accountType;
 
