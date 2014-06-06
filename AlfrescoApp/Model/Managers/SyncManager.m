@@ -341,22 +341,25 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         [self.documentFolderService retrieveChildrenInFolder:(AlfrescoFolder *)node completionBlock:^(NSArray *array, NSError *error) {
             
             self.nodeChildrenRequestsCount--;
-            // nodes for each folder are held in with keys folder identifiers
-            nodesInfoForSelectedAccount[[self.syncHelper syncIdentifierForNode:node]] = array;
-            [self retrievePermissionsForNodes:array withCompletionBlock:^{
-                
-                for (AlfrescoNode *node in array)
-                {
-                    // recursive call to retrieve nodes hierarchies
-                    [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                        
-                        if (completionBlock != NULL)
-                        {
-                            completionBlock(YES);
-                        }
-                    }];
-                }
-            }];
+            if (array)
+            {
+                // nodes for each folder are held in with keys folder identifiers
+                nodesInfoForSelectedAccount[[self.syncHelper syncIdentifierForNode:node]] = array;
+                [self retrievePermissionsForNodes:array withCompletionBlock:^{
+                    
+                    for (AlfrescoNode *node in array)
+                    {
+                        // recursive call to retrieve nodes hierarchies
+                        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                            
+                            if (completionBlock != NULL)
+                            {
+                                completionBlock(YES);
+                            }
+                        }];
+                    }
+                }];
+            }
             if (completionBlock != NULL)
             {
                 completionBlock(YES);
@@ -499,15 +502,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             self.isProcessingSyncNodes = NO;
             
             [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
+            unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 AccountSyncProgress *syncProgress = self.accountsSyncProgress[self.selectedAccountIdentifier];
                 syncProgress.totalSyncSize = 0;
                 syncProgress.syncProgressSize = 0;
-                
-                unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
-                AlfrescoLogDebug(@"Total Download Size: %@", stringForLongFileSize(totalDownloadSize));
                 
                 if (totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
                 {
