@@ -53,17 +53,22 @@ static NSUInteger const kCellLeftInset = 10;
     [super viewDidLoad];
     
     self.allowsPullToRefresh = NO;
-	
-    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
-
-    self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
-    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                 target:self
                                                                                 action:@selector(doneButtonPressed:)];
     self.navigationItem.rightBarButtonItem = doneButton;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
+
+    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
+    self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
 }
 
 #pragma mark - Private Functions
