@@ -17,7 +17,7 @@
 					<key>Type</key>
 					<string>AlfrescoSettingsLabel</string>
 					<key>DefaultValue</key>
-					<string>NO</string>
+					<false/>
 					<key>LocalizedCellTitleKey</key>
 					<string>about.title</string>
 				</dict>
@@ -74,7 +74,7 @@
 					<key>Type</key>
 					<string>AlfrescoSettingsToggle</string>
 					<key>DefaultValue</key>
-					<string>NO</string>
+					<false/>
 					<key>LocalizedCellTitleKey</key>
 					<string>settings.security.file.protection</string>
 				</dict>

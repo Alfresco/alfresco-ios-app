@@ -90,7 +90,9 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
         {
             NSString *preferenceIdentifier = cellInfo[kSettingsCellPreferenceIdentifier];
             
-            if (!self.preferences[preferenceIdentifier])
+            // Check for missing preferences, or preferences of the wrong type
+            if (self.preferences[preferenceIdentifier] == nil ||
+                ![self.preferences[preferenceIdentifier] isKindOfClass:[cellInfo[kSettingsCellDefaultValue] class]])
             {
                 // Set the default value
                 self.preferences[preferenceIdentifier] = cellInfo[kSettingsCellDefaultValue];
