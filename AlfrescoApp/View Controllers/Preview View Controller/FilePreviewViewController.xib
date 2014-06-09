@@ -29,7 +29,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nEO-Lg-bT2">
-                            <rect key="frame" x="248" y="2" width="44" height="44"/>
+                            <rect key="frame" x="256" y="2" width="44" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="44" id="TES-jO-IYJ"/>
@@ -44,18 +44,18 @@
                             </connections>
                         </button>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="bHR-ut-g0r">
-                            <rect key="frame" x="8" y="23" width="230" height="2"/>
+                            <rect key="frame" x="54" y="23" width="192" height="2"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </progressView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="bHR-ut-g0r" firstAttribute="leading" secondItem="YKg-P6-wfH" secondAttribute="leading" constant="8" id="6Xk-FG-Hfg"/>
+                        <constraint firstItem="bHR-ut-g0r" firstAttribute="leading" secondItem="YKg-P6-wfH" secondAttribute="leading" constant="54" id="6Xk-FG-Hfg"/>
                         <constraint firstItem="nEO-Lg-bT2" firstAttribute="leading" secondItem="bHR-ut-g0r" secondAttribute="trailing" constant="10" id="7UO-AK-Bzm"/>
                         <constraint firstAttribute="centerY" secondItem="bHR-ut-g0r" secondAttribute="centerY" id="NKV-HB-h4U"/>
                         <constraint firstAttribute="height" constant="48" id="Ycj-pp-ew4"/>
                         <constraint firstAttribute="centerY" secondItem="nEO-Lg-bT2" secondAttribute="centerY" id="fFA-Hp-Vtr"/>
-                        <constraint firstAttribute="trailing" secondItem="nEO-Lg-bT2" secondAttribute="trailing" constant="8" id="glH-tn-fdg"/>
+                        <constraint firstAttribute="trailing" secondItem="nEO-Lg-bT2" secondAttribute="trailing" id="glH-tn-fdg"/>
                         <constraint firstAttribute="width" constant="300" id="nmW-ZC-Lv0"/>
                     </constraints>
                 </view>
