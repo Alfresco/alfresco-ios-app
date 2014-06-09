@@ -18,6 +18,9 @@
  
 #import "Constants.h"
 
+// Time delay used in workaround for Cloud API rate limiting issues (comments and version history requests)
+NSTimeInterval const kRateLimitForRequestsOnCloud = 1.0;
+
 int const kMaxItemsPerListingRetrieve = 25;
 
 NSString * const kLicenseDictionaries = @"thirdPartyLibraries";

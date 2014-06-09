@@ -20,6 +20,7 @@
 #import "CommentCell.h"
 #import "AvatarManager.h"
 #import "TextView.h"
+#import "Constants.h"
 
 static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
@@ -129,13 +130,18 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         requestListingContext = self.defaultListingContext;
     }
     
-    [self.commentService retrieveCommentsForNode:self.node listingContext:requestListingContext latestFirst:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (completionBlock != NULL)
-        {
-            completionBlock(pagingResult, error);
-            [self updateCommentCount];
-        }
-    }];
+    // Workaround for Cloud API rate limiting issues
+    NSTimeInterval timeDelay = [self.session isKindOfClass:[AlfrescoCloudSession class]] ? kRateLimitForRequestsOnCloud : 0;
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.commentService retrieveCommentsForNode:self.node listingContext:requestListingContext latestFirst:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            if (completionBlock != NULL)
+            {
+                completionBlock(pagingResult, error);
+                [self updateCommentCount];
+            }
+        }];
+    });
 }
 
 - (void)sessionReceived:(NSNotification *)notification

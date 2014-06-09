@@ -33,6 +33,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ActionViewHandler.h"
 #import "FilePreviewViewController.h"
+#import "Constants.h"
 
 @interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, CommentViewControllerDelegate, ActionViewDelegate>
 @end

@@ -128,6 +128,7 @@
 		2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit.png */; };
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit@2x.png */; };
 		277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F16CB1938C0B000884ED6 /* ALFPreviewController.m */; };
+		27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A1BFD019460318004DF61D /* ThumbnailOperation.m */; };
 		27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3B1920DC54002C6793 /* preview-download-stop.png */; };
 		27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */; };
 		27B01F37193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B01F36193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m */; };
@@ -710,6 +711,8 @@
 		276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissCompletionProtocol.h; sourceTree = "<group>"; };
 		277F16CA1938C0B000884ED6 /* ALFPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFPreviewController.h; sourceTree = "<group>"; };
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
+		27A1BFCF19460318004DF61D /* ThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailOperation.h; sourceTree = "<group>"; };
+		27A1BFD019460318004DF61D /* ThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailOperation.m; sourceTree = "<group>"; };
 		27A2DC3B1920DC54002C6793 /* preview-download-stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop.png"; sourceTree = "<group>"; };
 		27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop@2x.png"; sourceTree = "<group>"; };
 		27B01F35193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoProtectionAwareFileManager.h; sourceTree = "<group>"; };
@@ -2067,6 +2070,8 @@
 			children = (
 				738664AC1906AF6A0021D1BD /* SyncOperation.h */,
 				738664AD1906AF6A0021D1BD /* SyncOperation.m */,
+				27A1BFCF19460318004DF61D /* ThumbnailOperation.h */,
+				27A1BFD019460318004DF61D /* ThumbnailOperation.m */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -3485,6 +3490,7 @@
 				738665191906B3ED0021D1BD /* AttributedLabelCell.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				08E1EA2718DB057900F9052F /* TaskDetailsViewController.m in Sources */,
+				27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */,
 				7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */,
 				738664F01906B2420021D1BD /* PersonCell.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
