@@ -136,6 +136,9 @@
 "error.new.version.unable.to.checkout.message" = "Unable to check out %@. Error: %@";
 "error.new.version.unable.to.checkin.title" = "Unable To Check In";
 "error.new.version.unable.to.checkin.message" = "Unable to check in %@. Error: %@";
+// Email
+"error.no.email.accounts.title" = "No Mail Accounts";
+"error.no.email.accounts.message" = "You must have at least one Mail account setup on your device to send this file.";
 
 /**
  * Custom error descriptions
@@ -637,7 +640,7 @@
 "action.review" = "Review";
 "action.edit" = "Edit";
 "action.new.version" = "Update";
-// alerts
+// Alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename file to:";
 "action.rename.success.title" = "Rename Successful";
@@ -700,6 +703,12 @@
 "fileprotection.unavailable.message" = "File protection is no longer available";
 "fileprotection.protecting.message" = "Protecting local files...";
 "fileprotection.unprotecting.message" = "Unprotecting local files...";
+
+/**
+ * Mail Action
+ */
+// e.g. "Sent from Alfresco Mobile". 'Alfresco Mobile' will not be localized.
+"mail.footer" = "Sent from %@";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS

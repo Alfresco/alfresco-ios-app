@@ -464,7 +464,6 @@
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
 		73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
 		73F628B7185779440050F437 /* TextFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F628B6185779440050F437 /* TextFileViewController.m */; };
-		73FC470C1823BE7400864E80 /* Email Template in Resources */ = {isa = PBXBuildFile; fileRef = 73FC470B1823BE7400864E80 /* Email Template */; };
 		73FF557718ACE2370009CA56 /* large_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF555F18ACE2370009CA56 /* large_audio.png */; };
 		73FF557818ACE2370009CA56 /* large_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556018ACE2370009CA56 /* large_audio@2x.png */; };
 		73FF557918ACE2370009CA56 /* large_document.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556118ACE2370009CA56 /* large_document.png */; };
@@ -1058,9 +1057,6 @@
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		73B957C317A6728A0099FB84 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		73B957C417A6728A0099FB84 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		73B957C517A6728A0099FB84 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		73B957C617A6728A0099FB84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		73B957C817A673A90099FB84 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		73B957C917A673A90099FB84 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1183,7 +1179,6 @@
 		73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
 		73F628B5185779440050F437 /* TextFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFileViewController.h; path = "Text File View Controller/TextFileViewController.h"; sourceTree = "<group>"; };
 		73F628B6185779440050F437 /* TextFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = TextFileViewController.m; path = "Text File View Controller/TextFileViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		73FC470B1823BE7400864E80 /* Email Template */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Email Template"; sourceTree = "<group>"; };
 		73FF555F18ACE2370009CA56 /* large_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_audio.png; sourceTree = "<group>"; };
 		73FF556018ACE2370009CA56 /* large_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_audio@2x.png"; sourceTree = "<group>"; };
 		73FF556118ACE2370009CA56 /* large_document.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_document.png; sourceTree = "<group>"; };
@@ -1855,21 +1850,17 @@
 				73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */,
 				73881F87188D87220052C75F /* AlfrescoApp.entitlements */,
 				08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */,
-				73B957C317A6728A0099FB84 /* Default-568h@2x.png */,
-				73B957C417A6728A0099FB84 /* Default.png */,
-				73B957C517A6728A0099FB84 /* Default@2x.png */,
-				73FC470B1823BE7400864E80 /* Email Template */,
 				73881F721889800C0052C75F /* Help Error */,
 				73B95B0617A68E770099FB84 /* Help Guides */,
 				73B959F117A68B7E0099FB84 /* Images */,
 				73B95B1817A6AE010099FB84 /* InfoPlist.strings */,
+				7379734018ABA1DD007613B2 /* LargeThumbnailImageMapping.plist */,
 				73B95B1E17A6AE7E0099FB84 /* Localizable.strings */,
 				73B957C617A6728A0099FB84 /* main.m */,
 				73B95B0F17A6A9A90099FB84 /* MetadataDisplayList.plist */,
-				73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */,
-				7379734018ABA1DD007613B2 /* LargeThumbnailImageMapping.plist */,
-				7384BDF817F3377A00C6A54F /* UserPreferences.plist */,
 				2744021F18AA83C400DF23DD /* Settings.bundle */,
+				73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */,
+				7384BDF817F3377A00C6A54F /* UserPreferences.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -3173,7 +3164,6 @@
 				27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */,
 				73BE420618F4021300DB8912 /* task_priority_low.png in Resources */,
 				27DFEBFB1937644D006D85BC /* actionsheet-print@2x~ipad.png in Resources */,
-				73FC470C1823BE7400864E80 /* Email Template in Resources */,
 				733638BC1913BA1600472A57 /* system_notice_tick@2x.png in Resources */,
 				73BE41FD18F3FF2900DB8912 /* account-type-onpremise@2x.png in Resources */,
 				73FF558118ACE2370009CA56 /* large_notes.png in Resources */,

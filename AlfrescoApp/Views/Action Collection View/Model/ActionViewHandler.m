@@ -139,7 +139,7 @@
             emailController.mailComposeDelegate = self;
             [emailController setSubject:filePath.lastPathComponent];
             
-            // attachment
+            // Attachment
             NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.lastPathComponent];
             if (!mimeType)
             {
@@ -148,14 +148,17 @@
             NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
             [emailController addAttachmentData:documentData mimeType:mimeType fileName:filePath.lastPathComponent];
             
-            // content body template
-            NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"emailTemplate" ofType:@"html" inDirectory:@"Email Template"];
-            NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-            [emailController setMessageBody:htmlString isHTML:YES];
-            
+            // Content body template
+            NSString *footer = [NSString stringWithFormat:NSLocalizedString(@"mail.footer", @"Sent from..."), @"<a href=\"http://itunes.apple.com/app/alfresco/id459242610?mt=8\">Alfresco Mobile</a>"];
+            NSString *messageBody = [NSString stringWithFormat:@"<br><br>%@", footer];
+            [emailController setMessageBody:messageBody isHTML:YES];
             emailController.modalPresentationStyle = UIModalPresentationPageSheet;
             
             [self.controller presentViewController:emailController animated:YES completion:nil];
+        }
+        else
+        {
+            displayErrorMessageWithTitle(NSLocalizedString(@"error.no.email.accounts.message", @"No mail accounts"), NSLocalizedString(@"error.no.email.accounts.title", @"No mail accounts"));
         }
     };
     
