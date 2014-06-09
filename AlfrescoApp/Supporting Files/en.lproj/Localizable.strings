@@ -295,6 +295,10 @@
 "multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d files from the server?";
 "multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 file from local files?";
 "multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d files from local files?";
+"multiselect.delete.completed.title" = "Delete Completed With Errors";
+"multiselect.delete.completed.message" = "%@ files were deleted from the server.";
+"multiselect.delete.partial.message" = "Only %@ files were deleted from the server.";
+"multiselect.delete.failure.message" = "None of the files could be deleted from the server.";
 
 /**
  * Node Picker
