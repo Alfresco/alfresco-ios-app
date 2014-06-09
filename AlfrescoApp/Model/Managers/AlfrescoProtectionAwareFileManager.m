@@ -116,13 +116,15 @@ static BOOL sFileProtectionEnabled = NO;
     hud.minShowTime = 1;
     [view addSubview:hud];
     [hud show:YES];
-    for (NSString *folder in userContentFolders)
-    {
-        [self enumerateThroughDirectory:folder includingSubDirectories:YES withBlock:^(NSString *fullFilePath) {
-            [self updateProtectionForFileAtPath:fullFilePath];
-        } error:nil];
-    }
-    [hud hide:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        for (NSString *folder in userContentFolders)
+        {
+            [self enumerateThroughDirectory:folder includingSubDirectories:YES withBlock:^(NSString *fullFilePath) {
+                [self updateProtectionForFileAtPath:fullFilePath];
+            } error:nil];
+        }
+        [hud hide:YES];
+    });
 }
 
 #pragma mark - AlfrescoFileManager
@@ -244,8 +246,12 @@ static BOOL sFileProtectionEnabled = NO;
                                                                            options:options
                                                                       errorHandler:^BOOL(NSURL *url, NSError *fileError) {
                                                                           AlfrescoLogDebug(@"Error retrieving contents of the URL: %@ with the error: %@", [url absoluteString], [fileError localizedDescription]);
-                                                                          *error = fileError;
+                                                                          if (error)
+                                                                          {
+                                                                              *error = fileError;
+                                                                          }
                                                                           completedWithoutError = NO;
+                                                                          // continue enumeration
                                                                           return YES;
                                                                       }];
     
