@@ -20,6 +20,7 @@
 #import "VersionHistoryCell.h"
 #import "MetaDataViewController.h"
 #import "DownloadManager.h"
+#import "Constants.h"
 
 static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 
@@ -92,12 +93,17 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 
 - (void)loadVersionsForDocument:(AlfrescoDocument *)document listingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock
 {
-    [self.versionService retrieveAllVersionsOfDocument:document listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (completionBlock != NULL)
-        {
-            completionBlock(pagingResult, error);
-        }
-    }];
+    // Workaround for Cloud API rate limiting issues
+    NSTimeInterval timeDelay = [self.session isKindOfClass:[AlfrescoCloudSession class]] ? kRateLimitForRequestsOnCloud * 2 : 0;
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.versionService retrieveAllVersionsOfDocument:document listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            if (completionBlock != NULL)
+            {
+                completionBlock(pagingResult, error);
+            }
+        }];
+    });
 }
 
 - (void)sessionReceived:(NSNotification *)notification

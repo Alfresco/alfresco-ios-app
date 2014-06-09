@@ -17,7 +17,10 @@
  ******************************************************************************/
  
 #import "ThumbnailManager.h"
+#import "ThumbnailOperation.h"
 #import "CoreDataCacheHelper.h"
+
+static NSTimeInterval const sMinimumDelayBetweenRequestsOnCloud = 0.25;
 
 typedef NS_ENUM(NSUInteger, RenditionType)
 {
@@ -28,10 +31,9 @@ typedef NS_ENUM(NSUInteger, RenditionType)
 
 @interface ThumbnailManager ()
 
-@property (nonatomic, strong, readwrite) AlfrescoDocumentFolderService *thumbnailService;
-@property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) __block NSMutableDictionary *requestedThumbnailCompletionBlocks;
 @property (nonatomic, strong) CoreDataCacheHelper *coreDataCacheHelper;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
 
@@ -53,24 +55,15 @@ typedef NS_ENUM(NSUInteger, RenditionType)
     if (self)
     {
         self.requestedThumbnailCompletionBlocks = [NSMutableDictionary dictionary];
-        self.thumbnailService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         self.coreDataCacheHelper = [[CoreDataCacheHelper alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(sessionReceived:)
-                                                     name:kAlfrescoSessionReceivedNotification
-                                                   object:nil];
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        self.operationQueue.maxConcurrentOperationCount = 1;
     }
     return self;
 }
 
 - (void)retrieveImageForDocument:(AlfrescoDocument *)document renditionType:(NSString *)rendition session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock
 {
-    if (!self.session)
-    {
-        self.thumbnailService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-        self.session = session;
-    }
-    
     NSString *identifier = document.identifier;
     UIImage *retrievedImage = [self thumbnailForDocument:document renditionType:rendition];
     
@@ -82,7 +75,9 @@ typedef NS_ENUM(NSUInteger, RenditionType)
     {
         if (![[self.requestedThumbnailCompletionBlocks allKeys] containsObject:identifier])
         {
-            [self.thumbnailService retrieveRenditionOfNode:document renditionName:rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+            AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+            
+            ThumbnailOperation *operation = [[ThumbnailOperation alloc] initWithDocumentFolderService:documentFolderService document:document renditionName:rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
                 if (contentFile)
                 {
                     NSManagedObjectContext *childManagedObjectContext = [self.coreDataCacheHelper createChildManagedObjectContext];
@@ -126,21 +121,18 @@ typedef NS_ENUM(NSUInteger, RenditionType)
                     [self runAllCompletionBlocksForIdentifier:identifier thumbnailImage:nil error:error];
                 }
             }];
+            
+            if ([session isKindOfClass:[AlfrescoCloudSession class]])
+            {
+                operation.minimumDelayBetweenRequests = sMinimumDelayBetweenRequestsOnCloud;
+            }
+            [self.operationQueue addOperation:operation];
         }
         [self addCompletionBlock:completionBlock forKey:identifier];
     }
 }
 
 #pragma mark - Private Functions
-
-- (void)sessionReceived:(NSNotification *)notification
-{
-    id <AlfrescoSession> session = notification.object;
-    self.session = session;
-    
-    // update the document folder service
-    self.thumbnailService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-}
 
 - (void)addCompletionBlock:(ImageCompletionBlock)completionBlock forKey:(NSString *)key
 {
