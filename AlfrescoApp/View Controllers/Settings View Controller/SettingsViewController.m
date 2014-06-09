@@ -78,7 +78,7 @@ static NSUInteger const kCellLeftInset = 10;
     BOOL hasPaidAccounts = [[AccountManager sharedManager] numberOfPaidAccounts] > 0;
     if (!hasPaidAccounts)
     {
-        // Filter the groups firstpo unfil
+        // Filter the groups first
         NSMutableArray *filteredGroups = [NSMutableArray array];
         for (NSDictionary *unfilteredGroup in unfilteredPreferences)
         {

@@ -366,9 +366,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     self.folder = (AlfrescoFolder *)node;
     self.permissions = permissions;
     self.session = session;
-    
-    self.actionHandler.node = node;
-    self.actionHandler.session = session;
+    self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
+    self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:node session:session controller:self];
     
     [self refreshViewController];
     

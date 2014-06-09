@@ -639,7 +639,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }];
 }
 
-- (void)deleteNodes:(NSArray *)nodes completionBlock:(void (^)(BOOL success))completionBlock
+- (void)deleteNodes:(NSArray *)nodes completionBlock:(void (^)(NSInteger numberDeleted, NSInteger numberFailed))completionBlock
 {
     __block NSInteger numberOfDocumentsToBeDeleted = nodes.count;
     __block int numberOfSuccessfulDeletes = 0;
@@ -655,7 +655,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             numberOfDocumentsToBeDeleted--;
             if (numberOfDocumentsToBeDeleted == 0 && completionBlock != NULL)
             {
-                (numberOfSuccessfulDeletes == nodes.count) ? completionBlock(YES) : completionBlock(NO);
+                if (completionBlock)
+                {
+                    completionBlock(numberOfSuccessfulDeletes, nodes.count - numberOfSuccessfulDeletes);
+                }
             }
         }];
     }
@@ -677,8 +680,22 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [self setEditing:NO animated:YES];
     [self showHUD];
-    [self deleteNodes:self.multiSelectToolbar.selectedItems completionBlock:^(BOOL complete) {
+    [self deleteNodes:self.multiSelectToolbar.selectedItems completionBlock:^(NSInteger numberDeleted, NSInteger numberFailed) {
         [self hideHUD];
+        if (numberFailed == 0)
+        {
+            displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"multiselect.delete.completed.message", @"%@ files were deleted from the server."), @(numberDeleted)]);
+        }
+        else if (numberDeleted == 0)
+        {
+            displayErrorMessageWithTitle(NSLocalizedString(@"multiselect.delete.failure.message", @"None of the files could be deleted from the server."),
+                                         NSLocalizedString(@"multiselect.delete.completed.title", @"Delete Completed With Errors"));
+        }
+        else
+        {
+            displayErrorMessageWithTitle([NSString stringWithFormat:NSLocalizedString(@"multiselect.delete.partial.message", @"Only %@ files were deleted from the server."), @(numberDeleted)],
+                                         NSLocalizedString(@"multiselect.delete.completed.title", @"Delete Completed With Errors"));
+        }
     }];
 }
 

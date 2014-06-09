@@ -254,6 +254,7 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 - (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
 {
     self.document = (AlfrescoDocument *)node;
+    [self createAlfrescoServicesWithSession:session];
     self.session = session;
     
     [self showHUD];

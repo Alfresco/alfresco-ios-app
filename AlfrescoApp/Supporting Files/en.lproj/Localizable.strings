@@ -136,6 +136,9 @@
 "error.new.version.unable.to.checkout.message" = "Unable to check out %@. Error: %@";
 "error.new.version.unable.to.checkin.title" = "Unable To Check In";
 "error.new.version.unable.to.checkin.message" = "Unable to check in %@. Error: %@";
+// Email
+"error.no.email.accounts.title" = "No Mail Accounts";
+"error.no.email.accounts.message" = "You must have at least one Mail account setup on your device to send this file.";
 
 /**
  * Custom error descriptions
@@ -292,6 +295,10 @@
 "multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d files from the server?";
 "multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 file from local files?";
 "multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d files from local files?";
+"multiselect.delete.completed.title" = "Delete Completed With Errors";
+"multiselect.delete.completed.message" = "%@ files were deleted from the server.";
+"multiselect.delete.partial.message" = "Only %@ files were deleted from the server.";
+"multiselect.delete.failure.message" = "None of the files could be deleted from the server.";
 
 /**
  * Node Picker
@@ -637,7 +644,7 @@
 "action.review" = "Review";
 "action.edit" = "Edit";
 "action.new.version" = "Update";
-// alerts
+// Alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename file to:";
 "action.rename.success.title" = "Rename Successful";
@@ -700,6 +707,12 @@
 "fileprotection.unavailable.message" = "File protection is no longer available";
 "fileprotection.protecting.message" = "Protecting local files...";
 "fileprotection.unprotecting.message" = "Unprotecting local files...";
+
+/**
+ * Mail Action
+ */
+// e.g. "Sent from Alfresco Mobile". 'Alfresco Mobile' will not be localized.
+"mail.footer" = "Sent from %@";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS

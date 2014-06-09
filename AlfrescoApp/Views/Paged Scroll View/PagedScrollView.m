@@ -115,7 +115,7 @@
     }
     else
     {
-        NSLog(@"The class %@ does not conform to the PagedScrollViewDelegate", [self.delegate class]);
+        AlfrescoLogError(@"The class %@ does not conform to the PagedScrollViewDelegate", [self.delegate class]);
     }
     self.delegate = self;
 }

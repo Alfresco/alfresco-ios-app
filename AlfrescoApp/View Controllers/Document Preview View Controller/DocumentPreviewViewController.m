@@ -35,7 +35,6 @@
 #import "FilePreviewViewController.h"
 
 @interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, CommentViewControllerDelegate, ActionViewDelegate>
-
 @end
 
 @implementation DocumentPreviewViewController
@@ -383,14 +382,7 @@
 
 - (void)updateToAlfrescoDocument:(AlfrescoDocument *)node permissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath documentLocation:(InAppDocumentLocation)documentLocation session:(id<AlfrescoSession>)session
 {
-    self.document = (AlfrescoDocument *)node;
-    self.documentPermissions = permissions;
-    self.documentContentFilePath = contentFilePath;
-    self.documentLocation = documentLocation;
-    self.session = session;
-    
-    self.actionHandler.node = node;
-    self.actionHandler.session = session;
+    [super updateToAlfrescoDocument:node permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
     
     self.title = self.document.name;
     
