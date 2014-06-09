@@ -21,9 +21,7 @@
 #import "MetaDataViewController.h"
 
 @interface DownloadsDocumentPreviewViewController ()
-
 @property (nonatomic, strong) NSMutableArray *displayedPagingControllers;
-
 @end
 
 @implementation DownloadsDocumentPreviewViewController
@@ -46,15 +44,7 @@
 
 - (instancetype)initWithFilePath:(NSString *)filePath
 {
-    self = [self initWithNibName:@"BaseDocumentPreviewViewController" bundle:nil];
-    if (self)
-    {
-        self.documentContentFilePath = filePath;
-        self.documentLocation = InAppDocumentLocationLocalFiles;
-        self.pagingControllers = [NSMutableArray array];
-        self.displayedPagingControllers = [NSMutableArray array];
-        self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:nil session:nil controller:self];
-    }
+    self = [self initWithAlfrescoDocument:nil permissions:nil contentFilePath:filePath documentLocation:InAppDocumentLocationLocalFiles session:nil];
     return self;
 }
 
@@ -203,13 +193,7 @@
                 documentLocation:(InAppDocumentLocation)documentLocation
                          session:(id<AlfrescoSession>)session
 {
-    self.document = node;
-    self.documentContentFilePath = contentFilePath;
-    self.documentLocation = documentLocation;
-    self.session = session;
-    
-    self.actionHandler.node = node;
-    self.actionHandler.session = session;
+    [super updateToAlfrescoDocument:node permissions:permissions contentFilePath:contentFilePath documentLocation:documentLocation session:session];
     
     [self refreshViewController];
     

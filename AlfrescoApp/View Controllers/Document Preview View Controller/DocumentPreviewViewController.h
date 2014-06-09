@@ -20,6 +20,4 @@
 
 @interface DocumentPreviewViewController : BaseDocumentPreviewViewController
 
-
-
 @end

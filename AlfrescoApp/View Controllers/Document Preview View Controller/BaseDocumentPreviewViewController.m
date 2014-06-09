@@ -21,10 +21,6 @@
 #import "DocumentPreviewViewController.h"
 #import "DownloadsDocumentPreviewViewController.h"
 
-@interface BaseDocumentPreviewViewController ()
-
-@end
-
 @implementation BaseDocumentPreviewViewController
 
 - (instancetype)initWithAlfrescoDocument:(AlfrescoDocument *)document
@@ -113,12 +109,26 @@
 
 - (void)updateToAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session
 {
-    AlfrescoLogError(@"You need to implement %@", _cmd);
+    self.document = (AlfrescoDocument *)node;
+    self.documentPermissions = permissions;
+    self.session = session;
+    self.documentContentFilePath = nil;
+    self.documentLocation = 0;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
+    self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:node session:session controller:self];
 }
 
 - (void)updateToAlfrescoDocument:(AlfrescoDocument *)node permissions:(AlfrescoPermissions *)permissions contentFilePath:(NSString *)contentFilePath documentLocation:(InAppDocumentLocation)documentLocation session:(id<AlfrescoSession>)session
 {
-    AlfrescoLogError(@"You need to implement %@", _cmd);
+    self.document = node;
+    self.documentPermissions = permissions;
+    self.session = session;
+    self.documentContentFilePath = contentFilePath;
+    self.documentLocation = documentLocation;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
+    self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:node session:session controller:self];
 }
 
 @end

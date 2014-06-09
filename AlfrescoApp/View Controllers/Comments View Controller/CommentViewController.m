@@ -362,6 +362,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     self.node = node;
     self.permissions = permissions;
     self.session = session;
+    [self createAlfrescoServicesWithSession:session];
     
     [self updateCommentsContainerViewHeightForNode:node];
     
