@@ -346,14 +346,14 @@
     AlfrescoRequest *request = nil;
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
 
-    if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
+    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync || [[SyncManager sharedManager] isNodeInSyncList:self.node])
+    {
+        displayOpenInBlock(documentPath);
+    }
+    else if (self.documentLocation == InAppDocumentLocationFilesAndFolders)
     {
         NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
         displayOpenInBlock(fileLocation);
-    }
-    else if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync)
-    {
-        displayOpenInBlock(documentPath);
     }
     else
     {

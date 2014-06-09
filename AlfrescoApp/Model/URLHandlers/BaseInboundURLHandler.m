@@ -46,15 +46,20 @@
 - (BOOL)handleInboundFileURL:(NSURL *)url savebackMetadata:(SaveBackMetadata *)metadata session:(id<AlfrescoSession>)session
 {
     // Save the file to the original location
-    NSString *filePath = metadata.originalFileLocation;
-    [self overwriteItemAtPath:filePath withItemAtPath:url.path];
+    NSString *originalFilePath = metadata.originalFileLocation;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
+    // Create a copy of the document with the correct extension to work with temporarily
+    NSString *fileNameWithCorrectExtension = [[url.path stringByReplacingOccurrencesOfString:url.pathExtension withString:originalFilePath.pathExtension] lastPathComponent];
+    NSString *temporaryFilePath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:fileNameWithCorrectExtension];
+    [self overwriteItemAtPath:temporaryFilePath withItemAtPath:url.path];
     
     AlfrescoDocument *syncedDocument = [[SyncHelper sharedHelper] syncDocumentFromDocumentIdentifier:metadata.nodeRef];
     
     if (syncedDocument)
     {
+        [self overwriteItemAtPath:originalFilePath withItemAtPath:temporaryFilePath];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
+        
         [[SyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
             
             AlfrescoDocument *editedDocument = (AlfrescoDocument *)[[SyncManager sharedManager] alfrescoNodeForIdentifier:syncedDocument.identifier];
@@ -69,7 +74,10 @@
             [documentService retrieveNodeWithIdentifier:metadata.nodeRef completionBlock:^(AlfrescoNode *node, NSError *identifierError) {
                 if (identifierError)
                 {
-                    [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:filePath completionBlock:nil];
+                    [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:temporaryFilePath completionBlock:^(NSString *filePath) {
+                        // Do some cleaning up
+                        [self removeFileAtPath:temporaryFilePath];
+                    }];
                     NSString *title = NSLocalizedString(@"saveback.failed.title", @"SaveBack Failed Title");
                     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"SaveBack Failed Message"), node.name];
                     
@@ -83,15 +91,18 @@
                 }
                 else
                 {
-                    NSInputStream *inputStream = [[NSInputStream alloc] initWithFileAtPath:filePath];
+                    NSInputStream *inputStream = [[NSInputStream alloc] initWithFileAtPath:temporaryFilePath];
                     [inputStream open];
                     
-                    AlfrescoContentStream *stream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:[Utility mimeTypeForFileExtension:filePath.pathExtension]];
+                    AlfrescoContentStream *stream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:[Utility mimeTypeForFileExtension:temporaryFilePath.pathExtension]];
                     [documentService updateContentOfDocument:(AlfrescoDocument *)node contentStream:stream completionBlock:^(AlfrescoDocument *document, NSError *error) {
                         [inputStream close];
                         // If successful, display a message and let the observers know, else, save it to downloads to ensure no data is lost
                         if (!error)
                         {
+                            [self overwriteItemAtPath:originalFilePath withItemAtPath:temporaryFilePath];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
+                            
                             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackRemoteComplete object:metadata.nodeRef userInfo:@{kAlfrescoDocumentUpdatedFromDocumentParameterKey : document}];
                             
                             NSString *title = NSLocalizedString(@"saveback.completed.title", @"SaveBack Completed Title");
@@ -100,7 +111,10 @@
                         }
                         else
                         {
-                            [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:filePath completionBlock:nil];
+                            [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:temporaryFilePath completionBlock:^(NSString *filePath) {
+                                // Do some cleaning up
+                                [self removeFileAtPath:temporaryFilePath];
+                            }];
                             NSString *title = NSLocalizedString(@"saveback.failed.title", @"SaveBack Failed Title");
                             NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"SaveBack Failed Message"), node.name];
                             displayErrorMessageWithTitle(message, title);
@@ -231,6 +245,17 @@
         return NO;
     }
     return YES;
+}
+
+- (void)removeFileAtPath:(NSString *)filePath
+{
+    NSError *removalError = nil;
+    [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:&removalError];
+    
+    if (removalError)
+    {
+        AlfrescoLogDebug(@"Unable to remove item at path: %@", filePath);
+    }
 }
 
 #pragma mark - NSFileManagerDelegate methods
