@@ -306,7 +306,6 @@ static CGFloat sDownloadProgressHeight;
 
 - (void)showProgressViewAnimated:(BOOL)animated
 {
-    NSLog(@"1 %@ %@", [self class], NSStringFromSelector(_cmd));
     if (animated)
     {
         [self.downloadProgressContainer layoutIfNeeded];
@@ -315,9 +314,7 @@ static CGFloat sDownloadProgressHeight;
             self.centerYAlignmentForProgressContainer.constant = (self.previewThumbnailImageView.image.size.height / 2) + kPlaceholderToProcessVerticalOffset;
             self.downloadProgressContainer.hidden = NO;
             [self.downloadProgressContainer layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            NSLog(@"2 %@ %@", [self class], NSStringFromSelector(_cmd));
-        }];
+        } completion:nil];
     }
     else
     {
@@ -330,8 +327,6 @@ static CGFloat sDownloadProgressHeight;
 
 - (void)hideProgressViewAnimated:(BOOL)animated
 {
-    NSLog(@"1 %@ %@", [self class], NSStringFromSelector(_cmd));
-    
     if (animated)
     {
         [self.downloadProgressContainer layoutIfNeeded];
@@ -339,7 +334,6 @@ static CGFloat sDownloadProgressHeight;
             self.heightForDownloadContainer.constant = 0;
             [self.downloadProgressContainer layoutIfNeeded];
         } completion:^(BOOL finished) {
-            NSLog(@"2 %@ %@", [self class], NSStringFromSelector(_cmd));
             self.downloadProgressContainer.hidden = YES;
         }];
     }
