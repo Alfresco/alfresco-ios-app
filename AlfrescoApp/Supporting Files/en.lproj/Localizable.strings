@@ -462,6 +462,7 @@
 
 "metadata.cm:longitude" = "Longitude";
 "metadata.cm:latitude" = "Latitude";
+
 "metadata.exif:dateTimeOriginal" = "Date Time Original";
 "metadata.exif:exposureTime" = "Exposure Time";
 "metadata.exif:flash" = "Flash";
@@ -483,12 +484,25 @@
 "metadata.exif.orientation.portrait.upsidedown" = "Portrait Up-side Down";
 "metadata.exif.orientation.undefined" = "Undefined";
 
+"metadata.audio:album" = "Album";
+"metadata.audio:artist" = "Artist";
+"metadata.audio:composer" = "Composer";
+"metadata.audio:engineer" = "Engineer";
+"metadata.audio:genre" = "Genre";
+"metadata.audio:trackNumber" = "Track Number";
+"metadata.audio:releaseDate" = "Release Date";
+"metadata.audio:sampleRate" = "Sample Rate";
+"metadata.audio:sampleType" = "Sample Type";
+"metadata.audio:channelType" = "Channel Type";
+"metadata.audio:compressor" = "Compressor";
+
 "metadata.nodeTags" = "Tags";
 "metadata.version.history.cell" = "View Version History";
 
-"metadata.general.section.header.title" = "General";
-"metadata.image.information.section.header.title" = "Image Information";
-"metadata.version.history.section.header.title" = "Version History";
+"metadata.section.header.general" = "General";
+"metadata.section.header.geographic" = "Geographic Information";
+"metadata.section.header.image" = "Image Information";
+"metadata.section.header.audio" = "Audio Information";
 
 /**
  * Version History View Controller
