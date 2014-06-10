@@ -35,6 +35,7 @@
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
 @property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
 @property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
+@property (nonatomic, assign) BOOL didCancelLogin;
 @end
 
 @implementation LoginManager
@@ -70,6 +71,8 @@
 
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
+    self.didCancelLogin = NO;
+    
     self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error)
     {
         if (loginCompletionBlock != NULL)
@@ -142,7 +145,7 @@
 
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
-             navigationController:(UINavigationController *)navigationController
+            navigationController:(UINavigationController *)navigationController
                  completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock
 {
     self.authenticationCompletionBlock = authenticationCompletionBlock;
@@ -156,33 +159,36 @@
         }
         else
         {
-            self.currentLoginRequest = [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *networks, NSError *error) {
-                if (networks && error == nil)
-                {
-                    // Primary sort: isHomeNetwork
-                    NSSortDescriptor *homeNetworkSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"isHomeNetwork" ascending:NO];
-                    // Seconday sort: alphabetical by identifier
-                    NSSortDescriptor *identifierSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES];
-                    
-                    NSArray *sortedNetworks = [networks sortedArrayUsingDescriptors:@[homeNetworkSortDescriptor, identifierSortDescriptor]];
-                    account.accountNetworks = [sortedNetworks valueForKeyPath:@"identifier"];
-                    
-                    // The home network defines the user's account paid status
-                    account.paidAccount = ((AlfrescoCloudNetwork *)sortedNetworks[0]).isPaidNetwork;
-                    
-                    if (authenticationCompletionBlock != NULL)
+            if (!self.didCancelLogin)
+            {
+                self.currentLoginRequest = [(AlfrescoCloudSession *)session retrieveNetworksWithCompletionBlock:^(NSArray *networks, NSError *error) {
+                    if (networks && error == nil)
                     {
-                        authenticationCompletionBlock(YES, session, error);
+                        // Primary sort: isHomeNetwork
+                        NSSortDescriptor *homeNetworkSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"isHomeNetwork" ascending:NO];
+                        // Seconday sort: alphabetical by identifier
+                        NSSortDescriptor *identifierSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES];
+                        
+                        NSArray *sortedNetworks = [networks sortedArrayUsingDescriptors:@[homeNetworkSortDescriptor, identifierSortDescriptor]];
+                        account.accountNetworks = [sortedNetworks valueForKeyPath:@"identifier"];
+                        
+                        // The home network defines the user's account paid status
+                        account.paidAccount = ((AlfrescoCloudNetwork *)sortedNetworks[0]).isPaidNetwork;
+                        
+                        if (authenticationCompletionBlock != NULL)
+                        {
+                            authenticationCompletionBlock(YES, session, error);
+                        }
                     }
-                }
-                else
-                {
-                    if (authenticationCompletionBlock != NULL)
+                    else
                     {
-                        authenticationCompletionBlock(NO, nil, error);
+                        if (authenticationCompletionBlock != NULL)
+                        {
+                            authenticationCompletionBlock(NO, nil, error);
+                        }
                     }
-                }
-            }];
+                }];
+            }
         }
     };
     
@@ -258,9 +264,12 @@
                             [[AccountManager sharedManager] saveAccountsToKeychain];
                             
                             // try to connect once OAuthData is refreshed
-                            self.currentLoginRequest = [self connectWithOAuthData:refreshedOAuthData networkId:networkId completionBlock:^(id<AlfrescoSession> retrySession, NSError *retryError) {
-                                authenticationComplete(retrySession, retryError);
-                            }];
+                            if (!self.didCancelLogin)
+                            {
+                                self.currentLoginRequest = [self connectWithOAuthData:refreshedOAuthData networkId:networkId completionBlock:^(id<AlfrescoSession> retrySession, NSError *retryError) {
+                                    authenticationComplete(retrySession, retryError);
+                                }];
+                            }
                         }
                     }];
                 }
@@ -419,6 +428,7 @@
 {
     [self hideHUD];
     [self.currentLoginRequest cancel];
+    self.didCancelLogin = YES;
     self.currentLoginRequest = nil;
     self.currentLoginURLString = nil;
 }
