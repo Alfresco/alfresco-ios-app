@@ -118,11 +118,15 @@
 		271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */; };
 		271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC762189C2D250059D1B2 /* status-sync-waiting.png */; };
 		271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */; };
+		272CC7BD19466B680009FADA /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272CC7BC19466B680009FADA /* MapViewController.m */; };
+		272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 272CC7C51946727A0009FADA /* AlfrescoDocument+MapAnnotation.m */; };
 		272CC7CD194690AD0009FADA /* segment-icon-comments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7C8194690AD0009FADA /* segment-icon-comments@2x.png */; };
 		272CC7CE194690AD0009FADA /* segment-icon-history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7C9194690AD0009FADA /* segment-icon-history@2x.png */; };
+		272CC7CF194690AD0009FADA /* segment-icon-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7CA194690AD0009FADA /* segment-icon-map@2x.png */; };
 		272CC7D0194690AD0009FADA /* segment-icon-preview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7CB194690AD0009FADA /* segment-icon-preview@2x.png */; };
 		272CC7D1194690AD0009FADA /* segment-icon-properties@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7CC194690AD0009FADA /* segment-icon-properties@2x.png */; };
 		272CC7D3194695290009FADA /* segment-icon-comments-none@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7D2194695290009FADA /* segment-icon-comments-none@2x.png */; };
+		272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7D41946977B0009FADA /* segment-icon-map-none@2x.png */; };
 		2739574F1900B12B00169BEB /* sync-button-stop-all.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574D1900B12B00169BEB /* sync-button-stop-all.png */; };
 		273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */; };
 		273DD714191261320081B01D /* eggShell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 273DD713191261320081B01D /* eggShell.framework */; };
@@ -686,11 +690,17 @@
 		271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC762189C2D250059D1B2 /* status-sync-waiting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting.png"; sourceTree = "<group>"; };
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
+		272CC7BB19466B680009FADA /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		272CC7BC19466B680009FADA /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		272CC7C41946727A0009FADA /* AlfrescoDocument+MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocument+MapAnnotation.h"; sourceTree = "<group>"; };
+		272CC7C51946727A0009FADA /* AlfrescoDocument+MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoDocument+MapAnnotation.m"; sourceTree = "<group>"; };
 		272CC7C8194690AD0009FADA /* segment-icon-comments@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-comments@2x.png"; sourceTree = "<group>"; };
 		272CC7C9194690AD0009FADA /* segment-icon-history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-history@2x.png"; sourceTree = "<group>"; };
+		272CC7CA194690AD0009FADA /* segment-icon-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-map@2x.png"; sourceTree = "<group>"; };
 		272CC7CB194690AD0009FADA /* segment-icon-preview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-preview@2x.png"; sourceTree = "<group>"; };
 		272CC7CC194690AD0009FADA /* segment-icon-properties@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-properties@2x.png"; sourceTree = "<group>"; };
 		272CC7D2194695290009FADA /* segment-icon-comments-none@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-comments-none@2x.png"; sourceTree = "<group>"; };
+		272CC7D41946977B0009FADA /* segment-icon-map-none@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-icon-map-none@2x.png"; sourceTree = "<group>"; };
 		2739574D1900B12B00169BEB /* sync-button-stop-all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all.png"; sourceTree = "<group>"; };
 		2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all@2x.png"; sourceTree = "<group>"; };
 		273DD712191260F10081B01D /* eggShell.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = eggShell.bundle; sourceTree = "<group>"; };
@@ -1570,12 +1580,25 @@
 			path = "Node Cell";
 			sourceTree = "<group>";
 		};
+		272CC7B919466B380009FADA /* Map View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				272CC7C41946727A0009FADA /* AlfrescoDocument+MapAnnotation.h */,
+				272CC7C51946727A0009FADA /* AlfrescoDocument+MapAnnotation.m */,
+				272CC7BB19466B680009FADA /* MapViewController.h */,
+				272CC7BC19466B680009FADA /* MapViewController.m */,
+			);
+			path = "Map View Controller";
+			sourceTree = "<group>";
+		};
 		272CC7C7194690AD0009FADA /* Segmented Control */ = {
 			isa = PBXGroup;
 			children = (
 				272CC7D2194695290009FADA /* segment-icon-comments-none@2x.png */,
 				272CC7C8194690AD0009FADA /* segment-icon-comments@2x.png */,
 				272CC7C9194690AD0009FADA /* segment-icon-history@2x.png */,
+				272CC7D41946977B0009FADA /* segment-icon-map-none@2x.png */,
+				272CC7CA194690AD0009FADA /* segment-icon-map@2x.png */,
 				272CC7CB194690AD0009FADA /* segment-icon-preview@2x.png */,
 				272CC7CC194690AD0009FADA /* segment-icon-properties@2x.png */,
 			);
@@ -2603,6 +2626,7 @@
 				737972F218A39E59007613B2 /* Folder Preview Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
+				272CC7B919466B380009FADA /* Map View Controller */,
 				73B95AD217A68DF20099FB84 /* Metadata View Controller */,
 				731A8F42192F54090099BE7B /* New Version View Controller */,
 				0876A03318D99FF60035370A /* Node Picker ViewController */,
@@ -3011,6 +3035,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */,
 				273DD716191261710081B01D /* eggShellSettings_iPhone.storyboardc in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
@@ -3200,6 +3225,7 @@
 				73D6492518AD855D00333266 /* actionsheet-folder@2x.png in Resources */,
 				0833248A17FF0DC200EE6AA8 /* blue-button-30.png in Resources */,
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
+				272CC7CF194690AD0009FADA /* segment-icon-map@2x.png in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
 				271DC76E189C2D250059D1B2 /* status-sync-failed.png in Resources */,
 				73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */,
@@ -3395,6 +3421,7 @@
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
+				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
@@ -3415,6 +3442,7 @@
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
 				0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */,
 				0876A05718D9A0A80035370A /* ProgressView.m in Sources */,
+				272CC7BD19466B680009FADA /* MapViewController.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
 				0876A04718D99FF60035370A /* NodePickerListViewController.m in Sources */,
 				73B078A0189AB4F800D02C43 /* Reachability.m in Sources */,

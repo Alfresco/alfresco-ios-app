@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
     PagingScrollViewSegmentTypeMetadata,
     PagingScrollViewSegmentTypeVersionHistory,
     PagingScrollViewSegmentTypeComments,
+    PagingScrollViewSegmentTypeMap,
     PagingScrollViewSegmentType_MAX
 };
 

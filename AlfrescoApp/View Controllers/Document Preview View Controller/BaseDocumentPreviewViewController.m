@@ -72,6 +72,7 @@
         [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
         [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.version.history.title", @"Version Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeVersionHistory];
         [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+        [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.map.title", @"Map Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMap];
     }
 }
 
