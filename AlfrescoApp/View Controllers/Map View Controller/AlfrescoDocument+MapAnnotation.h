@@ -18,8 +18,6 @@
 
 #import <MapKit/MapKit.h>
 
-#import "AlfrescoDocument.h"
-
 @interface AlfrescoDocument (MapAnnotation) <MKAnnotation>
 
 @end
