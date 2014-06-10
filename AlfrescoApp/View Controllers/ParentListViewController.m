@@ -287,6 +287,7 @@
         UITableViewController *tableViewController = [[UITableViewController alloc] init];
         tableViewController.tableView = self.tableView;
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        refreshControl.backgroundColor = [UIColor whiteColor];
         refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
         [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
         tableViewController.refreshControl = refreshControl;
