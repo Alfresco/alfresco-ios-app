@@ -71,8 +71,6 @@
 
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
-    self.didCancelLogin = NO;
-    
     self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error)
     {
         if (loginCompletionBlock != NULL)
@@ -148,6 +146,7 @@
             navigationController:(UINavigationController *)navigationController
                  completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock
 {
+    self.didCancelLogin = NO;
     self.authenticationCompletionBlock = authenticationCompletionBlock;
     void (^authenticationComplete)(id<AlfrescoSession>, NSError *error) = ^(id<AlfrescoSession> session, NSError *error) {
         if (error)
