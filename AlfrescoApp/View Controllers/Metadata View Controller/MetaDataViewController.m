@@ -31,6 +31,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 @property (nonatomic, strong) NSMutableDictionary *propertiesToDisplayWithValues;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) AlfrescoTaggingService *tagService;
+@property (nonatomic, strong) NSMutableArray *sectionHeaderKeys;
 @end
 
 @implementation MetaDataViewController
@@ -69,12 +70,13 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 - (void)setupMetadataToDisplayWithNode:(AlfrescoNode *)node
 {
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:kMetadataToDisplayPlistName ofType:@"plist"];
-    NSArray *allPossibleDisplayMetadata = [NSArray arrayWithContentsOfFile:plistPath];
-    
-    NSMutableArray *metadataToDisplayKeys = [NSMutableArray array];
+    NSDictionary *allPossibleDisplayMetadata = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    NSMutableArray *tableDataArray = [NSMutableArray array];
     NSMutableDictionary *metadataToDisplayWithValues = [NSMutableDictionary dictionary];
     
-    [allPossibleDisplayMetadata enumerateObjectsUsingBlock:^(NSArray *propertySectionArray, NSUInteger idx, BOOL *stop) {
+    self.sectionHeaderKeys = [NSMutableArray array];
+    
+    [allPossibleDisplayMetadata enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSArray *propertySectionArray, BOOL *stop) {
         NSMutableArray *sectionArray = [NSMutableArray array];
         
         [propertySectionArray enumerateObjectsUsingBlock:^(NSString *propertyName, NSUInteger idx, BOOL *stop) {
@@ -82,17 +84,18 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
             if ([propertyObject value] != nil)
             {
                 [sectionArray addObject:propertyName];
-                [metadataToDisplayWithValues setObject:propertyObject forKey:propertyName];
+                metadataToDisplayWithValues[propertyName] = propertyObject;
             }
         }];
         
         if (sectionArray.count > 0)
         {
-            [metadataToDisplayKeys addObject:sectionArray];
+            [self.sectionHeaderKeys addObject:key];
+            [tableDataArray addObject:sectionArray];
         }
     }];
     
-    self.tableViewData = metadataToDisplayKeys;
+    self.tableViewData = tableDataArray;
     self.propertiesToDisplayWithValues = metadataToDisplayWithValues;
     
     // fetch any tags the node may have in the background
@@ -135,18 +138,10 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
     headerView.headerTitleTextLabel.textColor = [UIColor appTintColor];
     
     NSString *headerTitleText = nil;
-    if (section < self.tableViewData.count)
+    if (section < self.sectionHeaderKeys.count)
     {
-        switch (section)
-        {
-            case 0:
-                headerTitleText = NSLocalizedString(@"metadata.general.section.header.title", @"General Section Header");
-                break;
-
-            case 1:
-                headerTitleText = NSLocalizedString(@"metadata.image.information.section.header.title", @"Image Section Header");
-                break;
-        }
+        NSString *stringKey = [NSString stringWithFormat:@"metadata.section.header.%@", self.sectionHeaderKeys[section]];
+        headerTitleText = NSLocalizedString(stringKey, @"Section Header");
     }
     
     headerView.headerTitleTextLabel.text = [headerTitleText uppercaseString];

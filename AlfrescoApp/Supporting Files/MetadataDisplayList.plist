@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<array>
+<dict>
+	<key>general</key>
 	<array>
 		<string>cmis:name</string>
 		<string>cm:title</string>
@@ -12,9 +13,13 @@
 		<string>cm:author</string>
 		<string>cmis:versionLabel</string>
 	</array>
+	<key>geographic</key>
 	<array>
 		<string>cm:longitude</string>
 		<string>cm:latitude</string>
+	</array>
+	<key>image</key>
+	<array>
 		<string>exif:dateTimeOriginal</string>
 		<string>exif:exposureTime</string>
 		<string>exif:flash</string>
@@ -31,5 +36,19 @@
 		<string>exif:model</string>
 		<string>exif:software</string>
 	</array>
-</array>
+	<key>audio</key>
+	<array>
+		<string>audio:album</string>
+		<string>audio:artist</string>
+		<string>audio:composer</string>
+		<string>audio:engineer</string>
+		<string>audio:genre</string>
+		<string>audio:trackNumber</string>
+		<string>audio:releaseDate</string>
+		<string>audio:sampleRate</string>
+		<string>audio:sampleType</string>
+		<string>audio:channelType</string>
+		<string>audio:compressor</string>
+	</array>
+</dict>
 </plist>
