@@ -38,8 +38,8 @@
                         <constraint firstAttribute="height" constant="28" id="gYK-gy-Vjg"/>
                     </constraints>
                     <segments>
-                        <segment title="First"/>
-                        <segment title="Second"/>
+                        <segment title="" image="segment-icon-properties.png"/>
+                        <segment title="" image="segment-icon-comments-none.png"/>
                     </segments>
                     <connections>
                         <action selector="segmentValueChanged:" destination="-1" eventType="valueChanged" id="Kng-pe-hGm"/>
@@ -70,4 +70,8 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="segment-icon-comments-none.png" width="30" height="22"/>
+        <image name="segment-icon-properties.png" width="30" height="22"/>
+    </resources>
 </document>

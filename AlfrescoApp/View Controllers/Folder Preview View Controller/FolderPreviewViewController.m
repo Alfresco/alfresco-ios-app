@@ -77,6 +77,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     [super viewDidLoad];
     
     [self setupPagingScrollView];
+    [self localiseUI];
     [self refreshViewController];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
@@ -111,8 +112,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
 - (void)localiseUI
 {
-    [self.segmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeMetadata];
-    [self.segmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
+    if (IS_IPAD)
+    {
+        [self.segmentControl setTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeMetadata];
+        [self.segmentControl setTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
+    }
 }
 
 - (void)refreshViewController
@@ -140,10 +144,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
 - (void)setupPagingScrollView
 {
-    [self.segmentControl removeAllSegments];
-    [self.segmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentFolderTypeMetadata animated:NO];
-    [self.segmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title") atIndex:PagingScrollViewSegmentFolderTypeComments animated:NO];
-    
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.folder session:self.session];
     [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentFolderTypeMetadata];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.folder permissions:self.permissions session:self.session delegate:self];
@@ -314,26 +314,34 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
 - (void)commentViewController:(CommentViewController *)controller didUpdateCommentCount:(NSUInteger)commentDisplayedCount hasMoreComments:(BOOL)hasMoreComments
 {
-    NSString *segmentCommentText = nil;
-    
-    if (hasMoreComments && commentDisplayedCount >= kMaxItemsPerListingRetrieve)
+    if (IS_IPAD)
     {
-        segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.hasmore.title", @"Comments Segment Title - Has More"), kMaxItemsPerListingRetrieve];
-    }
-    else if (commentDisplayedCount > 0)
-    {
-        segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
-    }
-    else if (commentDisplayedCount == 0)
-    {
-        segmentCommentText = NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title");
+        NSString *segmentCommentText = nil;
+        
+        if (hasMoreComments && commentDisplayedCount >= kMaxItemsPerListingRetrieve)
+        {
+            segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.hasmore.title", @"Comments Segment Title - Has More"), kMaxItemsPerListingRetrieve];
+        }
+        else if (commentDisplayedCount > 0)
+        {
+            segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
+        }
+        else if (commentDisplayedCount == 0)
+        {
+            segmentCommentText = NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title");
+        }
+        else
+        {
+            segmentCommentText = [self.segmentControl titleForSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
+        }
+        
+        [self.segmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
     }
     else
     {
-        segmentCommentText = [self.segmentControl titleForSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
+        NSString *imageName = (commentDisplayedCount > 0) ? @"segment-icon-comments.png" : @"segment-icon-comments-none.png";
+        [self.segmentControl setImage:[UIImage imageNamed:imageName] forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
     }
-    
-    [self.segmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentFolderTypeComments];
 }
 
 #pragma mark - PagedScrollViewDelegate Functions
