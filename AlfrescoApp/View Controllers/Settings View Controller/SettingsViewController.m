@@ -69,6 +69,7 @@ static NSUInteger const kCellLeftInset = 10;
 
     self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
     self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Private Functions
