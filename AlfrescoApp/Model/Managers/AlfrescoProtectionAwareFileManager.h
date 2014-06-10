@@ -16,8 +16,6 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AlfrescoFileManager.h"
-
 @interface AlfrescoProtectionAwareFileManager : AlfrescoFileManager
 
 - (BOOL)updateProtectionForFileAtPath:(NSString *)path;
