@@ -391,6 +391,7 @@
 "document.segment.nocomments.title" = "Comments";
 "document.segment.comments.title" = "Comments (%d)";
 "document.segment.comments.hasmore.title" = "Comments (%d+)";
+"document.segment.map.title" = "Map";
 
 /**
  * Downloads Document Preview Controller

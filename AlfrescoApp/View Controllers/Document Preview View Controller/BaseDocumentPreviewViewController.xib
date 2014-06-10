@@ -45,10 +45,11 @@
                         <constraint firstAttribute="height" constant="28" id="sr6-Vm-NRo"/>
                     </constraints>
                     <segments>
-                        <segment title="First"/>
-                        <segment title="Second"/>
-                        <segment title="Third"/>
-                        <segment title="Fourth"/>
+                        <segment title="" image="segment-icon-preview.png"/>
+                        <segment title="" image="segment-icon-properties.png"/>
+                        <segment title="" image="segment-icon-history.png"/>
+                        <segment title="" image="segment-icon-comments-none.png"/>
+                        <segment title="" image="segment-icon-map-none.png"/>
                     </segments>
                     <connections>
                         <action selector="segmentValueChanged:" destination="-1" eventType="valueChanged" id="n3w-bY-dyi"/>
@@ -72,4 +73,11 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="segment-icon-comments-none.png" width="30" height="22"/>
+        <image name="segment-icon-history.png" width="30" height="22"/>
+        <image name="segment-icon-map-none.png" width="30" height="22"/>
+        <image name="segment-icon-preview.png" width="30" height="22"/>
+        <image name="segment-icon-properties.png" width="30" height="22"/>
+    </resources>
 </document>

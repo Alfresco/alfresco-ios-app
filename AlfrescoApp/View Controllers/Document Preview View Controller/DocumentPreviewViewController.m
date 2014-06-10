@@ -15,27 +15,33 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
+
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <QuartzCore/QuartzCore.h>
+
+#import "ActionViewHandler.h"
 #import "DocumentPreviewViewController.h"
 #import "ActionCollectionView.h"
-#import "ThumbnailManager.h"
-#import "MBProgressHUD.h"
-#import "ErrorDescriptions.h"
-#import "UniversalDevice.h"
-#import "MetaDataViewController.h"
-#import "VersionHistoryViewController.h"
-#import "PagedScrollView.h"
 #import "CommentViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "FavouriteManager.h"
-#import "DownloadManager.h"
-#import "SyncManager.h"
-#import <MobileCoreServices/MobileCoreServices.h>
-#import "ActionViewHandler.h"
-#import "FilePreviewViewController.h"
 #import "Constants.h"
+#import "DownloadManager.h"
+#import "ErrorDescriptions.h"
+#import "FavouriteManager.h"
+#import "FilePreviewViewController.h"
+#import "MapViewController.h"
+#import "MBProgressHUD.h"
+#import "MetaDataViewController.h"
+#import "PagedScrollView.h"
+#import "SyncManager.h"
+#import "ThumbnailManager.h"
+#import "UniversalDevice.h"
+#import "VersionHistoryViewController.h"
 
-@interface DocumentPreviewViewController () <ActionCollectionViewDelegate, PagedScrollViewDelegate, CommentViewControllerDelegate, ActionViewDelegate>
+@interface DocumentPreviewViewController () <ActionCollectionViewDelegate,
+                                             ActionViewDelegate,
+                                             CommentViewControllerDelegate,
+                                             MapViewControllerDelegate,
+                                             PagedScrollViewDelegate>
 @end
 
 @implementation DocumentPreviewViewController
@@ -111,6 +117,8 @@
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
+    MapViewController *mapViewController = [[MapViewController alloc] initWithDocument:self.document session:self.session];
+    mapViewController.delegate = self;
     
     for (int i = 0; i < PagingScrollViewSegmentType_MAX; i++)
     {
@@ -121,6 +129,7 @@
     [self.pagingControllers insertObject:metaDataController atIndex:PagingScrollViewSegmentTypeMetadata];
     [self.pagingControllers insertObject:versionHistoryController atIndex:PagingScrollViewSegmentTypeVersionHistory];
     [self.pagingControllers insertObject:commentViewController atIndex:PagingScrollViewSegmentTypeComments];
+    [self.pagingControllers insertObject:mapViewController atIndex:PagingScrollViewSegmentTypeMap];
     
     for (int i = 0; i < self.pagingControllers.count; i++)
     {
@@ -357,26 +366,49 @@
 
 - (void)commentViewController:(CommentViewController *)controller didUpdateCommentCount:(NSUInteger)commentDisplayedCount hasMoreComments:(BOOL)hasMoreComments
 {
-    NSString *segmentCommentText = nil;
-    
-    if (hasMoreComments && commentDisplayedCount >= kMaxItemsPerListingRetrieve)
+    if (IS_IPAD)
     {
-        segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.hasmore.title", @"Comments Segment Title - Has More"), kMaxItemsPerListingRetrieve];
-    }
-    else if (commentDisplayedCount > 0)
-    {
-        segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
-    }
-    else if (commentDisplayedCount == 0)
-    {
-        segmentCommentText = NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title");
+        NSString *segmentCommentText = nil;
+        
+        if (hasMoreComments && commentDisplayedCount >= kMaxItemsPerListingRetrieve)
+        {
+            segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.hasmore.title", @"Comments Segment Title - Has More"), kMaxItemsPerListingRetrieve];
+        }
+        else if (commentDisplayedCount > 0)
+        {
+            segmentCommentText = [NSString stringWithFormat:NSLocalizedString(@"document.segment.comments.title", @"Comments Segment Title - Count"), commentDisplayedCount];
+        }
+        else if (commentDisplayedCount == 0)
+        {
+            segmentCommentText = NSLocalizedString(@"document.segment.nocomments.title", @"Comments Segment Title");
+        }
+        else
+        {
+            segmentCommentText = [self.pagingSegmentControl titleForSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+        }
+        
+        [self.pagingSegmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
     }
     else
     {
-        segmentCommentText = [self.pagingSegmentControl titleForSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+        NSString *imageName = (commentDisplayedCount > 0) ? @"segment-icon-comments.png" : @"segment-icon-comments-none.png";
+        [self.pagingSegmentControl setImage:[UIImage imageNamed:imageName] forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
     }
-    
-    [self.pagingSegmentControl setTitle:segmentCommentText forSegmentAtIndex:PagingScrollViewSegmentTypeComments];
+}
+
+#pragma mark - MapViewControllerDelegate Functions
+
+- (void)mapViewController:(MapViewController *)controller didUpdateLocationAvailability:(BOOL)hasLocation
+{
+    if (IS_IPAD)
+    {
+        // TBD - currently no UI hint
+    }
+    else
+    {
+        NSString *imageName = hasLocation ? @"segment-icon-map.png" : @"segment-icon-map-none.png";
+        [self.pagingSegmentControl setImage:[UIImage imageNamed:imageName] forSegmentAtIndex:PagingScrollViewSegmentTypeMap];
+    }
 }
 
 #pragma mark - NodeUpdatableProtocol Functions

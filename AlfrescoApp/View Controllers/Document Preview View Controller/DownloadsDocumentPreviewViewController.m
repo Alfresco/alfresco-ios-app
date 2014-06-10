@@ -22,6 +22,7 @@
 
 @interface DownloadsDocumentPreviewViewController ()
 @property (nonatomic, strong) NSMutableArray *displayedPagingControllers;
+@property (nonatomic, assign) CGFloat segmentControlHeightConstraintValue;
 @end
 
 @implementation DownloadsDocumentPreviewViewController
@@ -52,6 +53,8 @@
 {
     [super viewDidLoad];
     
+    self.segmentControlHeightConstraintValue = self.segmentControlHeightConstraint.constant;
+
     [self setupPagingScrollView];
     [self refreshViewController];
 }
@@ -65,6 +68,11 @@
         self.segmentControlHeightConstraint.constant = 0;
         self.pagingSegmentControl.hidden = YES;
     }
+    else
+    {
+        self.segmentControlHeightConstraint.constant = self.segmentControlHeightConstraintValue;
+        self.pagingSegmentControl.hidden = NO;
+    }
     
     [self refreshPagingScrollView];
     [self setupActionCollectionView];
@@ -74,14 +82,25 @@
 
 - (void)localiseUI
 {
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeFilePreview];
-    [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
+    if (IS_IPAD)
+    {
+        [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeFilePreview];
+        [self.pagingSegmentControl setTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") forSegmentAtIndex:PagingScrollViewSegmentTypeMetadata];
+    }
 }
 
 - (void)setupPagingScrollView
 {
     [self.pagingSegmentControl removeAllSegments];
-    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
+    if (IS_IPAD)
+    {
+        [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
+    }
+    else
+    {
+        [self.pagingSegmentControl insertSegmentWithImage:[UIImage imageNamed:@"segment-icon-preview.png"] atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
+    }
+
     [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
     
     FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document];
