@@ -103,7 +103,7 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(didCompleteSelectingTags:)])
     {
         NSArray *selectedTagsSorted = [[self.selectedTags allObjects] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-        [self.delegate didCompleteSelectingTags:selectedTagsSorted];
+        [self.delegate didCompleteSelectingTags:(selectedTagsSorted.count > 0) ? selectedTagsSorted : nil];
     }
 }
 
