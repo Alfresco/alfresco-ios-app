@@ -631,12 +631,12 @@
     NSDictionary *annotationDictionary = nil;
     NSString *filePath = controller.URL.path;
     
-    if ([application hasPrefix:kQuickofficeApplicationBundleIdentifierPrefix])
+    if ([application hasPrefix:kQuickofficeApplicationBundleIdentifierPrefix] && QUICKOFFICE_PARTNER_KEY.length > 0)
     {
         UserAccount *currentAccount = [[AccountManager sharedManager] selectedAccount];
         SaveBackMetadata *savebackMetadata = [[SaveBackMetadata alloc] initWithAccountID:currentAccount.accountIdentifier nodeRef:self.node.identifier originalFileLocation:filePath documentLocation:self.documentLocation];
         
-        annotationDictionary = @{kQuickofficeApplicationSecretUUIDKey : ALFRESCO_QUICKOFFICE_PARTNER_KEY,
+        annotationDictionary = @{kQuickofficeApplicationSecretUUIDKey : QUICKOFFICE_PARTNER_KEY,
                                  kQuickofficeApplicationInfoKey : @{kAlfrescoInfoMetadataKey : savebackMetadata.dictionaryRepresentation},
                                  kQuickofficeApplicationIdentifierKey : kAppIdentifier,
                                  kQuickofficeApplicationDocumentExtensionKey : kQuickofficeApplicationDocumentExtension,

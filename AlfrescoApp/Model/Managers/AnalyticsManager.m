@@ -21,10 +21,8 @@
 #import "PreferenceManager.h"
 
 @interface AnalyticsManager ()
-
 @property (nonatomic, assign, readwrite) BOOL flurryHasStarted;
 @property (nonatomic, assign, readwrite) BOOL analyticsAreActive;
-
 @end
 
 @implementation AnalyticsManager
@@ -49,12 +47,6 @@
     return self;
 }
 
-// Should never get here
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)startAnalytics
 {
     if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
@@ -70,18 +62,11 @@
 
 #pragma mark - Private Methods
 
-void uncaughtExceptionHandler(NSException *exception)
-{
-    [Flurry logError:@"Uncaught Exception" message:@"The app crashed!" exception:exception];
-}
-
 - (void)start
 {
-    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    
     if (!self.flurryHasStarted)
     {
-        [Flurry startSession:ALFRESCO_FLURRY_API_KEY];
+        [Flurry startSession:FLURRY_API_KEY];
         self.flurryHasStarted = YES;
     }
 
@@ -93,7 +78,6 @@ void uncaughtExceptionHandler(NSException *exception)
 
 - (void)stop
 {
-    NSSetUncaughtExceptionHandler(nil);
     [Flurry setEventLoggingEnabled:NO];
     [Flurry setSessionReportsOnCloseEnabled:NO];
     [Flurry setSessionReportsOnPauseEnabled:NO];

@@ -361,7 +361,7 @@ static NSString * const kSource = @"mobile";
 
 - (void)resendCloudSignupEmail
 {
-    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    NSDictionary *headers = @{kCloudAPIHeaderKey : INTERNAL_CLOUD_API_KEY};
     NSData *accountInfoJsonData = jsonDataFromDictionary([self accountInfo]);
     
     RequestHandler *request = [[RequestHandler alloc] init];
@@ -386,7 +386,7 @@ static NSString * const kSource = @"mobile";
 
 - (void)signUp:(id)sender
 {
-    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    NSDictionary *headers = @{kCloudAPIHeaderKey : INTERNAL_CLOUD_API_KEY};
     NSData *accountInfoJsonData = jsonDataFromDictionary([self accountInfo]);
     
     RequestHandler *request = [[RequestHandler alloc] init];

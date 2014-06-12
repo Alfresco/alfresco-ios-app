@@ -193,7 +193,7 @@
     
     AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthLoginViewController * (void) {
         NavigationViewController *oauthNavigationController = nil;
-        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:ALFRESCO_CLOUD_OAUTH_KEY secretKey:ALFRESCO_CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
+        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
             if (oauthData)
             {
                 account.oauthData = oauthData;
