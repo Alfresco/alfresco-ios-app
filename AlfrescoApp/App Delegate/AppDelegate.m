@@ -50,7 +50,56 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"CLOUD_OAUTH_KEY: %@", CLOUD_OAUTH_KEY);
+    NSLog(@"CLOUD_OAUTH_SECRET: %@", CLOUD_OAUTH_SECRET);
+    NSLog(@"HOCKEYAPP_APPID: %@", HOCKEYAPP_APPID);
+    NSLog(@"FLURRY_API_KEY: %@", FLURRY_API_KEY);
+    NSLog(@"QUICKOFFICE_PARTNER_KEY: %@", QUICKOFFICE_PARTNER_KEY);
+    NSLog(@"INTERNAL_CLOUD_API_KEY: %@", INTERNAL_CLOUD_API_KEY);
+    
+    /**
+     * This version of the app has been coded in such a way to require valid Alfresco Cloud OAuth key and secret tokens.
+     * These should be populated in the AlfrescoApp.xcconfig file, either via an environment variable or directly in the file.
+     * - "CLOUD_OAUTH_KEY"
+     * - "CLOUD_OAUTH_SECRET"
+     *
+     * Functionality that won't be available unless you have other valid keys are:
+     * - HockeyApp SDK integration. Requires "HOCKEYAPP_APPID"
+     * - Flurry Analytics. Requires "FLURRY_API_KEY"
+     * - Google Quickoffice Save Back. Requires "QUICKOFFICE_PARTNER_KEY"
+     *
+     * Functionality that is not made available to third-party apps:
+     * - Alfresco Cloud sign-up. This is a private implementation available to Alfresco only.
+     */
+#if DEBUG
+    NSAssert(CLOUD_OAUTH_KEY.length > 0, @"CLOUD_OAUTH_KEY must have non-zero length");
+    NSAssert(CLOUD_OAUTH_SECRET.length > 0, @"CLOUD_OAUTH_SECRET must have non-zero length");
+#endif
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    /**
+     * Note: CFBundleVersion is updated for AdHoc builds by calling the tools/set_build_number.sh script (configured in the build pre-action).
+     * The script updates CFBundleVersion from a CF_BUNDLE_VERSION environment variable which we have configured at Alfresco
+     * to be set to ${bamboo.buildNumner} when building using our internal Bamboo server.
+     */
+    NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    if (![bundleVersion isEqualToString:@"dev"])
+    {
+        // HockeyApp SDK
+        if (HOCKEYAPP_APPID.length > 0)
+        {
+            [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:HOCKEYAPP_APPID];
+            [[BITHockeyManager sharedHockeyManager] startManager];
+            [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+        }
+        
+        // Flurry Analytics
+        if (FLURRY_API_KEY.length > 0)
+        {
+            [[AnalyticsManager sharedManager] startAnalytics];
+        }
+    }
     
     // Migrate any old accounts if required
     [MigrationAssistant runMigrationAssistant];
@@ -93,18 +142,6 @@
 
     [AppConfigurationManager sharedManager];
     
-    NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    if (![bundleVersion isEqualToString:@"dev"])
-    {
-        // HockeyApp SDK
-        [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"50a2db26b7e3926dcca100aebc019fdd"];
-        [[BITHockeyManager sharedHockeyManager] startManager];
-        [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-
-        // Flurry Analytics
-        [[AnalyticsManager sharedManager] startAnalytics];
-    }
-
     return YES;
 }
 

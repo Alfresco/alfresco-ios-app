@@ -34,7 +34,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 @interface AccountTypeSelectionViewController () <AccountInfoViewControllerDelegate>
-
+@property (nonatomic, assign, getter = isCloudSignUpAvailable) BOOL cloudSignUpAvailable;
 @end
 
 @implementation AccountTypeSelectionViewController
@@ -51,6 +51,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     if (self)
     {
         self.delegate = delegate;
+        self.cloudSignUpAvailable = INTERNAL_CLOUD_API_KEY.length > 0;
     }
     return self;
 }
@@ -94,7 +95,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     {
         cell.imageView.image = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
-        cell.accessoryView = [self createCloudSignUpButton];
+        cell.accessoryView = self.isCloudSignUpAvailable ? [self createCloudSignUpButton] : nil;
     }
     else
     {
@@ -193,7 +194,7 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 
 - (UIView *)cloudAccountFooter
 {
-    NSString *signupText = NSLocalizedString(@"accounttype.footer.signuplink", @"New to Alfresco? Sign up...") ;
+    NSString *signupText = self.isCloudSignUpAvailable ? NSLocalizedString(@"accounttype.footer.signuplink", @"New to Alfresco? Sign up...") : @"" ;
     NSString *footerText = NSLocalizedString(@"accounttype.footer.alfrescoCloud", @"Access your Alfresco in the cloud account");
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectZero];

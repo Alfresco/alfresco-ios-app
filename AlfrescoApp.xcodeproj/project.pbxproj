@@ -2858,7 +2858,6 @@
 			buildConfigurationList = 7373B51217A66E9400869949 /* Build configuration list for PBXNativeTarget "AlfrescoApp" */;
 			buildPhases = (
 				04FED5E599354B4D859C6385 /* Check Pods Manifest.lock */,
-				2794C02F189AC82A00C9EA69 /* Check Cloud OAuth keys */,
 				7373B4F117A66E9400869949 /* Sources */,
 				7373B4F217A66E9400869949 /* Frameworks */,
 				7373B4F317A66E9400869949 /* Resources */,
@@ -3289,20 +3288,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		2794C02F189AC82A00C9EA69 /* Check Cloud OAuth keys */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Cloud OAuth keys";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo ALFRESCO_CLOUD_OAUTH_KEY = ${ALFRESCO_CLOUD_OAUTH_KEY}\nif [[ \"${ALFRESCO_CLOUD_OAUTH_KEY}\" = \"\" ]] ; then\n    cat << EOM\nerror: ALFRESCO_CLOUD_OAUTH_KEY has not been configured. Check the entry is present in /etc/launchd.conf\nEOM\n    exit 1\nfi\n\necho ALFRESCO_CLOUD_OAUTH_SECRET = ${ALFRESCO_CLOUD_OAUTH_SECRET}\nif [[ \"${ALFRESCO_CLOUD_OAUTH_SECRET}\" = \"\" ]] ; then\n    cat << EOM\nerror: ALFRESCO_CLOUD_OAUTH_SECRET has not been configured. Check the entry is present in /etc/launchd.conf\nEOM\n    exit 2\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

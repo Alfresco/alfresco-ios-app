@@ -299,7 +299,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     NSString *accountStatusUrl = [kAlfrescoCloudAPIAccountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountID withString:account.cloudAccountId];
     accountStatusUrl = [accountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountKey withString:account.cloudAccountKey];
     
-    NSDictionary *headers = @{kCloudAPIHeaderKey : ALFRESCO_CLOUD_API_KEY};
+    NSDictionary *headers = @{kCloudAPIHeaderKey : INTERNAL_CLOUD_API_KEY};
     
     RequestHandler *request = [[RequestHandler alloc] init];
     [request connectWithURL:[NSURL URLWithString:accountStatusUrl] method:kHTTPMethodGET headers:headers requestBody:nil completionBlock:^(NSData *data, NSError *error) {
