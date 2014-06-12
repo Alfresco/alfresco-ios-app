@@ -20,7 +20,7 @@
 #import "ThumbnailOperation.h"
 #import "CoreDataCacheHelper.h"
 
-static NSTimeInterval const sMinimumDelayBetweenRequestsOnCloud = 0.25;
+static NSTimeInterval const kMinimumDelayBetweenRequestsOnCloud = 0.5;
 
 typedef NS_ENUM(NSUInteger, RenditionType)
 {
@@ -124,7 +124,13 @@ typedef NS_ENUM(NSUInteger, RenditionType)
             
             if ([session isKindOfClass:[AlfrescoCloudSession class]])
             {
-                operation.minimumDelayBetweenRequests = sMinimumDelayBetweenRequestsOnCloud;
+                operation.minimumDelayBetweenRequests = kMinimumDelayBetweenRequestsOnCloud;
+                self.operationQueue.maxConcurrentOperationCount = 1;
+            }
+            else
+            {
+                operation.minimumDelayBetweenRequests = 0;
+                self.operationQueue.maxConcurrentOperationCount = 2;
             }
             [self.operationQueue addOperation:operation];
         }
