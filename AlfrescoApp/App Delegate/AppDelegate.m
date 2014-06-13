@@ -50,18 +50,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"CLOUD_OAUTH_KEY: %@", CLOUD_OAUTH_KEY);
-    NSLog(@"CLOUD_OAUTH_SECRET: %@", CLOUD_OAUTH_SECRET);
-    NSLog(@"HOCKEYAPP_APPID: %@", HOCKEYAPP_APPID);
-    NSLog(@"FLURRY_API_KEY: %@", FLURRY_API_KEY);
-    NSLog(@"QUICKOFFICE_PARTNER_KEY: %@", QUICKOFFICE_PARTNER_KEY);
-    NSLog(@"INTERNAL_CLOUD_API_KEY: %@", INTERNAL_CLOUD_API_KEY);
-    
     /**
      * This version of the app has been coded in such a way to require valid Alfresco Cloud OAuth key and secret tokens.
      * These should be populated in the AlfrescoApp.xcconfig file, either via an environment variable or directly in the file.
      * - "CLOUD_OAUTH_KEY"
      * - "CLOUD_OAUTH_SECRET"
+     * If these values are not present, the app will still attempt to present cloud authentication options.
      *
      * Functionality that won't be available unless you have other valid keys are:
      * - HockeyApp SDK integration. Requires "HOCKEYAPP_APPID"
@@ -71,10 +65,8 @@
      * Functionality that is not made available to third-party apps:
      * - Alfresco Cloud sign-up. This is a private implementation available to Alfresco only.
      */
-#if DEBUG
-    NSAssert(CLOUD_OAUTH_KEY.length > 0, @"CLOUD_OAUTH_KEY must have non-zero length");
-    NSAssert(CLOUD_OAUTH_SECRET.length > 0, @"CLOUD_OAUTH_SECRET must have non-zero length");
-#endif
+    if (CLOUD_OAUTH_KEY.length == 0) AlfrescoLogError(@"CLOUD_OAUTH_KEY must have non-zero length");
+    if (CLOUD_OAUTH_SECRET.length == 0) AlfrescoLogError(@"CLOUD_OAUTH_SECRET must have non-zero length");
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
