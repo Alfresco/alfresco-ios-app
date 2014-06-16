@@ -96,16 +96,9 @@
 
             [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                if (successful)
+                if (error && error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-                }
-                else
-                {
-                    if (error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
-                    {
-                        [self displayLoginViewControllerWithAccount:account username:account.username];
-                    }
+                    [self displayLoginViewControllerWithAccount:account username:account.username];
                 }
                 self.authenticationCompletionBlock(successful, session, error);
             }];
@@ -114,11 +107,6 @@
         {
             [self authenticateCloudAccount:account networkId:networkId navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
-                
-                if (successful)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-                }
                 if (loginCompletionBlock)
                 {
                     loginCompletionBlock(successful, session, error);
@@ -130,7 +118,6 @@
     {
         // Assuming there is no internet connection and the user tries to switch account.
         self.authenticationCompletionBlock(YES, nil, nil);
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:nil userInfo:nil];
     }
     else
     {

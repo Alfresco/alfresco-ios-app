@@ -156,7 +156,6 @@ static NSInteger const kTagCertificateCell = 1;
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
                     [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
