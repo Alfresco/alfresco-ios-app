@@ -56,7 +56,7 @@ static CGFloat const kCellHeight = 64.0f;
     [self loadSyncNodesForFolder:self.parentNode];
     self.allowsPullToRefresh = NO;
     
-    self.title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"Favorites", @"Favorites Title");
+    self.title = [self listTitle];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
@@ -75,7 +75,7 @@ static CGFloat const kCellHeight = 64.0f;
     self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.nodePicker updateMultiSelectToolBarActions];
@@ -143,6 +143,24 @@ static CGFloat const kCellHeight = 64.0f;
     NSPredicate *folderPredicate = [NSPredicate predicateWithFormat:@"SELF.isFolder == YES"];
     NSMutableArray *folders = [[nodes filteredArrayUsingPredicate:folderPredicate] mutableCopy];
     return folders;
+}
+
+- (NSString *)listTitle
+{
+    NSString *title = @"";
+    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+    
+    if (self.parentNode)
+    {
+        title = self.parentNode.name;
+    }
+    else
+    {
+        title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+    }
+    
+    self.tableView.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
+    return title;
 }
 
 #pragma mark - Table view data source
