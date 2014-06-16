@@ -128,6 +128,7 @@
                 {
                     displayErrorMessage([ErrorDescriptions descriptionForError:error]);
                 }
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
             }];
         });
     }
