@@ -1,0 +1,121 @@
+/*******************************************************************************
+ * Copyright (C) 2005-2014 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
+
+#import "PrintingWebView.h"
+#import "MBProgressHUD.h"
+
+@interface PrintingWebView () <UIWebViewDelegate>
+@property (nonatomic, strong) UIView *owningView;
+@property (nonatomic, copy) AlfrescoBOOLCompletionBlock completionBlock;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, assign) BOOL userCancelledLoading;
+@end
+
+@implementation PrintingWebView
+
+- (id)initWithOwningView:(UIView *)view
+{
+    self = [super init];
+    if (self)
+    {
+        self.owningView = view;
+        self.delegate = self;
+    }
+    return self;
+}
+
+- (void)printFileURL:(NSURL *)fileURL completionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
+{
+    self.completionBlock = completionBlock;
+    self.userCancelledLoading = NO;
+
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.owningView];
+    hud.labelText = NSLocalizedString(@"action.print", @"Print");
+    hud.detailsLabelText = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
+    hud.graceTime = 1.0;
+    hud.taskInProgress = YES;
+    hud.mode = MBProgressHUDModeDeterminate;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleProgressTap:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [hud addGestureRecognizer:tap];
+
+    [self.owningView addSubview:hud];
+    [hud show:YES];
+    self.hud = hud;
+
+    self.progress = 0.0;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerCallback) userInfo:nil repeats:YES];
+
+    [self loadRequest:[NSURLRequest requestWithURL:fileURL]];
+}
+
+- (void)cleanup
+{
+    [self.timer invalidate];
+    self.hud.progress = 1.0;
+    self.hud.taskInProgress = NO;
+    [self.hud hide:YES];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    if (!self.isLoading)
+    {
+        [self cleanup];
+        if (self.completionBlock)
+        {
+            self.completionBlock(!self.userCancelledLoading, nil);
+            self.completionBlock = nil;
+        }
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [self cleanup];
+    
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, self.userCancelledLoading ? nil : error);
+        self.completionBlock = nil;
+    }
+}
+
+#pragma mark - NSTimer
+
+- (void)timerCallback
+{
+    self.progress = MIN(self.progress + 0.005, 0.95);
+    self.hud.progress = self.progress;
+}
+
+#pragma mark - UIGestureRecognizer
+
+- (void)handleProgressTap:(UIGestureRecognizer *)gesture
+{
+    self.userCancelledLoading = YES;
+    [self stopLoading];
+}
+
+@end

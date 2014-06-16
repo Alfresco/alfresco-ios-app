@@ -131,6 +131,7 @@
 		2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit.png */; };
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit@2x.png */; };
 		277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F16CB1938C0B000884ED6 /* ALFPreviewController.m */; };
+		277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277FC4B1194F094200B311E1 /* PrintingWebView.m */; };
 		27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A1BFD019460318004DF61D /* ThumbnailOperation.m */; };
 		27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3B1920DC54002C6793 /* preview-download-stop.png */; };
 		27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */; };
@@ -707,6 +708,8 @@
 		276A937A18FF7204004B2E02 /* DismissCompletionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissCompletionProtocol.h; sourceTree = "<group>"; };
 		277F16CA1938C0B000884ED6 /* ALFPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFPreviewController.h; sourceTree = "<group>"; };
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
+		277FC4B0194F094200B311E1 /* PrintingWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintingWebView.h; sourceTree = "<group>"; };
+		277FC4B1194F094200B311E1 /* PrintingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintingWebView.m; sourceTree = "<group>"; };
 		27A1BFCF19460318004DF61D /* ThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailOperation.h; sourceTree = "<group>"; };
 		27A1BFD019460318004DF61D /* ThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailOperation.m; sourceTree = "<group>"; };
 		27A2DC3B1920DC54002C6793 /* preview-download-stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop.png"; sourceTree = "<group>"; };
@@ -1566,6 +1569,15 @@
 				272CC7CC194690AD0009FADA /* segment-icon-properties@2x.png */,
 			);
 			path = "Segmented Control";
+			sourceTree = "<group>";
+		};
+		277FC4AF194F092800B311E1 /* Printing WebView */ = {
+			isa = PBXGroup;
+			children = (
+				277FC4B0194F094200B311E1 /* PrintingWebView.h */,
+				277FC4B1194F094200B311E1 /* PrintingWebView.m */,
+			);
+			path = "Printing WebView";
 			sourceTree = "<group>";
 		};
 		27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */ = {
@@ -2598,6 +2610,7 @@
 				73632ACE1802C679007172EE /* Action Collection View */,
 				73B9583D17A6750F0099FB84 /* MultiSelect */,
 				7335AA6E181FBA1A0091CA95 /* Paged Scroll View */,
+				277FC4AF194F092800B311E1 /* Printing WebView */,
 				0876A05318D9A0A80035370A /* ProgressView */,
 				739B0A2A18CF7C9B00239584 /* Tableview Underlined Header View */,
 				73881F91188E7DEA0052C75F /* Text View */,
@@ -3320,6 +3333,7 @@
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
+				277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */,
