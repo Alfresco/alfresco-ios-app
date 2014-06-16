@@ -24,6 +24,8 @@ static CGFloat const kCellHeight = 64.0f;
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "AlfrescoNodeCell.h"
+#import "AccountManager.h"
+#import "LoginManager.h"
 
 @interface NodePickerFileFolderListViewController ()
 @property (nonatomic, weak) NodePicker *nodePicker;
@@ -129,6 +131,7 @@ static CGFloat const kCellHeight = 64.0f;
                     [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                         [self hideHUD];
                         [self reloadTableViewWithPagingResult:pagingResult error:error];
+                        [self hidePullToRefreshView];
                     }];
                 }
             }];
@@ -139,6 +142,7 @@ static CGFloat const kCellHeight = 64.0f;
             [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                 [self hideHUD];
                 [self reloadTableViewWithPagingResult:pagingResult error:error];
+                [self hidePullToRefreshView];
             }];
         }
     }
@@ -292,6 +296,28 @@ static CGFloat const kCellHeight = 64.0f;
 {
     self.searchResults = nil;
     [self.tableView reloadData];
+}
+
+#pragma mark - UIRefreshControl Functions
+
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
+{
+    [self showLoadingTextInRefreshControl:refreshControl];
+    if (self.session)
+    {
+        [self loadContentOfFolder];
+    }
+    else
+    {
+        [self hidePullToRefreshView];
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            if (successful)
+            {
+                [self loadContentOfFolder];
+            }
+        }];
+    }
 }
 
 @end
