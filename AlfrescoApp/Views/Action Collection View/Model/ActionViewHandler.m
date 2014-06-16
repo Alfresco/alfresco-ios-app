@@ -36,6 +36,7 @@
 #import "AccountManager.h"
 #import "SaveBackMetadata.h"
 #import "NewVersionViewController.h"
+#import "PrintingWebView.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -231,13 +232,13 @@
 
 - (AlfrescoRequest *)pressedPrintActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location presentFromView:(UIView *)view inView:(UIView *)inView
 {
-    void (^printBlock)(NSString *filePath) = ^(NSString *filePath) {
+    __block void (^printFileBlock)(NSString *filePath) = ^(NSString *filePath) {
         if (filePath)
         {
-            // define a print block
-            void (^printBlock)(UIWebView *webView) = ^(UIWebView *webView) {
-                NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-                
+            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+
+            // Define a print block
+            void (^innerPrintBlock)(UIWebView *webView) = ^(UIWebView *webView) {
                 UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
                 
                 UIPrintInfo *printInfo = [UIPrintInfo printInfo];
@@ -272,26 +273,25 @@
                 }
             };
             
-            // determine whether to use defult OS printing
-            NSSet *printableUTIs = [UIPrintInteractionController printableUTIs];
-            CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)filePath.pathExtension, NULL);
-            __block BOOL useNativePrinting = NO;
-            [printableUTIs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                if (UTTypeConformsTo(UTI, (__bridge CFStringRef)obj))
-                {
-                    useNativePrinting = YES;
-                    *stop = YES;
-                }
-            }];
-            CFRelease(UTI);
-            
-            if (useNativePrinting)
+            // Determine whether to use default OS printing or a hidden WebView
+            if ([UIPrintInteractionController canPrintURL:fileURL])
             {
-                printBlock(nil);
+                innerPrintBlock(nil);
             }
             else
             {
-                displayWarningMessageWithTitle(NSLocalizedString(@"error.print.failed.message", @"Print failed"), NSLocalizedString(@"action.print", @"Print"));
+                PrintingWebView *printWebView = [[PrintingWebView alloc] initWithOwningView:activeView()];
+                [printWebView printFileURL:fileURL completionBlock:^(BOOL succeeded, NSError *error) {
+                    if (succeeded)
+                    {
+                        innerPrintBlock(printWebView);
+                    }
+                    else if (error)
+                    {
+                        // Only display if there's an error object - it's suppressed if the user cancels the action
+                        displayWarningMessageWithTitle(NSLocalizedString(@"error.print.failed.message", @"Print failed"), NSLocalizedString(@"action.print", @"Print"));
+                    }
+                }];
             }
         }
     };
@@ -305,8 +305,7 @@
     {
         if ([previewManager hasLocalContentOfDocument:(AlfrescoDocument *)self.node])
         {
-            NSString *fileLocation = [previewManager filePathForDocument:(AlfrescoDocument *)self.node];
-            printBlock(fileLocation);
+            printFileBlock([previewManager filePathForDocument:(AlfrescoDocument *)self.node]);
         }
         else
         {
@@ -314,12 +313,12 @@
             {
                 request = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
             }
-            [self addCompletionBlock:printBlock];
+            [self addCompletionBlock:printFileBlock];
         }
     }
     else
     {
-        printBlock(documentPath);
+        printFileBlock(documentPath);
     }
     
     return request;
