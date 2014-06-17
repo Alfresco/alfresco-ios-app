@@ -61,13 +61,7 @@ static CGFloat const kCellHeight = 64.0f;
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
-    if (self.nodePicker.type == NodePickerTypeFolders)
-    {
-        if (self.parentNode)
-        {
-            [self.nodePicker replaceSelectedNodesWithNodes:@[self.parentNode]];
-        }
-    }
+    [self updateSelectFolderButton];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self
@@ -79,6 +73,7 @@ static CGFloat const kCellHeight = 64.0f;
 {
     [super viewWillAppear:animated];
     [self.nodePicker updateMultiSelectToolBarActions];
+    [self.nodePicker deselectAllNodes];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -90,6 +85,17 @@ static CGFloat const kCellHeight = 64.0f;
 - (void)cancelButtonPressed:(id)sender
 {
     [self.nodePicker cancel];
+}
+
+- (void)updateSelectFolderButton
+{
+    if (self.nodePicker.type == NodePickerTypeFolders)
+    {
+        if (self.parentNode)
+        {
+            [self.nodePicker replaceSelectedNodesWithNodes:@[self.parentNode]];
+        }
+    }
 }
 
 #pragma mark - Private Methods

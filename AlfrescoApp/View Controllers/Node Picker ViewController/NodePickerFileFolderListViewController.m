@@ -74,14 +74,6 @@ static CGFloat const kCellHeight = 64.0f;
     [self.searchDisplayController.searchResultsTableView setEditing:YES];
     [self.searchDisplayController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    if (self.nodePicker.type == NodePickerTypeFolders)
-    {
-        if (self.displayFolder)
-        {
-            [self.nodePicker replaceSelectedNodesWithNodes:@[self.displayFolder]];
-        }
-    }
-    
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
@@ -97,10 +89,11 @@ static CGFloat const kCellHeight = 64.0f;
                                                object:nil];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.nodePicker updateMultiSelectToolBarActions];
+    [self updateSelectFolderButton];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -133,6 +126,8 @@ static CGFloat const kCellHeight = 64.0f;
                         [self reloadTableViewWithPagingResult:pagingResult error:error];
                         [self hidePullToRefreshView];
                     }];
+                    
+                    [self updateSelectFolderButton];
                 }
             }];
         }
@@ -174,6 +169,17 @@ static CGFloat const kCellHeight = 64.0f;
                 completionBlock(pagingResult, error);
             }
         }];
+    }
+}
+
+- (void)updateSelectFolderButton
+{
+    if (self.nodePicker.type == NodePickerTypeFolders)
+    {
+        if (self.displayFolder)
+        {
+            [self.nodePicker replaceSelectedNodesWithNodes:@[self.displayFolder]];
+        }
     }
 }
 
