@@ -1104,13 +1104,18 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inSyncNodesStatus:self.syncNodesStatus];
     nodeStatus.status = SyncStatusLoading;
     NSString *contentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:self.selectedAccountIdentifier] stringByAppendingPathComponent:syncNameForNode];
-    NSString *mimeType = @"application/octet-stream";
-    
-    if (nodeExtension != nil && ![nodeExtension isEqualToString:@""])
+
+    NSString *mimeType = document.contentMimeType;
+    if (!mimeType)
     {
-        mimeType = [Utility mimeTypeForFileExtension:nodeExtension];
+        mimeType = @"application/octet-stream";
+        
+        if (nodeExtension != nil && ![nodeExtension isEqualToString:@""])
+        {
+            mimeType = [Utility mimeTypeForFileExtension:nodeExtension];
+        }
     }
-    
+
     AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:contentPath]];
     NSInputStream *readStream = [[AlfrescoFileManager sharedManager] inputStreamWithFilePath:contentPath];
     AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:readStream mimeType:mimeType length:contentFile.length];
