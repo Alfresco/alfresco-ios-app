@@ -112,7 +112,6 @@ static CGFloat const kTableViewCellHeight = 54.0f;
     {
         UITableViewCell *addCertificateCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CertificateCell"];
         addCertificateCell.textLabel.text = NSLocalizedString(@"certificate-manage.add-cell.label", @"Certificate Manage - Label for the add certificate cell's label");
-        addCertificateCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         addCertificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         addCertificateCell.backgroundColor = [UIColor whiteColor];
         addCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-add.png"];
@@ -130,8 +129,8 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         
         CenterLabelCell *deleteCertificateCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
         deleteCertificateCell.titleLabel.text = NSLocalizedString(@"certificate-details.buttons.delete", @"Delete Certificate");
-        deleteCertificateCell.titleLabel.textColor = [UIColor whiteColor];
-        deleteCertificateCell.backgroundColor = [UIColor redColor];
+        deleteCertificateCell.titleLabel.textColor = [UIColor redColor];
+        deleteCertificateCell.backgroundColor = [UIColor whiteColor];
         
         NSArray *identityGroup = @[identityCell];
         NSArray *deleteGroup = @[deleteCertificateCell];
