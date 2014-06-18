@@ -108,6 +108,7 @@
     self.passcodeTextField = passcodeCell.valueTextField;
     passcodeCell.valueTextField.secureTextEntry = YES;
     passcodeCell.valueTextField.returnKeyType = UIReturnKeyDone;
+    passcodeCell.shouldBecomeFirstResponder = YES;
     
     self.tableHeaders = @[NSLocalizedString(@"certificate-import.tableHeader", @"Table header for the Import Certificate View")];
     self.tableFooters = @[NSLocalizedString(@"certificate-import.tableFooter", @"Table footer for the Import Certificate View")];
