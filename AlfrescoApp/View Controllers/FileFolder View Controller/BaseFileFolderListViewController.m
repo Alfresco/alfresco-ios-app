@@ -38,6 +38,19 @@
     [self doesNotRecognizeSelector:_cmd];
 }
 
+- (void)showSearchProgressHUD
+{
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
+    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    [self.searchProgressHUD show:YES];
+}
+
+- (void)hideSearchProgressHUD
+{
+    [self.searchProgressHUD hide:YES];
+    self.searchProgressHUD = nil;
+}
+
 #pragma mark - Custom getters and setters
 
 - (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
@@ -155,13 +168,10 @@
 {
     AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithFolder:self.displayFolder includeDescendants:YES];
     
-    __block MBProgressHUD *searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:searchProgressHUD];
-    [searchProgressHUD show:YES];
+    [self showSearchProgressHUD];
     
     [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
-        [searchProgressHUD hide:YES];
-        searchProgressHUD = nil;
+        [self hideSearchProgressHUD];
         if (array)
         {
             self.searchResults = [array mutableCopy];

@@ -275,7 +275,7 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
 {
     if (selectedNodes.count > 0)
     {
-        [self.delegate fileLocationSelectionViewController:self uploadToFolder:selectedNodes[0] session:self.session filePath:self.filePath];
+        [self.delegate fileLocationSelectionViewController:self uploadToFolder:selectedNodes.lastObject session:self.session filePath:self.filePath];
     }
 }
 

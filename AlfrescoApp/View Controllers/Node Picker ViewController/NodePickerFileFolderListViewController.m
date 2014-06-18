@@ -15,8 +15,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
-static CGFloat const kCellHeight = 64.0f;
 
 #import "NodePickerFileFolderListViewController.h"
 #import "ConnectivityManager.h"
@@ -24,9 +22,16 @@ static CGFloat const kCellHeight = 64.0f;
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "AlfrescoNodeCell.h"
+#import "AccountManager.h"
+#import "LoginManager.h"
+
+static CGFloat const kCellHeight = 64.0f;
+static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('cmis:name:%@') AND IN_TREE('%@')";
 
 @interface NodePickerFileFolderListViewController ()
+
 @property (nonatomic, weak) NodePicker *nodePicker;
+
 @end
 
 @implementation NodePickerFileFolderListViewController
@@ -72,14 +77,6 @@ static CGFloat const kCellHeight = 64.0f;
     [self.searchDisplayController.searchResultsTableView setEditing:YES];
     [self.searchDisplayController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    if (self.nodePicker.type == NodePickerTypeFolders)
-    {
-        if (self.displayFolder)
-        {
-            [self.nodePicker replaceSelectedNodesWithNodes:@[self.displayFolder]];
-        }
-    }
-    
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
@@ -95,10 +92,11 @@ static CGFloat const kCellHeight = 64.0f;
                                                object:nil];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.nodePicker updateMultiSelectToolBarActions];
+    [self updateSelectFolderButton];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -129,7 +127,10 @@ static CGFloat const kCellHeight = 64.0f;
                     [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                         [self hideHUD];
                         [self reloadTableViewWithPagingResult:pagingResult error:error];
+                        [self hidePullToRefreshView];
                     }];
+                    
+                    [self updateSelectFolderButton];
                 }
             }];
         }
@@ -139,6 +140,7 @@ static CGFloat const kCellHeight = 64.0f;
             [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                 [self hideHUD];
                 [self reloadTableViewWithPagingResult:pagingResult error:error];
+                [self hidePullToRefreshView];
             }];
         }
     }
@@ -170,6 +172,17 @@ static CGFloat const kCellHeight = 64.0f;
                 completionBlock(pagingResult, error);
             }
         }];
+    }
+}
+
+- (void)updateSelectFolderButton
+{
+    if (self.nodePicker.type == NodePickerTypeFolders)
+    {
+        if (self.displayFolder)
+        {
+            [self.nodePicker replaceSelectedNodesWithNodes:@[self.displayFolder]];
+        }
     }
 }
 
@@ -244,11 +257,19 @@ static CGFloat const kCellHeight = 64.0f;
     
     if (selectedNode.isFolder)
     {
-        NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
-                                                                                                                     folderDisplayName:selectedNode.title
-                                                                                                                               session:self.session
-                                                                                                                  nodePickerController:self.nodePicker];
-        [self.navigationController pushViewController:browserViewController animated:YES];
+        if (self.nodePicker.type == NodePickerTypeFolders && self.nodePicker.mode == NodePickerModeSingleSelect)
+        {
+            [self.nodePicker selectNode:selectedNode];
+            [self.nodePicker pickingNodesComplete];
+        }
+        else
+        {
+            NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
+                                                                                                                         folderDisplayName:selectedNode.title
+                                                                                                                                   session:self.session
+                                                                                                                      nodePickerController:self.nodePicker];
+            [self.navigationController pushViewController:browserViewController animated:YES];
+        }
     }
     else
     {
@@ -288,10 +309,59 @@ static CGFloat const kCellHeight = 64.0f;
 
 #pragma mark - Searchbar Delegate
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    if (self.nodePicker.type == NodePickerTypeFolders)
+    {
+        [self showSearchProgressHUD];
+        NSString *searchQuery = [NSString stringWithFormat:kFolderSearchCMISQuery, searchBar.text, self.displayFolder.identifier];
+        [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
+            [self hideSearchProgressHUD];
+            if (array)
+            {
+                self.searchResults = [array mutableCopy];
+                [self.searchController.searchResultsTableView reloadData];
+            }
+            else
+            {
+                // display error
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.search.failed", @"Site Search failed"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+    else
+    {
+        [super searchBarSearchButtonClicked:searchBar];
+    }
+}
+
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
     [self.tableView reloadData];
+}
+
+#pragma mark - UIRefreshControl Functions
+
+- (void)refreshTableView:(UIRefreshControl *)refreshControl
+{
+    [self showLoadingTextInRefreshControl:refreshControl];
+    if (self.session)
+    {
+        [self loadContentOfFolder];
+    }
+    else
+    {
+        [self hidePullToRefreshView];
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            if (successful)
+            {
+                [self loadContentOfFolder];
+            }
+        }];
+    }
 }
 
 @end

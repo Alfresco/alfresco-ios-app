@@ -76,6 +76,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     [super viewDidLoad];
     
+    sActionViewHeight = self.actionViewHeightConstraint.constant;
+    
     [self setupPagingScrollView];
     [self localiseUI];
     [self refreshViewController];
@@ -212,7 +214,6 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     }
     
     self.actionView.items = items;
-    sActionViewHeight = self.actionViewHeightConstraint.constant;
 }
 
 - (void)updateActionButtons

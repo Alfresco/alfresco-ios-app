@@ -24,6 +24,7 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
 
 @interface WebBrowserViewController () <UIWebViewDelegate>
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSURL *errorURL;
 @property (nonatomic, strong) NSString *initalTitle;
@@ -31,6 +32,7 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 @property (nonatomic, weak) UIBarButtonItem *backButton;
 @property (nonatomic, weak) UIBarButtonItem *forwardButton;
+@property (nonatomic, assign) BOOL shouldHideToolbar;
 
 @end
 
@@ -49,6 +51,11 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
         self.url = url;
         self.initalTitle = initialTitle;
         self.errorURL = errorURL;
+        
+        if (url.isFileURL)
+        {
+            self.shouldHideToolbar = YES;
+        }
     }
     return self;
 }
@@ -96,6 +103,11 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
     }
     
     self.navigationItem.rightBarButtonItem = closeButton;
+    
+    if (self.shouldHideToolbar)
+    {
+        self.toolbarHeightConstraint.constant = 0;
+    }
     
     // make inital request
     [self makeInitialRequest];

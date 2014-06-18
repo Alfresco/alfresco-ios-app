@@ -35,5 +35,7 @@
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
             usingListingContext:(AlfrescoListingContext *)listingContext
                 completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
+- (void)showSearchProgressHUD;
+- (void)hideSearchProgressHUD;
 
 @end

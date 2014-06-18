@@ -42,6 +42,10 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
 - (id)init
 {
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:nil];
+    if (self)
+    {
+        self.cloudSignUpAvailable = INTERNAL_CLOUD_API_KEY.length > 0;
+    }
     return self;
 }
 
@@ -51,7 +55,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     if (self)
     {
         self.delegate = delegate;
-        self.cloudSignUpAvailable = INTERNAL_CLOUD_API_KEY.length > 0;
     }
     return self;
 }
