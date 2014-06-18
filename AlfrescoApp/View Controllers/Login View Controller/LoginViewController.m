@@ -305,7 +305,7 @@
     return YES;
 }
 
-- (void)textFieldDidChange:(NSNotification *)note
+- (void)textFieldDidChange:(NSNotification *)notification
 {
     if (self.usernameTextField.text.length > 0 && self.passwordTextField.text.length > 0)
     {

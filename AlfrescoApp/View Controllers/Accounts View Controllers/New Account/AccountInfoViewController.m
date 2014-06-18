@@ -595,7 +595,7 @@ static NSInteger const kTagCertificateCell = 1;
     return YES;
 }
 
-- (void)textFieldDidChange:(NSNotification *)note
+- (void)textFieldDidChange:(NSNotification *)notification
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }

@@ -552,7 +552,7 @@ static NSString * const kSource = @"mobile";
     return YES;
 }
 
-- (void)textFieldDidChange:(NSNotification *)note
+- (void)textFieldDidChange:(NSNotification *)notification
 {
     [self validateSignUpFields];
 }

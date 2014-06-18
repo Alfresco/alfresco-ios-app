@@ -18,12 +18,25 @@
  
 #import "CertificateDocumentFilter.h"
 
+@interface CertificateDocumentFilter ()
+@property (nonatomic, strong) NSArray *filteredExtensions;
+@end
+
 @implementation CertificateDocumentFilter
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        _filteredExtensions = @[@"p12", @"pfx"];
+    }
+    return self;
+}
 
 - (BOOL)filterDocumentWithExtension:(NSString *)documentExtension
 {
-    BOOL isCertificate = [documentExtension isEqualToString:@"p12"] || [documentExtension isEqualToString:@"pfx"];
-    return !isCertificate;
+    return ![self.filteredExtensions containsObject:[documentExtension lowercaseString]];
 }
 
 @end

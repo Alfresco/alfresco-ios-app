@@ -972,7 +972,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     self.activeTextField = nil;
 }
 
-- (void)textFieldDidChange:(NSNotification *)note
+- (void)textFieldDidChange:(NSNotification *)notification
 {
     [self enableOrDisableUploadButton];
 }
