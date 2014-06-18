@@ -176,12 +176,15 @@ static NSString * const kTextFileMimeType = @"text/plain";
         
         if (isSyncDocument)
         {
+            NSString *syncContentPath = [syncManager contentPathForNode:self.editingDocument];
+            [text writeToFile:syncContentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            
             [syncManager retrySyncForDocument:self.editingDocument completionBlock:^{
                 
                 AlfrescoDocument *document = (AlfrescoDocument *)[syncManager alfrescoNodeForIdentifier:self.editingDocument.identifier];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
-                [self dismissViewControllerAnimated:YES completion:nil];
             }];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
