@@ -514,15 +514,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0804DCA6181962E700E3ACC2 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountsViewController.h; path = "Accounts View Controller/AccountsViewController.h"; sourceTree = "<group>"; };
-		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountsViewController.m; path = "Accounts View Controller/AccountsViewController.m"; sourceTree = "<group>"; };
-		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountsViewController.xib; path = "Accounts View Controller/AccountsViewController.xib"; sourceTree = "<group>"; };
-		0804DCBA18197F8600E3ACC2 /* AccountTypeSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountTypeSelectionViewController.h; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.h"; sourceTree = "<group>"; };
-		0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = AccountTypeSelectionViewController.m; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountTypeSelectionViewController.xib; path = "Accounts View Controller/New Account/AccountTypeSelectionViewController.xib"; sourceTree = "<group>"; };
-		0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountInfoViewController.h; path = "Accounts View Controller/New Account/AccountInfoViewController.h"; sourceTree = "<group>"; };
-		0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountInfoViewController.m; path = "Accounts View Controller/New Account/AccountInfoViewController.m"; sourceTree = "<group>"; };
-		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "Accounts View Controller/New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
+		0804DCA6181962E700E3ACC2 /* AccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsViewController.h; sourceTree = "<group>"; };
+		0804DCA7181962E700E3ACC2 /* AccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsViewController.m; sourceTree = "<group>"; };
+		0804DCA91819634000E3ACC2 /* AccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountsViewController.xib; sourceTree = "<group>"; };
+		0804DCBA18197F8600E3ACC2 /* AccountTypeSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountTypeSelectionViewController.h; path = "New Account/AccountTypeSelectionViewController.h"; sourceTree = "<group>"; };
+		0804DCBB18197F8600E3ACC2 /* AccountTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = AccountTypeSelectionViewController.m; path = "New Account/AccountTypeSelectionViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0804DCBD1819806000E3ACC2 /* AccountTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountTypeSelectionViewController.xib; path = "New Account/AccountTypeSelectionViewController.xib"; sourceTree = "<group>"; };
+		0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountInfoViewController.h; path = "New Account/AccountInfoViewController.h"; sourceTree = "<group>"; };
+		0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountInfoViewController.m; path = "New Account/AccountInfoViewController.m"; sourceTree = "<group>"; };
+		0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AccountInfoViewController.xib; path = "New Account/AccountInfoViewController.xib"; sourceTree = "<group>"; };
 		080675E917EC44AA004AF3A2 /* CoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataHelper.h; sourceTree = "<group>"; };
 		080675EA17EC44AA004AF3A2 /* CoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataHelper.m; sourceTree = "<group>"; };
 		080828A4184DEDCB000524A3 /* AccountCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCertificate.h; sourceTree = "<group>"; };
@@ -530,19 +530,19 @@
 		0808B9DD183BB40B000A8984 /* green_selected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_selected_circle.png; sourceTree = "<group>"; };
 		0808B9DE183BB40B000A8984 /* unselected_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unselected_circle.png; sourceTree = "<group>"; };
 		0808B9E1183D1083000A8984 /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
-		080A81161855FE3A00B79306 /* ClientCertificateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientCertificateViewController.h; path = "Accounts View Controller/Certificate/ClientCertificateViewController.h"; sourceTree = "<group>"; };
-		080A81171855FE3A00B79306 /* ClientCertificateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClientCertificateViewController.m; path = "Accounts View Controller/Certificate/ClientCertificateViewController.m"; sourceTree = "<group>"; };
-		080A811A18561CD800B79306 /* ClientCertificateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ClientCertificateViewController.xib; path = "Accounts View Controller/Certificate/ClientCertificateViewController.xib"; sourceTree = "<group>"; };
+		080A81161855FE3A00B79306 /* ClientCertificateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCertificateViewController.h; sourceTree = "<group>"; };
+		080A81171855FE3A00B79306 /* ClientCertificateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientCertificateViewController.m; sourceTree = "<group>"; };
+		080A811A18561CD800B79306 /* ClientCertificateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCertificateViewController.xib; sourceTree = "<group>"; };
 		080A811D18561E6D00B79306 /* certificate-add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate-add.png"; sourceTree = "<group>"; };
 		080A811E18561E6D00B79306 /* certificate-add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate-add@2x.png"; sourceTree = "<group>"; };
 		080A811F18561E6D00B79306 /* certificate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = certificate.png; sourceTree = "<group>"; };
 		080A812018561E6D00B79306 /* certificate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate@2x.png"; sourceTree = "<group>"; };
-		080A8125185628AE00B79306 /* ClientCertificateImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientCertificateImportViewController.h; path = "Accounts View Controller/Certificate/ClientCertificateImportViewController.h"; sourceTree = "<group>"; };
-		080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClientCertificateImportViewController.m; path = "Accounts View Controller/Certificate/ClientCertificateImportViewController.m"; sourceTree = "<group>"; };
-		080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ClientCertificateImportViewController.xib; path = "Accounts View Controller/Certificate/ClientCertificateImportViewController.xib"; sourceTree = "<group>"; };
+		080A8125185628AE00B79306 /* ClientCertificateImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCertificateImportViewController.h; sourceTree = "<group>"; };
+		080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientCertificateImportViewController.m; sourceTree = "<group>"; };
+		080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCertificateImportViewController.xib; sourceTree = "<group>"; };
 		080A812D18573AD700B79306 /* DocumentFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentFilter.h; sourceTree = "<group>"; };
-		080A812F18573CBC00B79306 /* CertificateDocumentFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CertificateDocumentFilter.h; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.h"; sourceTree = "<group>"; };
-		080A813018573CBC00B79306 /* CertificateDocumentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CertificateDocumentFilter.m; path = "Accounts View Controller/Certificate/CertificateDocumentFilter.m"; sourceTree = "<group>"; };
+		080A812F18573CBC00B79306 /* CertificateDocumentFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateDocumentFilter.h; sourceTree = "<group>"; };
+		080A813018573CBC00B79306 /* CertificateDocumentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateDocumentFilter.m; sourceTree = "<group>"; };
 		080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConfigurationManager.h; sourceTree = "<group>"; };
 		080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppConfigurationManager.m; sourceTree = "<group>"; };
 		08244AAD192B99AE00228AD6 /* AccountSyncProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSyncProgress.h; sourceTree = "<group>"; };
@@ -629,9 +629,9 @@
 		08E1EA3B18DB2E1200F9052F /* CreateTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTaskViewController.h; sourceTree = "<group>"; };
 		08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTaskViewController.m; sourceTree = "<group>"; };
 		08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateTaskViewController.xib; sourceTree = "<group>"; };
-		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "Accounts View Controller/New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
-		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "Accounts View Controller/New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
-		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "Accounts View Controller/New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
+		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
+		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
+		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
 		08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AlfrescoApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1220,13 +1220,13 @@
 			isa = PBXGroup;
 			children = (
 				738664C71906B1E50021D1BD /* Cell */,
-				080A81191855FE4C00B79306 /* CertificateViewControllers */,
+				080A81191855FE4C00B79306 /* Certificate */,
 				0804DCB818197F0C00E3ACC2 /* New Account */,
 				0804DCA6181962E700E3ACC2 /* AccountsViewController.h */,
 				0804DCA7181962E700E3ACC2 /* AccountsViewController.m */,
 				0804DCA91819634000E3ACC2 /* AccountsViewController.xib */,
 			);
-			name = "Accounts View Controllers";
+			path = "Accounts View Controllers";
 			sourceTree = "<group>";
 		};
 		0804DCB818197F0C00E3ACC2 /* New Account */ = {
@@ -1265,19 +1265,19 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
-		080A81191855FE4C00B79306 /* CertificateViewControllers */ = {
+		080A81191855FE4C00B79306 /* Certificate */ = {
 			isa = PBXGroup;
 			children = (
-				080A81161855FE3A00B79306 /* ClientCertificateViewController.h */,
-				080A81171855FE3A00B79306 /* ClientCertificateViewController.m */,
-				080A811A18561CD800B79306 /* ClientCertificateViewController.xib */,
+				080A812F18573CBC00B79306 /* CertificateDocumentFilter.h */,
+				080A813018573CBC00B79306 /* CertificateDocumentFilter.m */,
 				080A8125185628AE00B79306 /* ClientCertificateImportViewController.h */,
 				080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */,
 				080A8128185628DE00B79306 /* ClientCertificateImportViewController.xib */,
-				080A812F18573CBC00B79306 /* CertificateDocumentFilter.h */,
-				080A813018573CBC00B79306 /* CertificateDocumentFilter.m */,
+				080A81161855FE3A00B79306 /* ClientCertificateViewController.h */,
+				080A81171855FE3A00B79306 /* ClientCertificateViewController.m */,
+				080A811A18561CD800B79306 /* ClientCertificateViewController.xib */,
 			);
-			name = CertificateViewControllers;
+			path = Certificate;
 			sourceTree = "<group>";
 		};
 		0833244D17F981EC00EE6AA8 /* Sync View Controller */ = {
@@ -2137,8 +2137,7 @@
 				738664CC1906B1E50021D1BD /* TextFieldCell.m */,
 				738664CD1906B1E50021D1BD /* TextFieldCell.xib */,
 			);
-			name = Cell;
-			path = "Accounts View Controller/Cell";
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		738664E61906B2420021D1BD /* Cell */ = {
