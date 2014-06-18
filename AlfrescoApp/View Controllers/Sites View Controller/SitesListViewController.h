@@ -32,4 +32,7 @@ typedef NS_ENUM(NSInteger, SiteListType)
 @property (nonatomic, strong) UISearchDisplayController *searchController;
 @property (nonatomic, strong) NSArray *searchResults;
 
+- (void)showSearchProgressHUD;
+- (void)hideSearchProgressHUD;
+
 @end

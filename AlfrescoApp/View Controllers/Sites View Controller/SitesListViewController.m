@@ -22,7 +22,7 @@
 #import "SitesCell.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
-#import "FileFolderCell.h"
+#import "AlfrescoNodeCell.h"
 #import "MetaDataViewController.h"
 #import "ThumbnailManager.h"
 #import "AccountManager.h"
@@ -165,10 +165,10 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SitesCell";
-    static NSString *SearchCellIdentifier = @"FileFolderCell";
+    static NSString *SearchCellIdentifier = @"AlfrescoNodeCell";
     
     SitesCell *siteCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    __block FileFolderCell *searchCell = [tableView dequeueReusableCellWithIdentifier:SearchCellIdentifier];
+    AlfrescoNodeCell *searchCell = [tableView dequeueReusableCellWithIdentifier:SearchCellIdentifier];
     
     UITableViewCell *returnCell = nil;
     
@@ -180,7 +180,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     
     if (!searchCell)
     {
-        searchCell = (FileFolderCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([FileFolderCell class]) owner:self options:nil] lastObject];
+        searchCell = (AlfrescoNodeCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil] lastObject];
     }
     
     if (tableView == self.tableView)
@@ -198,35 +198,50 @@ static CGFloat kSearchCellHeight = 60.0f;
     {
         returnCell = searchCell;
         
-        AlfrescoDocument *documentNode = [self.searchResults objectAtIndex:indexPath.row];
-        searchCell.nodeNameLabel.text = documentNode.name;
+        AlfrescoNode *node = [self.searchResults objectAtIndex:indexPath.row];
         
-        UIImage *thumbnailImage = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-
-        if (thumbnailImage)
+        if ([node isKindOfClass:[AlfrescoDocument class]])
         {
-            [searchCell.nodeImageView setImage:thumbnailImage withFade:NO];
+            AlfrescoDocument *documentNode = (AlfrescoDocument *)node;
+            
+            searchCell.filename.text = documentNode.name;
+            
+            UIImage *thumbnailImage = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+            
+            if (thumbnailImage)
+            {
+                [searchCell.image setImage:thumbnailImage withFade:NO];
+            }
+            else
+            {
+                // set a placeholder image
+                [searchCell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
+                
+                [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                    if (image)
+                    {
+                        AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                        if (updateCell)
+                        {
+                            [updateCell.image setImage:image withFade:YES];
+                        }
+                    }
+                }];
+            }
+            
+            NSString *modifiedDateString = relativeDateFromDate(documentNode.modifiedAt);
+            searchCell.details.text = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(documentNode.contentLength)];
+            searchCell.accessoryView = [self makeDetailDisclosureButton];
         }
         else
         {
-            // set a placeholder image
-            [searchCell.nodeImageView setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
+            AlfrescoFolder *folderNode = (AlfrescoFolder *)node;
             
-            [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
-                {
-                    FileFolderCell *updateCell = (FileFolderCell *)[tableView cellForRowAtIndexPath:indexPath];
-                    if (updateCell)
-                    {
-                        [updateCell.nodeImageView setImage:image withFade:YES];
-                    }
-                }
-            }];
+            [searchCell.image setImage:smallImageForType(@"folder") withFade:NO];
+            searchCell.filename.text = folderNode.name;
+            searchCell.details.text = @"";
         }
         
-        NSString *modifiedDateString = relativeDateFromDate(documentNode.modifiedAt);
-        searchCell.nodeDetailLabel.text = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(documentNode.contentLength)];
-        searchCell.accessoryView = [self makeDetailDisclosureButton];
     }
     
     return returnCell;
@@ -533,7 +548,7 @@ static CGFloat kSearchCellHeight = 60.0f;
 
 - (void)accessoryButtonTapped:(UIButton *)accessoryButton withEvent:(UIEvent *)event
 {
-    FileFolderCell *selectedCell = (FileFolderCell *)accessoryButton.superview;
+    AlfrescoNodeCell *selectedCell = (AlfrescoNodeCell *)accessoryButton.superview;
     NSIndexPath *indexPathToSelectedCell = nil;
     
     AlfrescoNode *selectedNode = nil;

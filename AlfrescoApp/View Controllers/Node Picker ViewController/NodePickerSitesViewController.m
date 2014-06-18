@@ -19,9 +19,14 @@
 #import "NodePickerSitesViewController.h"
 #import "NodePickerFileFolderListViewController.h"
 
+static NSString * const kSitesFolderLocation = @"/Sites";
+static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('cmis:name:%@') AND IN_TREE('%@')";
+
 @interface NodePickerSitesViewController ()
 
 @property (nonatomic, weak) NodePicker *nodePicker;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) AlfrescoSearchService *searchService;
 
 @end
 
@@ -33,6 +38,7 @@
     if (self)
     {
         _nodePicker = nodePicker;
+        [self createAlfrescoServicesWithSession:session];
     }
     return self;
 }
@@ -75,6 +81,15 @@
     }
 }
 
+#pragma mark - Private Functions
+
+- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
+{
+    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
+}
+
 #pragma mark - Notification Methods
 
 - (void)deselectAllSelectedNodes:(id)sender
@@ -113,6 +128,11 @@
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
         [self.nodePicker selectNode:selectedNode];
+        
+        if (self.nodePicker.mode == NodePickerModeSingleSelect)
+        {
+            [self.nodePicker pickingNodesComplete];
+        }
     }
     else
     {
@@ -144,6 +164,47 @@
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
         [self.nodePicker deselectNode:selectedNode];
+    }
+}
+
+#pragma mark - UISearchBarDelegate Functions
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    if (self.nodePicker.type == NodePickerTypeFolders)
+    {
+        [self showSearchProgressHUD];
+        [self.documentService retrieveNodeWithFolderPath:kSitesFolderLocation completionBlock:^(AlfrescoNode *node, NSError *error) {
+            [self hideSearchProgressHUD];
+            if (node)
+            {
+                [self showSearchProgressHUD];
+                NSString *searchQuery = [NSString stringWithFormat:kFolderSearchCMISQuery, searchBar.text, node.identifier];
+                [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
+                    [self hideSearchProgressHUD];
+                    if (array)
+                    {
+                        self.searchResults = array;
+                        [self.searchController.searchResultsTableView reloadData];
+                    }
+                    else
+                    {
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.search.failed", @"Site Search failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                }];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.folder.failed", @"Sites Folder Error"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+    else
+    {
+        [super searchBarSearchButtonClicked:searchBar];
     }
 }
 
