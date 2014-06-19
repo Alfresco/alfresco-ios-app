@@ -225,14 +225,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
         CGSize documentNameSize  = [self.documentURL.lastPathComponent sizeWithAttributes:@{NSFontAttributeName : nameTextField.font}];
         CGSize previewCellSize = previewCell.frame.size;
         CGSize documentIconImageViewSize = CGSizeMake(documentIconWidth, documentIconHeight);
-        CGSize previewCellLabelSize = [previewCellLabelTitle sizeWithAttributes:@{NSFontAttributeName : nameTextField.font}];
-        CGFloat nameFieldMaxWidth = tableView.frame.size.width - previewCellLabelSize.width - documentIconImageViewSize.width - indentation * 4;
+        CGSize previewCellLabelSize = [previewCellLabelTitle sizeWithAttributes:@{NSFontAttributeName : previewCell.textLabel.font}];
+        CGFloat nameFieldMaxWidth = previewCellSize.width - previewCellLabelSize.width - documentIconImageViewSize.width - indentation * 4;
 
         documentNameSize.width = fminf(documentNameSize.width, nameFieldMaxWidth);
         
-        UITextField *documentTitleField = [[UITextField alloc] initWithFrame:CGRectMake(previewCellSize.width - (documentNameSize.width + rightPadding),
+        UITextField *documentTitleField = [[UITextField alloc] initWithFrame:CGRectMake(previewCellSize.width - documentNameSize.width - rightPadding * 2,
                                                                                         topBottomPadding,
-                                                                                        documentNameSize.width,
+                                                                                        documentNameSize.width + rightPadding,
                                                                                         nameCell.frame.size.height - (topBottomPadding * 2))];
         documentTitleField.text = self.documentURL.lastPathComponent;
         documentTitleField.enabled = NO;
