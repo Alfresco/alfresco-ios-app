@@ -20,8 +20,6 @@
 		0808B9E2183D1083000A8984 /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0808B9E1183D1083000A8984 /* empty_icon.png */; };
 		080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A81171855FE3A00B79306 /* ClientCertificateViewController.m */; };
 		080A811B18561CD800B79306 /* ClientCertificateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080A811A18561CD800B79306 /* ClientCertificateViewController.xib */; };
-		080A812118561E6D00B79306 /* certificate-import.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A811D18561E6D00B79306 /* certificate-import.png */; };
-		080A812218561E6D00B79306 /* certificate-import@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A811E18561E6D00B79306 /* certificate-import@2x.png */; };
 		080A812318561E6D00B79306 /* certificate.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A811F18561E6D00B79306 /* certificate.png */; };
 		080A812418561E6D00B79306 /* certificate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 080A812018561E6D00B79306 /* certificate@2x.png */; };
 		080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080A8126185628AE00B79306 /* ClientCertificateImportViewController.m */; };
@@ -127,8 +125,6 @@
 		273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */; };
 		2744022018AA83C400DF23DD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2744021F18AA83C400DF23DD /* Settings.bundle */; };
 		274863A41951E1A2006A91C5 /* ClientCertificateDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274863A21951E1A2006A91C5 /* ClientCertificateDownloadViewController.m */; };
-		274863A81951FAC0006A91C5 /* certificate-download.png in Resources */ = {isa = PBXBuildFile; fileRef = 274863A61951FAC0006A91C5 /* certificate-download.png */; };
-		274863A91951FAC0006A91C5 /* certificate-download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 274863A71951FAC0006A91C5 /* certificate-download@2x.png */; };
 		2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */; };
 		2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */; };
 		2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD318CE09EE003FFBF9 /* actionsheet-edit.png */; };
@@ -536,8 +532,6 @@
 		080A81161855FE3A00B79306 /* ClientCertificateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCertificateViewController.h; sourceTree = "<group>"; };
 		080A81171855FE3A00B79306 /* ClientCertificateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientCertificateViewController.m; sourceTree = "<group>"; };
 		080A811A18561CD800B79306 /* ClientCertificateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClientCertificateViewController.xib; sourceTree = "<group>"; };
-		080A811D18561E6D00B79306 /* certificate-import.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate-import.png"; sourceTree = "<group>"; };
-		080A811E18561E6D00B79306 /* certificate-import@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate-import@2x.png"; sourceTree = "<group>"; };
 		080A811F18561E6D00B79306 /* certificate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = certificate.png; sourceTree = "<group>"; };
 		080A812018561E6D00B79306 /* certificate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate@2x.png"; sourceTree = "<group>"; };
 		080A8125185628AE00B79306 /* ClientCertificateImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCertificateImportViewController.h; sourceTree = "<group>"; };
@@ -705,8 +699,6 @@
 		2744021F18AA83C400DF23DD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		274863A11951E1A2006A91C5 /* ClientCertificateDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCertificateDownloadViewController.h; sourceTree = "<group>"; };
 		274863A21951E1A2006A91C5 /* ClientCertificateDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientCertificateDownloadViewController.m; sourceTree = "<group>"; };
-		274863A61951FAC0006A91C5 /* certificate-download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate-download.png"; sourceTree = "<group>"; };
-		274863A71951FAC0006A91C5 /* certificate-download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate-download@2x.png"; sourceTree = "<group>"; };
 		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
 		2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload.png"; sourceTree = "<group>"; };
 		2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload@2x.png"; sourceTree = "<group>"; };
@@ -1259,10 +1251,6 @@
 				73BE41F718F3FF2900DB8912 /* account-type-cloud@2x.png */,
 				73BE41F818F3FF2900DB8912 /* account-type-onpremise.png */,
 				73BE41F918F3FF2900DB8912 /* account-type-onpremise@2x.png */,
-				274863A61951FAC0006A91C5 /* certificate-download.png */,
-				274863A71951FAC0006A91C5 /* certificate-download@2x.png */,
-				080A811D18561E6D00B79306 /* certificate-import.png */,
-				080A811E18561E6D00B79306 /* certificate-import@2x.png */,
 				080A811F18561E6D00B79306 /* certificate.png */,
 				080A812018561E6D00B79306 /* certificate@2x.png */,
 				0808B9E1183D1083000A8984 /* empty_icon.png */,
@@ -3120,7 +3108,6 @@
 				08E1EA2818DB057900F9052F /* TaskDetailsViewController.xib in Resources */,
 				73217436187AC0CC008B330D /* CommentViewController.xib in Resources */,
 				27E84E8118AD53510024B658 /* mainmenu-localfiles@2x.png in Resources */,
-				080A812218561E6D00B79306 /* certificate-import@2x.png in Resources */,
 				08E1EA2E18DB057900F9052F /* TaskViewController.xib in Resources */,
 				27E84E7818AD53510024B658 /* mainmenu-accounts.png in Resources */,
 				73881FE81890086F0052C75F /* actionsheet-print@2x.png in Resources */,
@@ -3130,7 +3117,6 @@
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
 				730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */,
-				274863A91951FAC0006A91C5 /* certificate-download@2x.png in Resources */,
 				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
 				27E84E8618AD53510024B658 /* mainmenu-settings.png in Resources */,
 				733638BB1913BA1600472A57 /* system_notice_tick.png in Resources */,
@@ -3220,7 +3206,6 @@
 				27DFEBFA1937644D006D85BC /* actionsheet-open-in@2x~ipad.png in Resources */,
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
-				274863A81951FAC0006A91C5 /* certificate-download.png in Resources */,
 				73881FD1188FF6B00052C75F /* actionsheet-download@2x.png in Resources */,
 				732DBF9818E1BC6B00F7A0BF /* small_pdf.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
@@ -3256,7 +3241,6 @@
 				732DBF9C18E1BC6B00F7A0BF /* small_video.png in Resources */,
 				271DC771189C2D250059D1B2 /* status-sync-loading-highlighted@2x.png in Resources */,
 				27E84E8018AD53510024B658 /* mainmenu-localfiles.png in Resources */,
-				080A812118561E6D00B79306 /* certificate-import.png in Resources */,
 				27E84E8518AD53510024B658 /* mainmenu-repository@2x.png in Resources */,
 				731A8F41192F52AC0099BE7B /* NewVersionViewController.xib in Resources */,
 				271DC773189C2D250059D1B2 /* status-sync-loading@2x.png in Resources */,
