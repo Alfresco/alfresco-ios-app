@@ -177,6 +177,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
     }
+    
+    if (self.tableView.isEditing)
+    {
+        [self.tableView setEditing:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
