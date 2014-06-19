@@ -116,6 +116,16 @@ static CGFloat sDownloadProgressHeight;
     [self refreshViewController];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.mediaPlayerController.playbackState == MPMoviePlaybackStatePlaying)
+    {
+        [self.mediaPlayerController stop];
+    }
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     BOOL shouldHideStatusBar = NO;
@@ -245,7 +255,7 @@ static CGFloat sDownloadProgressHeight;
     mediaPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
     mediaPlayer.view.backgroundColor = [UIColor clearColor];
     mediaPlayer.controlStyle = MPMovieControlStyleDefault;
-    mediaPlayer.allowsAirPlay = NO;
+    mediaPlayer.allowsAirPlay = YES;
     mediaPlayer.shouldAutoplay = NO;
     
     [self.moviePlayerContainer addSubview:mediaPlayer.view];
