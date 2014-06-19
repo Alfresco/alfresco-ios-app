@@ -15,15 +15,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
-#import "CertificateDocumentFilter.h"
+  
+#import "ParentListViewController.h"
+#import "DownloadsViewController.h"
+#import "ClientCertificateDownloadViewController.h"
 
-@implementation CertificateDocumentFilter
+@class UserAccount;
 
-- (BOOL)filterDocumentWithExtension:(NSString *)documentExtension
-{
-    BOOL isCertificate = [documentExtension isEqualToString:@"p12"] || [documentExtension isEqualToString:@"pfx"];
-    return !isCertificate;
-}
+@interface ClientCertificateViewController : ParentListViewController <DownloadsPickerDelegate, ClientCertificateDownloadProtocol>
+
+- (id)initWithAccount:(UserAccount *)account;
 
 @end

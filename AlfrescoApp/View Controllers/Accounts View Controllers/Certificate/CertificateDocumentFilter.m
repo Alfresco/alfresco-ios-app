@@ -15,14 +15,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
-#import "ParentListViewController.h"
-#import "DownloadsViewController.h"
+ 
+#import "CertificateDocumentFilter.h"
 
-@class UserAccount;
+@interface CertificateDocumentFilter ()
+@property (nonatomic, strong) NSArray *filteredExtensions;
+@end
 
-@interface ClientCertificateViewController : ParentListViewController <DownloadsPickerDelegate>
+@implementation CertificateDocumentFilter
 
-- (id)initWithAccount:(UserAccount *)account;
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        _filteredExtensions = @[@"p12", @"pfx"];
+    }
+    return self;
+}
+
+- (BOOL)filterDocumentWithExtension:(NSString *)documentExtension
+{
+    return ![self.filteredExtensions containsObject:[documentExtension lowercaseString]];
+}
 
 @end

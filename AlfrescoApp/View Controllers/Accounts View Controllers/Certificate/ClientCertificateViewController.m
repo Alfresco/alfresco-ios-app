@@ -23,6 +23,8 @@
 #import "CertificateDocumentFilter.h"
 
 static NSInteger const kDeleteCertificateGroup = 1;
+static NSInteger const kImportCertificateRow = 0;
+
 static CGFloat const kTableViewCellHeight = 54.0f;
 
 @interface ClientCertificateViewController ()
@@ -39,6 +41,13 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         self.account = account;
     }
     return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,11 +86,20 @@ static CGFloat const kTableViewCellHeight = 54.0f;
     }
     else
     {
-        CertificateDocumentFilter *certificateFilter = [[CertificateDocumentFilter alloc] init];
-        DownloadsViewController *downloadsController = [[DownloadsViewController alloc] initWithDocumentFilter:certificateFilter];
-        downloadsController.isDownloadPickerEnabled = YES;
-        downloadsController.downloadPickerDelegate = self;
-        [self.navigationController pushViewController:downloadsController animated:YES];
+        if (indexPath.row == kImportCertificateRow)
+        {
+            CertificateDocumentFilter *certificateFilter = [CertificateDocumentFilter new];
+            DownloadsViewController *downloadsController = [[DownloadsViewController alloc] initWithDocumentFilter:certificateFilter];
+            downloadsController.isDownloadPickerEnabled = YES;
+            downloadsController.downloadPickerDelegate = self;
+            [self.navigationController pushViewController:downloadsController animated:YES];
+        }
+        else
+        {
+            ClientCertificateDownloadViewController *downloadsController = [ClientCertificateDownloadViewController new];
+            downloadsController.delegate = self;
+            [self.navigationController pushViewController:downloadsController animated:YES];
+        }
     }
 }
 
@@ -104,19 +122,34 @@ static CGFloat const kTableViewCellHeight = 54.0f;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - ClientCertificateDownloadProtocol
+
+- (void)clientCertificateDownload:(ClientCertificateDownloadViewController *)clientCertificateDownloader didDownloadCertificateAtPath:(NSString *)filePath
+{
+    ClientCertificateImportViewController *certificateImportController = [[ClientCertificateImportViewController alloc] initWithAccount:self.account andCertificatePath:filePath];
+    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController pushViewController:certificateImportController animated:YES];
+}
+
 #pragma mark - Private Methods
 
 - (void)constructTableGroups
 {
     if (!self.account.accountCertificate)
     {
-        UITableViewCell *addCertificateCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CertificateCell"];
-        addCertificateCell.textLabel.text = NSLocalizedString(@"certificate-manage.add-cell.label", @"Certificate Manage - Label for the add certificate cell's label");
-        addCertificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        addCertificateCell.backgroundColor = [UIColor whiteColor];
-        addCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-add.png"];
-        
-        NSArray *tableGroup = @[addCertificateCell];
+        UITableViewCell *importCertificateCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ImportCell"];
+        importCertificateCell.textLabel.text = NSLocalizedString(@"certificate-manage.import.label", @"Import Certificate");
+        importCertificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        importCertificateCell.backgroundColor = [UIColor whiteColor];
+        importCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-import.png"];
+
+        UITableViewCell *downloadCertificateCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DownloadCell"];
+        downloadCertificateCell.textLabel.text = NSLocalizedString(@"certificate-manage.download.label", @"Download Certificate");
+        downloadCertificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        downloadCertificateCell.backgroundColor = [UIColor whiteColor];
+        downloadCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-download.png"];
+
+        NSArray *tableGroup = @[importCertificateCell, downloadCertificateCell];
         self.tableViewData = [NSMutableArray arrayWithArray:@[tableGroup]];
     }
     else

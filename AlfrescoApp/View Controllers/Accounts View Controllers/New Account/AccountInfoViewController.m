@@ -262,6 +262,7 @@ static NSInteger const kTagCertificateCell = 1;
     descriptionCell.valueTextField.delegate = self;
     descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
     descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    descriptionCell.valueTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.descriptionTextField = descriptionCell.valueTextField;
     self.descriptionTextField.text = self.formBackupAccount.accountDescription;
     
@@ -299,6 +300,7 @@ static NSInteger const kTagCertificateCell = 1;
         serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
         serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
         serverAddressCell.valueTextField.delegate = self;
+        serverAddressCell.valueTextField.keyboardType = UIKeyboardTypeURL;
         self.serverAddressTextField = serverAddressCell.valueTextField;
         self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
         
@@ -593,7 +595,7 @@ static NSInteger const kTagCertificateCell = 1;
     return YES;
 }
 
-- (void)textFieldDidChange:(NSNotification *)note
+- (void)textFieldDidChange:(NSNotification *)notification
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
