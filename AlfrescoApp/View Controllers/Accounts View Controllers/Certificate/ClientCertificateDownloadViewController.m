@@ -250,12 +250,6 @@
     });
 }
 
-- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
-{
-    [self hideHUD];
-    displayErrorMessage([NSString stringWithFormat:@"%@ %@", [self class], NSStringFromSelector(_cmd)]);
-}
-
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
     [self hideHUD];
