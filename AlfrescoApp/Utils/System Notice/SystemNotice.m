@@ -30,7 +30,6 @@ static CGFloat const kSystemNoticeAlpha = 0.95f;
 @property (nonatomic, strong) UIColor *systemNoticeBackgroundColour;
 @property (nonatomic, strong) NSString *icon;
 @property (nonatomic, strong) UIColor *labelColor;
-@property (nonatomic, strong) UIColor *shadowColor;
 @property (nonatomic, strong) NSString *defaultTitle;
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) UILabel *messageLabel;
@@ -56,7 +55,6 @@ CGFloat hiddenYOrigin;
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeInformationColor];
                 self.icon = @"system_notice_tick.png";
                 self.labelColor = [UIColor whiteColor];
-                self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
                 self.displayTime = 2.0f;
                 break;
                 
@@ -64,7 +62,6 @@ CGFloat hiddenYOrigin;
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeErrorColor];
                 self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor whiteColor];
-                self.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.2];
                 self.defaultTitle = NSLocalizedString(@"An Error Occurred", @"Default title for error notification");
                 self.displayTime = 8.0f;
                 break;
@@ -73,7 +70,6 @@ CGFloat hiddenYOrigin;
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeWarningColor];
                 self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor blackColor];
-                self.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.2];
                 self.displayTime = 3.0f;
                 break;
 
@@ -130,7 +126,7 @@ CGFloat hiddenYOrigin;
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, originY, viewWidth - 70.0, 16.0)];
     titleLabel.textColor = self.labelColor;
-    titleLabel.font = [UIFont systemFontOfSize:14.0];
+    titleLabel.font = [UIFont systemFontOfSize:14.5];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.text = (self.title != nil) ? self.title : self.defaultTitle;
     
@@ -139,7 +135,7 @@ CGFloat hiddenYOrigin;
     if (self.message)
     {
         messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 10.0 + 10.0, viewWidth - 70.0, messageLineHeight)];
-        messageLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f];
+        messageLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.5f];
         messageLabel.textColor = self.labelColor;
         messageLabel.backgroundColor = [UIColor clearColor];
         messageLabel.text = self.message;
@@ -177,7 +173,6 @@ CGFloat hiddenYOrigin;
     iconView.tintColor = self.labelColor;
     iconView.image = [[UIImage imageNamed:self.icon] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.alpha = 0.9;
     [self addSubview:iconView];
     
     // Title label

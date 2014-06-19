@@ -141,13 +141,11 @@ static CGFloat const kTableViewCellHeight = 54.0f;
         importCertificateCell.textLabel.text = NSLocalizedString(@"certificate-manage.import.label", @"Import Certificate");
         importCertificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         importCertificateCell.backgroundColor = [UIColor whiteColor];
-        importCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-import.png"];
 
         UITableViewCell *downloadCertificateCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DownloadCell"];
         downloadCertificateCell.textLabel.text = NSLocalizedString(@"certificate-manage.download.label", @"Download Certificate");
         downloadCertificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         downloadCertificateCell.backgroundColor = [UIColor whiteColor];
-        downloadCertificateCell.imageView.image = [UIImage imageNamed:@"certificate-download.png"];
 
         NSArray *tableGroup = @[importCertificateCell, downloadCertificateCell];
         self.tableViewData = [NSMutableArray arrayWithArray:@[tableGroup]];
