@@ -245,7 +245,7 @@ static CGFloat sDownloadProgressHeight;
     mediaPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
     mediaPlayer.view.backgroundColor = [UIColor clearColor];
     mediaPlayer.controlStyle = MPMovieControlStyleDefault;
-    mediaPlayer.allowsAirPlay = YES;
+    mediaPlayer.allowsAirPlay = NO;
     mediaPlayer.shouldAutoplay = NO;
     
     [self.moviePlayerContainer addSubview:mediaPlayer.view];
