@@ -149,6 +149,7 @@ static CGFloat sDownloadProgressHeight;
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [self.mediaPlayerViewController.moviePlayer prepareToPlay];
     [self presentMoviePlayerViewControllerAnimated:self.mediaPlayerViewController];
 }
 
