@@ -378,6 +378,7 @@
 - (void)showHUDOnView:(UIView *)view
 {
     MBProgressHUD *progress = [[MBProgressHUD alloc] initWithView:view];
+    progress.removeFromSuperViewOnHide = YES;
     progress.labelText = NSLocalizedString(@"login.hud.label", @"Connecting...");
     progress.detailsLabelText = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
     

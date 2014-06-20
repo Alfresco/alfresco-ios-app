@@ -265,7 +265,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
     
     // create a new listing context so we can filter the processes
-    AlfrescoListingFilter *filter = [[AlfrescoListingFilter alloc] initWithFilter:kAlfrescoFilterByWorkflowState value:kAlfrescoFilterValueWorkflowStateActive];
+    AlfrescoListingFilter *filter = [[AlfrescoListingFilter alloc] initWithFilter:kAlfrescoFilterByWorkflowStatus value:kAlfrescoFilterValueWorkflowStateActive];
     AlfrescoListingContext *filteredListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:listingContext.maxItems
                                                                                             skipCount:listingContext.skipCount
                                                                                          sortProperty:listingContext.sortProperty
@@ -364,9 +364,10 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         {
             AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
             processDefinitionIdentifier = currentTask.processDefinitionIdentifier;
-            cell.title = currentTask.name;
+            cell.title = currentTask.summary;
             cell.dueDate = currentTask.dueAt;
             cell.priority = currentTask.priority;
+            cell.processType = currentTask.name;
         }
         break;
             
@@ -374,15 +375,14 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
             processDefinitionIdentifier = currentProcess.processDefinitionIdentifier;
-            cell.title = currentProcess.name;
+            cell.title = currentProcess.summary;
             cell.dueDate = currentProcess.dueAt;
             cell.priority = currentProcess.priority;
+            BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:processDefinitionIdentifier];
+            cell.processType = NSLocalizedString(isAdhocProcessType ? @"task.type.workflow.todo" : @"task.type.workflow.review.and.approve", @"Process type");
         }
         break;
     }
-
-    BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:processDefinitionIdentifier];
-    cell.processType = NSLocalizedString(isAdhocProcessType ? @"task.type.workflow.todo" : @"task.type.workflow.review.and.approve", @"Process type");
     
     return cell;
 }
@@ -423,11 +423,27 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     
     if (self.displayedTaskFilter == TaskFilterTask)
     {
-        taskDetailsViewController = [[TaskDetailsViewController alloc] initWithTask:(AlfrescoWorkflowTask *)selectedObject session:self.session];
+        // Sanity check
+        if ([selectedObject isKindOfClass:[AlfrescoWorkflowTask class]])
+        {
+            taskDetailsViewController = [[TaskDetailsViewController alloc] initWithTask:(AlfrescoWorkflowTask *)selectedObject session:self.session];
+        }
+        else
+        {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
     else if (self.displayedTaskFilter == TaskFilterProcess)
     {
-        taskDetailsViewController = [[TaskDetailsViewController alloc] initWithProcess:(AlfrescoWorkflowProcess *)selectedObject session:self.session];
+        // Sanity check
+        if ([selectedObject isKindOfClass:[AlfrescoWorkflowProcess class]])
+        {
+            taskDetailsViewController = [[TaskDetailsViewController alloc] initWithProcess:(AlfrescoWorkflowProcess *)selectedObject session:self.session];
+        }
+        else
+        {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
     
     [UniversalDevice pushToDisplayViewController:taskDetailsViewController usingNavigationController:self.navigationController animated:YES];

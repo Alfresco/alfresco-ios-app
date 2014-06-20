@@ -23,6 +23,7 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
 @interface ProcessTasksCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *taskStatusTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *taskEndedAtTextLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizonalPaddingBetweenContentViewAndAvatarImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *avatarImageViewWidth;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *horizonalPaddingBetweenAvatarImageViewAndTextLabel;
@@ -30,6 +31,12 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
 @end
 
 @implementation ProcessTasksCell
+
+- (void)awakeFromNib
+{
+    self.taskStatusTextLabel.text = @"";
+    self.taskEndedAtTextLabel.text = @"";
+}
 
 - (void)layoutSubviews
 {
@@ -47,6 +54,7 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
     CGFloat rightPadding = horizonalPaddingBetweenContentViewAndAvatarImageView;
     
     self.taskStatusTextLabel.preferredMaxLayoutWidth = self.contentView.frame.size.width - (leftPadding + rightPadding);
+    self.taskEndedAtTextLabel.textColor = [UIColor textDimmedColor];
 }
 
 #pragma mark - Public Functions
@@ -58,15 +66,17 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
 
 - (void)updateStatusLabelUsingTask:(AlfrescoWorkflowTask *)task
 {
-    NSString *statusString = nil;
+    NSString *statusString = @"";
     
     if (task.endedAt)
     {
-        statusString = [NSString stringWithFormat:NSLocalizedString(@"tasks.cell.taskcompleted", @"Task Completed"), task.assigneeIdentifier, relativeDateFromDate(task.endedAt)];
+        statusString = [NSString stringWithFormat:NSLocalizedString(@"tasks.cell.taskcompleted", @"Task Completed"), task.assigneeIdentifier];
+        self.taskEndedAtTextLabel.text = relativeDateFromDate(task.endedAt);
     }
     else
     {
         statusString = [NSString stringWithFormat:NSLocalizedString(@"tasks.cell.tasknotcompleted", @"Task Not Completed"), task.assigneeIdentifier];
+        self.taskEndedAtTextLabel.text = @"";
     }
     
     NSDictionary *attributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:self.taskStatusTextLabel.font.pointSize]};

@@ -138,17 +138,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
         }
     }];
     
-    if (self.taskFilter == TaskFilterProcess)
-    {
-        [self loadTasksWithCompletionBlock:^(NSArray *array, NSError *error) {
-            if (array)
-            {
-                NSPredicate *filteredArrayPredicate = [NSPredicate predicateWithFormat:kStartTaskRemovalPredicateFormat];
-                weakSelf.tasks = [[array filteredArrayUsingPredicate:filteredArrayPredicate] mutableCopy];
-                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:TableSectionTasks] withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-        }];
-    }
+    [self loadTasksWithCompletionBlock:^(NSArray *array, NSError *error) {
+        if (array)
+        {
+            NSPredicate *filteredArrayPredicate = [NSPredicate predicateWithFormat:kStartTaskRemovalPredicateFormat];
+            weakSelf.tasks = [[array filteredArrayUsingPredicate:filteredArrayPredicate] mutableCopy];
+            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:TableSectionTasks] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }];
 }
 
 - (void)registerForNotifications
@@ -273,11 +270,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
             AttributedLabelCell *detailCell = [tableView dequeueReusableCellWithIdentifier:[AttributedLabelCell cellIdentifier]];
             if (self.taskFilter == TaskFilterTask)
             {
-                detailCell.attributedLabel.text = self.task.name;
+                detailCell.attributedLabel.text = self.task.summary;
             }
             else
             {
-                detailCell.attributedLabel.text = self.process.name;
+                detailCell.attributedLabel.text = self.process.summary;
             }
 
             detailCell.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -603,6 +603,10 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
         {
             displayNameKey = [NSString stringWithFormat:@"tasks.process.%@", components[0]];
         }
+        else
+        {
+            displayNameKey = [NSString stringWithFormat:@"tasks.process.%@", [processDefinitionIdentifier stringByReplacingOccurrencesOfString:kAlfrescoWorkflowActivitiEngine withString:@""]];
+        }
     }
     
     return NSLocalizedString(displayNameKey, @"Localized process name");

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -22,18 +22,27 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="43" translatesAutoresizingMaskIntoConstraints="NO" id="MPW-77-BqZ">
-                        <rect key="frame" x="68" y="36" width="43" height="17"/>
+                        <rect key="frame" x="68" y="28" width="43" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGw-pX-UfB">
+                        <rect key="frame" x="68" y="49" width="33" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="centerY" secondItem="Uhx-N6-o4O" secondAttribute="centerY" id="10y-ti-uOb"/>
+                    <constraint firstItem="TGw-pX-UfB" firstAttribute="leading" secondItem="MPW-77-BqZ" secondAttribute="leading" id="56Z-nN-aPJ"/>
                     <constraint firstItem="Uhx-N6-o4O" firstAttribute="leading" secondItem="ulU-Vl-xaE" secondAttribute="leading" constant="8" id="5li-M4-ZGt"/>
-                    <constraint firstAttribute="centerY" secondItem="MPW-77-BqZ" secondAttribute="centerY" id="9my-E6-g0N"/>
+                    <constraint firstAttribute="centerY" secondItem="MPW-77-BqZ" secondAttribute="centerY" constant="8" id="9my-E6-g0N"/>
                     <constraint firstItem="MPW-77-BqZ" firstAttribute="leading" secondItem="Uhx-N6-o4O" secondAttribute="trailing" constant="10" id="AyJ-l9-Q3Y"/>
+                    <constraint firstItem="TGw-pX-UfB" firstAttribute="top" secondItem="MPW-77-BqZ" secondAttribute="bottom" constant="4" id="IsI-Cb-ynt"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Uhx-N6-o4O" secondAttribute="bottom" constant="8" id="apb-pC-Zl7"/>
                     <constraint firstItem="Uhx-N6-o4O" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ulU-Vl-xaE" secondAttribute="top" constant="8" id="idV-w5-mys"/>
                 </constraints>
@@ -43,6 +52,7 @@
                 <outlet property="avatarImageViewWidth" destination="l3I-0J-k2U" id="OEe-F0-2ei"/>
                 <outlet property="horizonalPaddingBetweenAvatarImageViewAndTextLabel" destination="AyJ-l9-Q3Y" id="VOP-5h-8aQ"/>
                 <outlet property="horizonalPaddingBetweenContentViewAndAvatarImageView" destination="5li-M4-ZGt" id="Awo-gR-URm"/>
+                <outlet property="taskEndedAtTextLabel" destination="TGw-pX-UfB" id="bHQ-aE-Mdk"/>
                 <outlet property="taskStatusTextLabel" destination="MPW-77-BqZ" id="5sT-G9-Tr4"/>
             </connections>
         </tableViewCell>
