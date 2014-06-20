@@ -11,6 +11,7 @@
                 <outlet property="downloadProgressView" destination="bHR-ut-g0r" id="1B3-wm-fN6"/>
                 <outlet property="heightForDownloadContainer" destination="Ycj-pp-ew4" id="3zb-sd-JZF"/>
                 <outlet property="moviePlayerContainer" destination="Mcd-3l-EwV" id="vAj-V8-d9y"/>
+                <outlet property="moviePlayerPreviewImageView" destination="6VJ-y0-QMT" id="6hP-Fi-rwG"/>
                 <outlet property="previewThumbnailImageView" destination="Im1-vZ-tko" id="zQs-Mf-pq9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -62,9 +63,32 @@
                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mcd-3l-EwV" userLabel="Movie Player Container">
                     <rect key="frame" x="0.0" y="134" width="320" height="300"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6VJ-y0-QMT" userLabel="Movie Preview">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hYS-YZ-4dy" userLabel="Play Button">
+                            <rect key="frame" x="124" y="114" width="72" height="72"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="playButton.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="playButtonPressed:" destination="-1" eventType="touchUpInside" id="pDZ-aQ-I8G"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="centerX" secondItem="hYS-YZ-4dy" secondAttribute="centerX" id="IL5-s3-qaE"/>
                         <constraint firstAttribute="height" constant="300" id="Jbe-ro-f41"/>
+                        <constraint firstItem="6VJ-y0-QMT" firstAttribute="leading" secondItem="Mcd-3l-EwV" secondAttribute="leading" id="KMf-dz-0WB"/>
+                        <constraint firstAttribute="bottom" secondItem="6VJ-y0-QMT" secondAttribute="bottom" id="Zn9-nZ-Brd"/>
+                        <constraint firstAttribute="trailing" secondItem="6VJ-y0-QMT" secondAttribute="trailing" id="h3I-uv-tiF"/>
+                        <constraint firstItem="6VJ-y0-QMT" firstAttribute="top" secondItem="Mcd-3l-EwV" secondAttribute="top" id="p9d-8p-6Gc"/>
+                        <constraint firstAttribute="centerY" secondItem="hYS-YZ-4dy" secondAttribute="centerY" id="vUG-EW-tiv"/>
                     </constraints>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </view>
@@ -87,6 +111,7 @@
         </view>
     </objects>
     <resources>
+        <image name="playButton.png" width="72" height="72"/>
         <image name="preview-download-stop.png" width="22" height="22"/>
     </resources>
 </document>

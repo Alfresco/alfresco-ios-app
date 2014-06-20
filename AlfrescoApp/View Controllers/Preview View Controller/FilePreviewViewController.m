@@ -17,6 +17,7 @@
  ******************************************************************************/
  
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import "FilePreviewViewController.h"
 #import "ThumbnailImageView.h"
@@ -44,7 +45,7 @@ static CGFloat sDownloadProgressHeight;
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoRequest *downloadRequest;
-@property (nonatomic, strong) MPMoviePlayerController *mediaPlayerController;
+@property (nonatomic, strong) MPMoviePlayerViewController *mediaPlayerViewController;
 @property (nonatomic, strong) FullScreenAnimationController *animationController;
 // Used for the file path initialiser
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
@@ -55,6 +56,7 @@ static CGFloat sDownloadProgressHeight;
 @property (nonatomic, weak) IBOutlet UIProgressView *downloadProgressView;
 @property (nonatomic, weak) IBOutlet UIView *downloadProgressContainer;
 @property (nonatomic, weak) IBOutlet UIView *moviePlayerContainer;
+@property (nonatomic, weak) IBOutlet UIImageView *moviePlayerPreviewImageView;
 // Views
 @property (nonatomic, strong) ALFPreviewController *previewController;
 
@@ -116,16 +118,6 @@ static CGFloat sDownloadProgressHeight;
     [self refreshViewController];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if (self.mediaPlayerController.playbackState == MPMoviePlaybackStatePlaying)
-    {
-        [self.mediaPlayerController stop];
-    }
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     BOOL shouldHideStatusBar = NO;
@@ -151,6 +143,13 @@ static CGFloat sDownloadProgressHeight;
     self.previewThumbnailSingleTapRecognizer = singleTap;
     self.previewThumbnailImageView.userInteractionEnabled = YES;
     [self.previewThumbnailImageView addGestureRecognizer:singleTap];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)playButtonPressed:(id)sender
+{
+    [self presentMoviePlayerViewControllerAnimated:self.mediaPlayerViewController];
 }
 
 #pragma mark - Private Functions
@@ -251,31 +250,41 @@ static CGFloat sDownloadProgressHeight;
 {
     self.moviePlayerContainer.hidden = YES;
     
-    MPMoviePlayerController *mediaPlayer = [MPMoviePlayerController new];
-    mediaPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
-    mediaPlayer.view.backgroundColor = [UIColor clearColor];
-    mediaPlayer.controlStyle = MPMovieControlStyleDefault;
-    mediaPlayer.allowsAirPlay = YES;
-    mediaPlayer.shouldAutoplay = NO;
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
     
-    [self.moviePlayerContainer addSubview:mediaPlayer.view];
-    self.mediaPlayerController = mediaPlayer;
+    MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] init];
+    moviePlayer.moviePlayer.contentURL = fileURL;
     
-    NSDictionary *views = @{@"moviePlayerView" : mediaPlayer.view};
-    [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[moviePlayerView]|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
-    [self.moviePlayerContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[moviePlayerView]|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
-
-    self.mediaPlayerController.contentURL = [NSURL fileURLWithPath:filePath];
-    [self.mediaPlayerController prepareToPlay];
+    self.mediaPlayerViewController = moviePlayer;
+    
+    // Generate a movie preview
+    // Synchronously generates a preview
+    AVAsset *fileAsset = [AVURLAsset assetWithURL:fileURL];
+    AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:fileAsset];
+    generator.appliesPreferredTrackTransform = YES;
+    
+    int frameTimeStart = 1;
+    int frameLocation = 1;
+    
+    CGImageRef frameImageRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart, frameLocation) actualTime:nil error:nil];
+    
+    if (frameImageRef != NULL)
+    {
+        self.moviePlayerPreviewImageView.image = [UIImage imageWithCGImage:frameImageRef scale:1.0 orientation:UIImageOrientationUp];
+        CGImageRelease(frameImageRef);
+    }
+    // End synchronous preview generation
     
     if (animated)
     {
         self.moviePlayerContainer.alpha = 0.0f;
         self.moviePlayerContainer.hidden = NO;
+        self.moviePlayerPreviewImageView.alpha = 0.0f;
 
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.previewThumbnailImageView.alpha = 0.0f;
             self.moviePlayerContainer.alpha = 1.0f;
+            self.moviePlayerPreviewImageView.alpha = 1.0f;
         }];
     }
     else
@@ -293,14 +302,14 @@ static CGFloat sDownloadProgressHeight;
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.moviePlayerContainer.alpha = 0.0f;
         } completion:^(BOOL finished) {
-            [self.mediaPlayerController.view removeFromSuperview];
-            self.mediaPlayerController = nil;
+            self.moviePlayerPreviewImageView.image = nil;
+            self.mediaPlayerViewController = nil;
         }];
     }
     else
     {
-        [self.mediaPlayerController.view removeFromSuperview];
-        self.mediaPlayerController = nil;
+        self.moviePlayerPreviewImageView.image = nil;
+        self.mediaPlayerViewController = nil;
     }
 }
 

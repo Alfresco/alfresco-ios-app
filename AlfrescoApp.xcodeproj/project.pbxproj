@@ -182,6 +182,8 @@
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
 		5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB5D92344964A91B3E95A3F /* libPods.a */; };
 		7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */; };
+		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
+		7302475519544AD50034D861 /* playButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475319544AD50034D861 /* playButton@2x.png */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
 		730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730B444918EC393B008A0977 /* libFlurry_4.4.0.a */; };
 		730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B444D18EC3A96008A0977 /* AnalyticsManager.m */; };
@@ -765,6 +767,8 @@
 		27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks@2x.png"; sourceTree = "<group>"; };
 		7300DE9318EF010F00F5F57E /* FullScreenAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenAnimationController.h; sourceTree = "<group>"; };
 		7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenAnimationController.m; sourceTree = "<group>"; };
+		7302475219544AD50034D861 /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
+		7302475319544AD50034D861 /* playButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playButton@2x.png"; sourceTree = "<group>"; };
 		73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlfrescoSDK.xcodeproj; path = AlfrescoSDK/AlfrescoSDK/AlfrescoSDK.xcodeproj; sourceTree = SOURCE_ROOT; };
 		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
 		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
@@ -2689,6 +2693,8 @@
 				731901AE18475B14002C82C1 /* closeButton.png */,
 				734BFE541899606A00692AB4 /* hamburger.png */,
 				734BFE551899606A00692AB4 /* hamburger@2x.png */,
+				7302475219544AD50034D861 /* playButton.png */,
+				7302475319544AD50034D861 /* playButton@2x.png */,
 				27A2DC3B1920DC54002C6793 /* preview-download-stop.png */,
 				27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */,
 			);
@@ -3104,6 +3110,7 @@
 				08E1EA2E18DB057900F9052F /* TaskViewController.xib in Resources */,
 				27E84E7818AD53510024B658 /* mainmenu-accounts.png in Resources */,
 				73881FE81890086F0052C75F /* actionsheet-print@2x.png in Resources */,
+				7302475519544AD50034D861 /* playButton@2x.png in Resources */,
 				73BE41FA18F3FF2900DB8912 /* account-type-cloud.png in Resources */,
 				732DBF9D18E1BC6B00F7A0BF /* small_video@2x.png in Resources */,
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
@@ -3128,6 +3135,7 @@
 				738664C01906B14C0021D1BD /* SitesCell.xib in Resources */,
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
+				7302475419544AD50034D861 /* playButton.png in Resources */,
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
 				73FF557718ACE2370009CA56 /* large_audio.png in Resources */,
 				73881F7E18898B910052C75F /* ButtonBarArrowRight@2x.png in Resources */,
