@@ -32,8 +32,6 @@
 #import "PeoplePicker.h"
 #import "WorkflowHelper.h"
 
-static NSString * const kJBPMReviewTask = @"wf:reviewTask";
-static NSString * const kActivitiReviewTask = @"wf:activitiReviewTask";
 static CGFloat const kMaxCommentTextViewHeight = 60.0f;
 static UILayoutPriority const kHighPriority = 950;
 static UILayoutPriority const kLowPriority = 250;
