@@ -39,6 +39,7 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
     if ([self shouldStartMigration])
     {
         [self migrateAccounts];
+        [self migrateDownloadedFiles];
         [(AppDelegate *)[[UIApplication sharedApplication] delegate] updateAppFirstLaunchFlag];
     }
 }
@@ -110,6 +111,43 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
     account.accountDescription = oldAccount.description;
     account.isSelectedAccount = NO;
     return account;
+}
+
++ (void)migrateDownloadedFiles
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    
+    NSError *documentsFolderContentError = nil;
+    NSArray *documentsContent = [fileManager contentsOfDirectoryAtPath:fileManager.documentsDirectory error:&documentsFolderContentError];
+    
+    if (!documentsFolderContentError)
+    {
+        for (NSString *fileName in documentsContent)
+        {
+            BOOL *isDir = NO;
+            NSString *absoluteSourceFilePath = [fileManager.documentsDirectory stringByAppendingPathComponent:fileName];
+            
+            if ([fileManager fileExistsAtPath:absoluteSourceFilePath isDirectory:isDir])
+            {
+                if (!isDir && ![fileName hasPrefix:@"."])
+                {
+                    NSError *moveError = nil;
+                    NSString *absoluteTargetPath = [fileManager.downloadsContentFolderPath stringByAppendingPathComponent:fileName];
+                    [fileManager moveItemAtPath:absoluteSourceFilePath toPath:absoluteTargetPath error:&moveError];
+                    
+                    if (moveError)
+                    {
+                        AlfrescoLogError(@"Unable to move item at path: %@ to %@", absoluteSourceFilePath, absoluteTargetPath);
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        AlfrescoLogError(@"Unable to retrieve documents folder");
+    }
+    
 }
 
 @end
