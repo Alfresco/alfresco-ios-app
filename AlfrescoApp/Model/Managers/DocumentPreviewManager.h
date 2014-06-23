@@ -22,6 +22,7 @@ typedef void (^DocumentPreviewManagerFileSavedBlock)(NSString *filePath);
 extern NSString * const kDocumentPreviewManagerWillStartDownloadNotification;
 extern NSString * const kDocumentPreviewManagerProgressNotification;
 extern NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification;
+extern NSString * const kDocumentPreviewManagerDocumentDownloadCancelledNotification;
 
 // Download Detail Keys
 extern NSString * const kDocumentPreviewManagerDocumentIdentifierNotificationKey;

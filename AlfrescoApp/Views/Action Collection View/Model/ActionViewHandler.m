@@ -64,6 +64,7 @@
         self.controller = controller;
         self.queuedCompletionBlocks = [NSMutableArray array];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadCancelled:) name:kDocumentPreviewManagerDocumentDownloadCancelledNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
     }
     return self;
@@ -224,7 +225,18 @@
     }
     else
     {
-        downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:nil session:self.session completionBlock:nil];
+        void (^saveToDownloadsBlock)(NSString *filePath) = ^(NSString *filePath) {
+            if (filePath)
+            {
+                [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)self.node contentPath:filePath completionBlock:nil];
+            }
+        };
+        
+        if (![[DocumentPreviewManager sharedManager] isCurrentlyDownloadingDocument:(AlfrescoDocument *)self.node])
+        {
+            downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node session:self.session];
+        }
+        [self addCompletionBlock:saveToDownloadsBlock];
     }
     
     return downloadRequest;
@@ -589,6 +601,11 @@
     {
         [self runAndRemoveAllCompletionBlocksWithFilePath:[[DocumentPreviewManager sharedManager] filePathForDocument:(AlfrescoDocument *)self.node]];
     }
+}
+
+- (void)downloadCancelled:(NSNotification *)notification
+{
+    [self.queuedCompletionBlocks removeAllObjects];
 }
 
 #pragma mark - Private Functions

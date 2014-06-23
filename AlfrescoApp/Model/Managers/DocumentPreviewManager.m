@@ -23,6 +23,7 @@ static NSString * const kTempFileFolderNamePath = @"tmp";
 NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"DocumentPreviewManagerWillStartDownloadNotification";
 NSString * const kDocumentPreviewManagerProgressNotification = @"DocumentPreviewManagerProgressNotification";
 NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification = @"DocumentPreviewManagerDocumentDownloadCompletedNotification";
+NSString * const kDocumentPreviewManagerDocumentDownloadCancelledNotification = @"DocumentPreviewManagerDocumentDownloadCancelledNotification";
 // keys
 NSString * const kDocumentPreviewManagerDocumentIdentifierNotificationKey = @"DocumentPreviewManagerDocumentIdentifierNotificationKey";
 NSString * const kDocumentPreviewManagerProgressBytesRecievedNotificationKey = @"DocumentPreviewManagerProgressBytesRecievedNotificationKey";
@@ -197,6 +198,13 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
                     {
                         [[AlfrescoFileManager sharedManager] removeItemAtPath:downloadPath error:nil];
                         [Notifier notifyWithAlfrescoError:error];
+                        
+                        if (error.code == kAlfrescoErrorCodeNetworkRequestCancelled)
+                        {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerDocumentDownloadCancelledNotification
+                                                                                object:document
+                                                                              userInfo:@{kDocumentPreviewManagerDocumentIdentifierNotificationKey : documentIdentifier}];
+                        }
                     }
                 } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                     progressBlock(bytesTransferred, bytesTotal);
