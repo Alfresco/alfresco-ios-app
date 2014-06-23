@@ -181,6 +181,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         NSString *fileToDeletePath = [self.tableViewData objectAtIndex:indexPath.row];
         
         [self deleteDocumentFromDownloads:fileToDeletePath];
+        [self updateBarButtonItems];
     }
 }
 
