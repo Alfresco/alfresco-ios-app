@@ -356,14 +356,12 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TasksCell *cell = [tableView dequeueReusableCellWithIdentifier:kTaskCellIdentifier];
-    NSString *processDefinitionIdentifier;
 
     switch (self.displayedTaskFilter)
     {
         case TaskFilterTask:
         {
             AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
-            processDefinitionIdentifier = currentTask.processDefinitionIdentifier;
             cell.title = currentTask.summary;
             cell.dueDate = currentTask.dueAt;
             cell.priority = currentTask.priority;
@@ -374,11 +372,10 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         case TaskFilterProcess:
         {
             AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
-            processDefinitionIdentifier = currentProcess.processDefinitionIdentifier;
             cell.title = currentProcess.summary;
             cell.dueDate = currentProcess.dueAt;
             cell.priority = currentProcess.priority;
-            BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:processDefinitionIdentifier];
+            BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
             cell.processType = NSLocalizedString(isAdhocProcessType ? @"task.type.workflow.todo" : @"task.type.workflow.review.and.approve", @"Process type");
         }
         break;
@@ -465,8 +462,8 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     if (self.session)
     {
         [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self hidePullToRefreshView];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
+            [self hidePullToRefreshView];
         }];
     }
     else
@@ -477,7 +474,6 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             if (successful)
             {
                 [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                    [self hidePullToRefreshView];
                     [self reloadTableViewWithPagingResult:pagingResult error:error];
                 }];
             }
