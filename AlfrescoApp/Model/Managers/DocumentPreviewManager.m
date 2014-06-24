@@ -101,30 +101,16 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
     {
         if (![self.downloadDocumentIdentifiers containsObject:documentIdentifier])
         {
-            NSString *downloadLocation = [self.tmpDownloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerWillStartDownloadNotification
                                                                 object:document
                                                               userInfo:@{kDocumentPreviewManagerDocumentIdentifierNotificationKey : documentIdentifier}];
             
-            __weak typeof(self) weakSelf = self;
+            NSString *downloadLocation = [self.downloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
+            
             request = [self downloadDocument:document toPath:downloadLocation session:session completionBlock:^(NSString *filePath) {
-                // move out of temp location
-                AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-                NSString *finalDestinationPath = [weakSelf.downloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
-                
-                NSError *movingError = nil;
-                [fileManager moveItemAtPath:filePath toPath:finalDestinationPath error:&movingError];
-                
-                if (movingError)
-                {
-                    AlfrescoLogError(@"Unable to move from path %@ to %@", filePath, finalDestinationPath);
-                }
-                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerDocumentDownloadCompletedNotification
                                                                     object:document
                                                                   userInfo:@{kDocumentPreviewManagerDocumentIdentifierNotificationKey : documentIdentifier}];
-                
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerProgressNotification
                                                                     object:document
@@ -169,6 +155,8 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
         return nil;
     }
     
+    NSString *temporaryDownloadLocation = [self.tmpDownloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
+    
     AlfrescoRequest *request = nil;
     if (completionBlock != NULL)
     {
@@ -184,7 +172,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
             if (![self.downloadDocumentIdentifiers containsObject:documentIdentifier])
             {
                 [self.downloadDocumentIdentifiers addObject:documentIdentifier];
-                NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:downloadPath append:NO];
+                NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:temporaryDownloadLocation append:NO];
                 AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
                 
                 __weak typeof(self) weakSelf = self;
@@ -192,6 +180,17 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
                     [weakSelf.downloadDocumentIdentifiers removeObject:documentIdentifier];
                     if (succeeded)
                     {
+                        // move out of temp location
+                        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+                        
+                        NSError *movingError = nil;
+                        [fileManager moveItemAtPath:temporaryDownloadLocation toPath:downloadPath error:&movingError];
+                        
+                        if (movingError)
+                        {
+                            AlfrescoLogError(@"Unable to move from path %@ to %@", temporaryDownloadLocation, downloadPath);
+                        }
+                        
                         completionBlock(downloadPath);
                     }
                     else
