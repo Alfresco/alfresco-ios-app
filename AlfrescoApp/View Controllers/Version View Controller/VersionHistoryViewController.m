@@ -262,6 +262,7 @@ static CGFloat const kExpandButtonRotationSpeed = 0.2f;
     self.document = (AlfrescoDocument *)node;
     [self createAlfrescoServicesWithSession:session];
     self.session = session;
+    self.expandedCellIndexPath = nil;
     
     [self showHUD];
     [self loadVersionsForDocument:self.document listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
