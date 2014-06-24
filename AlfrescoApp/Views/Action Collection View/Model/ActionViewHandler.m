@@ -228,7 +228,7 @@
         void (^saveToDownloadsBlock)(NSString *filePath) = ^(NSString *filePath) {
             if (filePath)
             {
-                [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)self.node contentPath:filePath completionBlock:nil];
+                [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)self.node contentPath:filePath suppressAlerts:NO completionBlock:nil];
             }
         };
         

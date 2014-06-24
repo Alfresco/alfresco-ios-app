@@ -19,15 +19,6 @@
 #import "DocumentPreviewManager.h"
 
 static NSString * const kTempFileFolderNamePath = @"tmp";
-// notifictations
-NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"DocumentPreviewManagerWillStartDownloadNotification";
-NSString * const kDocumentPreviewManagerProgressNotification = @"DocumentPreviewManagerProgressNotification";
-NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification = @"DocumentPreviewManagerDocumentDownloadCompletedNotification";
-NSString * const kDocumentPreviewManagerDocumentDownloadCancelledNotification = @"DocumentPreviewManagerDocumentDownloadCancelledNotification";
-// keys
-NSString * const kDocumentPreviewManagerDocumentIdentifierNotificationKey = @"DocumentPreviewManagerDocumentIdentifierNotificationKey";
-NSString * const kDocumentPreviewManagerProgressBytesRecievedNotificationKey = @"DocumentPreviewManagerProgressBytesRecievedNotificationKey";
-NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"DocumentPreviewManagerProgressBytesTotalNotificationKey";
 
 @interface DocumentPreviewManager ()
 

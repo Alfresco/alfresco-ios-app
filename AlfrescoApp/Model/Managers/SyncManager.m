@@ -743,7 +743,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:document.name];
         [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
         
-        [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
+        [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath suppressAlerts:NO completionBlock:^(NSString *filePath) {
             [self.fileManager removeItemAtPath:contentPath error:nil];
             [self.fileManager removeItemAtPath:temporaryPath error:nil];
             nodeStatus.status = SyncStatusRemoved;
@@ -772,7 +772,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:document.name];
     [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
     
-    [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
+    [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath suppressAlerts:NO completionBlock:^(NSString *filePath) {
         [self.fileManager removeItemAtPath:contentPath error:nil];
         [self.fileManager removeItemAtPath:temporaryPath error:nil];
         [self.syncHelper resolvedObstacleForDocument:document inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];

@@ -27,6 +27,7 @@
 static NSInteger const kCellHeight = 60;
 static CGFloat const kPullToRefreshDelay = 0.2f;
 static NSString * const kDownloadsInterface = @"DownloadsViewController";
+static NSString * const kDownloadInProgressExtension = @"-download";
 
 @interface DownloadsViewController ()
 
@@ -43,6 +44,21 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
 - (id)init
 {
     self = [super initWithNibName:kDownloadsInterface andSession:nil];
+    if (self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentDownloadStarted:)
+                                                     name:kDocumentPreviewManagerWillStartDownloadNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentDownloadComplete:)
+                                                     name:kDocumentPreviewManagerDocumentDownloadCompletedNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(documentDownloadCancelled:)
+                                                     name:kDocumentPreviewManagerDocumentDownloadCancelledNotification
+                                                   object:nil];
+    }
     return self;
 }
 
@@ -52,6 +68,16 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     if (self)
     {
         self.documentFilter = documentFilter;
+    }
+    return self;
+}
+
+- (id)initWithSession:(id<AlfrescoSession>)session
+{
+    self = [self init];
+    if (self)
+    {
+        self.session = session;
     }
     return self;
 }
@@ -130,6 +156,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     NSString *title = @"";
     NSString *details = @"";
     UIImage *iconImage = nil;
+    AlfrescoDocument *currentDocument = nil;
     
     if (self.tableViewData.count > 0)
     {
@@ -146,7 +173,7 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
         tableView.allowsSelection = YES;
         
         NSString *pathToCurrentDocument = [self.tableViewData objectAtIndex:indexPath.row];
-        AlfrescoDocument *currentDocument = [[DownloadManager sharedManager] infoForDocument:pathToCurrentDocument];
+        currentDocument = [[DownloadManager sharedManager] infoForDocument:pathToCurrentDocument];
         
         UIImage *thumbnail = [self thumbnailFromDiskForDocument:currentDocument];
         iconImage = thumbnail ?: smallImageForType([fileURLString pathExtension]);
@@ -164,7 +191,9 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     
     cell.nodeNameLabel.text = title;
     cell.nodeDetailLabel.text = details;
+    cell.node = currentDocument;
     [cell.nodeImageView setImage:iconImage withFade:NO];
+    [cell registerForNotifications];
     
     return cell;
 }
@@ -424,6 +453,48 @@ static NSString * const kDownloadsInterface = @"DownloadsViewController";
     {
         [self selectIndexPathForAlfrescoNodeInDetailView:documentIdentifier];
     }
+}
+
+- (void)documentDownloadStarted:(NSNotification *)notification
+{
+    AlfrescoDocument *document = notification.object;
+    DownloadManager *downloadManager = [DownloadManager sharedManager];
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    
+    NSString *documentName = [NSString stringWithFormat:@"%@%@", document.name, kDownloadInProgressExtension];
+    NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
+    NSError *error = nil;
+    [fileManager createFileAtPath:documentPath contents:nil error:&error];
+    [downloadManager saveDocument:document contentPath:documentPath suppressAlerts:YES completionBlock:^(NSString *filePath) {
+        [fileManager removeItemAtPath:documentPath error:nil];
+    }];
+    
+    [self refreshData];
+}
+
+- (void)documentDownloadComplete:(NSNotification *)notification
+{
+    AlfrescoDocument *document = notification.object;
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    DownloadManager *downloadManager = [DownloadManager sharedManager];
+    
+    NSString *documentName = [NSString stringWithFormat:@"%@%@", document.name, kDownloadInProgressExtension];
+    NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
+    
+    [downloadManager removeFromDownloads:documentPath];
+}
+
+- (void)documentDownloadCancelled:(NSNotification *)notification
+{
+    AlfrescoDocument *document = notification.object;
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    DownloadManager *downloadManager = [DownloadManager sharedManager];
+    
+    NSString *documentName = [NSString stringWithFormat:@"%@%@", document.name, kDownloadInProgressExtension];
+    NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
+    
+    [downloadManager removeFromDownloads:documentPath];
+    [self refreshData];
 }
 
 #pragma mark - Download Picker handlers

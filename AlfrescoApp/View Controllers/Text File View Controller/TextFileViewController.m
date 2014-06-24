@@ -209,7 +209,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
                     [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
                         if (!isCancelButton)
                         {
-                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.documentContentPath completionBlock:nil];
+                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.documentContentPath suppressAlerts:NO completionBlock:nil];
                         }
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }];
