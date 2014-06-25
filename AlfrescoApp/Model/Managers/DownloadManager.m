@@ -68,6 +68,11 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath completionBlock:(DownloadManagerFileSavedBlock)completionBlock
 {
+    [self saveDocument:document contentPath:contentPath suppressAlerts:NO completionBlock:completionBlock];
+}
+
+- (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath suppressAlerts:(BOOL)suppressAlerts completionBlock:(DownloadManagerFileSavedBlock)completionBlock
+{
     // Check source content exists
     if (contentPath == nil || ![self.fileManager fileExistsAtPath:contentPath])
     {
@@ -82,13 +87,17 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
             NSError *error = nil;
             
             filePath = [self copyToDownloadsFolder:document contentPath:contentPath overwriteExisting:YES error:&error];
-            if (filePath != nil)
+            
+            if (!suppressAlerts)
             {
-                displayInformationMessage(NSLocalizedString(@"download.success.message", @"Download succeeded"));
-            }
-            else
-            {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), error.localizedDescription]);
+                if (filePath != nil)
+                {
+                    displayInformationMessage(NSLocalizedString(@"download.success.message", @"Download succeeded"));
+                }
+                else
+                {
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), error.localizedDescription]);
+                }
             }
             
             if (completionBlock != NULL)
@@ -113,7 +122,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
                     blockFilePath = [self copyToDownloadsFolder:document contentPath:contentPath overwriteExisting:NO error:&blockError];
                 }
                 
-                if (blockFilePath != nil)
+                if (!suppressAlerts && blockFilePath != nil)
                 {
                     if ([blockFilePath.lastPathComponent isEqualToString:contentPath.lastPathComponent])
                     {
@@ -130,7 +139,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
                 {
                     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), blockError.localizedDescription]);
                 }
-
+                
                 if (completionBlock != NULL)
                 {
                     completionBlock(blockFilePath);

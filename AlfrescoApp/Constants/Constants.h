@@ -134,6 +134,17 @@ extern NSString * const kSyncObstaclesNotification;
 extern NSString * const kFavoritesListUpdatedNotification;
 extern NSString * const kSyncProgressViewVisiblityChangeNotification;
 
+// Download Status Notifications
+extern NSString * const kDocumentPreviewManagerWillStartDownloadNotification;
+extern NSString * const kDocumentPreviewManagerProgressNotification;
+extern NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification;
+extern NSString * const kDocumentPreviewManagerDocumentDownloadCancelledNotification;
+
+// Download Detail Keys
+extern NSString * const kDocumentPreviewManagerDocumentIdentifierNotificationKey;
+extern NSString * const kDocumentPreviewManagerProgressBytesRecievedNotificationKey;
+extern NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey;
+
 // Local Files Notification
 extern NSString * const kAlfrescoLocalDocumentNewName;
 extern NSString * const kAlfrescoDeleteLocalDocumentNotification;

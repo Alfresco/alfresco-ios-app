@@ -20,8 +20,12 @@
 
 @interface FileFolderCell : UITableViewCell
 
+@property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *nodeImageView;
 @property (nonatomic, weak) IBOutlet UILabel *nodeNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *nodeDetailLabel;
+@property (nonatomic, weak) IBOutlet UIProgressView *progressBar;
+
+- (void)registerForNotifications;
 
 @end

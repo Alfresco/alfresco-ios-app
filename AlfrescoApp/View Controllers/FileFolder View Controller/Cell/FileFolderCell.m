@@ -20,4 +20,38 @@
 
 @implementation FileFolderCell
 
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateProgress:)
+                                                 name:kDocumentPreviewManagerProgressNotification
+                                               object:nil];
+}
+
+- (void)updateProgress:(NSNotification *)notification
+{
+    AlfrescoDocument *notificationDocument = notification.object;
+    
+    if ([self.node.identifier isEqualToString:notificationDocument.identifier])
+    {
+        unsigned long long bytesTransferred = [notification.userInfo[kDocumentPreviewManagerProgressBytesRecievedNotificationKey] unsignedLongLongValue];
+        unsigned long long bytesTotal = [notification.userInfo[kDocumentPreviewManagerProgressBytesTotalNotificationKey] unsignedLongLongValue];
+        
+        if (bytesTotal != 0)
+        {
+            [self.progressBar setProgress:(float)bytesTransferred/(float)bytesTotal];
+            
+            if (self.progressBar.hidden)
+            {
+                self.progressBar.hidden = NO;
+            }
+        }
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 @end
