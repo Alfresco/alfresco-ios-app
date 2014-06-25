@@ -34,16 +34,24 @@
     
     if ([self.node.identifier isEqualToString:notificationDocument.identifier])
     {
-        if (self.progressBar.hidden)
-        {
-            self.progressBar.hidden = NO;
-        }
-        
         unsigned long long bytesTransferred = [notification.userInfo[kDocumentPreviewManagerProgressBytesRecievedNotificationKey] unsignedLongLongValue];
         unsigned long long bytesTotal = [notification.userInfo[kDocumentPreviewManagerProgressBytesTotalNotificationKey] unsignedLongLongValue];
         
-        [self.progressBar setProgress:(float)bytesTransferred/(float)bytesTotal];
+        if (bytesTotal != 0)
+        {
+            [self.progressBar setProgress:(float)bytesTransferred/(float)bytesTotal];
+            
+            if (self.progressBar.hidden)
+            {
+                self.progressBar.hidden = NO;
+            }
+        }
     }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

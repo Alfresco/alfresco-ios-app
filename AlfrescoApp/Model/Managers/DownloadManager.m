@@ -60,10 +60,15 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
     else
     {
-        [self saveDocument:document contentPath:contentPath suppressAlerts:NO completionBlock:completionBlock];
+        [self saveDocument:document contentPath:contentPath completionBlock:completionBlock];
     }
     
     return request;
+}
+
+- (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath completionBlock:(DownloadManagerFileSavedBlock)completionBlock
+{
+    [self saveDocument:document contentPath:contentPath suppressAlerts:NO completionBlock:completionBlock];
 }
 
 - (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath suppressAlerts:(BOOL)suppressAlerts completionBlock:(DownloadManagerFileSavedBlock)completionBlock

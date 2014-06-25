@@ -74,7 +74,7 @@
             [documentService retrieveNodeWithIdentifier:metadata.nodeRef completionBlock:^(AlfrescoNode *node, NSError *identifierError) {
                 if (identifierError)
                 {
-                    [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:temporaryFilePath suppressAlerts:NO completionBlock:^(NSString *filePath) {
+                    [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:temporaryFilePath completionBlock:^(NSString *filePath) {
                         // Do some cleaning up
                         [self removeFileAtPath:temporaryFilePath];
                     }];
@@ -111,7 +111,7 @@
                         }
                         else
                         {
-                            [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:temporaryFilePath suppressAlerts:NO completionBlock:^(NSString *filePath) {
+                            [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)node contentPath:temporaryFilePath completionBlock:^(NSString *filePath) {
                                 // Do some cleaning up
                                 [self removeFileAtPath:temporaryFilePath];
                             }];
@@ -223,7 +223,7 @@
 - (void)fileLocationSelectionViewController:(FileLocationSelectionViewController *)selectionController saveFileAtPathToDownloads:(NSString *)filePath
 {
     [selectionController dismissViewControllerAnimated:YES completion:^{
-        [[DownloadManager sharedManager] saveDocument:nil contentPath:filePath suppressAlerts:NO completionBlock:^(NSString *downloadFilePath) {
+        [[DownloadManager sharedManager] saveDocument:nil contentPath:filePath completionBlock:^(NSString *downloadFilePath) {
             [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
         }];
     }];

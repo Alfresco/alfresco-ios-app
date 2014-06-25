@@ -464,8 +464,11 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     NSString *documentName = [NSString stringWithFormat:@"%@%@", document.name, kDownloadInProgressExtension];
     NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
     NSError *error = nil;
+    
+    // creating temporary file for download in Temp folder and ask DownloadManager to save it in LocalFiles (Temporary file will be replaced by actual file after download completes)
     [fileManager createFileAtPath:documentPath contents:nil error:&error];
     [downloadManager saveDocument:document contentPath:documentPath suppressAlerts:YES completionBlock:^(NSString *filePath) {
+        // remove temporary file after its saved to Local Files
         [fileManager removeItemAtPath:documentPath error:nil];
     }];
     
@@ -475,18 +478,18 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 - (void)documentDownloadComplete:(NSNotification *)notification
 {
     AlfrescoDocument *document = notification.object;
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    DownloadManager *downloadManager = [DownloadManager sharedManager];
-    
-    NSString *documentName = [NSString stringWithFormat:@"%@%@", document.name, kDownloadInProgressExtension];
-    NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
-    
-    [downloadManager removeFromDownloads:documentPath];
+    [self removeTemporaryDownloadFilesForDocument:document];
 }
 
 - (void)documentDownloadCancelled:(NSNotification *)notification
 {
     AlfrescoDocument *document = notification.object;
+    [self removeTemporaryDownloadFilesForDocument:document];
+    [self refreshData];
+}
+
+- (void)removeTemporaryDownloadFilesForDocument:(AlfrescoDocument *)document
+{
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     DownloadManager *downloadManager = [DownloadManager sharedManager];
     
@@ -494,7 +497,6 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
     
     [downloadManager removeFromDownloads:documentPath];
-    [self refreshData];
 }
 
 #pragma mark - Download Picker handlers
