@@ -35,6 +35,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, weak) id<UploadFormViewControllerDelegate> uploadFormViewControllerDelegate;
 @property (nonatomic, weak) UITextView *textView;
+@property (nonatomic, strong) NSString *temporaryFilePath;
 
 @end
 
@@ -69,6 +70,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
 
 - (void)dealloc
 {
+    [self deleteTemporaryFile];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -108,12 +110,14 @@ static NSString * const kTextFileMimeType = @"text/plain";
     if (self.documentContentPath)
     {
         NSError *error = nil;
-        NSString *fileContent = [[NSString alloc] initWithContentsOfFile:self.documentContentPath encoding:NSUTF8StringEncoding error:&error];
+        NSString *fileContent = [[NSString alloc] initWithContentsOfFile:self.documentContentPath usedEncoding:NULL error:&error];
         if (!error)
         {
             self.textView.text = fileContent;
         }
     }
+    
+    [self createTemporaryFile];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -131,6 +135,57 @@ static NSString * const kTextFileMimeType = @"text/plain";
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)createTemporaryFile
+{
+    if (self.editingDocument)
+    {
+        NSString *temporaryFilePath  = [self.documentContentPath stringByReplacingOccurrencesOfString:self.documentContentPath.lastPathComponent withString:self.editingDocument.name];
+        
+        NSError *temporaryFileError = nil;
+        [[AlfrescoFileManager sharedManager] copyItemAtPath:self.documentContentPath toPath:temporaryFilePath error:&temporaryFileError];
+        
+        if (temporaryFileError)
+        {
+            AlfrescoLogError(@"Unable to copy file from location: %@ to %@", self.documentContentPath, temporaryFileError);
+        }
+        
+        self.temporaryFilePath = temporaryFilePath;
+    }
+    else
+    {
+        AlfrescoLogError(@"The editing node is nil. The temporary file could not be created");
+    }
+}
+
+- (void)updateSourceFileFromTemporaryFile
+{
+    NSError *updateError = nil;
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    fileManager.delegate = self;
+    [fileManager moveItemAtPath:self.temporaryFilePath toPath:self.documentContentPath error:&updateError];
+    
+    if (updateError)
+    {
+        AlfrescoLogError(@"Unable to overwrite file at path: %@ with file at path: %@", self.documentContentPath, self.temporaryFilePath);
+    }
+}
+
+- (void)deleteTemporaryFile
+{
+    if ([[AlfrescoFileManager sharedManager] fileExistsAtPath:self.temporaryFilePath])
+    {
+        NSError *temporaryFileDeleteError = nil;
+        [[AlfrescoFileManager sharedManager] removeItemAtPath:self.temporaryFilePath error:&temporaryFileDeleteError];
+        
+        if (temporaryFileDeleteError)
+        {
+            AlfrescoLogError(@"Unable to delete document at path: %@", self.temporaryFilePath);
+        }
+        
+        self.temporaryFilePath = nil;
+    }
 }
 
 - (void)cancelButtonPressed:(id)sender
@@ -172,7 +227,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
     {
         SyncManager *syncManager = [SyncManager sharedManager];
         BOOL isSyncDocument = [syncManager isNodeInSyncList:self.editingDocument];
-        [text writeToFile:self.documentContentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        [text writeToFile:self.temporaryFilePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
         
         if (isSyncDocument)
         {
@@ -196,6 +251,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
                 [progressHUD hide:YES];
                 if (document)
                 {
+                    [self updateSourceFileFromTemporaryFile];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
@@ -209,7 +265,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
                     [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
                         if (!isCancelButton)
                         {
-                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.documentContentPath completionBlock:nil];
+                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath completionBlock:nil];
                         }
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }];
@@ -295,6 +351,13 @@ static NSString * const kTextFileMimeType = @"text/plain";
     }
     
     return YES;
+}
+
+#pragma mark - NSFileManagerDelegate methods
+
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error movingItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath
+{
+    return (error.code == NSFileWriteFileExistsError);
 }
 
 @end
