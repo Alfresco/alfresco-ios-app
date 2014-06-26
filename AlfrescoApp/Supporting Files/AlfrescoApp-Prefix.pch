@@ -38,3 +38,4 @@
 #import "UIColor+Custom.h"
 #import "UILabel+Insets.h"
 #import "UIViewController+Swizzled.h"
+#import "NSObject+DebugCheck.h"

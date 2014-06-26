@@ -33,6 +33,9 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 + (AccountManager *)sharedManager
 {
+#ifndef DEBUG
+    SEC_IS_BEING_DEBUGGED_RETURN_NIL();
+#endif
     static dispatch_once_t onceToken;
     static AccountManager *sharedAccountManager = nil;
     dispatch_once(&onceToken, ^{

@@ -836,6 +836,7 @@
 		732DBFA918E1BDB600F7A0BF /* small_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small_folder@2x.png"; sourceTree = "<group>"; };
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
+		73345E35195C299D000CADC7 /* NSObject+DebugCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+DebugCheck.h"; sourceTree = "<group>"; };
 		7335AA6F181FBA500091CA95 /* PagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedScrollView.h; path = "Paged Scroll View/PagedScrollView.h"; sourceTree = "<group>"; };
 		7335AA70181FBA500091CA95 /* PagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedScrollView.m; path = "Paged Scroll View/PagedScrollView.m"; sourceTree = "<group>"; };
 		733638B51913BA1600472A57 /* system_notice_exclamation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = system_notice_exclamation.png; sourceTree = "<group>"; };
@@ -2529,6 +2530,7 @@
 				739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */,
 				73B350B51851E8BF0037E3E3 /* NSData+Base64.h */,
 				73B350B61851E8BF0037E3E3 /* NSData+Base64.m */,
+				73345E35195C299D000CADC7 /* NSObject+DebugCheck.h */,
 				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
 				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
 				73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */,
