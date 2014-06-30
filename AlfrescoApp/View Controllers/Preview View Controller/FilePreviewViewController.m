@@ -167,6 +167,11 @@ static CGFloat sDownloadProgressHeight;
     {
         [self displayFileAtPath:[[DocumentPreviewManager sharedManager] filePathForDocument:self.document]];
     }
+    else if ([[DocumentPreviewManager sharedManager] isCurrentlyDownloadingDocument:self.document])
+    {
+        self.previewThumbnailImageView.alpha = 1.0f;
+        self.previewThumbnailImageView.hidden = NO;
+    }
     else
     {
         // Display a static placeholder image
@@ -303,14 +308,17 @@ static CGFloat sDownloadProgressHeight;
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.moviePlayerContainer.alpha = 0.0f;
         } completion:^(BOOL finished) {
+            self.moviePlayerContainer.hidden = YES;
             self.moviePlayerPreviewImageView.image = nil;
             self.mediaPlayerViewController = nil;
         }];
     }
     else
     {
+        self.moviePlayerContainer.alpha = 0.0f;
         self.moviePlayerPreviewImageView.image = nil;
         self.mediaPlayerViewController = nil;
+        self.moviePlayerContainer.hidden = YES;
     }
 }
 
