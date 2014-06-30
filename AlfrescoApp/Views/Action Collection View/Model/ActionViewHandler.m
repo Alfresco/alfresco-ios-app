@@ -225,6 +225,10 @@
     }
     else
     {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDocumentPreviewManagerWillStartLocalDocumentDownloadNotification
+                                                            object:(AlfrescoDocument *)self.node
+                                                          userInfo:@{kDocumentPreviewManagerDocumentIdentifierNotificationKey : self.node.name}];
+        
         void (^saveToDownloadsBlock)(NSString *filePath) = ^(NSString *filePath) {
             if (filePath)
             {

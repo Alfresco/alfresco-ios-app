@@ -48,7 +48,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(documentDownloadStarted:)
-                                                     name:kDocumentPreviewManagerWillStartDownloadNotification
+                                                     name:kDocumentPreviewManagerWillStartLocalDocumentDownloadNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(documentDownloadComplete:)
@@ -490,13 +490,13 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 
 - (void)removeTemporaryDownloadFilesForDocument:(AlfrescoDocument *)document
 {
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     DownloadManager *downloadManager = [DownloadManager sharedManager];
-    
     NSString *documentName = [NSString stringWithFormat:@"%@%@", document.name, kDownloadInProgressExtension];
-    NSString *documentPath = [[fileManager temporaryDirectory] stringByAppendingPathComponent:documentName];
     
-    [downloadManager removeFromDownloads:documentPath];
+    if ([downloadManager isDownloadedDocument:documentName])
+    {
+        [downloadManager removeFromDownloads:documentName];
+    }
 }
 
 #pragma mark - Download Picker handlers
