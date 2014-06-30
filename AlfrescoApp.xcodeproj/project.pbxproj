@@ -721,6 +721,10 @@
 		27C2EBFD19097D01003B09B9 /* UILabel+Insets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Insets.m"; sourceTree = "<group>"; };
 		27C2EC00190A5A71003B09B9 /* ActivityWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityWrapper.h; sourceTree = "<group>"; };
 		27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActivityWrapper.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		27D4661F1961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Activities.strings"; sourceTree = "<group>"; };
+		27D466201961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "zh-Hans"; path = "zh-Hans.lproj/UserGuide.pdf"; sourceTree = "<group>"; };
+		27D466211961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27D466221961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		27DA1B631915362300885F0F /* BaseInboundURLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInboundURLHandler.h; sourceTree = "<group>"; };
 		27DA1B641915362300885F0F /* BaseInboundURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BaseInboundURLHandler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		27DFEBE21937644D006D85BC /* actionsheet-comment@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-comment@2x~ipad.png"; sourceTree = "<group>"; };
@@ -2920,6 +2924,7 @@
 				de,
 				es,
 				ja,
+				"zh-Hans",
 			);
 			mainGroup = 7373B4EC17A66E9400869949;
 			productRefGroup = 7373B4F617A66E9400869949 /* Products */;
@@ -3522,6 +3527,7 @@
 				273EEC33191A7EA800E07FF3 /* de */,
 				273EEC37191A7EB700E07FF3 /* es */,
 				273EEC3B191A7EF200E07FF3 /* ja */,
+				27D4661F1961772500E9AF10 /* zh-Hans */,
 			);
 			name = Activities.strings;
 			sourceTree = "<group>";
@@ -3535,6 +3541,7 @@
 				273EEC34191A7EA800E07FF3 /* de */,
 				273EEC38191A7EB700E07FF3 /* es */,
 				273EEC3C191A7EF200E07FF3 /* ja */,
+				27D466201961772500E9AF10 /* zh-Hans */,
 			);
 			name = UserGuide.pdf;
 			sourceTree = "<group>";
@@ -3548,6 +3555,7 @@
 				273EEC35191A7EA800E07FF3 /* de */,
 				273EEC39191A7EB700E07FF3 /* es */,
 				273EEC3D191A7EF200E07FF3 /* ja */,
+				27D466211961772500E9AF10 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -3561,6 +3569,7 @@
 				273EEC36191A7EA800E07FF3 /* de */,
 				273EEC3A191A7EB700E07FF3 /* es */,
 				273EEC3E191A7EF200E07FF3 /* ja */,
+				27D466221961772500E9AF10 /* zh-Hans */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

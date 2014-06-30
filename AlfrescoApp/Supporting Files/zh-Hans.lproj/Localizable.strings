@@ -1,0 +1,737 @@
+/**
+ * Localizable.strings
+ * AlfrescoApp
+ *
+ * Chinese (Simplified) (zh-cn)
+ *
+ * Copyright (c) 2014 Alfresco. All rights reserved.
+ */
+
+/**
+ * App Wide
+ */
+"Yes" = "是";
+"No" = "否";
+"Cancel" = "取消";
+"Add" = "添加";
+"Done" = "完成";
+"Retry" = "重试";
+"Upload" = "上传";
+"Close" = "关闭";
+"Next" = "下一步";
+"No Files" = "无文件";
+
+/**
+ * Relative Dates
+ */
+"relative.date.past.n-years" = "%d 年前";
+"relative.date.past.one-year" = "一年前";
+"relative.date.past.n-months" = "%d 个月前";
+"relative.date.past.one-month" = "一个月前";
+"relative.date.past.n-weeks" = "%d 周前";
+"relative.date.past.one-week" = "一周前";
+"relative.date.past.n-days" = "%d 天前";
+"relative.date.past.one-day" = "昨天";
+"relative.date.past.n-hours" = "%d 个小时前";
+"relative.date.past.one-hour" = "一个小时前";
+"relative.date.past.n-minutes" = "%d 分钟前";
+"relative.date.past.one-minute" = "一分钟前";
+"relative.date.past.n-seconds" = "%d 秒钟前";
+"relative.date.just-now" = "刚才";
+"relative.date.future.n-seconds" = "从现在起 %d 秒钟之后";
+"relative.date.future.one-minute" = "从现在起一分钟之后";
+"relative.date.future.n-minutes" = "从现在起 %d 分钟之后";
+"relative.date.future.one-hour" = "从现在起一小时之后";
+"relative.date.future.n-hours" = "从现在起 %d 小时之后";
+"relative.date.future.one-day" = "明天";
+"relative.date.future.n-days" = "从现在起 %d 天之后";
+"relative.date.future.one-week" = "从现在起一周之后";
+"relative.date.future.n-weeks" = "从现在起 %d 周之后";
+"relative.date.future.one-month" = "从现在起一个月之后";
+"relative.date.future.n-months" = "从现在起 %d 个月之后";
+"relative.date.future.one-year" = "从现在起一年之后";
+"relative.date.future.n-years" = "从现在起 %d 年之后";
+
+/**
+ * File Sizes
+ */
+"file.size.bytes" = "字节";
+"file.size.kilobytes" = "KB";
+"file.size.megabytes" = "MB";
+"file.size.gigabytes" = "GB";
+
+/**
+ * Sync
+ */
+"favourites.title" = "收藏夹";
+"favourites.empty" = "无收藏夹";
+"sync.title" = "同步内容";
+"sync.empty" = "无同步内容";
+"sync.downloadsize.prompt.title" = "下载大小";
+"sync.downloadsize.prompt.message" = "同步下载大小 %@。是否继续？";
+"sync.downloadsize.prompt.cancel" = "不同步";
+"sync.downloadsize.prompt.confirm" = "立即同步";
+"sync.enable.title" = "同步文件";
+"sync.enable.message" = "是否想让您最喜爱的文件自动与此 %@ 同步？";
+"sync.state.waiting-to-sync" = "正在同步，请稍候...";
+"sync.state.failed-to-sync" = "同步失败";
+"sync.progress.label.singular" = "正在同步 1 个文件，剩余 %@ 个文件"; // example: "Syncing 1 file, 238.3 MB left"
+"sync.progress.label.plural" = "正在同步 %d 个文件，剩余 %@ 个文件"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.cancelAll.alert.title" = "同步";
+"sync.cancelAll.alert.message" = "是否想要取消所有同步操作？";
+"sync.cancelAll.alert.button.continue" = "继续";
+"sync.cancelAll.alert.button.stop" = "停止同步";
+
+/**
+ * Sync Obstacles
+ */
+"sync-errors.title" = "同步错误";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "以下文件已在服务器上取消收藏，但有本地更改。选择如何对每个文件继续操作。\n\n请注意，文件将保存到 \"本地文件\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在服务器上删除，但副本已保存到您的 \"本地文件\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何对每个文件继续操作。\n\n文件将保存到 \"本地文件\"";
+"sync-errors.button.sync" = "同步";
+"sync-errors.button.save" = "保存";
+
+/**
+ * Errors
+ */
+"error.filefolder.rootfolder.notfound" = "无法加载根文件夹。错误：%@。";
+"error.filefolder.permission.notfound" = "未找到节点的权限。错误：%@。";
+"error.filefolder.content.failedtodownload" = "无法下载文件。错误：%@。";
+"error.filefolder.search.searchfailed" = "搜索失败。错误：%@。";
+"error.filefolder.createfolder.createfolder" = "尚未创建文件夹。错误：%@。";
+"error.filefolder.content.failedtoretrieve" = "检索内容失败。错误：%@。";
+"error.filefolder.unable.to.delete" = "无法删除。错误：%@";
+"error.sites.documentlibrary.failed" = "无法访问文档库。错误：%@。";
+"error.sites.retrieval.failed" = "无法检索站点。错误：%@。";
+"error.sites.folder.failed" = "无法检索站点文件夹。错误：%@。";
+"error.sites.search.failed" = "无法跨站点搜索。错误：%@。";
+"error.upload.failed" = "上传文件失败。错误：%@。";
+"error.upload.addtags.failed" = "向文件添加标记失败。错误：%@。";
+"error.tags.retrieve.failed" = "无法检索标记。错误：%@。";
+"error.login.failed" = "登录失败，请确保您的用户名和密码正确。";
+"error.comments.retrieve.failed" = "无法检索评论。错误：%@";
+"error.add.comment.failed" = "无法添加评论。错误：%@";
+"error.sites.unable.to.favorite" = "无法收藏 %@";
+"error.sites.unable.to.unfavorite" = "无法取消收藏 %@";
+"error.sites.unable.to.join" = "无法加入 %@";
+"error.sites.unable.to.cancel.request" = "无法取消加入 %@ 的请求";
+"error.sites.unable.to.leave" = "无法离开 %@";
+"error.version.history.unable.to.retrieve" = "无法检索版本历史记录。错误：%@";
+"error.version.history.no.latest.version" = "未能找到文件的最新版本。";
+"error.alfresco.node.notfound" = "未找到文件";
+"error.print.failed.message" = "不支持打印此文件";
+// Internet connection error
+"error.no.internet.access.title" = "无法建立连接";
+"error.no.internet.access.message" = "检查您是否已连接到 Internet 并重试。您仍可以访问下载的文件，无需连接。";
+"error.access.permissions.message" = "检查您是否有进行此操作的访问权限";
+"error.host.unreachable.title" = "连接错误";
+"error.host.unreachable.message" = "您的主机名值似乎是错误的，或者您可能需要激活 VPN 码。请检查您的帐户设置。";
+"error.retrieving.metadata" = "无法检索到 %@ 的属性。";
+// Workflow
+"error.workflow.unable.to.complete.process" = "无法完成对任务的处理。错误：%@";
+"error.workflow.unable.to.reassign.task" = "无法重新指派任务。错误：%@";
+// New Version
+"error.new.version.unable.to.checkout.title" = "无法签出";
+"error.new.version.unable.to.checkout.message" = "无法签出 %@。错误：%@";
+"error.new.version.unable.to.checkin.title" = "无法签入";
+"error.new.version.unable.to.checkin.message" = "无法签入 %@。错误：%@";
+// Email
+"error.no.email.accounts.title" = "无邮件帐户";
+"error.no.email.accounts.message" = "您必须至少在设备上设置一个邮件帐户才能发送此文件。";
+
+/**
+ * Custom error descriptions
+ */
+"error.description.kErrorFileSuffixMaxAttempts" = "无法生成唯一的文件名";
+
+/**
+ * Sites View Controller
+ */
+"sites.title" = "站点";
+"sites.empty" = "无站点";
+"sites.segmentControl.mysites" = "我的站点";
+"sites.segmentControl.favoritesites" = "收藏站点";
+"sites.segmentControl.allsites" = "所有站点";
+"sites.site.favorited.banner" = "您已收藏 %@";
+"sites.site.unfavorited.banner" = "您已取消收藏 %@";
+"sites.site.requested.to.join.banner" = "已发出加入 %@ 的请求";
+"sites.site.joined.banner" = "您已加入 %@";
+"sites.site.request.cancelled.banner" = "已取消加入 %@ 的请求";
+"sites.site.left.banner" = "您已离开 %@";
+
+// Site Cell Buttons
+"sites.siteCell.favorite" = "收藏夹";
+"sites.siteCell.unfavorite" = "取消收藏";
+"sites.siteCell.leave" = "离开";
+"sites.siteCell.cancel.request" = "取消请求";
+"sites.siteCell.request.to.join" = "请求加入";
+"sites.siteCell.join" = "加入";
+
+/**
+ * Accounts View Controller
+ */
+"accounts.title" = "帐户";
+"accounts.empty" = "无帐户";
+"accountdetails.title.newaccount" = "新建帐户";
+"accountdetails.title.editingaccount" = "编辑帐户";
+"accounttype.cloud" = "Alfresco 云";
+"accounttype.alfrescoServer" = "Alfresco 服务器";
+
+"accounttype.footer.alfrescoServer" = "连接至 Alfresco 服务器";
+"accounttype.footer.alfrescoCloud" = "访问您云端的 Alfresco 帐户";
+"accounttype.footer.signuplink" = "Alfresco 的新用户？注册一个免费帐户";
+
+"accountdetails.placeholder.required" = "必填";
+"accountdetails.placeholder.optional" = "可选";
+"accountdetails.fields.email" = "电子邮件";
+"accountdetails.placeholder.email" = "example@acme.com";
+"accountdetails.fields.hostname" = "主机名";
+"accountdetails.fields.description" = "说明";
+"accountdetails.fields.port" = "端口";
+"accountdetails.fields.protocol" = "HTTPS";
+"accountdetails.fields.servicedocument" = "服务文档";
+"accountdetails.fields.syncPreference" = "同步收藏的内容";
+"accountdetails.fields.syncPreference.footer" = "选择将收藏的内容与设备同步。同步超过 20 MB 的内容之前会显示警告";
+"accountdetails.buttons.client-certificate" = "客户端证书";
+"accountdetails.header.authentication" = "帐户详细信息";
+"accountdetails.header.advanced" = "高级";
+"accountdetails.header.setting" = "设置";
+
+"accountdetails.alert.save.title" = "保存帐户";
+"accountdetails.alert.save.validationerror" = "无法进行身份验证。请与您的系统管理员核实您的帐户设置。";
+
+/* Client Certificate */
+"certificate-manage.import.label" = "从\"本地文件\"导入";
+"certificate-manage.download.label" = "从 Web 服务器下载";
+"certificate-import.tableHeader" = "PCKS 12 密码";
+"certificate-import.fields.passcode" = "密码";
+"certificate-import.tableFooter" = "请输入 PKCS 12 文件的密码";
+"certificate-import.button.import" = "导入";
+"certificate-import.error.title" = "导入证书";
+"certificate-import.error.authentication" = "为证书提供的密码无效";
+"certificate-import.error.format" = "证书文件不正确，无法导入";
+"certificate-download.title" = "Web 服务器";
+"certificate-download.field.url" = "URL";
+"certificate-details.title" = "客户端证书";
+"certificate-details.issuer" = "颁发者：%@";
+"certificate-details.delete.title" = "移除客户端证书";
+"certificate-details.delete.message" = "移除此客户端证书的操作无法撤消。是否确定要继续？";
+"certificate-details.importSuccess" = "证书已成功导入";
+"certificate-details.buttons.delete" = "移除证书";
+"certificate-details.delete.confirm" = "移除";
+
+/**
+ * Cloud Signup
+ */
+"cloudsignup.title" = "云端的 Alfresco";
+"accountdetails.fields.firstName" = "名字";
+"accountdetails.fields.lastName" = "姓氏";
+"accountdetails.fields.username" = "用户名";
+"accountdetails.fields.email" = "电子邮件";
+"accountdetails.fields.password" = "密码";
+"accountdetails.fields.confirmPassword" = "确认密码";
+"accountdetails.placeholder.password.requirement" = "至少 6 个字符。";
+"cloudsignup.button.signup" = "注册";
+"cloudsignup.footer.firstLine" = "点按“注册”，即表示您同意";
+"cloudsignup.footer.secondLine" = "Alfresco 服务条款和隐私政策";
+"cloudsignup.label.termsOfService" = "服务条款";
+"cloudsignup.label.privacyPolicy" = "隐私政策";
+"cloudsignup.alert.title" = "云端的 Alfresco 注册";
+"cloudsignup.unsuccessful.message" = "云注册未成功，请稍后重试";
+
+"awaitingverification.description" = "帐户正在等待电子邮件验证\n\n您注册云端的 Alfresco 时所使用的电子邮件地址为 %@ \n\n请检查您的电子邮件。我们已发送您完成注册流程所需的链接。\n\n激活出了问题？\n\n如果您无法激活您的帐户，请让我们知道。";
+"awaitingverification.description.title" = "帐户正在等待电子邮件验证";
+"awaitingverification.description.subtitle" = "激活出了问题？";
+/** NOTE TO TRANSLATORS: the phrase "awaitingverification.description.customerCare" must match a phrase in the "awaitingverification.description" string above. */
+"awaitingverification.description.customerCare" = "请让我们知道";
+"awaitingverification.title" = "云端的 Alfresco";
+"awaitingverification.buttons.refresh" = "刷新";
+"awaitingverification.buttons.resendEmail" = "重新发送电子邮件";
+"awaitingverification.buttons.customercare" = "客户服务";
+"awaitingverification.alerts.title" = "云端的 Alfresco";
+"awaitingverification.alert.resendEmail.title" = "成功重新发送电子邮件";
+"awaitingverification.alert.resendEmail.success" = "未收到我们的电子邮件？请检查并确认您正确输入了电子邮件地址，并注意查看您的垃圾邮件文件夹。";
+"awaitingverification.alert.resendEmail.error" = "此时无法重新发送您的电子邮件。请稍后重试";
+"awaitingverification.alert.refresh.awaiting" = "您的帐户仍在等待验证";
+"awaitingverification.alert.refresh.verified" = "您的帐户已验证";
+
+/**
+ * Company Home View Controller
+ */
+"companyHome.title" = "存储库";
+
+/**
+ * Shared Files View Controller
+ */
+"sharedFiles.title" = "共享文件";
+
+/**
+ * My Files View Controller
+ */
+"myFiles.title" = "我的文件";
+
+/**
+ * Folder/Document View Controller
+ */
+"browser.actionsheet.addfolder" = "创建文件夹";
+"browser.actionsheet.upload" = "上传";
+"browser.actionsheet.upload.existingPhotos" = "选择照片";
+"browser.actionsheet.upload.existingPhotosOrVideos" = "选择照片或视频";
+"browser.actionsheet.upload.documents" = "选择本地文件";
+"browser.actionsheet.takephoto" = "拍照";
+"browser.actionsheet.takephotovideo" = "拍照或录像";
+"browser.actionsheet.createfile" = "创建文本文件";
+
+"browser.alertview.addfolder.title" = "创建文件夹";
+"browser.alertview.addfolder.message" = "创建文件夹并命名为：";
+"browser.alertview.addfolder.create" = "创建";
+
+"browser.actionsheet.record.audio" = "录制音频";
+
+/**
+ * MultiSelect
+ */
+"multiselect.button.delete" = "删除";
+"multiselect.button.delete.counter" = "删除 (%u)";
+"multiselect.delete.confirmation.message.one-item" = "是否要从服务器中删除 1 个文件？";
+"multiselect.delete.confirmation.message.n-items" = "是否要从服务器中删除 %d 个文件？";
+"multiselect.delete.confirmation.message.one-download" = "是否要从“本地文件”中删除 1 个文件？";
+"multiselect.delete.confirmation.message.n-downloads" = "是否要从“本地文件”中删除 %d 个文件？";
+"multiselect.delete.completed.title" = "删除完成但有错误";
+"multiselect.delete.completed.message" = "已从服务器中删除 %@ 个文件。";
+"multiselect.delete.partial.message" = "只从服务器中删除 %@ 个文件。";
+"multiselect.delete.failure.message" = "所有文件都无法从服务器中删除。";
+
+/**
+ * Node Picker
+ */
+"nodes.picker.attachments.select" = "选择附件...";
+"nodes.picker.list.title" = "附件";
+"nodes.picker.list.attachments.section.title" = "选择的附件";
+"nodes.picker.list.attachments.section.footer" = "滑动以删除";
+"nodes.picker.button.select.documents" = "选择文件";
+"nodes.picker.button.select.documents.counter" = "选择 %u 个文件";
+"nodes.picker.button.deselectAll" = "取消全选";
+"nodes.picker.button.deselectAll.counter" = "取消全选";
+"nodes.picker.button.select.folder" = "选择此文件夹";
+"nodes.picker.button.select.folder.counter" = "选择此文件夹";
+
+/**
+ * People Picker
+ */
+"people.picker.title" = "选择被指派者";
+"people.picker.assignees.select" = "选择被指派者...";
+"people.picker.assignee.select" = "选择被指派者...";
+"people.picker.list.title" = "被指派者";
+"people.picker.search.results.section.title" = "搜索结果";
+"people.picker.selected.people.section.title" = "选择的人员";
+"people.picker.search.title" = "搜索人员";
+"people.picker.search.no.results" = "无搜索结果";
+
+/**
+ * About View Controller
+ */
+"about.title" = "关于";
+"about.content" = "Alfresco 是针对业务关键性内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，并连接至云端的 Alfresco 和 Alfresco 内部部署服务器（3.4.8 及更高版本），以便安全访问您当前的企业文件。此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
+"about.version.number" = "版本：%@ (%@)";
+"about.build.date.time" = "创建日期：%s %s";
+
+/**
+ * Activities View Controller
+ */
+"activities.title" = "活动";
+"activities.empty" = "无活动";
+"activities.section.today" = "今天";
+"activities.section.yesterday" = "昨天";
+"activities.section.older" = "较旧";
+
+/**
+ * Upload Form Controller
+ */
+"upload.photo.title" = "上传图像";
+"upload.document.title" = "上传文件";
+"upload.video.title" = "上传视频";
+"upload.audio.title" = "上传音频";
+"upload.photo.namecell.title" = "名称";
+"upload.photo.namecell.textfield.placeholder.text" = "文件名";
+"upload.photo.tagcell.textlabel.placeholder.text" = "无标记";
+"upload.photo.photocell.title" = "照片";
+"upload.photo.qualitycell.title" = "质量";
+"upload.photo.tagscell.title" = "标记";
+"upload.documentTitleCell.label" = "文件";
+"upload.videoTitleCell.label" = "视频";
+"upload.default.video.name" = "视频 %@";
+// audio
+"upload.audio.cell.label" = "音频";
+"upload.audio.cell.button.record" = "录制";
+"upload.audio.cell.button.play" = "播放";
+"upload.audio.cell.button.stop" = "停止";
+"upload.audio.setting.disabled.title" = "权限";
+"upload.audio.setting.disabled.message" = "此应用程序没有访问麦克风的权限。\n\n在“设置”->“隐私”->“麦克风”中对此进行更改。";
+// confirmation
+"upload.confirm.dismissal.title" = "未保存的内容";
+"upload.confirm.dismissal.message" = "是否要上传此内容？如果现在不上传，您的内容会丢失。";
+"upload.confirm.dismissal.cancel" = "不上传";
+"upload.success-as.message" = "文件已作为 %@ 上传";
+
+/**
+ * Tag Selection Controller
+ */
+"tagselection.title" = "标记";
+"tagselection.empty" = "无标记";
+"tagselection.newTag.buttonTitle" = "添加新标记";
+"tagselection.newTag.alertTitle" = "添加新标记";
+"tagselection.newTag.error.invalidtag.title" = "无效标记";
+"tagselection.newTag.error.invalidtag.message" = "标记必须包含文本";
+
+/**
+ * Document Node Preview Controller
+ */
+"document.segment.preview.title" = "预览";
+"document.segment.metadata.title" = "属性";
+"document.segment.version.history.title" = "历史记录";
+"document.segment.nocomments.title" = "评论";
+"document.segment.comments.title" = "评论 (%d)";
+"document.segment.comments.hasmore.title" = "评论 (%d+)";
+"document.segment.map.title" = "地图";
+
+/**
+ * Downloads Document Preview Controller
+ */
+"document.segment.repository.metadata.title" = "原始属性";
+
+/**
+ * Document Preview Controller
+ */
+"document.video.not.supported" = "“播放”不可用";
+"document.open-in.not.supported.title" = "“打开方式”不可用";
+"document.open-in.not.supported.message" = "此应用程序不支持“打开方式”选项。";
+"document.open-in.noapps.title" = "没有支持的应用程序";
+"document.open-in.noapps.message" = "此设备中未安装可以打开此文件的应用程序。";
+
+/**
+ * Login View Controller
+ */
+"login.title" = "登录";
+"login.server.cell.label" = "服务器";
+"login.username.cell.label" = "用户名";
+"login.username.textfield.placeholder" = "用户名";
+"login.password.cell.label" = "密码";
+"login.password.textfield.placeholder" = "密码";
+"login.hud.label" = "正在连接...";
+"login.hud.cancel.label" = "点按以取消";
+
+/**
+ * Download View Controller
+ */
+"downloads.title" = "本地文件";
+"downloads.empty" = "无本地文件";
+
+/**
+ * DownloadManager
+ */
+"download.overwrite.prompt.title" = "";
+"download.overwrite.prompt.message" = "已存在一个同名的本地文件。是否要覆盖已有的本地文件？";
+"download.success.message" = "文件已保存";
+"download.success-as.message" = "文件另存为 %@";
+"download.failure.message" = "无法保存文件";
+"download.delete.failure.message" = "无法删除本地文件";
+
+/**
+ * Comments View Controller
+ */
+"comments.title" = "评论";
+"comments.empty" = "无评论";
+"comments.post.button" = "发帖";
+"comments.placeholder.text" = "添加评论...";
+
+/**
+ * Help
+ */
+"help.title" = "帮助";
+
+/**
+ * Metadata View Controller
+ */
+"metadata.cmis:name" = "名称";
+"metadata.cm:title" = "标题";
+"metadata.cmis:createdBy" = "创建者";
+"metadata.cmis:creationDate" = "创建日期";
+"metadata.cmis:lastModifiedBy" = "上次修改者";
+"metadata.cmis:lastModificationDate" = "上次修改日期";
+"metadata.cm:author" = "作者";
+"metadata.cmis:versionLabel" = "版本";
+
+"metadata.cm:longitude" = "经度";
+"metadata.cm:latitude" = "纬度";
+
+"metadata.exif:dateTimeOriginal" = "日期 时间 原始";
+"metadata.exif:exposureTime" = "曝光时间";
+"metadata.exif:flash" = "闪光灯";
+"metadata.exif:fNumber" = "光圈值";
+"metadata.exif:focalLength" = "焦距";
+"metadata.exif:isoSpeedRatings" = "ISO 感光度标定值";
+"metadata.exif:manufacturer" = "制造商";
+"metadata.exif:model" = "型号";
+"metadata.exif:orientation" = "方向";
+"metadata.exif:pixelXDimension" = "像素 X 方向";
+"metadata.exif:pixelYDimension" = "像素 Y 方向";
+"metadata.exif:resolutionUnit" = "分辨率单位";
+"metadata.exif:xResolution" = "X 分辨率";
+"metadata.exif:yResolution" = "Y 分辨率";
+"metadata.exif:software" = "软件";
+"metadata.exif.orientation.landscape.left" = "横向左";
+"metadata.exif.orientation.landscape.right" = "横向右";
+"metadata.exif.orientation.portrait" = "纵向";
+"metadata.exif.orientation.portrait.upsidedown" = "纵向颠倒";
+"metadata.exif.orientation.undefined" = "未定义";
+
+"metadata.audio:album" = "专辑";
+"metadata.audio:artist" = "艺术家";
+"metadata.audio:composer" = "作曲家";
+"metadata.audio:engineer" = "工程师";
+"metadata.audio:genre" = "流派";
+"metadata.audio:trackNumber" = "音轨号";
+"metadata.audio:releaseDate" = "发行日期";
+"metadata.audio:sampleRate" = "采样率";
+"metadata.audio:sampleType" = "采样类型";
+"metadata.audio:channelType" = "声道类型";
+"metadata.audio:compressor" = "压缩格式";
+
+"metadata.nodeTags" = "标记";
+"metadata.version.history.cell" = "查看版本历史记录";
+
+"metadata.section.header.general" = "常规";
+"metadata.section.header.geographic" = "地理信息";
+"metadata.section.header.image" = "图像信息";
+"metadata.section.header.audio" = "音频信息";
+
+/**
+ * Version History View Controller
+ */
+"version.history.title" = "版本历史记录";
+"version.history.empty" = "无版本历史记录";
+"version.history.version.cell.text" = "版本：%@";
+"version.history.last.modified.cell.text" = "上次修改时间：%@";
+"version.history.last.modified.by.cell.text" = "上次修改者：%@";
+"version.history.comment.cell.text" = "评论：%@";
+"version.history.current.version.cell.text" = "当前版本：%@";
+"version.history.download.latest.text" = "下载最新版本";
+
+/**
+ * Text File View Controller
+ */
+"createtextfile.title" = "创建文本文件";
+"createtextfile.dismiss.confirmation.title" = "取消？";
+"createtextfile.dismiss.confirmation.message" = "是否确定要取消创建此文本文件？\n\n请注意，所有操作都将被放弃。";
+"document.edit.button.discard" = "放弃更改";
+"document.edit.button.save" = "保存";
+"document.edit.failed.title" = "保存文件";
+"document.edit.savefailed.message" = "无法在服务器上保存文件。是否要将文件保存至您的“本地文件”？";
+"document.edit.dismiss.confirmation.message" = "是否要取消对文件所做的更改？";
+
+/**
+ * Policy Updated
+ */
+"policy.updated.title" = "政策更新";
+"policy.updated.message" = "您的管理员已更新您的应用程序配置策略";
+
+/**
+ * Location Manager
+ */
+"location.manager.purpose" = "您的位置将用于为此设备拍摄的照片添加地理标记。";
+
+/**
+ * UIRefreshControl
+ */
+"ui.refreshcontrol.pulltorefresh" = "下拉以刷新...";
+"ui.refreshcontrol.refreshing" = "正在加载中...";
+
+/**
+ * Tasks
+ */
+"tasks.title" = "任务";
+"tasks.empty" = "无任务";
+"tasks.process.unnamed" = "未命名的流程";
+"tasks.view.button" = "查看";
+"tasks.title.mytasks" = "我的任务";
+"tasks.title.taskistarted" = "我启动的任务";
+"tasks.list.no-due-date" = "无截止日期";
+// Details
+"tasks.calendar.no-due-date" = "无日期";
+"tasks.attachments.empty" = "无附件";
+"tasks.tasks.empty" = "无任务";
+"tasks.initiated-by" = "启动者 %@";
+"tasks.priority.high" = "高优先级";
+"tasks.priority.medium" = "中优先级";
+"tasks.priority.low" = "低优先级";
+"tasks.textview.addcomment.placeholder" = "添加评论";
+"task.details.section.header.details" = "详细信息";
+"task.details.section.header.attachments" = "附件";
+"task.details.section.header.tasks" = "任务";
+"task.reassign.button.title" = "重新指派";
+"task.reassign.success.message" = "任务已重新指派";
+"task.transition.approve" = "批准";
+"task.transition.reject" = "拒绝";
+"task.transition.done" = "完成";
+"task.completed.success.message" = "任务已完成";
+
+// Cell
+"tasks.cell.taskcompleted" = "%@ 已完成此任务 %@";
+"tasks.cell.tasknotcompleted" = "%@ 尚未完成此任务";
+// Process definition titles - these match workflow-message.properties in the repository
+"tasks.process.activitiAdhoc" = "新任务";
+"tasks.process.activitiParallelReview" = "发送文件供复查";
+"tasks.process.activitiReview" = "复查和批准";
+"tasks.process.jbpm$wf:adhoc" = "特殊工作流程";
+"tasks.process.jbpm$wf:parallelreview" = "并行复查和批准";
+"tasks.process.jbpm$wf:review" = "复查和批准";
+
+/**
+ * Create Tasks
+ */
+"task.choose.task.type.title" = "选择任务类型";
+"task.type.workflow.todo" = "待办事项";
+"task.type.workflow.review.and.approve" = "复查和审批";
+"task.type.workflow.todo.footer" = "向某人指派一项任务。";
+"task.type.workflow.review.and.approve.footer" = "向一人或多人指派一项任务以复查和审批内容。";
+
+"task.create.title" = "创建任务";
+"task.create.button" = "创建";
+"task.create.taskTitle" = "标题";
+"task.create.taskTitle.placeholder" = "新任务";
+"task.create.duedate" = "截止时间";
+"task.create.duedate.placeholder" = "无日期";
+"task.create.assignee" = "被指派者";
+"task.create.assignees" = "被指派者";
+"task.create.assignee.placeholder" = "无被指派者";
+"task.create.attachment" = "附件";
+"task.create.attachments" = "附件";
+"task.create.attachments.placeholder" = "无附件";
+"task.create.priority" = "优先级";
+"task.create.priority.high" = "高";
+"task.create.priority.medium" = "中";
+"task.create.priority.low" = "低";
+"task.create.emailnotification" = "电子邮件通知";
+"task.create.approvers" = "审批人";
+"task.create.approver" = "审批人";
+"task.create.created" = "任务已创建";
+"task.create.error" = "创建任务失败";
+
+/* Date picker */
+"date.picker.title" = "日历";
+"date.picker.today" = "今天";
+
+/**
+ * Settings
+ */
+"settings.title" = "设置";
+"settings.general.title" = "常规";
+"settings.sync.on.cellular" = "单元同步";
+"settings.sync.on.cellular.description" = "当您有 Wi-Fi 连接时，关闭以仅同步收藏内容。";
+"settings.send.diagnostics" = "发送诊断数据";
+"settings.send.diagnostics.description" = "为帮助我们改进 Alfresco Mobile，我们会以匿名方式收集技术诊断数据。如果愿意，请关闭。";
+"settings.security.title" = "安全性";
+"settings.security.file.protection" = "文件保护";
+"settings.security.file.protection.description" = "当设备锁定时，加密其上存储的文件。";
+
+/**
+ * Onboarding View Controller
+ */
+"onboarding.setup.cloud.button.title" = "注册 Alfresco 云帐户";
+"onboarding.setup.existing.account.button.title" = "登录";
+"onboarding.help.button.title" = "帮助";
+
+/**
+ * Action Sheet Actions
+ */
+"action.email" = "电子邮件";
+"action.emailAsLink" = "电子邮件链接";
+"action.open.in" = "打开方式...";
+"action.like" = "喜欢";
+"action.unlike" = "不喜欢";
+"action.favourite" = "收藏";
+"action.unfavourite" = "取消收藏";
+"action.comment" = "评论";
+"action.download" = "下载";
+"action.print" = "打印";
+"action.rename" = "重命名";
+"action.subfolder" = "添加文件夹";
+"action.upload" = "上传";
+"action.review" = "复查";
+"action.edit" = "编辑";
+"action.new.version" = "更新";
+// Alerts
+"action.rename.alert.title" = "重命名";
+"action.rename.alert.message" = "重命名文件为：";
+"action.rename.success.title" = "重命名成功";
+"action.rename.success.message" = "成功将 %@ 重命名为 %@。";
+"action.subfolder.success.title" = "已添加子文件夹";
+"action.subfolder.success.message" = "已成功创建 %@。";
+"action.subfolder.failure.title" = "无法创建子文件夹";
+"action.delete" = "删除";
+"action.delete.confirmation.title" = "删除确认";
+"action.delete.confirmation.message" = "是否确定要删除此文件？";
+"action.delete.success.title" = "删除成功";
+"action.delete.success.message" = "成功删除了 %@。";
+"action.delete.success.message.sync" = "成功删除了 %@，副本已保存到“本地文件”";
+"action.delete.failed.title" = "无法删除";
+"action.delete.failed.message" = "无法删除 %@。";
+
+/**
+ * SaveBack
+ */
+"saveback.hud.message" = "正在保存...";
+"saveback.saved.successfully.message" = "文件 %@ 已成功保存。";
+"saveback.failed.title" = "保存回操作失败";
+"saveback.failed.message" = "尝试保存回 %@ 失败。是否要重试？";
+"saveback.completed.title" = "保存回操作已完成";
+"saveback.completed.message" = "已成功保存回 %@";
+"saveback.failed.title" = "保存回操作失败";
+"saveback.failed.message" = "%@ 已保存到“本地文件”";
+// Location Picker
+"saveback.locationpicker.title" = "选择位置";
+"saveback.locationpicker.other" = "其他";
+"saveback.upload.completed.title" = "上传已完成";
+"saveback.upload.completed.message" = "%@ 已成功上传至 %@";
+"saveback.upload.failed.title" = "上传失败";
+"saveback.upload.failed.message" = "%@ 无法上传至 %@";
+
+/**
+ * New Version View Controller
+ */
+"new.version.title" = "更新文件";
+"new.version.upload" = "更新";
+"new.version.file.title" = "新版本";
+"new.version.file.placeholder" = "未选择文件";
+"new.version.major.version.title" = "主要更改";
+"new.version.comment.title" = "评论";
+"new.version.commet.placeholder" = "版本评论（可选）";
+"new.version.upload.successful.title" = "文件已更新";
+"new.version.upload.successful.message" = "已成功更新 %@";
+
+/**
+ * File Preview Controller
+ */
+"file.preview.loading.document.from.file" = "正在上传文件";
+
+/**
+ * File Protection Manager
+ */
+"fileprotection.title" = "文件保护";
+"fileprotection.available.message" = "文件保护可用。是否要启用它？";
+"fileprotection.available.confirm" = "保护";
+"fileprotection.unavailable.message" = "文件保护不再可用";
+"fileprotection.protecting.message" = "正在保护本地文件...";
+"fileprotection.unprotecting.message" = "正在取消保护本地文件...";
+
+/**
+ * Mail Action
+ */
+// e.g. "Sent from Alfresco Mobile". 'Alfresco Mobile' will not be localized.
+"mail.footer" = "发送自 %@";
+
+/**
+ * THIRD PARTY LIBRARIES LOCALIZATIONS
+ */

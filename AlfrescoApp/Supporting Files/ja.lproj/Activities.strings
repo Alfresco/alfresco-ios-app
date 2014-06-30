@@ -7,3 +7,78 @@
  * Copyright (c) 2014 Alfresco. All rights reserved.
  */
 
+/**
+ * Messages
+ */
+"activity.no-activities" = "アクティビティなし";
+"activity.unknown-user" = "不明なユーザー";
+"activity.unknown-item" = "不明なファイル";
+"activity.unknown-site" = "不明なサイト";
+
+/**
+ * Optional Site link
+ */
+"activity.in.site" = "{0}(サイト: {1})";
+
+/**
+ * Site Roles
+ */
+"activity.role.None" = "権限なし";
+"activity.role.SiteManager" = "マネージャ";
+"activity.role.SiteCollaborator" = "共同作業者";
+"activity.role.SiteContributor" = "投稿者";
+"activity.role.SiteConsumer" = "ゲスト";
+
+/**
+ * 0 = File title / page link, 1 = User profile link, 2 = custom0, 3 = custom1, 4 = Site link, 5 = second user profile link
+ */
+"org.alfresco.blog.post-created" = "{1}がBlog記事{0}を作成しました";
+"org.alfresco.blog.post-updated" = "{1}がBlog記事{0}を更新しました";
+"org.alfresco.blog.post-deleted" = "{1}がBlog記事{0}を削除しました";
+"org.alfresco.comments.comment-created" = "{1}が{0}についてコメントしました";
+"org.alfresco.comments.comment-updated" = "{1}が{0}についてのコメントを更新しました";
+"org.alfresco.comments.comment-deleted" = "{1}が{0}からコメントを削除しました";
+"org.alfresco.discussions.post-created" = "{1}がディスカッション{0}を作成しました";
+"org.alfresco.discussions.post-updated" = "{1}がディスカッション{0}を更新しました";
+"org.alfresco.discussions.post-deleted" = "{1}がディスカッション{0}を削除しました";
+"org.alfresco.discussions.reply-created" = "{1}がディスカッション{0}に返信しました";
+"org.alfresco.discussions.reply-updated" = "{1}が{0}への返信を更新しました";
+"org.alfresco.calendar.event-created" = "{1}がカレンダーイベント{0}を作成しました";
+"org.alfresco.calendar.event-updated" = "{1}がカレンダーイベント{0}を更新しました";
+"org.alfresco.calendar.event-deleted" = "{1}がカレンダーイベント{0}を削除しました";
+"org.alfresco.documentlibrary.file-added" = "{1}がファイル {0} を追加しました";
+"org.alfresco.documentlibrary.files-added" = "{1}が{0}個のファイルを追加しました";
+"org.alfresco.documentlibrary.file-created" = "{1}がファイル{0}を作成しました";
+"org.alfresco.documentlibrary.file-deleted" = "{1}がファイル{0}を削除しました";
+"org.alfresco.documentlibrary.files-deleted" = "{1}が{0}個のファイルを削除しました";
+"org.alfresco.documentlibrary.file-updated" = "{1}がファイル{0}を更新しました";
+"org.alfresco.documentlibrary.files-updated" = "{1}が{0}個のファイルを更新しました";
+"org.alfresco.documentlibrary.folder-added" = "{1}がフォルダ{0}を追加しました";
+"org.alfresco.documentlibrary.folder-deleted" = "{1}がフォルダ{0}を削除しました";
+"org.alfresco.documentlibrary.folders-added" = "{1}が{0}個のフォルダを追加しました";
+"org.alfresco.documentlibrary.folders-deleted" = "{1}が{0}個のフォルダを削除しました";
+"org.alfresco.documentlibrary.google-docs-checkout" = "{1}がファイル{0}をGoogle Docsにチェックアウトしました";
+"org.alfresco.documentlibrary.google-docs-checkin" = "{1}がGoogle Docsからファイル{0}をチェックインしました";
+"org.alfresco.documentlibrary.inline-edit" = "{1}がファイル{0}を編集しました";
+"org.alfresco.documentlibrary.file-liked" = "{1}がファイル{0}に[いいね!]を付けました";
+"org.alfresco.documentlibrary.folder-liked" = "{1}がフォルダ{0}に[いいね!]を付けました";
+"org.alfresco.wiki.page-created" = "{1}がWikiページ{0}を作成しました";
+"org.alfresco.wiki.page-edited" = "{1}がWikiページ{0}を更新しました";
+"org.alfresco.wiki.page-renamed" = "{1}がWikiページの名称を{2}から{0}に変更しました";
+"org.alfresco.wiki.page-deleted" = "{1}がWikiページ{0}を削除しました";
+"org.alfresco.site.group-added" = "{1}グループが役割{2}としてサイト{4}に追加されました";
+"org.alfresco.site.group-removed" = "\"{1}\"グループがサイト\"{4}\"から削除されました";
+"org.alfresco.site.group-role-changed" = "\"{1}\"グループの役割が\"{2}\"に変更されました";
+"org.alfresco.site.user-joined" = "\"{1}\"が役割\"{2}\"としてサイト\"{4}\"に参加しました";
+"org.alfresco.site.user-left" = "{1}がサイト{4}を退会しました";
+"org.alfresco.site.user-role-changed" = "{1}の役割が{2}に変更されました";
+"org.alfresco.site.liked" = "{1}がサイト{0}に[いいね!]を付けました";
+"org.alfresco.links.link-created" = "{1}がリンク{0}を作成しました";
+"org.alfresco.links.link-updated" = "{1}がリンク{0}を更新しました";
+"org.alfresco.links.link-deleted" = "{1}がリンク{0}を削除しました";
+"org.alfresco.datalists.list-created" = "{1}がデータリスト{0}を作成しました";
+"org.alfresco.datalists.list-updated" = "{1}がデータリスト{0}を更新しました";
+"org.alfresco.datalists.list-deleted" = "{1}がデータリスト{0}を削除しました";
+"org.alfresco.subscriptions.followed" = "{1}が現在{5}をフォローしています";
+"org.alfresco.subscriptions.subscribed" = "{1}は{2}を購読契約しています";
+"org.alfresco.profile.status-changed" = "{1}: {2}";

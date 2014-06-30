@@ -7,3 +7,78 @@
  * Copyright (c) 2014 Alfresco. All rights reserved.
  */
 
+/**
+ * Messages
+ */
+"activity.no-activities" = "Keine Aktivitäten";
+"activity.unknown-user" = "Unbekannter Benutzer";
+"activity.unknown-item" = "Unbekannte Datei";
+"activity.unknown-site" = "Unbekannte Site";
+
+/**
+ * Optional Site link
+ */
+"activity.in.site" = "{0} in Site {1}";
+
+/**
+ * Site Roles
+ */
+"activity.role.None" = "Keine Berechtigungen";
+"activity.role.SiteManager" = "Manager";
+"activity.role.SiteCollaborator" = "Mitarbeiter";
+"activity.role.SiteContributor" = "Beitragender";
+"activity.role.SiteConsumer" = "Konsument";
+
+/**
+ * 0 = File title / page link, 1 = User profile link, 2 = custom0, 3 = custom1, 4 = Site link, 5 = second user profile link
+ */
+"org.alfresco.blog.post-created" = "{1} erstellte Blog-Post {0}";
+"org.alfresco.blog.post-updated" = "{1} aktualisierte Blog-Post {0}";
+"org.alfresco.blog.post-deleted" = "{1} löschte Blog-Post {0}";
+"org.alfresco.comments.comment-created" = "{1} kommentierte {0}";
+"org.alfresco.comments.comment-updated" = "{1} aktualisierte Kommentar am {0}";
+"org.alfresco.comments.comment-deleted" = "{1} löschte Kommentar aus {0}";
+"org.alfresco.discussions.post-created" = "{1} begann Diskussion {0}";
+"org.alfresco.discussions.post-updated" = "{1} aktualisierte Diskussion {0}";
+"org.alfresco.discussions.post-deleted" = "{1} löschte Diskussion {0}";
+"org.alfresco.discussions.reply-created" = "{1} antwortete auf Diskussion {0}";
+"org.alfresco.discussions.reply-updated" = "{1} aktualisierte eine Antwort auf {0}";
+"org.alfresco.calendar.event-created" = "{1} erstellte Kalenderereignis {0}";
+"org.alfresco.calendar.event-updated" = "{1} aktualisierte Kalenderereignis {0}";
+"org.alfresco.calendar.event-deleted" = "{1} löschte Kalenderereignis {0}";
+"org.alfresco.documentlibrary.file-added" = "{1} fügte Datei {0} hinzu";
+"org.alfresco.documentlibrary.files-added" = "{1} fügte {0} Dateien hinzu";
+"org.alfresco.documentlibrary.file-created" = "{1} erstellte Datei {0}";
+"org.alfresco.documentlibrary.file-deleted" = "{1} löschte Datei {0}";
+"org.alfresco.documentlibrary.files-deleted" = "{1} löschte {0} Dateien";
+"org.alfresco.documentlibrary.file-updated" = "{1} aktualisierte Datei {0}";
+"org.alfresco.documentlibrary.files-updated" = "{1} aktualisierte {0} Dateien";
+"org.alfresco.documentlibrary.folder-added" = "{1} fügte Ordner {0} hinzu";
+"org.alfresco.documentlibrary.folder-deleted" = "{1} löschte Ordner {0}";
+"org.alfresco.documentlibrary.folders-added" = "{1} fügte {0} Ordner hinzu";
+"org.alfresco.documentlibrary.folders-deleted" = "{1} löschte {0} Ordner";
+"org.alfresco.documentlibrary.google-docs-checkout" = "{1} hat Datei {0} an Google Docs ausgecheckt";
+"org.alfresco.documentlibrary.google-docs-checkin" = "{1} hat Datei {0} aus Google Docs eingecheckt";
+"org.alfresco.documentlibrary.inline-edit" = "{1} bearbeitete Datei {0}";
+"org.alfresco.documentlibrary.file-liked" = "{1} gefiel Datei {0}";
+"org.alfresco.documentlibrary.folder-liked" = "{1} gefiel Ordner {0}";
+"org.alfresco.wiki.page-created" = "{1} erstellte Wiki-Seite {0}";
+"org.alfresco.wiki.page-edited" = "{1} aktualisierte Wiki-Seite {0}";
+"org.alfresco.wiki.page-renamed" = "{1} benannte Wiki-Seite um von {2} in {0}";
+"org.alfresco.wiki.page-deleted" = "{1} löschte Wiki-Seite {0}";
+"org.alfresco.site.group-added" = "Gruppe {1} zur Site {4} mit Rolle {2} hinzugefügt";
+"org.alfresco.site.group-removed" = "Gruppe {1} von Site {4} entfernt";
+"org.alfresco.site.group-role-changed" = "Rolle der Gruppe {1} in {2} geändert";
+"org.alfresco.site.user-joined" = "{1} trat der Site {4} mit der Rolle {2} bei";
+"org.alfresco.site.user-left" = "{1} hat Site {4} verlassen";
+"org.alfresco.site.user-role-changed" = "Rolle {1} geändert in {2}";
+"org.alfresco.site.liked" = "{1} gefiel Site {0}";
+"org.alfresco.links.link-created" = "{1} erstellte Link {0}";
+"org.alfresco.links.link-updated" = "{1} aktualisierte Link {0}";
+"org.alfresco.links.link-deleted" = "{1} löschte Link {0}";
+"org.alfresco.datalists.list-created" = "{1} erstellte Datenliste {0}";
+"org.alfresco.datalists.list-updated" = "{1} aktualisierte Datenliste {0}";
+"org.alfresco.datalists.list-deleted" = "{1} löschte Datenliste {0}";
+"org.alfresco.subscriptions.followed" = "{1} folgt jetzt {5}";
+"org.alfresco.subscriptions.subscribed" = "{1} hat {2} abonniert";
+"org.alfresco.profile.status-changed" = "{1}: {2}";

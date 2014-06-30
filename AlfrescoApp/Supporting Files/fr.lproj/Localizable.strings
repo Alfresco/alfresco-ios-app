@@ -7,3 +7,731 @@
  * Copyright (c) 2014 Alfresco. All rights reserved.
  */
 
+/**
+ * App Wide
+ */
+"Yes" = "Oui";
+"No" = "Non";
+"Cancel" = "Annuler";
+"Add" = "Ajouter";
+"Done" = "Terminé";
+"Retry" = "Réessayer";
+"Upload" = "Envoyer";
+"Close" = "Fermer";
+"Next" = "Suivant";
+"No Files" = "Aucun fichier";
+
+/**
+ * Relative Dates
+ */
+"relative.date.past.n-years" = "Il y a %d années";
+"relative.date.past.one-year" = "Il y a un an";
+"relative.date.past.n-months" = "Il y a %d mois";
+"relative.date.past.one-month" = "Il y a un mois";
+"relative.date.past.n-weeks" = "Il y a %d semaines";
+"relative.date.past.one-week" = "Il y a une semaine";
+"relative.date.past.n-days" = "Il y a %d jours";
+"relative.date.past.one-day" = "Hier";
+"relative.date.past.n-hours" = "Il y a %d heures";
+"relative.date.past.one-hour" = "Il y a une heure";
+"relative.date.past.n-minutes" = "Il y a %d minutes";
+"relative.date.past.one-minute" = "Il y a une minute";
+"relative.date.past.n-seconds" = "Il y a %d secondes";
+"relative.date.just-now" = "Maintenant";
+"relative.date.future.n-seconds" = "dans %d secondes";
+"relative.date.future.one-minute" = "Dans une minute";
+"relative.date.future.n-minutes" = "Dans %d minutes";
+"relative.date.future.one-hour" = "Dans une heure";
+"relative.date.future.n-hours" = "Dans %d heures";
+"relative.date.future.one-day" = "Demain";
+"relative.date.future.n-days" = "Dans %d jours";
+"relative.date.future.one-week" = "Dans une semaine";
+"relative.date.future.n-weeks" = "Dans %d semaines";
+"relative.date.future.one-month" = "Dans un mois";
+"relative.date.future.n-months" = "Dans %d mois";
+"relative.date.future.one-year" = "Dans un an";
+"relative.date.future.n-years" = "Dans %d ans";
+
+/**
+ * File Sizes
+ */
+"file.size.bytes" = "Octets";
+"file.size.kilobytes" = "Ko";
+"file.size.megabytes" = "Mo";
+"file.size.gigabytes" = "Go";
+
+/**
+ * Sync
+ */
+"favourites.title" = "Favoris";
+"favourites.empty" = "Aucun favoris";
+"sync.title" = "Contenu synchronisé";
+"sync.empty" = "Aucun contenu synchronisé";
+"sync.downloadsize.prompt.title" = "Taille du téléchargement";
+"sync.downloadsize.prompt.message" = "Synchro taille du téléchargement %@. Voulez-vous continuer ?";
+"sync.downloadsize.prompt.cancel" = "Ne pas synchroniser";
+"sync.downloadsize.prompt.confirm" = "Synchroniser maintenant";
+"sync.enable.title" = "Synchroniser fichiers";
+"sync.enable.message" = "Voulez-vous que vous fichiers favoris soient automatiquement synchronisés avec ce %@ ?";
+"sync.state.waiting-to-sync" = "En attente de synchronisation...";
+"sync.state.failed-to-sync" = "Échec synchro";
+"sync.progress.label.singular" = "Synchro en cours d’1 fichier, %@ restants"; // example: "Syncing 1 file, 238.3 MB left"
+"sync.progress.label.plural" = "Synchro en cours de %d fichiers, %@ restants"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.cancelAll.alert.title" = "Synchronisation";
+"sync.cancelAll.alert.message" = "Voulez-vous annuler toutes les synchronisations ?";
+"sync.cancelAll.alert.button.continue" = "Continuer";
+"sync.cancelAll.alert.button.stop" = "Arrêter synchronisations";
+
+/**
+ * Sync Obstacles
+ */
+"sync-errors.title" = "Erreurs de synchronisation";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "Les fichiers suivants ont été retirés des favoris sur le serveur, mais ils comportent des modifications locales. Sélectionnez la manière de procéder pour chaque fichier.\n\nRemarque : ces fichiers seront enregistrés dans \"Fichiers locaux\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "Les fichiers suivants ont été supprimés sur le serveur, mais des copient ont été enregistrés dans vos \"Fichiers locaux\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "Les fichiers suivants sont en attente de synchronisation et comportent de modifications locales. Sélectionnez la manière de procéder pour chaque fichier.\n\nLes fichiers seront enregistrés dans \"Fichiers locaux\"";
+"sync-errors.button.sync" = "Synchronisation";
+"sync-errors.button.save" = "Enregistrer";
+
+/**
+ * Errors
+ */
+"error.filefolder.rootfolder.notfound" = "Impossible de charger le dossier racine. Erreur : %@.";
+"error.filefolder.permission.notfound" = "Le droit d’accès pour le nœud est introuvable. Erreur : %@.";
+"error.filefolder.content.failedtodownload" = "Le téléchargement du fichier a échoué. Erreur : %@.";
+"error.filefolder.search.searchfailed" = "La recherche a échoué Erreur : %@.";
+"error.filefolder.createfolder.createfolder" = "Le dossier n’a pas été créé. Erreur : %@.";
+"error.filefolder.content.failedtoretrieve" = "La récupération du contenu a échoué. Erreur : %@.";
+"error.filefolder.unable.to.delete" = "Suppression impossible Erreur : %@";
+"error.sites.documentlibrary.failed" = "Impossible d’accéder à l’espace documentaire. Erreur : %@.";
+"error.sites.retrieval.failed" = "Impossible de récupérer les sites. Erreur : %@.";
+"error.sites.folder.failed" = "Impossible de récupérer les dossiers de sites. Erreur : %@.";
+"error.sites.search.failed" = "Impossible de rechercher sur les sites. Erreur : %@.";
+"error.upload.failed" = "L’envoi du fichier a échoué. Erreur : %@.";
+"error.upload.addtags.failed" = "L’ajout de tags au fichier a échoué. Erreur : %@.";
+"error.tags.retrieve.failed" = "Impossible de récupérer les tags. Erreur : %@.";
+"error.login.failed" = "La connexion a échoué. Vérifiez le nom d’utilisateur et le mot de passe.";
+"error.comments.retrieve.failed" = "Impossible de récupérer les commentaires. Erreur : %@";
+"error.add.comment.failed" = "Impossible d’ajouter le commentaire. Erreur : %@";
+"error.sites.unable.to.favorite" = "Impossible de faire un favori de %@";
+"error.sites.unable.to.unfavorite" = "Impossible de retirer %@ des favoris";
+"error.sites.unable.to.join" = "Impossible de rejoindre %@";
+"error.sites.unable.to.cancel.request" = "Impossible d’annuler la demande de rejoindre %@";
+"error.sites.unable.to.leave" = "Impossible de se désabonner de %@";
+"error.version.history.unable.to.retrieve" = "Impossible de récupérer l’historique des versions. Erreur : %@";
+"error.version.history.no.latest.version" = "La dernière version du fichier est introuvable.";
+"error.alfresco.node.notfound" = "Fichier introuvable";
+"error.print.failed.message" = "L’impression de ce fichier n’est pas prise en charge";
+// Internet connection error
+"error.no.internet.access.title" = "Impossible d’établir une connexion.";
+"error.no.internet.access.message" = "Vérifiez que vous êtes bien connecté à Internet et refaites une tentative.. Même sans connexion, vous pouvez toujours accéder aux fichiers que vous avez téléchargés.";
+"error.access.permissions.message" = "Vérifiez que vous disposez bien des droits d’accès pour ce faire";
+"error.host.unreachable.title" = "Erreur connexion";
+"error.host.unreachable.message" = "Le nom de votre hôte semble erroné ou vous devez peut-être activer votre VPN. Veuillez vérifier les paramètres de votre compte.";
+"error.retrieving.metadata" = "Impossible de récupérer les propriétés de %@.";
+// Workflow
+"error.workflow.unable.to.complete.process" = "Impossible de terminer le traitement sur la tâche. Erreur : %@";
+"error.workflow.unable.to.reassign.task" = "Impossible de réassigner la tâche. Erreur : %@";
+// New Version
+"error.new.version.unable.to.checkout.title" = "Impossible de réserver une copie de travail";
+"error.new.version.unable.to.checkout.message" = "Impossible de réserver une copie de travail de %@. Erreur : %@";
+"error.new.version.unable.to.checkin.title" = "Impossible de libérer la copie de travail";
+"error.new.version.unable.to.checkin.message" = "Impossible de libérer la copie de travail de %@. Erreur : %@";
+// Email
+"error.no.email.accounts.title" = "Pas de comptes de messagerie";
+"error.no.email.accounts.message" = "Pour pouvoir envoyer ce fichier, vous devez disposer d’au moins un compte de messagerie configuré sur votre appareil.";
+
+/**
+ * Custom error descriptions
+ */
+"error.description.kErrorFileSuffixMaxAttempts" = "Impossible de générer un nom de fichier unique";
+
+/**
+ * Sites View Controller
+ */
+"sites.title" = "Sites";
+"sites.empty" = "Pas de site";
+"sites.segmentControl.mysites" = "Mes sites";
+"sites.segmentControl.favoritesites" = "Sites favoris";
+"sites.segmentControl.allsites" = "Tous les sites";
+"sites.site.favorited.banner" = "Vous avez ajouté %@ aux favoris";
+"sites.site.unfavorited.banner" = "Vous avez retiré %@ des favoris";
+"sites.site.requested.to.join.banner" = "Une demande à rejoindre %@ a été envoyée";
+"sites.site.joined.banner" = "Vous avez rejoint %@";
+"sites.site.request.cancelled.banner" = "Demande annulée pour %@";
+"sites.site.left.banner" = "Vous vous êtes désabonné de %@";
+
+// Site Cell Buttons
+"sites.siteCell.favorite" = "Favori";
+"sites.siteCell.unfavorite" = "Supprimer";
+"sites.siteCell.leave" = "Se désabonner";
+"sites.siteCell.cancel.request" = "Annuler";
+"sites.siteCell.request.to.join" = "Demander";
+"sites.siteCell.join" = "Rejoindre";
+
+/**
+ * Accounts View Controller
+ */
+"accounts.title" = "Comptes";
+"accounts.empty" = "Aucun compte";
+"accountdetails.title.newaccount" = "Nouveau compte";
+"accountdetails.title.editingaccount" = "Modification en cours du compte";
+"accounttype.cloud" = "Cloud Alfresco";
+"accounttype.alfrescoServer" = "Serveur Alfresco";
+
+"accounttype.footer.alfrescoServer" = "Connexion à un serveur Alfresco";
+"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco in the cloud";
+"accounttype.footer.signuplink" = "Nouveau venu dans Alfresco ? Créez un compte gratuit";
+
+"accountdetails.placeholder.required" = "Requise";
+"accountdetails.placeholder.optional" = "Facultatif";
+"accountdetails.fields.email" = "E-mail";
+"accountdetails.placeholder.email" = "exemple@acme.com";
+"accountdetails.fields.hostname" = "Nom de l’hôte";
+"accountdetails.fields.description" = "Description";
+"accountdetails.fields.port" = "Port";
+"accountdetails.fields.protocol" = "HTTPS";
+"accountdetails.fields.servicedocument" = "Doc. de service";
+"accountdetails.fields.syncPreference" = "Synchroniser le contenu favori";
+"accountdetails.fields.syncPreference.footer" = "Sélectionner pour synchroniser le contenu favori avec votre appareil. Un avertissement s’affichera avant de synchroniser du contenu faisant plus de 20 Mo";
+"accountdetails.buttons.client-certificate" = "Certificat client";
+"accountdetails.header.authentication" = "Détails du compte";
+"accountdetails.header.advanced" = "Avancé";
+"accountdetails.header.setting" = "Paramètres";
+
+"accountdetails.alert.save.title" = "Enregistrer le compte";
+"accountdetails.alert.save.validationerror" = "Échec de l’authentification. Vérifiez vos paramètres de compte avec l’administrateur système.";
+
+/* Client Certificate */
+"certificate-manage.import.label" = "Importer depuis les fichiers locaux";
+"certificate-manage.download.label" = "Télécharger depuis serveur web";
+"certificate-import.tableHeader" = "Code d’accès PCKS 12";
+"certificate-import.fields.passcode" = "Code d’accès";
+"certificate-import.tableFooter" = "Saisissez le code d’accès pour le fichier PKCS 12";
+"certificate-import.button.import" = "Importer";
+"certificate-import.error.title" = "Importer certificat";
+"certificate-import.error.authentication" = "Code d’accès fourni pour le certificat non valide";
+"certificate-import.error.format" = "Fichier de certificat incorrect. Importation impossible";
+"certificate-download.title" = "Serveur web";
+"certificate-download.field.url" = "URL";
+"certificate-details.title" = "Certificat client";
+"certificate-details.issuer" = "Émetteur : %@";
+"certificate-details.delete.title" = "Supprimer le certificat client";
+"certificate-details.delete.message" = "Il sera impossible d’annuler la suppression de ce certificat client. Continuer ?";
+"certificate-details.importSuccess" = "L’importation du certificat a réussi";
+"certificate-details.buttons.delete" = "Retirer certificat";
+"certificate-details.delete.confirm" = "Retirer";
+
+/**
+ * Cloud Signup
+ */
+"cloudsignup.title" = "Alfresco in the cloud";
+"accountdetails.fields.firstName" = "Prénom";
+"accountdetails.fields.lastName" = "Nom";
+"accountdetails.fields.username" = "Nom d’utilisateur";
+"accountdetails.fields.email" = "E-mail";
+"accountdetails.fields.password" = "Mot de passe";
+"accountdetails.fields.confirmPassword" = "Confirmer le mot de passe";
+"accountdetails.placeholder.password.requirement" = "6 caractères au minimum";
+"cloudsignup.button.signup" = "Créer un compte";
+"cloudsignup.footer.firstLine" = "En sélectionnant Créer compte, vous";
+"cloudsignup.footer.secondLine" = "acceptez les conditions d’utilisation et la politique de confidentialité d’Alfresco";
+"cloudsignup.label.termsOfService" = "conditions d’utilisation";
+"cloudsignup.label.privacyPolicy" = "politique de confidentialité d’Alfresco";
+"cloudsignup.alert.title" = "S’inscrire à Alfresco in the cloud";
+"cloudsignup.unsuccessful.message" = "Impossible de créer un compte cloud. Réessayez plus tard";
+
+"awaitingverification.description" = "Vérification en attente du compte d’e-mail\n\nVous avez créé un compte Alfresco in the cloud avec l’adresse %@\n\nConsultez votre boîte e-mail. Vous avez reçu un lien permettant de terminer le processus d’enregistrement.\n\nProblèmes d’activation ?\n\nVeuillez nous prévenir en cas de problème d’activation de votre compte.";
+"awaitingverification.description.title" = "Compte en attente de vérification d’e-mail";
+"awaitingverification.description.subtitle" = "Des difficultés pour l’activation ?";
+/** NOTE TO TRANSLATORS: the phrase "awaitingverification.description.customerCare" must match a phrase in the "awaitingverification.description" string above. */
+"awaitingverification.description.customerCare" = "Veuillez nous prévenir";
+"awaitingverification.title" = "Alfresco in the cloud";
+"awaitingverification.buttons.refresh" = "Rafraîchir";
+"awaitingverification.buttons.resendEmail" = "Renvoyer e-mail";
+"awaitingverification.buttons.customercare" = "Service clientèle";
+"awaitingverification.alerts.title" = "Alfresco in the cloud";
+"awaitingverification.alert.resendEmail.title" = "L’e-mail a pu être renvoyé";
+"awaitingverification.alert.resendEmail.success" = "Vous ne recevez pas nos e-mails ? Vérifiez que l’adresse indiquée est correcte et consultez le dossier des e-mails indésirables.";
+"awaitingverification.alert.resendEmail.error" = "Votre message n’a pas pu être renvoyé. Réessayez plus tard";
+"awaitingverification.alert.refresh.awaiting" = "Votre compte est en cours de vérification";
+"awaitingverification.alert.refresh.verified" = "Votre compte a été vérifié";
+
+/**
+ * Company Home View Controller
+ */
+"companyHome.title" = "Entrepôt";
+
+/**
+ * Shared Files View Controller
+ */
+"sharedFiles.title" = "Fichiers partagés";
+
+/**
+ * My Files View Controller
+ */
+"myFiles.title" = "Mes fichiers";
+
+/**
+ * Folder/Document View Controller
+ */
+"browser.actionsheet.addfolder" = "Créer un dossier";
+"browser.actionsheet.upload" = "Envoyer";
+"browser.actionsheet.upload.existingPhotos" = "Sélectionner photos";
+"browser.actionsheet.upload.existingPhotosOrVideos" = "Sélectionner photos ou vidéos";
+"browser.actionsheet.upload.documents" = "Choisir un fichier local";
+"browser.actionsheet.takephoto" = "Prendre photo";
+"browser.actionsheet.takephotovideo" = "Prendre photo/vidéo";
+"browser.actionsheet.createfile" = "Créer un fichier texte";
+
+"browser.alertview.addfolder.title" = "Créer un dossier";
+"browser.alertview.addfolder.message" = "Créer un dossier du nom de :";
+"browser.alertview.addfolder.create" = "Créer";
+
+"browser.actionsheet.record.audio" = "Enregistrer son";
+
+/**
+ * MultiSelect
+ */
+"multiselect.button.delete" = "Supprimer";
+"multiselect.button.delete.counter" = "Supprimer (%u)";
+"multiselect.delete.confirmation.message.one-item" = "Voulez-vous supprimer 1 fichier du serveur ?";
+"multiselect.delete.confirmation.message.n-items" = "Voulez-vous supprimer %d fichiers du serveur ?";
+"multiselect.delete.confirmation.message.one-download" = "Voulez-vous supprimer 1 fichier des fichiers locaux ?";
+"multiselect.delete.confirmation.message.n-downloads" = "Voulez-vous supprimer %d fichiers des fichiers locaux ?";
+"multiselect.delete.completed.title" = "Suppression effectuée avec des erreurs";
+"multiselect.delete.completed.message" = "%@ fichiers ont été supprimés du serveur.";
+"multiselect.delete.partial.message" = "%@ fichiers seulement ont été supprimés du serveur.";
+"multiselect.delete.failure.message" = "Aucun des fichiers n’a pu être supprimé du serveur.";
+
+/**
+ * Node Picker
+ */
+"nodes.picker.attachments.select" = "Sélectionnez éléments attachés...";
+"nodes.picker.list.title" = "Éléments attachés";
+"nodes.picker.list.attachments.section.title" = "Éléments attachés sélectionnés";
+"nodes.picker.list.attachments.section.footer" = "Balayez pour supprimer";
+"nodes.picker.button.select.documents" = "Sélectionner fichier(s)";
+"nodes.picker.button.select.documents.counter" = "Sélectionner fichier(s) %u";
+"nodes.picker.button.deselectAll" = "Tout désélectionner";
+"nodes.picker.button.deselectAll.counter" = "Tout désélectionner";
+"nodes.picker.button.select.folder" = "Sélectionner ce dossier";
+"nodes.picker.button.select.folder.counter" = "Sélectionner ce dossier";
+
+/**
+ * People Picker
+ */
+"people.picker.title" = "Choisissez l’acteur";
+"people.picker.assignees.select" = "Sélect. des acteurs";
+"people.picker.assignee.select" = "Sélect. un acteur";
+"people.picker.list.title" = "Acteurs";
+"people.picker.search.results.section.title" = "Résultats de la recherche";
+"people.picker.selected.people.section.title" = "Personnes sélectionnées";
+"people.picker.search.title" = "Rechercher des personnes";
+"people.picker.search.no.results" = "Pas de résultat de recherche";
+
+/**
+ * About View Controller
+ */
+"about.title" = "À propos";
+"about.content" = "Alfresco est une plate-forme ouverte de gestion des contenus stratégiques et de collaboration.\n\nAlfresco Mobile a été conçu et développé par Alfresco Software, Inc. et se connecte à Alfresco in the cloud et sur des serveurs Alfresco sur sites (3.4.8 et supérieur) pour fournir un accès sécurisé aux fichiers de votre entreprise lorsque vous êtes en déplacement. Cette application mobile se connecte à votre référentiel Alfresco à l’aide de vos identifiants de connexion Alfresco (via HTTP ou HTTPS) et gère vos accès en fonction de vos permissions.";
+"about.version.number" = "Version : %@ (%@)";
+"about.build.date.time" = "Date de build : %s %s";
+
+/**
+ * Activities View Controller
+ */
+"activities.title" = "Activités";
+"activities.empty" = "Aucune activité";
+"activities.section.today" = "Aujourd’hui";
+"activities.section.yesterday" = "Hier";
+"activities.section.older" = "Plus ancien";
+
+/**
+ * Upload Form Controller
+ */
+"upload.photo.title" = "Télécharger l’image";
+"upload.document.title" = "Télécharger un fichier";
+"upload.video.title" = "Ajouter une vidéo";
+"upload.audio.title" = "Envoyer. audio";
+"upload.photo.namecell.title" = "Nom";
+"upload.photo.namecell.textfield.placeholder.text" = "Nom de fichier";
+"upload.photo.tagcell.textlabel.placeholder.text" = "Aucun tag";
+"upload.photo.photocell.title" = "Photo";
+"upload.photo.qualitycell.title" = "Qualité";
+"upload.photo.tagscell.title" = "Tags";
+"upload.documentTitleCell.label" = "Archiver";
+"upload.videoTitleCell.label" = "Vidéo";
+"upload.default.video.name" = "Vidéo %@";
+// audio
+"upload.audio.cell.label" = "Audio";
+"upload.audio.cell.button.record" = "Document d’archives";
+"upload.audio.cell.button.play" = "Lire";
+"upload.audio.cell.button.stop" = "Arrêter";
+"upload.audio.setting.disabled.title" = "Droits d’accès";
+"upload.audio.setting.disabled.message" = "Cette application n’est pas autorisée à accéder au microphone.\n\nPour changer cela, allez dans Paramètres -> Confidentialité-> Microphone.";
+// confirmation
+"upload.confirm.dismissal.title" = "Contenu non enregistré";
+"upload.confirm.dismissal.message" = "Voulez-vous envoyer ce contenu au serveur ? Votre contenu sera perdu si vous ne l’envoyez pas maintenant.";
+"upload.confirm.dismissal.cancel" = "Ne pas envoyer";
+"upload.success-as.message" = "Fichier envoyé en tant que %@";
+
+/**
+ * Tag Selection Controller
+ */
+"tagselection.title" = "Tags";
+"tagselection.empty" = "Aucun tag";
+"tagselection.newTag.buttonTitle" = "Ajouter tag";
+"tagselection.newTag.alertTitle" = "Ajouter tag";
+"tagselection.newTag.error.invalidtag.title" = "Tag non valide";
+"tagselection.newTag.error.invalidtag.message" = "Les tags doivent contenir du texte";
+
+/**
+ * Document Node Preview Controller
+ */
+"document.segment.preview.title" = "Aperçu";
+"document.segment.metadata.title" = "Propriétés";
+"document.segment.version.history.title" = "Historique";
+"document.segment.nocomments.title" = "Commentaires";
+"document.segment.comments.title" = "Commentaires (%d)";
+"document.segment.comments.hasmore.title" = "Commentaires (%d+)";
+"document.segment.map.title" = "Carte";
+
+/**
+ * Downloads Document Preview Controller
+ */
+"document.segment.repository.metadata.title" = "Propriétés d’origine";
+
+/**
+ * Document Preview Controller
+ */
+"document.video.not.supported" = "Lire n’est pas possible";
+"document.open-in.not.supported.title" = "Ouvrir n’est pas possible";
+"document.open-in.not.supported.message" = "L’option Ouvrir dans n’est pas possible avec cette application.";
+"document.open-in.noapps.title" = "Aucune application prise en charge";
+"document.open-in.noapps.message" = "Il n’y a pas sur cet appareil d’application installée capable d’ouvrir ce fichier.";
+
+/**
+ * Login View Controller
+ */
+"login.title" = "Connexion";
+"login.server.cell.label" = "Serveur";
+"login.username.cell.label" = "Nom d’utilisateur";
+"login.username.textfield.placeholder" = "Nom d’utilisateur";
+"login.password.cell.label" = "Mot de passe";
+"login.password.textfield.placeholder" = "Mot de passe";
+"login.hud.label" = "Connexion en cours...";
+"login.hud.cancel.label" = "Appuyez pour annuler";
+
+/**
+ * Download View Controller
+ */
+"downloads.title" = "Fichiers locaux";
+"downloads.empty" = "Aucun fichier local";
+
+/**
+ * DownloadManager
+ */
+"download.overwrite.prompt.title" = "";
+"download.overwrite.prompt.message" = "Un fichier local portant ce nom existe déjà. Voulez-vous remplacer le fichier existant ?";
+"download.success.message" = "Fichier enregistré";
+"download.success-as.message" = "Fichier enregistré en tant que %@";
+"download.failure.message" = "L’enregistrement du fichier a échoué";
+"download.delete.failure.message" = "La suppression du fichier local a échoué";
+
+/**
+ * Comments View Controller
+ */
+"comments.title" = "Commentaires";
+"comments.empty" = "Aucun commentaire";
+"comments.post.button" = "Poster";
+"comments.placeholder.text" = "Ajouter un commentaire...";
+
+/**
+ * Help
+ */
+"help.title" = "Aide";
+
+/**
+ * Metadata View Controller
+ */
+"metadata.cmis:name" = "Nom";
+"metadata.cm:title" = "Titre";
+"metadata.cmis:createdBy" = "Créé par";
+"metadata.cmis:creationDate" = "Date de création";
+"metadata.cmis:lastModifiedBy" = "Dernière modification par";
+"metadata.cmis:lastModificationDate" = "Dernière date de modification";
+"metadata.cm:author" = "Auteur";
+"metadata.cmis:versionLabel" = "Version";
+
+"metadata.cm:longitude" = "Longitude";
+"metadata.cm:latitude" = "Latitude";
+
+"metadata.exif:dateTimeOriginal" = "Date Heure Origine";
+"metadata.exif:exposureTime" = "Temps d’exposition";
+"metadata.exif:flash" = "Flash";
+"metadata.exif:fNumber" = "NuméroF";
+"metadata.exif:focalLength" = "Longueur focale";
+"metadata.exif:isoSpeedRatings" = "Sensibilités ISO";
+"metadata.exif:manufacturer" = "Fabricant";
+"metadata.exif:model" = "Modèle";
+"metadata.exif:orientation" = "Orientation";
+"metadata.exif:pixelXDimension" = "Dimension X (en pixels)";
+"metadata.exif:pixelYDimension" = "Dimension Y (en pixels)";
+"metadata.exif:resolutionUnit" = "Unité de résolution";
+"metadata.exif:xResolution" = "Résolution X";
+"metadata.exif:yResolution" = "Résolution Y";
+"metadata.exif:software" = "Logiciel";
+"metadata.exif.orientation.landscape.left" = "Paysage gauche";
+"metadata.exif.orientation.landscape.right" = "Paysage droite";
+"metadata.exif.orientation.portrait" = "Portrait";
+"metadata.exif.orientation.portrait.upsidedown" = "Portrait inversé";
+"metadata.exif.orientation.undefined" = "Indéfini";
+
+"metadata.audio:album" = "Album";
+"metadata.audio:artist" = "Artiste";
+"metadata.audio:composer" = "Compositeur";
+"metadata.audio:engineer" = "Ingénieur";
+"metadata.audio:genre" = "Genre";
+"metadata.audio:trackNumber" = "Numéro de piste";
+"metadata.audio:releaseDate" = "Date de parution";
+"metadata.audio:sampleRate" = "Taux d’échantillonnage";
+"metadata.audio:sampleType" = "Type d’échantillon";
+"metadata.audio:channelType" = "Type de canal";
+"metadata.audio:compressor" = "Compresseur";
+
+"metadata.nodeTags" = "Tags";
+"metadata.version.history.cell" = "Afficher l’historique des versions";
+
+"metadata.section.header.general" = "Général";
+"metadata.section.header.geographic" = "Infos géographiques";
+"metadata.section.header.image" = "Infos sur l’image";
+"metadata.section.header.audio" = "Information sur le son";
+
+/**
+ * Version History View Controller
+ */
+"version.history.title" = "Historique des versions";
+"version.history.empty" = "Aucun historique des versions";
+"version.history.version.cell.text" = "Version : %@";
+"version.history.last.modified.cell.text" = "Date de modification : %@";
+"version.history.last.modified.by.cell.text" = "Dernière modification par : %@";
+"version.history.comment.cell.text" = "Commentaire : %@";
+"version.history.current.version.cell.text" = "Version actuelle : %@";
+"version.history.download.latest.text" = "Télécharger la dernière version";
+
+/**
+ * Text File View Controller
+ */
+"createtextfile.title" = "Créer un fichier texte";
+"createtextfile.dismiss.confirmation.title" = "Annuler ?";
+"createtextfile.dismiss.confirmation.message" = "Êtes-vous sûr de vouloir annuler la création de ce fichier texte ?\n\nRemarque : tout votre travail sera annulé.";
+"document.edit.button.discard" = "Annuler les modifications";
+"document.edit.button.save" = "Enregistrer";
+"document.edit.failed.title" = "Enregistrer fichier";
+"document.edit.savefailed.message" = "Impossible d’enregistrer le fichier sur le serveur. Voulez-vous enregistrer le fichier dans vos fichiers locaux ?";
+"document.edit.dismiss.confirmation.message" = "Êtes-vous sûr de vouloir annuler les modifications apportées au fichier ?";
+
+/**
+ * Policy Updated
+ */
+"policy.updated.title" = "Mise à jour des règles";
+"policy.updated.message" = "Les règles de configuration de votre application ont été modifiées par votre administrateur";
+
+/**
+ * Location Manager
+ */
+"location.manager.purpose" = "Votre emplacement géographique servira à géotaguer les photos prises avec cet appareil.";
+
+/**
+ * UIRefreshControl
+ */
+"ui.refreshcontrol.pulltorefresh" = "Abaissez pour rafraîchir...";
+"ui.refreshcontrol.refreshing" = "Chargement en cours...";
+
+/**
+ * Tasks
+ */
+"tasks.title" = "Tâches";
+"tasks.empty" = "Aucune tâche";
+"tasks.process.unnamed" = "Traitement non nommé";
+"tasks.view.button" = "Visualiser";
+"tasks.title.mytasks" = "Mes tâches";
+"tasks.title.taskistarted" = "Tâches que j’ai initiées";
+"tasks.list.no-due-date" = "Pas de date d’échéance";
+// Details
+"tasks.calendar.no-due-date" = "Aucune date";
+"tasks.attachments.empty" = "Aucun élément attaché";
+"tasks.tasks.empty" = "Aucune tâche";
+"tasks.initiated-by" = "Initié par %@";
+"tasks.priority.high" = "Priorité élevée";
+"tasks.priority.medium" = "Priorité moyenne";
+"tasks.priority.low" = "Priorité faible";
+"tasks.textview.addcomment.placeholder" = "Ajouter un commentaire";
+"task.details.section.header.details" = "Détails";
+"task.details.section.header.attachments" = "Éléments attachés";
+"task.details.section.header.tasks" = "Tâches";
+"task.reassign.button.title" = "Réassigner";
+"task.reassign.success.message" = "Tâche réassignée";
+"task.transition.approve" = "Approuver";
+"task.transition.reject" = "Rejeter";
+"task.transition.done" = "Terminé";
+"task.completed.success.message" = "Tâche terminée";
+
+// Cell
+"tasks.cell.taskcompleted" = "%@ a terminé cette tâche %@";
+"tasks.cell.tasknotcompleted" = "%@ n’a pas terminé cette tâche";
+// Process definition titles - these match workflow-message.properties in the repository
+"tasks.process.activitiAdhoc" = "Nouvelle tâche";
+"tasks.process.activitiParallelReview" = "Envoyer fichier(s) pour révision";
+"tasks.process.activitiReview" = "Réviser et approuver";
+"tasks.process.jbpm$wf:adhoc" = "Workflow ad hoc";
+"tasks.process.jbpm$wf:parallelreview" = "Réviser et approuver en parallèle";
+"tasks.process.jbpm$wf:review" = "Réviser et approuver";
+
+/**
+ * Create Tasks
+ */
+"task.choose.task.type.title" = "Choisir le type de tâche";
+"task.type.workflow.todo" = "À faire";
+"task.type.workflow.review.and.approve" = "Réviser & Approuver";
+"task.type.workflow.todo.footer" = "Assigner une tâche à une personne.";
+"task.type.workflow.review.and.approve.footer" = "Affecter à une ou plusieurs personnes une tâche de révision et d’approbation de fichiers.";
+
+"task.create.title" = "Créer une tâche";
+"task.create.button" = "Créer";
+"task.create.taskTitle" = "Titre";
+"task.create.taskTitle.placeholder" = "Nouvelle tâche";
+"task.create.duedate" = "À échéance le";
+"task.create.duedate.placeholder" = "Aucune date";
+"task.create.assignee" = "Personne assignée";
+"task.create.assignees" = "Acteurs";
+"task.create.assignee.placeholder" = "Aucun acteur";
+"task.create.attachment" = "Pièce jointe";
+"task.create.attachments" = "Éléments attachés";
+"task.create.attachments.placeholder" = "Aucun élément attaché";
+"task.create.priority" = "Priorité";
+"task.create.priority.high" = "Élevée";
+"task.create.priority.medium" = "Moyenne";
+"task.create.priority.low" = "Basse";
+"task.create.emailnotification" = "Envoyer des notifications par e-mail";
+"task.create.approvers" = "Approbateurs";
+"task.create.approver" = "Approbateur";
+"task.create.created" = "Tâche créée";
+"task.create.error" = "Échec création tâche";
+
+/* Date picker */
+"date.picker.title" = "Calendrier";
+"date.picker.today" = "Aujourd’hui";
+
+/**
+ * Settings
+ */
+"settings.title" = "Paramètres";
+"settings.general.title" = "Général";
+"settings.sync.on.cellular" = "Synchronisation cellulaire";
+"settings.sync.on.cellular.description" = "Passez à l’option Ne synchroniser que le contenu favori lorsque vous êtes en connexion Wi-Fi.";
+"settings.send.diagnostics" = "Envoyer des diagnostics";
+"settings.send.diagnostics.description" = "Pour améliorer Alfresco Mobile, nous sommes amenés à collecter des données anonymes de diagnostics techniques. Désactivez ce paramètre si vous préférez.";
+"settings.security.title" = "Sécurité";
+"settings.security.file.protection" = "Protection des fichiers";
+"settings.security.file.protection.description" = "Crypte les fichiers stockés sur cet appareil lorsque ce dernier est verrouillé.";
+
+/**
+ * Onboarding View Controller
+ */
+"onboarding.setup.cloud.button.title" = "Créer un compte Alfresco Cloud";
+"onboarding.setup.existing.account.button.title" = "Connexion";
+"onboarding.help.button.title" = "Aide";
+
+/**
+ * Action Sheet Actions
+ */
+"action.email" = "E-mail";
+"action.emailAsLink" = "Lien e-mail";
+"action.open.in" = "Ouvrir dans...";
+"action.like" = "Aimer";
+"action.unlike" = "Ne plus aimer";
+"action.favourite" = "Favori";
+"action.unfavourite" = "Supprimer des favoris";
+"action.comment" = "Commentaire";
+"action.download" = "Télécharger";
+"action.print" = "Imprimer";
+"action.rename" = "Renommer";
+"action.subfolder" = "Ajouter dossier";
+"action.upload" = "Envoyer";
+"action.review" = "Réviser";
+"action.edit" = "Éditer";
+"action.new.version" = "Mis à jour";
+// Alerts
+"action.rename.alert.title" = "Renommer";
+"action.rename.alert.message" = "Renommer le fichier en :";
+"action.rename.success.title" = "Le nom du fichier a pu être changé";
+"action.rename.success.message" = "%@ a pu être renommé en %@.";
+"action.subfolder.success.title" = "Le sous-dossier a été ajouté";
+"action.subfolder.success.message" = "%@ a été créé.";
+"action.subfolder.failure.title" = "Impossible de créer le sous-dossier";
+"action.delete" = "Supprimer";
+"action.delete.confirmation.title" = "Confirmation de la suppression";
+"action.delete.confirmation.message" = "Êtes-vous sûr de vouloir supprimer ce fichier ?";
+"action.delete.success.title" = "Suppression réussie";
+"action.delete.success.message" = "%@ a été supprimé.";
+"action.delete.success.message.sync" = "%@ a été supprimé. Une copie est enregistrée dans les fichiers locaux";
+"action.delete.failed.title" = "Échec de la suppression";
+"action.delete.failed.message" = "Échec de la suppression de %@.";
+
+/**
+ * SaveBack
+ */
+"saveback.hud.message" = "Enregistrement...";
+"saveback.saved.successfully.message" = "Le fichier %@ a été créé.";
+"saveback.failed.title" = "L’enregistrement a échoué";
+"saveback.failed.message" = "La tentative d’enregistrement de %@ a échoué. Voulez-vous refaire une tentative ?";
+"saveback.completed.title" = "L’enregistrement a été effectué";
+"saveback.completed.message" = "%@ a été enregistré";
+"saveback.failed.title" = "L’enregistrement a échoué";
+"saveback.failed.message" = "%@ a été enregistré dans les fichiers locaux";
+// Location Picker
+"saveback.locationpicker.title" = "Choisir l’emplacement";
+"saveback.locationpicker.other" = "Autres";
+"saveback.upload.completed.title" = "Envoi vers le serveur terminé";
+"saveback.upload.completed.message" = "L’envoi de %@ vers %@ a réussi";
+"saveback.upload.failed.title" = "L’envoi a échoué";
+"saveback.upload.failed.message" = "%@ n’a pas pu être envoyé à %@";
+
+/**
+ * New Version View Controller
+ */
+"new.version.title" = "Mettre le fichier à jour";
+"new.version.upload" = "Mis à jour";
+"new.version.file.title" = "Nouvelle version";
+"new.version.file.placeholder" = "Pas de fichier sélectionné";
+"new.version.major.version.title" = "Changement majeur";
+"new.version.comment.title" = "Commentaires";
+"new.version.commet.placeholder" = "Commentaires sur la version (facultatif)";
+"new.version.upload.successful.title" = "Fichier mis à jour";
+"new.version.upload.successful.message" = "%@ a été mis à jour";
+
+/**
+ * File Preview Controller
+ */
+"file.preview.loading.document.from.file" = "Chargement en cours de fichiers";
+
+/**
+ * File Protection Manager
+ */
+"fileprotection.title" = "Protection des fichiers";
+"fileprotection.available.message" = "La protection des fichiers est disponible. Souhaitez-vous l’activer?";
+"fileprotection.available.confirm" = "Protéger";
+"fileprotection.unavailable.message" = "La protection des fichiers n’est plus disponible.";
+"fileprotection.protecting.message" = "Protection en cours des fichiers locaux...";
+"fileprotection.unprotecting.message" = "Déprotection en cours des fichiers locaux...";
+
+/**
+ * Mail Action
+ */
+// e.g. "Sent from Alfresco Mobile". 'Alfresco Mobile' will not be localized.
+"mail.footer" = "Envoyé depuis %@";
+
+/**
+ * THIRD PARTY LIBRARIES LOCALIZATIONS
+ */
