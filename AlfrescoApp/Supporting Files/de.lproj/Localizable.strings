@@ -161,8 +161,8 @@
 "sites.site.left.banner" = "Sie haben sich bei %@ abgemeldet.";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Als Favoriten markieren";
-"sites.siteCell.unfavorite" = "Markierung als Favorit aufheben";
+"sites.siteCell.favorite" = "Favorit";
+"sites.siteCell.unfavorite" = "Entfernen";
 "sites.siteCell.leave" = "Abmelden";
 "sites.siteCell.cancel.request" = "Antrag zurückziehen";
 "sites.siteCell.request.to.join" = "Beitritt beantragen";

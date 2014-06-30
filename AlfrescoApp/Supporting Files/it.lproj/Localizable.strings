@@ -161,11 +161,11 @@
 "sites.site.left.banner" = "Hai abbandonato %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Aggiungi ai preferiti";
-"sites.siteCell.unfavorite" = "Rimuovi dai preferiti";
+"sites.siteCell.favorite" = "Preferito";
+"sites.siteCell.unfavorite" = "Togli preferiti";
 "sites.siteCell.leave" = "Abbandona";
 "sites.siteCell.cancel.request" = "Annulla richiesta";
-"sites.siteCell.request.to.join" = "Richiedi la partecipazione";
+"sites.siteCell.request.to.join" = "Partecipa";
 "sites.siteCell.join" = "Partecipa";
 
 /**
