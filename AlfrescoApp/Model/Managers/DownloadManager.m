@@ -73,6 +73,16 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath suppressAlerts:(BOOL)suppressAlerts completionBlock:(DownloadManagerFileSavedBlock)completionBlock
 {
+    [self saveDocument:document documentName:nil contentPath:contentPath suppressAlerts:suppressAlerts completionBlock:completionBlock];
+}
+
+- (void)saveDocument:(AlfrescoDocument *)document documentName:(NSString *)documentName contentPath:(NSString *)contentPath completionBlock:(DownloadManagerFileSavedBlock)completionBlock
+{
+    [self saveDocument:document documentName:documentName contentPath:contentPath suppressAlerts:NO completionBlock:completionBlock];
+}
+
+- (void)saveDocument:(AlfrescoDocument *)document documentName:(NSString *)documentName contentPath:(NSString *)contentPath suppressAlerts:(BOOL)suppressAlerts completionBlock:(DownloadManagerFileSavedBlock)completionBlock
+{
     // Check source content exists
     if (contentPath == nil || ![self.fileManager fileExistsAtPath:contentPath])
     {
@@ -80,13 +90,14 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
     else
     {
-        if (![self isDownloadedDocument:contentPath])
+        NSString *name = documentName ? documentName : contentPath.lastPathComponent;
+        if (![self isDownloadedDocument:name])
         {
             // No existing file, so we're ok to copy from contentPath source to downloads folder
             NSString *filePath;
             NSError *error = nil;
             
-            filePath = [self copyToDownloadsFolder:document contentPath:contentPath overwriteExisting:YES error:&error];
+            filePath = [self copyToDownloadsFolder:document documentName:documentName contentPath:contentPath overwriteExisting:YES error:&error];
             
             if (!suppressAlerts)
             {
@@ -114,12 +125,12 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
                 if (buttonIndex == kOverwriteConfirmationOptionYes)
                 {
                     // User chose to overwrite existing file
-                    blockFilePath = [self copyToDownloadsFolder:document contentPath:contentPath overwriteExisting:YES error:&blockError];
+                    blockFilePath = [self copyToDownloadsFolder:document documentName:documentName contentPath:contentPath overwriteExisting:YES error:&blockError];
                 }
                 else
                 {
                     // Don't allow overwriting existing content
-                    blockFilePath = [self copyToDownloadsFolder:document contentPath:contentPath overwriteExisting:NO error:&blockError];
+                    blockFilePath = [self copyToDownloadsFolder:document documentName:documentName contentPath:contentPath overwriteExisting:NO error:&blockError];
                 }
                 
                 if (!suppressAlerts && blockFilePath != nil)
@@ -298,7 +309,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 - (NSString *)updateDownloadedDocument:(AlfrescoDocument *)document withContentsOfFileAtPath:(NSString *)filePath
 {
     NSError *updateError = nil;
-    NSString *savedFilePath = [self copyToDownloadsFolder:document contentPath:filePath overwriteExisting:YES error:&updateError];
+    NSString *savedFilePath = [self copyToDownloadsFolder:document documentName:nil contentPath:filePath overwriteExisting:YES error:&updateError];
     
     if (updateError)
     {
@@ -321,10 +332,12 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 }
 
 // Returns the filePath the content was saved to, or nil if an error occurred
-- (NSString *)copyToDownloadsFolder:(AlfrescoDocument *)document contentPath:(NSString *)contentPath overwriteExisting:(BOOL)overwrite error:(NSError **)error
+- (NSString *)copyToDownloadsFolder:(AlfrescoDocument *)document documentName:(NSString *)documentName contentPath:(NSString *)contentPath overwriteExisting:(BOOL)overwrite error:(NSError **)error
 {
     BOOL copySucceeded = NO;
-    NSString *destinationFilename = (overwrite ? contentPath.lastPathComponent : [self safeFilenameBySuffixing:contentPath.lastPathComponent error:error]);
+    
+    NSString *name = documentName ? documentName : contentPath.lastPathComponent;
+    NSString *destinationFilename = (overwrite ? name : [self safeFilenameBySuffixing:name error:error]);
     if (destinationFilename != nil)
     {
         if ([self copyDocumentFrom:contentPath destinationFilename:destinationFilename overwriteExisting:overwrite error:error])
