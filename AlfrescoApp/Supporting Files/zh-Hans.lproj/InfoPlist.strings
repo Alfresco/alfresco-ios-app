@@ -1,0 +1,12 @@
+/**
+ * InfoPlist.strings
+ * AlfrescoApp
+ *
+ * Chinese (Simplified) (zh-cn)
+ *
+ * Copyright (c) 2014 Alfresco. All rights reserved.
+ */
+
+/* Localized versions of Info.plist keys */
+NSLocationUsageDescription = "您的位置将用于为此设备拍摄的照片添加地理标记。";
+NSMicrophoneUsageDescription = "麦克风将用于录制声音，然后该声音可上传至存储库。";
