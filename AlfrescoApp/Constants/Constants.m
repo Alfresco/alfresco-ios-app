@@ -127,6 +127,7 @@ NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"Docume
 NSString * const kDocumentPreviewManagerProgressNotification = @"DocumentPreviewManagerProgressNotification";
 NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification = @"DocumentPreviewManagerDocumentDownloadCompletedNotification";
 NSString * const kDocumentPreviewManagerDocumentDownloadCancelledNotification = @"DocumentPreviewManagerDocumentDownloadCancelledNotification";
+NSString * const kDocumentPreviewManagerWillStartLocalDocumentDownloadNotification = @"DocumentPreviewManagerWillStartLocalDocumentDownloadNotification";
 
 // Download Notification Keys
 NSString * const kDocumentPreviewManagerDocumentIdentifierNotificationKey = @"DocumentPreviewManagerDocumentIdentifierNotificationKey";

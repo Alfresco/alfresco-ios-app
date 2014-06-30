@@ -139,6 +139,7 @@ extern NSString * const kDocumentPreviewManagerWillStartDownloadNotification;
 extern NSString * const kDocumentPreviewManagerProgressNotification;
 extern NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification;
 extern NSString * const kDocumentPreviewManagerDocumentDownloadCancelledNotification;
+extern NSString * const kDocumentPreviewManagerWillStartLocalDocumentDownloadNotification;
 
 // Download Detail Keys
 extern NSString * const kDocumentPreviewManagerDocumentIdentifierNotificationKey;
