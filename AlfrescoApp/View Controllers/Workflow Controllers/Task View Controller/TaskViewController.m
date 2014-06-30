@@ -265,7 +265,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
     
     // create a new listing context so we can filter the processes
-    AlfrescoListingFilter *filter = [[AlfrescoListingFilter alloc] initWithFilter:kAlfrescoFilterByWorkflowStatus value:kAlfrescoFilterValueWorkflowStateActive];
+    AlfrescoListingFilter *filter = [[AlfrescoListingFilter alloc] initWithFilter:kAlfrescoFilterByWorkflowStatus value:kAlfrescoFilterValueWorkflowStatusActive];
     AlfrescoListingContext *filteredListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:listingContext.maxItems
                                                                                             skipCount:listingContext.skipCount
                                                                                          sortProperty:listingContext.sortProperty
