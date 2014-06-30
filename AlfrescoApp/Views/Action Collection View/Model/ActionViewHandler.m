@@ -232,7 +232,14 @@
         void (^saveToDownloadsBlock)(NSString *filePath) = ^(NSString *filePath) {
             if (filePath)
             {
-                [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)self.node contentPath:filePath completionBlock:nil];
+                // rename the file to remove the date modified suffix, and then copy it to downloads
+                NSString *tempPath = [[fileManager documentPreviewDocumentFolderPath] stringByAppendingPathComponent:self.node.name];
+                [fileManager copyItemAtPath:filePath toPath:tempPath error:nil];
+                
+                [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)self.node contentPath:tempPath completionBlock:^(NSString *filePath) {
+                    // removing temp file after its saved to Local files
+                    [fileManager removeItemAtPath:tempPath error:nil];
+                }];
             }
         };
         
