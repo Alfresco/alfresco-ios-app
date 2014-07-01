@@ -511,7 +511,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         {
             case SyncStatusLoading:
             {
-                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier inAccountWithId:[[[AccountManager sharedManager] selectedAccount] accountIdentifier]];
+                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
                 break;
             }
             case SyncStatusFailed:
