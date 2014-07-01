@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "An Error Occurred";
 "error.filefolder.rootfolder.notfound" = "无法加载根文件夹。错误：%@。";
 "error.filefolder.permission.notfound" = "未找到节点的权限。错误：%@。";
 "error.filefolder.content.failedtodownload" = "无法下载文件。错误：%@。";
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "端口";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "服务文档";
-"accountdetails.fields.syncPreference" = "同步收藏的内容";
+"accountdetails.fields.syncPreference" = "同步文件";
 "accountdetails.fields.syncPreference.footer" = "选择将收藏的内容与设备同步。同步超过 20 MB 的内容之前会显示警告";
 "accountdetails.buttons.client-certificate" = "客户端证书";
 "accountdetails.header.authentication" = "帐户详细信息";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "评论：%@";
 "version.history.current.version.cell.text" = "当前版本：%@";
 "version.history.download.latest.text" = "下载最新版本";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "No Location Data";
 
 /**
  * Text File View Controller

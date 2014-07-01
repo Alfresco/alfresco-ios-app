@@ -60,7 +60,7 @@
     noMapLabel.textAlignment = NSTextAlignmentCenter;
     noMapLabel.textColor = [UIColor noItemsTextColor];
     noMapLabel.hidden = YES;
-    noMapLabel.text = NSLocalizedString(@"No Location Data", @"No Location Data");
+    noMapLabel.text = NSLocalizedString(@"map.no.location.data", @"No Location Data");
     noMapLabel.insetTop = -(self.view.frame.size.height / 3.0);
     noMapLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
     [self.view addSubview:noMapLabel];

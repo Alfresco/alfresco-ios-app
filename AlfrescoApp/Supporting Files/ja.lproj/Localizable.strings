@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "An Error Occurred";
 "error.filefolder.rootfolder.notfound" = "ルートフォルダをロードできませんでした。エラー: %@。";
 "error.filefolder.permission.notfound" = "ノードの許可が見つかりませんでした。エラー: %@。";
 "error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。エラー: %@。";
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "ポート";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "サービス ドキュメント";
-"accountdetails.fields.syncPreference" = "お気に入りのコンテンツの同期 ";
+"accountdetails.fields.syncPreference" = "ファイルを同期する";
 "accountdetails.fields.syncPreference.footer" = "デバイスに同期するお気に入りのコンテンツを選択してください。20MBを超えるコンテンツを同期する場合は、警告が表示されます";
 "accountdetails.buttons.client-certificate" = "クライアント証明書";
 "accountdetails.header.authentication" = "アカウントの詳細";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "コメント: %@";
 "version.history.current.version.cell.text" = "現在のバージョン: %@";
 "version.history.download.latest.text" = "最新バージョンをダウンロード";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "No Location Data";
 
 /**
  * Text File View Controller

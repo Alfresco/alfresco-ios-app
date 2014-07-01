@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "An Error Occurred";
 "error.filefolder.rootfolder.notfound" = "No fue posible subir la carpeta raíz. Error: %@.";
 "error.filefolder.permission.notfound" = "No se encontró permiso para el nodo. Error: %@.";
 "error.filefolder.content.failedtodownload" = "Error de fichero al descargar. Error: %@.";
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "Puerto";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Documento de servicio";
-"accountdetails.fields.syncPreference" = "Sincronizar contenido favorito";
+"accountdetails.fields.syncPreference" = "Sincronizar ficheros";
 "accountdetails.fields.syncPreference.footer" = "Seleccione sincronizar contenido favorito en su dispositivo. Aparecerá una advertencia antes de sincronizar contenido superior a 20 MB";
 "accountdetails.buttons.client-certificate" = "Certificado de cliente";
 "accountdetails.header.authentication" = "Datos de la cuenta";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "Comentario: %@";
 "version.history.current.version.cell.text" = "Versión actual: %@";
 "version.history.download.latest.text" = "Descargar la última versión";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "No Location Data";
 
 /**
  * Text File View Controller
