@@ -163,10 +163,10 @@
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "Favori";
-"sites.siteCell.unfavorite" = "Supprimer";
+"sites.siteCell.unfavorite" = "Supprimer des favoris";
 "sites.siteCell.leave" = "Se désabonner";
-"sites.siteCell.cancel.request" = "Annuler";
-"sites.siteCell.request.to.join" = "Demander";
+"sites.siteCell.cancel.request" = "Annuler la demande";
+"sites.siteCell.request.to.join" = "Demander à rejoindre";
 "sites.siteCell.join" = "Rejoindre";
 
 /**
