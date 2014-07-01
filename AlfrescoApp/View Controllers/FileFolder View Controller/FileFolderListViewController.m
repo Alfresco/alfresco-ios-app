@@ -559,7 +559,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             case SyncStatusLoading:
             {
-                [syncManager cancelSyncForDocumentWithIdentifier:selectedNode.identifier inAccountWithId:[[[AccountManager sharedManager] selectedAccount] accountIdentifier]];
+                [syncManager cancelSyncForDocumentWithIdentifier:selectedNode.identifier];
                 break;
             }
             case SyncStatusFailed:

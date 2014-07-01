@@ -1181,6 +1181,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 #pragma mark - Public Utilities
 
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
+{
+    [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:self.selectedAccountIdentifier];
+}
+
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier inAccountWithId:(NSString *)accountId
 {
     NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
