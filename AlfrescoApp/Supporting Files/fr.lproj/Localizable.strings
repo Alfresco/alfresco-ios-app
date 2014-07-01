@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "Une erreur s'est produite";
 "error.filefolder.rootfolder.notfound" = "Impossible de charger le dossier racine. Erreur : %@.";
 "error.filefolder.permission.notfound" = "Le droit d’accès pour le nœud est introuvable. Erreur : %@.";
 "error.filefolder.content.failedtodownload" = "Le téléchargement du fichier a échoué. Erreur : %@.";
@@ -162,10 +163,10 @@
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "Favori";
-"sites.siteCell.unfavorite" = "Supprimer";
+"sites.siteCell.unfavorite" = "Supprimer des favoris";
 "sites.siteCell.leave" = "Se désabonner";
-"sites.siteCell.cancel.request" = "Annuler";
-"sites.siteCell.request.to.join" = "Demander";
+"sites.siteCell.cancel.request" = "Annuler la demande";
+"sites.siteCell.request.to.join" = "Demander à rejoindre";
 "sites.siteCell.join" = "Rejoindre";
 
 /**
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Doc. de service";
-"accountdetails.fields.syncPreference" = "Synchroniser le contenu favori";
+"accountdetails.fields.syncPreference" = "Synchroniser fichiers";
 "accountdetails.fields.syncPreference.footer" = "Sélectionner pour synchroniser le contenu favori avec votre appareil. Un avertissement s’affichera avant de synchroniser du contenu faisant plus de 20 Mo";
 "accountdetails.buttons.client-certificate" = "Certificat client";
 "accountdetails.header.authentication" = "Détails du compte";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "Commentaire : %@";
 "version.history.current.version.cell.text" = "Version actuelle : %@";
 "version.history.download.latest.text" = "Télécharger la dernière version";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "Aucune donnée de géolocalisation";
 
 /**
  * Text File View Controller

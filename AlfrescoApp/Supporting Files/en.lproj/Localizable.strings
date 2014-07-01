@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "An Error Occurred";
 "error.filefolder.rootfolder.notfound" = "Root folder could not be loaded. Error: %@.";
 "error.filefolder.permission.notfound" = "Permission for the node was not found. Error: %@.";
 "error.filefolder.content.failedtodownload" = "File failed to download. Error: %@.";
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service Document";
-"accountdetails.fields.syncPreference" = "Sync Favorite Content";
+"accountdetails.fields.syncPreference" = "Sync Files";
 "accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
 "accountdetails.header.authentication" = "Account Details";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "Comment: %@";
 "version.history.current.version.cell.text" = "Current Version: %@";
 "version.history.download.latest.text" = "Download Latest Version";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "No Location Data";
 
 /**
  * Text File View Controller

@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "Ein Fehler ist aufgetreten";
 "error.filefolder.rootfolder.notfound" = "Root-Ordner konnte nicht geladen werden. Fehler: %@.";
 "error.filefolder.permission.notfound" = "Berechtigung für den Knoten wurde nicht gefunden. Fehler: %@.";
 "error.filefolder.content.failedtodownload" = "Datei konnte nicht heruntergeladen werden. Fehler: %@.";
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service-Dokument";
-"accountdetails.fields.syncPreference" = "Bevorzugten Inhalt synchronisieren";
+"accountdetails.fields.syncPreference" = "Dateien synchronisieren";
 "accountdetails.fields.syncPreference.footer" = "Treffen Sie eine Auswahl, um bevorzugten Inhalt auf Ihrem Gerät zu synchronisieren. Vor der Synchronisierung von mehr als 20 MB umfassenden Inhalt wird eine Warnung angezeigt.";
 "accountdetails.buttons.client-certificate" = "Client-Zertifikat";
 "accountdetails.header.authentication" = "Account-Details";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "Kommentar: %@";
 "version.history.current.version.cell.text" = "Aktuelle Version: %@";
 "version.history.download.latest.text" = "Aktuelle Version herunterladen";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "Keine Standortdaten";
 
 /**
  * Text File View Controller

@@ -62,7 +62,7 @@ CGFloat hiddenYOrigin;
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeErrorColor];
                 self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor whiteColor];
-                self.defaultTitle = NSLocalizedString(@"An Error Occurred", @"Default title for error notification");
+                self.defaultTitle = NSLocalizedString(@"error.generic.title", @"Default title for error notification");
                 self.displayTime = 8.0f;
                 break;
             

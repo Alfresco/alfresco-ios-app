@@ -95,6 +95,7 @@
 /**
  * Errors
  */
+"error.generic.title" = "Si è verificato un errore";
 "error.filefolder.rootfolder.notfound" = "Impossibile caricare la cartella principale. Errore: %@.";
 "error.filefolder.permission.notfound" = "Autorizzazione per il nodo non trovata. Errore: %@.";
 "error.filefolder.content.failedtodownload" = "Download file non riuscito. Errore: %@.";
@@ -161,8 +162,8 @@
 "sites.site.left.banner" = "Hai abbandonato %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Preferito";
-"sites.siteCell.unfavorite" = "Togli preferiti";
+"sites.siteCell.favorite" = "Aggiungi ai preferiti";
+"sites.siteCell.unfavorite" = "Rimuovi dai preferiti";
 "sites.siteCell.leave" = "Abbandona";
 "sites.siteCell.cancel.request" = "Annulla richiesta";
 "sites.siteCell.request.to.join" = "Partecipa";
@@ -191,7 +192,7 @@
 "accountdetails.fields.port" = "Porta";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Condizioni del servizio";
-"accountdetails.fields.syncPreference" = "Sincronizza contenuti preferiti";
+"accountdetails.fields.syncPreference" = "Sincronizza file";
 "accountdetails.fields.syncPreference.footer" = "Seleziona per sincronizzare i contenuti preferiti sul dispositivo. Un avviso viene visualizzato quando si sincronizzano contenuti oltre i 20 MB";
 "accountdetails.buttons.client-certificate" = "Certificato client";
 "accountdetails.header.authentication" = "Dettagli account";
@@ -518,6 +519,11 @@
 "version.history.comment.cell.text" = "Commento: %@";
 "version.history.current.version.cell.text" = "Versione corrente: %@";
 "version.history.download.latest.text" = "Scarica l'ultima versione";
+
+/**
+ * Map View Controller
+ */
+"map.no.location.data" = "Nessun dato di posizione";
 
 /**
  * Text File View Controller
