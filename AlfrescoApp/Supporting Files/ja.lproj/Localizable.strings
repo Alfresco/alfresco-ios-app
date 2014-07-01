@@ -95,7 +95,7 @@
 /**
  * Errors
  */
-"error.generic.title" = "An Error Occurred";
+"error.generic.title" = "エラーが発生しました";
 "error.filefolder.rootfolder.notfound" = "ルートフォルダをロードできませんでした。エラー: %@。";
 "error.filefolder.permission.notfound" = "ノードの許可が見つかりませんでした。エラー: %@。";
 "error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。エラー: %@。";
@@ -523,7 +523,7 @@
 /**
  * Map View Controller
  */
-"map.no.location.data" = "No Location Data";
+"map.no.location.data" = "場所のデータはありません";
 
 /**
  * Text File View Controller

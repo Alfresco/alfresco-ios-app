@@ -95,7 +95,7 @@
 /**
  * Errors
  */
-"error.generic.title" = "An Error Occurred";
+"error.generic.title" = "Une erreur s'est produite";
 "error.filefolder.rootfolder.notfound" = "Impossible de charger le dossier racine. Erreur : %@.";
 "error.filefolder.permission.notfound" = "Le droit d’accès pour le nœud est introuvable. Erreur : %@.";
 "error.filefolder.content.failedtodownload" = "Le téléchargement du fichier a échoué. Erreur : %@.";
@@ -523,7 +523,7 @@
 /**
  * Map View Controller
  */
-"map.no.location.data" = "No Location Data";
+"map.no.location.data" = "Aucune donnée de géolocalisation";
 
 /**
  * Text File View Controller

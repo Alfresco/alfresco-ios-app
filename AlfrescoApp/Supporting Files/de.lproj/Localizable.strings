@@ -95,7 +95,7 @@
 /**
  * Errors
  */
-"error.generic.title" = "An Error Occurred";
+"error.generic.title" = "Ein Fehler ist aufgetreten";
 "error.filefolder.rootfolder.notfound" = "Root-Ordner konnte nicht geladen werden. Fehler: %@.";
 "error.filefolder.permission.notfound" = "Berechtigung für den Knoten wurde nicht gefunden. Fehler: %@.";
 "error.filefolder.content.failedtodownload" = "Datei konnte nicht heruntergeladen werden. Fehler: %@.";
@@ -523,7 +523,7 @@
 /**
  * Map View Controller
  */
-"map.no.location.data" = "No Location Data";
+"map.no.location.data" = "Keine Standortdaten";
 
 /**
  * Text File View Controller

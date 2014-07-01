@@ -95,7 +95,7 @@
 /**
  * Errors
  */
-"error.generic.title" = "An Error Occurred";
+"error.generic.title" = "Si è verificato un errore";
 "error.filefolder.rootfolder.notfound" = "Impossibile caricare la cartella principale. Errore: %@.";
 "error.filefolder.permission.notfound" = "Autorizzazione per il nodo non trovata. Errore: %@.";
 "error.filefolder.content.failedtodownload" = "Download file non riuscito. Errore: %@.";
@@ -523,7 +523,7 @@
 /**
  * Map View Controller
  */
-"map.no.location.data" = "No Location Data";
+"map.no.location.data" = "Nessun dato di posizione";
 
 /**
  * Text File View Controller

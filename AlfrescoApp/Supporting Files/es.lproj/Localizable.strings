@@ -95,7 +95,7 @@
 /**
  * Errors
  */
-"error.generic.title" = "An Error Occurred";
+"error.generic.title" = "Se ha producido un error";
 "error.filefolder.rootfolder.notfound" = "No fue posible subir la carpeta raíz. Error: %@.";
 "error.filefolder.permission.notfound" = "No se encontró permiso para el nodo. Error: %@.";
 "error.filefolder.content.failedtodownload" = "Error de fichero al descargar. Error: %@.";
@@ -523,7 +523,7 @@
 /**
  * Map View Controller
  */
-"map.no.location.data" = "No Location Data";
+"map.no.location.data" = "No hay datos de ubicación";
 
 /**
  * Text File View Controller
