@@ -87,11 +87,15 @@
             self.syncRequest = [self.documentFolderService retrieveContentOfDocument:self.document outputStream:(NSOutputStream *)self.stream completionBlock:^(BOOL succeeded, NSError *error) {
                 if (weakSelf.downloadCompletionBlock)
                 {
-                    weakSelf.downloadCompletionBlock(succeeded, error);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        weakSelf.downloadCompletionBlock(succeeded, error);
+                    });
                 }
                 operationCompleted = YES;
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                });
             }];
         }
         else
@@ -99,11 +103,15 @@
             self.syncRequest = [self.documentFolderService updateContentOfDocument:self.document contentStream:(AlfrescoContentStream *)self.stream completionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
                 if (weakSelf.uploadCompletionBlock)
                 {
-                    weakSelf.uploadCompletionBlock(uploadedDocument, error);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        weakSelf.uploadCompletionBlock(uploadedDocument, error);
+                    });
                 }
                 operationCompleted = YES;
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                });
             }];
         }
         
