@@ -85,5 +85,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (UIImage *)cropImageIntoSquare:(UIImage *)originalImage;
 + (void)createBorderedButton:(UIButton *)button label:(NSString *)label color:(UIColor *)color;
 + (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier;
++ (NSArray *)localisationsThatRequireTwoRowsInActionView;
 
 @end

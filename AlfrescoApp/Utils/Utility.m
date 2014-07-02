@@ -683,4 +683,9 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return cleanNodeRef;
 }
 
++ (NSArray *)localisationsThatRequireTwoRowsInActionView
+{
+    return @[@"it", @"de", @"es", @"ja"];
+}
+
 @end

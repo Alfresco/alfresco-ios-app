@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseDocumentPreviewViewController">
             <connections>
                 <outlet property="actionMenuView" destination="jWJ-GZ-Bv7" id="vjt-iw-lL3"/>
+                <outlet property="actionViewHeightConstraint" destination="EUy-o0-kGO" id="6WR-Hv-ueO"/>
                 <outlet property="pagingScrollView" destination="W5I-8h-eej" id="dkl-cr-jK3"/>
                 <outlet property="pagingSegmentControl" destination="Wf6-TO-B0e" id="Qfy-s5-U0V"/>
                 <outlet property="segmentControlHeightConstraint" destination="qv4-4a-6Ij" id="cvf-lu-nbF"/>
@@ -20,25 +21,25 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWJ-GZ-Bv7" customClass="ActionCollectionView">
-                    <rect key="frame" x="0.0" y="914" width="768" height="110"/>
+                    <rect key="frame" x="0.0" y="916" width="768" height="108"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="110" id="EUy-o0-kGO"/>
+                        <constraint firstAttribute="height" constant="108" id="EUy-o0-kGO"/>
                     </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="AyZ-Ns-Et4"/>
                     </connections>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5I-8h-eej" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="48" width="728" height="856"/>
+                    <rect key="frame" x="20" y="48" width="728" height="858"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="SX3-D9-vdJ"/>
                     </connections>
                 </scrollView>
                 <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="103.9999979632242" y="10" width="560" height="29"/>
+                    <rect key="frame" x="104" y="10" width="560" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="560" id="DdW-5m-2GS"/>

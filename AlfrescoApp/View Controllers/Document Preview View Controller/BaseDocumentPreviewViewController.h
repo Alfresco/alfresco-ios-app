@@ -39,6 +39,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentType)
 
 // LayoutConstraints
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *segmentControlHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewHeightConstraint;
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet UISegmentedControl *pagingSegmentControl;

@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseDocumentPreviewViewController">
             <connections>
                 <outlet property="actionMenuView" destination="she-YW-fRt" id="c6L-IM-UuZ"/>
+                <outlet property="actionViewHeightConstraint" destination="Zdi-cE-VBX" id="Deu-ed-6Cp"/>
                 <outlet property="pagingScrollView" destination="aHo-93-a2B" id="Gx3-As-0Ck"/>
                 <outlet property="pagingSegmentControl" destination="Fa9-gb-l3D" id="0vw-Sa-2G4"/>
                 <outlet property="segmentControlHeightConstraint" destination="sr6-Vm-NRo" id="QCi-AT-kdH"/>
@@ -20,18 +21,18 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="she-YW-fRt" customClass="ActionCollectionView">
-                    <rect key="frame" x="0.0" y="474" width="320" height="94"/>
+                    <rect key="frame" x="0.0" y="478" width="320" height="90"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="94" id="Zdi-cE-VBX"/>
+                        <constraint firstAttribute="height" constant="90" id="Zdi-cE-VBX"/>
                     </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="cZT-qK-lhm"/>
                     </connections>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHo-93-a2B" customClass="PagedScrollView">
-                    <rect key="frame" x="0.0" y="48" width="320" height="418"/>
+                    <rect key="frame" x="0.0" y="48" width="320" height="422"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="rjM-hQ-Wc6"/>
