@@ -31,7 +31,7 @@ static CGFloat const kAccountTypeTitleFontSize = 20.0f;
 static CGFloat const kAccountTypeInlineButtonFontSize = 14.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
-static CGFloat const kAccountTypeFooterHeight = 60.0f;
+static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
 
 @interface AccountTypeSelectionViewController () <AccountInfoViewControllerDelegate>
 @property (nonatomic, assign, getter = isCloudSignUpAvailable) BOOL cloudSignUpAvailable;
@@ -159,23 +159,15 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    if (section == kCloudSectionNumber)
-    {
-        return [self cloudAccountFooter];
-    }
-    return [self alfrescoServerAccountFooter];
+    NSString *titleKey = (section == kCloudSectionNumber) ? @"accounttype.footer.alfrescoCloud" : @"accounttype.footer.alfrescoServer";
+    return NSLocalizedString(titleKey, @"Access Alfresco Account");
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return kAccountTypeCellRowHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return kAccountTypeFooterHeight;
 }
 
 #pragma mark - private functions
@@ -194,69 +186,6 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     }];
 }
 
-- (UIView *)cloudAccountFooter
-{
-    NSString *signupText = self.isCloudSignUpAvailable ? NSLocalizedString(@"accounttype.footer.signuplink", @"New to Alfresco? Sign up...") : @"" ;
-    NSString *footerText = NSLocalizedString(@"accounttype.footer.alfrescoCloud", @"Access your Alfresco in the cloud account");
-    
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
-    
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    footerLabel.adjustsFontSizeToFitWidth = YES;
-    footerLabel.backgroundColor = self.tableView.backgroundColor;
-    footerLabel.userInteractionEnabled = YES;
-    footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor textDimmedColor];
-    footerLabel.font = [UIFont systemFontOfSize:15];
-    footerLabel.text = footerText;
-    [footerLabel sizeToFit];
-    [footerLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-    
-    UILabel *signupLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    CGRect signUpLabelFrame = signupLabel.frame;
-    signUpLabelFrame.size.width = footerView.frame.size.width;
-    signUpLabelFrame.origin.y = footerLabel.frame.size.height;
-    signupLabel.frame = signUpLabelFrame;
-    
-    signupLabel.adjustsFontSizeToFitWidth = YES;
-    signupLabel.backgroundColor = self.tableView.backgroundColor;
-    signupLabel.numberOfLines = 0;
-    signupLabel.userInteractionEnabled = YES;
-    signupLabel.textAlignment = NSTextAlignmentCenter;
-    signupLabel.textColor = [UIColor textDimmedColor];
-    signupLabel.font = [UIFont systemFontOfSize:15];
-    signupLabel.text = signupText;
-    [signupLabel sizeToFit];
-    [signupLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-    
-    [footerView addSubview:footerLabel];
-    [footerView addSubview:signupLabel];
-    return footerView;
-}
-
-- (UIView *)alfrescoServerAccountFooter
-{
-    NSString *footerText = NSLocalizedString(@"accounttype.footer.alfrescoServer", @"Access your Alfresco Server");
-    
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
-    
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    footerLabel.adjustsFontSizeToFitWidth = YES;
-    footerLabel.backgroundColor = self.tableView.backgroundColor;
-    footerLabel.userInteractionEnabled = YES;
-    footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor textDimmedColor];
-    footerLabel.font = [UIFont systemFontOfSize:15];
-    footerLabel.text = footerText;
-    [footerLabel sizeToFit];
-    [footerLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-    
-    [footerView addSubview:footerLabel];
-    return footerView;
-}
-
 - (void)signUpButtonClicked:(id)sender
 {
     CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] initWithAccount:nil];
@@ -269,14 +198,19 @@ static CGFloat const kAccountTypeFooterHeight = 60.0f;
     UIFont *labelFont = [UIFont systemFontOfSize:kAccountTypeInlineButtonFontSize];
     NSString *labelText = [NSLocalizedString(@"cloudsignup.button.signup", @"Sign up") uppercaseString];
     CGSize labelSize = [labelText sizeWithAttributes:@{NSFontAttributeName:labelFont}];
-
+    
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, roundf(labelSize.width), roundf(labelSize.height))];
     button.titleLabel.font = labelFont;
     [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     [Utility createBorderedButton:button label:labelText color:[UIColor appTintColor]];
     [button sizeToFit];
-
+    
+    // giving signUp button minimum width in case its too small
+    CGRect buttonFrame = button.frame;
+    buttonFrame.size.width = (buttonFrame.size.width > kCloudSignupButtonMinimumWidth) ? buttonFrame.size.width : kCloudSignupButtonMinimumWidth;
+    button.frame = buttonFrame;
+    
     return button;
 }
 

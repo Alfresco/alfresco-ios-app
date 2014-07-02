@@ -180,8 +180,7 @@
 "accounttype.alfrescoServer" = "Alfresco Server";
 
 "accounttype.footer.alfrescoServer" = "Connect to an Alfresco Server";
-"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account";
-"accounttype.footer.signuplink" = "New to Alfresco? Sign up for a free account";
+"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account. New to Alfresco? Sign up for a free account";
 
 "accountdetails.placeholder.required" = "Required";
 "accountdetails.placeholder.optional" = "Optional";
