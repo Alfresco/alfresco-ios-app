@@ -28,6 +28,7 @@
 #import "AvatarManager.h"
 #import "ThumbnailManager.h"
 #import "ConnectivityManager.h"
+#import "TableviewUnderlinedHeaderView.h"
 
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
@@ -103,9 +104,17 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     return [self.tableViewData count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedString(self.tableSectionHeaders[section], @"Section header");
+    return [TableviewUnderlinedHeaderView headerViewHeight];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    TableviewUnderlinedHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"TableviewUnderlinedHeaderView" owner:self options:nil] lastObject];
+    headerView.headerTitleTextLabel.textColor = [UIColor appTintColor];
+    headerView.headerTitleTextLabel.text = NSLocalizedString(self.tableSectionHeaders[section], @"Section header");
+    return headerView;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
