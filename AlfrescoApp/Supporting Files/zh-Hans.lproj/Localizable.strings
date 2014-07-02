@@ -95,7 +95,7 @@
 /**
  * Errors
  */
-"error.generic.title" = "An Error Occurred";
+"error.generic.title" = "发生错误";
 "error.filefolder.rootfolder.notfound" = "无法加载根文件夹。错误：%@。";
 "error.filefolder.permission.notfound" = "未找到节点的权限。错误：%@。";
 "error.filefolder.content.failedtodownload" = "无法下载文件。错误：%@。";
@@ -522,7 +522,7 @@
 /**
  * Map View Controller
  */
-"map.no.location.data" = "No Location Data";
+"map.no.location.data" = "无位置数据";
 
 /**
  * Text File View Controller

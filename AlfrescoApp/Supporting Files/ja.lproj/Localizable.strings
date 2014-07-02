@@ -152,7 +152,7 @@
 "sites.title" = "サイト";
 "sites.empty" = "サイトがありません";
 "sites.segmentControl.mysites" = "マイサイト";
-"sites.segmentControl.favoritesites" = "お気に入りサイト";
+"sites.segmentControl.favoritesites" = "お気に入り";
 "sites.segmentControl.allsites" = "すべてのサイト";
 "sites.site.favorited.banner" = "%@をお気に入りに追加しました";
 "sites.site.unfavorited.banner" = "%@をお気に入りから削除しました";
