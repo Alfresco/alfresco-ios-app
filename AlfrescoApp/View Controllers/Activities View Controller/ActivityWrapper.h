@@ -32,7 +32,6 @@
 @property (nonatomic, strong) AlfrescoPermissions *nodePermissions;
 
 @property (nonatomic, strong, readonly) NSAttributedString *attributedDetailString;
-@property (nonatomic, strong, readonly) NSString *detailString;
 @property (nonatomic, strong, readonly) NSString *dateString;
 
 @end

@@ -52,7 +52,6 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
 
 @property (nonatomic, strong, readwrite) NSString *avatarUserName;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedDetailString;
-@property (nonatomic, strong, readwrite) NSString *detailString;
 @property (nonatomic, strong, readwrite) NSString *dateString;
 
 @end
@@ -117,7 +116,7 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
 {
     if (self.activityEntry)
     {
-        return [NSString stringWithFormat:@"%@ %@", super.description, self.detailString];
+        return [NSString stringWithFormat:@"%@ %@", super.description, [self.attributedDetailString string]];
     }
     return [super description];
 }
@@ -221,7 +220,6 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
     NSArray *detailTokenValues = @[self.title, self.fullName, self.custom0, self.custom1, self.siteTitle, self.secondFullName];
     
     self.attributedDetailString = [self attributedStringForTemplate:NSLocalizedStringFromTable(self.activityEntry.type, @"Activities", @"Activity template string") withReplacements:detailTokenValues];
-    self.detailString = [self.attributedDetailString string];
     self.dateString = relativeDateFromDate(self.activityEntry.createdAt);
 }
 
@@ -248,6 +246,30 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
         {
             NSAttributedString *tokenString = [[NSAttributedString alloc] initWithString:[replacements[index] description] attributes:tokenAttributes];
             [attrString replaceCharactersInRange:indexRange withAttributedString:tokenString];
+        }
+    }
+    
+    if (!self.suppressSite && self.siteTitle)
+    {
+        NSString *inSiteString = NSLocalizedStringFromTable(@"activity.in.site", @"Activities", @"{0} in site {1}");
+        NSRange indexRange = [inSiteString rangeOfString:@"{0}"];
+        NSMutableAttributedString *attrInSiteString = [[NSMutableAttributedString alloc] initWithString:inSiteString attributes:baseAttributes];
+        
+        if (indexRange.location != NSNotFound)
+        {
+            // Insert existing activity string
+            [attrInSiteString replaceCharactersInRange:indexRange withAttributedString:attrString];
+            
+            // Add the site title
+            indexRange = [[attrInSiteString string] rangeOfString:@"{1}"];
+
+            if (indexRange.location != NSNotFound)
+            {
+                NSAttributedString *tokenString = [[NSAttributedString alloc] initWithString:self.siteTitle attributes:tokenAttributes];
+                [attrInSiteString replaceCharactersInRange:indexRange withAttributedString:tokenString];
+            
+                attrString = attrInSiteString;
+            }
         }
     }
     
