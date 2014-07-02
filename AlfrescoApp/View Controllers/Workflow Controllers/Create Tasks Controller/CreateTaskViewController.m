@@ -26,6 +26,7 @@
 #import "MBProgressHud.h"
 
 static CGFloat const kNavigationBarHeight = 44.0f;
+static CGFloat const kMinimumPrioritySegmentWidth = 64.0f;
 
 typedef NS_ENUM(NSInteger, CreateTaskRowType)
 {
@@ -408,16 +409,36 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         {
             TaskPriorityCell *priorityCell = (TaskPriorityCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TaskPriorityCell class]) owner:self options:nil] lastObject];
             priorityCell.titleLabel.text = NSLocalizedString(@"task.create.priority", @"Priority");
-            [priorityCell.segmentControl setTitle:NSLocalizedString(@"task.create.priority.high", @"High") forSegmentAtIndex:0];
-            [priorityCell.segmentControl setTitle:NSLocalizedString(@"task.create.priority.medium", @"Medium") forSegmentAtIndex:1];
-            [priorityCell.segmentControl setTitle:NSLocalizedString(@"task.create.priority.low", @"Low") forSegmentAtIndex:2];
+            
+            UISegmentedControl *segmentedControl = priorityCell.segmentControl;
+            NSString *segmentTitle = NSLocalizedString(@"task.create.priority.high", @"High");
+            NSString *longestTitle = segmentTitle;
+            [segmentedControl setTitle:segmentTitle forSegmentAtIndex:0];
+            
+            segmentTitle = NSLocalizedString(@"task.create.priority.medium", @"Medium");
+            longestTitle = (segmentTitle.length > longestTitle.length) ? segmentTitle : longestTitle;
+            [segmentedControl setTitle:segmentTitle forSegmentAtIndex:1];
+            
+            segmentTitle = NSLocalizedString(@"task.create.priority.low", @"Low");
+            longestTitle = (segmentTitle.length > longestTitle.length) ? segmentTitle : longestTitle;
+            [segmentedControl setTitle:segmentTitle forSegmentAtIndex:2];
+ 
+            CGFloat longestTitleWidth = [longestTitle sizeWithAttributes:[segmentedControl titleTextAttributesForState:UIControlStateNormal]].width;
+            if (longestTitleWidth < kMinimumPrioritySegmentWidth)
+            {
+                segmentedControl.apportionsSegmentWidthsByContent = NO;
+                for (NSUInteger index = 0; index < segmentedControl.numberOfSegments; index++)
+                {
+                    [segmentedControl setWidth:kMinimumPrioritySegmentWidth forSegmentAtIndex:index];
+                }
+            }
             
             if (self.prioritySegmentControl)
             {
-                [priorityCell.segmentControl setSelectedSegmentIndex:self.prioritySegmentControl.selectedSegmentIndex];
+                [segmentedControl setSelectedSegmentIndex:self.prioritySegmentControl.selectedSegmentIndex];
             }
             
-            self.prioritySegmentControl = priorityCell.segmentControl;
+            self.prioritySegmentControl = segmentedControl;
             cell = priorityCell;
             break;
         }
