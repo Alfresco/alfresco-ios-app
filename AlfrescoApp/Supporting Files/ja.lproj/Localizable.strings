@@ -180,8 +180,7 @@
 "accounttype.alfrescoServer" = "Alfresco Server";
 
 "accounttype.footer.alfrescoServer" = "Alfresco Serverに接続する";
-"accounttype.footer.alfrescoCloud" = "Alfresco in the cloudアカウントにアクセスします";
-"accounttype.footer.signuplink" = "初めてAlfrescoをお使いですか？無料アカウントに登録する";
+"accounttype.footer.alfrescoCloud" = "Alfresco in the cloudアカウントにアクセスします。初めてAlfrescoをお使いですか？無料アカウントに登録する";
 
 "accountdetails.placeholder.required" = "必須";
 "accountdetails.placeholder.optional" = "オプション";
