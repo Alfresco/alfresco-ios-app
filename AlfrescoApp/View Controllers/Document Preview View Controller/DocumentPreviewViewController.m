@@ -37,6 +37,8 @@
 #import "UniversalDevice.h"
 #import "VersionHistoryViewController.h"
 
+static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
+
 @interface DocumentPreviewViewController () <ActionCollectionViewDelegate,
                                              ActionViewDelegate,
                                              CommentViewControllerDelegate,
@@ -53,6 +55,7 @@
     self.title = self.document.name;
     
     // collection view
+    [self actionViewHeightFromPreferredLanguage];
     [self setupActionCollectionView];
     
     // setup the paging view
@@ -264,6 +267,17 @@
         @throw ([NSException exceptionWithName:@"AlfrescoNode update exception in DocumentPreviewController - (void)documentUpdated:"
                                         reason:@"No document node returned from the edit file service"
                                       userInfo:nil]);
+    }
+}
+
+- (void)actionViewHeightFromPreferredLanguage
+{
+    NSArray *preferredLocalisations = [[NSBundle mainBundle] preferredLocalizations];
+    NSArray *localisationRequiringTwoRows = [Utility localisationsThatRequireTwoRowsInActionView];
+    
+    if ([localisationRequiringTwoRows containsObject:preferredLocalisations.firstObject])
+    {
+        self.actionViewHeightConstraint.constant += kActionViewAdditionalTextRowHeight;
     }
 }
 

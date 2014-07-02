@@ -24,7 +24,7 @@
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000001192092896" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="Ys8-jU-Dxg">
                         <rect key="frame" x="0.0" y="79" width="100" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -32,6 +32,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="Ys8-jU-Dxg" secondAttribute="bottom" constant="5" id="4zU-WO-ySq"/>
                 <constraint firstAttribute="centerX" secondItem="igW-eh-u5B" secondAttribute="centerX" id="AKn-rZ-SsP"/>
                 <constraint firstItem="igW-eh-u5B" firstAttribute="top" secondItem="pDe-Zq-hGb" secondAttribute="top" id="ILy-Qj-A4O"/>
                 <constraint firstItem="Ys8-jU-Dxg" firstAttribute="leading" secondItem="pDe-Zq-hGb" secondAttribute="leading" id="RQk-io-7bz"/>

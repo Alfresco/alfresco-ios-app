@@ -28,6 +28,7 @@
 static CGFloat sActionViewHeight = 0;
 static CGFloat segmentControlHeight = 0;
 static CGFloat const kAnimationSpeed = 0.3;
+static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 
 typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
@@ -76,6 +77,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     [super viewDidLoad];
     
+    [self actionViewHeightFromPreferredLanguage];
     sActionViewHeight = self.actionViewHeightConstraint.constant;
     
     [self setupPagingScrollView];
@@ -259,6 +261,17 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
             self.actionViewHeightConstraint.constant = requiredHeight;
             [self.actionView layoutIfNeeded];
         }];
+    }
+}
+
+- (void)actionViewHeightFromPreferredLanguage
+{
+    NSArray *preferredLocalisations = [[NSBundle mainBundle] preferredLocalizations];
+    NSArray *localisationRequiringTwoRows = [Utility localisationsThatRequireTwoRowsInActionView];
+    
+    if ([localisationRequiringTwoRows containsObject:preferredLocalisations.firstObject])
+    {
+        self.actionViewHeightConstraint.constant += kActionViewAdditionalTextRowHeight;
     }
 }
 

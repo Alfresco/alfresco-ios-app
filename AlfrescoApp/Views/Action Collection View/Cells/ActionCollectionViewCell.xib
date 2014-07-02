@@ -25,7 +25,7 @@
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000000000000004" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="AeZ-qF-uJl">
                         <rect key="frame" x="0.0" y="63" width="80" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -38,6 +38,7 @@
                 <constraint firstAttribute="trailing" secondItem="AeZ-qF-uJl" secondAttribute="trailing" id="cPG-Ze-5wq"/>
                 <constraint firstItem="AeZ-qF-uJl" firstAttribute="leading" secondItem="Wc5-7p-djv" secondAttribute="leading" id="cgD-P6-maM"/>
                 <constraint firstAttribute="centerX" secondItem="fjf-tX-xno" secondAttribute="centerX" id="jx4-6y-P5h"/>
+                <constraint firstAttribute="bottom" secondItem="AeZ-qF-uJl" secondAttribute="bottom" constant="1" id="s80-K1-7F2"/>
             </constraints>
             <size key="customSize" width="81" height="80"/>
             <connections>
