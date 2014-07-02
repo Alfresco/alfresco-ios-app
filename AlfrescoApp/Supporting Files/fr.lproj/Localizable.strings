@@ -179,8 +179,7 @@
 "accounttype.alfrescoServer" = "Serveur Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Connexion à un serveur Alfresco";
-"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco in the cloud";
-"accounttype.footer.signuplink" = "Nouveau venu dans Alfresco ? Créez un compte gratuit";
+"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco in the cloud. Nouveau venu dans Alfresco ? Créez un compte gratuit";
 
 "accountdetails.placeholder.required" = "Requise";
 "accountdetails.placeholder.optional" = "Facultatif";
@@ -232,7 +231,7 @@
 "accountdetails.fields.password" = "Mot de passe";
 "accountdetails.fields.confirmPassword" = "Confirmer le mot de passe";
 "accountdetails.placeholder.password.requirement" = "6 caractères au minimum";
-"cloudsignup.button.signup" = "Créer un compte";
+"cloudsignup.button.signup" = "Créer";
 "cloudsignup.footer.firstLine" = "En sélectionnant Créer compte, vous";
 "cloudsignup.footer.secondLine" = "acceptez les conditions d’utilisation et la politique de confidentialité d’Alfresco";
 "cloudsignup.label.termsOfService" = "conditions d’utilisation";
