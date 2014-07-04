@@ -176,7 +176,7 @@
 "accounts.empty" = "无帐户";
 "accountdetails.title.newaccount" = "新建帐户";
 "accountdetails.title.editingaccount" = "编辑帐户";
-"accounttype.cloud" = "Alfresco 云";
+"accounttype.cloud" = "Alfresco Cloud";
 "accounttype.alfrescoServer" = "Alfresco 服务器";
 
 "accounttype.footer.alfrescoServer" = "连接至 Alfresco 服务器";

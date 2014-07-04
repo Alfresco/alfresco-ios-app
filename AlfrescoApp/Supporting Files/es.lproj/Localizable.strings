@@ -176,7 +176,7 @@
 "accounts.empty" = "Sin cuentas";
 "accountdetails.title.newaccount" = "Nueva cuenta";
 "accountdetails.title.editingaccount" = "Editar cuenta";
-"accounttype.cloud" = "Nube Alfresco";
+"accounttype.cloud" = "Alfresco Cloud";
 "accounttype.alfrescoServer" = "Servidor Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Conectar a un servidor Alfresco";

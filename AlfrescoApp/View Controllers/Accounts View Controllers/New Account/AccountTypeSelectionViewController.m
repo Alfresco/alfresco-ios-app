@@ -27,7 +27,7 @@ static NSInteger const kNumberOfTypesPerSection = 1;
 
 static NSInteger const kCloudSectionNumber = 0;
 
-static CGFloat const kAccountTypeTitleFontSize = 20.0f;
+static CGFloat const kAccountTypeTitleFontSize = 18.0f;
 static CGFloat const kAccountTypeInlineButtonFontSize = 14.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
