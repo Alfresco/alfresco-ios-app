@@ -610,7 +610,12 @@ static NSInteger const kTagCertificateCell = 1;
 {
     NSDictionary *info = [aNotification userInfo];
     CGRect keyBoardFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGFloat height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
+    CGFloat height = [self.view convertRect:keyBoardFrame fromView:self.view.window].size.height;
+    
+    if (IS_IPAD)
+    {
+        height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
+    }
     
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
     self.tableView.contentInset = contentInsets;
