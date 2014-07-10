@@ -179,6 +179,7 @@
     };
     
     AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthLoginViewController * (void) {
+        [self hideHUD];
         NavigationViewController *oauthNavigationController = nil;
         AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
             if (oauthData)
