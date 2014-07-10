@@ -333,8 +333,13 @@ static CGFloat kSearchCellHeight = 60.0f;
                 [self hideHUD];
                 if (succeeded)
                 {
-                    FilePreviewViewController *previewController = [[FilePreviewViewController alloc] initWithDocument:(AlfrescoDocument *)selectedNode session:self.session];
-                    [UniversalDevice pushToDisplayViewController:previewController usingNavigationController:self.navigationController animated:YES];
+                    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                   permissions:permissions
+                                                                                   contentFile:nil
+                                                                              documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                       session:self.session
+                                                                          navigationController:self.navigationController
+                                                                                      animated:YES];
                 }
                 else
                 {
