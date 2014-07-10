@@ -49,7 +49,17 @@
     NSString *originalFilePath = metadata.originalFileLocation;
     
     // Create a copy of the document with the correct extension to work with temporarily
-    NSString *fileNameWithCorrectExtension = [[url.path stringByReplacingOccurrencesOfString:url.pathExtension withString:originalFilePath.pathExtension] lastPathComponent];
+    NSString *fileNameWithCorrectExtension = [url.path lastPathComponent];
+    if (url.pathExtension && originalFilePath.pathExtension)
+    {
+        fileNameWithCorrectExtension = [[url.path stringByReplacingOccurrencesOfString:url.pathExtension withString:originalFilePath.pathExtension] lastPathComponent];
+    }
+    else
+    {
+        NSString *nilValue = (url.pathExtension == nil) ? @"URL Path Extension" : @"Original Path Extension";
+        AlfrescoLogError(@"File name may be incorrect as the \"%@\" was nil", nilValue);
+    }
+    
     NSString *temporaryFilePath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:fileNameWithCorrectExtension];
     [self overwriteItemAtPath:temporaryFilePath withItemAtPath:url.path];
     
