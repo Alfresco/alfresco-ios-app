@@ -821,7 +821,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     NSMutableArray *topLevelSyncNodes = nodesInfoForSelectedAccount[self.selectedAccountIdentifier];
     BOOL isSyncNodesInfoInMemory = (topLevelSyncNodes != nil);
     
-    
     void (^syncNode)(AlfrescoNode *) = ^ void (AlfrescoNode *nodeToBeSynced)
     {
         // start sync for this node only
@@ -836,9 +835,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     if (selectedAccount.isSyncOn)
     {
         [self showSyncAlertWithCompletionBlock:^(BOOL completed) {
-            
             [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
-                
                 if (isSyncNodesInfoInMemory)
                 {
                     [topLevelSyncNodes addObject:node];
@@ -847,7 +844,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 {
                     NSMutableDictionary *nodesInfoForSelectedAccount = [NSMutableDictionary dictionary];
                     self.syncNodesInfo[self.selectedAccountIdentifier] = nodesInfoForSelectedAccount;
-                    nodesInfoForSelectedAccount[self.selectedAccountIdentifier] = @[node];
+                    nodesInfoForSelectedAccount[self.selectedAccountIdentifier] = [@[node] mutableCopy];
                 }
                 
                 if (node.isFolder)
