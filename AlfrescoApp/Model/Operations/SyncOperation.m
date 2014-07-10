@@ -85,32 +85,38 @@
         if (self.isDownload)
         {
             self.syncRequest = [self.documentFolderService retrieveContentOfDocument:self.document outputStream:(NSOutputStream *)self.stream completionBlock:^(BOOL succeeded, NSError *error) {
-                if (weakSelf.downloadCompletionBlock)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (weakSelf.downloadCompletionBlock)
+                    {
                         weakSelf.downloadCompletionBlock(succeeded, error);
-                    });
-                }
-                operationCompleted = YES;
+                    }
+                    operationCompleted = YES;
+                });
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                    if (weakSelf.progressBlock)
+                    {
+                        weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                    }
                 });
             }];
         }
         else
         {
             self.syncRequest = [self.documentFolderService updateContentOfDocument:self.document contentStream:(AlfrescoContentStream *)self.stream completionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
-                if (weakSelf.uploadCompletionBlock)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (weakSelf.uploadCompletionBlock)
+                    {
                         weakSelf.uploadCompletionBlock(uploadedDocument, error);
-                    });
-                }
-                operationCompleted = YES;
+                    }
+                    operationCompleted = YES;
+                });
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                    if (weakSelf.progressBlock)
+                    {
+                        weakSelf.progressBlock(bytesTransferred, bytesTotal);
+                    }
                 });
             }];
         }
