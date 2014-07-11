@@ -18,7 +18,8 @@
  
 #import "ParentListViewController.h"
 #import "ConnectivityManager.h"
-
+#import "UniversalDevice.h"
+#import "RootRevealControllerViewController.h"
 
 @interface ParentListViewController ()
 @property (nonatomic, strong) NSDictionary *imageMappings;
@@ -66,6 +67,15 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.view.autoresizesSubviews = YES;
+    
+    if (!IS_IPAD && !self.presentingViewController)
+    {
+        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
+        if (self.navigationController.viewControllers.firstObject == self)
+        {
+            self.navigationItem.leftBarButtonItem = hamburgerButtom;
+        }
+    }
     
     // Pull to Refresh
     if (self.allowsPullToRefresh && [[ConnectivityManager sharedManager] hasInternetConnection])
@@ -313,6 +323,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.refreshing", @"Loading...")];
     });
+}
+
+- (void)expandRootRevealController
+{
+    [(RootRevealControllerViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
 #pragma mark - Custom Getters and Setters

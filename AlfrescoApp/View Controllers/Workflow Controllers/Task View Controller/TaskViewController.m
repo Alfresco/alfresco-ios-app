@@ -77,8 +77,16 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     self.filterButton = filterButton;
     
     UIBarButtonItem *addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createTask:)];
-    self.navigationItem.rightBarButtonItem = addTaskButton;
-    self.navigationItem.leftBarButtonItem = filterButton;
+
+    if (IS_IPAD)
+    {
+        self.navigationItem.rightBarButtonItem = addTaskButton;
+        self.navigationItem.leftBarButtonItem = filterButton;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItems = @[filterButton, addTaskButton];
+    }
 
     UINib *cellNib = [UINib nibWithNibName:@"TasksCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kTaskCellIdentifier];
