@@ -238,7 +238,7 @@
 "cloudsignup.label.privacyPolicy" = "隐私政策";
 "cloudsignup.alert.title" = "云端的 Alfresco 注册";
 "cloudsignup.unsuccessful.message" = "云注册未成功，请稍后重试";
-"cloudsignup.already-registered.message" = "You already have an Alfresco account associated with this e-mail address";
+"cloudsignup.already-registered.message" = "您已将此电子邮件地址与某个 Alfresco 帐户相关联";
 
 "awaitingverification.description" = "帐户正在等待电子邮件验证\n\n您注册云端的 Alfresco 时所使用的电子邮件地址为 %@ \n\n请检查您的电子邮件。我们已发送您完成注册流程所需的链接。\n\n激活出了问题？\n\n如果您无法激活您的帐户，请让我们知道。";
 "awaitingverification.description.title" = "帐户正在等待电子邮件验证";
