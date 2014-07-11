@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -116,10 +116,13 @@
                         <constraint firstAttribute="bottom" secondItem="e1A-fd-lfJ" secondAttribute="bottom" constant="4" id="4di-oA-8U4"/>
                         <constraint firstAttribute="centerX" secondItem="1JN-dD-qp9" secondAttribute="centerX" id="8zM-Bg-bnt"/>
                         <constraint firstAttribute="trailing" secondItem="cA0-LA-mMm" secondAttribute="trailing" constant="8" id="Abk-hC-txJ"/>
+                        <constraint firstItem="1JN-dD-qp9" firstAttribute="top" secondItem="7Ct-FG-PHJ" secondAttribute="bottom" priority="750" constant="8" id="C5s-uW-29j"/>
                         <constraint firstItem="cA0-LA-mMm" firstAttribute="leading" secondItem="7Ct-FG-PHJ" secondAttribute="trailing" priority="500" constant="10" id="Dd9-Ta-LfZ"/>
                         <constraint firstItem="7Ct-FG-PHJ" firstAttribute="leading" secondItem="U8a-gk-Zub" secondAttribute="leading" constant="8" id="LsE-AA-xll"/>
                         <constraint firstAttribute="height" constant="80" id="NCR-oh-o7O"/>
                         <constraint firstItem="7Ct-FG-PHJ" firstAttribute="centerY" secondItem="cA0-LA-mMm" secondAttribute="centerY" id="Nlb-lD-qmL"/>
+                        <constraint firstItem="e1A-fd-lfJ" firstAttribute="top" secondItem="7Ct-FG-PHJ" secondAttribute="bottom" priority="750" constant="8" id="QCk-E4-SrQ"/>
+                        <constraint firstItem="fJO-Dk-RIK" firstAttribute="top" secondItem="7Ct-FG-PHJ" secondAttribute="bottom" priority="750" constant="8" id="bSH-pY-WGY"/>
                         <constraint firstAttribute="bottom" secondItem="1JN-dD-qp9" secondAttribute="bottom" constant="4" id="fGe-mZ-wf7"/>
                         <constraint firstItem="fJO-Dk-RIK" firstAttribute="leading" secondItem="U8a-gk-Zub" secondAttribute="leading" constant="8" id="nSu-DP-6Gc"/>
                         <constraint firstItem="e1A-fd-lfJ" firstAttribute="leading" secondItem="fJO-Dk-RIK" secondAttribute="trailing" constant="22" id="sqm-pB-hoI"/>

@@ -20,4 +20,6 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 
++ (NSString *)cellIdentifier;
+
 @end

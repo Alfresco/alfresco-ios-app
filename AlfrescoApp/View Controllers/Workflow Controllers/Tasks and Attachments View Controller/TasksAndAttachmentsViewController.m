@@ -28,6 +28,7 @@
 #import "ProcessTasksCell.h"
 
 static NSString * const kStartTaskRemovalPredicateFormat = @"NOT SELF.identifier CONTAINS '$start'";
+static NSString * const kNoAttachmentsCellIdentifier = @"NoAttachmentsCellIdentifier";
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
@@ -111,7 +112,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     UINib *attachmentCellNib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:attachmentCellNib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-    
+
+    UINib *noAttachmentsCellNib = [UINib nibWithNibName:@"AttributedLabelCell" bundle:nil];
+    [self.tableView registerNib:noAttachmentsCellNib forCellReuseIdentifier:kNoAttachmentsCellIdentifier];
+
     UINib *processTaskCellNib = [UINib nibWithNibName:@"ProcessTasksCell" bundle:nil];
     [self.tableView registerNib:processTaskCellNib forCellReuseIdentifier:[ProcessTasksCell cellIdentifier]];
 }
@@ -324,10 +328,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
             
         case TableSectionAttachments:
         {
-            AlfrescoNodeCell *attachmentCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
-            
             if (self.attachments.count > 0)
             {
+                AlfrescoNodeCell *attachmentCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
                 AlfrescoNode *currentNode = self.attachments[indexPath.row];
 
                 SyncManager *syncManager = [SyncManager sharedManager];
@@ -363,17 +366,18 @@ typedef NS_ENUM(NSUInteger, TableSections)
                         }
                     }];
                 }
+                cell = attachmentCell;
             }
             else
             {
-                attachmentCell.textLabel.text = NSLocalizedString(@"tasks.attachments.empty", @"No Attachments");
-                attachmentCell.textLabel.textAlignment = NSTextAlignmentCenter;
-                attachmentCell.textLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
-                attachmentCell.textLabel.textColor = [UIColor noItemsTextColor];
-                attachmentCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                AttributedLabelCell *noAttachmentsCell = [tableView dequeueReusableCellWithIdentifier:kNoAttachmentsCellIdentifier];
+                noAttachmentsCell.attributedLabel.text = NSLocalizedString(@"tasks.attachments.empty", @"No Attachments");
+                noAttachmentsCell.attributedLabel.textAlignment = NSTextAlignmentCenter;
+                noAttachmentsCell.attributedLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
+                noAttachmentsCell.attributedLabel.textColor = [UIColor noItemsTextColor];
+                noAttachmentsCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell = noAttachmentsCell;
             }
-            
-            cell = attachmentCell;
         }
             break;
             
