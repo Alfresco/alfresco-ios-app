@@ -304,7 +304,18 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     NSIndexPath *indexPathForNode = [self indexPathForNodeWithIdentifier:fileToDeletePath inNodeIdentifiers:self.tableViewData];
     [[DownloadManager sharedManager] removeFromDownloads:fileToDeletePath];
     [self.tableViewData removeObject:fileToDeletePath];
-    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode]  withRowAnimation:UITableViewRowAnimationFade];
+    
+    // The indexPath should never return nil, as it's impossible to delete a download that isn't currently there.
+    // However, due to MOBILE-2902, a check has been added to ensure that value is not nil before animating.
+    // Otherwise, the entire tableview is refeshed.
+    if (indexPathForNode)
+    {
+        [self.tableView deleteRowsAtIndexPaths:@[indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    else
+    {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)confirmDeletingMultipleNodes
