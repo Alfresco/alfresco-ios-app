@@ -147,7 +147,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             // currently being displayed, refresh the tableview.
             if (weakSelf.displayedTaskFilter == TaskFilterTask)
             {
-                weakSelf.tableViewData = weakSelf.myTasks.tasksAfterFiltering;
+                weakSelf.tableViewData = [weakSelf.myTasks.tasksAfterFiltering mutableCopy];
                 [weakSelf.tableView reloadData];
             }
         }
@@ -164,7 +164,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             // currently being displayed, refresh the tableview.
             if (weakSelf.displayedTaskFilter == TaskFilterProcess)
             {
-                weakSelf.tableViewData = weakSelf.tasksIStarted.tasksAfterFiltering;
+                weakSelf.tableViewData = [weakSelf.tasksIStarted.tasksAfterFiltering mutableCopy];
                 [weakSelf.tableView reloadData];
             }
         }
@@ -252,7 +252,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
     else
     {
-        self.tableViewData = groupToSwitchTo.tasksAfterFiltering;
+        self.tableViewData = [groupToSwitchTo.tasksAfterFiltering mutableCopy];
         [self.tableView reloadData];
     }
 }
@@ -316,7 +316,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
                 [self.myTasks clearAllTasks];
                 [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
                 self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
-                self.tableViewData = self.myTasks.tasksAfterFiltering;
+                self.tableViewData = [self.myTasks.tasksAfterFiltering mutableCopy];
             }
             break;
                 
@@ -325,7 +325,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
                 [self.tasksIStarted clearAllTasks];
                 [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
                 self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
-                self.tableViewData = self.tasksIStarted.tasksAfterFiltering;
+                self.tableViewData = [self.tasksIStarted.tasksAfterFiltering mutableCopy];
             }
             break;
         }
@@ -341,7 +341,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         TaskGroupItem *currentGroupedItem = [self taskGroupItemForType:self.displayedTaskFilter];
         [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];;
         currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
-        self.tableViewData = currentGroupedItem.tasksAfterFiltering;
+        self.tableViewData = [currentGroupedItem.tasksAfterFiltering mutableCopy];
         [self.tableView reloadData];
     }
 }
