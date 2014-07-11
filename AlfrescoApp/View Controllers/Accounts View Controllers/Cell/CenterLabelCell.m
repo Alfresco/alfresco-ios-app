@@ -18,6 +18,14 @@
  
 #import "CenterLabelCell.h"
 
+static NSString * const kCenterLabelCellIdentifier = @"CenterLabelCellIdentifier";
+
 @implementation CenterLabelCell
+
++ (NSString *)cellIdentifier
+{
+    return kCenterLabelCellIdentifier;
+}
+
 
 @end

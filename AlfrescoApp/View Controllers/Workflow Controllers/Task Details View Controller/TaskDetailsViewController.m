@@ -344,6 +344,7 @@ static UILayoutPriority const kLowPriority = 250;
 
 - (void)cancelCommentAction:(id)sender
 {
+    self.textView.text = @"";
     [self.view endEditing:YES];
 }
 
