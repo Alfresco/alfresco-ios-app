@@ -27,6 +27,7 @@
 #import "DocumentPreviewManager.h"
 #import "FullScreenAnimationController.h"
 #import "ALFPreviewController.h"
+#import "SyncManager.h"
 
 static CGFloat const kAnimationFadeSpeed = 0.5f;
 static CGFloat const kAnimationDelayTime = 1.0f;
@@ -508,7 +509,17 @@ static CGFloat sDownloadProgressHeight;
     }
     else
     {
-        FilePreviewViewController *presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+        FilePreviewViewController *presentationViewController = nil;
+        if ([[SyncManager sharedManager] isNodeInSyncList:self.document])
+        {
+            NSString *filePath = [[SyncManager sharedManager] contentPathForNode:self.document];
+            presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:filePath document:self.document];
+        }
+        else
+        {
+            presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+        }
+        
         presentationViewController.fullScreenMode = YES;
         presentationViewController.useControllersPreferStatusBarHidden = YES;
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
