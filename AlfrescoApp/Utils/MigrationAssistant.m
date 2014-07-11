@@ -25,6 +25,7 @@
 #import "AppDelegate.h"
 
 static NSString * const kOldAccountListIdentifier = @"AccountList";
+static NSString * const kOldAccountCMISServicePath = @"/service/cmis";
 
 @interface MigrationAssistant ()
 
@@ -71,7 +72,10 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
     for (AccountInfo *oldAccount in oldAccounts)
     {
         UserAccount *account = [self createUserAccountFromOldAccount:oldAccount];
-        [migratedAccounts addObject:account];
+        if (account != nil)
+        {
+            [migratedAccounts addObject:account];
+        }
     }
     
     [[AccountManager sharedManager] addAccounts:migratedAccounts];
@@ -96,8 +100,16 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
     if ([oldAccount.multitenant boolValue])
     {
         account.accountType = UserAccountTypeCloud;
-        account.cloudAccountId = oldAccount.cloudId;
-        account.cloudAccountKey = oldAccount.cloudKey;
+        if (oldAccount.accountStatus == FDAccountStatusAwaitingVerification)
+        {
+            account.cloudAccountId = oldAccount.cloudId;
+            account.cloudAccountKey = oldAccount.cloudKey;
+            if (account.cloudAccountId == nil || account.cloudAccountKey == nil)
+            {
+                // Invalid cloud sign-up; don't migrate the account
+                return nil;
+            }
+        }
     }
     else
     {
@@ -107,6 +119,10 @@ static NSString * const kOldAccountListIdentifier = @"AccountList";
         account.serverPort = oldAccount.port;
         account.protocol = oldAccount.protocol;
         account.serviceDocument = oldAccount.serviceDocumentRequestPath;
+        if (account.serviceDocument && [account.serviceDocument rangeOfString:kOldAccountCMISServicePath].location != NSNotFound)
+        {
+            account.serviceDocument = [account.serviceDocument stringByReplacingOccurrencesOfString:kOldAccountCMISServicePath withString:@""];
+        }
     }
     account.accountDescription = oldAccount.description;
     account.isSelectedAccount = NO;

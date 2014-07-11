@@ -233,18 +233,16 @@
 "accountdetails.fields.confirmPassword" = "Confirmer le mot de passe";
 "accountdetails.placeholder.password.requirement" = "6 caractères au minimum";
 "cloudsignup.button.signup" = "Créer";
-"cloudsignup.footer.firstLine" = "En sélectionnant Créer compte, vous";
-"cloudsignup.footer.secondLine" = "acceptez les conditions d’utilisation et la politique de confidentialité d’Alfresco";
+"cloudsignup.footer" = "En sélectionnant Créer compte, vous acceptez les conditions d’utilisation et la politique de confidentialité d’Alfresco";
 "cloudsignup.label.termsOfService" = "conditions d’utilisation";
 "cloudsignup.label.privacyPolicy" = "politique de confidentialité d’Alfresco";
 "cloudsignup.alert.title" = "S’inscrire à Alfresco in the cloud";
 "cloudsignup.unsuccessful.message" = "Impossible de créer un compte cloud. Réessayez plus tard";
+"cloudsignup.already-registered.message" = "Vous possédez déjà un compte Alfresco associé à cette adresse e-mail";
 
 "awaitingverification.description" = "Vérification en attente du compte d’e-mail\n\nVous avez créé un compte Alfresco in the cloud avec l’adresse %@\n\nConsultez votre boîte e-mail. Vous avez reçu un lien permettant de terminer le processus d’enregistrement.\n\nProblèmes d’activation ?\n\nVeuillez nous prévenir en cas de problème d’activation de votre compte.";
 "awaitingverification.description.title" = "Compte en attente de vérification d’e-mail";
 "awaitingverification.description.subtitle" = "Des difficultés pour l’activation ?";
-/** NOTE TO TRANSLATORS: the phrase "awaitingverification.description.customerCare" must match a phrase in the "awaitingverification.description" string above. */
-"awaitingverification.description.customerCare" = "Veuillez nous prévenir";
 "awaitingverification.title" = "Alfresco in the cloud";
 "awaitingverification.buttons.refresh" = "Rafraîchir";
 "awaitingverification.buttons.resendEmail" = "Renvoyer e-mail";

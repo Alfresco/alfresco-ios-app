@@ -136,11 +136,11 @@ static NSString * const kSource = @"mobile";
     return [self.tableViewData[section] count];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (!self.account && (section == kCloudSignUpActionSection))
     {
-        return [self cloudAccountFooter];
+        return NSLocalizedString(@"cloudsignup.footer", @"By tapping 'Sign Up'...");
     }
     return nil;
 }
@@ -406,17 +406,29 @@ static NSString * const kSource = @"mobile";
             account.lastName = self.LastNameTextField.text;
             account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
             
-            NSError *error = nil;
-            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            NSError *jsonError = nil;
+            NSDictionary *accountInfoReceived = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             
-            if (!error)
+            if (jsonError)
+            {
+                displayErrorMessageWithTitle(NSLocalizedString(@"cloudsignup.unsuccessful.message", @"The cloud sign up was unsuccessful, please try again later"), NSLocalizedString(@"cloudsignup.alert.title", @"Alfresco Cloud Sign Up"));
+            }
+            else
             {
                 account.cloudAccountId = [accountInfoReceived valueForKeyPath:kCloudAccountIdValuePath];
                 account.cloudAccountKey = [accountInfoReceived valueForKeyPath:kCloudAccountKeyValuePath];
+                
+                // Check these keys - they're null if the user has already signed-up, for example
+                if ([account.cloudAccountId isKindOfClass:[NSNull class]] || [account.cloudAccountKey isKindOfClass:[NSNull class]])
+                {
+                    displayErrorMessageWithTitle(NSLocalizedString(@"cloudsignup.already-registered.message", @"You already have an Alfresco account associated with this e-mail address"), NSLocalizedString(@"cloudsignup.alert.title", @"Alfresco Cloud Sign Up"));
+                }
+                else
+                {
+                    [[AccountManager sharedManager] addAccount:account];
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
             }
-            
-            [[AccountManager sharedManager] addAccount:account];
-            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
 }
@@ -441,53 +453,6 @@ static NSString * const kSource = @"mobile";
                         kSourceKey : kSource};
     }
     return accountInfo;
-}
-
-- (UIView *)cloudAccountFooter
-{
-    static CGFloat iPadFooterWidth = 540.0f;
-    static CGFloat iPhoneLandscapeFooterWidth = 480.0f;
-    static CGFloat iPhonePortraitFooterWidth = 320.0f;
-    
-    CGFloat footerWidth = IS_IPAD ? iPadFooterWidth : (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? iPhoneLandscapeFooterWidth : iPhonePortraitFooterWidth);
-    NSString *footerText = NSLocalizedString(@"cloudsignup.footer.firstLine", @"By tapping 'Sign Up'...");
-    NSString *signupText = NSLocalizedString(@"cloudsignup.footer.secondLine", @"Alfresco Terms of ...");
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, footerWidth, 0)];
-    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
-    
-    UILabel *footerTextView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footerWidth, 0)];
-    footerTextView.backgroundColor = [UIColor clearColor];
-    footerTextView.numberOfLines = 0;
-    footerTextView.textAlignment = NSTextAlignmentCenter;
-    footerTextView.textColor = [UIColor textDimmedColor];
-    footerTextView.font = [UIFont systemFontOfSize:15];
-    footerTextView.text = footerText;
-    [footerTextView sizeToFit];
-    footerTextView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-    
-    // Restore width after sizeToFit
-    CGRect footerTextFrame = footerTextView.frame;
-    footerTextFrame.size.width = footerWidth;
-    footerTextView.frame = footerTextFrame;
-    
-    UILabel *signupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, footerTextView.frame.size.height, footerWidth, 0)];
-    signupLabel.backgroundColor = [UIColor clearColor];
-    signupLabel.numberOfLines = 0;
-    signupLabel.textAlignment = NSTextAlignmentCenter;
-    signupLabel.textColor = [UIColor textDimmedColor];
-    signupLabel.font = [UIFont systemFontOfSize:15];
-    signupLabel.userInteractionEnabled = YES;
-    signupLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    signupLabel.text = signupText;
-    [signupLabel sizeToFit];
-    
-    CGRect signupFrame = signupLabel.frame;
-    signupFrame.size.width = footerWidth;
-    signupLabel.frame = signupFrame;
-    
-    [footerView addSubview:footerTextView];
-    [footerView addSubview:signupLabel];
-    return footerView;
 }
 
 - (BOOL)validateSignUpFields
