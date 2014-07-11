@@ -279,21 +279,32 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         self.accountsFromKeychain = [NSMutableArray array];
     }
 
-    for (UserAccount *account in self.accountsFromKeychain)
+    NSArray *accounts = [NSArray arrayWithArray:self.accountsFromKeychain];
+    for (UserAccount *account in accounts)
     {
+        if (account.accountType == UserAccountTypeCloud && account.accountStatus == UserAccountStatusAwaitingVerification)
+        {
+            // Check for bad accounts in "awaiting" status
+            if ([account.cloudAccountId isKindOfClass:[NSNull class]] || [account.cloudAccountKey isKindOfClass:[NSNull class]])
+            {
+                [self.accountsFromKeychain removeObject:account];
+                [self saveAccountsToKeychain];
+                account.isSelectedAccount = NO;
+            }
+            else
+            {
+                [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
+                    if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
+                    {
+                        [self saveAccountsToKeychain];
+                    }
+                }];
+            }
+        }
+
         if (account.isSelectedAccount)
         {
             self.selectedAccount = account;
-        }
-        
-        if (account.accountType == UserAccountTypeCloud && account.accountStatus == UserAccountStatusAwaitingVerification)
-        {
-            [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
-                if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
-                {
-                    [self saveAccountsToKeychain];
-                }
-            }];
         }
     }
 }
@@ -332,8 +343,8 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
             }
             else
             {
-                BOOL isActiviated = [[accountInfoReceived valueForKeyPath:kCloudAccountStatusValuePath] boolValue];
-                account.accountStatus = isActiviated ? UserAccountStatusActive : UserAccountStatusAwaitingVerification;
+                BOOL isActivated = [[accountInfoReceived valueForKeyPath:kCloudAccountStatusValuePath] boolValue];
+                account.accountStatus = isActivated ? UserAccountStatusActive : UserAccountStatusAwaitingVerification;
                 
                 if (completionBlock != NULL)
                 {

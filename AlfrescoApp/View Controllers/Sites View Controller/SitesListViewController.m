@@ -412,7 +412,7 @@ static CGFloat kSearchCellHeight = 60.0f;
               listingContext:(AlfrescoListingContext *)listingContext
          withCompletionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
 {
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    if ([[ConnectivityManager sharedManager] hasInternetConnection] && self.session)
     {
         switch (siteType)
         {
