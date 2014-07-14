@@ -180,7 +180,7 @@
 "accounttype.alfrescoServer" = "Servidor Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Conectar a un servidor Alfresco";
-"accounttype.footer.alfrescoCloud" = "Acceda a su cuenta Alfresco en la nube. ¿Nuevo en Alfresco? Regístrese para obtener una cuenta gratuita";
+"accounttype.footer.alfrescoCloud" = "Acceda a su cuenta en Alfresco Cloud. ¿Nuevo en Alfresco? Regístrese para obtener una cuenta gratuita";
 
 "accountdetails.placeholder.required" = "Obligatorio";
 "accountdetails.placeholder.optional" = "Opcional";
@@ -224,7 +224,7 @@
 /**
  * Cloud Signup
  */
-"cloudsignup.title" = "Alfresco en la nube";
+"cloudsignup.title" = "Alfresco Cloud";
 "accountdetails.fields.firstName" = "Nombre";
 "accountdetails.fields.lastName" = "Apellido";
 "accountdetails.fields.username" = "Nombre de usuario";
@@ -236,18 +236,18 @@
 "cloudsignup.footer" = "Pulsando Registrarse, acepta las condiciones de servicio y la política de privacidad de Alfresco";
 "cloudsignup.label.termsOfService" = "Condiciones de servicio";
 "cloudsignup.label.privacyPolicy" = "Política de privacidad";
-"cloudsignup.alert.title" = "Registrarse en Alfresco en la nube";
+"cloudsignup.alert.title" = "Registrarse en Alfresco Cloud";
 "cloudsignup.unsuccessful.message" = "Registro en la nube erróneo, vuelva a intentarlo más tarde";
 "cloudsignup.already-registered.message" = "Ya tiene una cuenta de Alfresco asociada a esta dirección de email";
 
-"awaitingverification.description" = "Cuenta a la espera de verificación por correo electrónico\n\nSe ha registrado en Alfresco en la nube utilizando la dirección de correo electrónico %@\n\nPor favor, compruebe su correo electrónico. Le hemos enviado un enlace que deberá utilizar para completar el proceso de registro.\n\n¿Tiene problemas de activación?\n\nInfórmenos si no puede activar su cuenta.";
+"awaitingverification.description" = "Cuenta a la espera de verificación por correo electrónico\n\nSe ha registrado en Alfresco Cloud utilizando la dirección de correo electrónico %@\n\nPor favor, compruebe su correo electrónico. Le hemos enviado un enlace que deberá utilizar para completar el proceso de registro.\n\n¿Tiene problemas de activación?\n\nInfórmenos si no puede activar su cuenta.";
 "awaitingverification.description.title" = "Cuenta a la espera de verificación por correo electrónico";
 "awaitingverification.description.subtitle" = "¿Tiene problemas de activación?";
-"awaitingverification.title" = "Alfresco en la nube";
+"awaitingverification.title" = "Alfresco Cloud";
 "awaitingverification.buttons.refresh" = "Refrescar";
 "awaitingverification.buttons.resendEmail" = "Reenviar correo electrónico";
 "awaitingverification.buttons.customercare" = "Atención al cliente";
-"awaitingverification.alerts.title" = "Alfresco en la nube";
+"awaitingverification.alerts.title" = "Alfresco Cloud";
 "awaitingverification.alert.resendEmail.title" = "Correo electrónico reenviado correctamente";
 "awaitingverification.alert.resendEmail.success" = "¿No recibe nuestros correos electrónicos? Compruebe si ha introducido la dirección correcta de correo electrónico y recuerde buscar en sus carpetas de correo electrónico no deseado.";
 "awaitingverification.alert.resendEmail.error" = "Su correo electrónico no ha podido reenviarse en estos momentos. Inténtelo de nuevo más tarde";
@@ -331,7 +331,7 @@
  * About View Controller
  */
 "about.title" = "Acerca de";
-"about.content" = "Alfresco es la plataforma abierta para la gestión y colaboración de contenido comercial crítico.\n\nAlfresco Mobile ha sido diseñado y desarrollado por Alfresco Software, Inc. y se conecta a Alfresco en la nube y a los servidores in situ de Alfresco (3.4.8 y superior) para ofrecer acceso seguro a sus ficheros corporativos desde cualquier lugar. Esta aplicación móvil conecta con su repositorio de Alfresco empleando sus credenciales de inicio de sesión de Alfresco (sobre HTTP o HTTPS) y gestiona el acceso en base a sus permisos.";
+"about.content" = "Alfresco es la plataforma abierta para la gestión y colaboración de contenido comercial crítico.\n\nAlfresco Mobile ha sido diseñado y desarrollado por Alfresco Software, Inc. y se conecta a Alfresco Cloud y a los servidores in situ de Alfresco (3.4.8 y superior) para ofrecer acceso seguro a sus ficheros corporativos desde cualquier lugar. Esta aplicación móvil conecta con su repositorio de Alfresco empleando sus credenciales de inicio de sesión de Alfresco (sobre HTTP o HTTPS) y gestiona el acceso en base a sus permisos.";
 "about.version.number" = "Versión: %@ (%@)";
 "about.build.date.time" = "Fecha de creación: %s %s";
 
