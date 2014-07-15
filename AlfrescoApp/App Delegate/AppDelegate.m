@@ -35,6 +35,7 @@
 #import "AnalyticsManager.h"
 #import "CoreDataCacheHelper.h"
 #import "FileHandlerManager.h"
+#import "PreferenceManager.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -93,13 +94,21 @@
         }
     }
     
-    // Migrate any old accounts if required
-    [MigrationAssistant runMigrationAssistant];
+    BOOL safeMode = [[[PreferenceManager sharedManager] settingsPreferenceForIdentifier:kSettingsBundlePreferenceSafeModeKey] boolValue];
+    
+    if (!safeMode)
+    {
+        // Migrate any old accounts if required
+        [MigrationAssistant runMigrationAssistant];
+    }
     
     BOOL isFirstLaunch = [self isAppFirstLaunch];
     if (isFirstLaunch)
     {
-        [[AccountManager sharedManager] removeAllAccounts];
+        if (!safeMode)
+        {
+            [[AccountManager sharedManager] removeAllAccounts];
+        }
         [self updateAppFirstLaunchFlag];
     }
     
@@ -117,23 +126,32 @@
     // Make the window visible
     [self.window makeKeyAndVisible];
     
-    // If there is a selected Account, attempt login
-    AccountManager *accountManager = [AccountManager sharedManager];
-    if (accountManager.selectedAccount)
+    if (!safeMode)
     {
-        // Delay to allow the UI to update - reachability check can block the main thread
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                if (!successful)
-                {
-                    displayErrorMessage([ErrorDescriptions descriptionForError:error]);
-                }
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
-            }];
-        });
+        // If there is a selected Account, attempt login
+        AccountManager *accountManager = [AccountManager sharedManager];
+        if (accountManager.selectedAccount)
+        {
+            // Delay to allow the UI to update - reachability check can block the main thread
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                    if (!successful)
+                    {
+                        displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                }];
+            });
+        }
     }
-
+    
     [AppConfigurationManager sharedManager];
+    
+    if (safeMode)
+    {
+        // Switch safe mode off
+        [[PreferenceManager sharedManager] updateSettingsPreferenceToValue:@NO preferenceIdentifier:kSettingsBundlePreferenceSafeModeKey];
+    }
     
     return YES;
 }

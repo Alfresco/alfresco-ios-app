@@ -367,6 +367,8 @@
 		7390619B189676F600B1920C /* ButtonBarArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 73906199189676F600B1920C /* ButtonBarArrowDown.png */; };
 		7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
+		7396E85619742645001FB9A9 /* SettingButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7396E85519742645001FB9A9 /* SettingButtonCell.m */; };
+		7396E85819742661001FB9A9 /* SettingButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7396E85719742661001FB9A9 /* SettingButtonCell.xib */; };
 		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
 		739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */; };
 		739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */; };
@@ -1032,6 +1034,9 @@
 		7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowDown@2x.png"; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
+		7396E85419742645001FB9A9 /* SettingButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingButtonCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.h"; sourceTree = SOURCE_ROOT; };
+		7396E85519742645001FB9A9 /* SettingButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingButtonCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.m"; sourceTree = SOURCE_ROOT; };
+		7396E85719742661001FB9A9 /* SettingButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingButtonCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.xib"; sourceTree = SOURCE_ROOT; };
 		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
 		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
 		739B0A2B18CF7C9B00239584 /* TableviewUnderlinedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableviewUnderlinedHeaderView.h; sourceTree = "<group>"; };
@@ -1987,10 +1992,10 @@
 		7384BDEE17F2F86B00C6A54F /* Settings View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7384BDF517F330CB00C6A54F /* Cells */,
 				7384BE0617F57FEC00C6A54F /* SettingConstants.h */,
 				7384BE0717F57FEC00C6A54F /* SettingConstants.m */,
 				7384BDFA17F3509900C6A54F /* SettingsCellProtocol.h */,
-				7384BDF517F330CB00C6A54F /* Cells */,
 				7384BDEF17F2F8C000C6A54F /* SettingsViewController.h */,
 				7384BDF017F2F8C000C6A54F /* SettingsViewController.m */,
 			);
@@ -2002,6 +2007,9 @@
 			children = (
 				7384BDFB17F3510E00C6A54F /* SettingCell.h */,
 				7384BDFC17F3510E00C6A54F /* SettingCell.m */,
+				7396E85419742645001FB9A9 /* SettingButtonCell.h */,
+				7396E85519742645001FB9A9 /* SettingButtonCell.m */,
+				7396E85719742661001FB9A9 /* SettingButtonCell.xib */,
 				7384BDFE17F3556900C6A54F /* SettingTextFieldCell.h */,
 				7384BDFF17F3556900C6A54F /* SettingTextFieldCell.m */,
 				7384BE0117F3558900C6A54F /* SettingTextFieldCell.xib */,
@@ -2985,6 +2993,7 @@
 				0837F29A192F69A0006BE40C /* sync-button-stop.png in Resources */,
 				27DFEBFF1937644D006D85BC /* actionsheet-upload@2x~ipad.png in Resources */,
 				08E1EA2B18DB057900F9052F /* TasksCell.xib in Resources */,
+				7396E85819742661001FB9A9 /* SettingButtonCell.xib in Resources */,
 				73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */,
 				73B95A6117A68B7E0099FB84 /* AboutLogo.png in Resources */,
 				73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */,
@@ -3416,6 +3425,7 @@
 				738664E41906B2260021D1BD /* SwitchCell.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
+				7396E85619742645001FB9A9 /* SettingButtonCell.m in Sources */,
 				738664F41906B2420021D1BD /* TaskPriorityCell.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				739E107D18F6D83600495616 /* SaveBackMetadata.m in Sources */,

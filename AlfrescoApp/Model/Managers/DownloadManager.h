@@ -38,5 +38,6 @@ typedef void (^DownloadManagerFileSavedBlock)(NSString *filePath);
 - (BOOL)isDownloadedDocument:(NSString *)filePath;
 - (AlfrescoDocument *)infoForDocument:(NSString *)documentName;
 - (NSString *)updateDownloadedDocument:(AlfrescoDocument *)document withContentsOfFileAtPath:(NSString *)filePath;
+- (void)removeAllDownloads;
 
 @end

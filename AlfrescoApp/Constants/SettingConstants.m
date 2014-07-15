@@ -39,14 +39,18 @@ NSString * const kSettingsCellLocalizedTitleKey = @"LocalizedCellTitleKey";
 NSString * const kSettingsToggleCell = @"AlfrescoSettingsToggle";
 NSString * const kSettingsTextFieldCell = @"AlfrescoSettingsTextField";
 NSString * const kSettingsLabelCell = @"AlfrescoSettingsLabel";
+NSString * const kSettingsButtonCell = @"AlfrescoSettingsButton";
 
 // Reuse identifers
 NSString * const kSettingsToggleCellReuseIdentifier = @"ToggleCell";
 NSString * const kSettingsTextFieldCellReuseIdentifier = @"TextFieldCell";
 NSString * const kSettingsLabelCellReuseIdentifier = @"LabelCell";
+NSString * const kSettingsButtonCellReuseIdentifier = @"ButtonCell";
 
 // Setting identifiers: Note these are referenced in UserPreferences.plist
 NSString * const kSettingsAboutIdentifier = @"SettingsAboutIdentifier";
 NSString * const kSettingsSyncOnCellularIdentifier = @"SettingsSyncOnCellularIdentifier";
 NSString * const kSettingsSendDiagnosticsIdentifier = @"SettingsSendDiagnosticsIdentifier";
 NSString * const kSettingsFileProtectionIdentifier = @"SettingsFileProtectionIdentifier";
+NSString * const kSettingsResetAccountsIdentifier = @"SettingsResetAccountsIdentifier";
+NSString * const kSettingsResetEntireAppIdentifier = @"SettingsResetEntireAppIdentifier";

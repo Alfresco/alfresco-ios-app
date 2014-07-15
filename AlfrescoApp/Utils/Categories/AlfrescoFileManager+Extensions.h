@@ -29,4 +29,7 @@
 - (NSString *)downloadsInfoContentPath;
 - (NSString *)downloadsContentFolderPath;
 
+// clear
+- (void)clearTemporaryDirectory;
+
 @end

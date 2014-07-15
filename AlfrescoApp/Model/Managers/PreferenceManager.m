@@ -22,6 +22,7 @@
 static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 @interface PreferenceManager ()
+@property (nonatomic, strong) NSUserDefaults *settingPreferences;
 @property (nonatomic, strong) NSMutableDictionary *preferences;
 @end
 
@@ -43,6 +44,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     if (self)
     {
         [self loadPreferences];
+        [self registerDefaultsFromSettingsBundle];
     }
     return self;
 }
@@ -68,6 +70,17 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     self.preferences[preferenceIdentifier] = obj;
     [self savePreferences];
     [[NSNotificationCenter defaultCenter] postNotificationName:kSettingsDidChangeNotification object:preferenceIdentifier userInfo:@{kSettingChangedFromKey : existingValue, kSettingChangedToKey : obj}];
+}
+
+- (id)settingsPreferenceForIdentifier:(NSString *)preferenceIdentifier
+{
+    return [self.settingPreferences valueForKey:preferenceIdentifier];
+}
+
+- (void)updateSettingsPreferenceToValue:(id)object preferenceIdentifier:(NSString *)preferenceIdentifier
+{
+    [self.settingPreferences setObject:object forKey:preferenceIdentifier];
+    [self.settingPreferences synchronize];
 }
 
 #pragma mark - Private Functions
@@ -109,6 +122,35 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.preferences forKey:kPreferenceKey];
     [defaults synchronize];
+}
+
+- (void)registerDefaultsFromSettingsBundle
+{
+    NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
+    
+    if(!settingsBundle)
+    {
+        AlfrescoLogError(@"Could not find Settings.bundle");
+        return;
+    }
+    
+    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
+    NSArray *preferences = [settings objectForKey:@"PreferenceSpecifiers"];
+    
+    NSMutableDictionary *defaultsToRegister = [[NSMutableDictionary alloc] initWithCapacity:[preferences count]];
+    for(NSDictionary *prefSpecification in preferences)
+    {
+        NSString *key = prefSpecification[@"key"];
+        
+        if(key)
+        {
+            defaultsToRegister[key] = prefSpecification[@"DefaultValue"];
+        }
+    }
+    
+    self.settingPreferences = [[NSUserDefaults alloc] init];
+    [self.settingPreferences registerDefaults:defaultsToRegister];
+    [self.settingPreferences synchronize];
 }
 
 @end

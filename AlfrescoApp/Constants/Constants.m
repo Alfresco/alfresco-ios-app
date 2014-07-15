@@ -47,6 +47,10 @@ CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 
+// Settings Bundle Keys
+NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";
+NSString * const kSettingsBundlePreferenceSafeModeKey = @"Prefs_SafeMode";
+
 // App Configuration
 NSString * const kAppConfigurationFileLocationOnServer = @"Mobile/configuration.json";
 NSString * const kAppConfigurationActivitiesKey = @"com.alfresco.activities";

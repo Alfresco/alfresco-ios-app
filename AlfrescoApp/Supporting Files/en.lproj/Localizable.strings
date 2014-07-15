@@ -638,6 +638,16 @@
 "settings.security.title" = "Security";
 "settings.security.file.protection" = "File Protection";
 "settings.security.file.protection.description" = "Encrypts files stored on this device when it is locked.";
+"settings.reset.title" = "Reset";
+"settings.reset.accounts" = "Clear All Accounts Only";
+"settings.reset.accounts.confirmation.title" = "Clear Accounts?";
+"settings.reset.accounts.confirmation.message" = "Are you sure you wish to delete all accounts?\n\nPlease note, this action is irreversible.";
+"settings.reset.entire.app" = "Clear Accounts, Cache & Downloads";
+"settings.reset.entire.app.confirmation.title" = "Clear Accounts, Cache & Downloads?";
+"settings.reset.entire.app.confirmation.message" = "Are you sure you wish to delete all accounts, cached data and downloads?\n\nPlease note, this action is irreversible.";
+"settings.reset.confirmation.title" = "Reset Complete";
+"settings.reset.confirmation.message" = "In order to complete the reset, please restart the app.\n\nYou can do this by pressing the home button. Once on your homescreen, double tap the home button and swipe the Alfresco off the multitasking bar. Then simply launch Alfresco again.";
+"settings.reset.description" = "Clearing the accounts will delete all accounts from the app. Clearing accounts, cache and downloads will reset the app to a fresh install.";
 
 /**
  * Onboarding View Controller

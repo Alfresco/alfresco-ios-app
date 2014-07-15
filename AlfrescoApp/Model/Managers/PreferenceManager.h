@@ -30,4 +30,7 @@
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier;
 - (void)updatePreferenceToValue:(id)obj preferenceIdentifier:(NSString *)preferenceIdentifier;
 
+- (id)settingsPreferenceForIdentifier:(NSString *)preferenceIdentifier;
+- (void)updateSettingsPreferenceToValue:(id)object preferenceIdentifier:(NSString *)preferenceIdentifier;
+
 @end
