@@ -482,7 +482,7 @@ static NSUInteger const kAccountsRowNumber = 0;
                 [repositoryMenuItems removeObject:myFilesMenuItem];
             }
             FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
-                                                                                                     folderPermissions:nil
+                                                                                                     folderPermissions:configurationManager.myFilesPermissions
                                                                                                      folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
                                                                                                                session:self.alfrescoSession];
             NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
@@ -512,7 +512,7 @@ static NSUInteger const kAccountsRowNumber = 0;
                 [repositoryMenuItems removeObject:sharedFilesMenuItem];
             }
             FileFolderListViewController *sharedFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.sharedFiles
-                                                                                                         folderPermissions:nil
+                                                                                                         folderPermissions:configurationManager.sharedFilesPermissions
                                                                                                          folderDisplayName:NSLocalizedString(@"sharedFiles.title", @"Shared Files")
                                                                                                                    session:self.alfrescoSession];
             NavigationViewController *sharedFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:sharedFilesViewController];

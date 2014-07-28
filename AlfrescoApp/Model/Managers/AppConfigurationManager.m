@@ -35,7 +35,9 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 @property (nonatomic, assign) BOOL useDefaultConfiguration;
 @property (nonatomic, assign, readwrite) BOOL showRepositorySpecificItems;
 @property (nonatomic, strong, readwrite) AlfrescoFolder *myFiles;
+@property (nonatomic, strong, readwrite) AlfrescoPermissions *myFilesPermissions;
 @property (nonatomic, strong, readwrite) AlfrescoFolder *sharedFiles;
+@property (nonatomic, strong, readwrite) AlfrescoPermissions *sharedFilesPermissions;
 
 @end
 
@@ -400,19 +402,43 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 {
     NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
     [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-        
         if (error)
         {
             AlfrescoLogDebug(@"Could not retrieve Shared Files: %@", error);
+            if (completionBlock != NULL)
+            {
+                completionBlock();
+            }
         }
         else
         {
             self.sharedFiles = [resultsArray firstObject];
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock();
+            if (!self.sharedFiles)
+            {
+                if (completionBlock != NULL)
+                {
+                    completionBlock();
+                }
+            }
+            else
+            {
+                [self.documentService retrievePermissionsOfNode:self.sharedFiles completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (error)
+                    {
+                        AlfrescoLogDebug(@"Could not retrieve permissions for Shared Files: %@", error);
+                        self.sharedFilesPermissions = nil;
+                    }
+                    else
+                    {
+                        self.sharedFilesPermissions = permissions;
+                    }
+
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock();
+                    }
+                }];
+            }
         }
     }];
 }
@@ -424,15 +450,40 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
         if (error)
         {
             AlfrescoLogDebug(@"Could not retrieve My Files: %@", error);
+            if (completionBlock != NULL)
+            {
+                completionBlock();
+            }
         }
         else
         {
             self.myFiles = [resultsArray firstObject];
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock();
+            if (!self.myFiles)
+            {
+                if (completionBlock != NULL)
+                {
+                    completionBlock();
+                }
+            }
+            else
+            {
+                [self.documentService retrievePermissionsOfNode:self.myFiles completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (error)
+                    {
+                        AlfrescoLogDebug(@"Could not retrieve permissions for My Files: %@", error);
+                        self.myFilesPermissions = nil;
+                    }
+                    else
+                    {
+                        self.myFilesPermissions = permissions;
+                    }
+
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock();
+                    }
+                }];
+            }
         }
     }];
 }
