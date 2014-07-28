@@ -140,6 +140,9 @@
 // Email
 "error.no.email.accounts.title" = "No Mail Accounts";
 "error.no.email.accounts.message" = "You must have at least one Mail account setup on your device to send this file.";
+// Edit Properties
+"error.edit.properties.failed.title" = "Edit Properties Failed";
+"error.edit.properties.failed.message" = "Unable to edit properties of %@";
 
 /**
  * Custom error descriptions
@@ -664,6 +667,7 @@
 "action.upload" = "Upload";
 "action.review" = "Review";
 "action.edit" = "Edit";
+"action.edit.properties" = "Edit Properties";
 "action.new.version" = "Update";
 // Alerts
 "action.rename.alert.title" = "Rename";

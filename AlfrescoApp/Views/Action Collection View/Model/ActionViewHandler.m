@@ -37,8 +37,11 @@
 #import "SaveBackMetadata.h"
 #import "NewVersionViewController.h"
 #import "PrintingWebView.h"
+#import "FormUtils.h"
+#import "AlfrescoFormViewController.h"
 
-@interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
+
+@interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate, AlfrescoFormViewControllerDelegate>
 
 @property (nonatomic, weak) UIViewController<ActionViewDelegate> *controller;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
@@ -419,6 +422,25 @@
     return request;
 }
 
+- (AlfrescoRequest *)pressedEditPropertiesActionItem:(ActionCollectionItem *)actionItem
+{
+    return [FormUtils formForNode:self.node completionBlock:^(AlfrescoForm *form, NSError *error) {
+        if (form != nil)
+        {
+            AlfrescoFormViewController *formController = [[AlfrescoFormViewController alloc] initWithForm:form];
+            formController.delegate = self;
+        
+            // show the form in a navigation controller
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:formController];
+            [self.controller presentViewController:navigationController animated:YES completion:nil];
+        }
+        else
+        {
+            AlfrescoLogError(@"Failed to edit properties: %@", error);
+        }
+    }];
+}
+
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem
 {
     __block AlfrescoRequest *deleteRequest = nil;
@@ -716,6 +738,44 @@
 {
     NSDictionary *notificationObject = @{kAlfrescoNodeAddedOnServerParentFolderKey : self.node, kAlfrescoNodeAddedOnServerSubNodeKey : node, kAlfrescoNodeAddedOnServerContentLocationLocally : locationURL};
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoNodeAddedOnServerNotification object:notificationObject];
+}
+
+#pragma mark - AlfrescoFormViewControllerDelegate Functions
+
+- (void)formViewController:(AlfrescoFormViewController *)viewController didEndEditingOfForm:(AlfrescoForm *)form
+{
+    // TODO: show the HUD
+    
+    // build dictionary of the fields that have been edited
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    for (AlfrescoFormField *field in form.fields)
+    {
+        if (field.value != nil)
+        {
+            properties[field.identifier] = field.value;
+        }
+    }
+    
+    // update the properties of the node
+    [self.documentService updatePropertiesOfNode:self.node properties:properties completionBlock:^(AlfrescoNode *updatedNode, NSError *updateError) {
+        
+        // TODO: hide the HUD
+        
+        if (updatedNode != nil)
+        {
+            // post a notification to refresh the node
+            // TODO: define a new nodePropertiesEditedNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:updatedNode];
+            
+            [self.controller dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            displayErrorMessageWithTitle([NSString stringWithFormat:
+                                          NSLocalizedString(@"error.edit.properties.failed.message", @"Edit Properties Failed"), self.node.name],
+                                          NSLocalizedString(@"error.edit.properties.failed.title", @"Edit Properties Failed"));
+        }
+    }];
 }
 
 @end

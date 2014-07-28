@@ -83,8 +83,6 @@
 		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
-		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
-		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
 		27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */; };
@@ -180,6 +178,27 @@
 		27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */; };
 		27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7418AD53510024B658 /* mainmenu-tasks.png */; };
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
+		58B84D8D198286BB00F66B50 /* FormTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D8C198286BB00F66B50 /* FormTest.m */; };
+		58B84DB5198287AF00F66B50 /* AlfrescoForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D91198287AF00F66B50 /* AlfrescoForm.m */; };
+		58B84DB6198287AF00F66B50 /* AlfrescoFormField.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D93198287AF00F66B50 /* AlfrescoFormField.m */; };
+		58B84DB7198287AF00F66B50 /* AlfrescoFormFieldGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D95198287AF00F66B50 /* AlfrescoFormFieldGroup.m */; };
+		58B84DB8198287AF00F66B50 /* AlfrescoFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D97198287AF00F66B50 /* AlfrescoFormViewController.m */; };
+		58B84DB9198287AF00F66B50 /* AlfrescoFormBooleanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D9A198287AF00F66B50 /* AlfrescoFormBooleanCell.m */; };
+		58B84DBA198287AF00F66B50 /* AlfrescoFormBooleanCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B84D9B198287AF00F66B50 /* AlfrescoFormBooleanCell.xib */; };
+		58B84DBB198287AF00F66B50 /* AlfrescoFormCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D9D198287AF00F66B50 /* AlfrescoFormCell.m */; };
+		58B84DBC198287AF00F66B50 /* AlfrescoFormDateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84D9F198287AF00F66B50 /* AlfrescoFormDateCell.m */; };
+		58B84DBD198287AF00F66B50 /* AlfrescoFormListOfValuesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DA1198287AF00F66B50 /* AlfrescoFormListOfValuesCell.m */; };
+		58B84DBE198287AF00F66B50 /* AlfrescoFormTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DA3198287AF00F66B50 /* AlfrescoFormTextCell.m */; };
+		58B84DBF198287AF00F66B50 /* AlfrescoFormTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B84DA4198287AF00F66B50 /* AlfrescoFormTextCell.xib */; };
+		58B84DC0198287AF00F66B50 /* AlfrescoFormConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DA7198287AF00F66B50 /* AlfrescoFormConstraint.m */; };
+		58B84DC1198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DA9198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.m */; };
+		58B84DC2198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DAB198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.m */; };
+		58B84DC3198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DAD198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.m */; };
+		58B84DC4198287AF00F66B50 /* AlfrescoDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DB0198287AF00F66B50 /* AlfrescoDatePickerViewController.m */; };
+		58B84DC5198287AF00F66B50 /* AlfrescoDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B84DB1198287AF00F66B50 /* AlfrescoDatePickerViewController.xib */; };
+		58B84DC6198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DB3198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.m */; };
+		58B84DC7198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B84DB4198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.xib */; };
+		58B84DCA1982B74A00F66B50 /* FormUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B84DC91982B74A00F66B50 /* FormUtils.m */; };
 		5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB5D92344964A91B3E95A3F /* libPods.a */; };
 		7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */; };
 		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
@@ -635,10 +654,6 @@
 		08E89CA017E7593B006936DF /* AlfrescoApp Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AlfrescoApp Tests-Info.plist"; sourceTree = "<group>"; };
 		08E89CA217E7593B006936DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		08E89CA617E7593B006936DF /* AlfrescoApp Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp Tests-Prefix.pch"; sourceTree = "<group>"; };
-		08E89CAF17E75BA6006936DF /* SyncTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncTest.h; sourceTree = "<group>"; };
-		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
-		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
-		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
 		2711979D1912ADE60073C3EC /* ALFTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ALFTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2715E03619300C520049FA32 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -769,6 +784,43 @@
 		27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-sync@2x.png"; sourceTree = "<group>"; };
 		27E84E7418AD53510024B658 /* mainmenu-tasks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks.png"; sourceTree = "<group>"; };
 		27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks@2x.png"; sourceTree = "<group>"; };
+		58B84D8C198286BB00F66B50 /* FormTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormTest.m; sourceTree = "<group>"; };
+		58B84D90198287AF00F66B50 /* AlfrescoForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoForm.h; sourceTree = "<group>"; };
+		58B84D91198287AF00F66B50 /* AlfrescoForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoForm.m; sourceTree = "<group>"; };
+		58B84D92198287AF00F66B50 /* AlfrescoFormField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormField.h; sourceTree = "<group>"; };
+		58B84D93198287AF00F66B50 /* AlfrescoFormField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormField.m; sourceTree = "<group>"; };
+		58B84D94198287AF00F66B50 /* AlfrescoFormFieldGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormFieldGroup.h; sourceTree = "<group>"; };
+		58B84D95198287AF00F66B50 /* AlfrescoFormFieldGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormFieldGroup.m; sourceTree = "<group>"; };
+		58B84D96198287AF00F66B50 /* AlfrescoFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormViewController.h; sourceTree = "<group>"; };
+		58B84D97198287AF00F66B50 /* AlfrescoFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormViewController.m; sourceTree = "<group>"; };
+		58B84D99198287AF00F66B50 /* AlfrescoFormBooleanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormBooleanCell.h; sourceTree = "<group>"; };
+		58B84D9A198287AF00F66B50 /* AlfrescoFormBooleanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormBooleanCell.m; sourceTree = "<group>"; };
+		58B84D9B198287AF00F66B50 /* AlfrescoFormBooleanCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlfrescoFormBooleanCell.xib; sourceTree = "<group>"; };
+		58B84D9C198287AF00F66B50 /* AlfrescoFormCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormCell.h; sourceTree = "<group>"; };
+		58B84D9D198287AF00F66B50 /* AlfrescoFormCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormCell.m; sourceTree = "<group>"; };
+		58B84D9E198287AF00F66B50 /* AlfrescoFormDateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormDateCell.h; sourceTree = "<group>"; };
+		58B84D9F198287AF00F66B50 /* AlfrescoFormDateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormDateCell.m; sourceTree = "<group>"; };
+		58B84DA0198287AF00F66B50 /* AlfrescoFormListOfValuesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormListOfValuesCell.h; sourceTree = "<group>"; };
+		58B84DA1198287AF00F66B50 /* AlfrescoFormListOfValuesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormListOfValuesCell.m; sourceTree = "<group>"; };
+		58B84DA2198287AF00F66B50 /* AlfrescoFormTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormTextCell.h; sourceTree = "<group>"; };
+		58B84DA3198287AF00F66B50 /* AlfrescoFormTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormTextCell.m; sourceTree = "<group>"; };
+		58B84DA4198287AF00F66B50 /* AlfrescoFormTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlfrescoFormTextCell.xib; sourceTree = "<group>"; };
+		58B84DA6198287AF00F66B50 /* AlfrescoFormConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormConstraint.h; sourceTree = "<group>"; };
+		58B84DA7198287AF00F66B50 /* AlfrescoFormConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormConstraint.m; sourceTree = "<group>"; };
+		58B84DA8198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormListOfValuesConstraint.h; sourceTree = "<group>"; };
+		58B84DA9198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormListOfValuesConstraint.m; sourceTree = "<group>"; };
+		58B84DAA198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormMandatoryConstraint.h; sourceTree = "<group>"; };
+		58B84DAB198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormMandatoryConstraint.m; sourceTree = "<group>"; };
+		58B84DAC198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormNumberRangeConstraint.h; sourceTree = "<group>"; };
+		58B84DAD198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormNumberRangeConstraint.m; sourceTree = "<group>"; };
+		58B84DAF198287AF00F66B50 /* AlfrescoDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoDatePickerViewController.h; sourceTree = "<group>"; };
+		58B84DB0198287AF00F66B50 /* AlfrescoDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoDatePickerViewController.m; sourceTree = "<group>"; };
+		58B84DB1198287AF00F66B50 /* AlfrescoDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlfrescoDatePickerViewController.xib; sourceTree = "<group>"; };
+		58B84DB2198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoListOfValuesPickerViewController.h; sourceTree = "<group>"; };
+		58B84DB3198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoListOfValuesPickerViewController.m; sourceTree = "<group>"; };
+		58B84DB4198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlfrescoListOfValuesPickerViewController.xib; sourceTree = "<group>"; };
+		58B84DC81982B74A00F66B50 /* FormUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormUtils.h; sourceTree = "<group>"; };
+		58B84DC91982B74A00F66B50 /* FormUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormUtils.m; sourceTree = "<group>"; };
 		7300DE9318EF010F00F5F57E /* FullScreenAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenAnimationController.h; sourceTree = "<group>"; };
 		7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenAnimationController.m; sourceTree = "<group>"; };
 		7302475219544AD50034D861 /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
@@ -1491,10 +1543,7 @@
 		08E89C9E17E7593B006936DF /* AlfrescoApp Tests */ = {
 			isa = PBXGroup;
 			children = (
-				08E89CB217E76012006936DF /* AlfrescoBaseTest.h */,
-				08E89CB317E76012006936DF /* AlfrescoBaseTest.m */,
-				08E89CAF17E75BA6006936DF /* SyncTest.h */,
-				08E89CB017E75BA6006936DF /* SyncTest.m */,
+				58B84D8C198286BB00F66B50 /* FormTest.m */,
 				08E89C9F17E7593B006936DF /* Supporting Files */,
 			);
 			path = "AlfrescoApp Tests";
@@ -1600,6 +1649,71 @@
 				27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		58B84D8F198287AF00F66B50 /* Form View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				58B84D90198287AF00F66B50 /* AlfrescoForm.h */,
+				58B84D91198287AF00F66B50 /* AlfrescoForm.m */,
+				58B84D92198287AF00F66B50 /* AlfrescoFormField.h */,
+				58B84D93198287AF00F66B50 /* AlfrescoFormField.m */,
+				58B84D94198287AF00F66B50 /* AlfrescoFormFieldGroup.h */,
+				58B84D95198287AF00F66B50 /* AlfrescoFormFieldGroup.m */,
+				58B84D96198287AF00F66B50 /* AlfrescoFormViewController.h */,
+				58B84D97198287AF00F66B50 /* AlfrescoFormViewController.m */,
+				58B84D98198287AF00F66B50 /* Cells */,
+				58B84DA5198287AF00F66B50 /* Constraints */,
+				58B84DAE198287AF00F66B50 /* Pickers */,
+			);
+			path = "Form View Controller";
+			sourceTree = "<group>";
+		};
+		58B84D98198287AF00F66B50 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				58B84D99198287AF00F66B50 /* AlfrescoFormBooleanCell.h */,
+				58B84D9A198287AF00F66B50 /* AlfrescoFormBooleanCell.m */,
+				58B84D9B198287AF00F66B50 /* AlfrescoFormBooleanCell.xib */,
+				58B84D9C198287AF00F66B50 /* AlfrescoFormCell.h */,
+				58B84D9D198287AF00F66B50 /* AlfrescoFormCell.m */,
+				58B84D9E198287AF00F66B50 /* AlfrescoFormDateCell.h */,
+				58B84D9F198287AF00F66B50 /* AlfrescoFormDateCell.m */,
+				58B84DA0198287AF00F66B50 /* AlfrescoFormListOfValuesCell.h */,
+				58B84DA1198287AF00F66B50 /* AlfrescoFormListOfValuesCell.m */,
+				58B84DA2198287AF00F66B50 /* AlfrescoFormTextCell.h */,
+				58B84DA3198287AF00F66B50 /* AlfrescoFormTextCell.m */,
+				58B84DA4198287AF00F66B50 /* AlfrescoFormTextCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		58B84DA5198287AF00F66B50 /* Constraints */ = {
+			isa = PBXGroup;
+			children = (
+				58B84DA6198287AF00F66B50 /* AlfrescoFormConstraint.h */,
+				58B84DA7198287AF00F66B50 /* AlfrescoFormConstraint.m */,
+				58B84DA8198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.h */,
+				58B84DA9198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.m */,
+				58B84DAA198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.h */,
+				58B84DAB198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.m */,
+				58B84DAC198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.h */,
+				58B84DAD198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.m */,
+			);
+			path = Constraints;
+			sourceTree = "<group>";
+		};
+		58B84DAE198287AF00F66B50 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				58B84DAF198287AF00F66B50 /* AlfrescoDatePickerViewController.h */,
+				58B84DB0198287AF00F66B50 /* AlfrescoDatePickerViewController.m */,
+				58B84DB1198287AF00F66B50 /* AlfrescoDatePickerViewController.xib */,
+				58B84DB2198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.h */,
+				58B84DB3198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.m */,
+				58B84DB4198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.xib */,
+			);
+			path = Pickers;
 			sourceTree = "<group>";
 		};
 		7300DE9218EF00EA00F5F57E /* Animation Controllers */ = {
@@ -2509,6 +2623,8 @@
 				7379731118AA2E55007613B2 /* CoreDataCacheHelper.m */,
 				73B957FB17A6750E0099FB84 /* ErrorDescriptions.h */,
 				73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */,
+				58B84DC81982B74A00F66B50 /* FormUtils.h */,
+				58B84DC91982B74A00F66B50 /* FormUtils.m */,
 				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
 				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
 				731901B0184770F5002C82C1 /* MigrationAssistant.h */,
@@ -2583,6 +2699,7 @@
 				7386651F1907B9930021D1BD /* File Handler View Controllers */,
 				7386649A1906AD840021D1BD /* FileFolder View Controller */,
 				737972F218A39E59007613B2 /* Folder Preview Controller */,
+				58B84D8F198287AF00F66B50 /* Form View Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				272CC7B919466B380009FADA /* Map View Controller */,
@@ -2996,6 +3113,7 @@
 				73B95A6217A68B7E0099FB84 /* AboutLogo@2x.png in Resources */,
 				2715E03719300C520049FA32 /* Images.xcassets in Resources */,
 				73B95A6317A68B7E0099FB84 /* AboutLogo@2x~ipad.png in Resources */,
+				58B84DC5198287AF00F66B50 /* AlfrescoDatePickerViewController.xib in Resources */,
 				73B95A6417A68B7E0099FB84 /* AboutLogo~ipad.png in Resources */,
 				732DBFA618E1BDAB00F7A0BF /* small_site.png in Resources */,
 				73B95A6517A68B7E0099FB84 /* avatar.png in Resources */,
@@ -3175,6 +3293,7 @@
 				738664A21906AD840021D1BD /* FileFolderListViewController.xib in Resources */,
 				27E84E8B18AD53510024B658 /* mainmenu-sites@2x.png in Resources */,
 				27E84E8918AD53510024B658 /* mainmenu-sharedfiles@2x.png in Resources */,
+				58B84DBA198287AF00F66B50 /* AlfrescoFormBooleanCell.xib in Resources */,
 				73881FE1188FF9290052C75F /* actionsheet-favorite@2x.png in Resources */,
 				27E84E7A18AD53510024B658 /* mainmenu-activities.png in Resources */,
 				73BE420818F4021300DB8912 /* task_priority_medium.png in Resources */,
@@ -3211,6 +3330,7 @@
 				73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */,
 				73B95AB617A68B7E0099FB84 /* site-action-join@2x.png in Resources */,
 				27DFEBFA1937644D006D85BC /* actionsheet-open-in@2x~ipad.png in Resources */,
+				58B84DBF198287AF00F66B50 /* AlfrescoFormTextCell.xib in Resources */,
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				73881FD1188FF6B00052C75F /* actionsheet-download@2x.png in Resources */,
@@ -3244,6 +3364,7 @@
 				73881FCA188FF6B00052C75F /* actionsheet-link.png in Resources */,
 				0837F299192F69A0006BE40C /* sync-button-error@2x.png in Resources */,
 				27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */,
+				58B84DC7198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.xib in Resources */,
 				27E84E7E18AD53510024B658 /* mainmenu-help.png in Resources */,
 				732DBF9C18E1BC6B00F7A0BF /* small_video.png in Resources */,
 				271DC771189C2D250059D1B2 /* status-sync-loading-highlighted@2x.png in Resources */,
@@ -3312,8 +3433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */,
-				08E89CB117E75BA6006936DF /* SyncTest.m in Sources */,
+				58B84D8D198286BB00F66B50 /* FormTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3340,6 +3460,7 @@
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */,
+				58B84DB5198287AF00F66B50 /* AlfrescoForm.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
 				738664A61906AD8E0021D1BD /* SitesListViewController.m in Sources */,
 				08E1EA2D18DB057900F9052F /* TaskViewController.m in Sources */,
@@ -3374,8 +3495,10 @@
 				08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
+				58B84DBC198287AF00F66B50 /* AlfrescoFormDateCell.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
+				58B84DBD198287AF00F66B50 /* AlfrescoFormListOfValuesCell.m in Sources */,
 				738664BF1906B14C0021D1BD /* SitesCell.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
@@ -3385,9 +3508,11 @@
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
 				738664E21906B2260021D1BD /* LabelCell.m in Sources */,
+				58B84DC0198287AF00F66B50 /* AlfrescoFormConstraint.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
 				739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */,
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
+				58B84DC6198287AF00F66B50 /* AlfrescoListOfValuesPickerViewController.m in Sources */,
 				738664911906AD660021D1BD /* AboutViewController.m in Sources */,
 				738664B31906B12B0021D1BD /* CommentCell.m in Sources */,
 				738665231907B9BE0021D1BD /* FileLocationSelectionViewController.m in Sources */,
@@ -3416,11 +3541,14 @@
 				738664E41906B2260021D1BD /* SwitchCell.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
+				58B84DBB198287AF00F66B50 /* AlfrescoFormCell.m in Sources */,
 				738664F41906B2420021D1BD /* TaskPriorityCell.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
+				58B84DCA1982B74A00F66B50 /* FormUtils.m in Sources */,
 				739E107D18F6D83600495616 /* SaveBackMetadata.m in Sources */,
 				08885FEE18BCB3DD008CBE66 /* SettingLabelCell.m in Sources */,
 				738664A01906AD840021D1BD /* BaseFileFolderListViewController.m in Sources */,
+				58B84DB6198287AF00F66B50 /* AlfrescoFormField.m in Sources */,
 				738664E01906B2260021D1BD /* CenterLabelCell.m in Sources */,
 				277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */,
 				7379730E18A9295B007613B2 /* CoreDataSyncHelper.m in Sources */,
@@ -3436,6 +3564,7 @@
 				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
+				58B84DBE198287AF00F66B50 /* AlfrescoFormTextCell.m in Sources */,
 				731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
@@ -3444,6 +3573,8 @@
 				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
 				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
+				58B84DC3198287AF00F66B50 /* AlfrescoFormNumberRangeConstraint.m in Sources */,
+				58B84DB8198287AF00F66B50 /* AlfrescoFormViewController.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
@@ -3451,11 +3582,13 @@
 				274863A41951E1A2006A91C5 /* ClientCertificateDownloadViewController.m in Sources */,
 				730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */,
 				73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */,
+				58B84DC4198287AF00F66B50 /* AlfrescoDatePickerViewController.m in Sources */,
 				738665191906B3ED0021D1BD /* AttributedLabelCell.m in Sources */,
 				73632AF518080E7C007172EE /* MainMenuItem.m in Sources */,
 				08E1EA2718DB057900F9052F /* TaskDetailsViewController.m in Sources */,
 				27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */,
 				7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */,
+				58B84DB9198287AF00F66B50 /* AlfrescoFormBooleanCell.m in Sources */,
 				738664F01906B2420021D1BD /* PersonCell.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				738664AA1906AE2E0021D1BD /* ThumbnailImageView.m in Sources */,
@@ -3465,7 +3598,9 @@
 				2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
+				58B84DB7198287AF00F66B50 /* AlfrescoFormFieldGroup.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
+				58B84DC2198287AF00F66B50 /* AlfrescoFormMandatoryConstraint.m in Sources */,
 				739E108018F6F10700495616 /* FileHandlerManager.m in Sources */,
 				738664FD1906B27C0021D1BD /* NodePickerListCell.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
@@ -3482,6 +3617,7 @@
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
+				58B84DC1198287AF00F66B50 /* AlfrescoFormListOfValuesConstraint.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				731A8F46192F56470099BE7B /* NewVersionLabelCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,

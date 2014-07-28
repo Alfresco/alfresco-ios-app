@@ -31,6 +31,7 @@ NSString * const kActionCollectionIdentifierFavourite = @"ActionCollectionIdenti
 NSString * const kActionCollectionIdentifierUnfavourite = @"ActionCollectionIdentifierUnfavourite";
 NSString * const kActionCollectionIdentifierComment = @"ActionCollectionIdentifierComment";
 NSString * const kActionCollectionIdentifierEdit = @"ActionCollectionIdentifierEdit";
+NSString * const kActionCollectionIdentifierEditProperties = @"ActionCollectionIdentifierEditProperties";
 NSString * const kActionCollectionIdentifierDownload = @"ActionCollectionIdentifierDownload";
 NSString * const kActionCollectionIdentifierEmailAsLink = @"ActionCollectionIdentifierEmailAsLink";
 NSString * const kActionCollectionIdentifierPrint = @"ActionCollectionIdentifierPrint";
@@ -95,6 +96,11 @@ NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectio
 + (ActionCollectionItem *)editItem
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit.png"] title:NSLocalizedString(@"action.edit", @"Edit") identifier:kActionCollectionIdentifierEdit];
+}
+
++ (ActionCollectionItem *)editPropertiesItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-edit.png"] title:NSLocalizedString(@"action.edit.properties", @"Edit Properties") identifier:kActionCollectionIdentifierEditProperties];
 }
 
 + (ActionCollectionItem *)downloadItem

@@ -41,6 +41,7 @@
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem;
 - (void)pressedDeleteLocalFileActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath;
 - (AlfrescoRequest *)pressedCreateSubFolderActionItem:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder;
+- (AlfrescoRequest *)pressedEditPropertiesActionItem:(ActionCollectionItem *)actionItem;
 - (AlfrescoRequest *)pressedEditActionItem:(ActionCollectionItem *)actionItem forDocumentWithContentPath:(NSString *)contentPath;
 - (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path;
 - (void)pressedUploadActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;

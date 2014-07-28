@@ -36,6 +36,7 @@
 #import "ThumbnailManager.h"
 #import "UniversalDevice.h"
 #import "VersionHistoryViewController.h"
+#import "AlfrescoFormViewController.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 
@@ -117,6 +118,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     {
         filePreviewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
     }
+    
     MetaDataViewController *metaDataController = [[MetaDataViewController alloc] initWithAlfrescoNode:self.document session:self.session];
     VersionHistoryViewController *versionHistoryController = [[VersionHistoryViewController alloc] initWithDocument:self.document session:self.session];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithAlfrescoNode:self.document permissions:self.documentPermissions session:self.session delegate:self];
@@ -200,6 +202,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     
     if (self.documentPermissions.canEdit)
     {
+       [items addObject:[ActionCollectionItem editPropertiesItem]];
+        
        NSArray *editableDocumentExtensions = [kEditableDocumentExtensions componentsSeparatedByString:@","];
        NSArray *editableDocumentMimeTypes = [kEditableDocumentMimeTypes componentsSeparatedByString:@","];
             
@@ -346,6 +350,10 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEdit])
     {
         [self.actionHandler pressedEditActionItem:actionItem forDocumentWithContentPath:self.documentContentFilePath];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierEditProperties])
+    {
+        [self.actionHandler pressedEditPropertiesActionItem:actionItem];
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUploadNewVersion])
     {
