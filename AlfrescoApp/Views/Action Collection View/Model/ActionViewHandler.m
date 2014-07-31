@@ -424,7 +424,7 @@
 
 - (AlfrescoRequest *)pressedEditPropertiesActionItem:(ActionCollectionItem *)actionItem
 {
-    return [FormUtils formForNode:self.node completionBlock:^(AlfrescoForm *form, NSError *error) {
+    return [FormUtils formForNode:self.node session:self.session completionBlock:^(AlfrescoForm *form, NSError *error) {
         if (form != nil)
         {
             AlfrescoFormViewController *formController = [[AlfrescoFormViewController alloc] initWithForm:form];
@@ -750,32 +750,40 @@
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     for (AlfrescoFormField *field in form.fields)
     {
-        if (field.value != nil)
+        if (field.value != nil && field.value != field.originalValue)
         {
             properties[field.identifier] = field.value;
         }
     }
     
-    // update the properties of the node
-    [self.documentService updatePropertiesOfNode:self.node properties:properties completionBlock:^(AlfrescoNode *updatedNode, NSError *updateError) {
-        
-        // TODO: hide the HUD
-        
-        if (updatedNode != nil)
-        {
-            // post a notification to refresh the node
-            // TODO: define a new nodePropertiesEditedNotification
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:updatedNode];
+    // update the properties of the node, if there are changes
+    if (properties.count > 0)
+    {
+        [self.documentService updatePropertiesOfNode:self.node properties:properties completionBlock:^(AlfrescoNode *updatedNode, NSError *updateError) {
             
-            [self.controller dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            displayErrorMessageWithTitle([NSString stringWithFormat:
-                                          NSLocalizedString(@"error.edit.properties.failed.message", @"Edit Properties Failed"), self.node.name],
-                                          NSLocalizedString(@"error.edit.properties.failed.title", @"Edit Properties Failed"));
-        }
-    }];
+            // TODO: hide the HUD
+            
+            if (updatedNode != nil)
+            {
+                // post a notification to refresh the node
+                // TODO: define a new nodePropertiesEditedNotification
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:updatedNode];
+                
+                [self.controller dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                displayErrorMessageWithTitle([NSString stringWithFormat:
+                                              NSLocalizedString(@"error.edit.properties.failed.message", @"Edit Properties Failed"), self.node.name],
+                                              NSLocalizedString(@"error.edit.properties.failed.title", @"Edit Properties Failed"));
+            }
+        }];
+    }
+    else
+    {
+        // just dismiss the view controller
+        [self.controller dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end

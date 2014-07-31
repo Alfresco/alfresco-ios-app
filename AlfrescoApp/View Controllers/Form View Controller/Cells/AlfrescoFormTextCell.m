@@ -84,7 +84,16 @@
     }
     else
     {
-        self.field.value = self.textField.text;
+        if (self.field.type == AlfrescoFormFieldTypeNumber)
+        {
+            NSNumberFormatter *formatter = [NSNumberFormatter new];
+            [formatter setNumberStyle:NSNumberFormatterNoStyle];
+            self.field.value = [formatter numberFromString:self.textField.text];
+        }
+        else
+        {
+            self.field.value = self.textField.text;
+        }
     }
     
     NSLog(@"Text field %@ was edited, value changed to %@", self.field.identifier, self.field.value);

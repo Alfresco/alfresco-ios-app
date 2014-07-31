@@ -24,6 +24,6 @@ typedef void (^FormCompletionBlock)(AlfrescoForm *form, NSError *error);
 @interface FormUtils : NSObject
 
 // Builds a form for the given node using the config and model definition services.
-+ (AlfrescoRequest *)formForNode:(AlfrescoNode *)node completionBlock:(FormCompletionBlock)completionBlock;
++ (AlfrescoRequest *)formForNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(FormCompletionBlock)completionBlock;
 
 @end
