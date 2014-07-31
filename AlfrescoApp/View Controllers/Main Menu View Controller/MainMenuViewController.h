@@ -30,6 +30,6 @@
 @property (nonatomic, weak) id<MainMenuViewControllerDelegate> delegate;
 
 - (instancetype)initWithAccountsSectionItems:(NSArray *)accountSectionItems;
-- (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType;
+- (void)displayViewControllerWithType:(MainMenuType)controllerType;
 
 @end

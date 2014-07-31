@@ -183,12 +183,12 @@ static NSUInteger const kAccountsRowNumber = 0;
     NSArray *sectionArray = [self.tableData objectAtIndex:indexPath.section];
     MainMenuItem *selectedMenuItem = [sectionArray objectAtIndex:indexPath.row];
     
-    if (selectedMenuItem.controllerType == NavigationControllerTypeHelp)
+    if (selectedMenuItem.controllerType == MainMenuTypeHelp)
     {
         selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationPageSheet;
         [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
     }
-    else if (selectedMenuItem.controllerType == NavigationControllerTypeSettings)
+    else if (selectedMenuItem.controllerType == MainMenuTypeSettings)
     {
         selectedMenuItem.viewController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:selectedMenuItem.viewController animated:YES completion:nil];
@@ -227,14 +227,14 @@ static NSUInteger const kAccountsRowNumber = 0;
 
 - (void)accountListEmpty:(NSNotification *)notification
 {
-    MainMenuItem *downloadsMenuItem = [self existingMenuItemWithType:NavigationControllerTypeDownloads];
+    MainMenuItem *downloadsMenuItem = [self existingMenuItemWithType:MainMenuTypeDownloads];
     
     if (!downloadsMenuItem)
     {
         NSMutableArray *localMenuItems = self.tableData.lastObject;
         DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
         NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
-        downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
+        downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeDownloads
                                                                imageName:@"mainmenu-localfiles.png"
                                                        localizedTitleKey:@"downloads.title"
                                                           viewController:downloadsNavigationController
@@ -296,7 +296,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithSession:self.alfrescoSession];
     settingsViewController.dismissCompletionBlock = dismissCompletionBlock;
     NavigationViewController *settingsNavigationController = [[NavigationViewController alloc] initWithRootViewController:settingsViewController];
-    MainMenuItem *settingsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSettings
+    MainMenuItem *settingsMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSettings
                                                                         imageName:@"mainmenu-settings.png"
                                                                 localizedTitleKey:@"settings.title"
                                                                    viewController:settingsNavigationController
@@ -306,7 +306,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:userGuidUrl initialTitle:NSLocalizedString(@"help.title", @"Help") errorLoadingURL:nil];
     helpViewController.dismissCompletionBlock = dismissCompletionBlock;
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
-    MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeHelp
+    MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeHelp
                                                                     imageName:@"mainmenu-help.png"
                                                             localizedTitleKey:@"help.title"
                                                                viewController:helpNavigationController
@@ -314,7 +314,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     
     DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
     NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
-    MainMenuItem *downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
+    MainMenuItem *downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeDownloads
                                                            imageName:@"mainmenu-localfiles.png"
                                                    localizedTitleKey:@"downloads.title"
                                                       viewController:downloadsNavigationController
@@ -329,12 +329,12 @@ static NSUInteger const kAccountsRowNumber = 0;
     BOOL localMenuItemsChanged = NO;
     
     BOOL showLocalFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationLocalFilesKey];
-    MainMenuItem *downloadsMenuItem = [self existingMenuItemWithType:NavigationControllerTypeDownloads];
+    MainMenuItem *downloadsMenuItem = [self existingMenuItemWithType:MainMenuTypeDownloads];
     if (showLocalFiles && !downloadsMenuItem)
     {
         DownloadsViewController *downloadsViewController = [[DownloadsViewController alloc] initWithSession:self.alfrescoSession];
         NavigationViewController *downloadsNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadsViewController];
-        downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeDownloads
+        downloadsMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeDownloads
                                                                imageName:@"mainmenu-localfiles.png"
                                                        localizedTitleKey:@"downloads.title"
                                                           viewController:downloadsNavigationController
@@ -365,12 +365,12 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // Activites
         BOOL showActivities = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationActivitiesKey];
-        MainMenuItem *activitiesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeActivities];
+        MainMenuItem *activitiesMenuItem = [self existingMenuItemWithType:MainMenuTypeActivities];
         if (showActivities && !activitiesMenuItem)
         {
             ActivitiesViewController *activitiesViewController = [[ActivitiesViewController alloc] initWithSession:self.alfrescoSession];
             NavigationViewController *activitiesNavigationController = [[NavigationViewController alloc] initWithRootViewController:activitiesViewController];
-            activitiesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeActivities
+            activitiesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeActivities
                                                                     imageName:@"mainmenu-activities.png"
                                                             localizedTitleKey:@"activities.title"
                                                                viewController:activitiesNavigationController
@@ -388,12 +388,12 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // Tasks
         BOOL showTasks = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationTasksKey];
-        MainMenuItem *tasksMenuItem = [self existingMenuItemWithType:NavigationControllerTypeTasks];
+        MainMenuItem *tasksMenuItem = [self existingMenuItemWithType:MainMenuTypeTasks];
         if (showTasks && !tasksMenuItem)
         {
             TaskViewController *taskViewController = [[TaskViewController alloc] initWithSession:self.alfrescoSession];
             NavigationViewController *taskNavigationController = [[NavigationViewController alloc] initWithRootViewController:taskViewController];
-            tasksMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeTasks
+            tasksMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeTasks
                                                                imageName:@"mainmenu-tasks.png"
                                                        localizedTitleKey:@"tasks.title"
                                                           viewController:taskNavigationController
@@ -411,7 +411,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // Favourites
         BOOL showFavorites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationFavoritesKey];
-        MainMenuItem *favoritesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSync];
+        MainMenuItem *favoritesMenuItem = [self existingMenuItemWithType:MainMenuTypeSync];
         if (showFavorites)
         {
             BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
@@ -420,7 +420,7 @@ static NSUInteger const kAccountsRowNumber = 0;
             {
                 SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.alfrescoSession];
                 SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
-                favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSync
                                                                        imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
                                                                localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
                                                                   viewController:syncNavigationController
@@ -431,7 +431,7 @@ static NSUInteger const kAccountsRowNumber = 0;
             }
             else
             {
-                MainMenuItem *menuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+                MainMenuItem *menuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSync
                                                                             imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
                                                                     localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
                                                                        viewController:favoritesMenuItem.viewController
@@ -451,12 +451,12 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // Sites
         BOOL showSites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSitesKey];
-        MainMenuItem *sitesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSites];
+        MainMenuItem *sitesMenuItem = [self existingMenuItemWithType:MainMenuTypeSites];
         if (showSites && !sitesMenuItem)
         {
             SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.alfrescoSession];
             NavigationViewController *sitesListNavigationController = [[NavigationViewController alloc] initWithRootViewController:sitesListViewController];
-            sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
+            sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSites
                                                                imageName:@"mainmenu-sites.png"
                                                        localizedTitleKey:@"sites.title"
                                                           viewController:sitesListNavigationController
@@ -474,7 +474,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // My Files
         BOOL showMyFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
-        MainMenuItem *myFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeMyFiles];
+        MainMenuItem *myFilesMenuItem = [self existingMenuItemWithType:MainMenuTypeMyFiles];
         if (showMyFiles)
         {
             if (myFilesMenuItem)
@@ -486,7 +486,7 @@ static NSUInteger const kAccountsRowNumber = 0;
                                                                                                      folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
                                                                                                                session:self.alfrescoSession];
             NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
-            myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeMyFiles
+            myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeMyFiles
                                                                  imageName:@"mainmenu-myfiles.png"
                                                          localizedTitleKey:@"myFiles.title"
                                                             viewController:myFilesNavigationController
@@ -504,7 +504,7 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // Shared Files
         BOOL showSharedFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSharedFilesKey];
-        MainMenuItem *sharedFilesMenuItem = [self existingMenuItemWithType:NavigationControllerTypeSharedFiles];
+        MainMenuItem *sharedFilesMenuItem = [self existingMenuItemWithType:MainMenuTypeSharedFiles];
         if (showSharedFiles)
         {
             if (sharedFilesMenuItem)
@@ -516,7 +516,7 @@ static NSUInteger const kAccountsRowNumber = 0;
                                                                                                          folderDisplayName:NSLocalizedString(@"sharedFiles.title", @"Shared Files")
                                                                                                                    session:self.alfrescoSession];
             NavigationViewController *sharedFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:sharedFilesViewController];
-            sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSharedFiles
+            sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSharedFiles
                                                                      imageName:@"mainmenu-sharedfiles.png"
                                                              localizedTitleKey:@"sharedFiles.title"
                                                                 viewController:sharedFilesNavigationController
@@ -534,12 +534,12 @@ static NSUInteger const kAccountsRowNumber = 0;
         
         // Repository
         BOOL showRepository = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationRepositoryKey];
-        MainMenuItem *companyHomeMenuItem = [self existingMenuItemWithType:NavigationControllerTypeRepository];
+        MainMenuItem *companyHomeMenuItem = [self existingMenuItemWithType:MainMenuTypeRepository];
         if (showRepository && !companyHomeMenuItem)
         {
             FileFolderListViewController *companyHomeViewController = [[FileFolderListViewController alloc] initWithFolder:nil session:self.alfrescoSession];
             NavigationViewController *companyHomeNavigationController = [[NavigationViewController alloc] initWithRootViewController:companyHomeViewController];
-            companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
+            companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeRepository
                                                                      imageName:@"mainmenu-repository.png"
                                                              localizedTitleKey:@"companyHome.title"
                                                                 viewController:companyHomeNavigationController
@@ -570,19 +570,19 @@ static NSUInteger const kAccountsRowNumber = 0;
         // If currently displayed view is Sync view then Sync view is displayed after session renewal e.g User Pulled to refresh
         if ([currentlyDisplayedController.viewControllers.firstObject isKindOfClass:[SyncViewController class]])
         {
-            [self displayViewControllerWithType:NavigationControllerTypeSync];
+            [self displayViewControllerWithType:MainMenuTypeSync];
             indexOfItemDisplayed = [repositoryMenuItems indexOfObject:favoritesMenuItem];
         }
         else
         {
-            if ([[ConnectivityManager sharedManager] hasInternetConnection] && [self existingMenuItemWithType:NavigationControllerTypeSites])
+            if ([[ConnectivityManager sharedManager] hasInternetConnection] && [self existingMenuItemWithType:MainMenuTypeSites])
             {
-                [self displayViewControllerWithType:NavigationControllerTypeSites];
+                [self displayViewControllerWithType:MainMenuTypeSites];
                 indexOfItemDisplayed = [repositoryMenuItems indexOfObject:sitesMenuItem];
             }
             else
             {
-                [self displayViewControllerWithType:NavigationControllerTypeAccounts];
+                [self displayViewControllerWithType:MainMenuTypeAccounts];
             }
         }
         
@@ -604,7 +604,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     }
 }
 
-- (MainMenuItem *)existingMenuItemWithType:(MainMenuNavigationControllerType)menuItemType
+- (MainMenuItem *)existingMenuItemWithType:(MainMenuType)menuItemType
 {
     __block MainMenuItem *foundItem = nil;
     [self.tableData enumerateObjectsUsingBlock:^(NSArray *sectionArray, NSUInteger idx, BOOL *stop) {
@@ -628,7 +628,7 @@ static NSUInteger const kAccountsRowNumber = 0;
 
 #pragma mark - Public Functions
 
-- (void)displayViewControllerWithType:(MainMenuNavigationControllerType)controllerType
+- (void)displayViewControllerWithType:(MainMenuType)controllerType
 {
     MainMenuItem *menuItem = [self existingMenuItemWithType:controllerType];
     if (menuItem && [self.delegate respondsToSelector:@selector(didSelectMenuItem:)])

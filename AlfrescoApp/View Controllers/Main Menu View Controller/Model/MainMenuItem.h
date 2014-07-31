@@ -15,17 +15,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
-#import "AppDelegate.h"
+
+#import "Constants.h"
 
 @interface MainMenuItem : NSObject
 
-@property (nonatomic, assign, readonly) MainMenuNavigationControllerType controllerType;
+@property (nonatomic, assign, readonly) MainMenuType controllerType;
 @property (nonatomic, strong, readonly) NSString *imageName;
 @property (nonatomic, strong, readonly) NSString *localizedTitleKey;
 @property (nonatomic, strong, readonly) UIViewController *viewController;
 @property (nonatomic, assign, readonly, getter = shouldDisplayInDetailView) BOOL displayInDetail;
 
-- (instancetype)initWithControllerType:(MainMenuNavigationControllerType)controllerType imageName:(NSString *)imageName localizedTitleKey:(NSString *)localizedKey viewController:(UIViewController *)viewController displayInDetail:(BOOL)displayInDetail;
+- (instancetype)initWithControllerType:(MainMenuType)controllerType imageName:(NSString *)imageName localizedTitleKey:(NSString *)localizedKey viewController:(UIViewController *)viewController displayInDetail:(BOOL)displayInDetail;
 
 @end
