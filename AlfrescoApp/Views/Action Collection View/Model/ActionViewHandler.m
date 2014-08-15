@@ -142,7 +142,7 @@
             [emailController setSubject:filePath.lastPathComponent];
             
             // Attachment
-            NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.lastPathComponent];
+            NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.pathExtension];
             if (!mimeType)
             {
                 mimeType = @"application/octet-stream";

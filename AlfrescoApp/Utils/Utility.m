@@ -170,7 +170,7 @@ NSString *relativeDateFromDate(NSDate *date)
     };
 
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSUInteger unitFlags = NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSSecondCalendarUnit;
+    NSUInteger unitFlags = NSSecondCalendarUnit | NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit;
     NSDateComponents *components = [calendar components:unitFlags fromDate:earliest toDate:latest options:0];
     
     if (components.year >= 2)

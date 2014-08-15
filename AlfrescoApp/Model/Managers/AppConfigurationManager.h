@@ -19,7 +19,9 @@
 @interface AppConfigurationManager : NSObject
 
 @property (nonatomic, strong, readonly) AlfrescoFolder *myFiles;
+@property (nonatomic, strong, readonly) AlfrescoPermissions *myFilesPermissions;
 @property (nonatomic, strong, readonly) AlfrescoFolder *sharedFiles;
+@property (nonatomic, strong, readonly) AlfrescoPermissions *sharedFilesPermissions;
 @property (nonatomic, assign, readonly) BOOL showRepositorySpecificItems;
 
 - (void)checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration;

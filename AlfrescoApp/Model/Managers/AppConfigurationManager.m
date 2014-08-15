@@ -22,11 +22,6 @@
 static NSString * const kConfigurationRootMenuKey = @"rootMenu";
 static NSString * const kConfigurationItemVisibleKey = @"visible";
 
-// repository version numbers supporting My Files and Shared Files
-static NSUInteger const kRepositorySupportedMajorVersion = 4;
-static NSUInteger const kRepositoryCommunitySupportedMinorVersion = 3;
-static NSUInteger const kRepositoryEnterpriseSupportedMinorVersion = 2;
-
 static NSString * const kRepositoryId = @"{RepositoryId}";
 static NSString * const kRepositoryDataDictionaryPathKey = @"com.alfresco.dataDictionary.{RepositoryId}";
 static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = @"repositoryDownloadedConfigurationFileLastUpdatedDate";
@@ -40,7 +35,9 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 @property (nonatomic, assign) BOOL useDefaultConfiguration;
 @property (nonatomic, assign, readwrite) BOOL showRepositorySpecificItems;
 @property (nonatomic, strong, readwrite) AlfrescoFolder *myFiles;
+@property (nonatomic, strong, readwrite) AlfrescoPermissions *myFilesPermissions;
 @property (nonatomic, strong, readwrite) AlfrescoFolder *sharedFiles;
+@property (nonatomic, strong, readwrite) AlfrescoPermissions *sharedFilesPermissions;
 
 @end
 
@@ -219,50 +216,37 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     {
         BOOL showMyFiles = [self visibilityInfoInAppConfigurationForMenuItem:kAppConfigurationMyFilesKey];
         BOOL showSharedFiles = [self visibilityInfoInAppConfigurationForMenuItem:kAppConfigurationSharedFilesKey];
-        
         NSString *repositoryEdition = self.alfrescoSession.repositoryInfo.edition;
-        NSInteger repositoryMajorVersion = [self.alfrescoSession.repositoryInfo.majorVersion intValue];
-        NSInteger repositoryMinorVersion = [self.alfrescoSession.repositoryInfo.minorVersion intValue];
-        
-        if ((showMyFiles || showSharedFiles) && repositoryMajorVersion >= kRepositorySupportedMajorVersion)
+        float version = [[NSString stringWithFormat:@"%i.%i", self.alfrescoSession.repositoryInfo.majorVersion.intValue, self.alfrescoSession.repositoryInfo.minorVersion.intValue] floatValue];
+
+        if (([repositoryEdition isEqualToString:kRepositoryEditionEnterprise] && version >= 4.2f) ||
+            ([repositoryEdition isEqualToString:kRepositoryEditionCommunity] && version >= 4.3f))
         {
-            BOOL isEnterpriseServerAndSupportsMyFilesSharedFiles = ([repositoryEdition isEqualToString:kRepositoryEditionEnterprise] && repositoryMinorVersion >= kRepositoryEnterpriseSupportedMinorVersion);
-            BOOL isCommunityServerAndSupportsMyFilesSharedFiles = ([repositoryEdition isEqualToString:kRepositoryEditionCommunity] && repositoryMinorVersion >= kRepositoryCommunitySupportedMinorVersion);
+            __block NSInteger numberOfRetrievalsInProgress = 0;
             
-            if (isEnterpriseServerAndSupportsMyFilesSharedFiles || isCommunityServerAndSupportsMyFilesSharedFiles)
+            if (showMyFiles)
             {
-                __block NSInteger numberOfRetrievalsInProgress = 0;
-                if (showMyFiles)
-                {
-                    numberOfRetrievalsInProgress++;
-                }
-                if (showSharedFiles)
-                {
-                    numberOfRetrievalsInProgress++;
-                }
-                
-                if (showMyFiles)
-                {
-                    [self retrieveMyFilesWithCompletionBlock:^{
-                        
-                        numberOfRetrievalsInProgress--;
-                        if (numberOfRetrievalsInProgress == 0)
-                        {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
-                        }
-                    }];
-                }
-                if (showSharedFiles)
-                {
-                    [self retrieveSharedFilesWithCompletionBlock:^{
-                        
-                        numberOfRetrievalsInProgress--;
-                        if (numberOfRetrievalsInProgress == 0)
-                        {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
-                        }
-                    }];
-                }
+                numberOfRetrievalsInProgress++;
+
+                [self retrieveMyFilesWithCompletionBlock:^{
+                    numberOfRetrievalsInProgress--;
+                    if (numberOfRetrievalsInProgress == 0)
+                    {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
+                    }
+                }];
+            }
+            if (showSharedFiles)
+            {
+                numberOfRetrievalsInProgress++;
+
+                [self retrieveSharedFilesWithCompletionBlock:^{
+                    numberOfRetrievalsInProgress--;
+                    if (numberOfRetrievalsInProgress == 0)
+                    {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
+                    }
+                }];
             }
         }
     };
@@ -370,7 +354,11 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     
     if (self.alfrescoSession)
     {
-        NSString *dataDictionaryPathKey = [kRepositoryDataDictionaryPathKey stringByReplacingOccurrencesOfString:kRepositoryId withString:self.alfrescoSession.repositoryInfo.identifier];
+        AlfrescoRepositoryInfo *repositoryInfo = self.alfrescoSession.repositoryInfo;
+        
+        // When using the PublicAPI, all repository identifiers are returned as "-default-" and so the rootFolder ID is used as the unique key instead
+        NSString *repositoryIdentifier = repositoryInfo.capabilities.doesSupportPublicAPI ? self.alfrescoSession.rootFolder.identifier : repositoryInfo.identifier;
+        NSString *dataDictionaryPathKey = [kRepositoryDataDictionaryPathKey stringByReplacingOccurrencesOfString:kRepositoryId withString:repositoryIdentifier];
         NSString *dataDictionaryPath = [userDefaults objectForKey:dataDictionaryPathKey];
         
         if (dataDictionaryPath)
@@ -381,7 +369,6 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
         {
             NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:dictionary\"')";
             [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-                
                 if (error)
                 {
                     AlfrescoLogDebug(@"Could not retrieve Data Dictionary: %@", error);
@@ -415,19 +402,43 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 {
     NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
     [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-        
         if (error)
         {
             AlfrescoLogDebug(@"Could not retrieve Shared Files: %@", error);
+            if (completionBlock != NULL)
+            {
+                completionBlock();
+            }
         }
         else
         {
             self.sharedFiles = [resultsArray firstObject];
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock();
+            if (!self.sharedFiles)
+            {
+                if (completionBlock != NULL)
+                {
+                    completionBlock();
+                }
+            }
+            else
+            {
+                [self.documentService retrievePermissionsOfNode:self.sharedFiles completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (error)
+                    {
+                        AlfrescoLogDebug(@"Could not retrieve permissions for Shared Files: %@", error);
+                        self.sharedFilesPermissions = nil;
+                    }
+                    else
+                    {
+                        self.sharedFilesPermissions = permissions;
+                    }
+
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock();
+                    }
+                }];
+            }
         }
     }];
 }
@@ -436,19 +447,43 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 {
     NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", self.alfrescoSession.personIdentifier];
     [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
-        
         if (error)
         {
             AlfrescoLogDebug(@"Could not retrieve My Files: %@", error);
+            if (completionBlock != NULL)
+            {
+                completionBlock();
+            }
         }
         else
         {
             self.myFiles = [resultsArray firstObject];
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock();
+            if (!self.myFiles)
+            {
+                if (completionBlock != NULL)
+                {
+                    completionBlock();
+                }
+            }
+            else
+            {
+                [self.documentService retrievePermissionsOfNode:self.myFiles completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (error)
+                    {
+                        AlfrescoLogDebug(@"Could not retrieve permissions for My Files: %@", error);
+                        self.myFilesPermissions = nil;
+                    }
+                    else
+                    {
+                        self.myFilesPermissions = permissions;
+                    }
+
+                    if (completionBlock != NULL)
+                    {
+                        completionBlock();
+                    }
+                }];
+            }
         }
     }];
 }

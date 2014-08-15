@@ -183,6 +183,13 @@ extern NSInteger const kNumberOfDaysToKeepCachedData;
 
 extern NSString * const kAlfrescoOnPremiseServerURLTemplate;
 
+// Cloud Configuration
+extern NSString * const kCloudConfigFile;
+extern NSString * const kCloudConfigParamURL;
+extern NSString * const kCloudConfigParamAPIKey;
+extern NSString * const kCloudConfigParamSecretKey;
+extern NSString * const kInternalSessionCloudURL;
+
 // Cloud Sign Up
 extern NSString * const kCloudAPIHeaderKey;
 extern NSString * const kAlfrescoCloudAPISignUpUrl;

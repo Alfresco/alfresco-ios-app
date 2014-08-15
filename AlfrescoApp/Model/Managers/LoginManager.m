@@ -29,13 +29,15 @@
 #import "AccountInfoViewController.h"
 
 @interface LoginManager()
-
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
 @property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
 @property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 @property (nonatomic, assign) BOOL didCancelLogin;
+// Cloud parameters
+@property (nonatomic, strong) NSString *cloudAPIKey;
+@property (nonatomic, strong) NSString *cloudSecretKey;
 @end
 
 @implementation LoginManager
@@ -57,14 +59,8 @@
     self = [super init];
     if (self)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(unauthorizedAccessNotificationReceived:)
-                                                     name:kAlfrescoAccessDeniedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(appPolicyUpdated:)
-                                                     name:kAlfrescoApplicationPolicyUpdatedNotification
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appPolicyUpdated:) name:kAlfrescoApplicationPolicyUpdatedNotification object:nil];
     }
     return self;
 }
@@ -135,6 +131,9 @@
 {
     self.didCancelLogin = NO;
     self.authenticationCompletionBlock = authenticationCompletionBlock;
+
+    NSDictionary *customParameters = [self loadCustomCloudOAuthParameters];
+    
     void (^authenticationComplete)(id<AlfrescoSession>, NSError *error) = ^(id<AlfrescoSession> session, NSError *error) {
         if (error)
         {
@@ -181,7 +180,8 @@
     AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthLoginViewController * (void) {
         [self hideHUD];
         NavigationViewController *oauthNavigationController = nil;
-        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
+
+        AlfrescoOAuthLoginViewController *oauthLoginController = [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:self.cloudAPIKey secretKey:self.cloudSecretKey parameters:customParameters completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
             if (oauthData)
             {
                 account.oauthData = oauthData;
@@ -233,7 +233,7 @@
                 if (connectionError.code == kAlfrescoErrorCodeAccessTokenExpired)
                 {
                     // refresh token
-                    AlfrescoOAuthHelper *oauthHelper = [[AlfrescoOAuthHelper alloc] initWithParameters:nil delegate:self];
+                    AlfrescoOAuthHelper *oauthHelper = [[AlfrescoOAuthHelper alloc] initWithParameters:customParameters delegate:self];
                     self.currentLoginRequest = [oauthHelper refreshAccessToken:account.oauthData completionBlock:^(AlfrescoOAuthData *refreshedOAuthData, NSError *refreshError) {
                         if (nil == refreshedOAuthData)
                         {
@@ -281,14 +281,15 @@
 - (AlfrescoRequest *)connectWithOAuthData:(AlfrescoOAuthData *)oauthData networkId:(NSString *)networkId completionBlock:(AlfrescoSessionCompletionBlock)completionBlock
 {
     AlfrescoRequest *cloudRequest = nil;
+    NSDictionary *customParameters = [self loadCustomCloudOAuthParameters];
     
     if (networkId)
     {
-        cloudRequest = [AlfrescoCloudSession connectWithOAuthData:oauthData networkIdentifer:networkId completionBlock:completionBlock];
+        cloudRequest = [AlfrescoCloudSession connectWithOAuthData:oauthData networkIdentifer:networkId parameters:customParameters completionBlock:completionBlock];
     }
     else
     {
-        cloudRequest = [AlfrescoCloudSession connectWithOAuthData:oauthData completionBlock:completionBlock];
+        cloudRequest = [AlfrescoCloudSession connectWithOAuthData:oauthData parameters:customParameters completionBlock:completionBlock];
     }
     
     return cloudRequest;
@@ -304,7 +305,31 @@
     }];
 }
 
+- (NSDictionary *)loadCustomCloudOAuthParameters
+{
+    NSDictionary *parameters = nil;
+    
+    // Initially reset to defaults
+    self.cloudAPIKey = CLOUD_OAUTH_KEY;
+    self.cloudSecretKey = CLOUD_OAUTH_SECRET;
+    
+    // Checks for a cloud-config.plist file with custom connection parameters
+    NSString *plistPath = [[[AlfrescoFileManager sharedManager] documentsDirectory] stringByAppendingPathComponent:kCloudConfigFile];
+    NSDictionary *config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    NSString *customCloudURL = config[kCloudConfigParamURL];
+
+    if (config && customCloudURL)
+    {
+        self.cloudAPIKey = config[kCloudConfigParamAPIKey];
+        self.cloudSecretKey = config[kCloudConfigParamSecretKey];
+        parameters = @{kInternalSessionCloudURL: customCloudURL};
+    }
+    
+    return parameters;
+}
+
 #pragma mark - OAuth delegate
+
 - (void)oauthLoginDidFailWithError:(NSError *)error
 {
     AlfrescoLogDebug(@"OAuth Failed");
