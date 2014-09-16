@@ -47,6 +47,8 @@ NSString * const kServerIsQualifying = @"kServerIsQualifying";
 
 @implementation AccountInfo
 
+@synthesize description = _description;
+
 #pragma mark Object Lifecycle
 - (void)dealloc
 {

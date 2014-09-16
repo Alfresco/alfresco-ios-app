@@ -129,6 +129,7 @@
 "error.host.unreachable.title" = "Connection Error";
 "error.host.unreachable.message" = "Your hostname value seems to be wrong or you may need to activate your VPN. Please check your account settings.";
 "error.retrieving.metadata" = "Properties for %@ could not be retrieved.";
+"error.server.message" = "An error occurred on the server.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Unable to complete process on task. Error: %@";
 "error.workflow.unable.to.reassign.task" = "Unable to reassign task. Error: %@";
