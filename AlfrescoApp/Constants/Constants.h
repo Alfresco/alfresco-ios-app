@@ -29,6 +29,23 @@ typedef NS_ENUM(NSInteger, InAppDocumentLocation)
     InAppDocumentLocationLocalFiles
 };
 
+typedef NS_ENUM(NSUInteger, MainMenuType)
+{
+    MainMenuTypeAccounts = 0,
+    MainMenuTypeActivities,
+    MainMenuTypeRepository,
+    MainMenuTypeSites,
+    MainMenuTypeTasks,
+    MainMenuTypeSync,
+    MainMenuTypeMyFiles,
+    MainMenuTypeSharedFiles,
+    MainMenuTypeDownloads,
+    MainMenuTypeSettings,
+    MainMenuTypeAbout,
+    MainMenuTypeHelp,
+    MainMenuType_MAX_ENUM    // <-- Ensure this is the last entry
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
 

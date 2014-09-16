@@ -24,7 +24,6 @@
 #import "LoginManager.h"
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
-#import "MainMenuViewController.h"
 #import "CloudSignUpViewController.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
@@ -57,22 +56,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                                                                                 action:@selector(addAccount:)];
     self.navigationItem.rightBarButtonItem = addAccount;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountAdded:)
-                                                 name:kAlfrescoAccountAddedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountRemoved:)
-                                                 name:kAlfrescoAccountRemovedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountListUpdated:)
-                                                 name:kAlfrescoAccountUpdatedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountListUpdated:)
-                                                 name:kAlfrescoAccountsListEmptyNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
 }
 
 - (void)updateAccountList

@@ -24,7 +24,6 @@
 #import "AccountManager.h"
 #import "RootRevealControllerViewController.h"
 #import "DetailSplitViewController.h"
-#import "MainMenuViewController.h"
 #import "SwitchViewController.h"
 #import "AccountsViewController.h"
 #import "OnboardingViewController.h"
@@ -43,6 +42,7 @@
 @property (nonatomic, strong) UIViewController *appRootViewController;
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong, readwrite) MainMenuViewController *mainMenuViewController;
 
 @end
 
@@ -156,7 +156,7 @@
     
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
-    MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeAccounts
+    MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeAccounts
                                                                     imageName:@"mainmenu-accounts.png"
                                                             localizedTitleKey:@"accounts.title"
                                                                viewController:accountsNavigationController
@@ -166,6 +166,7 @@
     
     MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithAccountsSectionItems:@[accountsItem]];
     mainMenuController.delegate = switchController;
+    self.mainMenuViewController = mainMenuController;
     
     rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];
     

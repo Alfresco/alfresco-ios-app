@@ -93,7 +93,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
         if (showRepository)
         {
             NodePickerFileFolderListViewController *companyHomeViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:nil folderDisplayName:@"companyHome.title" session:self.session nodePickerController:self.nodePicker];
-            MainMenuItem *companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeRepository
+            MainMenuItem *companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeRepository
                                                                                    imageName:@"mainmenu-repository.png"
                                                                            localizedTitleKey:@"companyHome.title"
                                                                               viewController:companyHomeViewController
@@ -105,7 +105,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
         if (showSites)
         {
             NodePickerSitesViewController *sitesListViewController = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self.nodePicker];
-            MainMenuItem *sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSites
+            MainMenuItem *sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSites
                                                                              imageName:@"mainmenu-sites.png"
                                                                      localizedTitleKey:@"sites.title"
                                                                         viewController:sitesListViewController
@@ -118,7 +118,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
         {
             BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
             NodePickerFavoritesViewController *syncViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
-            MainMenuItem *favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSync
+            MainMenuItem *favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSync
                                                                                  imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
                                                                          localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
                                                                             viewController:syncViewController
@@ -133,7 +133,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                                                                              folderDisplayName:NSLocalizedString(@"sharedFiles.title", @"Shared Files")
                                                                                                                                        session:self.session
                                                                                                                           nodePickerController:self.nodePicker];
-            MainMenuItem *sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeSharedFiles
+            MainMenuItem *sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSharedFiles
                                                                                    imageName:@"mainmenu-sharedfiles.png"
                                                                            localizedTitleKey:@"sharedFiles.title"
                                                                               viewController:sharedFilesViewController
@@ -148,7 +148,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                                                                          folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
                                                                                                                                    session:self.session
                                                                                                                       nodePickerController:self.nodePicker];
-            MainMenuItem *myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:NavigationControllerTypeMyFiles
+            MainMenuItem *myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeMyFiles
                                                                                imageName:@"mainmenu-myfiles.png"
                                                                        localizedTitleKey:@"myFiles.title"
                                                                           viewController:myFilesViewController

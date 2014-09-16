@@ -181,7 +181,7 @@
 "accounttype.alfrescoServer" = "Server Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Connetti a un server Alfresco";
-"accounttype.footer.alfrescoCloud" = "Effettua l'accesso ad Alfresco nel cloud. Benvenuto Registrati per un account gratis";
+"accounttype.footer.alfrescoCloud" = "Effettua l'accesso ad Alfresco nel cloud";
 
 "accountdetails.placeholder.required" = "Obbligatorio";
 "accountdetails.placeholder.optional" = "Facoltativo";
