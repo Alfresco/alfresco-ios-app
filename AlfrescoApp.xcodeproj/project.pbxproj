@@ -1614,7 +1614,7 @@
 		73036F291886E3CC002AF6DC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.1-debug.a */,
+				73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.2-debug.a */,
 				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */,
 			);
 			name = Products;
@@ -2944,10 +2944,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.1-debug.a */ = {
+		73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.2-debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libAlfrescoSDKv1.3.1-debug.a";
+			path = "libAlfrescoSDKv1.3.2-debug.a";
 			remoteRef = 73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3697,7 +3697,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.1.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.2.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3829,7 +3829,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.1-debug.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.2-debug.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3868,7 +3868,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.1.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.2.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

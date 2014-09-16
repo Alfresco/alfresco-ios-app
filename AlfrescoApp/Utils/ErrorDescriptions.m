@@ -22,6 +22,7 @@
 static NSString * const kErrorDescriptionNetworkNotAvailable = @"error.no.internet.access.message";
 static NSString * const kErrorDescriptionAccessPermissions = @"error.access.permissions.message";
 static NSString * const kErrorDescriptionHostUnreachable = @"error.host.unreachable.message";
+static NSString * const kErrorDescriptionServerError = @"error.server.message";
 static NSString * const kErrorDescriptionLoginFailed = @"error.login.failed";
 
 @implementation ErrorDescriptions
@@ -52,7 +53,7 @@ static NSString * const kErrorDescriptionLoginFailed = @"error.login.failed";
     switch (error.code)
     {
         case kAlfrescoErrorCodeHTTPResponse:
-            errorDescription = NSLocalizedString(kErrorDescriptionAccessPermissions, @"SDK HTTP Response error");
+            errorDescription = NSLocalizedString(kErrorDescriptionServerError, @"Error occurred on the server");
             break;
             
         case kAlfrescoErrorCodeNoNetworkConnection:
