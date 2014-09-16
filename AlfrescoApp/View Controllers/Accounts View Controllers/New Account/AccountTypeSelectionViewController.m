@@ -44,7 +44,8 @@ static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:nil];
     if (self)
     {
-        self.cloudSignUpAvailable = INTERNAL_CLOUD_API_KEY.length > 0;
+        // MOBILE-2988: Remove cloud sign-up from the app
+        self.cloudSignUpAvailable = NO;
     }
     return self;
 }

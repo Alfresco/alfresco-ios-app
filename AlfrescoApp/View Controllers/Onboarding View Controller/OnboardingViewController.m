@@ -45,7 +45,8 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     self.useExistingAccountButton.backgroundColor = [UIColor appTintColor];
     self.useExistingAccountButton.layer.cornerRadius = kButtonCornerRadius;
     
-    self.createCloudAccountButton.hidden = !(INTERNAL_CLOUD_API_KEY.length > 0);
+    // MOBILE-2988: Remove cloud sign-up from the app
+    self.createCloudAccountButton.hidden = YES;
     self.createCloudAccountButton.backgroundColor = [UIColor whiteColor];
     self.createCloudAccountButton.layer.cornerRadius = kButtonCornerRadius;
     

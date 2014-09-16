@@ -181,7 +181,7 @@
 "accounttype.alfrescoServer" = "Alfresco 服务器";
 
 "accounttype.footer.alfrescoServer" = "连接至 Alfresco 服务器";
-"accounttype.footer.alfrescoCloud" = "访问您云端的 Alfresco 帐户。Alfresco 的新用户？注册一个免费帐户";
+"accounttype.footer.alfrescoCloud" = "访问您云端的 Alfresco 帐户";
 
 "accountdetails.placeholder.required" = "必填";
 "accountdetails.placeholder.optional" = "可选";
