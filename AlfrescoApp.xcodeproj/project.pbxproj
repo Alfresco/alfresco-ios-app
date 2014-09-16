@@ -112,6 +112,7 @@
 		271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */; };
 		271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC762189C2D250059D1B2 /* status-sync-waiting.png */; };
 		271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */; };
+		272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 272C41D319C7AF2600DABBF0 /* libFlurry_5.3.0.a */; };
 		272CC7BD19466B680009FADA /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272CC7BC19466B680009FADA /* MapViewController.m */; };
 		272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 272CC7C51946727A0009FADA /* AlfrescoDocument+MapAnnotation.m */; };
 		272CC7CD194690AD0009FADA /* segment-icon-comments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7C8194690AD0009FADA /* segment-icon-comments@2x.png */; };
@@ -185,7 +186,6 @@
 		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
 		7302475519544AD50034D861 /* playButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475319544AD50034D861 /* playButton@2x.png */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
-		730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730B444918EC393B008A0977 /* libFlurry_4.4.0.a */; };
 		730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B444D18EC3A96008A0977 /* AnalyticsManager.m */; };
 		730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B445618ED7B96008A0977 /* FilePreviewViewController.m */; };
 		730B445918ED7B96008A0977 /* FilePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730B445718ED7B96008A0977 /* FilePreviewViewController.xib */; };
@@ -667,6 +667,7 @@
 		271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC762189C2D250059D1B2 /* status-sync-waiting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting.png"; sourceTree = "<group>"; };
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
+		272C41D319C7AF2600DABBF0 /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		272CC7BB19466B680009FADA /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		272CC7BC19466B680009FADA /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		272CC7C41946727A0009FADA /* AlfrescoDocument+MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocument+MapAnnotation.h"; sourceTree = "<group>"; };
@@ -777,7 +778,6 @@
 		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
 		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
 		730B444818EC393B008A0977 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		730B444918EC393B008A0977 /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		730B444C18EC3A96008A0977 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		730B444D18EC3A96008A0977 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		730B445518ED7B96008A0977 /* FilePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePreviewViewController.h; sourceTree = "<group>"; };
@@ -1212,8 +1212,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
-				730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */,
 				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
+				272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1633,8 +1633,8 @@
 		730B444718EC393B008A0977 /* Flurry */ = {
 			isa = PBXGroup;
 			children = (
+				272C41D319C7AF2600DABBF0 /* libFlurry_5.3.0.a */,
 				730B444818EC393B008A0977 /* Flurry.h */,
-				730B444918EC393B008A0977 /* libFlurry_4.4.0.a */,
 			);
 			path = Flurry;
 			sourceTree = "<group>";
