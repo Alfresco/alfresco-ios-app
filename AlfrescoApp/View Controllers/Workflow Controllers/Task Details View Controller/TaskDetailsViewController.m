@@ -116,10 +116,13 @@ static UILayoutPriority const kLowPriority = 250;
     // configure the view
     [self configureForFilter:self.taskFilter];
     
-    // Add reassign button
-    UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
-    self.navigationItem.rightBarButtonItem = reassignButton;
-    
+    // Add reassign button for tasks
+    if (self.task)
+    {
+        UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
+        self.navigationItem.rightBarButtonItem = reassignButton;
+    }
+
     [self.cancelButton addTarget:self action:@selector(cancelCommentAction:) forControlEvents:UIControlEventTouchUpInside];
 
     // Dismiss keyboard gesture
