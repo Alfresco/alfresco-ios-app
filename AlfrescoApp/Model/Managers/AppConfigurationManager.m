@@ -157,8 +157,16 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     }
     else if ([menuItemKey isEqualToString:kAppConfigurationTasksKey])
     {
-        // We do not currently support creating or querying workflows for Alfresco in the cloud
-        visible = ([self.alfrescoSession isKindOfClass:[AlfrescoRepositorySession class]]);
+        // Only show tasks for on-premise servers, if a workflow engine is available
+        if ([self.alfrescoSession isKindOfClass:[AlfrescoCloudSession class]])
+        {
+            visible = NO;
+        }
+        else if (!self.alfrescoSession.repositoryInfo.capabilities.doesSupportActivitiWorkflowEngine &&
+                 !self.alfrescoSession.repositoryInfo.capabilities.doesSupportJBPMWorkflowEngine)
+        {
+            visible = NO;
+        }
         
         if (visible)
         {

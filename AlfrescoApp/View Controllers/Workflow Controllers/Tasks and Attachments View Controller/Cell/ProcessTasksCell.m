@@ -79,12 +79,16 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
         self.taskEndedAtTextLabel.text = @"";
     }
     
-    NSDictionary *attributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:self.taskStatusTextLabel.font.pointSize]};
-    NSRange usernameRange = [statusString rangeOfString:task.assigneeIdentifier];
-    NSRange boldRange = NSMakeRange(usernameRange.length, statusString.length - usernameRange.length);
-    
     NSMutableAttributedString *test = [[NSMutableAttributedString alloc] initWithString:statusString];
-    [test addAttributes:attributes range:boldRange];
+    
+    if (task.assigneeIdentifier != nil)
+    {
+        NSDictionary *attributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:self.taskStatusTextLabel.font.pointSize]};
+        NSRange usernameRange = [statusString rangeOfString:task.assigneeIdentifier];
+        NSRange boldRange = NSMakeRange(usernameRange.length, statusString.length - usernameRange.length);
+        [test addAttributes:attributes range:boldRange];
+    }
+    
     self.taskStatusTextLabel.attributedText = test;
 }
 

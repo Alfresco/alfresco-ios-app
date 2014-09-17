@@ -32,7 +32,7 @@ static NSString * const kActivitiToDo = @"activitiAdhoc";
 static NSString * const kJBPMReview = @"wf:review";
 static NSString * const kJBPMParallelReview = @"wf:parallelreview";
 static NSString * const kJBPMToDo = @"wf:adhoc";
-static NSString * const kSupportedTasksPredicateFormat = @"processDefinitionIdentifier CONTAINS %@";
+static NSString * const kSupportedTasksPredicateFormat = @"processDefinitionIdentifier CONTAINS %@ AND NOT (processDefinitionIdentifier CONTAINS[c] 'pooled')";
 static NSString * const kAdhocProcessTypePredicateFormat = @"SELF CONTAINS[cd] %@";
 static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername like %@";
 
