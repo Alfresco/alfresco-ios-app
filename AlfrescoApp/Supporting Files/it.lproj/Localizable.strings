@@ -582,7 +582,7 @@
 "task.completed.success.message" = "Compito completato";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@ ha completato il compito %@";
+"tasks.cell.taskcompleted" = "%@ ha completato il compito";
 "tasks.cell.tasknotcompleted" = "%@ non ha completato il compito";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "Nuovo compito";
