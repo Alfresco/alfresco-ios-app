@@ -129,7 +129,7 @@
 "error.host.unreachable.title" = "Verbindungsfehler";
 "error.host.unreachable.message" = "Ihr Hostname ist anscheinend falsch oder Sie müssen Ihr VPN aktivieren. Überprüfen Sie die Account-Einstellungen.";
 "error.retrieving.metadata" = "Eigenschaften für %@ konnten nicht abgerufen werden.";
-"error.server.message" = "An error occurred on the server.";
+"error.server.message" = "Auf dem Server ist ein Fehler aufgetreten.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Prozess für Aufgabe kann nicht abgeschlossen werden. Fehler: %@.";
 "error.workflow.unable.to.reassign.task" = "Aufgabe kann nicht neu zugewiesen werden. Fehler: %@.";
