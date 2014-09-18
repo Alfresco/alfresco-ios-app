@@ -129,7 +129,7 @@
 "error.host.unreachable.title" = "接続エラー";
 "error.host.unreachable.message" = "ホスト名の値が間違っているか、お使いのVPNを有効にする必要があります。アカウント設定を確認してください。";
 "error.retrieving.metadata" = "%@ のプロパティを検索できませんでした。";
-"error.server.message" = "An error occurred on the server.";
+"error.server.message" = "サーバーでエラーが発生しました。";
 // Workflow
 "error.workflow.unable.to.complete.process" = "タスクの処理を完了することができません。エラー: %@";
 "error.workflow.unable.to.reassign.task" = "タスクを再割り当てできません。エラー: %@";

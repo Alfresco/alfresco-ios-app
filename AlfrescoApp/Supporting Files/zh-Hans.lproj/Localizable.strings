@@ -129,7 +129,7 @@
 "error.host.unreachable.title" = "连接错误";
 "error.host.unreachable.message" = "您的主机名值似乎是错误的，或者您可能需要激活 VPN 码。请检查您的帐户设置。";
 "error.retrieving.metadata" = "无法检索到 %@ 的属性。";
-"error.server.message" = "An error occurred on the server.";
+"error.server.message" = "在服务器上发生错误";
 // Workflow
 "error.workflow.unable.to.complete.process" = "无法完成对任务的处理。错误：%@";
 "error.workflow.unable.to.reassign.task" = "无法重新指派任务。错误：%@";
