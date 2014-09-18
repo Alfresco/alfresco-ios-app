@@ -28,4 +28,6 @@
 
 - (NSDictionary *)dictionaryRepresentation;
 
+- (BOOL)isValid;
+
 @end

@@ -58,6 +58,19 @@
     return [self dictionaryWithValuesForKeys:[self getPropertyNames]];
 }
 
+- (BOOL)isValid
+{
+    BOOL valid = NO;
+    
+    // determine whether the currently stored information is valid
+    if (self.accountID && self.nodeRef && self.originalFileLocation)
+    {
+        valid = YES;
+    }
+    
+    return valid;
+}
+
 #pragma mark - Custom Getters and Setters
 
 - (void)setOriginalFileLocation:(NSString *)originalFileLocation
