@@ -428,7 +428,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if ([self.popover isPopoverVisible])
         {
             [self.popover dismissPopoverAnimated:YES];
-            [self setPopover:nil];
+            self.popover = nil;
             if (completionBlock != NULL)
             {
                 completionBlock();
@@ -1392,22 +1392,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (IS_IPAD)
     {
-        FailedTransferDetailViewController *syncFailedDetailController = nil;
-        
-        syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
-                                                                                       message:errorDescription retryCompletionBlock:^(BOOL retry) {
-                                                                                           if (retry)
-                                                                                           {
-                                                                                               [self retrySyncAndCloseRetryPopover];
-                                                                                           }
+        FailedTransferDetailViewController *syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
+                                                                                       message:errorDescription retryCompletionBlock:^() {
+                                                                                           [self retrySyncAndCloseRetryPopover];
                                                                                        }];
         
+        if (self.retrySyncPopover)
+        {
+            [self.retrySyncPopover dismissPopoverAnimated:YES];
+        }
         self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
         [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         
-        if(cell.accessoryView.window != nil)
+        if (cell.accessoryView.window != nil)
         {
             [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }

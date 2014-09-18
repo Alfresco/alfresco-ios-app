@@ -103,7 +103,7 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
 {
     if (self.retryCompletionBlock != NULL)
     {
-        self.retryCompletionBlock(YES);
+        self.retryCompletionBlock();
     }
 }
 
