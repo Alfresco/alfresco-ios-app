@@ -129,7 +129,7 @@
 "error.host.unreachable.title" = "Error de conexión";
 "error.host.unreachable.message" = "El valor de su hostname parece erróneo o podría necesitar activar su VPN. Compruebe los ajustes de su cuenta de Google.";
 "error.retrieving.metadata" = "Las propiedades para %@ no pudieron recuperarse.";
-"error.server.message" = "An error occurred on the server.";
+"error.server.message" = "Sucedió un error en el servidor.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Imposible completar el proceso de la tarea. Error: %@";
 "error.workflow.unable.to.reassign.task" = "Imposible reasignar tarea. Error: %@";

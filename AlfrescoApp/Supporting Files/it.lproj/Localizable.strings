@@ -129,7 +129,7 @@
 "error.host.unreachable.title" = "Errore di connessione";
 "error.host.unreachable.message" = "Il valore nome host non è corretto oppure è necessario attivare la VPN. Verificare le impostazioni dell'account.";
 "error.retrieving.metadata" = "Impossibile recuperare le proprietà per %@.";
-"error.server.message" = "An error occurred on the server.";
+"error.server.message" = "Si è verificato un errore sul server.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Impossibile completare l'elaborazione del compito. Errore: %@";
 "error.workflow.unable.to.reassign.task" = "Impossibile riassegnare il compito. Errore: %@";
