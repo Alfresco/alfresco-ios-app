@@ -688,8 +688,6 @@
  */
 "saveback.hud.message" = "Guardando...";
 "saveback.saved.successfully.message" = "fichero %@ guardado correctamente.";
-"saveback.failed.title" = "Error al volver a guardar";
-"saveback.failed.message" = "Error al intentar volver a guardar %@. ¿Desea volver a intentarlo?";
 "saveback.completed.title" = "Volver a guardar completado";
 "saveback.completed.message" = "%@ se ha vuelto a guardar correctamente";
 "saveback.failed.title" = "Error al volver a guardar";

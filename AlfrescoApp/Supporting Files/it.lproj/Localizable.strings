@@ -688,8 +688,6 @@
  */
 "saveback.hud.message" = "Salvataggio in corso";
 "saveback.saved.successfully.message" = "Il file %@ è stato salvato correttamente.";
-"saveback.failed.title" = "Salvataggio non riuscito";
-"saveback.failed.message" = "Tentativo di salvataggio di %@ non riuscito. Riprovare?";
 "saveback.completed.title" = "Salvataggio completato";
 "saveback.completed.message" = "%@ è stato salvato correttamente";
 "saveback.failed.title" = "Salvataggio non riuscito";

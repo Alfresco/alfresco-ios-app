@@ -688,8 +688,6 @@
  */
 "saveback.hud.message" = "Speichern...";
 "saveback.saved.successfully.message" = "Die Datei %@ wurde erfolgreich gespeichert.";
-"saveback.failed.title" = "Zurückspeichern fehlgeschlagen";
-"saveback.failed.message" = "Der Versuch, %@ zurückzuspeichern, ist fehlgeschlagen. Möchten Sie es erneut versuchen?";
 "saveback.completed.title" = "Zurückspeichern abgeschlossen";
 "saveback.completed.message" = "%@ wurde erfolgreich zurückgespeichert.";
 "saveback.failed.title" = "Zurückspeichern fehlgeschlagen";

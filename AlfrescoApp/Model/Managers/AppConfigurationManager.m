@@ -453,7 +453,13 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 
 - (void)retrieveMyFilesWithCompletionBlock:(void (^)())completionBlock
 {
-    NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", self.alfrescoSession.personIdentifier];
+    // MOBILE-2984: The username needs to be escaped using ISO9075 encoding, as there's nothing built-in to do this and this
+    // is a temporary fix (CMIS 1.1 will expose the nodeRef of the users home folder) we'll manually replace the commonly used
+    // characters manually, namely, "@" and space rather than implementing a complete ISO9075 encoder!
+    NSString *escapedUsername = [self.alfrescoSession.personIdentifier stringByReplacingOccurrencesOfString:@"@" withString:@"_x0040_"];
+    escapedUsername = [escapedUsername stringByReplacingOccurrencesOfString:@" " withString:@"_x0020_"];
+    
+    NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", escapedUsername];
     [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *resultsArray, NSError *error) {
         if (error)
         {

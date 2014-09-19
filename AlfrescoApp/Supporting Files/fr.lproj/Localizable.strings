@@ -688,8 +688,6 @@
  */
 "saveback.hud.message" = "Enregistrement...";
 "saveback.saved.successfully.message" = "Le fichier %@ a été créé.";
-"saveback.failed.title" = "L’enregistrement a échoué";
-"saveback.failed.message" = "La tentative d’enregistrement de %@ a échoué. Voulez-vous refaire une tentative ?";
 "saveback.completed.title" = "L’enregistrement a été effectué";
 "saveback.completed.message" = "%@ a été enregistré";
 "saveback.failed.title" = "L’enregistrement a échoué";

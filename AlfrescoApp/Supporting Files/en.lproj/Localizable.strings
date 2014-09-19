@@ -688,8 +688,6 @@
  */
 "saveback.hud.message" = "Saving...";
 "saveback.saved.successfully.message" = "The file %@ was successfully saved.";
-"saveback.failed.title" = "Save back Failed";
-"saveback.failed.message" = "The attempt to save back %@ failed. Would you like to retry?";
 "saveback.completed.title" = "Save back Completed";
 "saveback.completed.message" = "%@ has successfully been saved back";
 "saveback.failed.title" = "Save back Failed";
