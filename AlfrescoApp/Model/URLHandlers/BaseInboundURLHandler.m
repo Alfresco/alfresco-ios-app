@@ -140,6 +140,7 @@
     else
     {
         // MOBILE-2992: without the nodeRef in the metadata there's not a lot we can do so just show an error message
+        // TODO: Use a more informative error message i.e. save back failed due to insufficient information being provided
         NSString *title = NSLocalizedString(@"saveback.failed.title", @"SaveBack Failed Title");
         displayErrorMessageWithTitle(title, title);
     }
@@ -151,93 +152,108 @@
 
 - (void)fileLocationSelectionViewController:(FileLocationSelectionViewController *)selectionController uploadToFolder:(AlfrescoFolder *)folder session:(id<AlfrescoSession>)session filePath:(NSString *)filePath
 {
-    AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    
-    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
-    [inputStream open];
-    
-    // mimetype
-    NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.pathExtension];
-    
-    // Get the file size
-    // It appears that the content size is required by CMIS when creating the content, but not when updating existing content
-    NSError *attributeError = nil;
-    NSDictionary *fileAttributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:filePath error:&attributeError];
-    
-    if (attributeError)
+    if (folder && session && filePath)
     {
-        AlfrescoLogError(@"Unable to get the attributes for the item at path: %@", filePath);
-    }
-    
-    unsigned long long fileLength = [(NSNumber *)fileAttributes[kAlfrescoFileSize] unsignedLongLongValue];
-    AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:mimeType length:fileLength];
-    NSString *fileName = [filePath.lastPathComponent stringByRemovingPercentEncoding];
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:selectionController.navigationController.view];
-    progressHUD.mode = MBProgressHUDModeDeterminate;
-    
-    [selectionController.navigationController.view addSubview:progressHUD];
-    [progressHUD show:YES];
-    
-    [documentFolderService createDocumentWithName:fileName inParentFolder:folder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-        // success block
-        void (^successBlock)(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) = ^(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) {
-            [progressHUD hide:YES];
-            [creationInputStream close];
-            [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
-
-            [selectionController dismissViewControllerAnimated:YES completion:^{
-                NSString *title = NSLocalizedString(@"saveback.upload.completed.title", @"Upload Completed");
-                NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.completed.message", @"Upload Completed"), createdDocument.name, folder.name];
-                displayInformationMessageWithTitle(message, title);
-            }];
-        };
+        AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         
-        // failure block
-        void (^failureBlock)(NSError *creationError, NSInputStream *creationInputStream) = ^(NSError *creationError, NSInputStream *creationInputStream) {
-            [progressHUD hide:YES];
-            [creationInputStream close];
-            NSString *title = NSLocalizedString(@"saveback.upload.failed.title", @"Upload Failed");
-            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.failed.message", @"Upload Failed"), filePath.lastPathComponent, folder.name];
-            displayErrorMessageWithTitle(message, title);
-        };
+        NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
+        [inputStream open];
         
-        if (error)
+        // mimetype
+        NSString *mimeType = [Utility mimeTypeForFileExtension:filePath.pathExtension];
+        
+        // Get the file size
+        // It appears that the content size is required by CMIS when creating the content, but not when updating existing content
+        NSError *attributeError = nil;
+        NSDictionary *fileAttributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:filePath error:&attributeError];
+        
+        if (attributeError)
         {
-            // content already exists, then append the current time to it and try again.
-            if (error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists)
-            {
-                NSString *updatedFileName = fileNameAppendedWithDate(fileName);
-                NSInputStream *retryInputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
-                [retryInputStream open];
-                AlfrescoContentStream *retryContentStream = [[AlfrescoContentStream alloc] initWithStream:retryInputStream mimeType:mimeType length:fileLength];
-                
-                [documentFolderService createDocumentWithName:updatedFileName inParentFolder:folder contentStream:retryContentStream properties:nil completionBlock:^(AlfrescoDocument *renamedDocument, NSError *renamedError) {
-                    if (renamedError)
-                    {
-                        failureBlock(renamedError, retryInputStream);
-                    }
-                    else
-                    {
-                        successBlock(renamedDocument, retryInputStream);
-                    }
-                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                    // Update progress HUD
-                    progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
+            AlfrescoLogError(@"Unable to get the attributes for the item at path: %@", filePath);
+        }
+        
+        unsigned long long fileLength = [(NSNumber *)fileAttributes[kAlfrescoFileSize] unsignedLongLongValue];
+        AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:mimeType length:fileLength];
+        NSString *fileName = [filePath.lastPathComponent stringByRemovingPercentEncoding];
+        if (!fileName)
+        {
+            // MOBILE-2995: generate a fileName if necessary
+            fileName = [NSString stringWithFormat:@"%@.%@", [[NSUUID UUID] UUIDString], [Utility fileExtensionFromMimeType:mimeType]];
+        }
+        MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:selectionController.navigationController.view];
+        progressHUD.mode = MBProgressHUDModeDeterminate;
+        
+        [selectionController.navigationController.view addSubview:progressHUD];
+        [progressHUD show:YES];
+        
+        [documentFolderService createDocumentWithName:fileName inParentFolder:folder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+            // success block
+            void (^successBlock)(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) = ^(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) {
+                [progressHUD hide:YES];
+                [creationInputStream close];
+                [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
+
+                [selectionController dismissViewControllerAnimated:YES completion:^{
+                    NSString *title = NSLocalizedString(@"saveback.upload.completed.title", @"Upload Completed");
+                    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.completed.message", @"Upload Completed"), createdDocument.name, folder.name];
+                    displayInformationMessageWithTitle(message, title);
                 }];
+            };
+            
+            // failure block
+            void (^failureBlock)(NSError *creationError, NSInputStream *creationInputStream) = ^(NSError *creationError, NSInputStream *creationInputStream) {
+                [progressHUD hide:YES];
+                [creationInputStream close];
+                NSString *title = NSLocalizedString(@"saveback.upload.failed.title", @"Upload Failed");
+                NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.failed.message", @"Upload Failed"), filePath.lastPathComponent, folder.name];
+                displayErrorMessageWithTitle(message, title);
+            };
+            
+            if (error)
+            {
+                // content already exists, then append the current time to it and try again.
+                if (error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists)
+                {
+                    NSString *updatedFileName = fileNameAppendedWithDate(fileName);
+                    NSInputStream *retryInputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
+                    [retryInputStream open];
+                    AlfrescoContentStream *retryContentStream = [[AlfrescoContentStream alloc] initWithStream:retryInputStream mimeType:mimeType length:fileLength];
+                    
+                    [documentFolderService createDocumentWithName:updatedFileName inParentFolder:folder contentStream:retryContentStream properties:nil completionBlock:^(AlfrescoDocument *renamedDocument, NSError *renamedError) {
+                        if (renamedError)
+                        {
+                            failureBlock(renamedError, retryInputStream);
+                        }
+                        else
+                        {
+                            successBlock(renamedDocument, retryInputStream);
+                        }
+                    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                        // Update progress HUD
+                        progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
+                    }];
+                }
+                else
+                {
+                    failureBlock(error, inputStream);
+                }
             }
             else
             {
-                failureBlock(error, inputStream);
+                successBlock(document, inputStream);
             }
-        }
-        else
-        {
-            successBlock(document, inputStream);
-        }
-    } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-        // Update progress HUD
-        progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
-    }];
+        } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+            // Update progress HUD
+            progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
+        }];
+    }
+    else
+    {
+        // MOBILE-2995: ensure we have all the information we need to attempt save back
+        // TODO: Use a more informative error message i.e. save back failed due to insufficient information being provided
+        NSString *title = NSLocalizedString(@"saveback.failed.title", @"SaveBack Failed Title");
+        displayErrorMessageWithTitle(title, title);
+    }
 }
 
 - (void)fileLocationSelectionViewController:(FileLocationSelectionViewController *)selectionController saveFileAtPathToDownloads:(NSString *)filePath
