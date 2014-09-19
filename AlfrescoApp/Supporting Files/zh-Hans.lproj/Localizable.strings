@@ -688,8 +688,6 @@
  */
 "saveback.hud.message" = "正在保存...";
 "saveback.saved.successfully.message" = "文件 %@ 已成功保存。";
-"saveback.failed.title" = "保存回操作失败";
-"saveback.failed.message" = "尝试保存回 %@ 失败。是否要重试？";
 "saveback.completed.title" = "保存回操作已完成";
 "saveback.completed.message" = "已成功保存回 %@";
 "saveback.failed.title" = "保存回操作失败";
