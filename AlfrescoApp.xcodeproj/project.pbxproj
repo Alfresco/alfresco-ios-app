@@ -3653,6 +3653,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -3684,7 +3688,6 @@
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
@@ -3785,6 +3788,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -3816,7 +3823,6 @@
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
@@ -3855,7 +3861,6 @@
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
