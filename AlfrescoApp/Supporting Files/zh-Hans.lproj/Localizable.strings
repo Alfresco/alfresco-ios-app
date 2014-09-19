@@ -229,7 +229,6 @@
 "accountdetails.fields.firstName" = "名字";
 "accountdetails.fields.lastName" = "姓氏";
 "accountdetails.fields.username" = "用户名";
-"accountdetails.fields.email" = "电子邮件";
 "accountdetails.fields.password" = "密码";
 "accountdetails.fields.confirmPassword" = "确认密码";
 "accountdetails.placeholder.password.requirement" = "至少 6 个字符。";
@@ -430,7 +429,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "已存在一个同名的本地文件。是否要覆盖已有的本地文件？";
 "download.success.message" = "文件已保存";
 "download.success-as.message" = "文件另存为 %@";

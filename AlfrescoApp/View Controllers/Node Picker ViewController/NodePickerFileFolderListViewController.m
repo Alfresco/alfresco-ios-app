@@ -105,6 +105,11 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     [self.tableView reloadData];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)cancelButtonPressed:(id)sender
 {
     [self.nodePicker cancel];

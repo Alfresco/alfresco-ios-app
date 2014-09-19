@@ -128,6 +128,12 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
     [self validateForm];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.tableView.delegate = nil;
+}
+
 #pragma mark - Private Methods
 
 - (void)createTableViewGroups

@@ -229,7 +229,6 @@
 "accountdetails.fields.firstName" = "Nome";
 "accountdetails.fields.lastName" = "Cognome";
 "accountdetails.fields.username" = "Nome utente";
-"accountdetails.fields.email" = "E-mail";
 "accountdetails.fields.password" = "Password";
 "accountdetails.fields.confirmPassword" = "Conferma password";
 "accountdetails.placeholder.password.requirement" = "Min. 6 caratteri";
@@ -430,7 +429,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "Esiste già un file locale con lo stesso nome. Sovrascrivere il file esistente?";
 "download.success.message" = "File salvato";
 "download.success-as.message" = "File salvato come %@";

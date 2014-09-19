@@ -65,6 +65,11 @@ static NSInteger const kSectionNumberAdHoc = 0;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)dealloc
+{
+    self.tableView.delegate = nil;
+}
+
 #pragma mark - TableView Delegate and Datasource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

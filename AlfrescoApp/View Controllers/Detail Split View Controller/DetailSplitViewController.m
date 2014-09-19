@@ -117,6 +117,11 @@ static const CGFloat kAnimationSpeed = 0.2f;
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Public Functions
 
 - (void)expandOrCollapse

@@ -103,6 +103,7 @@ static NSUInteger const kAccountsRowNumber = 0;
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
+    view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     view.autoresizesSubviews = YES;
     self.view = view;
 

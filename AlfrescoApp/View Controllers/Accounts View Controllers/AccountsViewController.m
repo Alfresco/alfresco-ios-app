@@ -85,6 +85,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     [self.tableView reloadData];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Notification Methods
 
 - (void)sessionReceived:(NSNotification *)notification

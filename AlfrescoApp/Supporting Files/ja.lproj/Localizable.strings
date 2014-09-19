@@ -229,7 +229,6 @@
 "accountdetails.fields.firstName" = "名";
 "accountdetails.fields.lastName" = "姓";
 "accountdetails.fields.username" = "ユーザー名";
-"accountdetails.fields.email" = "Eメール";
 "accountdetails.fields.password" = "パスワード";
 "accountdetails.fields.confirmPassword" = "パスワードの確認";
 "accountdetails.placeholder.password.requirement" = "6文字以上";
@@ -430,7 +429,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "同じ名前のローカルファイルがすでにあります。既存のファイルを上書きしますか";
 "download.success.message" = "ファイルが保存されました";
 "download.success-as.message" = "ファイルが%@として保存されました";

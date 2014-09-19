@@ -28,7 +28,7 @@
 - (void)setup
 {
     self.metadataTableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.metadataTableview layoutSubviews];
+    [self.metadataTableview setNeedsLayout];
     self.disclosureImageView.image = [self.disclosureImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
