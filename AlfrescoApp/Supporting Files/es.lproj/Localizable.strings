@@ -229,7 +229,6 @@
 "accountdetails.fields.firstName" = "Nombre";
 "accountdetails.fields.lastName" = "Apellido";
 "accountdetails.fields.username" = "Nombre de usuario";
-"accountdetails.fields.email" = "Correo electrónico";
 "accountdetails.fields.password" = "Contraseña";
 "accountdetails.fields.confirmPassword" = "Confirmar contraseña";
 "accountdetails.placeholder.password.requirement" = "6 caracteres como mínimo";
@@ -430,7 +429,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "Ya existe un fichero local con el mismo nombre. ¿Desea sobrescribir el fichero existente?";
 "download.success.message" = "fichero guardado";
 "download.success-as.message" = "fichero guardado como %@";

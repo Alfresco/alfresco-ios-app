@@ -229,7 +229,6 @@
 "accountdetails.fields.firstName" = "Prénom";
 "accountdetails.fields.lastName" = "Nom";
 "accountdetails.fields.username" = "Nom d’utilisateur";
-"accountdetails.fields.email" = "E-mail";
 "accountdetails.fields.password" = "Mot de passe";
 "accountdetails.fields.confirmPassword" = "Confirmer le mot de passe";
 "accountdetails.placeholder.password.requirement" = "6 caractères au minimum";
@@ -430,7 +429,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "Un fichier local portant ce nom existe déjà. Voulez-vous remplacer le fichier existant ?";
 "download.success.message" = "Fichier enregistré";
 "download.success-as.message" = "Fichier enregistré en tant que %@";
