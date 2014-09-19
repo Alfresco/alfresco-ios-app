@@ -101,6 +101,11 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)createTask:(id)sender
 {
     TaskTypeViewController *taskTypeController = [[TaskTypeViewController alloc] initWithSession:self.session];

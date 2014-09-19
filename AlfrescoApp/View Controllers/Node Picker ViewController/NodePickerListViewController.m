@@ -79,6 +79,11 @@ static NSInteger const kDefaultNumberOfRows = 1;
     [self.picker hideMultiSelectToolBar];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)editButtonPressed:(id)sender
 {
     self.tableView.editing = !self.tableView.isEditing;

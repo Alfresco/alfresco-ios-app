@@ -48,6 +48,11 @@ static BOOL sFileProtectionEnabled = NO;
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Public Methods
 
 - (BOOL)updateProtectionForFileAtPath:(NSString *)path
