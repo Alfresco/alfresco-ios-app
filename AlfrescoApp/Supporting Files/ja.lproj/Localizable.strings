@@ -582,7 +582,7 @@
 "task.completed.success.message" = "完了済みタスク";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@は、このタスク%@を完了しました";
+"tasks.cell.taskcompleted" = "%@は、このタスクを完了しました";
 "tasks.cell.tasknotcompleted" = "%@は、このタスクを完了していません";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "新しいタスク";
