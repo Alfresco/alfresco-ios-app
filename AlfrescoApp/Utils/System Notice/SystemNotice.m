@@ -80,6 +80,11 @@ CGFloat hiddenYOrigin;
     return self;
 }
 
+- (void)dealloc
+{
+    self.animator.delegate = nil;
+}
+
 - (BOOL)isEqual:(id)object
 {
     if ([object class] == [SystemNotice class])

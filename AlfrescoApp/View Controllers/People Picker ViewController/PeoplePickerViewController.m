@@ -112,6 +112,12 @@ static NSInteger const kSearchResultsIndex = 0;
     [self.peoplePicker pickingPeopleComplete];
 }
 
+- (void)dealloc
+{
+    self.tableView.delegate = nil;
+    self.searchBar.delegate = nil;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

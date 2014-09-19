@@ -221,6 +221,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.tableView.delegate = nil;
+    self.imagePickerController.delegate = nil;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

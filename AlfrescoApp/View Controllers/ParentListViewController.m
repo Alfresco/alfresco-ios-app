@@ -58,6 +58,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.tableView.delegate = nil;
 }
 
 - (void)viewDidLoad
