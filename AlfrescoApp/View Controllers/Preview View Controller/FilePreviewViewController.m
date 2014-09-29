@@ -517,7 +517,14 @@ static CGFloat sDownloadProgressHeight;
         }
         else
         {
-            presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+            if (self.document)
+            {
+                presentationViewController = [[FilePreviewViewController alloc] initWithDocument:self.document session:self.session];
+            }
+            else
+            {
+                presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:self.filePathForFileToLoad document:nil];
+            }
         }
         
         presentationViewController.fullScreenMode = YES;
