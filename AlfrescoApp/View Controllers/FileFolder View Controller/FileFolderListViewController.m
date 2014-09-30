@@ -161,7 +161,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (self.initialFolder)
     {
-        [self setDisplayFolder:self.initialFolder];
+        self.displayFolder = self.initialFolder;
     }
     else
     {
@@ -180,7 +180,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (self.tableView.isEditing)
     {
-        [self.tableView setEditing:NO];
+        self.tableView.editing = NO;
     }
 }
 
@@ -330,11 +330,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                                                action:@selector(performEditBarButtonItemAction:)];
     }
     
-    if (self.editBarButtonItem)
-    {
-        self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
-        [rightBarButtonItems addObject:self.editBarButtonItem];
-    }
+    self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
+    [rightBarButtonItems addObject:self.editBarButtonItem];
     
     if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
     {
@@ -348,17 +345,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 self.actionSheetBarButton = displayActionSheetButton;
             }
             
-            if (!self.actionSheetSender.enabled && [self.actionSheetBarButton isEqual:self.actionSheetSender])
-            {
-                self.actionSheetBarButton.enabled = NO;
-                self.actionSheetSender = self.actionSheetBarButton;
-            }
-            
             [rightBarButtonItems addObject:self.actionSheetBarButton];
-        }
-        else
-        {
-            self.actionSheetSender = nil;
         }
     }
     [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
@@ -386,7 +373,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (IS_IPAD)
     {
-        [actionSheet setActionSheetStyle:UIActionSheetStyleDefault];
+        actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
         [actionSheet showFromBarButtonItem:sender animated:YES];
     }
     else
@@ -397,24 +384,22 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // UIActionSheet button titles don't pick up the global tint color by default
     [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
 
-    self.actionSheetSender = (UIBarButtonItem *)sender;
-    self.actionSheetSender.enabled = NO;
     self.actionSheet = actionSheet;
-    self.editBarButtonItem.enabled = NO;
+    self.actionSheetSender = sender;
 }
 
 - (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated
 {
-    self.actionSheetSender.enabled = NO;
-    
     if (IS_IPAD)
     {
         UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
         popoverController.delegate = self;
         self.popover = popoverController;
-        [self.popover setContentViewController:controller];
+        self.popover.contentViewController = controller;
         
-        [self.popover presentPopoverFromBarButtonItem:self.actionSheetSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.popover presentPopoverFromBarButtonItem:self.actionSheetSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+        });
     }
     else
     {
@@ -429,11 +414,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if ([self.popover isPopoverVisible])
         {
             [self.popover dismissPopoverAnimated:YES];
-            self.popover = nil;
-            if (completionBlock != NULL)
-            {
-                completionBlock();
-            }
+        }
+        self.popover = nil;
+        if (completionBlock != NULL)
+        {
+            completionBlock();
         }
     }
     else
@@ -453,7 +438,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             AlfrescoFolder *rootFolder = [self.session rootFolder];
             if (rootFolder)
             {
-                [self setDisplayFolder:rootFolder];
+                self.displayFolder = rootFolder;
                 self.navigationItem.title = rootFolder.name;
                 [self retrieveAndSetPermissionsOfCurrentFolder];
                 [self hidePullToRefreshView];
@@ -463,7 +448,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
                     if (folder)
                     {
-                        [self setDisplayFolder:folder];
+                        self.displayFolder = folder;
                         self.navigationItem.title = folder.name;
                         [self retrieveAndSetPermissionsOfCurrentFolder];
                         [self hidePullToRefreshView];
@@ -503,7 +488,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
-    [self setDisplayFolder:nil];
+    self.displayFolder = nil;
     self.tableView.tableHeaderView = nil;
     
     [self createAlfrescoServicesWithSession:session];
@@ -993,19 +978,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *selectedButtonText = [actionSheet buttonTitleAtIndex:buttonIndex];
-    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    
-    if (self.actionSheetSender)
-    {
-        self.actionSheetSender.enabled = YES;
-    }
     
     if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File")])
     {
         TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:self.displayFolder session:self.session delegate:self];
         NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
-        [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
-        self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
+        });
     }
     else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder")])
     {
@@ -1034,10 +1014,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                 }];
             }
-            self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
         }];
-        
-        self.actionSheetSender.enabled = YES;
     }
     else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload", @"Upload")])
     {  
@@ -1049,8 +1026,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         if (IS_IPAD)
         {
-            [uploadActionSheet setActionSheetStyle:UIActionSheetStyleDefault];
-            [uploadActionSheet showFromBarButtonItem:self.actionSheetSender animated:YES];
+            uploadActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [uploadActionSheet showFromBarButtonItem:self.actionSheetSender animated:YES];
+            });
         }
         else
         {
@@ -1059,9 +1038,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         // UIActionSheet button titles don't pick up the global tint color by default
         [Utility colorButtonsForActionSheet:uploadActionSheet tintColor:[UIColor appTintColor]];
-
-        [self.actionSheetSender setEnabled:NO];
-        [self setActionSheet:uploadActionSheet];
     }
     else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo from Library")] ||
              [selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library")])
@@ -1077,6 +1053,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
         }
         
+        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
     }
     else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document")])
@@ -1084,7 +1061,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
         downloadPicker.isDownloadPickerEnabled = YES;
         downloadPicker.downloadPickerDelegate = self;
-        [downloadPicker setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
+        downloadPicker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
         
         [self presentViewInPopoverOrModal:downloadPickerNavigationController animated:YES];
@@ -1106,9 +1083,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
         }
         
-        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+        });
     }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"multiselect.button.delete", @"Multi Select Deleteconfirmation")])
+    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"multiselect.button.delete", @"Multi Select Delete Confirmation")])
     {
         [self deleteMultiSelectedNodes];
     }
@@ -1117,7 +1097,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:self.displayFolder delegate:self];
         NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
         
-        [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
+        });
     }
 }
 
@@ -1125,9 +1107,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (buttonIndex == actionSheet.cancelButtonIndex)
     {
-        self.actionSheetSender.enabled = YES;
-        self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
-        
         if ([[LocationManager sharedManager] isTrackingLocation])
         {
             [[LocationManager sharedManager] stopLocationUpdates];
@@ -1217,7 +1196,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         // construct the file name
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH.mm.ss"];
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH.mm.ss";
         NSString *timestamp = [dateFormatter stringFromDate:[NSDate date]];
         NSString *fileExtension = [filePathInDefaultFileSystem pathExtension];
         
@@ -1261,16 +1240,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             }];
         }
     }
-
-    self.actionSheetSender.enabled = YES;
-    self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     self.capturingMedia = NO;
-    self.actionSheetSender.enabled = YES;
-    self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
     
     if ([[LocationManager sharedManager] isTrackingLocation])
     {
@@ -1292,20 +1266,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     NavigationViewController *uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
     
-    __weak FileFolderListViewController *weakSelf = self;
     [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
         [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-        weakSelf.actionSheetSender.enabled = YES;
     }];
 }
 
 - (void)downloadPickerDidCancel
 {
-    __weak FileFolderListViewController *weakSelf = self;
-    [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
-        weakSelf.actionSheetSender.enabled = YES;
-        weakSelf.editBarButtonItem.enabled = (self.tableViewData.count > 0);
-    }];
+    [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
 }
 
 #pragma mark - UIPopoverControllerDelegate Functions
@@ -1317,9 +1285,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    self.actionSheetSender.enabled = YES;
-    self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
-    
     [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
 }
 
@@ -1331,11 +1296,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self addAlfrescoNodes:@[node] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"upload.success-as.message", @"Document uplaoded as"), node.name]);
-}
-
-- (void)didCancelUpload
-{
-    self.editBarButtonItem.enabled = (self.tableViewData.count > 0);
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -1403,7 +1363,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             [self.retrySyncPopover dismissPopoverAnimated:YES];
         }
         self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
-        [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
+        self.retrySyncPopover.popoverContentSize = syncFailedDetailController.view.frame.size;
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         
