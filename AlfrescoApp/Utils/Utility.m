@@ -152,7 +152,7 @@ UIImage *resizeImage(UIImage *image, CGSize size)
     return destImage;
 }
 
-NSString *relativeDateFromDate(NSDate *date)
+NSString *relativeTimeFromDate(NSDate *date)
 {
     if (nil == date)
     {
@@ -216,6 +216,74 @@ NSString *relativeDateFromDate(NSDate *date)
         return relativeDateString(@"one-week", 0);
     }
  
+    double months_ago = round(days_ago / 30);
+    if (days_ago < 30)
+    {
+        return relativeDateString(@"n-weeks", weeks_ago);
+    }
+    if (months_ago == 1)
+    {
+        return relativeDateString(@"one-month", 0);
+    }
+    
+    double years_ago = round(days_ago / 365);
+    if (days_ago < 365)
+    {
+        return relativeDateString(@"n-months", months_ago);
+    }
+    if (years_ago == 1)
+    {
+        return relativeDateString(@"one-year", 0);
+    }
+    
+    return relativeDateString(@"n-years", years_ago);
+}
+
+NSString *relativeDateFromDate(NSDate *date)
+{
+    if (nil == date)
+    {
+        return @"";
+    }
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger preservedComponents = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
+    
+    // Only keep the date components
+    NSDate *today = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:[NSDate date]]];
+    date = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:date]];
+
+    NSDate *earliest = [today earlierDate:date];
+    BOOL isTodayEarlierDate = (today == earliest);
+    NSDate *latest = isTodayEarlierDate ? date : today;
+    
+    NSString *(^relativeDateString)(NSString *key, NSInteger param) = ^NSString *(NSString *key, NSInteger param) {
+        NSString *dateKey = [NSString stringWithFormat:@"relative.date.%@.%@", isTodayEarlierDate ? @"future" : @"past", key];
+        return [NSString stringWithFormat:NSLocalizedString(dateKey, @"Date string"), param];
+    };
+    
+    NSTimeInterval seconds_ago = [latest timeIntervalSinceDate:earliest];
+    if (seconds_ago < 86400) // 24*60*60
+    {
+        return NSLocalizedString(@"relative.date.today", @"Today");
+    }
+    
+    double days_ago = round(seconds_ago / 86400); // 24*60*60
+    if (days_ago == 1)
+    {
+        return relativeDateString(@"one-day", 0);
+    }
+    
+    double weeks_ago = round(days_ago / 7);
+    if (days_ago < 7)
+    {
+        return relativeDateString(@"n-days", days_ago);
+    }
+    if (weeks_ago == 1)
+    {
+        return relativeDateString(@"one-week", 0);
+    }
+    
     double months_ago = round(days_ago / 30);
     if (days_ago < 30)
     {

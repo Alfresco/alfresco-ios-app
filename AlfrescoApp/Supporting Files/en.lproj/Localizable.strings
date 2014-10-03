@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "A minute ago";
 "relative.date.past.n-seconds" = "%d seconds ago";
 "relative.date.just-now" = "Just now";
+"relative.date.today" = "Today";
 "relative.date.future.n-seconds" = "%d seconds from now";
 "relative.date.future.one-minute" = "A minute from now";
 "relative.date.future.n-minutes" = "%d minutes from now";

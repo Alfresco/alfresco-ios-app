@@ -229,7 +229,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                 }];
             }
             
-            NSString *modifiedDateString = relativeDateFromDate(documentNode.modifiedAt);
+            NSString *modifiedDateString = relativeTimeFromDate(documentNode.modifiedAt);
             searchCell.details.text = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, stringForLongFileSize(documentNode.contentLength)];
             searchCell.accessoryView = [self makeDetailDisclosureButton];
         }
