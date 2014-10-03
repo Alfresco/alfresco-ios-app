@@ -320,7 +320,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     else
     {
-        modifiedDateString = nodeStatus.localModificationDate ? relativeDateFromDate(nodeStatus.localModificationDate) : relativeDateFromDate(self.node.modifiedAt);
+        modifiedDateString = nodeStatus.localModificationDate ? relativeTimeFromDate(nodeStatus.localModificationDate) : relativeTimeFromDate(self.node.modifiedAt);
         fileSizeString = (nodeStatus.totalSize > 0) ? stringForLongFileSize(nodeStatus.totalSize) : stringForLongFileSize(((AlfrescoDocument *)self.node).contentLength);
         self.nodeDetails = [NSString stringWithFormat:@"%@ • %@", modifiedDateString, fileSizeString];
     }

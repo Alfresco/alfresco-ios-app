@@ -289,7 +289,9 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
 {
     if (self.datePickerViewController != nil)
     {
-        self.dueDate = date;
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSUInteger preservedComponents = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
+        self.dueDate = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:date]];
         self.datePickerViewController = nil;
         [self.tableView reloadData];
         

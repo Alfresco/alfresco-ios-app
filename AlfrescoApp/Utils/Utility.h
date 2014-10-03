@@ -49,6 +49,7 @@ UIImage *largeImageForType(NSString *type);
  */
 UIImage *resizeImage(UIImage *image, CGSize size);
 
+NSString *relativeTimeFromDate(NSDate *objDate);
 NSString *relativeDateFromDate(NSDate *objDate);
 NSString *stringForLongFileSize(unsigned long long size);
 

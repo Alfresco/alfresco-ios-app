@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "1分前";
 "relative.date.past.n-seconds" = "%d秒前";
 "relative.date.just-now" = "今すぐ";
+"relative.date.today" = "今日";
 "relative.date.future.n-seconds" = "今から%d秒後";
 "relative.date.future.one-minute" = "今から1分後";
 "relative.date.future.n-minutes" = "今から%d分後";

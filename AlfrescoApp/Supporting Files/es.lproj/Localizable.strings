@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "Hace un minuto";
 "relative.date.past.n-seconds" = "Hace %d segundos";
 "relative.date.just-now" = "En este instante";
+"relative.date.today" = "Hoy";
 "relative.date.future.n-seconds" = "En %d segundos a partir de ahora";
 "relative.date.future.one-minute" = "En un minuto a partir de ahora";
 "relative.date.future.n-minutes" = "En %d minutos a partir de ahora";

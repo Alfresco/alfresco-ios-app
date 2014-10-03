@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "一分钟前";
 "relative.date.past.n-seconds" = "%d 秒钟前";
 "relative.date.just-now" = "刚才";
+"relative.date.today" = "今天";
 "relative.date.future.n-seconds" = "从现在起 %d 秒钟之后";
 "relative.date.future.one-minute" = "从现在起一分钟之后";
 "relative.date.future.n-minutes" = "从现在起 %d 分钟之后";

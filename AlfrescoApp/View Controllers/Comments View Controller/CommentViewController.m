@@ -215,7 +215,7 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     
     AlfrescoComment *currentComment = [self.tableViewData objectAtIndex:indexPath.row];
     
-    cell.authorTextLabel.text = [NSString stringWithFormat:@"%@, %@", currentComment.createdBy, relativeDateFromDate(currentComment.createdAt)];
+    cell.authorTextLabel.text = [NSString stringWithFormat:@"%@, %@", currentComment.createdBy, relativeTimeFromDate(currentComment.createdAt)];
     cell.contentTextLabel.text = stringByRemovingHTMLTagsFromString(currentComment.content);
     
     if ([currentComment.createdBy isEqualToString:self.session.personIdentifier])
