@@ -33,7 +33,7 @@
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
-@property (nonatomic, strong) AlfrescoOAuthLoginViewController *loginController;
+@property (nonatomic, strong) AlfrescoOAuthUILoginViewController *loginController;
 @property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 @property (nonatomic, assign) BOOL didCancelLogin;
 @end
@@ -178,10 +178,10 @@
         }
     };
     
-    AlfrescoOAuthLoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthLoginViewController * (void) {
+    AlfrescoOAuthUILoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthUILoginViewController * (void) {
         [self hideHUD];
         NavigationViewController *oauthNavigationController = nil;
-        AlfrescoOAuthLoginViewController *oauthLoginController =  [[AlfrescoOAuthLoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
+        AlfrescoOAuthUILoginViewController *oauthLoginController =  [[AlfrescoOAuthUILoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *error) {
             if (oauthData)
             {
                 account.oauthData = oauthData;

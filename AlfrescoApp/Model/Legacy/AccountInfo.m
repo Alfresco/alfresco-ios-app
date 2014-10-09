@@ -52,7 +52,7 @@ NSString * const kServerIsQualifying = @"kServerIsQualifying";
 {
     [_uuid release];
     [_vendor release];
-    [_description release];
+    [_summary release];
     [_protocol release];
     [_hostname release];
     [_port release];
@@ -82,7 +82,7 @@ NSString * const kServerIsQualifying = @"kServerIsQualifying";
         [_uuid retain];
         
         _vendor = [[aDecoder decodeObjectForKey:kServerVendor] retain];
-        _description = [[aDecoder decodeObjectForKey:kServerDescription] retain];
+        _summary = [[aDecoder decodeObjectForKey:kServerDescription] retain];
         _protocol = [[aDecoder decodeObjectForKey:kServerProtocol] retain];
         _hostname = [[aDecoder decodeObjectForKey:kServerHostName] retain];
         _port = [[aDecoder decodeObjectForKey:kServerPort] retain];
@@ -111,7 +111,7 @@ NSString * const kServerIsQualifying = @"kServerIsQualifying";
 {
     [aCoder encodeObject:_uuid forKey:kServerAccountId];
     [aCoder encodeObject:_vendor forKey:kServerVendor];
-    [aCoder encodeObject:_description forKey:kServerDescription];
+    [aCoder encodeObject:_summary forKey:kServerDescription];
     [aCoder encodeObject:_protocol forKey:kServerProtocol];
     [aCoder encodeObject:_hostname forKey:kServerHostName];
     [aCoder encodeObject:_port forKey:kServerPort];

@@ -508,6 +508,20 @@
 			remoteGlobalIDString = 7373B4F417A66E9400869949;
 			remoteInfo = AlfrescoApp;
 		};
+		5869E8F319E6D9C400C37103 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 73D01E2D197FC3D00065E107;
+			remoteInfo = "AlfrescoSDK-OSX";
+		};
+		5869E8F519E6D9C400C37103 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7333E5EA197FD15000B4CB1D;
+			remoteInfo = "AlfrescoSDK-OSXTests";
+		};
 		73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
@@ -1728,8 +1742,10 @@
 		73036F291886E3CC002AF6DC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.4-debug.a */,
-				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */,
+				73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4-dev-debug.a */,
+				73036F301886E3CC002AF6DC /* AlfrescoSDK-iOSTests.xctest */,
+				5869E8F419E6D9C400C37103 /* libAlfrescoSDK-OSXv1.4-dev-debug.a */,
+				5869E8F619E6D9C400C37103 /* AlfrescoSDK-OSXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3061,17 +3077,31 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.4-debug.a */ = {
+		5869E8F419E6D9C400C37103 /* libAlfrescoSDK-OSXv1.4-dev-debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libAlfrescoSDKv1.4-debug.a";
+			path = "libAlfrescoSDK-OSXv1.4-dev-debug.a";
+			remoteRef = 5869E8F319E6D9C400C37103 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5869E8F619E6D9C400C37103 /* AlfrescoSDK-OSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AlfrescoSDK-OSXTests.xctest";
+			remoteRef = 5869E8F519E6D9C400C37103 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4-dev-debug.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAlfrescoSDK-iOSv1.4-dev-debug.a";
 			remoteRef = 73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */ = {
+		73036F301886E3CC002AF6DC /* AlfrescoSDK-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = AlfrescoSDKTests.xctest;
+			path = "AlfrescoSDK-iOSTests.xctest";
 			remoteRef = 73036F2F1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3833,7 +3863,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.4.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3965,7 +3995,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.4-debug.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev-debug.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -4004,7 +4034,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.4.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
