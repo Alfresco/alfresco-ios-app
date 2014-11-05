@@ -3730,7 +3730,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3903,7 +3903,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
