@@ -45,7 +45,7 @@ extern NSString * const kIsDefaultAccount;
 @interface AccountInfo : NSObject <NSCoding>
 @property (nonatomic, readonly) NSString *uuid;
 @property (nonatomic, retain) NSString *vendor;
-@property (nonatomic, retain) NSString *description;
+@property (nonatomic, retain) NSString *summary;
 @property (nonatomic, retain) NSString *protocol;
 @property (nonatomic, retain) NSString *hostname;
 @property (nonatomic, retain) NSString *port;
