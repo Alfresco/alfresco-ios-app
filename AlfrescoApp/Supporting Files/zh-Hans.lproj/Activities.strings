@@ -60,6 +60,8 @@
 "org.alfresco.documentlibrary.google-docs-checkout" = "{1} 将文件 {0} 签出到 Google Docs";
 "org.alfresco.documentlibrary.google-docs-checkin" = "{1} 从 Google Docs 签入了文件 {0}";
 "org.alfresco.documentlibrary.inline-edit" = "{1} 编辑了文件 {0}";
+"org.alfresco.documentlibrary.file-previewed" = "{1} 预览了文档 {0}";
+"org.alfresco.documentlibrary.file-downloaded" = "{1} 下载了文档 {0}";
 "org.alfresco.documentlibrary.file-liked" = "{1} 点赞了文件 {0}";
 "org.alfresco.documentlibrary.folder-liked" = "{1} 点赞了文件夹 {0}";
 "org.alfresco.wiki.page-created" = "{1} 创建了维基页面 {0}";

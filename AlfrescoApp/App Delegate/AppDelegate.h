@@ -17,27 +17,12 @@
  ******************************************************************************/
   
 #import "NavigationViewController.h"
+#import "MainMenuViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
-typedef NS_ENUM(NSUInteger, MainMenuNavigationControllerType)
-{
-    NavigationControllerTypeAccounts = 0,
-    NavigationControllerTypeActivities,
-    NavigationControllerTypeRepository,
-    NavigationControllerTypeSites,
-    NavigationControllerTypeTasks,
-    NavigationControllerTypeSync,
-    NavigationControllerTypeMyFiles,
-    NavigationControllerTypeSharedFiles,
-    NavigationControllerTypeDownloads,
-    NavigationControllerTypeSettings,
-    NavigationControllerTypeAbout,
-    NavigationControllerTypeHelp,
-    NavigationControllerType_MAX_ENUM    // <-- Ensure this is the last entry
-};
-
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, strong, readonly) MainMenuViewController *mainMenuViewController;
 
 - (void)updateAppFirstLaunchFlag;
 

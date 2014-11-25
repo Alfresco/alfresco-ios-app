@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "Un minuto fa";
 "relative.date.past.n-seconds" = "%d secondi fa";
 "relative.date.just-now" = "In questo momento";
+"relative.date.today" = "Oggi";
 "relative.date.future.n-seconds" = "Tra %d secondi";
 "relative.date.future.one-minute" = "Tra un minuto";
 "relative.date.future.n-minutes" = "Tra %d minuti";
@@ -129,6 +130,7 @@
 "error.host.unreachable.title" = "Errore di connessione";
 "error.host.unreachable.message" = "Il valore nome host non è corretto oppure è necessario attivare la VPN. Verificare le impostazioni dell'account.";
 "error.retrieving.metadata" = "Impossibile recuperare le proprietà per %@.";
+"error.server.message" = "Si è verificato un errore sul server.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Impossibile completare l'elaborazione del compito. Errore: %@";
 "error.workflow.unable.to.reassign.task" = "Impossibile riassegnare il compito. Errore: %@";
@@ -180,7 +182,7 @@
 "accounttype.alfrescoServer" = "Server Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Connetti a un server Alfresco";
-"accounttype.footer.alfrescoCloud" = "Effettua l'accesso ad Alfresco nel cloud. Benvenuto Registrati per un account gratis";
+"accounttype.footer.alfrescoCloud" = "Effettua l'accesso ad Alfresco nel cloud";
 
 "accountdetails.placeholder.required" = "Obbligatorio";
 "accountdetails.placeholder.optional" = "Facoltativo";
@@ -228,7 +230,6 @@
 "accountdetails.fields.firstName" = "Nome";
 "accountdetails.fields.lastName" = "Cognome";
 "accountdetails.fields.username" = "Nome utente";
-"accountdetails.fields.email" = "E-mail";
 "accountdetails.fields.password" = "Password";
 "accountdetails.fields.confirmPassword" = "Conferma password";
 "accountdetails.placeholder.password.requirement" = "Min. 6 caratteri";
@@ -429,7 +430,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "Esiste già un file locale con lo stesso nome. Sovrascrivere il file esistente?";
 "download.success.message" = "File salvato";
 "download.success-as.message" = "File salvato come %@";
@@ -581,7 +581,7 @@
 "task.completed.success.message" = "Compito completato";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@ ha completato il compito %@";
+"tasks.cell.taskcompleted" = "%@ ha completato il compito";
 "tasks.cell.tasknotcompleted" = "%@ non ha completato il compito";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "Nuovo compito";
@@ -687,8 +687,6 @@
  */
 "saveback.hud.message" = "Salvataggio in corso";
 "saveback.saved.successfully.message" = "Il file %@ è stato salvato correttamente.";
-"saveback.failed.title" = "Salvataggio non riuscito";
-"saveback.failed.message" = "Tentativo di salvataggio di %@ non riuscito. Riprovare?";
 "saveback.completed.title" = "Salvataggio completato";
 "saveback.completed.message" = "%@ è stato salvato correttamente";
 "saveback.failed.title" = "Salvataggio non riuscito";

@@ -32,7 +32,7 @@ static CGFloat const kMaxiPadSpeechBubbleWidth = 350.0f;
 {
     [super layoutSubviews];
     
-    [self.contentView layoutSubviews];
+    [self.contentView setNeedsLayout];
     self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width/2;
     self.avatarImageView.clipsToBounds = YES;
 }

@@ -81,6 +81,11 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Private Functions
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session

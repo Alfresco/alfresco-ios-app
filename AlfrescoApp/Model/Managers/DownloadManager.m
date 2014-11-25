@@ -555,7 +555,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
 - (void)displayOverwriteConfirmationWithCompletionBlock:(UIAlertViewDismissBlock)completionBlock
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"download.overwrite.prompt.title", @"overwite alert title")
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                     message:NSLocalizedString(@"download.overwrite.prompt.message", @"overwrite alert message")
                                                    delegate:nil
                                           cancelButtonTitle:nil

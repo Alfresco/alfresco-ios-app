@@ -26,7 +26,7 @@
 
 static NSString * const kTextFileMimeType = @"text/plain";
 
-@interface TextFileViewController () <UITextViewDelegate>
+@interface TextFileViewController () <NSFileManagerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) AlfrescoFolder *uploadDestinationFolder;
 @property (nonatomic, strong) AlfrescoDocument *editingDocument;

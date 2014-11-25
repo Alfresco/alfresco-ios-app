@@ -60,6 +60,8 @@
 "org.alfresco.documentlibrary.google-docs-checkout" = "{1} a réservé le fichier {0} dans Google Docs";
 "org.alfresco.documentlibrary.google-docs-checkin" = "{1} a libéré le fichier {0} de Google Docs";
 "org.alfresco.documentlibrary.inline-edit" = "{1} a édité le fichier {0}";
+"org.alfresco.documentlibrary.file-previewed" = "{1} a prévisualisé le document {0}";
+"org.alfresco.documentlibrary.file-downloaded" = "{1} a téléchargé le document {0}";
 "org.alfresco.documentlibrary.file-liked" = "{1} a aimé le fichier {0}";
 "org.alfresco.documentlibrary.folder-liked" = "{1} a aimé le dossier {0}";
 "org.alfresco.wiki.page-created" = "{1} a créé la page de wiki {0}";

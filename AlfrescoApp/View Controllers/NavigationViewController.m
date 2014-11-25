@@ -117,6 +117,15 @@
     [self updateView];
 }
 
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateView];
+    } completion:nil];
+    [super viewWillTransitionToSize: size withTransitionCoordinator:coordinator];
+}
+
 #pragma mark - DetailSplitViewControllerDelegate
 
 - (void)didPressExpandCollapseButton:(DetailSplitViewController *)detailSplitViewController button:(UIBarButtonItem *)button

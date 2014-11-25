@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "Il y a une minute";
 "relative.date.past.n-seconds" = "Il y a %d secondes";
 "relative.date.just-now" = "Maintenant";
+"relative.date.today" = "Aujourd’hui";
 "relative.date.future.n-seconds" = "dans %d secondes";
 "relative.date.future.one-minute" = "Dans une minute";
 "relative.date.future.n-minutes" = "Dans %d minutes";
@@ -129,6 +130,7 @@
 "error.host.unreachable.title" = "Erreur connexion";
 "error.host.unreachable.message" = "Le nom de votre hôte semble erroné ou vous devez peut-être activer votre VPN. Veuillez vérifier les paramètres de votre compte.";
 "error.retrieving.metadata" = "Impossible de récupérer les propriétés de %@.";
+"error.server.message" = "Une erreur s'est produite sur le serveur.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Impossible de terminer le traitement sur la tâche. Erreur : %@";
 "error.workflow.unable.to.reassign.task" = "Impossible de réassigner la tâche. Erreur : %@";
@@ -180,7 +182,7 @@
 "accounttype.alfrescoServer" = "Serveur Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Connexion à un serveur Alfresco";
-"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco in the cloud. Nouveau venu dans Alfresco ? Créez un compte gratuit";
+"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco in the cloud";
 
 "accountdetails.placeholder.required" = "Requise";
 "accountdetails.placeholder.optional" = "Facultatif";
@@ -228,7 +230,6 @@
 "accountdetails.fields.firstName" = "Prénom";
 "accountdetails.fields.lastName" = "Nom";
 "accountdetails.fields.username" = "Nom d’utilisateur";
-"accountdetails.fields.email" = "E-mail";
 "accountdetails.fields.password" = "Mot de passe";
 "accountdetails.fields.confirmPassword" = "Confirmer le mot de passe";
 "accountdetails.placeholder.password.requirement" = "6 caractères au minimum";
@@ -429,7 +430,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "Un fichier local portant ce nom existe déjà. Voulez-vous remplacer le fichier existant ?";
 "download.success.message" = "Fichier enregistré";
 "download.success-as.message" = "Fichier enregistré en tant que %@";
@@ -581,7 +581,7 @@
 "task.completed.success.message" = "Tâche terminée";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@ a terminé cette tâche %@";
+"tasks.cell.taskcompleted" = "%@ a terminé cette tâche";
 "tasks.cell.tasknotcompleted" = "%@ n’a pas terminé cette tâche";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "Nouvelle tâche";
@@ -687,8 +687,6 @@
  */
 "saveback.hud.message" = "Enregistrement...";
 "saveback.saved.successfully.message" = "Le fichier %@ a été créé.";
-"saveback.failed.title" = "L’enregistrement a échoué";
-"saveback.failed.message" = "La tentative d’enregistrement de %@ a échoué. Voulez-vous refaire une tentative ?";
 "saveback.completed.title" = "L’enregistrement a été effectué";
 "saveback.completed.message" = "%@ a été enregistré";
 "saveback.failed.title" = "L’enregistrement a échoué";

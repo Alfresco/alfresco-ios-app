@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "1分前";
 "relative.date.past.n-seconds" = "%d秒前";
 "relative.date.just-now" = "今すぐ";
+"relative.date.today" = "今日";
 "relative.date.future.n-seconds" = "今から%d秒後";
 "relative.date.future.one-minute" = "今から1分後";
 "relative.date.future.n-minutes" = "今から%d分後";
@@ -129,6 +130,7 @@
 "error.host.unreachable.title" = "接続エラー";
 "error.host.unreachable.message" = "ホスト名の値が間違っているか、お使いのVPNを有効にする必要があります。アカウント設定を確認してください。";
 "error.retrieving.metadata" = "%@ のプロパティを検索できませんでした。";
+"error.server.message" = "サーバーでエラーが発生しました。";
 // Workflow
 "error.workflow.unable.to.complete.process" = "タスクの処理を完了することができません。エラー: %@";
 "error.workflow.unable.to.reassign.task" = "タスクを再割り当てできません。エラー: %@";
@@ -180,7 +182,7 @@
 "accounttype.alfrescoServer" = "Alfresco Server";
 
 "accounttype.footer.alfrescoServer" = "Alfresco Serverに接続する";
-"accounttype.footer.alfrescoCloud" = "Alfresco in the cloudアカウントにアクセスします。初めてAlfrescoをお使いですか？無料アカウントに登録する";
+"accounttype.footer.alfrescoCloud" = "Alfresco in the cloudアカウントにアクセスします";
 
 "accountdetails.placeholder.required" = "必須";
 "accountdetails.placeholder.optional" = "オプション";
@@ -228,7 +230,6 @@
 "accountdetails.fields.firstName" = "名";
 "accountdetails.fields.lastName" = "姓";
 "accountdetails.fields.username" = "ユーザー名";
-"accountdetails.fields.email" = "Eメール";
 "accountdetails.fields.password" = "パスワード";
 "accountdetails.fields.confirmPassword" = "パスワードの確認";
 "accountdetails.placeholder.password.requirement" = "6文字以上";
@@ -429,7 +430,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "同じ名前のローカルファイルがすでにあります。既存のファイルを上書きしますか";
 "download.success.message" = "ファイルが保存されました";
 "download.success-as.message" = "ファイルが%@として保存されました";
@@ -581,7 +581,7 @@
 "task.completed.success.message" = "完了済みタスク";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@は、このタスク%@を完了しました";
+"tasks.cell.taskcompleted" = "%@は、このタスクを完了しました";
 "tasks.cell.tasknotcompleted" = "%@は、このタスクを完了していません";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "新しいタスク";
@@ -687,8 +687,6 @@
  */
 "saveback.hud.message" = "保存中...";
 "saveback.saved.successfully.message" = "ファイル%@は正常に保存されました。";
-"saveback.failed.title" = "セーブバックできませんでした";
-"saveback.failed.message" = "%@をセーブ バックすることができませんでした。再試行しますか?";
 "saveback.completed.title" = "セーブバックしました";
 "saveback.completed.message" = "%@は、正常にセーブバックされました";
 "saveback.failed.title" = "セーブバックできませんでした";

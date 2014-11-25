@@ -220,7 +220,7 @@ static NSString * const kActivitySummaryCustom1 = @"custom1";
     NSArray *detailTokenValues = @[self.title, self.fullName, self.custom0, self.custom1, self.siteTitle, self.secondFullName];
     
     self.attributedDetailString = [self attributedStringForTemplate:NSLocalizedStringFromTable(self.activityEntry.type, @"Activities", @"Activity template string") withReplacements:detailTokenValues];
-    self.dateString = relativeDateFromDate(self.activityEntry.createdAt);
+    self.dateString = relativeTimeFromDate(self.activityEntry.createdAt);
 }
 
 - (NSString *)fullNameFromFirstName:(NSString *)firstName lastName:(NSString *)lastName

@@ -152,7 +152,7 @@ UIImage *resizeImage(UIImage *image, CGSize size)
     return destImage;
 }
 
-NSString *relativeDateFromDate(NSDate *date)
+NSString *relativeTimeFromDate(NSDate *date)
 {
     if (nil == date)
     {
@@ -169,64 +169,142 @@ NSString *relativeDateFromDate(NSDate *date)
         return [NSString stringWithFormat:NSLocalizedString(dateKey, @"Date string"), param];
     };
 
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSUInteger unitFlags = NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSSecondCalendarUnit;
-    NSDateComponents *components = [calendar components:unitFlags fromDate:earliest toDate:latest options:0];
+    NSTimeInterval seconds_ago = [latest timeIntervalSinceDate:earliest];
     
-    if (components.year >= 2)
+    if (seconds_ago < 2)
     {
-        return relativeDateString(@"n-years", components.year);
-    }
-    else if (components.year >= 1)
-    {
-        return relativeDateString(@"one-year", components.year);
-    }
-    else if (components.month >= 2)
-    {
-        return relativeDateString(@"n-months", components.month);
-    }
-    else if (components.month >= 1)
-    {
-        return relativeDateString(@"one-month", components.month);
-    }
-    else if (components.day >= 14)
-    {
-        return relativeDateString(@"n-weeks", floor(components.day / 7.0));
-    }
-    else if (components.day >= 7)
-    {
-        return relativeDateString(@"one-week", floor(components.day / 7.0));
-    }
-    else if (components.day >= 2)
-    {
-        return relativeDateString(@"n-days", components.day);
-    }
-    else if (components.day >= 1)
-    {
-        return relativeDateString(@"one-day", components.day);
-    }
-    else if (components.hour >= 2)
-    {
-        return relativeDateString(@"n-hours", components.hour);
-    }
-    else if (components.hour >= 1)
-    {
-        return relativeDateString(@"one-hour", components.hour);
-    }
-    else if (components.minute >= 2)
-    {
-        return relativeDateString(@"n-minutes", components.minute);
-    }
-    else if (components.minute >= 1)
-    {
-        return relativeDateString(@"one-minute", components.minute);
-    }
-    else if (components.second >= 2)
-    {
-        return relativeDateString(@"n-seconds", components.second);
+        return NSLocalizedString(@"relative.date.just-now", @"Just now");
     }
 
-    return NSLocalizedString(@"relative.date.just-now", @"Just now");
+    double minutes_ago = round(seconds_ago / 60);
+    if (seconds_ago < 60)
+    {
+        return relativeDateString(@"n-seconds", seconds_ago);
+    }
+    if (minutes_ago == 1)
+    {
+        return relativeDateString(@"one-minute", 0);
+    }
+
+    double hours_ago = round(minutes_ago / 60);
+    if (minutes_ago < 60)
+    {
+        return relativeDateString(@"n-minutes", minutes_ago);
+    }
+    if (hours_ago == 1)
+    {
+        return relativeDateString(@"one-hour", 0);
+    }
+
+    double days_ago = round(hours_ago / 24);
+    if (hours_ago < 24)
+    {
+        return relativeDateString(@"n-hours", hours_ago);
+    }
+    if (days_ago == 1)
+    {
+        return relativeDateString(@"one-day", 0);
+    }
+
+    double weeks_ago = round(days_ago / 7);
+    if (days_ago < 7)
+    {
+        return relativeDateString(@"n-days", days_ago);
+    }
+    if (weeks_ago == 1)
+    {
+        return relativeDateString(@"one-week", 0);
+    }
+ 
+    double months_ago = round(days_ago / 30);
+    if (days_ago < 30)
+    {
+        return relativeDateString(@"n-weeks", weeks_ago);
+    }
+    if (months_ago == 1)
+    {
+        return relativeDateString(@"one-month", 0);
+    }
+    
+    double years_ago = round(days_ago / 365);
+    if (days_ago < 365)
+    {
+        return relativeDateString(@"n-months", months_ago);
+    }
+    if (years_ago == 1)
+    {
+        return relativeDateString(@"one-year", 0);
+    }
+    
+    return relativeDateString(@"n-years", years_ago);
+}
+
+NSString *relativeDateFromDate(NSDate *date)
+{
+    if (nil == date)
+    {
+        return @"";
+    }
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger preservedComponents = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
+    
+    // Only keep the date components
+    NSDate *today = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:[NSDate date]]];
+    date = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:date]];
+
+    NSDate *earliest = [today earlierDate:date];
+    BOOL isTodayEarlierDate = (today == earliest);
+    NSDate *latest = isTodayEarlierDate ? date : today;
+    
+    NSString *(^relativeDateString)(NSString *key, NSInteger param) = ^NSString *(NSString *key, NSInteger param) {
+        NSString *dateKey = [NSString stringWithFormat:@"relative.date.%@.%@", isTodayEarlierDate ? @"future" : @"past", key];
+        return [NSString stringWithFormat:NSLocalizedString(dateKey, @"Date string"), param];
+    };
+    
+    NSTimeInterval seconds_ago = [latest timeIntervalSinceDate:earliest];
+    if (seconds_ago < 86400) // 24*60*60
+    {
+        return NSLocalizedString(@"relative.date.today", @"Today");
+    }
+    
+    double days_ago = round(seconds_ago / 86400); // 24*60*60
+    if (days_ago == 1)
+    {
+        return relativeDateString(@"one-day", 0);
+    }
+    
+    double weeks_ago = round(days_ago / 7);
+    if (days_ago < 7)
+    {
+        return relativeDateString(@"n-days", days_ago);
+    }
+    if (weeks_ago == 1)
+    {
+        return relativeDateString(@"one-week", 0);
+    }
+    
+    double months_ago = round(days_ago / 30);
+    if (days_ago < 30)
+    {
+        return relativeDateString(@"n-weeks", weeks_ago);
+    }
+    if (months_ago == 1)
+    {
+        return relativeDateString(@"one-month", 0);
+    }
+    
+    double years_ago = round(days_ago / 365);
+    if (days_ago < 365)
+    {
+        return relativeDateString(@"n-months", months_ago);
+    }
+    if (years_ago == 1)
+    {
+        return relativeDateString(@"one-year", 0);
+    }
+    
+    return relativeDateString(@"n-years", years_ago);
 }
 
 NSString *stringForLongFileSize(unsigned long long size)

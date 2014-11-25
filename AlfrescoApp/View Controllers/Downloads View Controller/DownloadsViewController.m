@@ -164,7 +164,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
         NSDictionary *fileAttributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:fileURLString error:nil];
         unsigned long fileSize = [[fileAttributes objectForKey:kAlfrescoFileSize] longValue];
         NSDate *modificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
-        NSString *modDateString = relativeDateFromDate(modificationDate);
+        NSString *modDateString = relativeTimeFromDate(modificationDate);
         
         title = [fileURLString lastPathComponent];
         details = [NSString stringWithFormat:@"%@ • %@", modDateString, stringForLongFileSize(fileSize)];

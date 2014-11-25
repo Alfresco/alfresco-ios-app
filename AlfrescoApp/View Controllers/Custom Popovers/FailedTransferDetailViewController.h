@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
   
-typedef void (^FailedTransferRetryCompletionBlock)(BOOL retry);
+typedef void (^FailedTransferRetryCompletionBlock)();
 
 @interface FailedTransferDetailViewController : UIViewController
 

@@ -47,7 +47,7 @@ static CGFloat const kMainMenuItemCellHeight = 50.0f;
 {
     [super layoutSubviews];
     
-    [self.contentView layoutSubviews];
+    [self.contentView setNeedsLayout];
     self.menuImageView.layer.cornerRadius = self.menuImageView.frame.size.width / 2;
     self.menuImageView.clipsToBounds = YES;
 }

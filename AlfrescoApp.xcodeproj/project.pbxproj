@@ -112,6 +112,7 @@
 		271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */; };
 		271DC77A189C2D250059D1B2 /* status-sync-waiting.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC762189C2D250059D1B2 /* status-sync-waiting.png */; };
 		271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */; };
+		272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 272C41D319C7AF2600DABBF0 /* libFlurry_5.3.0.a */; };
 		272CC7BD19466B680009FADA /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272CC7BC19466B680009FADA /* MapViewController.m */; };
 		272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 272CC7C51946727A0009FADA /* AlfrescoDocument+MapAnnotation.m */; };
 		272CC7CD194690AD0009FADA /* segment-icon-comments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 272CC7C8194690AD0009FADA /* segment-icon-comments@2x.png */; };
@@ -185,7 +186,6 @@
 		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
 		7302475519544AD50034D861 /* playButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475319544AD50034D861 /* playButton@2x.png */; };
 		7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304DA7D1884348B00229809 /* VersionHistoryViewController.m */; };
-		730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730B444918EC393B008A0977 /* libFlurry_4.4.0.a */; };
 		730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B444D18EC3A96008A0977 /* AnalyticsManager.m */; };
 		730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730B445618ED7B96008A0977 /* FilePreviewViewController.m */; };
 		730B445918ED7B96008A0977 /* FilePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730B445718ED7B96008A0977 /* FilePreviewViewController.xib */; };
@@ -491,6 +491,20 @@
 			remoteGlobalIDString = 7373B4F417A66E9400869949;
 			remoteInfo = AlfrescoApp;
 		};
+		588D9F581A0A34E2000E00B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 73D01E2D197FC3D00065E107;
+			remoteInfo = "AlfrescoSDK-OSX";
+		};
+		588D9F5A1A0A34E2000E00B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7333E5EA197FD15000B4CB1D;
+			remoteInfo = "AlfrescoSDK-OSXTests";
+		};
 		73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
@@ -669,6 +683,7 @@
 		271DC761189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting-highlighted@2x.png"; sourceTree = "<group>"; };
 		271DC762189C2D250059D1B2 /* status-sync-waiting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting.png"; sourceTree = "<group>"; };
 		271DC763189C2D250059D1B2 /* status-sync-waiting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-sync-waiting@2x.png"; sourceTree = "<group>"; };
+		272C41D319C7AF2600DABBF0 /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		272CC7BB19466B680009FADA /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		272CC7BC19466B680009FADA /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		272CC7C41946727A0009FADA /* AlfrescoDocument+MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocument+MapAnnotation.h"; sourceTree = "<group>"; };
@@ -779,7 +794,6 @@
 		7304DA7C1884348B00229809 /* VersionHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionHistoryViewController.h; sourceTree = "<group>"; };
 		7304DA7D1884348B00229809 /* VersionHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionHistoryViewController.m; sourceTree = "<group>"; };
 		730B444818EC393B008A0977 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		730B444918EC393B008A0977 /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		730B444C18EC3A96008A0977 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		730B444D18EC3A96008A0977 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		730B445518ED7B96008A0977 /* FilePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePreviewViewController.h; sourceTree = "<group>"; };
@@ -1217,8 +1231,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
-				730B444A18EC393B008A0977 /* libFlurry_4.4.0.a in Frameworks */,
 				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
+				272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1619,8 +1633,10 @@
 		73036F291886E3CC002AF6DC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.1-debug.a */,
-				73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */,
+				73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4-dev-debug.a */,
+				73036F301886E3CC002AF6DC /* AlfrescoSDK-iOSTests.xctest */,
+				588D9F591A0A34E2000E00B9 /* libAlfrescoSDK-OSXv1.4-dev-debug.a */,
+				588D9F5B1A0A34E2000E00B9 /* AlfrescoSDK-OSXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1638,8 +1654,8 @@
 		730B444718EC393B008A0977 /* Flurry */ = {
 			isa = PBXGroup;
 			children = (
+				272C41D319C7AF2600DABBF0 /* libFlurry_5.3.0.a */,
 				730B444818EC393B008A0977 /* Flurry.h */,
-				730B444918EC393B008A0977 /* libFlurry_4.4.0.a */,
 			);
 			path = Flurry;
 			sourceTree = "<group>";
@@ -2952,17 +2968,31 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		73036F2E1886E3CC002AF6DC /* libAlfrescoSDKv1.3.1-debug.a */ = {
+		588D9F591A0A34E2000E00B9 /* libAlfrescoSDK-OSXv1.4-dev-debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libAlfrescoSDKv1.3.1-debug.a";
+			path = "libAlfrescoSDK-OSXv1.4-dev-debug.a";
+			remoteRef = 588D9F581A0A34E2000E00B9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		588D9F5B1A0A34E2000E00B9 /* AlfrescoSDK-OSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AlfrescoSDK-OSXTests.xctest";
+			remoteRef = 588D9F5A1A0A34E2000E00B9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4-dev-debug.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAlfrescoSDK-iOSv1.4-dev-debug.a";
 			remoteRef = 73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73036F301886E3CC002AF6DC /* AlfrescoSDKTests.xctest */ = {
+		73036F301886E3CC002AF6DC /* AlfrescoSDK-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = AlfrescoSDKTests.xctest;
+			path = "AlfrescoSDK-iOSTests.xctest";
 			remoteRef = 73036F2F1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3663,6 +3693,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -3686,6 +3720,7 @@
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -3694,7 +3729,6 @@
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
@@ -3707,7 +3741,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.1.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3795,6 +3829,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -3818,6 +3856,7 @@
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -3826,7 +3865,6 @@
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
@@ -3839,7 +3877,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.1-debug.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev-debug.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3857,6 +3895,7 @@
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -3865,7 +3904,6 @@
 				GCC_PREFIX_HEADER = "AlfrescoApp/Supporting Files/AlfrescoApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
@@ -3878,7 +3916,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDKv1.3.1.a\"",
+					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

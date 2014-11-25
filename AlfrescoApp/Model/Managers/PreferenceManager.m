@@ -67,6 +67,9 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 - (void)updatePreferenceToValue:(id)obj preferenceIdentifier:(NSString *)preferenceIdentifier
 {
     id existingValue = self.preferences[preferenceIdentifier];
+    
+    // MOBILE-3045: Devices running iOS 8 refuse to recognise the preferences property as mutable so re-create
+    self.preferences = [NSMutableDictionary dictionaryWithDictionary:self.preferences];
     self.preferences[preferenceIdentifier] = obj;
     [self savePreferences];
     [[NSNotificationCenter defaultCenter] postNotificationName:kSettingsDidChangeNotification object:preferenceIdentifier userInfo:@{kSettingChangedFromKey : existingValue, kSettingChangedToKey : obj}];
@@ -108,6 +111,8 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
                 ![self.preferences[preferenceIdentifier] isKindOfClass:[cellInfo[kSettingsCellDefaultValue] class]])
             {
                 // Set the default value
+                // MOBILE-3045: Devices running iOS 8 refuse to recognise the preferences property as mutable so re-create
+                self.preferences = [NSMutableDictionary dictionaryWithDictionary:self.preferences];
                 self.preferences[preferenceIdentifier] = cellInfo[kSettingsCellDefaultValue];
             }
         }

@@ -123,6 +123,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     ActionCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ActionCell" forIndexPath:indexPath];
     ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
     
+    cell.contentView.frame = [cell bounds];
     cell.imageView.image = itemSelected.itemImage;
     cell.imageView.highlightedImage = itemSelected.itemImageHighlightedImage;
     cell.imageView.tintColor = [UIColor documentActionsTintColor];

@@ -116,10 +116,13 @@ static UILayoutPriority const kLowPriority = 250;
     // configure the view
     [self configureForFilter:self.taskFilter];
     
-    // Add reassign button
-    UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
-    self.navigationItem.rightBarButtonItem = reassignButton;
-    
+    // Add reassign button for tasks
+    if (self.task)
+    {
+        UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
+        self.navigationItem.rightBarButtonItem = reassignButton;
+    }
+
     [self.cancelButton addTarget:self action:@selector(cancelCommentAction:) forControlEvents:UIControlEventTouchUpInside];
 
     // Dismiss keyboard gesture
@@ -431,28 +434,37 @@ static UILayoutPriority const kLowPriority = 250;
 
 - (void)peoplePicker:(PeoplePicker *)peoplePicker didSelectPeople:(NSArray *)selectedPeople
 {
-    if (selectedPeople.count > 0)
+    if (self.task)
     {
-        AlfrescoPerson *reassignee = selectedPeople[0];
-        
-        [self enableActionButtons:NO];
-        __weak typeof(self) weakSelf = self;
-        [self.workflowService reassignTask:self.task toAssignee:reassignee completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
-            if (error)
-            {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.reassign.task", @"Unable to reassign task"), [ErrorDescriptions descriptionForError:error]]);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-            else
-            {
-                [peoplePicker cancelWithCompletionBlock:^(PeoplePicker *peoplePicker) {
-                    displayInformationMessage(NSLocalizedString(@"task.reassign.success.message", @"Task reassigned"));
-                }];
-                [weakSelf enableActionButtons:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
-                [UniversalDevice clearDetailViewController];
-            }
-        }];
+        if (selectedPeople.count > 0)
+        {
+            AlfrescoPerson *reassignee = selectedPeople[0];
+            
+            [self enableActionButtons:NO];
+            __weak typeof(self) weakSelf = self;
+            [self.workflowService reassignTask:self.task toAssignee:reassignee completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
+                if (error)
+                {
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.reassign.task", @"Unable to reassign task"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+                else
+                {
+                    [peoplePicker cancelWithCompletionBlock:^(PeoplePicker *peoplePicker) {
+                        displayInformationMessage(NSLocalizedString(@"task.reassign.success.message", @"Task reassigned"));
+                    }];
+                    [weakSelf enableActionButtons:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
+                    [UniversalDevice clearDetailViewController];
+                }
+            }];
+        }
+    }
+    else
+    {
+        // MOBILE-2990: It appears the task can be set to nil in some circumstances, inform the user the reassign failed.
+        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.workflow.unable.to.reassign.task", @"Unable to reassign task"),
+                             NSLocalizedString(@"error.generic.title", @"An error occurred")]);
     }
 }
 

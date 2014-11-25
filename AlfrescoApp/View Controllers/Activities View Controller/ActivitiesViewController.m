@@ -124,7 +124,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self configureCell:self.prototypeCell forIndexPath:indexPath isForOffscreenUse:YES];
+    [self configureCell:self.prototypeCell forIndexPath:indexPath forOffscreenUse:YES];
     [self.prototypeCell layoutIfNeeded];
     CGSize size = [self.prototypeCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     return size.height;
@@ -133,7 +133,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityTableViewCell *activityCell = [self.tableView dequeueReusableCellWithIdentifier:kActivityCellIdentifier];
-    [self configureCell:activityCell forIndexPath:indexPath isForOffscreenUse:NO];
+    [self configureCell:activityCell forIndexPath:indexPath forOffscreenUse:NO];
     return activityCell;
 }
 
@@ -284,7 +284,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
 - (NSString *)groupHeaderForActivity:(AlfrescoActivityEntry *)activityEntry relativeToDate:(NSDate *)date
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *activityComponents = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:activityEntry.createdAt];
+    NSDateComponents *activityComponents = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:activityEntry.createdAt];
     NSDate *activityDate = [calendar dateFromComponents:activityComponents];
     NSTimeInterval interval = [date timeIntervalSinceDate:activityDate];
     
@@ -320,7 +320,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     }
 }
 
-- (void)configureCell:(ActivityTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath isForOffscreenUse:(BOOL)offscreenUse
+- (void)configureCell:(ActivityTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath forOffscreenUse:(BOOL)offscreenUse
 {
     ActivityWrapper *activityWrapper = self.tableViewData[indexPath.section][indexPath.row];
     cell.detailsLabel.attributedText = activityWrapper.attributedDetailString;

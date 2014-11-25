@@ -24,7 +24,6 @@
 #import "LoginManager.h"
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
-#import "MainMenuViewController.h"
 #import "CloudSignUpViewController.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
@@ -57,22 +56,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                                                                                 action:@selector(addAccount:)];
     self.navigationItem.rightBarButtonItem = addAccount;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountAdded:)
-                                                 name:kAlfrescoAccountAddedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountRemoved:)
-                                                 name:kAlfrescoAccountRemovedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountListUpdated:)
-                                                 name:kAlfrescoAccountUpdatedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountListUpdated:)
-                                                 name:kAlfrescoAccountsListEmptyNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
 }
 
 - (void)updateAccountList
@@ -96,6 +83,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
     
     [self.tableView reloadData];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Notification Methods
@@ -186,6 +178,14 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         if (account.accountType == UserAccountTypeCloud)
         {
             accountTypeImage = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            if (account.oauthData && ![account.oauthData.apiKey isEqualToString:CLOUD_OAUTH_KEY])
+            {
+                cell.imageView.tintColor = [UIColor redColor];
+            }
+            else
+            {
+                cell.imageView.tintColor = [UIColor appTintColor];
+            }
         }
         
         cell.imageView.image = accountTypeImage;

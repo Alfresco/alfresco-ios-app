@@ -38,6 +38,7 @@
 "relative.date.past.one-minute" = "A minute ago";
 "relative.date.past.n-seconds" = "%d seconds ago";
 "relative.date.just-now" = "Just now";
+"relative.date.today" = "Today";
 "relative.date.future.n-seconds" = "%d seconds from now";
 "relative.date.future.one-minute" = "A minute from now";
 "relative.date.future.n-minutes" = "%d minutes from now";
@@ -129,6 +130,7 @@
 "error.host.unreachable.title" = "Connection Error";
 "error.host.unreachable.message" = "Your hostname value seems to be wrong or you may need to activate your VPN. Please check your account settings.";
 "error.retrieving.metadata" = "Properties for %@ could not be retrieved.";
+"error.server.message" = "An error occurred on the server.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "Unable to complete process on task. Error: %@";
 "error.workflow.unable.to.reassign.task" = "Unable to reassign task. Error: %@";
@@ -180,7 +182,7 @@
 "accounttype.alfrescoServer" = "Alfresco Server";
 
 "accounttype.footer.alfrescoServer" = "Connect to an Alfresco Server";
-"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account. New to Alfresco? Sign up for a free account";
+"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account";
 
 "accountdetails.placeholder.required" = "Required";
 "accountdetails.placeholder.optional" = "Optional";
@@ -228,7 +230,6 @@
 "accountdetails.fields.firstName" = "First name";
 "accountdetails.fields.lastName" = "Last name";
 "accountdetails.fields.username" = "User name";
-"accountdetails.fields.email" = "Email";
 "accountdetails.fields.password" = "Password";
 "accountdetails.fields.confirmPassword" = "Confirm password";
 "accountdetails.placeholder.password.requirement" = "6 characters min.";
@@ -429,7 +430,6 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.title" = "";
 "download.overwrite.prompt.message" = "There is already a local file with the same name. Do you want to overwrite the existing one?";
 "download.success.message" = "File Saved";
 "download.success-as.message" = "File Saved as %@";
@@ -697,8 +697,6 @@
  */
 "saveback.hud.message" = "Saving...";
 "saveback.saved.successfully.message" = "The file %@ was successfully saved.";
-"saveback.failed.title" = "Save back Failed";
-"saveback.failed.message" = "The attempt to save back %@ failed. Would you like to retry?";
 "saveback.completed.title" = "Save back Completed";
 "saveback.completed.message" = "%@ has successfully been saved back";
 "saveback.failed.title" = "Save back Failed";

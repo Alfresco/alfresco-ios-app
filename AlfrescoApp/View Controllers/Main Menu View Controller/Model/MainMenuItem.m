@@ -20,7 +20,7 @@
 
 @interface MainMenuItem ()
 
-@property (nonatomic, assign, readwrite) MainMenuNavigationControllerType controllerType;
+@property (nonatomic, assign, readwrite) MainMenuType controllerType;
 @property (nonatomic, strong, readwrite) NSString *imageName;
 @property (nonatomic, strong, readwrite) NSString *localizedTitleKey;
 @property (nonatomic, strong, readwrite) UIViewController *viewController;
@@ -30,7 +30,7 @@
 
 @implementation MainMenuItem
 
-- (instancetype)initWithControllerType:(MainMenuNavigationControllerType)controllerType imageName:(NSString *)imageName localizedTitleKey:(NSString *)localizedKey viewController:(UIViewController *)viewController displayInDetail:(BOOL)displayInDetail
+- (instancetype)initWithControllerType:(MainMenuType)controllerType imageName:(NSString *)imageName localizedTitleKey:(NSString *)localizedKey viewController:(UIViewController *)viewController displayInDetail:(BOOL)displayInDetail
 {
     self = [super init];
     if (self)
