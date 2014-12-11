@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseDocumentPreviewViewController">
@@ -11,7 +11,7 @@
                 <outlet property="actionViewHeightConstraint" destination="EUy-o0-kGO" id="6WR-Hv-ueO"/>
                 <outlet property="pagingScrollView" destination="W5I-8h-eej" id="dkl-cr-jK3"/>
                 <outlet property="pagingSegmentControl" destination="Wf6-TO-B0e" id="Qfy-s5-U0V"/>
-                <outlet property="segmentControlHeightConstraint" destination="qv4-4a-6Ij" id="cvf-lu-nbF"/>
+                <outlet property="segmentControlHeightConstraint" destination="uYR-8d-qnF" id="xd3-PY-ytD"/>
                 <outlet property="view" destination="1" id="zQc-V0-u7o"/>
             </connections>
         </placeholder>
@@ -22,7 +22,6 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWJ-GZ-Bv7" customClass="ActionCollectionView">
                     <rect key="frame" x="0.0" y="916" width="768" height="108"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="108" id="EUy-o0-kGO"/>
@@ -32,45 +31,65 @@
                     </connections>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5I-8h-eej" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="48" width="728" height="858"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="20" y="54" width="728" height="852"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="SX3-D9-vdJ"/>
                     </connections>
                 </scrollView>
-                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
-                    <rect key="frame" x="104" y="10" width="560" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AMt-eV-VSw">
+                    <rect key="frame" x="96" y="0.0" width="576" height="44"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wf6-TO-B0e">
+                            <rect key="frame" x="8" y="8" width="560" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="uYR-8d-qnF"/>
+                                <constraint firstAttribute="width" constant="560" id="z8N-SG-shx"/>
+                            </constraints>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                                <segment title="Third"/>
+                                <segment title="Fourth"/>
+                                <segment title="Fifth"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentValueChanged:" destination="-1" eventType="valueChanged" id="Cj2-xg-Mip"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="560" id="DdW-5m-2GS"/>
-                        <constraint firstAttribute="height" constant="28" id="qv4-4a-6Ij"/>
+                        <constraint firstItem="Wf6-TO-B0e" firstAttribute="leading" secondItem="AMt-eV-VSw" secondAttribute="leading" priority="800" constant="8" id="1Xf-Yb-LjT"/>
+                        <constraint firstAttribute="bottom" secondItem="Wf6-TO-B0e" secondAttribute="bottom" constant="8" id="7bM-2v-0ED"/>
+                        <constraint firstAttribute="height" constant="44" id="WnH-ur-tsH"/>
+                        <constraint firstItem="Wf6-TO-B0e" firstAttribute="top" secondItem="AMt-eV-VSw" secondAttribute="top" constant="8" id="d9D-j7-cVX"/>
+                        <constraint firstAttribute="width" priority="800" constant="576" id="f7f-a9-QKb"/>
+                        <constraint firstAttribute="trailing" secondItem="Wf6-TO-B0e" secondAttribute="trailing" priority="800" constant="8" id="fIo-Y6-YhN"/>
                     </constraints>
-                    <segments>
-                        <segment title="First"/>
-                        <segment title="Second"/>
-                        <segment title="Third"/>
-                        <segment title="Fourth"/>
-                        <segment title="Fifth"/>
-                    </segments>
-                    <connections>
-                        <action selector="segmentValueChanged:" destination="-1" eventType="valueChanged" id="Cj2-xg-Mip"/>
-                    </connections>
-                </segmentedControl>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Wf6-TO-B0e" firstAttribute="top" secondItem="1" secondAttribute="top" constant="10" id="4Sb-vb-7xL"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AMt-eV-VSw" secondAttribute="trailing" id="2dR-9o-MT2"/>
+                <constraint firstItem="AMt-eV-VSw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1" secondAttribute="leading" id="5Zq-mg-eFM"/>
                 <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="top" secondItem="W5I-8h-eej" secondAttribute="bottom" constant="10" id="99P-9X-niS"/>
+                <constraint firstItem="AMt-eV-VSw" firstAttribute="top" secondItem="1" secondAttribute="top" id="D55-oj-nyI"/>
                 <constraint firstAttribute="trailing" secondItem="jWJ-GZ-Bv7" secondAttribute="trailing" id="EpE-dK-mMi"/>
-                <constraint firstItem="W5I-8h-eej" firstAttribute="top" secondItem="Wf6-TO-B0e" secondAttribute="bottom" constant="10" id="G5m-oE-IqO"/>
                 <constraint firstAttribute="bottom" secondItem="jWJ-GZ-Bv7" secondAttribute="bottom" id="Jav-OD-dZY"/>
                 <constraint firstItem="W5I-8h-eej" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="Nfk-7l-5b1"/>
-                <constraint firstAttribute="centerX" secondItem="Wf6-TO-B0e" secondAttribute="centerX" id="a9D-7J-mp8"/>
+                <constraint firstAttribute="centerX" secondItem="AMt-eV-VSw" secondAttribute="centerX" id="UtE-Nq-xMq"/>
                 <constraint firstAttribute="bottom" secondItem="jWJ-GZ-Bv7" secondAttribute="bottom" id="jcV-qU-zqZ"/>
                 <constraint firstAttribute="trailing" secondItem="W5I-8h-eej" secondAttribute="trailing" constant="20" id="obA-RX-rHR"/>
+                <constraint firstItem="W5I-8h-eej" firstAttribute="top" secondItem="AMt-eV-VSw" secondAttribute="bottom" constant="10" id="xDp-GR-c7M"/>
                 <constraint firstItem="jWJ-GZ-Bv7" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="z9T-Sf-JeI"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="239" y="465"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
 </document>
