@@ -461,18 +461,21 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return isEmail;
 }
 
-+ (BOOL)isValidFolderName:(NSString *)folderName{
++ (BOOL)isValidFolderName:(NSString *)folderName
+{
     BOOL isValid = NO;
     
-    if (folderName.length == 0)
-        return isValid;
-
-    NSString *regexPattern = @"([\"*\\\\><?/:;|]+)|([.]?[.]+$)";
-    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:regexPattern options:NSRegularExpressionCaseInsensitive error:nil];
-    NSUInteger regexMatches = [regex numberOfMatchesInString:folderName options:0 range:NSMakeRange(0, [folderName length])];
-    
-    if (regexMatches == 0)
-        isValid = YES;
+    if ([folderName length] == 0)
+    {
+        NSString *regexPattern = @"([\"*\\\\><?/:;|]+)|([.]?[.]+$)";
+        NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:regexPattern options:NSRegularExpressionCaseInsensitive error:nil];
+        NSUInteger regexMatches = [regex numberOfMatchesInString:folderName options:0 range:NSMakeRange(0, [folderName length])];
+        
+        if (regexMatches == 0)
+        {
+            isValid = YES;
+        }
+    }
 
     return isValid;
 }

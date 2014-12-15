@@ -1001,7 +1001,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             {
                 NSString *desiredFolderName = [[createFolderAlert textFieldAtIndex:0] text];
                 desiredFolderName = [desiredFolderName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                if ([Utility isValidFolderName:desiredFolderName]){
+                if ([Utility isValidFolderName:desiredFolderName])
+                {
                     [self.documentService createFolderWithName:desiredFolderName inParentFolder:self.displayFolder properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
                         if (folder)
                         {
@@ -1011,11 +1012,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         }
                         else
                         {
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.createfolder", @"Creation failed"), [ErrorDescriptions descriptionForError:error]]);
                             [Notifier notifyWithAlfrescoError:error];
                         }
                     }];
-                } else {
+                }
+                else
+                {
                     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.invalidname", @"Creation failed")]);
                 }
             }
