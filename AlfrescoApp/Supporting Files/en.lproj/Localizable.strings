@@ -101,6 +101,7 @@
 "error.filefolder.permission.notfound" = "Permission for the node was not found. Error: %@.";
 "error.filefolder.content.failedtodownload" = "File failed to download. Error: %@.";
 "error.filefolder.search.searchfailed" = "The search failed. Error: %@.";
+"error.filefolder.createfolder.invalidname" = "Value contains illegal characters for a name.";
 "error.filefolder.createfolder.createfolder" = "The folder was not created. Error: %@.";
 "error.filefolder.content.failedtoretrieve" = "Retrieval of content failed. Error: %@.";
 "error.filefolder.unable.to.delete" = "Unable to delete. Error: %@";
