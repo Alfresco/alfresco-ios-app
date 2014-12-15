@@ -70,6 +70,7 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 @interface Utility : NSObject
 
 + (BOOL)isValidEmail:(NSString *)emailAddress;
++ (BOOL)isValidFolderName:(NSString *)folderName;
 + (BOOL)isVideo:(NSString *)filePath;
 + (BOOL)isAudio:(NSString *)filePath;
 + (BOOL)isAudioOrVideo:(NSString *)filePath;
