@@ -465,7 +465,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 {
     BOOL isValid = NO;
     
-    if ([folderName length] == 0)
+    if ([folderName length] != 0)
     {
         NSString *regexPattern = @"([\"*\\\\><?/:;|]+)|([.]?[.]+$)";
         NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:regexPattern options:NSRegularExpressionCaseInsensitive error:nil];
