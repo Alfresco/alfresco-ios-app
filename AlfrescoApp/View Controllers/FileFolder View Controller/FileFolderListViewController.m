@@ -105,6 +105,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(editingDocumentCompleted:)
                                                      name:kAlfrescoDocumentEditedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(connectivityStatusChanged:)
+                                                     name:kAlfrescoConnectivityChangedNotification
+                                                    object:nil];
     }
     return self;
 }
@@ -807,6 +811,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [self.searchProgressHUD hide:YES];
     self.searchProgressHUD = nil;
+}
+
+- (void)connectivityStatusChanged:(NSNotification *)notification
+{
+    NSNumber *object = [notification object];
+    bool hasInternetConnectivity = [object boolValue];
+    
+    [self.editBarButtonItem setEnabled:hasInternetConnectivity];
 }
 
 #pragma mark - Table view data source
