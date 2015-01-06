@@ -105,6 +105,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(editingDocumentCompleted:)
                                                      name:kAlfrescoDocumentEditedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(connectivityStatusChanged:)
+                                                     name:kAlfrescoConnectivityChangedNotification
+                                                    object:nil];
     }
     return self;
 }
@@ -809,6 +813,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.searchProgressHUD = nil;
 }
 
+- (void)connectivityStatusChanged:(NSNotification *)notification
+{
+    NSNumber *object = [notification object];
+    bool hasInternetConnectivity = [object boolValue];
+    
+    [self.editBarButtonItem setEnabled:hasInternetConnectivity];
+}
+
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1000,19 +1012,27 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             if (!isCancelButton)
             {
                 NSString *desiredFolderName = [[createFolderAlert textFieldAtIndex:0] text];
-                [self.documentService createFolderWithName:desiredFolderName inParentFolder:self.displayFolder properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
-                    if (folder)
-                    {
-                        [self retrievePermissionsForNode:folder];
-                        [self addAlfrescoNodes:@[folder] withRowAnimation:UITableViewRowAnimationAutomatic];
-                        [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                    }
-                    else
-                    {
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                }];
+                desiredFolderName = [desiredFolderName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                if ([Utility isValidFolderName:desiredFolderName])
+                {
+                    [self.documentService createFolderWithName:desiredFolderName inParentFolder:self.displayFolder properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
+                        if (folder)
+                        {
+                            [self retrievePermissionsForNode:folder];
+                            [self addAlfrescoNodes:@[folder] withRowAnimation:UITableViewRowAnimationAutomatic];
+                            [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                        }
+                        else
+                        {
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.createfolder", @"Creation failed"), [ErrorDescriptions descriptionForError:error]]);
+                            [Notifier notifyWithAlfrescoError:error];
+                        }
+                    }];
+                }
+                else
+                {
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.invalidname", @"Creation failed")]);
+                }
             }
         }];
     }
