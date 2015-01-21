@@ -245,6 +245,8 @@
 		734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7342939E1899218300BDFD35 /* bubble_grey@2x.png */; };
 		734BFE561899606A00692AB4 /* hamburger.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE541899606A00692AB4 /* hamburger.png */; };
 		734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE551899606A00692AB4 /* hamburger@2x.png */; };
+		734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		734CC3B71A6FBD9B005D148E /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
 		73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD01802C679007172EE /* ActionCollectionView.m */; };
 		73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD31802C679007172EE /* ActionCollectionViewCell.m */; };
 		73632ADC1802C679007172EE /* ActionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73632AD41802C679007172EE /* ActionCollectionViewCell.xib */; };
@@ -519,12 +521,47 @@
 			remoteGlobalIDString = 4EB076A715B00D8E00DF7DED;
 			remoteInfo = AlfrescoSDKTests;
 		};
-		73036F311886E3DB002AF6DC /* PBXContainerItemProxy */ = {
+		734CC3A81A6FBC4C005D148E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 73B8C08E1A5D9B3700571B28;
+			remoteInfo = AlfrescoKit;
+		};
+		734CC3AA1A6FBC4C005D148E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 73B8C11A1A5EAB1D00571B28;
+			remoteInfo = AlfrescoKitBundle;
+		};
+		734CC3AC1A6FBC4C005D148E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 73B8C0991A5D9B3700571B28;
+			remoteInfo = AlfrescoKitTests;
+		};
+		734CC3AE1A6FBC75005D148E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 73B8C08D1A5D9B3700571B28;
+			remoteInfo = AlfrescoKit;
+		};
+		734CC3B21A6FBD7E005D148E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4EB0769615B00D8E00DF7DED;
-			remoteInfo = AlfrescoSDK;
+			remoteInfo = "AlfrescoSDK-iOS";
+		};
+		734CC3B41A6FBD85005D148E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 73B8C1191A5EAB1D00571B28;
+			remoteInfo = AlfrescoKitBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -867,6 +904,7 @@
 		7342939E1899218300BDFD35 /* bubble_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_grey@2x.png"; sourceTree = "<group>"; };
 		734BFE541899606A00692AB4 /* hamburger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hamburger.png; sourceTree = "<group>"; };
 		734BFE551899606A00692AB4 /* hamburger@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hamburger@2x.png"; sourceTree = "<group>"; };
+		734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlfrescoKit.xcodeproj; path = AlfrescoSDK/AlfrescoKit/AlfrescoKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		73632ACF1802C679007172EE /* ActionCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionView.h; sourceTree = "<group>"; };
 		73632AD01802C679007172EE /* ActionCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActionCollectionView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73632AD21802C679007172EE /* ActionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1230,6 +1268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */,
 				27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */,
 				5D9B31B56FA84E13B2B77841 /* libPods.a in Frameworks */,
 				272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */,
@@ -1746,6 +1785,24 @@
 			path = Comments;
 			sourceTree = "<group>";
 		};
+		734CC39D1A6FBB96005D148E /* AlfrescoKit */ = {
+			isa = PBXGroup;
+			children = (
+				734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */,
+			);
+			path = AlfrescoKit;
+			sourceTree = "<group>";
+		};
+		734CC3A21A6FBC4C005D148E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */,
+				734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */,
+				734CC3AD1A6FBC4C005D148E /* AlfrescoKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		73632ACE1802C679007172EE /* Action Collection View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1865,6 +1922,7 @@
 				73B9580F17A6750E0099FB84 /* View Controllers */,
 				73B9583617A6750F0099FB84 /* Views */,
 				73B9587617A67A110099FB84 /* Alfresco SDK */,
+				734CC39D1A6FBB96005D148E /* AlfrescoKit */,
 				73B959CD17A67A760099FB84 /* Third Party Libraries */,
 				2715E03619300C520049FA32 /* Images.xcassets */,
 				7373B4FF17A66E9400869949 /* Supporting Files */,
@@ -2907,7 +2965,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				73036F321886E3DB002AF6DC /* PBXTargetDependency */,
+				734CC3B31A6FBD7E005D148E /* PBXTargetDependency */,
+				734CC3B51A6FBD85005D148E /* PBXTargetDependency */,
+				734CC3AF1A6FBC75005D148E /* PBXTargetDependency */,
 			);
 			name = AlfrescoApp;
 			productName = AlfrescoApp;
@@ -2955,6 +3015,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 734CC3A21A6FBC4C005D148E /* Products */;
+					ProjectRef = 734CC3A11A6FBC4C005D148E /* AlfrescoKit.xcodeproj */;
+				},
+				{
 					ProductGroup = 73036F291886E3CC002AF6DC /* Products */;
 					ProjectRef = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
 				},
@@ -2996,6 +3060,27 @@
 			remoteRef = 73036F2F1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAlfrescoKit.a;
+			remoteRef = 734CC3A81A6FBC4C005D148E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AlfrescoKitBundle.bundle;
+			remoteRef = 734CC3AA1A6FBC4C005D148E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		734CC3AD1A6FBC4C005D148E /* AlfrescoKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AlfrescoKitTests.xctest;
+			remoteRef = 734CC3AC1A6FBC4C005D148E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -3011,6 +3096,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				734CC3B71A6FBD9B005D148E /* AlfrescoKitBundle.bundle in Resources */,
 				272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
@@ -3542,10 +3628,20 @@
 			target = 7373B4F417A66E9400869949 /* AlfrescoApp */;
 			targetProxy = 08E89CA717E7593C006936DF /* PBXContainerItemProxy */;
 		};
-		73036F321886E3DB002AF6DC /* PBXTargetDependency */ = {
+		734CC3AF1A6FBC75005D148E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = AlfrescoSDK;
-			targetProxy = 73036F311886E3DB002AF6DC /* PBXContainerItemProxy */;
+			name = AlfrescoKit;
+			targetProxy = 734CC3AE1A6FBC75005D148E /* PBXContainerItemProxy */;
+		};
+		734CC3B31A6FBD7E005D148E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AlfrescoSDK-iOS";
+			targetProxy = 734CC3B21A6FBD7E005D148E /* PBXContainerItemProxy */;
+		};
+		734CC3B51A6FBD85005D148E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AlfrescoKitBundle;
+			targetProxy = 734CC3B41A6FBD85005D148E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3741,7 +3837,6 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3877,7 +3972,6 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev-debug.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3916,7 +4010,6 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
-					"\"$(CONFIGURATION_BUILD_DIR)/libAlfrescoSDK-iOSv1.4-dev.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
