@@ -37,14 +37,18 @@ extern NSString * const kSettingsCellLocalizedTitleKey;
 extern NSString * const kSettingsToggleCell;
 extern NSString * const kSettingsTextFieldCell;
 extern NSString * const kSettingsLabelCell;
+extern NSString * const kSettingsButtonCell;
 
 // Cell reuse identifers
 extern NSString * const kSettingsToggleCellReuseIdentifier;
 extern NSString * const kSettingsTextFieldCellReuseIdentifier;
 extern NSString * const kSettingsLabelCellReuseIdentifier;
+extern NSString * const kSettingsButtonCellReuseIdentifier;
 
 // Setting identifiers: Note these are referenced in UserPreferences.plist
 extern NSString * const kSettingsAboutIdentifier;
 extern NSString * const kSettingsSyncOnCellularIdentifier;
 extern NSString * const kSettingsSendDiagnosticsIdentifier;
 extern NSString * const kSettingsFileProtectionIdentifier;
+extern NSString * const kSettingsResetAccountsIdentifier;
+extern NSString * const kSettingsResetEntireAppIdentifier;

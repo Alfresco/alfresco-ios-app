@@ -77,6 +77,29 @@ static NSString * const kDownloadsContentFolder = @"content";
     return downloadsContentFolderPathString;
 }
 
+- (void)clearTemporaryDirectory
+{
+    NSError *tmpError = nil;
+    NSArray *temporayDirectoryContent = [self contentsOfDirectoryAtPath:self.temporaryDirectory error:&tmpError];
+    
+    if (tmpError)
+    {
+        AlfrescoLogError(@"Unable to retrieve content of %@", self.temporaryDirectory);
+    }
+    
+    for (NSString *itemName in temporayDirectoryContent)
+    {
+        NSError *removalError = nil;
+        NSString *absolutePath = [self.temporaryDirectory stringByAppendingPathComponent:itemName];
+        [self removeItemAtPath:absolutePath error:&removalError];
+        
+        if (removalError)
+        {
+            AlfrescoLogError(@"Unable to remove iteam at path: %@", absolutePath);
+        }
+    }
+}
+
 #pragma mark - Private Functions
 
 - (void)createFolderAtPathIfItDoesNotExist:(NSString *)folderPath

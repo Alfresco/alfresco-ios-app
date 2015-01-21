@@ -24,6 +24,11 @@
 #import "SettingLabelCell.h"
 #import "AboutViewController.h"
 #import "AccountManager.h"
+#import "SettingButtonCell.h"
+#import "UIAlertView+ALF.h"
+#import "CoreDataCacheHelper.h"
+#import "AvatarImageCache.h"
+#import "DownloadManager.h"
 
 static NSUInteger const kCellLeftInset = 10;
 
@@ -132,6 +137,10 @@ static NSUInteger const kCellLeftInset = 10;
     {
         returnClass = [SettingLabelCell class];
     }
+    else if ([cellPreferenceType isEqualToString:kSettingsButtonCell])
+    {
+        returnClass = [SettingButtonCell class];
+    }
     
     return returnClass;
 }
@@ -154,8 +163,76 @@ static NSUInteger const kCellLeftInset = 10;
     {
         reuseIdentifier = kSettingsLabelCellReuseIdentifier;
     }
+    else if ([cellPreferenceType isEqualToString:kSettingsButtonCellReuseIdentifier])
+    {
+        reuseIdentifier = kSettingsButtonCellReuseIdentifier;
+    }
     
     return reuseIdentifier;
+}
+
+- (void)handleActionWithPreferenceIdentifier:(NSString *)preferenceIdentifier
+{
+    NSLog(@"Pressed %@", preferenceIdentifier);
+    if ([preferenceIdentifier isEqualToString:kSettingsResetAccountsIdentifier])
+    {
+        UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
+                                                                    message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+        
+        [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+            if (!isCancelButton)
+            {
+                // Remove accounts
+                [[AccountManager sharedManager] removeAllAccounts];
+                // Delete avatar cache
+                CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+                [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+                
+                UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                            message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                           delegate:self
+                                                                  cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                                  otherButtonTitles:nil];
+                [confirmation show];
+            }
+        }];
+    }
+    else if ([preferenceIdentifier isEqualToString:kSettingsResetEntireAppIdentifier])
+    {
+        UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
+                                                                    message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+        
+        [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+            if (!isCancelButton)
+            {
+                // Reset accounts, delete cache databases, tmp folder, downloads
+                // Remove accounts
+                [[AccountManager sharedManager] removeAllAccounts];
+                // Delete cache
+                CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+                [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+                [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
+                [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
+                // Remove downloads
+                [[DownloadManager sharedManager] removeAllDownloads];
+                // Remove all contents of the temp folder
+                [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
+                
+                UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                       message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                      delegate:self
+                                                             cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                             otherButtonTitles:nil];
+                [confirmation show];
+            }
+        }];
+    }
 }
 
 #pragma mark - Table view data source
@@ -228,7 +305,15 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (void)valueDidChangeForCell:(SettingCell *)cell preferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value
 {
-    [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
+    // If it's an action cell that requires action, else, update the prefernces
+    if ([cell isKindOfClass:[SettingButtonCell class]])
+    {
+        [self handleActionWithPreferenceIdentifier:preferenceIdentifier];
+    }
+    else
+    {
+        [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
+    }
 }
 
 @end

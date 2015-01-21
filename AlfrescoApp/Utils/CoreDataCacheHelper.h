@@ -35,5 +35,8 @@
 - (DocumentPreviewImageCache *)retrieveDocumentPreviewForDocument:(AlfrescoDocument *)document inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 - (void)removeAllCachedDataOlderThanNumberOfDays:(NSNumber *)numberOfDays;
+- (void)removeAllAvatarDataInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)removeAllDocLibImageDataInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)removeAllDocumentPreviewImageDataInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end

@@ -319,6 +319,17 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     return savedFilePath;
 }
 
+- (void)removeAllDownloads
+{
+    NSError *removalError = nil;
+    [self.fileManager removeItemAtPath:[self.fileManager downloadsFolderPath] error:&removalError];
+    
+    if (removalError)
+    {
+        AlfrescoLogError(@"Unable to delete item at path: %@", [self.fileManager downloadsFolderPath]);
+    }
+}
+
 #pragma mark - Private Interface
 
 - (id)init

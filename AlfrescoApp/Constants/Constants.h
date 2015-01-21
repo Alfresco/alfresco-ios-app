@@ -82,6 +82,10 @@ extern CGFloat const kRevealControllerMasterViewWidth;
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
 
+// Settings Bundle Keys
+extern NSString * const kSettingsBundlePreferenceAppVersionKey;
+extern NSString * const kSettingsBundlePreferenceSafeModeKey;
+
 // App Configuration
 extern NSString * const kAppConfigurationFileLocationOnServer;
 extern NSString * const kAppConfigurationActivitiesKey;

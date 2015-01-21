@@ -185,6 +185,36 @@ static NSString * const kAlfrescoAppDataModel = @"AlfrescoCache";
     [self deleteRecordsWithPredicate:predicate inTable:NSStringFromClass([DocumentPreviewImageCache class]) inManagedObjectContext:self.managedObjectContext];
 }
 
+- (void)removeAllAvatarDataInManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    [self deleteAllRecordsInTable:NSStringFromClass([AvatarImageCache class]) inManagedObjectContext:managedContext];
+}
+
+- (void)removeAllDocLibImageDataInManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    [self deleteAllRecordsInTable:NSStringFromClass([DocLibImageCache class]) inManagedObjectContext:managedContext];
+}
+
+- (void)removeAllDocumentPreviewImageDataInManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    [self deleteAllRecordsInTable:NSStringFromClass([DocumentPreviewImageCache class]) inManagedObjectContext:managedContext];
+}
+
 #pragma mark - Custom Getters and Setters
 
 - (NSManagedObjectContext *)cacheManagedObjectContext
