@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -50,19 +50,6 @@ NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";
 NSString * const kSettingsBundlePreferenceSafeModeKey = @"Prefs_SafeMode";
-
-// App Configuration
-NSString * const kAppConfigurationFileLocationOnServer = @"Mobile/configuration.json";
-NSString * const kAppConfigurationActivitiesKey = @"com.alfresco.activities";
-NSString * const kAppConfigurationFavoritesKey = @"com.alfresco.favorites";
-NSString * const kAppConfigurationLocalFilesKey = @"com.alfresco.localFiles";
-NSString * const kAppConfigurationNotificationsKey = @"com.alfresco.notifications";
-NSString * const kAppConfigurationRepositoryKey = @"com.alfresco.repository";
-NSString * const kAppConfigurationSearchKey = @"com.alfresco.search";
-NSString * const kAppConfigurationSitesKey = @"com.alfresco.sites";
-NSString * const kAppConfigurationTasksKey = @"com.alfresco.tasks";
-NSString * const kAppConfigurationMyFilesKey = @"com.alfresco.repository.userhome";
-NSString * const kAppConfigurationSharedFilesKey = @"com.alfresco.repository.shared";
 
 // App Configuration Notifications
 NSString * const kAlfrescoAppConfigurationUpdatedNotification = @"AlfrescoAppConfigurationUpdatedNotification";

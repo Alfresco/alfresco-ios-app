@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -15,7 +15,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
+
+#import <Foundation/Foundation.h>
+#import "SharedConstants.h"
+
 typedef NS_ENUM(NSUInteger, TaskFilter)
 {
     TaskFilterTask = 0,
@@ -85,19 +88,6 @@ extern NSString * const kIsAppFirstLaunch;
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
 extern NSString * const kSettingsBundlePreferenceSafeModeKey;
-
-// App Configuration
-extern NSString * const kAppConfigurationFileLocationOnServer;
-extern NSString * const kAppConfigurationActivitiesKey;
-extern NSString * const kAppConfigurationFavoritesKey;
-extern NSString * const kAppConfigurationLocalFilesKey;
-extern NSString * const kAppConfigurationNotificationsKey;
-extern NSString * const kAppConfigurationRepositoryKey;
-extern NSString * const kAppConfigurationSearchKey;
-extern NSString * const kAppConfigurationSitesKey;
-extern NSString * const kAppConfigurationTasksKey;
-extern NSString * const kAppConfigurationMyFilesKey;
-extern NSString * const kAppConfigurationSharedFilesKey;
 
 // App Configuration Notifications
 extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;

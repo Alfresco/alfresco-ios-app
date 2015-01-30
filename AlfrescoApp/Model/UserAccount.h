@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -15,8 +15,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
+
+#import <Foundation/Foundation.h>
 #import "AccountCertificate.h"
+
+@class AlfrescoOAuthData;
 
 typedef NS_ENUM(NSInteger, UserAccountType)
 {
