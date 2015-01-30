@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -326,7 +326,8 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     }
     
     NSString *configurationFileName = [accountIdentifier stringByAppendingPathExtension:[kAppConfigurationFileLocationOnServer pathExtension]];
-    return [NSTemporaryDirectory() stringByAppendingPathComponent:configurationFileName];
+    NSURL *sharedContainerURL = [[NSFileManager alloc] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+    return [sharedContainerURL.path stringByAppendingPathComponent:configurationFileName];
 }
 
 - (void)updateAppUsingDefaultConfiguration
@@ -358,7 +359,7 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
 
 - (void)appDataDictionaryPathWithCompletionBlock:(void (^)(NSString *dataDictionaryPath))completionBlock
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroupIdentifier];
     
     if (self.alfrescoSession)
     {

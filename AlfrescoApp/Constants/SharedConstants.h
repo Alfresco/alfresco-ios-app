@@ -1,14 +1,14 @@
 /*******************************************************************************
  * Copyright (C) 2005-2015 Alfresco Software Limited.
- * 
+ *
  * This file is part of the Alfresco Mobile iOS App.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,10 +18,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KeychainUtils : NSObject
+// Shared Group
+extern NSString * const kSharedAppGroupIdentifier;
 
-+ (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error;
-+ (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError;
-+ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError;
-
-@end
+// App Configuration
+extern NSString * const kAppConfigurationFileLocationOnServer;
+extern NSString * const kAppConfigurationActivitiesKey;
+extern NSString * const kAppConfigurationFavoritesKey;
+extern NSString * const kAppConfigurationLocalFilesKey;
+extern NSString * const kAppConfigurationNotificationsKey;
+extern NSString * const kAppConfigurationRepositoryKey;
+extern NSString * const kAppConfigurationSearchKey;
+extern NSString * const kAppConfigurationSitesKey;
+extern NSString * const kAppConfigurationTasksKey;
+extern NSString * const kAppConfigurationMyFilesKey;
+extern NSString * const kAppConfigurationSharedFilesKey;
