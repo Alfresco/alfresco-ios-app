@@ -17,6 +17,7 @@
  ******************************************************************************/
  
 #import "KeychainUtils.h"
+#import "NSObject+DebugCheck.h"
 
 @implementation KeychainUtils
 
