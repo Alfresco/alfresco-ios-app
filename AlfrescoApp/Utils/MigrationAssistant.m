@@ -203,8 +203,6 @@ static NSString * const kOldAccountCMISServicePath = @"/service/cmis";
     NSError *moveError = nil;
     [fileManager moveItemAtPath:sourcePath toPath:destinationPath error:&moveError];
     
-    NSLog(@"Source location: %@, to destination location: %@", sourcePath, destinationPath);
-    
     if (moveError)
     {
         AlfrescoLogError(@"Unable to migrate Downloads folder from source location: %@, to destination location: %@. Error: %@", sourcePath, destinationPath, moveError.localizedDescription);
