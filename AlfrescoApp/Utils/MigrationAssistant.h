@@ -19,5 +19,6 @@
 @interface MigrationAssistant : NSObject
 
 + (void)runMigrationAssistant;
++ (void)runDownloadsMigration;
 
 @end

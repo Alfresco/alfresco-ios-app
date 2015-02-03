@@ -37,17 +37,27 @@ static NSString * const kOldAccountCMISServicePath = @"/service/cmis";
 
 + (void)runMigrationAssistant
 {
-    if ([self shouldStartMigration])
+    if ([self shouldStartAccountMigration])
     {
         [self migrateAccounts];
-        [self migrateDownloadedFiles];
+        [self migrateLegacyAppDownloadedFiles];
         [(AppDelegate *)[[UIApplication sharedApplication] delegate] updateAppFirstLaunchFlag];
+    }
+}
+
++ (void)runDownloadsMigration
+{
+    if ([self shouldStartDownloadFolderMigration])
+    {
+        [self migrateDownloadsToSharedContainer];
     }
 }
 
 #pragma mark - Private Functions
 
-+ (BOOL)shouldStartMigration
+#pragma mark Legacy Account Migration
+
++ (BOOL)shouldStartAccountMigration
 {
     BOOL shouldMigrateAccounts = NO;
     
@@ -129,7 +139,8 @@ static NSString * const kOldAccountCMISServicePath = @"/service/cmis";
     return account;
 }
 
-+ (void)migrateDownloadedFiles
+// Moves downloads from the legacy app (v1.5) to the the updated Downloads location
++ (void)migrateLegacyAppDownloadedFiles
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     
@@ -164,6 +175,38 @@ static NSString * const kOldAccountCMISServicePath = @"/service/cmis";
         AlfrescoLogError(@"Unable to retrieve documents folder");
     }
     
+}
+
+#pragma mark Downloads Folder Migration
+
++ (BOOL)shouldStartDownloadFolderMigration
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    
+    BOOL shouldMigrateDownloads = NO;
+    
+    if ([fileManager fileExistsAtPath:fileManager.legacyDownloadsFolderPath])
+    {
+        shouldMigrateDownloads = YES;
+    }
+    
+    return shouldMigrateDownloads;
+}
+
++ (void)migrateDownloadsToSharedContainer
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    
+    NSString *sourcePath = fileManager.legacyDownloadsFolderPath;
+    NSString *destinationPath = fileManager.downloadsFolderPath;
+    
+    NSError *moveError = nil;
+    [fileManager moveItemAtPath:sourcePath toPath:destinationPath error:&moveError];
+    
+    if (moveError)
+    {
+        AlfrescoLogError(@"Unable to migrate Downloads folder from source location: %@, to destination location: %@. Error: %@", sourcePath, destinationPath, moveError.localizedDescription);
+    }
 }
 
 @end

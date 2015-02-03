@@ -112,6 +112,8 @@
         [self updateAppFirstLaunchFlag];
     }
     
+    [MigrationAssistant runDownloadsMigration];
+    
     // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];
     self.window.tintColor = [UIColor appTintColor];
