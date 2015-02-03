@@ -17,6 +17,7 @@
  ******************************************************************************/
  
 #import "AlfrescoFileManager+Extensions.h"
+#import "SharedConstants.h"
 
 // preview documents
 static NSString * const kPreviewDocumentsFolder = @"DocumentPreviews";
@@ -54,6 +55,14 @@ static NSString * const kDownloadsContentFolder = @"content";
 }
 
 - (NSString *)downloadsFolderPath
+{
+    NSURL *downloadsFolderPathURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+    NSString *sharedContainerDownloadsPath = [downloadsFolderPathURL.path stringByAppendingPathComponent:kDownloadsFolder];
+    
+    return sharedContainerDownloadsPath;
+}
+     
+- (NSString *)legacyDownloadsFolderPath
 {
     NSString *downloadsFolderPathString = [[self documentsDirectory] stringByAppendingPathComponent:kDownloadsFolder];
     [self createFolderAtPathIfItDoesNotExist:downloadsFolderPathString];
