@@ -109,14 +109,22 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (NSArray *)scopeItemsForAccount:(id<AKUserAccount>)account myFilesFolder:(AlfrescoFolder *)myFilesFolder sharedFilesFolder:(AlfrescoFolder *)sharedFilesFolder
 {
-    NSURL *configFilePathURL = [self configurationFileNameURLForAccount:account];
-    AppConfiguration *configuration = [[AppConfiguration alloc] initWithAppConfigurationFileURL:configFilePathURL];
-    
-    BOOL showRepository = [configuration visibilityInRootMenuForKey:kAppConfigurationRepositoryKey];
-    BOOL showSites = [configuration visibilityInRootMenuForKey:kAppConfigurationSitesKey];
-    BOOL showFavourites = [configuration visibilityInRootMenuForKey:kAppConfigurationFavoritesKey];
+    // Default visibility
+    BOOL showRepository = YES;
+    BOOL showSites = YES;
+    BOOL showFavourites = YES;
     BOOL showSharedFiles = !!sharedFilesFolder;
     BOOL showMyFiles = !!myFilesFolder;
+    
+    NSURL *configFilePathURL = [self configurationFileNameURLForAccount:account];
+    BOOL appConfigurationFileExists = [[NSFileManager defaultManager] fileExistsAtPath:configFilePathURL.path];
+    if (appConfigurationFileExists)
+    {
+        AppConfiguration *configuration = [[AppConfiguration alloc] initWithAppConfigurationFileURL:configFilePathURL];
+        showRepository = [configuration visibilityInRootMenuForKey:kAppConfigurationRepositoryKey];
+        showSites = [configuration visibilityInRootMenuForKey:kAppConfigurationSitesKey];
+        showFavourites = [configuration visibilityInRootMenuForKey:kAppConfigurationFavoritesKey];
+    }
     
     NSMutableArray *scopeItems = [NSMutableArray array];
     
