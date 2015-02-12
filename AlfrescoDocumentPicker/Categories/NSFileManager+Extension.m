@@ -16,23 +16,28 @@
  *  limitations under the License.
  ******************************************************************************/
 
-/**
- * General
- */
-"Yes" = "Yes";
-"No" = "No";
+#import "NSFileManager+Extension.h"
 
-/**
- * Sites Scope
- */
-"document.picker.scope.repository" = "Repository";
-"document.picker.scope.sites" = "Sites";
-"document.picker.scope.favourites" = "Favorites";
-"document.picker.scope.shared.files" = "Shared Files";
-"document.picker.scope.my.files" = "My Files";
+@implementation NSFileManager (Extension)
 
-/**
- * Local Files
- */
-"document.picker.scope.overwrite.title" = "File Exists";
-"document.picker.scope.overwrite.message" = "A file with this name already exists. Would you like to overwrite it?";
+- (BOOL)copyItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL overwritingExistingFile:(BOOL)overwrite error:(NSError **)error
+{
+    if (overwrite)
+    {
+        [self removeItemAtURL:dstURL error:error];
+    }
+    
+    return [self copyItemAtURL:srcURL toURL:dstURL error:error];
+}
+
+- (BOOL)copyItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath overwritingExistingFile:(BOOL)overwrite error:(NSError **)error
+{
+    if (overwrite)
+    {
+        [self removeItemAtPath:dstPath error:error];
+    }
+    
+    return [self copyItemAtPath:srcPath toPath:dstPath error:error];
+}
+
+@end

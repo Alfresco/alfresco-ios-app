@@ -24,6 +24,8 @@
 #import "SharedConstants.h"
 #import "CustomFolderService.h"
 #import "MBProgressHUD.h"
+#import "AlfrescoFileManager+Extensions.h"
+#import "NSFileManager+Extension.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -32,10 +34,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                             AKScopePickingViewControllerDelegate,
                                             AKSitesListViewControllerDelegate,
                                             AKLoginViewControllerDelegate,
-                                            AKNamingViewControllerDelegate>
+                                            AKNamingViewControllerDelegate,
+                                            AKLocalFilesViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *containingView;
-@property (nonatomic, strong) AppConfiguration *appConfiguration;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UINavigationController *embeddedNavigationController;
 
@@ -243,7 +245,21 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (void)didSelectLocalFilesOnUserAccountListViewController:(AKUserAccountListViewController *)accountListViewController
 {
-    // TODO: local files
+    AKLocalFileControllerType mode;
+    
+    if (self.documentPickerMode == UIDocumentPickerModeImport || self.documentPickerMode == UIDocumentPickerModeOpen)
+    {
+        mode = AKLocalFileControllerTypeFilePicker;
+    }
+    else
+    {
+        mode = AKLocalFileControllerTypeFolderPicker;
+    }
+    NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+    NSURL *downloadContentURL = [NSURL fileURLWithPath:downloadContentPath];
+    AKLocalFilesViewController *localFileController = [[AKLocalFilesViewController alloc] initWithMode:mode url:downloadContentURL delegate:self];
+    
+    [self.embeddedNavigationController pushViewController:localFileController animated:YES];
 }
 
 #pragma mark - AKLoginViewControllerDelegate Methods
@@ -376,52 +392,123 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (void)namingViewController:(AKNamingViewController *)namingController didEnterName:(NSString *)name userInfo:(id)userInfo
 {
-    BOOL access = [self.originalURL startAccessingSecurityScopedResource];
-    
-    if (access)
+    if ([userInfo isKindOfClass:[AlfrescoNode class]])
     {
-        NSString *enteredFileName = [name stringByDeletingPathExtension];
-        NSString *enteredExtension = name.pathExtension;
+        BOOL access = [self.originalURL startAccessingSecurityScopedResource];
         
-        NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] init];
-        NSError *error = nil;
-        [fileCoordinator coordinateReadingItemAtURL:self.originalURL options:NSFileCoordinatorReadingForUploading error:&error byAccessor:^(NSURL *newURL) {
-            // Move the copy the file to the shared container
-            NSString *pathExtension = (enteredExtension && enteredExtension.length > 0) ? enteredExtension : newURL.pathExtension;
+        if (access)
+        {
+            NSString *enteredFileName = [name stringByDeletingPathExtension];
+            NSString *enteredExtension = name.pathExtension;
+            
+            NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] init];
+            NSError *error = nil;
+            [fileCoordinator coordinateReadingItemAtURL:self.originalURL options:NSFileCoordinatorReadingForUploading error:&error byAccessor:^(NSURL *newURL) {
+                // Move the copy the file to the shared container
+                NSString *pathExtension = (enteredExtension && enteredExtension.length > 0) ? enteredExtension : newURL.pathExtension;
+                NSString *fileName = [enteredFileName stringByAppendingPathExtension:pathExtension];
+                
+                NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:fileName];
+                NSFileManager *fileManager = [[NSFileManager alloc] init];
+                [fileManager copyItemAtURL:newURL toURL:outURL overwritingExistingFile:YES error:nil];
+                
+                // Show Progress HUD
+                MBProgressHUD *progressHUD = [self progressHUDForView:namingController.view];
+                [namingController.view addSubview:progressHUD];
+                [progressHUD show:YES];
+                
+                // Initiate the upload
+                AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+                AlfrescoFolder *uploadFolder = (AlfrescoFolder *)userInfo;
+                AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:outURL];
+                
+                NSInputStream *inputStream = [NSInputStream inputStreamWithURL:outURL];
+                AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:contentFile.mimeType length:contentFile.length];
+                [docService createDocumentWithName:fileName inParentFolder:uploadFolder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                    [progressHUD hide:YES];
+                    if (error)
+                    {
+                        // TODO: MOBILE-3181
+                        [self displayAlertWithError:error];
+                    }
+                    else
+                    {
+                        [self dismissGrantingAccessToURL:outURL];
+                    }
+                } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
+                    progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
+                }];
+            }];
+            [self.originalURL stopAccessingSecurityScopedResource];
+        }
+    }
+    else
+    {
+        BOOL access = [self.originalURL startAccessingSecurityScopedResource];
+        
+        if (access)
+        {
+            NSString *enteredFileName = [name stringByDeletingPathExtension];
+            NSString *enteredExtension = name.pathExtension;
+            NSString *pathExtension = (enteredExtension && enteredExtension.length > 0) ? enteredExtension : self.originalURL.pathExtension;
             NSString *fileName = [enteredFileName stringByAppendingPathExtension:pathExtension];
             
-            NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:fileName];
             NSFileManager *fileManager = [[NSFileManager alloc] init];
-            [fileManager copyItemAtURL:newURL toURL:outURL error:nil];
             
-            // Show Progress HUD
-            MBProgressHUD *progressHUD = [self progressHUDForView:namingController.view];
-            [namingController.view addSubview:progressHUD];
-            [progressHUD show:YES];
-            
-            // Initiate the upload
-            AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-            AlfrescoFolder *uploadFolder = (AlfrescoFolder *)userInfo;
-            AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:outURL];
-            
-            NSInputStream *inputStream = [NSInputStream inputStreamWithURL:outURL];
-            AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:contentFile.mimeType length:contentFile.length];
-            [docService createDocumentWithName:fileName inParentFolder:uploadFolder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                [progressHUD hide:YES];
-                if (error)
+            NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] init];
+            __block NSError *error = nil;
+            [fileCoordinator coordinateReadingItemAtURL:self.originalURL options:NSFileCoordinatorReadingForUploading error:&error byAccessor:^(NSURL *newURL) {
+                NSURL *completeDocumentStorageURL = [self.documentStorageURL URLByAppendingPathComponent:fileName];
+                NSError *copyError = nil;
+                [fileManager copyItemAtURL:newURL toURL:completeDocumentStorageURL overwritingExistingFile:YES error:&copyError];
+                
+                if (copyError)
                 {
-                    // TODO: MOBILE-3181
-                    [self displayAlertWithError:error];
+                    AlfrescoLogError(@"Unable to copy file from location: %@ to location: %@", newURL, completeDocumentStorageURL);
+                }
+                
+                // copy to downloads
+                NSString *fullDestinationPath = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:fileName];
+                NSURL *downloadPath = [NSURL fileURLWithPath:fullDestinationPath];
+                
+                if ([fileManager fileExistsAtPath:fullDestinationPath])
+                {
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No") style:UIAlertActionStyleCancel handler:nil];
+                    UIAlertAction *overwrite = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                        NSError *copyError = nil;
+                        [fileManager copyItemAtURL:completeDocumentStorageURL toURL:downloadPath overwritingExistingFile:YES error:&copyError];
+                        
+                        if (copyError)
+                        {
+                            AlfrescoLogError(@"Unable to copy from: %@ to: %@", completeDocumentStorageURL, downloadPath);
+                        }
+                        
+                        [self dismissGrantingAccessToURL:completeDocumentStorageURL];
+                    }];
+                    
+                    NSString *title = NSLocalizedString(@"document.picker.scope.overwrite.title", @"Overwrite Title");
+                    NSString *message = NSLocalizedString(@"document.picker.scope.overwrite.message", @"Overwrite Message");
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:cancel];
+                    [alertController addAction:overwrite];
+                    [self presentViewController:alertController animated:YES completion:nil];
                 }
                 else
                 {
-                    [self dismissGrantingAccessToURL:outURL];
+                    NSError *copyError = nil;
+                    [fileManager copyItemAtURL:completeDocumentStorageURL toURL:downloadPath overwritingExistingFile:YES error:&copyError];
+                    
+                    if (copyError)
+                    {
+                        AlfrescoLogError(@"Unable to copy from: %@ to: %@", completeDocumentStorageURL, downloadPath);
+                    }
+                    
+                    [self dismissGrantingAccessToURL:completeDocumentStorageURL];
                 }
-            } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
             }];
-        }];
-        [self.originalURL stopAccessingSecurityScopedResource];
+            
+            [self.originalURL stopAccessingSecurityScopedResource];
+        }
     }
 }
 
@@ -444,6 +531,36 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             [hud hide:YES];
         }
     }
+}
+
+#pragma mark - AKLocalFilesViewControllerDelegate Methods
+
+- (void)localFileViewController:(AKLocalFilesViewController *)localFileViewController didSelectFolderURL:(NSURL *)folderURL
+{
+    AKNamingViewController *namingController = [[AKNamingViewController alloc] initWithURL:nil delegate:self userInfo:folderURL];
+    [self.embeddedNavigationController pushViewController:namingController animated:YES];
+}
+
+- (void)localFileViewController:(AKLocalFilesViewController *)localFileViewController didSelectDocumentURLPaths:(NSArray *)documentURLPaths
+{
+    // Currently only support one file, so get the first URL from the array
+    NSURL *fileURL = documentURLPaths.firstObject;
+    
+    // Move the file into the document storage URL
+    NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:fileURL.path.lastPathComponent];
+    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] init];
+    [coordinator coordinateWritingItemAtURL:fileURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newURL) {
+        NSError *copyError = nil;
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        [fileManager copyItemAtURL:newURL toURL:outURL overwritingExistingFile:YES error:&copyError];
+        
+        if (copyError)
+        {
+            AlfrescoLogError(@"Unable to copy from: %@ to: %@", newURL, outURL);
+        }
+    }];
+    
+    [self dismissGrantingAccessToURL:outURL];
 }
 
 @end
