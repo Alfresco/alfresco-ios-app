@@ -478,7 +478,9 @@
 		73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
 		73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21117E854ED00A198B4 /* AccountManager.m */; };
 		73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
+		73F14C201A8CDDF50042D91E /* NSFileManager+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F14C1F1A8CDDF50042D91E /* NSFileManager+Extension.m */; };
 		73F628B7185779440050F437 /* TextFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F628B6185779440050F437 /* TextFileViewController.m */; };
+		73F8D01C1A8272D700793309 /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
 		73FF557718ACE2370009CA56 /* large_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF555F18ACE2370009CA56 /* large_audio.png */; };
 		73FF557818ACE2370009CA56 /* large_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556018ACE2370009CA56 /* large_audio@2x.png */; };
 		73FF557918ACE2370009CA56 /* large_document.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF556118ACE2370009CA56 /* large_document.png */; };
@@ -609,6 +611,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4EB0769615B00D8E00DF7DED;
 			remoteInfo = "AlfrescoSDK-iOS";
+		};
+		73F14C0F1A8389620042D91E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7373B4ED17A66E9400869949 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 734CC3F91A700808005D148E;
+			remoteInfo = AlfrescoDocumentPickerFileProvider;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1316,6 +1325,8 @@
 		73E9E21117E854ED00A198B4 /* AccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManager.m; sourceTree = "<group>"; };
 		73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
 		73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
+		73F14C1E1A8CDDF50042D91E /* NSFileManager+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Extension.h"; sourceTree = "<group>"; };
+		73F14C1F1A8CDDF50042D91E /* NSFileManager+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Extension.m"; sourceTree = "<group>"; };
 		73F628B5185779440050F437 /* TextFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextFileViewController.h; path = "Text File View Controller/TextFileViewController.h"; sourceTree = "<group>"; };
 		73F628B6185779440050F437 /* TextFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = TextFileViewController.m; path = "Text File View Controller/TextFileViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73FF555F18ACE2370009CA56 /* large_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_audio.png; sourceTree = "<group>"; };
@@ -1912,6 +1923,7 @@
 		734CC3ED1A700808005D148E /* AlfrescoDocumentPicker */ = {
 			isa = PBXGroup;
 			children = (
+				73F14C191A8CDDC40042D91E /* Categories */,
 				73CD5B011A727594000A5523 /* Services */,
 				738B41091A714879008F8784 /* Model */,
 				734CC3F11A700808005D148E /* DocumentPickerViewController.h */,
@@ -3099,6 +3111,15 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		73F14C191A8CDDC40042D91E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				73F14C1E1A8CDDF50042D91E /* NSFileManager+Extension.h */,
+				73F14C1F1A8CDDF50042D91E /* NSFileManager+Extension.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		73F628B4185779050050F437 /* Text File View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -3199,6 +3220,7 @@
 				734CC3B51A6FBD85005D148E /* PBXTargetDependency */,
 				734CC3AF1A6FBC75005D148E /* PBXTargetDependency */,
 				734CC4061A700809005D148E /* PBXTargetDependency */,
+				73F14C101A8389620042D91E /* PBXTargetDependency */,
 			);
 			name = AlfrescoApp;
 			productName = AlfrescoApp;
@@ -3745,12 +3767,14 @@
 			files = (
 				73CD5B0F1A729543000A5523 /* SharedConstants.m in Sources */,
 				73CD5B0B1A727D88000A5523 /* AppConfiguration.m in Sources */,
+				73F14C201A8CDDF50042D91E /* NSFileManager+Extension.m in Sources */,
 				738B41011A71467A008F8784 /* UserAccount.m in Sources */,
 				73322D871A71439D000C1118 /* AccountCertificate.m in Sources */,
 				734CC3F31A700808005D148E /* DocumentPickerViewController.m in Sources */,
 				735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */,
 				73CD5B081A7275B7000A5523 /* CustomFolderService.m in Sources */,
 				738B41081A714872008F8784 /* UserAccountWrapper.m in Sources */,
+				73F8D01C1A8272D700793309 /* AlfrescoFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3984,6 +4008,11 @@
 			isa = PBXTargetDependency;
 			name = "AlfrescoSDK-iOS";
 			targetProxy = 735F95CD1A71037000D8B81E /* PBXContainerItemProxy */;
+		};
+		73F14C101A8389620042D91E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 734CC3F91A700808005D148E /* AlfrescoDocumentPickerFileProvider */;
+			targetProxy = 73F14C0F1A8389620042D91E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

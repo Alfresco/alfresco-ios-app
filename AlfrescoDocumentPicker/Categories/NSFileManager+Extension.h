@@ -16,23 +16,11 @@
  *  limitations under the License.
  ******************************************************************************/
 
-/**
- * General
- */
-"Yes" = "Yes";
-"No" = "No";
+#import <Foundation/Foundation.h>
 
-/**
- * Sites Scope
- */
-"document.picker.scope.repository" = "Repository";
-"document.picker.scope.sites" = "Sites";
-"document.picker.scope.favourites" = "Favorites";
-"document.picker.scope.shared.files" = "Shared Files";
-"document.picker.scope.my.files" = "My Files";
+@interface NSFileManager (Extension)
 
-/**
- * Local Files
- */
-"document.picker.scope.overwrite.title" = "File Exists";
-"document.picker.scope.overwrite.message" = "A file with this name already exists. Would you like to overwrite it?";
+- (BOOL)copyItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL overwritingExistingFile:(BOOL)overwrite error:(NSError **)error;
+- (BOOL)copyItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath overwritingExistingFile:(BOOL)overwrite error:(NSError **)error;
+
+@end
