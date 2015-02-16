@@ -62,7 +62,15 @@ static NSString * const kAlfrescoRepositoryConfigurationVisibilityKey = @"visibl
 
 - (BOOL)visibilityKeyInDictionary:(NSDictionary *)dictionary
 {
-    return [dictionary[kAlfrescoRepositoryConfigurationVisibilityKey] boolValue];
+    BOOL shouldDisplay = YES;
+    NSNumber *visibilityValue = dictionary[kAlfrescoRepositoryConfigurationVisibilityKey];
+    
+    if (visibilityValue)
+    {
+        shouldDisplay = visibilityValue.boolValue;
+    }
+    
+    return shouldDisplay;
 }
 
 #pragma mark - Public Methods
