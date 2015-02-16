@@ -65,8 +65,6 @@ static NSString * const kDownloadsContentFolder = @"content";
 - (NSString *)legacyDownloadsFolderPath
 {
     NSString *downloadsFolderPathString = [[self documentsDirectory] stringByAppendingPathComponent:kDownloadsFolder];
-    [self createFolderAtPathIfItDoesNotExist:downloadsFolderPathString];
-    
     return downloadsFolderPathString;
 }
 
