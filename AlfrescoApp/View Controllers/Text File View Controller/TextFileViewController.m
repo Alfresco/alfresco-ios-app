@@ -294,14 +294,17 @@ static NSString * const kTextFileMimeType = @"text/plain";
                     UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"document.edit.failed.title", @"Edit Document Save Failed Title")
                                                                               message:NSLocalizedString(@"document.edit.savefailed.message", @"Edit Document Save Failed Message")
                                                                              delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+                                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                                    otherButtonTitles:NSLocalizedString(@"document.edit.button.save", @"Save to Local Files"), nil];
                     [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
                         if (!isCancelButton)
                         {
-                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath completionBlock:nil];
+                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath showOverrideAlert:false completionBlock:^(NSString *filePath) {
+                                [self dismissViewControllerAnimated:YES completion:^{
+                                    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"download.success-as.message", @"Download succeeded"), filePath.lastPathComponent]);
+                                }];
+                            }];
                         }
-                        [self dismissViewControllerAnimated:YES completion:nil];
                     }];
                 }
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
