@@ -196,20 +196,54 @@ static NSString * const kTextFileMimeType = @"text/plain";
     
     if (self.textView.text.length > 0)
     {
-        NSString *alertTitleKey = self.editingDocument ? @"document.edit.button.discard" : @"createtextfile.dismiss.confirmation.title";
-        NSString *alertMessageKey = self.editingDocument ? @"document.edit.dismiss.confirmation.message" : @"createtextfile.dismiss.confirmation.message";
+        BOOL shouldShowAlertView = false;
         
-        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
-                                                                    message:NSLocalizedString(alertMessageKey, @"Discard Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"Yes", @"Yes")
-                                                          otherButtonTitles:NSLocalizedString(@"No", @"No"), nil];
-        [confirmationAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (isCancelButton)
+        //we check to see if we are in editing mode
+        if((self.editingDocument) && (self.documentContentPath))
+        {
+            NSError *error = nil;
+            NSString *fileContent = [[NSString alloc] initWithContentsOfFile:self.documentContentPath usedEncoding:NULL error:&error];
+            if(error == nil)
             {
-                dismissController();
+                if(self.textView.text.length != fileContent.length)
+                {
+                    //user has edited the file
+                    shouldShowAlertView = true;
+                }
+                else
+                {
+                    //the file is untouched
+                    shouldShowAlertView = false;
+                }
             }
-        }];
+        }
+        else
+        {
+            //this is a new file and it has some text entered by the user; we want to ask him if he wants to discard
+            shouldShowAlertView = true;
+        }
+        
+        if(shouldShowAlertView)
+        {
+            NSString *alertTitleKey = self.editingDocument ? @"document.edit.button.discard" : @"createtextfile.dismiss.confirmation.title";
+            NSString *alertMessageKey = self.editingDocument ? @"document.edit.dismiss.confirmation.message" : @"createtextfile.dismiss.confirmation.message";
+            
+            UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
+                                                                        message:NSLocalizedString(alertMessageKey, @"Discard Message")
+                                                                       delegate:self
+                                                              cancelButtonTitle:NSLocalizedString(@"document.edit.discard", @"Discard")
+                                                              otherButtonTitles:NSLocalizedString(@"document.edit.continue.editing", @"Continue Editing"), nil];
+            [confirmationAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                if (isCancelButton)
+                {
+                    dismissController();
+                }
+            }];
+        }
+        else
+        {
+            dismissController();
+        }
     }
     else
     {
