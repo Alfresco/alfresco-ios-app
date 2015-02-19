@@ -377,6 +377,7 @@
 		73881FE81890086F0052C75F /* actionsheet-print@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73881FE61890086F0052C75F /* actionsheet-print@2x.png */; };
 		738B41011A71467A008F8784 /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
 		738B41081A714872008F8784 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
+		738BE94A1A960787006264E5 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BE9491A960787006264E5 /* Launch Screen.xib */; };
 		7390619B189676F600B1920C /* ButtonBarArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 73906199189676F600B1920C /* ButtonBarArrowDown.png */; };
 		7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
@@ -1172,6 +1173,7 @@
 		73881FE61890086F0052C75F /* actionsheet-print@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-print@2x.png"; sourceTree = "<group>"; };
 		738B41061A714872008F8784 /* UserAccountWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserAccountWrapper.h; path = Model/UserAccountWrapper.h; sourceTree = "<group>"; };
 		738B41071A714872008F8784 /* UserAccountWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserAccountWrapper.m; path = Model/UserAccountWrapper.m; sourceTree = "<group>"; };
+		738BE9491A960787006264E5 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		73906199189676F600B1920C /* ButtonBarArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowDown.png; sourceTree = "<group>"; };
 		7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowDown@2x.png"; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
@@ -2116,6 +2118,7 @@
 				2744021F18AA83C400DF23DD /* Settings.bundle */,
 				73B95B0B17A6A83A0099FB84 /* SmallThumbnailImageMapping.plist */,
 				7384BDF817F3377A00C6A54F /* UserPreferences.plist */,
+				738BE9491A960787006264E5 /* Launch Screen.xib */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -3628,6 +3631,7 @@
 				73B95AB717A68B7E0099FB84 /* site-action-leave.png in Resources */,
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				73881FD1188FF6B00052C75F /* actionsheet-download@2x.png in Resources */,
+				738BE94A1A960787006264E5 /* Launch Screen.xib in Resources */,
 				732DBF9818E1BC6B00F7A0BF /* small_pdf.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
 				08E1EA3918DB073A00F9052F /* TaskTypeViewController.xib in Resources */,
