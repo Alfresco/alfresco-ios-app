@@ -19,6 +19,7 @@
 #import "WebBrowserViewController.h"
 #import "ConnectivityManager.h"
 #import "DismissCompletionProtocol.h"
+#import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 
 static CGFloat const kSpacingBetweenButtons = 10.0f;
