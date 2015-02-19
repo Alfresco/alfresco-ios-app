@@ -32,6 +32,7 @@ static NSDictionary *smallIconMappings;
 static NSDictionary *largeIconMappings;
 static NSDateFormatter *dateFormatter;
 static CGFloat const kZoomAnimationSpeed = 0.2f;
+static NSDictionary *helpURLLocaleIdentifiers;
 
 /**
  * TaskPriority lightweight class
@@ -783,6 +784,28 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 + (NSArray *)localisationsThatRequireTwoRowsInActionView
 {
     return @[@"it", @"de", @"es", @"ja"];
+}
+
++ (NSString *)helpURLLocaleIdentifierForAppLocale
+{
+    NSString *urlLanguageKey = nil;
+    
+    if (!helpURLLocaleIdentifiers)
+    {
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kAlfrescoHelpURLPlistFilename ofType:@"plist"];
+        helpURLLocaleIdentifiers = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    }
+    
+    NSString *localeLanguageCode = [[NSBundle mainBundle] preferredLocalizations].firstObject;
+    urlLanguageKey = helpURLLocaleIdentifiers[localeLanguageCode];
+    
+    // if locale language is not in the dictionary, default to english
+    if (!urlLanguageKey)
+    {
+        urlLanguageKey = helpURLLocaleIdentifiers[@"en"];
+    }
+    
+    return urlLanguageKey;
 }
 
 @end

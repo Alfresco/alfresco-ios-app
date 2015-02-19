@@ -449,6 +449,7 @@
  * Help
  */
 "help.title" = "Help";
+"help.no.internet.message" = "No Internet Connection.\n\nTo access help, you need to be connected to the Internet.";
 
 /**
  * Metadata View Controller
