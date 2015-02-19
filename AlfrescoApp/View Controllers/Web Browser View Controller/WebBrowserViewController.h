@@ -17,6 +17,7 @@
  ******************************************************************************/
   
 #import "DismissCompletionProtocol.h"
+#import "NJKWebViewProgress.h"
 
 @interface WebBrowserViewController : UIViewController <DismissCompletionProtocol>
 
