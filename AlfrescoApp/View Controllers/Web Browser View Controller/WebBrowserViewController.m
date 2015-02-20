@@ -191,10 +191,10 @@ static CGFloat const kProgressBarHeight = 2.0f;
     self.progressProxy.webViewProxyDelegate = self;
     self.progressProxy.progressDelegate = self;
     
-    CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
+    CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
     CGRect progressBarFrame = CGRectMake(0,
-                                         navigaitonBarBounds.size.height - kProgressBarHeight,
-                                         navigaitonBarBounds.size.width,
+                                         navigationBarBounds.size.height - kProgressBarHeight,
+                                         navigationBarBounds.size.width,
                                          kProgressBarHeight);
     self.progressView = [[NJKWebViewProgressView alloc] initWithFrame:progressBarFrame];
     self.progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
