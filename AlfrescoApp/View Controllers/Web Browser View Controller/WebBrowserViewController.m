@@ -197,6 +197,7 @@ static CGFloat const kProgressBarHeight = 2.0f;
                                          navigaitonBarBounds.size.width,
                                          kProgressBarHeight);
     self.progressView = [[NJKWebViewProgressView alloc] initWithFrame:progressBarFrame];
+    self.progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     
     [self.navigationController.navigationBar addSubview:self.progressView];
 }
