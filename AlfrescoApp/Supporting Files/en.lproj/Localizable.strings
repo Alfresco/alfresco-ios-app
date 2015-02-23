@@ -449,7 +449,7 @@
  * Help
  */
 "help.title" = "Help";
-"help.no.internet.message" = "No Internet Connection.\n\nTo access help, you need to be connected to the Internet.";
+"help.no.internet.message" = "Alfresco Mobile help can't be accessed because you're offline.\n\nPlease try again when you're back online.";
 
 /**
  * Metadata View Controller
