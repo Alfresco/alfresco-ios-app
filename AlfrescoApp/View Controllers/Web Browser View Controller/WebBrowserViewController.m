@@ -19,20 +19,29 @@
 #import "WebBrowserViewController.h"
 #import "ConnectivityManager.h"
 #import "DismissCompletionProtocol.h"
+#import "NJKWebViewProgress.h"
+#import "NJKWebViewProgressView.h"
 
 static CGFloat const kSpacingBetweenButtons = 10.0f;
+static CGFloat const kProgressBarHeight = 2.0f;
 
-@interface WebBrowserViewController () <UIWebViewDelegate>
+@interface WebBrowserViewController () <UIWebViewDelegate, NJKWebViewProgressDelegate>
 
+// Views
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
+@property (nonatomic, weak) IBOutlet UILabel *noInternetLabel;
+@property (nonatomic, strong) NJKWebViewProgressView *progressView;
+@property (nonatomic, strong) NJKWebViewProgress *progressProxy;
+// Data Structure
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSURL *errorURL;
 @property (nonatomic, strong) NSString *initalTitle;
-@property (nonatomic, weak) IBOutlet UIWebView *webView;
-@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
+@property (nonatomic, assign) BOOL shouldHideToolbar;
+// Buttons
 @property (nonatomic, weak) UIBarButtonItem *backButton;
 @property (nonatomic, weak) UIBarButtonItem *forwardButton;
-@property (nonatomic, assign) BOOL shouldHideToolbar;
 
 @end
 
@@ -40,7 +49,7 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
 
 - (instancetype)initWithURLString:(NSString *)urlString initialTitle:(NSString *)initialTitle errorLoadingURLString:(NSString *)errorURLString
 {
-    return [self initWithURL:[NSURL URLWithString:urlString] initialTitle:initialTitle errorLoadingURL:[NSURL fileURLWithPath:errorURLString]];
+    return [self initWithURL:[NSURL URLWithString:urlString] initialTitle:initialTitle errorLoadingURL:(errorURLString) ? [NSURL fileURLWithPath:errorURLString] : nil];
 }
 
 - (instancetype)initWithURL:(NSURL *)url initialTitle:(NSString *)initialTitle errorLoadingURL:(NSURL *)errorURL
@@ -65,6 +74,10 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
     [super viewDidLoad];
     
     self.title = self.initalTitle;
+    
+    self.noInternetLabel.text = NSLocalizedString(@"help.no.internet.message", @"No Internet Message");
+    
+    [self setupProgressView];
     
     NSMutableArray *webViewButtons = nil;
     if (!self.url.filePathURL)
@@ -102,7 +115,10 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
         self.forwardButton = self.navigationItem.leftBarButtonItems[2];
     }
     
-    self.navigationItem.rightBarButtonItem = closeButton;
+    if (self.url.isFileURL || IS_IPAD)
+    {
+        self.navigationItem.rightBarButtonItem = closeButton;
+    }
     
     if (self.shouldHideToolbar)
     {
@@ -117,15 +133,20 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
 
 - (void)makeInitialRequest
 {
+    [self showWebView];
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
         NSURLRequest *request = [NSURLRequest requestWithURL:self.url];
         [self.webView loadRequest:request];
     }
-    else
+    else if (self.errorURL)
     {
         NSURLRequest *request = [NSURLRequest requestWithURL:self.errorURL];
         [self.webView loadRequest:request];
+    }
+    else
+    {
+        [self hideWebView];
     }
 }
 
@@ -150,6 +171,37 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
     self.forwardButton.enabled = self.webView.canGoForward;
 }
 
+- (void)showWebView
+{
+    self.webView.hidden = NO;
+    [self updateButtons];
+}
+
+- (void)hideWebView
+{
+    self.webView.hidden = YES;
+    self.backButton.enabled = NO;
+    self.forwardButton.enabled = NO;
+}
+
+- (void)setupProgressView
+{
+    self.progressProxy = [[NJKWebViewProgress alloc] init];
+    self.webView.delegate = self.progressProxy;
+    self.progressProxy.webViewProxyDelegate = self;
+    self.progressProxy.progressDelegate = self;
+    
+    CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
+    CGRect progressBarFrame = CGRectMake(0,
+                                         navigationBarBounds.size.height - kProgressBarHeight,
+                                         navigationBarBounds.size.width,
+                                         kProgressBarHeight);
+    self.progressView = [[NJKWebViewProgressView alloc] initWithFrame:progressBarFrame];
+    self.progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    
+    [self.navigationController.navigationBar addSubview:self.progressView];
+}
+
 #pragma mark - UIWebViewDelegate Functions
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -161,6 +213,18 @@ static CGFloat const kSpacingBetweenButtons = 10.0f;
     }
     
     [self updateButtons];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [self hideWebView];
+}
+
+#pragma mark - NJKWebViewProgressDelegate Methods
+
+- (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
+{
+    self.progressView.progress = progress;
 }
 
 @end

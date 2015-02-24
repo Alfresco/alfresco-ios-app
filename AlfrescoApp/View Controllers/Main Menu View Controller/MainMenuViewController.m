@@ -303,8 +303,10 @@ static NSUInteger const kAccountsRowNumber = 0;
                                                                    viewController:settingsNavigationController
                                                                   displayInDetail:YES];
     
-    NSURL *userGuidUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"UserGuide" ofType:@"pdf"]];
-    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURL:userGuidUrl initialTitle:NSLocalizedString(@"help.title", @"Help") errorLoadingURL:nil];
+    NSString *helpURLString = [NSString stringWithFormat:kAlfrescoHelpURLString, [Utility helpURLLocaleIdentifierForAppLocale]];
+    WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:helpURLString
+                                                                                          initialTitle:NSLocalizedString(@"help.title", @"Help Title")
+                                                                                 errorLoadingURLString:nil];
     helpViewController.dismissCompletionBlock = dismissCompletionBlock;
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
     MainMenuItem *helpMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeHelp

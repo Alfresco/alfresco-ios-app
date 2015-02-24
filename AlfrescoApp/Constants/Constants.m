@@ -185,7 +185,8 @@ NSString * const kAlfrescoCloudAPIAccountKey = @"{AccountKey}";
 NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";
 
 // Help/Documentation
-NSString * const kAlfrescoHelpURLString = @"http://www.alfresco.com/";
+NSString * const kAlfrescoHelpURLPlistFilename = @"HelpURLKeys";
+NSString * const kAlfrescoHelpURLString = @"http://docs.alfresco.com/%@/topics/mobile-overview.html";
 
 // Workflow
 NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
