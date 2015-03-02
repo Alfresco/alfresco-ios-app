@@ -26,6 +26,9 @@
 #import "MBProgressHUD.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "NSFileManager+Extension.h"
+#import "FileMetadata.h"
+#import "PersistentQueueStore.h"
+#import "Utilities.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -40,6 +43,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 @property (nonatomic, weak) IBOutlet UIView *containingView;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) id<AKUserAccount> account;
 @property (nonatomic, strong) UINavigationController *embeddedNavigationController;
 
 @end
@@ -174,6 +178,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (void)displayScopeViewControllerFromController:(UIViewController *)controller forAccount:(id<AKUserAccount>)account session:(id<AlfrescoSession>)session completionBlock:(void (^)())completionBlock
 {
+    self.account = account;
     self.session = session;
     
     void (^createAndPushScopeViewController)(NSArray *, id<AKScopePickingViewControllerDelegate>) = ^(NSArray *scopeItems, id<AKScopePickingViewControllerDelegate>scopeDelegate) {
@@ -269,7 +274,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     {
         AlfrescoDocument *document = selectedNodes.firstObject;
         AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-        NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:document.name];
+        NSString *uniqueFilename = [Utilities filenameWithVersionFromFilename:document.name nodeIdentifier:document.identifier];
+        NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:uniqueFilename];
+        
         NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:outURL append:NO];
         // Show Progress HUD
         MBProgressHUD *progressHUD = [self progressHUDForView:controller.view];
@@ -289,6 +296,20 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     NSFileManager *fileManager = [[NSFileManager alloc] init];
                     [fileManager copyItemAtURL:outURL toURL:newURL error:nil];
                 }];
+                
+                if (self.documentPickerMode == UIDocumentPickerModeOpen)
+                {
+                    PersistentQueueStore *queueStore = [[PersistentQueueStore alloc] initWithGroupContainerIdentifier:kSharedAppGroupIdentifier];
+                    NSArray *fileURLs = [queueStore.queue valueForKey:@"fileURL"];
+                    
+                    if (![fileURLs containsObject:outURL])
+                    {
+                        FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:FileMetadataSourceLocationRepository];
+                        [queueStore addObjectToQueue:metadata];
+                        [queueStore saveQueue];
+                    }
+                    
+                }
                 
                 [self dismissGrantingAccessToURL:outURL];
             }
@@ -414,6 +435,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (void)namingViewController:(AKNamingViewController *)namingController didEnterName:(NSString *)name userInfo:(id)userInfo
 {
+    // If a node, then uploading to the repo, else, move to 
     if ([userInfo isKindOfClass:[AlfrescoNode class]])
     {
         BOOL access = [self.originalURL startAccessingSecurityScopedResource];
