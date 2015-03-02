@@ -29,7 +29,7 @@
 			<key>UIDocumentPickerModes</key>
 			<array>
 				<string>UIDocumentPickerModeImport</string>
-				<!--<string>UIDocumentPickerModeOpen</string> --> <!-- CURRENTLY NOT SUPPORTED -->
+				<string>UIDocumentPickerModeOpen</string> <!-- CURRENTLY NOT SUPPORTED -->
 				<string>UIDocumentPickerModeExportToService</string>
 				<!--<string>UIDocumentPickerModeMoveToService</string> --> <!-- CURRENTLY NOT SUPPORTED -->
 			</array>
