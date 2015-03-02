@@ -274,7 +274,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     {
         AlfrescoDocument *document = selectedNodes.firstObject;
         AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-        NSString *uniqueFilename = [[Utilities nodeGUIDFromNodeIdentifierWithVersion:document.identifier] stringByAppendingPathExtension:document.name.pathExtension];
+        NSString *uniqueFilename = [Utilities filenameWithVersionFromFilename:document.name nodeIdentifier:document.identifier];
         NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:uniqueFilename];
         
         NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:outURL append:NO];
