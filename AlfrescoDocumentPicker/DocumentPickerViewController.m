@@ -281,6 +281,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     [self.embeddedNavigationController pushViewController:localFileController animated:YES];
 }
 
+#pragma mark Code used to handle selecting a document or a folder
+
 - (void)handleSelectionFromController:(UIViewController *)controller selectedNodes:(NSArray *)selectedNodes
 {
     AlfrescoDocument *document = selectedNodes.firstObject;
@@ -491,6 +493,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 }
 
 #pragma mark - AKNamingViewControllerDelegate Methods
+#pragma mark Code used to handle creating content on the repo or moving to Local Files
 
 - (void)namingViewController:(AKNamingViewController *)namingController didEnterName:(NSString *)name userInfo:(id)userInfo
 {
