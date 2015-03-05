@@ -321,7 +321,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     {
         // Show Progress HUD
         MBProgressHUD *progressHUD = [self progressHUDForView:controller.view];
-        progressHUD = MBProgressHUDModeIndeterminate;
+        progressHUD.mode = MBProgressHUDModeIndeterminate;
         [controller.view addSubview:progressHUD];
         [progressHUD show:YES];
         
