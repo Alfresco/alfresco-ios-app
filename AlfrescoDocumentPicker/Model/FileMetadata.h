@@ -14,10 +14,10 @@ typedef NS_ENUM(NSUInteger, FileMetadataStatus)
     FileMetadataStatusUploading
 };
 
-typedef NS_ENUM(NSUInteger, FileMetadataSourceLocation)
+typedef NS_ENUM(NSUInteger, FileMetadataSaveLocation)
 {
-    FileMetadataSourceLocationRepository = 0,
-    FileMetadataSourceLocationLocalFiles
+    FileMetadataSaveLocationRepository = 0,
+    FileMetadataSaveLocationLocalFiles
 };
 
 @class AlfrescoNode;
@@ -27,9 +27,10 @@ typedef NS_ENUM(NSUInteger, FileMetadataSourceLocation)
 @property (nonatomic, strong) NSString *accountIdentifier;
 @property (nonatomic, strong) AlfrescoNode *repositoryNode;
 @property (nonatomic, strong) NSURL *fileURL;
+@property (nonatomic, strong) NSDate *lastAccessed;
 @property (nonatomic, assign) FileMetadataStatus status;
-@property (nonatomic, assign) FileMetadataSourceLocation sourceLocation;
+@property (nonatomic, assign) FileMetadataSaveLocation saveLocation;
 
-- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSourceLocation)location;
+- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location;
 
 @end

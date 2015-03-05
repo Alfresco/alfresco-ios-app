@@ -11,6 +11,7 @@
 static NSString * const kFileMetadataAccountIdentifier = @"FileMetadataAccountIdentifier";
 static NSString * const kFileMetadataRepositoryNodeIdentifier = @"FileMetadataRepositoryNodeIdentifier";
 static NSString * const kFileMetadataFileURLIdentifier = @"FileMetadataFileURLIdentifier";
+static NSString * const kFileMetadataLastAccessedIdentifier = @"FileMetadataLastAccessedIdentifier";
 static NSString * const kFileMetadataStatusIdentifier = @"FileMetadataStatusIdentifier";
 static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSourceLocationIdentifier";
 
@@ -20,7 +21,7 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
 
 @implementation FileMetadata
 
-- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSourceLocation)location
+- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location
 {
     self = [self init];
     if (self)
@@ -28,7 +29,8 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
         self.accountIdentifier = accountId;
         self.repositoryNode = repoNode;
         self.fileURL = fileURL;
-        self.sourceLocation = location;
+        self.lastAccessed = [NSDate date];
+        self.saveLocation = location;
     }
     return self;
 }
@@ -40,8 +42,9 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
     [aCoder encodeObject:self.accountIdentifier forKey:kFileMetadataAccountIdentifier];
     [aCoder encodeObject:self.repositoryNode forKey:kFileMetadataRepositoryNodeIdentifier];
     [aCoder encodeObject:self.fileURL forKey:kFileMetadataFileURLIdentifier];
+    [aCoder encodeObject:self.lastAccessed forKey:kFileMetadataLastAccessedIdentifier];
     [aCoder encodeInteger:self.status forKey:kFileMetadataStatusIdentifier];
-    [aCoder encodeInteger:self.sourceLocation forKey:kFileMetadataSourceLocationIdentifier];
+    [aCoder encodeInteger:self.saveLocation forKey:kFileMetadataSourceLocationIdentifier];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -52,8 +55,9 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
         self.accountIdentifier = [aDecoder decodeObjectForKey:kFileMetadataAccountIdentifier];
         self.repositoryNode = [aDecoder decodeObjectForKey:kFileMetadataRepositoryNodeIdentifier];
         self.fileURL = [aDecoder decodeObjectForKey:kFileMetadataFileURLIdentifier];
+        self.lastAccessed = [aDecoder decodeObjectForKey:kFileMetadataLastAccessedIdentifier];
         self.status = [aDecoder decodeIntegerForKey:kFileMetadataStatusIdentifier];
-        self.sourceLocation = [aDecoder decodeIntegerForKey:kFileMetadataSourceLocationIdentifier];
+        self.saveLocation = [aDecoder decodeIntegerForKey:kFileMetadataSourceLocationIdentifier];
     }
     return self;
 }
