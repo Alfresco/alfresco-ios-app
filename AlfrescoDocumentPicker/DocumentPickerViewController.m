@@ -338,10 +338,17 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 void (^cacheAndDismissBlock)(FileMetadataSaveLocation saveLocation) = ^(FileMetadataSaveLocation location) {
                     NSArray *fileURLs = [self.queueStore.queue valueForKey:@"fileURL"];
                     
+                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:location];
+                    
                     if (![fileURLs containsObject:outURL])
                     {
-                        FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:location];
                         [self.queueStore addObjectToQueue:metadata];
+                        [self.queueStore saveQueue];
+                    }
+                    else
+                    {
+                        NSUInteger indexOfMetadata = [fileURLs indexOfObject:outURL];
+                        [self.queueStore replaceObjectInQueueAtIndex:indexOfMetadata withObject:metadata];
                         [self.queueStore saveQueue];
                     }
                     

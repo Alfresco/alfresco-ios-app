@@ -257,10 +257,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                         {
                             AlfrescoLogInfo(@"Successfully updated document: %@, Modified At: %@, Created At: %@", document.name, document.modifiedAt, document.createdAt);
                             metadata.repositoryNode = document;
-                            metadata.lastAccessed = [NSDate date];
                         }
                         metadata.status = FileMetadataStatusPendingUpload;
-                        metadata.lastAccessed = [NSDate date];
                         [self.queueStore saveQueue];
                     }];
                     
