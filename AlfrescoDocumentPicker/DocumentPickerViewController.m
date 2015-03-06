@@ -45,6 +45,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) id<AKUserAccount> account;
 @property (nonatomic, strong) UINavigationController *embeddedNavigationController;
+@property (nonatomic, strong) PersistentQueueStore *queueStore;
 
 @end
 
@@ -67,6 +68,17 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userAccountViewController];
     self.embeddedNavigationController = navigationController;
     [self setRootEmbeddedController:navigationController];
+}
+
+#pragma mark - Custom Getters and Setters
+
+- (PersistentQueueStore *)queueStore
+{
+    if (!_queueStore)
+    {
+        _queueStore = [[PersistentQueueStore alloc] initWithGroupContainerIdentifier:kSharedAppGroupIdentifier];
+    }
+    return _queueStore;
 }
 
 #pragma mark - Private Methods
@@ -221,13 +233,14 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     return progressHUD;
 }
 
-// MOBILE-3181 - TEMP METHOD
-- (void)displayAlertWithError:(NSError *)error
+- (void)displayErrorAlertWithTitle:(NSString *)title message:(NSString *)message error:(NSError *)error
 {
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"MOBILE-3181" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", @"Ok") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];
+    
+    AlfrescoLogError(@"Error: %@", error.localizedDescription);
 }
 
 #pragma mark - AKUserAccountListViewControllerDelegate Methods
@@ -268,48 +281,37 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     [self.embeddedNavigationController pushViewController:localFileController animated:YES];
 }
 
+#pragma mark Code used to handle selecting a document or a folder
+
 - (void)handleSelectionFromController:(UIViewController *)controller selectedNodes:(NSArray *)selectedNodes
 {
-    if (self.documentPickerMode == UIDocumentPickerModeImport || self.documentPickerMode == UIDocumentPickerModeOpen)
+    AlfrescoDocument *document = selectedNodes.firstObject;
+    NSString *uniqueFilename = [Utilities filenameWithVersionFromFilename:document.name nodeIdentifier:document.identifier];
+    NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:uniqueFilename];
+    
+    if (self.documentPickerMode == UIDocumentPickerModeImport)
     {
-        AlfrescoDocument *document = selectedNodes.firstObject;
-        AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-        NSString *uniqueFilename = [Utilities filenameWithVersionFromFilename:document.name nodeIdentifier:document.identifier];
-        NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:uniqueFilename];
-        
-        NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:outURL append:NO];
         // Show Progress HUD
         MBProgressHUD *progressHUD = [self progressHUDForView:controller.view];
         [controller.view addSubview:progressHUD];
         [progressHUD show:YES];
+        
+        NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:outURL append:NO];
+        AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [docService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
             [progressHUD hide:YES];
             if (error)
             {
-                // TODO: MOBILE-3181
-                [self displayAlertWithError:error];
+                [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
             }
             else
             {
                 NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] init];
                 [coordinator coordinateWritingItemAtURL:outURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newURL) {
                     NSFileManager *fileManager = [[NSFileManager alloc] init];
+                    [fileManager setAttributes:@{NSFileModificationDate : document.modifiedAt} ofItemAtPath:outURL.path error:nil];
                     [fileManager copyItemAtURL:outURL toURL:newURL error:nil];
                 }];
-                
-                if (self.documentPickerMode == UIDocumentPickerModeOpen)
-                {
-                    PersistentQueueStore *queueStore = [[PersistentQueueStore alloc] initWithGroupContainerIdentifier:kSharedAppGroupIdentifier];
-                    NSArray *fileURLs = [queueStore.queue valueForKey:@"fileURL"];
-                    
-                    if (![fileURLs containsObject:outURL])
-                    {
-                        FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:FileMetadataSourceLocationRepository];
-                        [queueStore addObjectToQueue:metadata];
-                        [queueStore saveQueue];
-                    }
-                    
-                }
                 
                 [self dismissGrantingAccessToURL:outURL];
             }
@@ -317,7 +319,67 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             progressHUD.progress = (bytesTotal != 0) ? (float)bytesTransferred / (float)bytesTotal : 0;
         }];
     }
-    else
+    else if (self.documentPickerMode == UIDocumentPickerModeOpen)
+    {
+        // Show Progress HUD
+        MBProgressHUD *progressHUD = [self progressHUDForView:controller.view];
+        progressHUD.mode = MBProgressHUDModeIndeterminate;
+        [controller.view addSubview:progressHUD];
+        [progressHUD show:YES];
+        
+        // Retrieve Permissions
+        AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+        [documentService retrievePermissionsOfNode:document completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            [progressHUD hide:YES];
+            if (error)
+            {
+                [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
+            }
+            else
+            {
+                void (^cacheAndDismissBlock)(FileMetadataSaveLocation saveLocation) = ^(FileMetadataSaveLocation location) {
+                    NSArray *fileURLs = [self.queueStore.queue valueForKey:@"fileURL"];
+                    
+                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:location];
+                    
+                    if (![fileURLs containsObject:outURL])
+                    {
+                        [self.queueStore addObjectToQueue:metadata];
+                        [self.queueStore saveQueue];
+                    }
+                    else
+                    {
+                        NSUInteger indexOfMetadata = [fileURLs indexOfObject:outURL];
+                        [self.queueStore replaceObjectInQueueAtIndex:indexOfMetadata withObject:metadata];
+                        [self.queueStore saveQueue];
+                    }
+                    
+                    [self dismissGrantingAccessToURL:outURL];
+                };
+                
+                if (permissions.canEdit)
+                {
+                    cacheAndDismissBlock(FileMetadataSaveLocationRepository);
+                }
+                else
+                {
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", "Ok")
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:^(UIAlertAction *action) {
+                        cacheAndDismissBlock(FileMetadataSaveLocationLocalFiles);
+                    }];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"document.picker.scope.permissions.cannot.edit.title", "Permissions Error")
+                                                                                   message:NSLocalizedString(@"document.picker.scope.permissions.cannot.edit.message", @"Permissions Message")
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:cancel];
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
+            }
+        }];
+        
+        
+    }
+    else if (self.documentPickerMode == UIDocumentPickerModeExportToService || self.documentPickerMode == UIDocumentPickerModeMoveToService)
     {
         AlfrescoFolder *uploadFolder = selectedNodes.firstObject;
         AKNamingViewController *namingController = [[AKNamingViewController alloc] initWithURL:nil delegate:self userInfo:uploadFolder];
@@ -346,8 +408,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     }
     else
     {
-        // TODO: MOBILE-3181
-        [self displayAlertWithError:error];
+        [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
     }
 }
 
@@ -432,6 +493,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 }
 
 #pragma mark - AKNamingViewControllerDelegate Methods
+#pragma mark Code used to handle creating content on the repo or moving to Local Files
 
 - (void)namingViewController:(AKNamingViewController *)namingController didEnterName:(NSString *)name userInfo:(id)userInfo
 {
@@ -472,8 +534,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     [progressHUD hide:YES];
                     if (error)
                     {
-                        // TODO: MOBILE-3181
-                        [self displayAlertWithError:error];
+                        [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
                     }
                     else
                     {
@@ -589,22 +650,38 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 {
     // Currently only support one file, so get the first URL from the array
     NSURL *fileURL = documentURLPaths.firstObject;
-    
-    // Move the file into the document storage URL
     NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:fileURL.path.lastPathComponent];
-    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] init];
-    [coordinator coordinateWritingItemAtURL:fileURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newURL) {
-        NSError *copyError = nil;
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
-        [fileManager copyItemAtURL:newURL toURL:outURL overwritingExistingFile:YES error:&copyError];
-        
-        if (copyError)
-        {
-            AlfrescoLogError(@"Unable to copy from: %@ to: %@", newURL, outURL);
-        }
-    }];
     
-    [self dismissGrantingAccessToURL:outURL];
+    if (self.documentPickerMode == UIDocumentPickerModeImport)
+    {
+        // Move the file into the document storage URL
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] init];
+        [coordinator coordinateWritingItemAtURL:fileURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newURL) {
+            NSError *copyError = nil;
+            NSFileManager *fileManager = [[NSFileManager alloc] init];
+            [fileManager copyItemAtURL:newURL toURL:outURL overwritingExistingFile:YES error:&copyError];
+            
+            if (copyError)
+            {
+                AlfrescoLogError(@"Unable to copy from: %@ to: %@", newURL, outURL);
+            }
+        }];
+        
+        [self dismissGrantingAccessToURL:outURL];
+    }
+    else if (self.documentPickerMode == UIDocumentPickerModeOpen)
+    {
+        NSArray *fileURLs = [self.queueStore.queue valueForKey:@"fileURL"];
+        
+        if (![fileURLs containsObject:outURL])
+        {
+            FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles];
+            [self.queueStore addObjectToQueue:metadata];
+            [self.queueStore saveQueue];
+        }
+        
+        [self dismissGrantingAccessToURL:outURL];
+    }
 }
 
 #pragma mark - AKFavoritesListViewControllerDelegate Methods

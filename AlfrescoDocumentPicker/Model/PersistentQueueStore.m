@@ -84,6 +84,11 @@ static NSString * const kDefaultPersistentQueueIdentifier = @"DefaultPersistentQ
     [self.persistedQueue removeObject:obj];
 }
 
+- (void)replaceObjectInQueueAtIndex:(NSUInteger)index withObject:(id)object
+{
+    [self.persistedQueue replaceObjectAtIndex:index withObject:object];
+}
+
 - (void)clearQueue
 {
     [self.persistedQueue removeAllObjects];
