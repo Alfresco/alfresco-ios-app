@@ -25,6 +25,7 @@
 #import "UserAccountWrapper.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "NSFileManager+Extension.h"
+#import "Utilities.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -82,7 +83,16 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 {
     FileMetadata *returnMetadata = nil;
     
-    NSURL *searchURL = [self.documentStorageURL URLByAppendingPathComponent:fileURL.lastPathComponent];
+    /*
+     * We need the unique document identifier appended onto the URL.
+     * Since we can't get access to the document, in order to generate this, we simply take the 
+     * last two path components from the url provided in order to generate the search url.
+     */
+    NSArray *pathComponents = fileURL.pathComponents;
+    NSArray *folderAndFilePathComponents = [pathComponents subarrayWithRange:NSMakeRange(pathComponents.count - 2, 2)];
+    NSString *lastTwoPathString = [NSString pathWithComponents:folderAndFilePathComponents];
+    
+    NSURL *searchURL = [self.documentStorageURL URLByAppendingPathComponent:lastTwoPathString];
     NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"fileURL == %@", searchURL];
     NSArray *urlSearchResultArray = [self.queueStore.queue filteredArrayUsingPredicate:searchPredicate];
     

@@ -31,8 +31,6 @@ static NSString * const kWorkspaceNodePrefix = @"workspace://SpacesStore/";
     return filename;
 }
 
-#pragma mark - Private Methods
-
 + (NSString *)nodeGUIDFromNodeIdentifierWithVersion:(NSString *)nodeIdentifier
 {
     NSString *nodeGUID = [nodeIdentifier stringByReplacingOccurrencesOfString:kWorkspaceNodePrefix withString:@""];
