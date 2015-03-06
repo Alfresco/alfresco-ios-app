@@ -285,9 +285,23 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (void)handleSelectionFromController:(UIViewController *)controller selectedNodes:(NSArray *)selectedNodes
 {
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
     AlfrescoDocument *document = selectedNodes.firstObject;
     NSString *uniqueFilename = [Utilities filenameWithVersionFromFilename:document.name nodeIdentifier:document.identifier];
-    NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:uniqueFilename];
+    NSURL *uniqueURL = [self.documentStorageURL URLByAppendingPathComponent:[Utilities nodeGUIDFromNodeIdentifierWithVersion:document.identifier]];
+    
+    if (![fileManager fileExistsAtPath:uniqueURL.path])
+    {
+        NSError *creationError = nil;
+        [fileManager createDirectoryAtURL:uniqueURL withIntermediateDirectories:YES attributes:nil error:&creationError];
+        
+        if (creationError)
+        {
+            AlfrescoLogError(@"Unable to create folder at path: %@. Error: %@", uniqueURL, creationError.localizedDescription);
+        }
+    }
+    
+    NSURL *outURL = [uniqueURL URLByAppendingPathComponent:uniqueFilename];
     
     if (self.documentPickerMode == UIDocumentPickerModeImport)
     {
