@@ -21,6 +21,8 @@
  */
 "Yes" = "Yes";
 "No" = "No";
+"Ok" = "Ok";
+"Error" = "Error";
 
 /**
  * Sites Scope
@@ -36,3 +38,9 @@
  */
 "document.picker.scope.overwrite.title" = "File Exists";
 "document.picker.scope.overwrite.message" = "A file with this name already exists. Would you like to overwrite it?";
+
+/**
+ * Permissions
+ */
+"document.picker.scope.permissions.cannot.edit.title" = "Edit Permissions";
+"document.picker.scope.permissions.cannot.edit.message" = "You do not have editing permissions.\n\nAny changes you make will be saved back to Local Files in the Alfresco App.";
