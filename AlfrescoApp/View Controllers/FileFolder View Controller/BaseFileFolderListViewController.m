@@ -17,6 +17,7 @@
  ******************************************************************************/
  
 #import "BaseFileFolderListViewController.h"
+#import "PreferenceManager.h"
 
 @interface BaseFileFolderListViewController ()
 
@@ -171,10 +172,11 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithFolder:self.displayFolder includeDescendants:YES];
+    BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
+    
+    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:self.displayFolder includeDescendants:YES];
     
     [self showSearchProgressHUD];
-    
     [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
         [self hideSearchProgressHUD];
         if (array)
