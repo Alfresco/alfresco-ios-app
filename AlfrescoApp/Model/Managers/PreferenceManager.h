@@ -25,6 +25,7 @@
 // Convenience Methods
 - (BOOL)shouldSyncOnCellular;
 - (BOOL)shouldSendDiagnostics;
+- (BOOL)shouldCarryOutFullSearch;
 
 // Accessors and Modifiers
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier;

@@ -650,6 +650,9 @@
 "settings.reset.confirmation.title" = "Reset Complete";
 "settings.reset.confirmation.message" = "In order to complete the reset, please restart the app.\n\nYou can do this by pressing the home button. Once on your homescreen, double tap the home button and swipe the Alfresco off the multitasking bar. Then simply launch Alfresco again.";
 "settings.reset.description" = "Clearing the accounts will delete all accounts from the app. Clearing accounts, cache and downloads will reset the app to a fresh install.";
+"settings.full.text.search" = "Full Content Search";
+"settings.full.text.search.description" = "Turning on the full content search will search the entire content of the file with the entered search term.";
+
 
 /**
  * Onboarding View Controller

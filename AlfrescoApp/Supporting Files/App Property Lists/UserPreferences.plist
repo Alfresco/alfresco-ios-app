@@ -61,6 +61,25 @@
 			<key>GroupFooterLocalizedKey</key>
 			<string>settings.send.diagnostics.description</string>
 		</dict>
+        <dict>
+            <key>GroupHeaderLocalizedKey</key>
+            <string></string>
+            <key>GroupCells</key>
+            <array>
+                <dict>
+                    <key>PreferenceIdentifier</key>
+                    <string>SettingsFullTextSearchIdentifier</string>
+                    <key>Type</key>
+                    <string>AlfrescoSettingsToggle</string>
+                    <key>DefaultValue</key>
+                    <false/>
+                    <key>LocalizedCellTitleKey</key>
+                    <string>settings.full.text.search</string>
+                </dict>
+            </array>
+            <key>GroupFooterLocalizedKey</key>
+            <string>settings.full.text.search.description</string>
+        </dict>
 		<dict>
 			<key>GroupHeaderLocalizedKey</key>
 			<string>settings.security.title</string>
