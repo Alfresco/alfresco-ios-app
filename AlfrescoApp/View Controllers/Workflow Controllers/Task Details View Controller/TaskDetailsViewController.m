@@ -116,8 +116,8 @@ static UILayoutPriority const kLowPriority = 250;
     // configure the view
     [self configureForFilter:self.taskFilter];
     
-    // Add reassign button for tasks
-    if (self.task)
+    // Add reassign button for tasks, but not tasks that are invitations.
+    if (self.task && (![self isAnInvitePendingTask:self.task] && ![self isAnInviteAcceptedOrRejectedTask:self.task]))
     {
         UIBarButtonItem *reassignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"task.reassign.button.title", @"Reassign") style:UIBarButtonItemStylePlain target:self action:@selector(pressedReassignButton:)];
         self.navigationItem.rightBarButtonItem = reassignButton;
@@ -242,10 +242,31 @@ static UILayoutPriority const kLowPriority = 250;
     [self.view layoutIfNeeded];
 }
 
+- (BOOL)isAnInvitePendingTask:(AlfrescoWorkflowTask *)task
+{
+    return [task.type isEqualToString:kActivitiInvitePendingTask] || [task.type isEqualToString:kJBPMInvitePendingTask];
+}
+
+- (BOOL)isAnInviteAcceptedOrRejectedTask:(AlfrescoWorkflowTask *)task
+{
+    BOOL isInvitedAcceptedTask = [task.type isEqualToString:kActivitiInviteAcceptedTask] || [task.type isEqualToString:kJBPMInviteAcceptedTask];
+    BOOL isInviteRejectedTask = [task.type isEqualToString:kActivitiInviteRejectedTask] || [task.type isEqualToString:kJBPMInviteRejectedTask];
+    
+    return isInvitedAcceptedTask || isInviteRejectedTask;
+}
+
+- (BOOL)isAReviewTask:(AlfrescoWorkflowTask *)task
+{
+    return [task.type isEqualToString:kJBPMReviewTask] || [task.type isEqualToString:kActivitiReviewTask];
+}
+
 - (BOOL)shouldDisplayApproveAndRejectButtonsForTask:(AlfrescoWorkflowTask *)task
 {
-    // It's a review and approve task if the task type matches
-    return [task.type isEqualToString:kJBPMReviewTask] || [task.type isEqualToString:kActivitiReviewTask];
+    // Require approve and reject buttons for review or invite tasks
+    BOOL isReviewTask = [self isAReviewTask:task];
+    BOOL isInvitePendingTask = [self isAnInvitePendingTask:task];
+    
+    return isReviewTask || isInvitePendingTask;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -375,7 +396,15 @@ static UILayoutPriority const kLowPriority = 250;
 
 - (IBAction)pressedApproveButton:(id)sender
 {
-    NSMutableDictionary *properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
+    NSMutableDictionary *properties = nil;
+    if ([self isAnInvitePendingTask:self.task])
+    {
+        properties = [@{kAlfrescoWorkflowVariableTaskInvitePendingOutcome : [kAlfrescoWorkflowTaskTransitionAccept lowercaseString]} mutableCopy];
+    }
+    else
+    {
+        properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
+    }
     
     if ([WorkflowHelper isJBPMTask:self.task])
     {
@@ -393,7 +422,15 @@ static UILayoutPriority const kLowPriority = 250;
 
 - (IBAction)pressedRejectButton:(id)sender
 {
-    NSMutableDictionary *properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionReject} mutableCopy];
+    NSMutableDictionary *properties = nil;
+    if ([self isAnInvitePendingTask:self.task])
+    {
+        properties = [@{kAlfrescoWorkflowVariableTaskInvitePendingOutcome : [kAlfrescoWorkflowTaskTransitionReject lowercaseString]} mutableCopy];
+    }
+    else
+    {
+        properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
+    }
     
     if ([WorkflowHelper isJBPMTask:self.task])
     {
