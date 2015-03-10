@@ -29,9 +29,11 @@ static NSString * const kDateFormat = @"dd MMMM yyyy";
 static NSString * const kActivitiReview = @"activitiReview";
 static NSString * const kActivitiParallelReview = @"activitiParallelReview";
 static NSString * const kActivitiToDo = @"activitiAdhoc";
+static NSString * const kActivitiInviteNominated = @"activitiInvitationNominated";
 static NSString * const kJBPMReview = @"wf:review";
 static NSString * const kJBPMParallelReview = @"wf:parallelreview";
 static NSString * const kJBPMToDo = @"wf:adhoc";
+static NSString * const kJBPMInviteNominated = @"wf:invitationNominated";
 static NSString * const kSupportedTasksPredicateFormat = @"processDefinitionIdentifier CONTAINS %@ AND NOT (processDefinitionIdentifier CONTAINS[c] 'pooled')";
 static NSString * const kAdhocProcessTypePredicateFormat = @"SELF CONTAINS[cd] %@";
 static NSString * const kInitiatorWorkflowsPredicateFormat = @"initiatorUsername like %@";
@@ -44,6 +46,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSPredicate *supportedTasksPredicate;
 @property (nonatomic, strong) NSPredicate *adhocProcessTypePredicate;
+@property (nonatomic, strong) NSPredicate *inviteProcessTypePredicate;
 @property (nonatomic, assign) TaskFilter displayedTaskFilter;
 @property (nonatomic, strong) TaskGroupItem *myTasks;
 @property (nonatomic, strong) TaskGroupItem *tasksIStarted;
@@ -190,7 +193,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 
     if (!self.supportedTasksPredicate)
     {
-        NSArray *supportedProcessIdentifiers = @[kActivitiReview, kActivitiParallelReview, kActivitiToDo, kJBPMReview, kJBPMParallelReview, kJBPMToDo];
+        NSArray *supportedProcessIdentifiers = @[kActivitiReview, kActivitiParallelReview, kActivitiInviteNominated, kActivitiToDo, kJBPMReview, kJBPMParallelReview, kJBPMToDo, kJBPMInviteNominated];
         NSMutableArray *tasksSubpredicates = [[NSMutableArray alloc] init];
         [supportedProcessIdentifiers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [tasksSubpredicates addObject:[NSPredicate predicateWithFormat:kSupportedTasksPredicateFormat, obj]];
@@ -208,6 +211,17 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         }];
         
         self.adhocProcessTypePredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tasksSubpredicates];
+    }
+    
+    if (!self.inviteProcessTypePredicate)
+    {
+        NSArray *supportedProcessIdentifiers = @[kActivitiInviteNominated, kJBPMInviteNominated];
+        NSMutableArray *tasksSubpredicates = [[NSMutableArray alloc] init];
+        [supportedProcessIdentifiers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [tasksSubpredicates addObject:[NSPredicate predicateWithFormat:kAdhocProcessTypePredicateFormat, obj]];
+        }];
+        
+        self.inviteProcessTypePredicate = [NSCompoundPredicate orPredicateWithSubpredicates:tasksSubpredicates];
     }
     
     NSPredicate *initiatorSubpredicate = [NSPredicate predicateWithFormat:kInitiatorWorkflowsPredicateFormat, self.session.personIdentifier];
@@ -389,7 +403,22 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             cell.dueDate = currentProcess.dueAt;
             cell.priority = currentProcess.priority;
             BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
-            cell.processType = NSLocalizedString(isAdhocProcessType ? @"task.type.workflow.todo" : @"task.type.workflow.review.and.approve", @"Process type");
+            BOOL isInviteProcessType = [self.inviteProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
+            
+            NSString *processType = nil;
+            if (isAdhocProcessType)
+            {
+                processType = NSLocalizedString(@"task.type.workflow.todo", @"Adhoc Process type");
+            }
+            else if (isInviteProcessType)
+            {
+                processType = NSLocalizedString(@"task.type.workflow.invitation", @"Invitation Process type");
+            }
+            else
+            {
+                processType = NSLocalizedString(@"task.type.workflow.review.and.approve", @"Review & Approve Process type");
+            }
+            cell.processType = processType;
         }
         break;
     }

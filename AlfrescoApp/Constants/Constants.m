@@ -193,6 +193,12 @@ NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
 NSString * const kAlfrescoWorkflowJBPMEngine = @"jbpm$";
 NSString * const kJBPMReviewTask = @"wf:reviewTask";
 NSString * const kActivitiReviewTask = @"wf:activitiReviewTask";
+NSString * const kJBPMInvitePendingTask = @"inwf:invitePendingTask";
+NSString * const kActivitiInvitePendingTask = @"inwf:activitiInvitePendingTask";
+NSString * const kJBPMInviteAcceptedTask = @"inwf:acceptInviteTask";
+NSString * const kActivitiInviteAcceptedTask = @"inwf:acceptInviteTask";
+NSString * const kJBPMInviteRejectedTask = @"inwf:rejectInviteTask";
+NSString * const kActivitiInviteRejectedTask = @"inwf:rejectInviteTask";
 
 // Google Quickoffice
 NSString * const kQuickofficeApplicationSecretUUIDKey = @"PartnerApplicationSecretUUID";

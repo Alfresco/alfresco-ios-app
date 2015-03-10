@@ -225,6 +225,12 @@ extern NSString * const kAlfrescoWorkflowActivitiEngine;
 extern NSString * const kAlfrescoWorkflowJBPMEngine;
 extern NSString * const kJBPMReviewTask;
 extern NSString * const kActivitiReviewTask;
+extern NSString * const kJBPMInvitePendingTask;
+extern NSString * const kActivitiInvitePendingTask;
+extern NSString * const kJBPMInviteAcceptedTask;
+extern NSString * const kActivitiInviteAcceptedTask;
+extern NSString * const kJBPMInviteRejectedTask;
+extern NSString * const kActivitiInviteRejectedTask;
 
 // Google Quickoffice
 extern NSString * const kQuickofficeApplicationSecretUUIDKey;

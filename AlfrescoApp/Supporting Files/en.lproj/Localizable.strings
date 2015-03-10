@@ -589,9 +589,11 @@
 "tasks.process.activitiAdhoc" = "New Task";
 "tasks.process.activitiParallelReview" = "Send File(s) For Review";
 "tasks.process.activitiReview" = "Review And Approve";
+"tasks.process.activitiInvitationNominated" = "Invitation";
 "tasks.process.jbpm$wf:adhoc" = "Adhoc Workflow";
 "tasks.process.jbpm$wf:parallelreview" = "Parallel Review And Approve";
 "tasks.process.jbpm$wf:review" = "Review And Approve";
+"tasks.process.jbpm$invitationNominated" = "Invitation";
 
 /**
  * Create Tasks
@@ -599,6 +601,7 @@
 "task.choose.task.type.title" = "Choose task type";
 "task.type.workflow.todo" = "To do";
 "task.type.workflow.review.and.approve" = "Review & Approve";
+"task.type.workflow.invitation" = "Invitation";
 "task.type.workflow.todo.footer" = "Assign a task to a person.";
 "task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve files.";
 
