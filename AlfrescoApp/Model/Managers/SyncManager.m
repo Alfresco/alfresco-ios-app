@@ -58,6 +58,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 @property (nonatomic, strong) NSOperationQueue *currentQueue;
 @property (nonatomic, strong) NSString *selectedAccountIdentifier;
 @property (nonatomic, assign) BOOL isProcessingSyncNodes;
+
+@property (nonatomic) BOOL lastConnectivityFlag;
 @end
 
 @implementation SyncManager
@@ -166,7 +168,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 {
                     [self rearrangeNodesAndSync:array];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kFavoritesListUpdatedNotification object:nil];
-                    completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
+                    if(completionBlock)
+                    {
+                        completionBlock([self topLevelSyncNodesOrNodesInFolder:nil]);
+                    }
                 }
                 else
                 {
@@ -237,7 +242,15 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
 {
     SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:nil];
-    return nodeInfo.syncContentPath;
+    
+    //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
+    NSString *storedPath = nodeInfo.syncContentPath;
+    NSString *relativePath = [self getRelativeSyncPath:storedPath];
+    NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
+    
+    NSString *newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
+    
+    return newNodePath;
 }
 
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
@@ -267,6 +280,23 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 }
 
 #pragma mark - Private Methods
+
+// this parses a path to get the relative path to the Sync folder
+- (NSString *) getRelativeSyncPath:(NSString *)oldPath
+{
+    NSString *newPath;
+    NSArray *array = [oldPath componentsSeparatedByString:@"Sync/"];
+    if(array.count >= 2)
+    {
+        newPath = array[1];
+    }
+    else
+    {
+        newPath = nil;
+    }
+    
+    return newPath;
+}
 
 - (void)rearrangeNodesAndSync:(NSArray *)nodes
 {
@@ -1571,11 +1601,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    if (!hasInternetConnection)
+    
+    if(hasInternetConnection != self.lastConnectivityFlag)
     {
-        self.alfrescoSession = nil;
-        self.documentFolderService = nil;
-        [self syncDocumentsAndFoldersForSession:nil withCompletionBlock:nil];
+        self.lastConnectivityFlag = hasInternetConnection;
+        if(hasInternetConnection)
+        {
+            [self syncDocumentsAndFoldersForSession:self.alfrescoSession withCompletionBlock:nil];
+        }
     }
 }
 
