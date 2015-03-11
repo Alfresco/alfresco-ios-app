@@ -15,12 +15,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
-@protocol FullScreenAnimationControllerProtocol <NSObject>
 
-@property (nonatomic, assign) BOOL useControllersPreferStatusBarHidden;
-
-@end
+#import <Foundation/Foundation.h>
 
 @interface FullScreenAnimationController : NSObject <UIViewControllerAnimatedTransitioning>
 
