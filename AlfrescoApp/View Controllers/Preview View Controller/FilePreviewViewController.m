@@ -188,6 +188,12 @@ static CGFloat sDownloadProgressHeight;
 
 - (void)dismiss:(UIBarButtonItem *)sender
 {
+    if (!IS_IPAD)
+    {
+        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

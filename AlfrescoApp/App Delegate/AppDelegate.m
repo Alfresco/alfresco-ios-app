@@ -168,6 +168,38 @@
     [[AccountManager sharedManager] saveAccountsToKeychain];
 }
 
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    // default is to support all orientations
+    NSUInteger supportedOrientations = UIInterfaceOrientationMaskAll;
+    
+    if (!IS_IPAD)
+    {
+        // iPhones and iPods only support portrait by default
+        supportedOrientations = UIInterfaceOrientationMaskPortrait;
+        
+        // unless content is being displayed modally
+        UIViewController *modalViewController = self.window.rootViewController.presentedViewController;
+        if (modalViewController)
+        {
+            if ([modalViewController isKindOfClass:[NavigationViewController class]])
+            {
+                NavigationViewController *navController = (NavigationViewController *)modalViewController;
+                UIViewController *presentedController = navController.topViewController;
+                
+                supportedOrientations = [presentedController supportedInterfaceOrientations];
+            }
+            else
+            {
+                supportedOrientations = [modalViewController supportedInterfaceOrientations];
+            }
+        }
+    }
+    
+    return supportedOrientations;
+}
+
 #pragma mark - Private Functions
 
 - (UIViewController *)buildMainAppUIWithSession:(id<AlfrescoSession>)session displayingMainMenu:(BOOL)displayMainMenu
