@@ -19,9 +19,9 @@
 #import "FullScreenAnimationController.h"
 #import "NodeUpdatableProtocol.h"
 
-@interface FilePreviewViewController : UIViewController <FullScreenAnimationControllerProtocol, NodeUpdatableProtocol>
+@interface FilePreviewViewController : UIViewController <NodeUpdatableProtocol>
 
-@property (nonatomic, assign) BOOL useControllersPreferStatusBarHidden;
+@property (nonatomic, assign) BOOL fullScreenMode;
 
 - (instancetype)initWithDocument:(AlfrescoDocument *)document session:(id<AlfrescoSession>)session;
 - (instancetype)initWithFilePath:(NSString *)filePath document:(AlfrescoDocument *)document;
