@@ -270,6 +270,7 @@
 		73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEB1806F5D2007172EE /* SwitchViewController.m */; };
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
+		7367CFC01AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 7367CFBF1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m */; };
 		73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */; };
 		73697B911A979879009F10BA /* FileMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697B901A979879009F10BA /* FileMetadata.m */; };
 		73697B921A979879009F10BA /* FileMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697B901A979879009F10BA /* FileMetadata.m */; };
@@ -1051,6 +1052,8 @@
 		73632AF318080E7C007172EE /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItem.h; path = "Main Menu View Controller/Model/MainMenuItem.h"; sourceTree = "<group>"; };
 		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
 		7367CFB31AB19C8F00A1B484 /* ModalRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalRotation.h; sourceTree = "<group>"; };
+		7367CFBE1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+RightAlignmentSpacingFix.h"; sourceTree = "<group>"; };
+		7367CFBF1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+RightAlignmentSpacingFix.m"; sourceTree = "<group>"; };
 		73697A8118B22D9700021B02 /* UIViewController+Swizzled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Swizzled.h"; sourceTree = "<group>"; };
 		73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Swizzled.m"; sourceTree = "<group>"; };
 		73697B8F1A979879009F10BA /* FileMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileMetadata.h; path = Model/FileMetadata.h; sourceTree = "<group>"; };
@@ -2889,6 +2892,8 @@
 				73881F52188831410052C75F /* UIView+DrawingUtils.m */,
 				73697A8118B22D9700021B02 /* UIViewController+Swizzled.h */,
 				73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */,
+				7367CFBE1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.h */,
+				7367CFBF1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3935,6 +3940,7 @@
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */,
 				73BA7CBE191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld in Sources */,
+				7367CFC01AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
 				738664C51906B16F0021D1BD /* MetadataCell.m in Sources */,
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
