@@ -196,20 +196,45 @@ static NSString * const kTextFileMimeType = @"text/plain";
     
     if (self.textView.text.length > 0)
     {
-        NSString *alertTitleKey = self.editingDocument ? @"document.edit.button.discard" : @"createtextfile.dismiss.confirmation.title";
-        NSString *alertMessageKey = self.editingDocument ? @"document.edit.dismiss.confirmation.message" : @"createtextfile.dismiss.confirmation.message";
+        BOOL shouldShowAlertView = false;
         
-        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
-                                                                    message:NSLocalizedString(alertMessageKey, @"Discard Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"Yes", @"Yes")
-                                                          otherButtonTitles:NSLocalizedString(@"No", @"No"), nil];
-        [confirmationAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (isCancelButton)
+        //we check to see if we are in editing mode
+        if((self.editingDocument) && (self.documentContentPath))
+        {
+            NSError *error = nil;
+            NSString *fileContent = [[NSString alloc] initWithContentsOfFile:self.documentContentPath usedEncoding:NULL error:&error];
+            if(error == nil)
             {
-                dismissController();
+                shouldShowAlertView = !(self.textView.text.length == fileContent.length);
             }
-        }];
+        }
+        else
+        {
+            //this is a new file and it has some text entered by the user; we want to ask him if he wants to discard
+            shouldShowAlertView = YES;
+        }
+        
+        if(shouldShowAlertView)
+        {
+            NSString *alertTitleKey = self.editingDocument ? @"document.edit.button.discard" : @"createtextfile.dismiss.confirmation.title";
+            NSString *alertMessageKey = self.editingDocument ? @"document.edit.dismiss.confirmation.message" : @"createtextfile.dismiss.confirmation.message";
+            
+            UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
+                                                                        message:NSLocalizedString(alertMessageKey, @"Discard Message")
+                                                                       delegate:self
+                                                              cancelButtonTitle:NSLocalizedString(@"document.edit.discard", @"Discard")
+                                                              otherButtonTitles:NSLocalizedString(@"document.edit.continue.editing", @"Continue Editing"), nil];
+            [confirmationAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                if (isCancelButton)
+                {
+                    dismissController();
+                }
+            }];
+        }
+        else
+        {
+            dismissController();
+        }
     }
     else
     {
@@ -260,14 +285,17 @@ static NSString * const kTextFileMimeType = @"text/plain";
                     UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"document.edit.failed.title", @"Edit Document Save Failed Title")
                                                                               message:NSLocalizedString(@"document.edit.savefailed.message", @"Edit Document Save Failed Message")
                                                                              delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+                                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                                    otherButtonTitles:NSLocalizedString(@"document.edit.button.save", @"Save to Local Files"), nil];
                     [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
                         if (!isCancelButton)
                         {
-                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath completionBlock:nil];
+                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath showOverrideAlert:false completionBlock:^(NSString *filePath) {
+                                [self dismissViewControllerAnimated:YES completion:^{
+                                    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"download.success-as.message", @"Download succeeded"), filePath.lastPathComponent]);
+                                }];
+                            }];
                         }
-                        [self dismissViewControllerAnimated:YES completion:nil];
                     }];
                 }
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
