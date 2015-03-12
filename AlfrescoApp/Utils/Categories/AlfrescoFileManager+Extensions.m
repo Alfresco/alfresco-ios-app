@@ -19,6 +19,17 @@
 #import "AlfrescoFileManager+Extensions.h"
 #import "SharedConstants.h"
 
+/**
+ * Public constants
+ */
+
+// Sync Folder name
+NSString * const kSyncFolder = @"Sync";
+
+/**
+ * Private constants
+ */
+
 // preview documents
 static NSString * const kPreviewDocumentsFolder = @"DocumentPreviews";
 
@@ -27,9 +38,6 @@ static NSString * const kThumbnailsFolder = @"Thumbnails";
 static NSString * const kThumbnailsMappingFolder = @"ThumbnailMappings";
 static NSString * const kThumbnailDocLibFolder = @"DocLibsThumbnails";
 static NSString * const kThumbnailImagePreviewFolder = @"ImgPreviewThumbnails";
-
-// sync
-static NSString * const kSyncFolder = @"Sync";
 
 // downloads
 static NSString * const kDownloadsFolder = @"Downloads";
