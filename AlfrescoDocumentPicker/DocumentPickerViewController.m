@@ -257,8 +257,42 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     }
     else
     {
-        AKLoginViewController *loginViewController = [[AKLoginViewController alloc] initWithUserAccount:account delegate:self];
-        [self.embeddedNavigationController pushViewController:loginViewController animated:YES];
+        if (account.isOnPremiseAccount)
+        {
+            AKLoginViewController *loginViewController = [[AKLoginViewController alloc] initWithUserAccount:account delegate:self];
+            [self.embeddedNavigationController pushViewController:loginViewController animated:YES];
+        }
+        else
+        {
+            AlfrescoOAuthUILoginViewController *loginController = [[AlfrescoOAuthUILoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *loginControllerError) {
+                if (loginControllerError)
+                {
+                    [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:loginControllerError.localizedDescription error:loginControllerError];
+                }
+                else
+                {
+                    account.oAuthData = oauthData;
+                    
+                    AKLoginService *loginService = [[AKLoginService alloc] init];
+                    [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
+                        if (successful)
+                        {
+                            [self displayScopeViewControllerFromController:accountListViewController forAccount:account session:session completionBlock:^{
+                                // Remove the login controller from the nav stack
+                                NSMutableArray *navigationStack = self.embeddedNavigationController.viewControllers.mutableCopy;
+                                [navigationStack removeObjectAtIndex:(navigationStack.count-2)];
+                                self.embeddedNavigationController.viewControllers = navigationStack;
+                            }];
+                        }
+                        else
+                        {
+                            [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:loginError.localizedDescription error:loginError];
+                        }
+                    }];
+                }
+            }];
+            [self.embeddedNavigationController pushViewController:loginController animated:YES];
+        }
     }
 }
 
