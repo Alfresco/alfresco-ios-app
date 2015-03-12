@@ -35,6 +35,7 @@
 #import "CoreDataCacheHelper.h"
 #import "FileHandlerManager.h"
 #import "PreferenceManager.h"
+#import "ModalRotation.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -188,11 +189,17 @@
                 NavigationViewController *navController = (NavigationViewController *)modalViewController;
                 UIViewController *presentedController = navController.topViewController;
                 
-                supportedOrientations = [presentedController supportedInterfaceOrientations];
+                if ([presentedController conformsToProtocol:@protocol(ModalRotation)])
+                {
+                    supportedOrientations = [presentedController supportedInterfaceOrientations];
+                }
             }
             else
             {
-                supportedOrientations = [modalViewController supportedInterfaceOrientations];
+                if ([modalViewController conformsToProtocol:@protocol(ModalRotation)])
+                {
+                    supportedOrientations = [modalViewController supportedInterfaceOrientations];
+                }
             }
         }
     }
