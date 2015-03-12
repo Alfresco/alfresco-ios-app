@@ -535,6 +535,8 @@
 "document.edit.failed.title" = "Save File";
 "document.edit.savefailed.message" = "Could not save file on the server. Do you want to save the file to your Local Files?";
 "document.edit.dismiss.confirmation.message" = "Are you sure you want to cancel changes made to the file?";
+"document.edit.discard" = "Discard";
+"document.edit.continue.editing" = "Continue Editing";
 
 /**
  * Policy Updated

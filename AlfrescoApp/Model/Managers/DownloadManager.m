@@ -160,6 +160,30 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
 }
 
+- (void)saveDocument:(AlfrescoDocument *)document contentPath:(NSString *)contentPath showOverrideAlert:(BOOL)showOverrideAlert completionBlock:(DownloadManagerFileSavedBlock)completionBlock
+{
+    if(showOverrideAlert)
+    {
+        [self saveDocument:document contentPath:contentPath completionBlock:completionBlock];
+    }
+    else
+    {
+        if (contentPath == nil || ![self.fileManager fileExistsAtPath:contentPath])
+        {
+            AlfrescoLogError(@"Save operation attempted with no valid source document");
+        }
+        else
+        {
+            NSError *blockError = nil;
+            NSString *blockFilePath = [self copyToDownloadsFolder:document documentName:nil contentPath:contentPath overwriteExisting:NO error:&blockError];
+            if (completionBlock != NULL)
+            {
+                completionBlock(blockFilePath);
+            }
+        }
+    }
+}
+
 /**
  * TODO: There must be a way this be consolidated with the saveDocument:contentPath:completionBlock method above...
  */
