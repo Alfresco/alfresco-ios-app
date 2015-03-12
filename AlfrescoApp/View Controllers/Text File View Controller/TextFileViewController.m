@@ -205,22 +205,13 @@ static NSString * const kTextFileMimeType = @"text/plain";
             NSString *fileContent = [[NSString alloc] initWithContentsOfFile:self.documentContentPath usedEncoding:NULL error:&error];
             if(error == nil)
             {
-                if(self.textView.text.length != fileContent.length)
-                {
-                    //user has edited the file
-                    shouldShowAlertView = true;
-                }
-                else
-                {
-                    //the file is untouched
-                    shouldShowAlertView = false;
-                }
+                shouldShowAlertView = !(self.textView.text.length == fileContent.length);
             }
         }
         else
         {
             //this is a new file and it has some text entered by the user; we want to ask him if he wants to discard
-            shouldShowAlertView = true;
+            shouldShowAlertView = YES;
         }
         
         if(shouldShowAlertView)

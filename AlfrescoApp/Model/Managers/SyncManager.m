@@ -29,6 +29,7 @@
 #import "ConnectivityManager.h"
 #import "PreferenceManager.h"
 #import "AccountSyncProgress.h"
+#import "AlfrescoFileManager+Extensions.h"
 
 static NSUInteger const kSyncMaxConcurrentOperations = 2;
 
@@ -284,15 +285,11 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 // this parses a path to get the relative path to the Sync folder
 - (NSString *) getRelativeSyncPath:(NSString *)oldPath
 {
-    NSString *newPath;
-    NSArray *array = [oldPath componentsSeparatedByString:@"Sync/"];
+    NSString *newPath = nil;
+    NSArray *array = [oldPath componentsSeparatedByString:[NSString stringWithFormat:@"%@/",kSyncFolder]];
     if(array.count >= 2)
     {
         newPath = array[1];
-    }
-    else
-    {
-        newPath = nil;
     }
     
     return newPath;

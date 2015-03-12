@@ -20,6 +20,8 @@
 
 @interface AlfrescoFileManager (Extensions)
 
+extern NSString * const kSyncFolder;
+
 // preview documents
 - (NSString *)documentPreviewDocumentFolderPath;
 
