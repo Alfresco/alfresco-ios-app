@@ -174,9 +174,8 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
         }
         else
         {
-            NSString *blockFilePath;
             NSError *blockError = nil;
-            blockFilePath = [self copyToDownloadsFolder:document documentName:nil contentPath:contentPath overwriteExisting:NO error:&blockError];
+            NSString *blockFilePath = [self copyToDownloadsFolder:document documentName:nil contentPath:contentPath overwriteExisting:NO error:&blockError];
             if (completionBlock != NULL)
             {
                 completionBlock(blockFilePath);
