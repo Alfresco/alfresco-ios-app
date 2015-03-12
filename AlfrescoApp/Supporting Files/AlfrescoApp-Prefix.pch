@@ -39,3 +39,4 @@
 #import "UILabel+Insets.h"
 #import "UIViewController+Swizzled.h"
 #import "NSObject+DebugCheck.h"
+#import "UITextField+RightAlignmentSpacingFix.h"

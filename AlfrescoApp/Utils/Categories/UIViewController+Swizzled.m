@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
- * 
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
+ *
  * This file is part of the Alfresco Mobile iOS App.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,9 +23,12 @@
 
 + (void)load
 {
-    Method defaultPreferredStatusBarStyleMethod = class_getInstanceMethod(self, @selector(preferredStatusBarStyle));
-    Method swizzledPreferredStatusBarStyleMethod = class_getInstanceMethod(self, @selector(preferredStatusBarStyle_swizzled));
-    method_exchangeImplementations(defaultPreferredStatusBarStyleMethod, swizzledPreferredStatusBarStyleMethod);
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Method defaultPreferredStatusBarStyleMethod = class_getInstanceMethod(self, @selector(preferredStatusBarStyle));
+        Method swizzledPreferredStatusBarStyleMethod = class_getInstanceMethod(self, @selector(preferredStatusBarStyle_swizzled));
+        method_exchangeImplementations(defaultPreferredStatusBarStyleMethod, swizzledPreferredStatusBarStyleMethod);
+    });
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle_swizzled
