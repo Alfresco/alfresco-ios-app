@@ -28,6 +28,7 @@
 - (void)saveQueue;
 - (void)addObjectToQueue:(id)obj;
 - (void)removeObjectFromQueue:(id)obj;
+- (void)replaceObjectInQueueAtIndex:(NSUInteger)index withObject:(id)object;
 - (void)clearQueue; // clears the queue and writes an empty queue to the file system
 - (void)deleteQueue; // deletes the persisted queue completely
 

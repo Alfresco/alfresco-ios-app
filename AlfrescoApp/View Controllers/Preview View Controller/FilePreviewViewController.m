@@ -50,7 +50,6 @@ static CGFloat sDownloadProgressHeight;
 @property (nonatomic, strong) FullScreenAnimationController *animationController;
 // Used for the file path initialiser
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
-@property (nonatomic, assign) BOOL fullScreenMode;
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *previewThumbnailImageView;
@@ -121,12 +120,7 @@ static CGFloat sDownloadProgressHeight;
 
 - (BOOL)prefersStatusBarHidden
 {
-    BOOL shouldHideStatusBar = NO;
-    if (self.fullScreenMode)
-    {
-        shouldHideStatusBar = YES;
-    }
-    return shouldHideStatusBar;
+    return YES;
 }
 
 #pragma mark - IBOutlets
@@ -194,6 +188,12 @@ static CGFloat sDownloadProgressHeight;
 
 - (void)dismiss:(UIBarButtonItem *)sender
 {
+    if (!IS_IPAD)
+    {
+        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -528,7 +528,6 @@ static CGFloat sDownloadProgressHeight;
         }
         
         presentationViewController.fullScreenMode = YES;
-        presentationViewController.useControllersPreferStatusBarHidden = YES;
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
@@ -540,6 +539,7 @@ static CGFloat sDownloadProgressHeight;
         
         navigationPresentationViewController.transitioningDelegate  = self;
         navigationPresentationViewController.modalPresentationStyle = UIModalPresentationCustom;
+        navigationPresentationViewController.modalPresentationCapturesStatusBarAppearance = YES;
         
         [self presentViewController:navigationPresentationViewController animated:YES completion:^{
             [presentationViewController.navigationController setNavigationBarHidden:YES animated:YES];

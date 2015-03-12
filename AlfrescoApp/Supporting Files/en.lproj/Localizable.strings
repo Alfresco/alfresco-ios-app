@@ -591,9 +591,11 @@
 "tasks.process.activitiAdhoc" = "New Task";
 "tasks.process.activitiParallelReview" = "Send File(s) For Review";
 "tasks.process.activitiReview" = "Review And Approve";
+"tasks.process.activitiInvitationNominated" = "Invitation";
 "tasks.process.jbpm$wf:adhoc" = "Adhoc Workflow";
 "tasks.process.jbpm$wf:parallelreview" = "Parallel Review And Approve";
 "tasks.process.jbpm$wf:review" = "Review And Approve";
+"tasks.process.jbpm$invitationNominated" = "Invitation";
 
 /**
  * Create Tasks
@@ -601,6 +603,7 @@
 "task.choose.task.type.title" = "Choose task type";
 "task.type.workflow.todo" = "To do";
 "task.type.workflow.review.and.approve" = "Review & Approve";
+"task.type.workflow.invitation" = "Invitation";
 "task.type.workflow.todo.footer" = "Assign a task to a person.";
 "task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve files.";
 
@@ -652,6 +655,9 @@
 "settings.reset.confirmation.title" = "Reset Complete";
 "settings.reset.confirmation.message" = "In order to complete the reset, please restart the app.\n\nYou can do this by pressing the home button. Once on your homescreen, double tap the home button and swipe the Alfresco off the multitasking bar. Then simply launch Alfresco again.";
 "settings.reset.description" = "Clearing the accounts will delete all accounts from the app. Clearing accounts, cache and downloads will reset the app to a fresh install.";
+"settings.full.text.search" = "Full Content Search";
+"settings.full.text.search.description" = "Turning on the full content search will search the entire content of the file with the entered search term.";
+
 
 /**
  * Onboarding View Controller

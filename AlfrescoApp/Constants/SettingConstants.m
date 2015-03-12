@@ -54,3 +54,4 @@ NSString * const kSettingsSendDiagnosticsIdentifier = @"SettingsSendDiagnosticsI
 NSString * const kSettingsFileProtectionIdentifier = @"SettingsFileProtectionIdentifier";
 NSString * const kSettingsResetAccountsIdentifier = @"SettingsResetAccountsIdentifier";
 NSString * const kSettingsResetEntireAppIdentifier = @"SettingsResetEntireAppIdentifier";
+NSString * const kSettingsFullTextSearchIdentifier = @"SettingsFullTextSearchIdentifier";

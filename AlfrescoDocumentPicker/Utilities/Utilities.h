@@ -11,6 +11,6 @@
 @interface Utilities : NSObject
 
 + (NSString *)filenameWithVersionFromFilename:(NSString *)filename nodeIdentifier:(NSString *)nodeIdentifier;
-
++ (NSString *)nodeGUIDFromNodeIdentifierWithVersion:(NSString *)nodeIdentifier;
 
 @end

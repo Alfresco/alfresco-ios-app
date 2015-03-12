@@ -246,6 +246,8 @@
 		734293A21899218300BDFD35 /* bubble_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7342939E1899218300BDFD35 /* bubble_grey@2x.png */; };
 		734B87641A9F7A0F0093E702 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B87631A9F7A0F0093E702 /* Utilities.m */; };
 		734B87651A9F7A0F0093E702 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 734B87631A9F7A0F0093E702 /* Utilities.m */; };
+		734B877F1AA734000093E702 /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
+		734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F14C1F1A8CDDF50042D91E /* NSFileManager+Extension.m */; };
 		734BFE561899606A00692AB4 /* hamburger.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE541899606A00692AB4 /* hamburger.png */; };
 		734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE551899606A00692AB4 /* hamburger@2x.png */; };
 		734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
@@ -3873,12 +3875,14 @@
 			files = (
 				73697B961A979895009F10BA /* PersistentQueueStore.m in Sources */,
 				73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */,
+				734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */,
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				73697B921A979879009F10BA /* FileMetadata.m in Sources */,
 				73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */,
 				734CC4011A700809005D148E /* FileProvider.m in Sources */,
+				734B877F1AA734000093E702 /* AlfrescoFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

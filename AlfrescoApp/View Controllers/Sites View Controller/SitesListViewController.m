@@ -27,6 +27,7 @@
 #import "ThumbnailManager.h"
 #import "AccountManager.h"
 #import "FilePreviewViewController.h"
+#import "PreferenceManager.h"
 
 CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
@@ -608,7 +609,9 @@ static CGFloat kSearchCellHeight = 60.0f;
         [self hideSearchProgressHUD];
         if (node)
         {
-            AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithFolder:(AlfrescoFolder *)node includeDescendants:YES];
+            BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
+            
+            AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:(AlfrescoFolder *)node includeDescendants:YES];
             [self showSearchProgressHUD];
             [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
                 [self hideSearchProgressHUD];

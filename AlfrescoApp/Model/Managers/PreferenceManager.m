@@ -59,6 +59,11 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     return [[self preferenceForIdentifier:kSettingsSendDiagnosticsIdentifier] boolValue];
 }
 
+- (BOOL)shouldCarryOutFullSearch
+{
+    return [[self preferenceForIdentifier:kSettingsFullTextSearchIdentifier] boolValue];
+}
+
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier
 {
     return [self.preferences valueForKey:preferenceIdentifier];

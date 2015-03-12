@@ -66,26 +66,4 @@ static NSUInteger const kStatusBarViewHeight = 20.0f;
     [self.view bringSubviewToFront:self.statusBarBackgroundView];
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    BOOL displayStatusBar = NO;
-    
-    UIViewController *presentedController = self.presentedViewController;
-    if ([self.presentedViewController isKindOfClass:[UINavigationController class]])
-    {
-        presentedController = [[(UINavigationController *)presentedController viewControllers] lastObject];
-    }
-    
-    if ([presentedController conformsToProtocol:@protocol(FullScreenAnimationControllerProtocol)])
-    {
-        UIViewController<FullScreenAnimationControllerProtocol> *controller = (UIViewController<FullScreenAnimationControllerProtocol> *)presentedController;
-        if (controller.useControllersPreferStatusBarHidden)
-        {
-            displayStatusBar = controller.prefersStatusBarHidden;
-        }
-    }
-    
-    return displayStatusBar;
-}
-
 @end
