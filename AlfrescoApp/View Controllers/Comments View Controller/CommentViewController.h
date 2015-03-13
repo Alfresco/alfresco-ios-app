@@ -32,6 +32,6 @@
 @property (nonatomic, weak, readonly) id<CommentViewControllerDelegate> delegate;
 
 - (id)initWithAlfrescoNode:(AlfrescoNode *)node permissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<CommentViewControllerDelegate>)delegate;
-- (void)focusCommentEntry;
+- (void)focusCommentEntry:(BOOL)shouldFocus;
 
 @end

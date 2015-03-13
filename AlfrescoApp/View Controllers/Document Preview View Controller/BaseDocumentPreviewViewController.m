@@ -82,6 +82,17 @@
 {
     PagingScrollViewSegmentType selectedSegment = self.pagingSegmentControl.selectedSegmentIndex;
     [self.pagingScrollView scrollToDisplayViewAtIndex:selectedSegment animated:YES];
+    
+    if(selectedSegment != PagingScrollViewSegmentTypeComments)
+    {
+        [self shouldFocusComments:NO];
+    }
+}
+
+#pragma mark - Private methods
+- (void) shouldFocusComments:(BOOL)shouldFocusComments
+{
+    AlfrescoLogError(@"You need to implement %@", _cmd);
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions
