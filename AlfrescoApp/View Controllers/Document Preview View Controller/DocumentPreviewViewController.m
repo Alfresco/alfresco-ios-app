@@ -281,6 +281,12 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     }
 }
 
+- (void) shouldFocusComments:(BOOL)shouldFocusComments
+{
+    CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentTypeComments];
+    [commentsViewController focusCommentEntry:shouldFocusComments];
+}
+
 #pragma mark - Document Editing Notification
 
 - (void)editingDocumentCompleted:(NSNotification *)notification
@@ -292,6 +298,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 
 - (void)didPressActionItem:(ActionCollectionItem *)actionItem cell:(UICollectionViewCell *)cell inView:(UICollectionView *)view
 {
+    BOOL shouldFocusComments = NO;
     if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierLike])
     {
         [self.actionHandler pressedLikeActionItem:actionItem];
@@ -320,8 +327,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     {
         self.pagingSegmentControl.selectedSegmentIndex = PagingScrollViewSegmentTypeComments;
         [self.pagingScrollView scrollToDisplayViewAtIndex:PagingScrollViewSegmentTypeComments animated:YES];
-        CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentTypeComments];
-        [commentsViewController focusCommentEntry];
+        shouldFocusComments = YES;
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierPrint])
     {
@@ -351,6 +357,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     {
         [self.actionHandler pressedUploadNewVersion:actionItem node:self.document];
     }
+    
+    [self shouldFocusComments:shouldFocusComments];
 }
 
 #pragma mark - ActionViewHandlerDelegate Functions

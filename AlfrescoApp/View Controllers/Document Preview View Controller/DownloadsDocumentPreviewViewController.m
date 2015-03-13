@@ -92,16 +92,9 @@
 - (void)setupPagingScrollView
 {
     [self.pagingSegmentControl removeAllSegments];
-    if (IS_IPAD)
-    {
-        [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.preview.title", @"Preview Segment Title") atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
-    }
-    else
-    {
-        [self.pagingSegmentControl insertSegmentWithImage:[UIImage imageNamed:@"segment-icon-preview.png"] atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
-    }
 
-    [self.pagingSegmentControl insertSegmentWithTitle:NSLocalizedString(@"document.segment.repository.metadata.title", @"Metadata Segment Title") atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
+    [self.pagingSegmentControl insertSegmentWithImage:[UIImage imageNamed:@"segment-icon-preview.png"] atIndex:PagingScrollViewSegmentTypeFilePreview animated:NO];
+    [self.pagingSegmentControl insertSegmentWithImage:[UIImage imageNamed:@"segment-icon-properties.png"] atIndex:PagingScrollViewSegmentTypeMetadata animated:NO];
     
     FilePreviewViewController *filePreviewController = [[FilePreviewViewController alloc] initWithFilePath:self.documentContentFilePath document:self.document];
     [self.pagingControllers insertObject:filePreviewController atIndex:PagingScrollViewSegmentTypeFilePreview];

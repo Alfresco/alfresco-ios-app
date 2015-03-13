@@ -275,18 +275,30 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     }
 }
 
+- (void) shouldFocusComments:(BOOL)shouldFocusComments
+{
+    CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentFolderTypeComments];
+    [commentsViewController focusCommentEntry:shouldFocusComments];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)segmentValueChanged:(id)sender
 {
     PagingScrollViewSegmentFolderType selectedSegment = self.segmentControl.selectedSegmentIndex;
     [self.pagedScrollView scrollToDisplayViewAtIndex:selectedSegment animated:YES];
+    
+    if(selectedSegment != PagingScrollViewSegmentFolderTypeComments)
+    {
+        [self shouldFocusComments:NO];
+    }
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions
 
 - (void)didPressActionItem:(ActionCollectionItem *)actionItem cell:(UICollectionViewCell *)cell inView:(UICollectionView *)view
 {
+    BOOL shouldFocusComments = NO;
     if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierLike])
     {
         [self.actionHandler pressedLikeActionItem:actionItem];
@@ -307,8 +319,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     {
         self.segmentControl.selectedSegmentIndex = PagingScrollViewSegmentFolderTypeComments;
         [self.pagedScrollView scrollToDisplayViewAtIndex:PagingScrollViewSegmentFolderTypeComments animated:YES];
-        CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentFolderTypeComments];
-        [commentsViewController focusCommentEntry];
+        shouldFocusComments = YES;
     }
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
     {
@@ -322,6 +333,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     {
         [self.actionHandler pressedUploadActionItem:actionItem presentFromView:cell inView:view];
     }
+    
+    [self shouldFocusComments:shouldFocusComments];
 }
 
 #pragma mark - CommentsViewControllerDelegate Functions

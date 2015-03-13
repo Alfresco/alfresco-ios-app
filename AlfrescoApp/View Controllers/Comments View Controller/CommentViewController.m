@@ -191,9 +191,16 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
 #pragma mark - Public Functions
 
-- (void)focusCommentEntry
+- (void)focusCommentEntry:(BOOL)shouldFocus
 {
-    [self.addCommentTextView becomeFirstResponder];
+    if(shouldFocus)
+    {
+        [self.addCommentTextView becomeFirstResponder];
+    }
+    else if([self.addCommentTextView isFirstResponder])
+    {
+        [self.addCommentTextView resignFirstResponder];
+    }
 }
 
 #pragma mark - Table view data source
