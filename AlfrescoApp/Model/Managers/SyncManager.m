@@ -245,11 +245,14 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self.syncHelper syncIdentifierForNode:document] inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:nil];
     
     //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
-    NSString *storedPath = nodeInfo.syncContentPath;
-    NSString *relativePath = [self getRelativeSyncPath:storedPath];
-    NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
-    
-    NSString *newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
+    NSString *newNodePath = nil;
+    if(nodeInfo)
+    {
+        NSString *storedPath = nodeInfo.syncContentPath;
+        NSString *relativePath = [self getRelativeSyncPath:storedPath];
+        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
+        newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
+    }
     
     return newNodePath;
 }
