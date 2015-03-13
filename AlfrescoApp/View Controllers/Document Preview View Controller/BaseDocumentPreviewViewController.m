@@ -83,7 +83,7 @@
     PagingScrollViewSegmentType selectedSegment = self.pagingSegmentControl.selectedSegmentIndex;
     [self.pagingScrollView scrollToDisplayViewAtIndex:selectedSegment animated:YES];
     
-    if(selectedSegment != PagingScrollViewSegmentTypeComments)
+    if((selectedSegment != PagingScrollViewSegmentTypeComments) && ([self isKindOfClass:[DocumentPreviewViewController class]]))
     {
         [self shouldFocusComments:NO];
     }
