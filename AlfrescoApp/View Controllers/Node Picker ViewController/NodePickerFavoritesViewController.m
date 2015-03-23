@@ -73,7 +73,11 @@ static CGFloat const kCellHeight = 64.0f;
 {
     [super viewWillAppear:animated];
     [self.nodePicker updateMultiSelectToolBarActions];
-    [self.nodePicker deselectAllNodes];
+    
+    if (self.nodePicker.type == NodePickerTypeFolders)
+    {
+        [self.nodePicker deselectAllNodes];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
