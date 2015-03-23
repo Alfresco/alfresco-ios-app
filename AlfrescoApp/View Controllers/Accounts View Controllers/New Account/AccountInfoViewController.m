@@ -27,6 +27,7 @@
 #import "NavigationViewController.h"
 #import "ClientCertificateViewController.h"
 #import "UniversalDevice.h"
+#import "ConnectionDiagnosticViewController.h"
 
 static NSString * const kDefaultHTTPPort = @"80";
 static NSString * const kDefaultHTTPSPort = @"443";
@@ -513,19 +514,25 @@ static NSInteger const kTagCertificateCell = 1;
         }
         else
         {
-            if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
-            {
-                displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
-            }
-            else
-            {
-                UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
-                                                                       message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
-                                                                      delegate:nil
-                                                             cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
-                                                             otherButtonTitles:nil, nil];
-                [failureAlert show];
-            }
+//            if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
+//            {
+//                displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
+//            }
+//            else
+//            {
+//                UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+//                                                                       message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+//                                                                      delegate:nil
+//                                                             cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+//                                                             otherButtonTitles:nil, nil];
+//                [failureAlert show];
+//            }
+            UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                   message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                         otherButtonTitles:@"Retry with diagnostic", nil];
+            [failureAlert show];
         }
     }];
 }
@@ -666,6 +673,51 @@ static NSInteger const kTagCertificateCell = 1;
     {
         [self.tableView scrollRectToVisible:cell.frame animated:YES];
     }
+}
+
+#pragma mark - UIAlertView delegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        UIStoryboard *st = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
+        ConnectionDiagnosticViewController *vc = (ConnectionDiagnosticViewController *)[st instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
+        [vc setupWithParrent:self andSelector:@selector(retry)];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+}
+
+#pragma mark - temp
+- (void) retry
+{
+    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
+    {
+        self.account.username = temporaryAccount.username;
+        self.account.password = temporaryAccount.password;
+        self.account.accountDescription = temporaryAccount.accountDescription;
+        self.account.serverAddress = temporaryAccount.serverAddress;
+        self.account.serverPort = temporaryAccount.serverPort;
+        self.account.protocol = temporaryAccount.protocol;
+        self.account.serviceDocument = temporaryAccount.serviceDocument;
+        self.account.accountCertificate = temporaryAccount.accountCertificate;
+        self.account.isSyncOn = temporaryAccount.isSyncOn;
+        // If Sync is now enabled, suppress the prompt in the Favorites view
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
+        }
+        self.account.paidAccount = temporaryAccount.isPaidAccount;
+    };
+    
+    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        [self hideHUD];
+        if (successful)
+        {
+            updateAccountInfo(self.formBackupAccount);
+//            completionBlock(successful, alfrescoSession);
+        }
+    }];
 }
 
 @end
