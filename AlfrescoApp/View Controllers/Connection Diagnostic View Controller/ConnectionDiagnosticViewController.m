@@ -43,6 +43,9 @@
     self.mainTableView.dataSource = self;
     
     self.mainTitle.title = @"Connection Diagnostic";
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didStartEvent:) name:kAlfrescoConfigurationDiagnosticDidStartEventNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndEvent:) name:kAlfrescoConfigurationDiagnosticDidEndEventNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,9 +55,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didStartEvent:) name:kConfigurationDiagnosticDidStartEventNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndEvent:) name:kConfigurationDiagnosticDidEndEventNotification object:nil];
-    
     if(self.parentVC && self.selectorToPerform)
     {
         if([self.parentVC respondsToSelector:self.selectorToPerform])
@@ -65,19 +65,18 @@
     [super viewWillAppear:animated];
 }
 
-- (void) viewWillDisappear:(BOOL)animated
+- (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super viewWillDisappear:animated];
 }
 
-/*
 #pragma mark - Navigation
-
+/*
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
 }
 */
 
@@ -102,8 +101,8 @@
     ConnectionDiagnosticEventCell *cell = (ConnectionDiagnosticEventCell *)[tableView dequeueReusableCellWithIdentifier:@"ConnectionDiagnosticEventCell" forIndexPath:indexPath];
     
     NSDictionary *dict = [self.tableViewDataSource objectAtIndex:indexPath.row];
-    cell.eventText.text = [dict objectForKey:kConfigurationDiagnosticDictionaryEventName];
-    if([[dict objectForKey:kConfigurationDiagnosticDictionaryIsLoading] boolValue])
+    cell.eventText.text = [dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName];
+    if([[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryIsLoading] boolValue])
     {
         [cell.eventActivityIndicator startAnimating];
         cell.eventActivityIndicator.hidden = NO;
@@ -114,7 +113,7 @@
         [cell.eventActivityIndicator stopAnimating];
         cell.eventActivityIndicator.hidden = YES;
         cell.eventStatusImage.hidden = NO;
-        if([[dict objectForKey:kConfigurationDiagnosticDictionaryIsSuccess] boolValue])
+        if([[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryIsSuccess] boolValue])
         {
             cell.eventStatusImage.backgroundColor = [UIColor greenColor];
         }
@@ -154,12 +153,42 @@
     for(int i = 0; i < copyOfDataSource.count; i++)
     {
         NSDictionary *dict = [copyOfDataSource objectAtIndex:i];
-        if([[userInfo objectForKey:kConfigurationDiagnosticDictionaryEventName] isEqualToString:[dict objectForKey:kConfigurationDiagnosticDictionaryEventName]])
+        if([[userInfo objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName] isEqualToString:[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName]])
         {
             [self.tableViewDataSource replaceObjectAtIndex:i withObject:userInfo];
             [self.mainTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }
+}
+
+
+#pragma mark - Temp methods
+
++ (NSString *) translationKeyForEventName:(NSString *)eventName
+{
+    NSString *stringToReturn;
+    if([eventName isEqualToString:kAlfrescoConfigurationDiagnosticReachabilityEvent])
+    {
+        stringToReturn = @"";
+    }
+    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticServerVersionEvent])
+    {
+        stringToReturn = @"";
+    }
+    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticRepositoriesAvailableEvent])
+    {
+        stringToReturn = @"";
+    }
+    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticConnectRepositoryEvent])
+    {
+        stringToReturn = @"";
+    }
+    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticRetrieveRootFolderEvent])
+    {
+        stringToReturn = @"";
+    }
+    
+    return stringToReturn;
 }
 
 @end
