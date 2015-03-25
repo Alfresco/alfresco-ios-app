@@ -756,3 +756,12 @@
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */
+
+/**
+ * Connection Diagnostic
+ */
+"connectiondiagnostic.reachabilityevent" = "Checking network connectivity";
+"connectiondiagnostic.serverversionevent" = "Checking server version";
+"connectiondiagnostic.repositoriesavailableevent" = "Authenticating with Alfresco";
+"connectiondiagnostic.connectrepositoryevent" = "Connecting to repository";
+"connectiondiagnostic.retrieverootfolderevent" = "Retrieving the root folder";
