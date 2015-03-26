@@ -669,14 +669,14 @@ static NSInteger const kTagCertificateCell = 1;
     {
         UIStoryboard *st = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
         ConnectionDiagnosticViewController *vc = (ConnectionDiagnosticViewController *)[st instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
-        [vc setupWithParrent:self andSelector:@selector(retry)];
+        [vc setupWithParrent:self andSelector:@selector(retryLoginForDiagnostic)];
         [self.navigationController pushViewController:vc animated:YES];
         
     }
 }
 
-#pragma mark - temp
-- (void) retry
+#pragma mark - Retry method for login with diagnostic
+- (void) retryLoginForDiagnostic
 {
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
@@ -698,7 +698,6 @@ static NSInteger const kTagCertificateCell = 1;
     };
     
     [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-        [self hideHUD];
         if (successful)
         {
             updateAccountInfo(self.formBackupAccount);

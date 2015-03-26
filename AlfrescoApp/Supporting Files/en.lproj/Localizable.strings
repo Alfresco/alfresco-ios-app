@@ -766,3 +766,4 @@
 "connectiondiagnostic.connectrepositoryevent" = "Connecting to repository";
 "connectiondiagnostic.retrieverootfolderevent" = "Retrieving the root folder";
 "connectiondiagnostic.retrywithdiagnostic" = "Retry with diagnostic";
+"connectiondiagnostic.title" = "Connection Diagnostic"

@@ -43,7 +43,7 @@
     self.mainTableView.dataSource = self;
     self.mainTableView.rowHeight = UITableViewAutomaticDimension;
     
-    self.mainTitle.title = @"Connection Diagnostic";
+    self.mainTitle.title = NSLocalizedString(@"connectiondiagnostic.title", @"Connection Diagnostic");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didStartEvent:) name:kAlfrescoConfigurationDiagnosticDidStartEventNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndEvent:) name:kAlfrescoConfigurationDiagnosticDidEndEventNotification object:nil];
@@ -161,7 +161,7 @@
 }
 
 
-#pragma mark - Temp methods
+#pragma mark - Localization method
 
 - (NSString *) translationKeyForEventName:(NSString *)eventName
 {
