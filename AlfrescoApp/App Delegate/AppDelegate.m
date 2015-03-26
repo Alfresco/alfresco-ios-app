@@ -83,9 +83,12 @@
         // HockeyApp SDK
         if (HOCKEYAPP_APPID.length > 0)
         {
-            [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:HOCKEYAPP_APPID];
-            [[BITHockeyManager sharedHockeyManager] startManager];
-            [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+            BITHockeyManager *hockeyManager = [BITHockeyManager sharedHockeyManager];
+            [hockeyManager configureWithIdentifier:HOCKEYAPP_APPID];
+            // Disable HockeyApp auto-update manager unless the HOCKEYAPP_UPDATES preprocessor variable contains a non zero-length string
+            hockeyManager.disableUpdateManager = (HOCKEYAPP_UPDATES.length == 0);
+            [hockeyManager startManager];
+            [hockeyManager.authenticator authenticateInstallation];
         }
         
         // Flurry Analytics
