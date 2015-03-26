@@ -71,15 +71,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-/*
-#pragma mark - Navigation
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - UITableViewDelegate and UITableViewDataSource methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -103,26 +94,33 @@
     NSDictionary *dict = [self.tableViewDataSource objectAtIndex:indexPath.row];
     NSString *eventName = [dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName];
     cell.eventText.text = NSLocalizedString([self translationKeyForEventName:eventName], @"");
-    if([[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryIsLoading] boolValue])
-    {
-        [cell.eventActivityIndicator startAnimating];
-        cell.eventActivityIndicator.hidden = NO;
-        cell.eventStatusImage.hidden = YES;
-    }
-    else
-    {
-        [cell.eventActivityIndicator stopAnimating];
-        cell.eventActivityIndicator.hidden = YES;
-        cell.eventStatusImage.hidden = NO;
-        if([[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryIsSuccess] boolValue])
+    ConnectionDiagnosticStatus connectionStatus = [[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryStatus] integerValue];
+    
+    switch (connectionStatus) {
+        case ConnectionDiagnosticStatusLoading:
         {
+            [cell.eventActivityIndicator startAnimating];
+            cell.eventActivityIndicator.hidden = NO;
+            cell.eventStatusImage.hidden = YES;
+            break;
+        }
+        case ConnectionDiagnosticStatusSuccess:
+        {
+            [cell.eventActivityIndicator stopAnimating];
+            cell.eventActivityIndicator.hidden = YES;
+            cell.eventStatusImage.hidden = NO;
             cell.eventStatusImage.image = [[UIImage imageNamed:@"circle_tick"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             cell.eventStatusImage.tintColor = [UIColor systemNoticeInformationColor];
+            break;
         }
-        else
+        case ConnectionDiagnosticStatusFailure:
         {
+            [cell.eventActivityIndicator stopAnimating];
+            cell.eventActivityIndicator.hidden = YES;
+            cell.eventStatusImage.hidden = NO;
             cell.eventStatusImage.image = [[UIImage imageNamed:@"circle_cross"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             cell.eventStatusImage.tintColor = [UIColor systemNoticeErrorColor];
+            break;
         }
     }
     
