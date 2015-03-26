@@ -181,6 +181,12 @@
 		27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */; };
 		27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7418AD53510024B658 /* mainmenu-tasks.png */; };
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
+		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
+		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
+		2BFE12951AC2E734000EB19D /* circle_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12911AC2E734000EB19D /* circle_cross.png */; };
+		2BFE12961AC2E734000EB19D /* circle_cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12921AC2E734000EB19D /* circle_cross@2x.png */; };
+		2BFE12971AC2E734000EB19D /* circle_tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12931AC2E734000EB19D /* circle_tick.png */; };
+		2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12941AC2E734000EB19D /* circle_tick@2x.png */; };
 		65E3284E24B215E500C5C83C /* libPods-AlfrescoDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB8B1BCCC8F9161DE364C96 /* libPods-AlfrescoDocumentPicker.a */; };
 		7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */; };
 		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
@@ -932,6 +938,13 @@
 		27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-sync@2x.png"; sourceTree = "<group>"; };
 		27E84E7418AD53510024B658 /* mainmenu-tasks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks.png"; sourceTree = "<group>"; };
 		27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks@2x.png"; sourceTree = "<group>"; };
+		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
+		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; };
+		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
+		2BFE12911AC2E734000EB19D /* circle_cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_cross.png; sourceTree = "<group>"; };
+		2BFE12921AC2E734000EB19D /* circle_cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle_cross@2x.png"; sourceTree = "<group>"; };
+		2BFE12931AC2E734000EB19D /* circle_tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_tick.png; sourceTree = "<group>"; };
+		2BFE12941AC2E734000EB19D /* circle_tick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle_tick@2x.png"; sourceTree = "<group>"; };
 		2DDAD7488C5D07BE47218131 /* Pods-AlfrescoDocumentPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.release.xcconfig"; sourceTree = "<group>"; };
 		386644BAD9E13F10A635FE60 /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; sourceTree = "<group>"; };
 		5E94C5EF6AA4498598C65FBE /* Pods-AlfrescoDocumentPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1830,6 +1843,27 @@
 				27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		2B93CBC41ABACC34003BAD2E /* Connection Diagnostic View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */,
+				2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */,
+				2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */,
+			);
+			path = "Connection Diagnostic View Controller";
+			sourceTree = "<group>";
+		};
+		2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */ = {
+			isa = PBXGroup;
+			children = (
+				2BFE12911AC2E734000EB19D /* circle_cross.png */,
+				2BFE12921AC2E734000EB19D /* circle_cross@2x.png */,
+				2BFE12931AC2E734000EB19D /* circle_tick.png */,
+				2BFE12941AC2E734000EB19D /* circle_tick@2x.png */,
+			);
+			path = "Configuration Diagnostic";
 			sourceTree = "<group>";
 		};
 		7300DE9218EF00EA00F5F57E /* Animation Controllers */ = {
@@ -2922,6 +2956,7 @@
 				0804DCA5181962A400E3ACC2 /* Accounts View Controllers */,
 				738664941906AD740021D1BD /* Activities View Controller */,
 				73B95AC317A68DF20099FB84 /* Comments View Controller */,
+				2B93CBC41ABACC34003BAD2E /* Connection Diagnostic View Controller */,
 				731901A31844B49A002C82C1 /* Container View Controller */,
 				08B61F9B1804076800C827EA /* Custom Popovers */,
 				732F275117FAC57C00BAFDDE /* Detail Split View Controller */,
@@ -3000,6 +3035,7 @@
 		73B959F117A68B7E0099FB84 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */,
 				73B959F217A68B7E0099FB84 /* About */,
 				0808B9DC183BB39C000A8984 /* Accounts */,
 				73881F96188FF4CB0052C75F /* Action Sheet */,
@@ -3481,6 +3517,7 @@
 				734CC3B71A6FBD9B005D148E /* AlfrescoKitBundle.bundle in Resources */,
 				272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
+				2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
@@ -3674,7 +3711,9 @@
 				73FF558818ACE2370009CA56 /* large_video@2x.png in Resources */,
 				73881FD5188FF6B00052C75F /* actionsheet-unlike@2x.png in Resources */,
 				733638B91913BA1600472A57 /* system_notice_exclamation.png in Resources */,
+				2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
+				2BFE12951AC2E734000EB19D /* circle_cross.png in Resources */,
 				08344EF918E2E64E00B061C0 /* DatePickerViewController.xib in Resources */,
 				73881F7B18898B910052C75F /* ButtonBarArrowLeft.png in Resources */,
 				73FF557D18ACE2370009CA56 /* large_excel.png in Resources */,
@@ -3703,6 +3742,7 @@
 				27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
 				738664E11906B2260021D1BD /* CenterLabelCell.xib in Resources */,
+				2BFE12961AC2E734000EB19D /* circle_cross@2x.png in Resources */,
 				73881FCD188FF6B00052C75F /* actionsheet-comment@2x.png in Resources */,
 				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
 				73881F58188842D60052C75F /* MetaDataViewController.xib in Resources */,
@@ -3713,6 +3753,7 @@
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				738BE9591A962AA7006264E5 /* SmallThumbnailImageMapping.plist in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
+				2BFE12971AC2E734000EB19D /* circle_tick.png in Resources */,
 				271DC76A189C2D250059D1B2 /* status-restricted.png in Resources */,
 				27DFEBF61937644D006D85BC /* actionsheet-favorite@2x~ipad.png in Resources */,
 				738664F11906B2420021D1BD /* PersonCell.xib in Resources */,
@@ -4010,6 +4051,7 @@
 				738664FF1906B27C0021D1BD /* NodePickerScopeCell.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */,
+				2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
 				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
