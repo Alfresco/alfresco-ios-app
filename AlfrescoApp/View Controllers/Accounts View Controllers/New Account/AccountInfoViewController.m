@@ -514,24 +514,11 @@ static NSInteger const kTagCertificateCell = 1;
         }
         else
         {
-//            if (error.code == kAlfrescoErrorCodeNoNetworkConnection)
-//            {
-//                displayErrorMessageWithTitle(NSLocalizedString(@"error.host.unreachable.message", @"Connect VPN. Check account."), NSLocalizedString(@"error.host.unreachable.title", @"Connection error"));
-//            }
-//            else
-//            {
-//                UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
-//                                                                       message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
-//                                                                      delegate:nil
-//                                                             cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
-//                                                             otherButtonTitles:nil, nil];
-//                [failureAlert show];
-//            }
             UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
                                                                    message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
                                                                   delegate:self
                                                          cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
-                                                         otherButtonTitles:@"Retry with diagnostic", nil];
+                                                         otherButtonTitles:NSLocalizedString(@"connectiondiagnostic.retrywithdiagnostic", @"Retry with diagnostic"), nil];
             [failureAlert show];
         }
     }];
@@ -715,7 +702,6 @@ static NSInteger const kTagCertificateCell = 1;
         if (successful)
         {
             updateAccountInfo(self.formBackupAccount);
-//            completionBlock(successful, alfrescoSession);
         }
     }];
 }

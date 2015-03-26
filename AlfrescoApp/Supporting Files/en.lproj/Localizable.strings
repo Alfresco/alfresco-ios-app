@@ -765,3 +765,4 @@
 "connectiondiagnostic.repositoriesavailableevent" = "Authenticating with Alfresco";
 "connectiondiagnostic.connectrepositoryevent" = "Connecting to repository";
 "connectiondiagnostic.retrieverootfolderevent" = "Retrieving the root folder";
+"connectiondiagnostic.retrywithdiagnostic" = "Retry with diagnostic";

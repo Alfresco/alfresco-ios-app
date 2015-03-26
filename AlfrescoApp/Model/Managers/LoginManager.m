@@ -361,14 +361,6 @@
                               kAlfrescoConnectUsingClientSSLCertificate : @YES,
                               kAlfrescoClientCertificateCredentials : certificateCredential};
     }
-    
-//    NSDictionary *startEventDict = [NSDictionary dictionaryWithObjectsAndKeys:@"canReachHostName", @"eventName", @"", @"translationKey", [NSNumber numberWithBool:YES], @"isLoading", nil];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kConfigurationDiagnosticDidStartEventNotification object:nil userInfo:startEventDict];
-//    [[ConnectivityManager sharedManager] canReachHostName:account.serverAddress withCompletionBlock:^(BOOL isReachable) {
-//        if (isReachable)
-//        {
-//            NSDictionary *endEventDict = [NSDictionary dictionaryWithObjectsAndKeys:@"canReachHostName", @"eventName", @"", @"translationKey", [NSNumber numberWithBool:YES], @"isSuccess", [NSNumber numberWithBool:NO], @"isLoading", nil];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:kConfigurationDiagnosticDidEndEventNotification object:nil userInfo: endEventDict];
             self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
             self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                 if (session)
@@ -392,18 +384,6 @@
                         completionBlock(NO, nil, error);
                     }
                 }
-//            }];
-//        }
-//        else
-//        {
-//            NSDictionary *endEventDict = [NSDictionary dictionaryWithObjectsAndKeys:@"canReachHostName", @"eventName", @"", @"translationKey", [NSNumber numberWithBool:NO], @"isSuccess", [NSNumber numberWithBool:NO], @"isLoading", nil];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:kConfigurationDiagnosticDidEndEventNotification object:nil userInfo:endEventDict];
-//            if (completionBlock != NULL)
-//            {
-//                NSError *unreachableError = [NSError errorWithDomain:kAlfrescoErrorDomainName code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
-//                completionBlock(NO, nil, unreachableError);
-//            }
-//        }
     }];
 }
 
