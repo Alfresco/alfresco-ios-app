@@ -760,10 +760,10 @@
 /**
  * Connection Diagnostic
  */
-"connectiondiagnostic.reachabilityevent" = "Checking network connectivity";
-"connectiondiagnostic.serverversionevent" = "Checking server version";
-"connectiondiagnostic.repositoriesavailableevent" = "Authenticating with Alfresco";
-"connectiondiagnostic.connectrepositoryevent" = "Connecting to repository";
-"connectiondiagnostic.retrieverootfolderevent" = "Retrieving the root folder";
-"connectiondiagnostic.retrywithdiagnostic" = "Retry with diagnostic";
-"connectiondiagnostic.title" = "Connection Diagnostic"
+"connectiondiagnostic.event.reachability" = "Checking network connection";
+"connectiondiagnostic.event.serverversion" = "Checking server connection";
+"connectiondiagnostic.event.repositoriesavailable" = "Authenticating with Alfresco";
+"connectiondiagnostic.event.connectrepository" = "Connecting to Alfresco";
+"connectiondiagnostic.event.retrieverootfolder" = "Checking repository connection";
+"connectiondiagnostic.button.retrywithdiagnostic" = "Retry with diagnostic";
+"connectiondiagnostic.title" = "Connection Diagnostic";

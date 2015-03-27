@@ -518,8 +518,16 @@ static NSInteger const kTagCertificateCell = 1;
                                                                    message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
                                                                   delegate:self
                                                          cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
-                                                         otherButtonTitles:NSLocalizedString(@"connectiondiagnostic.retrywithdiagnostic", @"Retry with diagnostic"), nil];
-            [failureAlert show];
+                                                         otherButtonTitles:NSLocalizedString(@"connectiondiagnostic.button.retrywithdiagnostic", @"Retry with diagnostic"), nil];
+            [failureAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                if (!isCancelButton)
+                {
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
+                    ConnectionDiagnosticViewController *viewController = (ConnectionDiagnosticViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
+                    [viewController setupWithParent:self andSelector:@selector(retryLoginForConnectionDiagnostic)];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }
+            }];
         }
     }];
 }
@@ -662,21 +670,9 @@ static NSInteger const kTagCertificateCell = 1;
     }
 }
 
-#pragma mark - UIAlertView delegate methods
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(buttonIndex == 1)
-    {
-        UIStoryboard *st = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
-        ConnectionDiagnosticViewController *vc = (ConnectionDiagnosticViewController *)[st instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
-        [vc setupWithParrent:self andSelector:@selector(retryLoginForDiagnostic)];
-        [self.navigationController pushViewController:vc animated:YES];
-        
-    }
-}
-
 #pragma mark - Retry method for login with diagnostic
-- (void) retryLoginForDiagnostic
+
+- (void)retryLoginForConnectionDiagnostic
 {
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {

@@ -1,42 +1,45 @@
-//
-//  ConnectionDiagnosticViewController.m
-//  AlfrescoApp
-//
-//  Created by Silviu Odobescu on 19/03/15.
-//  Copyright (c) 2015 Alfresco. All rights reserved.
-//
+/*******************************************************************************
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
 
 #import "ConnectionDiagnosticViewController.h"
-#import "Constants.h"
 
 @interface ConnectionDiagnosticEventCell()
-
 @property (weak, nonatomic) IBOutlet UIImageView *eventStatusImage;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *eventActivityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *eventText;
-
 @end
 
 @implementation ConnectionDiagnosticEventCell
-
 @end
 
 @interface ConnectionDiagnosticViewController ()
-
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
 @property (weak, nonatomic) IBOutlet UINavigationItem *mainTitle;
 @property (nonatomic, strong) NSMutableArray *tableViewDataSource;
-
 @property (nonatomic, weak) UIViewController *parentVC;
 @property (nonatomic, assign) SEL selectorToPerform;
-
 @end
 
 @implementation ConnectionDiagnosticViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
     self.tableViewDataSource = [NSMutableArray new];
     self.mainTableView.delegate = self;
@@ -49,16 +52,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndEvent:) name:kAlfrescoConfigurationDiagnosticDidEndEventNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
-    if(self.parentVC && self.selectorToPerform)
+    if (self.parentVC && self.selectorToPerform)
     {
-        if([self.parentVC respondsToSelector:self.selectorToPerform])
+        if ([self.parentVC respondsToSelector:self.selectorToPerform])
         {
             [self.parentVC performSelector:self.selectorToPerform withObject:nil afterDelay:0];
         }
@@ -72,6 +70,7 @@
 }
 
 #pragma mark - UITableViewDelegate and UITableViewDataSource methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -91,12 +90,13 @@
 {
     ConnectionDiagnosticEventCell *cell = (ConnectionDiagnosticEventCell *)[tableView dequeueReusableCellWithIdentifier:@"ConnectionDiagnosticEventCell" forIndexPath:indexPath];
     
-    NSDictionary *dict = [self.tableViewDataSource objectAtIndex:indexPath.row];
-    NSString *eventName = [dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName];
+    NSDictionary *diagnostic = [self.tableViewDataSource objectAtIndex:indexPath.row];
+    NSString *eventName = [diagnostic objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName];
     cell.eventText.text = NSLocalizedString([self translationKeyForEventName:eventName], @"");
-    ConnectionDiagnosticStatus connectionStatus = [[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryStatus] integerValue];
+    ConnectionDiagnosticStatus connectionStatus = [[diagnostic objectForKey:kAlfrescoConfigurationDiagnosticDictionaryStatus] integerValue];
     
-    switch (connectionStatus) {
+    switch (connectionStatus)
+    {
         case ConnectionDiagnosticStatusLoading:
         {
             [cell.eventActivityIndicator startAnimating];
@@ -104,6 +104,7 @@
             cell.eventStatusImage.hidden = YES;
             break;
         }
+            
         case ConnectionDiagnosticStatusSuccess:
         {
             [cell.eventActivityIndicator stopAnimating];
@@ -113,6 +114,7 @@
             cell.eventStatusImage.tintColor = [UIColor systemNoticeInformationColor];
             break;
         }
+            
         case ConnectionDiagnosticStatusFailure:
         {
             [cell.eventActivityIndicator stopAnimating];
@@ -128,7 +130,8 @@
 }
 
 #pragma mark - Public Methods
-- (void)setupWithParrent:(UIViewController *)parent andSelector:(SEL)selector
+
+- (void)setupWithParent:(UIViewController *)parent andSelector:(SEL)selector
 {
     self.parentVC = parent;
     self.selectorToPerform = selector;
@@ -136,7 +139,7 @@
 
 #pragma mark - Notifications methods
 
-- (void) didStartEvent:(NSNotification *)notification
+- (void)didStartEvent:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
     
@@ -144,18 +147,18 @@
     [self.mainTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.tableViewDataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void) didEndEvent:(NSNotification *)notification
+- (void)didEndEvent:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
-    
     NSArray *copyOfDataSource = [self.tableViewDataSource copy];
-    for(int i = 0; i < copyOfDataSource.count; i++)
+
+    for (NSUInteger index = 0; index < copyOfDataSource.count; index++)
     {
-        NSDictionary *dict = [copyOfDataSource objectAtIndex:i];
-        if([[userInfo objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName] isEqualToString:[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName]])
+        NSDictionary *dict = [copyOfDataSource objectAtIndex:index];
+        if ([[userInfo objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName] isEqualToString:[dict objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName]])
         {
-            [self.tableViewDataSource replaceObjectAtIndex:i withObject:userInfo];
-            [self.mainTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableViewDataSource replaceObjectAtIndex:index withObject:userInfo];
+            [self.mainTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }
 }
@@ -163,31 +166,28 @@
 
 #pragma mark - Localization method
 
-- (NSString *) translationKeyForEventName:(NSString *)eventName
+- (NSString *)translationKeyForEventName:(NSString *)eventName
 {
-    NSString *stringToReturn;
-    if([eventName isEqualToString:kAlfrescoConfigurationDiagnosticReachabilityEvent])
+    static NSDictionary *eventToKeyMap;
+    
+    if (!eventToKeyMap)
     {
-        stringToReturn = @"connectiondiagnostic.reachabilityevent";
+        eventToKeyMap = @{ kAlfrescoConfigurationDiagnosticReachabilityEvent : @"connectiondiagnostic.event.reachability",
+                           kAlfrescoConfigurationDiagnosticServerVersionEvent : @"connectiondiagnostic.event.serverversion",
+                           kAlfrescoConfigurationDiagnosticRepositoriesAvailableEvent : @"connectiondiagnostic.event.repositoriesavailable",
+                           kAlfrescoConfigurationDiagnosticConnectRepositoryEvent : @"connectiondiagnostic.event.connectrepository",
+                           kAlfrescoConfigurationDiagnosticRetrieveRootFolderEvent : @"connectiondiagnostic.event.retrieverootfolder"
+                           };
     }
-    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticServerVersionEvent])
+
+    NSString *translationKey = nil;
+
+    if (eventName)
     {
-        stringToReturn = @"connectiondiagnostic.serverversionevent";
-    }
-    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticRepositoriesAvailableEvent])
-    {
-        stringToReturn = @"connectiondiagnostic.repositoriesavailableevent";
-    }
-    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticConnectRepositoryEvent])
-    {
-        stringToReturn = @"connectiondiagnostic.connectrepositoryevent";
-    }
-    else if ([eventName isEqualToString:kAlfrescoConfigurationDiagnosticRetrieveRootFolderEvent])
-    {
-        stringToReturn = @"connectiondiagnostic.retrieverootfolderevent";
+        translationKey = eventToKeyMap[eventName];
     }
     
-    return stringToReturn;
+    return translationKey;
 }
 
 @end

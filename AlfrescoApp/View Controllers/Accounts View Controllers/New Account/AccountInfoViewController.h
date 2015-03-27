@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
 
 @end
 
-@interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate, UIAlertViewDelegate>
+@interface AccountInfoViewController : ParentListViewController <UITextFieldDelegate>
 
 /**
  This delegate is being made strong to ensure that the callbacks to the delegate are invoked.
