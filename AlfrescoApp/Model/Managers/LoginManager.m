@@ -361,10 +361,6 @@
                               kAlfrescoConnectUsingClientSSLCertificate : @YES,
                               kAlfrescoClientCertificateCredentials : certificateCredential};
     }
-    
-    [[ConnectivityManager sharedManager] canReachHostName:account.serverAddress withCompletionBlock:^(BOOL isReachable) {
-        if (isReachable)
-        {
             self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
             self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                 if (session)
@@ -388,16 +384,6 @@
                         completionBlock(NO, nil, error);
                     }
                 }
-            }];
-        }
-        else
-        {
-            if (completionBlock != NULL)
-            {
-                NSError *unreachableError = [NSError errorWithDomain:kAlfrescoErrorDomainName code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
-                completionBlock(NO, nil, unreachableError);
-            }
-        }
     }];
 }
 
