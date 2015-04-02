@@ -212,3 +212,16 @@ NSString * const kQuickofficeApplicationDocumentUTIKey = @"PartnerApplicationDoc
 NSString * const kQuickofficeApplicationBundleIdentifierPrefix = @"com.quickoffice.";
 NSString * const kAlfrescoInfoMetadataKey = @"AlfrescoInfoMetadataKey";
 NSString * const kAppIdentifier = @"AlfrescoMobileApp";
+
+// Apple MDM User Defaults
+NSString * const kAppleManagedConfigurationKey = @"com.apple.configuration.managed";
+
+// MDM Server Keys
+NSString * const kAlfrescoMDMRepositoryURLKey = @"AlfrescoRepositoryURL";
+NSString * const kAlfrescoMDMUsernameKey = @"AlfrescoUserName";
+NSString * const kAlfrescoMDMDisplayNameKey = @"AlfrescoDisplayName";
+
+// App Configuration
+NSString * const kAppConfigurationCanAddAccountsKey = @"AppConfigurationCanAddAccounts";
+NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEditAccounts";
+NSString * const kAppConfigurationCanRemoveAccountsKey = @"AppConfigurationCanRemoveAccounts";

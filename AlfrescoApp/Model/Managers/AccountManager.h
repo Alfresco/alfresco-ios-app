@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 - (NSInteger)totalNumberOfAddedAccounts;
 - (NSInteger)numberOfPaidAccounts;
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier alfrescoSession:(id<AlfrescoSession>)alfrescoSession;
+- (void)deselectSelectedAccount;
 - (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock;
 
 /*

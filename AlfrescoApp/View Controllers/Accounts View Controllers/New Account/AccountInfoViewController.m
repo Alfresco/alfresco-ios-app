@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -53,11 +53,13 @@ static NSInteger const kTagCertificateCell = 1;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
+@property (nonatomic, strong) NSDictionary *configuration;
+@property (nonatomic, assign) BOOL canEditAccounts;
 @end
 
 @implementation AccountInfoViewController
 
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
+- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self)
@@ -72,6 +74,9 @@ static NSInteger const kTagCertificateCell = 1;
         }
         self.activityType = activityType;
         self.formBackupAccount = [self.account copy];
+        self.configuration = configuration;
+        NSNumber *canEditAccounts = configuration[kAppConfigurationCanEditAccountsKey];
+        self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
     }
     return self;
 }
@@ -320,6 +325,7 @@ static NSInteger const kTagCertificateCell = 1;
             isHTTPSOn = YES;
         }
         [self.protocolSwitch setOn:isHTTPSOn animated:YES];
+        protocolCell.valueSwitch.enabled = self.canEditAccounts;
         
         TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         portCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -556,6 +562,11 @@ static NSInteger const kTagCertificateCell = 1;
 - (void)syncPreferenceChanged:(id)sender
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return self.canEditAccounts || textField == self.passwordTextField;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField

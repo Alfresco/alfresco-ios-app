@@ -36,6 +36,9 @@
 #import "FileHandlerManager.h"
 #import "PreferenceManager.h"
 #import "ModalRotation.h"
+#import "MDMUserDefaultsConfigurationHelper.h"
+#import "MDMLaunchViewController.h"
+#import "NSDictionary+Extension.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -216,7 +219,28 @@
 {
     RootRevealControllerViewController *rootRevealViewController = nil;
     
-    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
+    MDMUserDefaultsConfigurationHelper *managedConfigurationHelper = [[MDMUserDefaultsConfigurationHelper alloc] init];
+    
+    NSDictionary *managedDict = @{kAlfrescoMDMRepositoryURLKey : @"http://localhost:8080/alfresco",
+                                  kAlfrescoMDMUsernameKey : @"admin",
+                                  kAlfrescoMDMDisplayNameKey : @"Mac"};
+    
+    [managedConfigurationHelper setManagedDictionary:managedDict];
+    
+    BOOL isManaged = [managedConfigurationHelper isManaged];
+    
+    // This is currently set to a dictionary that is passed around with appropiate values set.
+    // This will probably require rework in the app to support sevrer side configuration
+    NSMutableDictionary *initialConfiguration = [NSMutableDictionary dictionary];
+    
+    if (isManaged)
+    {
+        [initialConfiguration setObject:@NO forKey:kAppConfigurationCanAddAccountsKey];
+        [initialConfiguration setObject:@NO forKey:kAppConfigurationCanEditAccountsKey];
+        [initialConfiguration setObject:@NO forKey:kAppConfigurationCanRemoveAccountsKey];
+    }
+    
+    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
     MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeAccounts
                                                                     imageName:@"mainmenu-accounts.png"
@@ -243,8 +267,83 @@
         rootRevealViewController.detailViewController = splitViewController;
     }
     
-    // check accounts and add this if applicable
-    if ([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0)
+    NSUInteger numberOfAccountsSetup = [[AccountManager sharedManager] totalNumberOfAddedAccounts];
+    
+    if (isManaged)
+    {
+        NSArray *requiredKeys = @[kAlfrescoMDMRepositoryURLKey, kAlfrescoMDMUsernameKey];
+        NSArray *missingKeys = [managedConfigurationHelper.rootManagedDictionary findMissingKeysFromKeys:requiredKeys];
+        
+        if (numberOfAccountsSetup == 0)
+        {
+            if (missingKeys.count == 0)
+            {
+                // Create a new account and add it to the keychain
+                NSURL *serverURL = [NSURL URLWithString:[managedConfigurationHelper valueForKey:kAlfrescoMDMRepositoryURLKey]];
+                
+                UserAccount *userAccount = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
+                userAccount.serverAddress = serverURL.host;
+                userAccount.accountDescription = [managedConfigurationHelper valueForKey:kAlfrescoMDMDisplayNameKey];
+                userAccount.serverPort = serverURL.port.stringValue;
+                userAccount.protocol = serverURL.scheme;
+                userAccount.serviceDocument = serverURL.path;
+                userAccount.username = [managedConfigurationHelper valueForKey:kAlfrescoMDMUsernameKey];
+                [[AccountManager sharedManager] addAccount:userAccount];
+                [[AccountManager sharedManager] selectAccount:userAccount selectNetwork:nil alfrescoSession:session];
+            }
+            else
+            {
+                // Deselect the account to ensure a login attempt isn't made
+                [[AccountManager sharedManager] deselectSelectedAccount];
+                MDMLaunchViewController *mdmLaunchViewController = [[MDMLaunchViewController alloc] initWithMissingMDMKeys:missingKeys];
+                [rootRevealViewController addOverlayedViewController:mdmLaunchViewController];
+            }
+        }
+        else
+        {
+            if (missingKeys.count == 0)
+            {
+                // Update the existing account in the keychain
+                NSURL *serverURL = [NSURL URLWithString:[managedConfigurationHelper valueForKey:kAlfrescoMDMRepositoryURLKey]];
+                
+                // Update only the settings of the account that have changed
+                UserAccount *userAccount = [[AccountManager sharedManager] allAccounts][0];
+                if (![userAccount.serverAddress isEqualToString:serverURL.host])
+                {
+                    userAccount.serverAddress = serverURL.host;
+                }
+                if (![userAccount.accountDescription isEqualToString:[managedConfigurationHelper valueForKey:kAlfrescoMDMDisplayNameKey]])
+                {
+                    userAccount.accountDescription = [managedConfigurationHelper valueForKey:kAlfrescoMDMDisplayNameKey];
+                }
+                if (![userAccount.serverPort isEqualToString:serverURL.port.stringValue])
+                {
+                    userAccount.serverPort = serverURL.port.stringValue;
+                }
+                if (![userAccount.protocol isEqualToString:serverURL.scheme])
+                {
+                    userAccount.protocol = serverURL.scheme;
+                }
+                if (![userAccount.serviceDocument isEqualToString:serverURL.path])
+                {
+                    userAccount.serviceDocument = serverURL.path;
+                }
+                if (![userAccount.username isEqualToString:[managedConfigurationHelper valueForKey:kAlfrescoMDMUsernameKey]])
+                {
+                    userAccount.username = [managedConfigurationHelper valueForKey:kAlfrescoMDMUsernameKey];
+                }
+                [[AccountManager sharedManager] selectAccount:userAccount selectNetwork:nil alfrescoSession:session];
+            }
+            else
+            {
+                // Deselect the account to ensure a login attempt isn't made
+                [[AccountManager sharedManager] deselectSelectedAccount];
+                MDMLaunchViewController *mdmLaunchViewController = [[MDMLaunchViewController alloc] initWithMissingMDMKeys:missingKeys];
+                [rootRevealViewController addOverlayedViewController:mdmLaunchViewController];
+            }
+        }
+    }
+    else if (numberOfAccountsSetup == 0)
     {
         OnboardingViewController *onboardingViewController = [[OnboardingViewController alloc] init];
         [rootRevealViewController addOverlayedViewController:onboardingViewController];
