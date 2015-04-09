@@ -20,6 +20,6 @@
 
 @interface NSDictionary (Extension)
 
-- (NSArray *)findMissingKeysFromKeys:(NSArray *)searchKeys;
+- (NSArray *)findMissingKeysFromArray:(NSArray *)searchKeys;
 
 @end

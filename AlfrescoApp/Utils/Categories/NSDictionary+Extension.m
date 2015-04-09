@@ -20,7 +20,7 @@
 
 @implementation NSDictionary (Extension)
 
-- (NSArray *)findMissingKeysFromKeys:(NSArray *)searchKeys
+- (NSArray *)findMissingKeysFromArray:(NSArray *)searchKeys
 {
     __block NSMutableArray *missingKeys = [NSMutableArray array];
     NSArray *myKeys = self.allKeys;

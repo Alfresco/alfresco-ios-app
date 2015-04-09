@@ -21,12 +21,13 @@
 @interface MDMUserDefaultsConfigurationHelper : NSObject
 
 @property (nonatomic, strong, readonly) NSDictionary *rootManagedDictionary;
+@property (nonatomic, assign, readonly) BOOL isManaged;
 
-- (BOOL)isManaged;
+- (instancetype)initWithConfigurationKey:(NSString *)configurationKey;
+
 - (id)valueForKey:(NSString *)key;
 - (id)valueForKeyPath:(NSString *)keyPath;
 
-// ONLY FOR TESTING PURPOSES, SHOULD BE REMOVED ONCE AIRWATCH IS SETUP
 - (void)setManagedDictionary:(NSDictionary *)dictionary;
 
 @end

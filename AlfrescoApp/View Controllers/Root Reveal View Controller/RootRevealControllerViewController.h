@@ -18,6 +18,7 @@
   
 @interface RootRevealControllerViewController : UIViewController
 
+@property (nonatomic, assign, readonly) BOOL hasOverlayController;
 @property (nonatomic, strong) UIViewController *masterViewController;
 @property (nonatomic, strong) UIViewController *detailViewController;
 
@@ -26,6 +27,6 @@
 - (void)expandViewController;
 - (void)collapseViewController;
 - (void)addOverlayedViewController:(UIViewController *)overlayViewController;
-- (void)removeOverlayedViewController;
+- (void)removeOverlayedViewControllerWithAnimation:(BOOL)animated;
 
 @end

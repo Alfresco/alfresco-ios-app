@@ -20,34 +20,36 @@
 
 @interface MDMUserDefaultsConfigurationHelper ()
 
-@property (nonatomic, strong) NSDictionary *managedConfiguration;
+@property (nonatomic, strong, readwrite) NSString *configurationKey;
+@property (nonatomic, strong, readwrite) NSDictionary *managedConfiguration;
+@property (nonatomic, assign, readwrite) BOOL isManaged;
 
 @end
 
 @implementation MDMUserDefaultsConfigurationHelper
 
-- (instancetype)init
+- (instancetype)initWithConfigurationKey:(NSString *)configurationKey
 {
-    self = [super init];
+    self = [self init];
     if (self)
     {
-        self.managedConfiguration = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kAppleManagedConfigurationKey];
-        
-        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:kAppleManagedConfigurationKey options:NSKeyValueObservingOptionNew context:NULL];
+        self.configurationKey = configurationKey;
+        self.managedConfiguration = [[NSUserDefaults standardUserDefaults] dictionaryForKey:configurationKey];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:configurationKey options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:kAppleManagedConfigurationKey];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:self.configurationKey];
 }
 
 #pragma mark - Private Methods
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:kAppleManagedConfigurationKey])
+    if ([keyPath isEqualToString:self.configurationKey])
     {
         self.managedConfiguration = change;
         NSLog(@"KVO: %@ changed property %@ to value %@", object, keyPath, change);
@@ -61,12 +63,12 @@
     return self.managedConfiguration;
 }
 
-#pragma mark - Public Methods
-
 - (BOOL)isManaged
 {
     return (self.managedConfiguration != nil);
 }
+
+#pragma mark - Public Methods
 
 - (id)valueForKey:(NSString *)key
 {
@@ -78,10 +80,12 @@
     return [self.managedConfiguration valueForKeyPath:keyPath];
 }
 
-// ONLY FOR TESTING PURPOSES, SHOULD BE REMOVED ONCE AIRWATCH IS SETUP
 - (void)setManagedDictionary:(NSDictionary *)dictionary
 {
     self.managedConfiguration = dictionary;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue:dictionary forKey:self.configurationKey];
+    [userDefaults synchronize];
 }
 
 @end

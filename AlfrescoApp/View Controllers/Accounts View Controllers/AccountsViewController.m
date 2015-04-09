@@ -56,6 +56,8 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
         NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
         self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
+        
+        [self registerForNotifications];
     }
     return self;
 }
@@ -75,11 +77,6 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                                                                                     action:@selector(addAccount:)];
         self.navigationItem.rightBarButtonItem = addAccount;
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
 }
 
 - (void)updateAccountList
@@ -103,6 +100,36 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
     
     [self.tableView reloadData];
+}
+
+- (void)accountConfigurationUpdated:(NSNotification *)notification
+{
+    NSDictionary *configuration = notification.object;
+    [self configureViewForConfiguration:configuration];
+}
+
+- (void)configureViewForConfiguration:(NSDictionary *)configuration
+{
+    self.configuration = configuration;
+    NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
+    self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
+    NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
+    self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
+    
+    // Remove the add button if configuration to add accounts is set to NO
+    if (!self.canAddAccounts)
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountConfigurationUpdated:) name:kAppConfigurationAccountsCongurationUpdatedNotification object:nil];
 }
 
 - (void)dealloc
