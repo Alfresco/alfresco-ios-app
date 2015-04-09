@@ -55,6 +55,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 @implementation TasksAndAttachmentsViewController
 
+@dynamic session;
+
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
     self = [self initWithTaskFilter:TaskFilterTask session:session];
