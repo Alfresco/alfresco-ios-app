@@ -276,6 +276,10 @@
 		73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEB1806F5D2007172EE /* SwitchViewController.m */; };
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
+		7366F7451ACAB78F008DD92E /* MDMLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7366F7441ACAB78F008DD92E /* MDMLaunchViewController.m */; };
+		7366F7471ACAB7A1008DD92E /* MDMLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7366F7461ACAB7A1008DD92E /* MDMLaunchViewController.xib */; };
+		7366F74A1ACAD8DE008DD92E /* NSDictionary+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */; };
+		7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7366F74C1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m */; };
 		7367CFC01AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 7367CFBF1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m */; };
 		73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697A8218B22D9700021B02 /* UIViewController+Swizzled.m */; };
 		73697B911A979879009F10BA /* FileMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 73697B901A979879009F10BA /* FileMetadata.m */; };
@@ -1064,6 +1068,13 @@
 		73632AEF1806F674007172EE /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MainMenuViewController.m; path = "Main Menu View Controller/MainMenuViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73632AF318080E7C007172EE /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItem.h; path = "Main Menu View Controller/Model/MainMenuItem.h"; sourceTree = "<group>"; };
 		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
+		7366F7431ACAB78F008DD92E /* MDMLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDMLaunchViewController.h; sourceTree = "<group>"; };
+		7366F7441ACAB78F008DD92E /* MDMLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDMLaunchViewController.m; sourceTree = "<group>"; };
+		7366F7461ACAB7A1008DD92E /* MDMLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MDMLaunchViewController.xib; sourceTree = "<group>"; };
+		7366F7481ACAD8DE008DD92E /* NSDictionary+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Extension.h"; sourceTree = "<group>"; };
+		7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Extension.m"; sourceTree = "<group>"; };
+		7366F74B1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDMUserDefaultsConfigurationHelper.h; sourceTree = "<group>"; };
+		7366F74C1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDMUserDefaultsConfigurationHelper.m; sourceTree = "<group>"; };
 		7367CFB31AB19C8F00A1B484 /* ModalRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalRotation.h; sourceTree = "<group>"; };
 		7367CFBE1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+RightAlignmentSpacingFix.h"; sourceTree = "<group>"; };
 		7367CFBF1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+RightAlignmentSpacingFix.m"; sourceTree = "<group>"; };
@@ -2143,6 +2154,16 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		7366F7421ACAB764008DD92E /* MDM Launch View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7366F7431ACAB78F008DD92E /* MDMLaunchViewController.h */,
+				7366F7441ACAB78F008DD92E /* MDMLaunchViewController.m */,
+				7366F7461ACAB7A1008DD92E /* MDMLaunchViewController.xib */,
+			);
+			path = "MDM Launch View Controller";
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -2890,6 +2911,8 @@
 				73B957FC17A6750E0099FB84 /* ErrorDescriptions.m */,
 				73E9E21317E9AF7A00A198B4 /* KeychainUtils.h */,
 				73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */,
+				7366F74B1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.h */,
+				7366F74C1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m */,
 				731901B0184770F5002C82C1 /* MigrationAssistant.h */,
 				731901B1184770F5002C82C1 /* MigrationAssistant.m */,
 				73B957FD17A6750E0099FB84 /* Notifier.h */,
@@ -2913,6 +2936,8 @@
 				739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */,
 				73B350B51851E8BF0037E3E3 /* NSData+Base64.h */,
 				73B350B61851E8BF0037E3E3 /* NSData+Base64.m */,
+				7366F7481ACAD8DE008DD92E /* NSDictionary+Extension.h */,
+				7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */,
 				73345E35195C299D000CADC7 /* NSObject+DebugCheck.h */,
 				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
 				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
@@ -2968,6 +2993,7 @@
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				272CC7B919466B380009FADA /* Map View Controller */,
+				7366F7421ACAB764008DD92E /* MDM Launch View Controller */,
 				73B95AD217A68DF20099FB84 /* Metadata View Controller */,
 				731A8F42192F54090099BE7B /* New Version View Controller */,
 				0876A03318D99FF60035370A /* Node Picker ViewController */,
@@ -3772,6 +3798,7 @@
 				73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
 				732DBFA218E1BC6B00F7A0BF /* small_zip.png in Resources */,
+				7366F7471ACAB7A1008DD92E /* MDMLaunchViewController.xib in Resources */,
 				738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */,
 				73881FDA188FF6B00052C75F /* actionsheet-like@2x.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
@@ -3987,6 +4014,7 @@
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
+				7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
 				08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */,
@@ -3997,6 +4025,7 @@
 				738664BF1906B14C0021D1BD /* SitesCell.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
+				7366F7451ACAB78F008DD92E /* MDMLaunchViewController.m in Sources */,
 				738664DE1906B2260021D1BD /* ButtonCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73CD5B0E1A729526000A5523 /* SharedConstants.m in Sources */,
@@ -4058,6 +4087,7 @@
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */,
+				7366F74A1ACAD8DE008DD92E /* NSDictionary+Extension.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,

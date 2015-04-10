@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -55,6 +55,6 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
  Only use this initialiser to init this view controller. Passing through nil for the account will display an empty controller
  which can be used for a new account setup.
  */
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType;
+- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration;
 
 @end

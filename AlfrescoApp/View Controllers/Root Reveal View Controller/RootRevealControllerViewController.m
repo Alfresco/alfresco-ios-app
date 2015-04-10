@@ -27,6 +27,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
 
 @interface RootRevealControllerViewController () <UIGestureRecognizerDelegate>
 
+@property (nonatomic, assign, readwrite) BOOL hasOverlayController;
 @property (nonatomic, strong) UIView *masterViewContainer;
 @property (nonatomic, strong) UIView *detailViewContainer;
 @property (nonatomic, assign) BOOL isExpanded;
@@ -121,6 +122,13 @@ static const CGFloat kAnimationSpeed = 0.2f;
     [self addShadowToView:self.detailViewContainer];
 }
 
+#pragma mark - Custom Getters and Setters
+
+- (BOOL)hasOverlayController
+{
+    return (self.overlayedViewController != nil);
+}
+
 #pragma mark - Public Functions
 
 - (void)expandViewController
@@ -170,15 +178,26 @@ static const CGFloat kAnimationSpeed = 0.2f;
     self.overlayedViewController = overlayViewController;
 }
 
-- (void)removeOverlayedViewController
+- (void)removeOverlayedViewControllerWithAnimation:(BOOL)animated
 {
-    [UIView animateWithDuration:0.3f animations:^{
-        self.overlayedViewController.view.alpha = 0.0f;
-    } completion:^(BOOL finished) {
+    void (^removeOverlayController)(void) = ^ {
         [self willMoveToParentViewController:nil];
         [self.overlayedViewController.view removeFromSuperview];
         [self.overlayedViewController removeFromParentViewController];
-    }];
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.3f animations:^{
+            self.overlayedViewController.view.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            removeOverlayController();
+        }];
+    }
+    else
+    {
+        removeOverlayController();
+    }
 }
 
 #pragma mark - Private Functions

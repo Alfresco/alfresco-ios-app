@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -154,7 +154,7 @@ static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
     }
     else
     {
-        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:nil accountActivityType:AccountActivityTypeNewAccount];
+        AccountInfoViewController *accountInfoController = [[AccountInfoViewController alloc] initWithAccount:nil accountActivityType:AccountActivityTypeNewAccount configuration:nil];
         accountInfoController.delegate = self;
         [self.navigationController pushViewController:accountInfoController animated:YES];
     }

@@ -1,32 +1,33 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
- * 
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
+ *
  * This file is part of the Alfresco Mobile iOS App.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
-@interface RootRevealControllerViewController : UIViewController
 
-@property (nonatomic, assign, readonly) BOOL hasOverlayController;
-@property (nonatomic, strong) UIViewController *masterViewController;
-@property (nonatomic, strong) UIViewController *detailViewController;
+#import <Foundation/Foundation.h>
 
-- (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController;
+@interface MDMUserDefaultsConfigurationHelper : NSObject
 
-- (void)expandViewController;
-- (void)collapseViewController;
-- (void)addOverlayedViewController:(UIViewController *)overlayViewController;
-- (void)removeOverlayedViewControllerWithAnimation:(BOOL)animated;
+@property (nonatomic, strong, readonly) NSDictionary *rootManagedDictionary;
+@property (nonatomic, assign, readonly) BOOL isManaged;
+
+- (instancetype)initWithConfigurationKey:(NSString *)configurationKey;
+
+- (id)valueForKey:(NSString *)key;
+- (id)valueForKeyPath:(NSString *)keyPath;
+
+- (void)setManagedDictionary:(NSDictionary *)dictionary;
 
 @end
