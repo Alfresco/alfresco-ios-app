@@ -224,7 +224,7 @@ NSString * const kAlfrescoMDMDisplayNameKey = @"AlfrescoDisplayName";
 
 // App Configuration
 //// Notifictaions
-NSString * const kAppConfigurationAccountsCongurationUpdatedNotification = @"AppConfigurationAccountsCongurationUpdatedNotification";
+NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"AppConfigurationAccountsConfigurationUpdatedNotification";
 //// Keys
 NSString * const kAppConfigurationCanAddAccountsKey = @"AppConfigurationCanAddAccounts";
 NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEditAccounts";
