@@ -367,7 +367,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         {
             isSuccessful = NO;
             
-            NSString *errorMessage = [NSString stringWithFormat:@"The following keys have not been setup:\n%@\nPlease contact your administrator.", missingKeys];
+            NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"mdm.missing.keys.description", @"Missing Keys Description"), missingKeys];
             configurationError = [NSError errorWithDomain:errorMessage code:-1 userInfo:@{kMDMMissingRequiredKeysKey : missingKeys}];
         }
     }
@@ -412,7 +412,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         {
             isSuccessful = NO;
             
-            NSString *errorMessage = [NSString stringWithFormat:@"The following keys have not been setup:\n%@\nPlease contact your administrator.", missingKeys];
+            NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"mdm.missing.keys.description", @"Missing Keys Description"), missingKeys];
             configurationError = [NSError errorWithDomain:errorMessage code:-1 userInfo:@{kMDMMissingRequiredKeysKey : missingKeys}];
         }
     }
@@ -446,7 +446,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                                                    kAppConfigurationCanEditAccountsKey : @NO,
                                                    kAppConfigurationCanRemoveAccountsKey : @NO};
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAppConfigurationAccountsCongurationUpdatedNotification object:accountConfiguration];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAppConfigurationAccountsConfigurationUpdatedNotification object:accountConfiguration];
             
             if (addedAccount)
             {

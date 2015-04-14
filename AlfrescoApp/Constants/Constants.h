@@ -256,7 +256,7 @@ extern NSString * const kAlfrescoMDMDisplayNameKey;
 
 // App Configuration
 //// Notifictaions
-extern NSString * const kAppConfigurationAccountsCongurationUpdatedNotification;
+extern NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification;
 //// Keys
 extern NSString * const kAppConfigurationCanAddAccountsKey;
 extern NSString * const kAppConfigurationCanEditAccountsKey;

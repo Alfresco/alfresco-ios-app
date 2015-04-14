@@ -52,7 +52,7 @@
     if ([keyPath isEqualToString:self.configurationKey])
     {
         self.managedConfiguration = change;
-        NSLog(@"KVO: %@ changed property %@ to value %@", object, keyPath, change);
+        AlfrescoLogDebug(@"KVO: %@ changed property %@ to value %@", object, keyPath, change);
     }
 }
 

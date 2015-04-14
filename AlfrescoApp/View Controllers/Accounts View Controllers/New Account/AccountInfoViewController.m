@@ -59,6 +59,11 @@ static NSInteger const kTagCertificateCell = 1;
 
 @implementation AccountInfoViewController
 
+- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
+{
+    return [self initWithAccount:account accountActivityType:activityType configuration:nil];
+}
+
 - (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];

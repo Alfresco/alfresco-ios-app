@@ -47,7 +47,7 @@
         [missingKeysString appendFormat:@"- %@\n", missingKey];
     }];
     
-    NSString *errorMessage = [NSString stringWithFormat:@"The following keys have not been setup:\n%@\nPlease contact your administrator.", missingKeysString];
+    NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"mdm.missing.keys.description", @"Missing Keys Description"), missingKeysString];
     self.errorTextLabel.text = errorMessage;
 }
 
