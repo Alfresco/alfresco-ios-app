@@ -346,9 +346,9 @@ static NSString * const kRepositoryDownloadedConfigurationFileLastUpdatedDate = 
     
     if (!jsonError)
     {
-        NSDictionary *rootMenuConfiguration = [appConfiguration objectForKey:kConfigurationRootMenuKey];
-        if (rootMenuConfiguration)
+        if (appConfiguration)
         {
+            NSDictionary *rootMenuConfiguration = [appConfiguration objectForKey:kConfigurationRootMenuKey];
             self.useDefaultConfiguration = NO;
             self.showRepositorySpecificItems = YES;
             self.appConfigurations = [rootMenuConfiguration mutableCopy];
