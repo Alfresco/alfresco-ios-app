@@ -754,6 +754,11 @@
 "mail.footer" = "Sent from %@";
 
 /**
+ * MDM
+ */
+"mdm.missing.keys.description" = "The following keys have not been setup:\n%@\nPlease contact your administrator.";
+
+/**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */
 

@@ -36,8 +36,14 @@
 #import "FileHandlerManager.h"
 #import "PreferenceManager.h"
 #import "ModalRotation.h"
+#import "MDMUserDefaultsConfigurationHelper.h"
+#import "MDMLaunchViewController.h"
+#import "NSDictionary+Extension.h"
+#import "UniversalDevice.h"
 
 #import <HockeySDK/HockeySDK.h>
+
+static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 
 @interface AppDelegate()
 
@@ -45,10 +51,24 @@
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) MainMenuViewController *mainMenuViewController;
+@property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *appleConfigurationHelper;
+@property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *mobileIronConfigurationHelper;
 
 @end
 
 @implementation AppDelegate
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.appleConfigurationHelper = [[MDMUserDefaultsConfigurationHelper alloc] initWithConfigurationKey:kAppleManagedConfigurationKey];
+        self.mobileIronConfigurationHelper = [[MDMUserDefaultsConfigurationHelper alloc] initWithConfigurationKey:kMobileIronManagedConfigurationKey];
+        
+    }
+    return self;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -216,7 +236,20 @@
 {
     RootRevealControllerViewController *rootRevealViewController = nil;
     
-    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithSession:session];
+    BOOL isManaged = self.appleConfigurationHelper.isManaged || self.mobileIronConfigurationHelper.isManaged;
+    
+    // This is currently set to a dictionary that is passed around with appropiate values set.
+    // This will probably require rework in the app to support server side configuration
+    NSMutableDictionary *initialConfiguration = [NSMutableDictionary dictionary];
+    
+    if (isManaged)
+    {
+        [initialConfiguration setObject:@NO forKey:kAppConfigurationCanAddAccountsKey];
+        [initialConfiguration setObject:@NO forKey:kAppConfigurationCanEditAccountsKey];
+        [initialConfiguration setObject:@NO forKey:kAppConfigurationCanRemoveAccountsKey];
+    }
+    
+    AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
     MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeAccounts
                                                                     imageName:@"mainmenu-accounts.png"
@@ -243,8 +276,26 @@
         rootRevealViewController.detailViewController = splitViewController;
     }
     
-    // check accounts and add this if applicable
-    if ([[AccountManager sharedManager] totalNumberOfAddedAccounts] == 0)
+    NSUInteger numberOfAccountsSetup = [[AccountManager sharedManager] totalNumberOfAddedAccounts];
+    
+    if (isManaged)
+    {
+        NSDictionary *managedDictionary = (self.appleConfigurationHelper.isManaged) ? self.appleConfigurationHelper.rootManagedDictionary : self.mobileIronConfigurationHelper.rootManagedDictionary;
+        
+        [self configureManagedObjectWithDictionary:managedDictionary completionBlock:^(BOOL successful, BOOL addedAccount, UserAccount *configuredAccount, NSError *configurationError) {
+            if (successful)
+            {
+                [[AccountManager sharedManager] selectAccount:configuredAccount selectNetwork:nil alfrescoSession:session];
+            }
+            else
+            {
+                NSArray *missingKeys = configurationError.userInfo[kMDMMissingRequiredKeysKey];
+                MDMLaunchViewController *mdmLaunchViewController = [[MDMLaunchViewController alloc] initWithMissingMDMKeys:missingKeys];
+                [rootRevealViewController addOverlayedViewController:mdmLaunchViewController];
+            }
+        }];
+    }
+    else if (numberOfAccountsSetup == 0)
     {
         OnboardingViewController *onboardingViewController = [[OnboardingViewController alloc] init];
         [rootRevealViewController addOverlayedViewController:onboardingViewController];
@@ -278,6 +329,152 @@
 - (void)sessionReceived:(NSNotification *)notification
 {
     self.session = notification.object;
+}
+
+- (void)configureManagedObjectWithDictionary:(NSDictionary *)managedDictionary completionBlock:(void (^)(BOOL successful, BOOL addedAccount, UserAccount *configuredAccount, NSError *configurationError))completionBlock
+{
+    // Variables to pass through to the completionBlock
+    BOOL isSuccessful = NO;
+    BOOL didAddAccount = NO;
+    UserAccount *userAccount = nil;
+    NSError *configurationError = nil;
+    
+    NSUInteger numberOfAccountsSetup = [[AccountManager sharedManager] totalNumberOfAddedAccounts];
+    
+    NSArray *requiredKeys = @[kAlfrescoMDMRepositoryURLKey, kAlfrescoMDMUsernameKey];
+    NSArray *missingKeys = [managedDictionary findMissingKeysFromArray:requiredKeys];
+    
+    if (numberOfAccountsSetup == 0)
+    {
+        if (missingKeys.count == 0)
+        {
+            // Create a new account and add it to the keychain
+            NSURL *serverURL = [NSURL URLWithString:[managedDictionary valueForKey:kAlfrescoMDMRepositoryURLKey]];
+            
+            userAccount = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
+            userAccount.serverAddress = serverURL.host;
+            userAccount.accountDescription = [managedDictionary valueForKey:kAlfrescoMDMDisplayNameKey];
+            userAccount.serverPort = serverURL.port.stringValue;
+            userAccount.protocol = serverURL.scheme;
+            userAccount.serviceDocument = serverURL.path;
+            userAccount.username = [managedDictionary valueForKey:kAlfrescoMDMUsernameKey];
+            [[AccountManager sharedManager] addAccount:userAccount];
+            
+            isSuccessful = YES;
+            didAddAccount = YES;
+        }
+        else
+        {
+            isSuccessful = NO;
+            
+            NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"mdm.missing.keys.description", @"Missing Keys Description"), missingKeys];
+            configurationError = [NSError errorWithDomain:errorMessage code:-1 userInfo:@{kMDMMissingRequiredKeysKey : missingKeys}];
+        }
+    }
+    else
+    {
+        if (missingKeys.count == 0)
+        {
+            // Update the existing account in the keychain
+            NSURL *serverURL = [NSURL URLWithString:[managedDictionary valueForKey:kAlfrescoMDMRepositoryURLKey]];
+            
+            // Update only the settings of the account that have changed
+            userAccount = [[AccountManager sharedManager] allAccounts][0];
+            if (![userAccount.serverAddress isEqualToString:serverURL.host])
+            {
+                userAccount.serverAddress = serverURL.host;
+            }
+            if (![userAccount.accountDescription isEqualToString:[managedDictionary valueForKey:kAlfrescoMDMDisplayNameKey]])
+            {
+                userAccount.accountDescription = [managedDictionary valueForKey:kAlfrescoMDMDisplayNameKey];
+            }
+            if (![userAccount.serverPort isEqualToString:serverURL.port.stringValue])
+            {
+                userAccount.serverPort = serverURL.port.stringValue;
+            }
+            if (![userAccount.protocol isEqualToString:serverURL.scheme])
+            {
+                userAccount.protocol = serverURL.scheme;
+            }
+            if (![userAccount.serviceDocument isEqualToString:serverURL.path])
+            {
+                userAccount.serviceDocument = serverURL.path;
+            }
+            if (![userAccount.username isEqualToString:[managedDictionary valueForKey:kAlfrescoMDMUsernameKey]])
+            {
+                userAccount.username = [managedDictionary valueForKey:kAlfrescoMDMUsernameKey];
+            }
+            
+            isSuccessful = YES;
+            didAddAccount = NO;
+        }
+        else
+        {
+            isSuccessful = NO;
+            
+            NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"mdm.missing.keys.description", @"Missing Keys Description"), missingKeys];
+            configurationError = [NSError errorWithDomain:errorMessage code:-1 userInfo:@{kMDMMissingRequiredKeysKey : missingKeys}];
+        }
+    }
+    
+    if (completionBlock != NULL)
+    {
+        completionBlock(isSuccessful, didAddAccount, userAccount, configurationError);
+    }
+}
+
+#pragma mark - MobileIron AppConnect Wrapping Method
+
+- (NSString *)appConnectConfigChangedTo:(NSDictionary *)config
+{
+    __block NSString *configurationErrorString = nil;
+    
+    [self.mobileIronConfigurationHelper setManagedDictionary:config];
+    
+    RootRevealControllerViewController *rootRevealController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+    
+    if (rootRevealController.hasOverlayController)
+    {
+        [rootRevealController removeOverlayedViewControllerWithAnimation:NO];
+    }
+    
+    [self configureManagedObjectWithDictionary:config completionBlock:^(BOOL successful, BOOL addedAccount, UserAccount *configuredAccount, NSError *configurationError) {
+        if (successful)
+        {
+            // We need to notify the app to disable the account addition, modification and removal
+            NSDictionary *accountConfiguration = @{kAppConfigurationCanAddAccountsKey : @NO,
+                                                   kAppConfigurationCanEditAccountsKey : @NO,
+                                                   kAppConfigurationCanRemoveAccountsKey : @NO};
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAppConfigurationAccountsConfigurationUpdatedNotification object:accountConfiguration];
+            
+            if (addedAccount)
+            {
+                // Login to the account after it has been configured
+                [[LoginManager sharedManager] attemptLoginToAccount:configuredAccount networkId:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                    if (successful)
+                    {
+                        [[AccountManager sharedManager] selectAccount:configuredAccount selectNetwork:nil alfrescoSession:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                    }
+                }];
+            }
+            else
+            {
+                [[AccountManager sharedManager] selectAccount:configuredAccount selectNetwork:nil alfrescoSession:nil];
+            }
+        }
+        else
+        {
+            NSArray *missingKeys = configurationError.userInfo[kMDMMissingRequiredKeysKey];
+            MDMLaunchViewController *mdmLaunchViewController = [[MDMLaunchViewController alloc] initWithMissingMDMKeys:missingKeys];
+            [rootRevealController addOverlayedViewController:mdmLaunchViewController];
+            
+            configurationErrorString = configurationError.localizedDescription;
+        }
+    }];
+    
+    return configurationErrorString;
 }
 
 @end

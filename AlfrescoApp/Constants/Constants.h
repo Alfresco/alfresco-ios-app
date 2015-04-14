@@ -244,3 +244,20 @@ extern NSString * const kQuickofficeApplicationDocumentUTIKey;
 extern NSString * const kQuickofficeApplicationBundleIdentifierPrefix;
 extern NSString * const kAlfrescoInfoMetadataKey;
 extern NSString * const kAppIdentifier;
+
+// MDM User Defaults
+extern NSString * const kAppleManagedConfigurationKey;
+extern NSString * const kMobileIronManagedConfigurationKey;
+
+// MDM Server Keys
+extern NSString * const kAlfrescoMDMRepositoryURLKey;
+extern NSString * const kAlfrescoMDMUsernameKey;
+extern NSString * const kAlfrescoMDMDisplayNameKey;
+
+// App Configuration
+//// Notifictaions
+extern NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification;
+//// Keys
+extern NSString * const kAppConfigurationCanAddAccountsKey;
+extern NSString * const kAppConfigurationCanEditAccountsKey;
+extern NSString * const kAppConfigurationCanRemoveAccountsKey;

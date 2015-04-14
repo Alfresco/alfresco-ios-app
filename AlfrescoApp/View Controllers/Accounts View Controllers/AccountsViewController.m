@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -39,9 +39,28 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 @interface AccountsViewController ()
 @property (nonatomic, assign) NSInteger expandedSection;
+@property (nonatomic, strong) NSDictionary *configuration;
+@property (nonatomic, assign) BOOL canAddAccounts;
+@property (nonatomic, assign) BOOL canRemoveAccounts;
 @end
 
 @implementation AccountsViewController
+
+- (instancetype)initWithConfiguration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
+{
+    self = [self initWithSession:session];
+    if (self)
+    {
+        self.configuration = configuration;
+        NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
+        self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
+        NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
+        self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
+        
+        [self registerForNotifications];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -51,15 +70,13 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     self.tableView.emptyMessage = NSLocalizedString(@"accounts.empty", @"No Accounts");
     [self updateAccountList];
     
-    UIBarButtonItem *addAccount = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                target:self
-                                                                                action:@selector(addAccount:)];
-    self.navigationItem.rightBarButtonItem = addAccount;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
+    if (self.canAddAccounts)
+    {
+        UIBarButtonItem *addAccount = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                    target:self
+                                                                                    action:@selector(addAccount:)];
+        self.navigationItem.rightBarButtonItem = addAccount;
+    }
 }
 
 - (void)updateAccountList
@@ -83,6 +100,36 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
     
     [self.tableView reloadData];
+}
+
+- (void)accountConfigurationUpdated:(NSNotification *)notification
+{
+    NSDictionary *configuration = notification.object;
+    [self configureViewForConfiguration:configuration];
+}
+
+- (void)configureViewForConfiguration:(NSDictionary *)configuration
+{
+    self.configuration = configuration;
+    NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
+    self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
+    NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
+    self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
+    
+    // Remove the add button if configuration to add accounts is set to NO
+    if (!self.canAddAccounts)
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountConfigurationUpdated:) name:kAppConfigurationAccountsConfigurationUpdatedNotification object:nil];
 }
 
 - (void)dealloc
@@ -172,7 +219,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
         
         cell.textLabel.font = [UIFont systemFontOfSize:kDefaultFontSize];
-        cell.textLabel.text = account.accountDescription;
+        cell.textLabel.text = (account.accountDescription) ?: account.serverAddress;
         
         UIImage *accountTypeImage = [UIImage imageNamed:@"account-type-onpremise.png"];
         if (account.accountType == UserAccountTypeCloud)
@@ -241,7 +288,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         }
         else
         {
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount];
+            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount configuration:self.configuration];
         }
         
         if (viewController)
@@ -259,7 +306,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.row == kAccountRowNumber);
+    return self.canRemoveAccounts && (indexPath.row == kAccountRowNumber);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

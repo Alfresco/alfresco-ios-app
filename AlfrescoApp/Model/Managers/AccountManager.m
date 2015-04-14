@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -170,6 +170,17 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
     [self saveAccountsToKeychain];
+}
+
+- (void)deselectSelectedAccount
+{
+    self.selectedAccount = nil;
+    
+    for (UserAccount *account in self.accountsFromKeychain)
+    {
+        account.selectedNetworkId = nil;
+        account.isSelectedAccount = NO;
+    }
 }
 
 - (NSInteger)totalNumberOfAddedAccounts
