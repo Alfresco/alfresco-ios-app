@@ -89,7 +89,10 @@
         self.noMapLabel.hidden = YES;
         
         [self.mapView addAnnotation:self.document];
-        [self.mapView setCenterCoordinate:self.document.coordinate animated:NO];
+        if (CLLocationCoordinate2DIsValid(self.document.coordinate))
+        {
+            [self.mapView setCenterCoordinate:self.document.coordinate animated:NO];
+        }
     }
     else
     {
