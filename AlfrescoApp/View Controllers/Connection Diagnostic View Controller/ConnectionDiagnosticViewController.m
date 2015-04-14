@@ -93,11 +93,11 @@
     NSDictionary *diagnostic = [self.tableViewDataSource objectAtIndex:indexPath.row];
     NSString *eventName = [diagnostic objectForKey:kAlfrescoConfigurationDiagnosticDictionaryEventName];
     cell.eventText.text = NSLocalizedString([self translationKeyForEventName:eventName], @"");
-    ConnectionDiagnosticStatus connectionStatus = [[diagnostic objectForKey:kAlfrescoConfigurationDiagnosticDictionaryStatus] integerValue];
+    AlfrescoConnectionDiagnosticStatus connectionStatus = [[diagnostic objectForKey:kAlfrescoConfigurationDiagnosticDictionaryStatus] integerValue];
     
     switch (connectionStatus)
     {
-        case ConnectionDiagnosticStatusLoading:
+        case AlfrescoConnectionDiagnosticStatusLoading:
         {
             [cell.eventActivityIndicator startAnimating];
             cell.eventActivityIndicator.hidden = NO;
@@ -105,7 +105,7 @@
             break;
         }
             
-        case ConnectionDiagnosticStatusSuccess:
+        case AlfrescoConnectionDiagnosticStatusSuccess:
         {
             [cell.eventActivityIndicator stopAnimating];
             cell.eventActivityIndicator.hidden = YES;
@@ -115,7 +115,7 @@
             break;
         }
             
-        case ConnectionDiagnosticStatusFailure:
+        case AlfrescoConnectionDiagnosticStatusFailure:
         {
             [cell.eventActivityIndicator stopAnimating];
             cell.eventActivityIndicator.hidden = YES;
