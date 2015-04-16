@@ -124,18 +124,24 @@
             [cell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
             
             [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
-                {
-                    // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
-                    // by the time completion block is called the table view could have been unloaded.
-                    if (tableView && indexPath)
+                @try {
+                    
+                    if (image)
                     {
-                        AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
-                        if (updateCell)
+                        // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
+                        // by the time completion block is called the table view could have been unloaded.
+                        if (tableView && indexPath)
                         {
-                            [updateCell.image setImage:image withFade:YES];
+                            AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                            if (updateCell)
+                            {
+                                [updateCell.image setImage:image withFade:YES];
+                            }
                         }
                     }
+                }
+                @catch (NSException *exception) {
+                    AlfrescoLogError(@"Exception thrown is %@", exception);
                 }
             }];
         }
