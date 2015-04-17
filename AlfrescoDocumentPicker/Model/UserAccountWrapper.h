@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSString *protocol;
 @property (nonatomic, strong) NSString *serviceDocument;
 @property (nonatomic, strong) NSString *selectedNetworkIdentifier;
+@property (nonatomic, strong) NSArray *networkIdentifiers;
 @property (nonatomic, strong) AlfrescoOAuthData *oAuthData;
 
 - (instancetype)initWithUserAccount:(UserAccount *)userAccount;
