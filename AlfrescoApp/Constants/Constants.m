@@ -85,6 +85,8 @@ NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplet
 NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";
 
 // Accounts
+NSString * const kAlfrescoDefaultHTTPPortString = @"80";
+NSString * const kAlfrescoDefaultHTTPSPortString = @"443";
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";
 NSString * const kAlfrescoAccountRemovedNotification = @"AlfrescoAccountRemovedNotification";
 NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedNotification";
@@ -129,6 +131,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
 NSString * const kAlfrescoLocalDocumentNewName = @"AlfrescoLocalDocumentNewName";
 NSString * const kAlfrescoDeleteLocalDocumentNotification = @"AlfrescoDeleteDocumentFileNotification";
 NSString * const kAlfrescoLocalDocumentRenamedNotification = @"AlfrescoLocalDocumentRenamedNotification";
+NSString * const kAlfrescoDeletedLocalDocumentsFolderNotification = @"AlfrescoDeletedLocalDocumentsFolderNotification";
 
 // Confirmation Options
 NSUInteger const kConfirmationOptionYes = 0;

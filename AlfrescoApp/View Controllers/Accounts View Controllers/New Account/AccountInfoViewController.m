@@ -29,8 +29,6 @@
 #import "UniversalDevice.h"
 #import "ConnectionDiagnosticViewController.h"
 
-static NSString * const kDefaultHTTPPort = @"80";
-static NSString * const kDefaultHTTPSPort = @"443";
 static NSString * const kServiceDocument = @"/alfresco";
 
 static NSInteger const kTagCertificateCell = 1;
@@ -335,15 +333,15 @@ static NSInteger const kTagCertificateCell = 1;
         TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         portCell.selectionStyle = UITableViewCellSelectionStyleNone;
         portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-        portCell.valueTextField.text = kDefaultHTTPPort;
+        portCell.valueTextField.text = kAlfrescoDefaultHTTPPortString;
         portCell.valueTextField.returnKeyType = UIReturnKeyNext;
         portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
         portCell.valueTextField.delegate = self;
         self.portTextField = portCell.valueTextField;
-        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kDefaultHTTPPort;
+        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kAlfrescoDefaultHTTPPortString;
         if (self.activityType == AccountActivityTypeNewAccount)
         {
-            self.portTextField.text = kDefaultHTTPSPort;
+            self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
         }
         
         TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -549,15 +547,15 @@ static NSInteger const kTagCertificateCell = 1;
 {
     NSString *portNumber = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if ([portNumber isEqualToString:@""] || [portNumber isEqualToString:kDefaultHTTPPort] || [portNumber isEqualToString:kDefaultHTTPSPort])
+    if ([portNumber isEqualToString:@""] || [portNumber isEqualToString:kAlfrescoDefaultHTTPPortString] || [portNumber isEqualToString:kAlfrescoDefaultHTTPSPortString])
     {
         if (self.protocolSwitch.isOn && self.portTextField.text)
         {
-            self.portTextField.text = kDefaultHTTPSPort;
+            self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
         }
         else
         {
-            self.portTextField.text = kDefaultHTTPPort;
+            self.portTextField.text = kAlfrescoDefaultHTTPPortString;
         }
     }
     

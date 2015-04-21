@@ -117,6 +117,8 @@ extern NSString * const kAlfrescoSaveBackLocalComplete;
 extern NSString * const kAlfrescoSaveBackRemoteComplete;
 
 // Accounts
+extern NSString * const kAlfrescoDefaultHTTPPortString;
+extern NSString * const kAlfrescoDefaultHTTPSPortString;
 extern NSString * const kAlfrescoAccountAddedNotification;
 extern NSString * const kAlfrescoAccountRemovedNotification;
 extern NSString * const kAlfrescoAccountUpdatedNotification;
@@ -161,6 +163,7 @@ extern NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey
 extern NSString * const kAlfrescoLocalDocumentNewName;
 extern NSString * const kAlfrescoDeleteLocalDocumentNotification;
 extern NSString * const kAlfrescoLocalDocumentRenamedNotification;
+extern NSString * const kAlfrescoDeletedLocalDocumentsFolderNotification;
 
 // Confirmation Options
 extern NSUInteger const kConfirmationOptionYes;

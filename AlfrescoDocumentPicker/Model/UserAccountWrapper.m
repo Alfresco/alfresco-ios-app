@@ -41,6 +41,7 @@
         self.protocol = userAccount.protocol;
         self.serviceDocument = userAccount.serviceDocument;
         self.selectedNetworkIdentifier = userAccount.selectedNetworkId;
+        self.networkIdentifiers = userAccount.accountNetworks;
         self.oAuthData = userAccount.oauthData;
         self.isOnPremiseAccount = (userAccount.accountType == UserAccountTypeOnPremise);
         self.userAccount = userAccount;
