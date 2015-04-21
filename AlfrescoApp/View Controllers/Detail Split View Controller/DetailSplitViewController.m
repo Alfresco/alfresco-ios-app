@@ -44,6 +44,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
         self.masterViewController = masterViewController;
         self.detailViewController = detailViewController;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allAccountsRemoved:) name:kAlfrescoAccountsListEmptyNotification object:nil];
     }
     return self;
 }
@@ -221,6 +222,11 @@ static const CGFloat kAnimationSpeed = 0.2f;
     {
         [UniversalDevice clearDetailViewController];
     }
+}
+
+- (void)allAccountsRemoved:(NSNotification *)notification
+{
+    [UniversalDevice clearDetailViewController];
 }
 
 @end
