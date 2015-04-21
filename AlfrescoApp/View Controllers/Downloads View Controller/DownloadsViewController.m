@@ -58,6 +58,10 @@ static NSString * const kDownloadInProgressExtension = @"-download";
                                                  selector:@selector(documentDownloadCancelled:)
                                                      name:kDocumentPreviewManagerDocumentDownloadCancelledNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(downloadsFolderDeleted:)
+                                                     name:kAlfrescoDeletedLocalDocumentsFolderNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -567,6 +571,11 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     NSIndexPath *indexPathForNode = [self indexPathForNodeWithIdentifier:oldPath inNodeIdentifiers:self.tableViewData];
     [self.tableViewData replaceObjectAtIndex:indexPathForNode.row withObject:newPath];
     [self.tableView reloadRowsAtIndexPaths:@[indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)downloadsFolderDeleted:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 @end

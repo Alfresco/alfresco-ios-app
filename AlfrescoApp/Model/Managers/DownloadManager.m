@@ -352,6 +352,10 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     {
         AlfrescoLogError(@"Unable to delete item at path: %@", [self.fileManager downloadsFolderPath]);
     }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeletedLocalDocumentsFolderNotification object:nil];
+    }
 }
 
 #pragma mark - Private Interface

@@ -163,6 +163,7 @@ extern NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey
 extern NSString * const kAlfrescoLocalDocumentNewName;
 extern NSString * const kAlfrescoDeleteLocalDocumentNotification;
 extern NSString * const kAlfrescoLocalDocumentRenamedNotification;
+extern NSString * const kAlfrescoDeletedLocalDocumentsFolderNotification;
 
 // Confirmation Options
 extern NSUInteger const kConfirmationOptionYes;
