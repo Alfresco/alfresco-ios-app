@@ -131,6 +131,7 @@ NSString * const kDocumentPreviewManagerProgressBytesTotalNotificationKey = @"Do
 NSString * const kAlfrescoLocalDocumentNewName = @"AlfrescoLocalDocumentNewName";
 NSString * const kAlfrescoDeleteLocalDocumentNotification = @"AlfrescoDeleteDocumentFileNotification";
 NSString * const kAlfrescoLocalDocumentRenamedNotification = @"AlfrescoLocalDocumentRenamedNotification";
+NSString * const kAlfrescoDeletedLocalDocumentsFolderNotification = @"AlfrescoDeletedLocalDocumentsFolderNotification";
 
 // Confirmation Options
 NSUInteger const kConfirmationOptionYes = 0;
