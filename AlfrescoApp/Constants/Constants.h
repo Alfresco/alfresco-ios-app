@@ -117,6 +117,8 @@ extern NSString * const kAlfrescoSaveBackLocalComplete;
 extern NSString * const kAlfrescoSaveBackRemoteComplete;
 
 // Accounts
+extern NSString * const kAlfrescoDefaultHTTPPortString;
+extern NSString * const kAlfrescoDefaultHTTPSPortString;
 extern NSString * const kAlfrescoAccountAddedNotification;
 extern NSString * const kAlfrescoAccountRemovedNotification;
 extern NSString * const kAlfrescoAccountUpdatedNotification;

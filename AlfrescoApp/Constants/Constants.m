@@ -85,6 +85,8 @@ NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplet
 NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";
 
 // Accounts
+NSString * const kAlfrescoDefaultHTTPPortString = @"80";
+NSString * const kAlfrescoDefaultHTTPSPortString = @"443";
 NSString * const kAlfrescoAccountAddedNotification = @"AlfrescoAccountAddedNotification";
 NSString * const kAlfrescoAccountRemovedNotification = @"AlfrescoAccountRemovedNotification";
 NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedNotification";
