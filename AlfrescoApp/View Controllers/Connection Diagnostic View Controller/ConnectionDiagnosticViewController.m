@@ -69,6 +69,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height - self.view.frame.origin.y);
+}
+
 #pragma mark - UITableViewDelegate and UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
