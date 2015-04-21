@@ -245,6 +245,12 @@ static NSUInteger const kAccountsRowNumber = 0;
         NSInteger localMainMenuItemsSectionIndex = [self.tableData indexOfObject:localMenuItems];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:localMainMenuItemsSectionIndex] withRowAnimation:UITableViewRowAnimationFade];
     }
+    
+    // Switch to accounts menu and clear the account cell of previous selected account
+    MainMenuItem *accountsMenuItem = [self existingMenuItemWithType:MainMenuTypeAccounts];
+    [self informDelegateMenuItemSelected:accountsMenuItem];
+    self.alfrescoSession = nil;
+    [self reloadAccountSection];
 }
 
 - (void)accountUpdated:(NSNotification *)notification
