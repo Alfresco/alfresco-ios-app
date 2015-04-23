@@ -146,6 +146,11 @@ static NSString * const kTempFileFolderNamePath = @"tmp";
         return nil;
     }
     
+    // MOBILE-3310 & MOBILE-3311
+    // If the temporary path has been deleted (clearing all data in the app), we need to recreate the destination folders.
+    [self setupDownloadFolder];
+    [self setupTempDownloadFolder];
+    
     NSString *temporaryDownloadLocation = [self.tmpDownloadFolderPath stringByAppendingPathComponent:filenameAppendedWithDateModified(document.name, document)];
     
     AlfrescoRequest *request = nil;
