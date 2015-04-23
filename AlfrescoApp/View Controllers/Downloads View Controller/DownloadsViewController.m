@@ -575,6 +575,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 
 - (void)downloadsFolderDeleted:(NSNotification *)notification
 {
+    [self.tableViewData removeAllObjects];
     [self.tableView reloadData];
 }
 
