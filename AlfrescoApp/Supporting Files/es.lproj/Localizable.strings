@@ -97,29 +97,29 @@
  * Errors
  */
 "error.generic.title" = "Se ha producido un error";
-"error.filefolder.rootfolder.notfound" = "No fue posible subir la carpeta raíz. Error: %@.";
-"error.filefolder.permission.notfound" = "No se encontró permiso para el nodo. Error: %@.";
-"error.filefolder.content.failedtodownload" = "Error de fichero al descargar. Error: %@.";
-"error.filefolder.search.searchfailed" = "Error al buscar. Error: %@.";
-"error.filefolder.createfolder.createfolder" = "La carpeta no pudo crearse. Error: %@.";
-"error.filefolder.content.failedtoretrieve" = "Error en la recuperación del contenido. Error: %@.";
-"error.filefolder.unable.to.delete" = "Error al eliminar. Error: %@";
-"error.sites.documentlibrary.failed" = "Imposible acceder a la biblioteca de documentos. Error: %@.";
-"error.sites.retrieval.failed" = "Imposible recuperar los sitios. Error: %@.";
-"error.sites.folder.failed" = "Imposible recuperar las carpetas de los sitios. Error: %@.";
-"error.sites.search.failed" = "Imposible buscar en los sitios. Error: %@.";
-"error.upload.failed" = "Error al subir el fichero. Error: %@.";
-"error.upload.addtags.failed" = "Error al añadir etiquetas al fichero. Error: %@.";
-"error.tags.retrieve.failed" = "Error al recuperar las etiquetas. Error: %@.";
+"error.filefolder.rootfolder.notfound" = "No fue posible subir la carpeta raíz.\n\n%@.";
+"error.filefolder.permission.notfound" = "No se encontró permiso para el nodo.\n\n%@.";
+"error.filefolder.content.failedtodownload" = "Error de fichero al descargar.\n\n%@.";
+"error.filefolder.search.searchfailed" = "Error al buscar.\n\n%@.";
+"error.filefolder.createfolder.createfolder" = "La carpeta no pudo crearse.\n\n%@.";
+"error.filefolder.content.failedtoretrieve" = "Error en la recuperación del contenido.\n\n%@.";
+"error.filefolder.unable.to.delete" = "Error al eliminar.\n\n%@";
+"error.sites.documentlibrary.failed" = "Imposible acceder a la biblioteca de documentos.\n\n%@.";
+"error.sites.retrieval.failed" = "Imposible recuperar los sitios.\n\n%@.";
+"error.sites.folder.failed" = "Imposible recuperar las carpetas de los sitios.\n\n%@.";
+"error.sites.search.failed" = "Imposible buscar en los sitios.\n\n%@.";
+"error.upload.failed" = "Error al subir el fichero.\n\n%@.";
+"error.upload.addtags.failed" = "Error al añadir etiquetas al fichero.\n\n%@.";
+"error.tags.retrieve.failed" = "Error al recuperar las etiquetas.\n\n%@.";
 "error.login.failed" = "Error al iniciar sesión; asegúrese de que su nombre de usuario y contraseña sean correctos.";
-"error.comments.retrieve.failed" = "Imposible recuperar los comentarios. Error: %@";
-"error.add.comment.failed" = "Imposible añadir comentario. Error: %@";
+"error.comments.retrieve.failed" = "Imposible recuperar los comentarios.\n\n%@";
+"error.add.comment.failed" = "Imposible añadir comentario.\n\n%@";
 "error.sites.unable.to.favorite" = "Imposible marcar como favorito %@";
 "error.sites.unable.to.unfavorite" = "Imposible desmarcar como favorito %@";
 "error.sites.unable.to.join" = "Imposible unirse a %@";
 "error.sites.unable.to.cancel.request" = "Imposible cancelar la solicitud de unión a %@";
 "error.sites.unable.to.leave" = "Imposible abandonar %@";
-"error.version.history.unable.to.retrieve" = "Imposible recuperar el historial de la versión. Error: %@";
+"error.version.history.unable.to.retrieve" = "Imposible recuperar el historial de la versión.\n\n%@";
 "error.version.history.no.latest.version" = "No se ha encontrado la versión más reciente del fichero.";
 "error.alfresco.node.notfound" = "fichero no encontrado";
 "error.print.failed.message" = "Impresión del fichero incompatible.";
@@ -132,13 +132,13 @@
 "error.retrieving.metadata" = "Las propiedades para %@ no pudieron recuperarse.";
 "error.server.message" = "Sucedió un error en el servidor.";
 // Workflow
-"error.workflow.unable.to.complete.process" = "Imposible completar el proceso de la tarea. Error: %@";
-"error.workflow.unable.to.reassign.task" = "Imposible reasignar tarea. Error: %@";
+"error.workflow.unable.to.complete.process" = "Imposible completar el proceso de la tarea.\n\n%@";
+"error.workflow.unable.to.reassign.task" = "Imposible reasignar tarea.\n\n%@";
 // New Version
 "error.new.version.unable.to.checkout.title" = "Imposible extraer";
-"error.new.version.unable.to.checkout.message" = "Imposible extraer %@. Error: %@";
+"error.new.version.unable.to.checkout.message" = "Imposible extraer %@.\n\n%@";
 "error.new.version.unable.to.checkin.title" = "Imposible introducir";
-"error.new.version.unable.to.checkin.message" = "Imposible introducir %@. Error: %@";
+"error.new.version.unable.to.checkin.message" = "Imposible introducir %@.\n\n%@";
 // Email
 "error.no.email.accounts.title" = "No hay cuentas de correo electrónico";
 "error.no.email.accounts.message" = "Debe tener al menos una cuenta de correo electrónico configurada en su dispositivo para enviar este fichero.";

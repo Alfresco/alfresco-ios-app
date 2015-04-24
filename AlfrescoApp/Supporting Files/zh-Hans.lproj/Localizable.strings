@@ -97,29 +97,29 @@
  * Errors
  */
 "error.generic.title" = "发生错误";
-"error.filefolder.rootfolder.notfound" = "无法加载根文件夹。错误：%@。";
-"error.filefolder.permission.notfound" = "未找到节点的权限。错误：%@。";
-"error.filefolder.content.failedtodownload" = "无法下载文件。错误：%@。";
-"error.filefolder.search.searchfailed" = "搜索失败。错误：%@。";
-"error.filefolder.createfolder.createfolder" = "尚未创建文件夹。错误：%@。";
-"error.filefolder.content.failedtoretrieve" = "检索内容失败。错误：%@。";
-"error.filefolder.unable.to.delete" = "无法删除。错误：%@";
-"error.sites.documentlibrary.failed" = "无法访问文档库。错误：%@。";
-"error.sites.retrieval.failed" = "无法检索站点。错误：%@。";
-"error.sites.folder.failed" = "无法检索站点文件夹。错误：%@。";
-"error.sites.search.failed" = "无法跨站点搜索。错误：%@。";
-"error.upload.failed" = "上传文件失败。错误：%@。";
-"error.upload.addtags.failed" = "向文件添加标记失败。错误：%@。";
-"error.tags.retrieve.failed" = "无法检索标记。错误：%@。";
+"error.filefolder.rootfolder.notfound" = "无法加载根文件夹。\n\n%@。";
+"error.filefolder.permission.notfound" = "未找到节点的权限。\n\n%@。";
+"error.filefolder.content.failedtodownload" = "无法下载文件。\n\n%@。";
+"error.filefolder.search.searchfailed" = "搜索失败。\n\n%@。";
+"error.filefolder.createfolder.createfolder" = "尚未创建文件夹。\n\n%@。";
+"error.filefolder.content.failedtoretrieve" = "检索内容失败。\n\n%@。";
+"error.filefolder.unable.to.delete" = "无法删除。\n\n%@";
+"error.sites.documentlibrary.failed" = "无法访问文档库。\n\n%@。";
+"error.sites.retrieval.failed" = "无法检索站点。\n\n%@。";
+"error.sites.folder.failed" = "无法检索站点文件夹。\n\n%@。";
+"error.sites.search.failed" = "无法跨站点搜索。\n\n%@。";
+"error.upload.failed" = "上传文件失败。\n\n%@。";
+"error.upload.addtags.failed" = "向文件添加标记失败。\n\n%@。";
+"error.tags.retrieve.failed" = "无法检索标记。\n\n%@。";
 "error.login.failed" = "登录失败，请确保您的用户名和密码正确。";
-"error.comments.retrieve.failed" = "无法检索评论。错误：%@";
-"error.add.comment.failed" = "无法添加评论。错误：%@";
+"error.comments.retrieve.failed" = "无法检索评论。\n\n%@";
+"error.add.comment.failed" = "无法添加评论。\n\n%@";
 "error.sites.unable.to.favorite" = "无法收藏 %@";
 "error.sites.unable.to.unfavorite" = "无法取消收藏 %@";
 "error.sites.unable.to.join" = "无法加入 %@";
 "error.sites.unable.to.cancel.request" = "无法取消加入 %@ 的请求";
 "error.sites.unable.to.leave" = "无法离开 %@";
-"error.version.history.unable.to.retrieve" = "无法检索版本历史记录。错误：%@";
+"error.version.history.unable.to.retrieve" = "无法检索版本历史记录。\n\n%@";
 "error.version.history.no.latest.version" = "未能找到文件的最新版本。";
 "error.alfresco.node.notfound" = "未找到文件";
 "error.print.failed.message" = "不支持打印此文件";
@@ -132,13 +132,13 @@
 "error.retrieving.metadata" = "无法检索到 %@ 的属性。";
 "error.server.message" = "在服务器上发生错误";
 // Workflow
-"error.workflow.unable.to.complete.process" = "无法完成对任务的处理。错误：%@";
-"error.workflow.unable.to.reassign.task" = "无法重新指派任务。错误：%@";
+"error.workflow.unable.to.complete.process" = "无法完成对任务的处理。\n\n%@";
+"error.workflow.unable.to.reassign.task" = "无法重新指派任务。\n\n%@";
 // New Version
 "error.new.version.unable.to.checkout.title" = "无法签出";
-"error.new.version.unable.to.checkout.message" = "无法签出 %@。错误：%@";
+"error.new.version.unable.to.checkout.message" = "无法签出 %@。\n\n%@";
 "error.new.version.unable.to.checkin.title" = "无法签入";
-"error.new.version.unable.to.checkin.message" = "无法签入 %@。错误：%@";
+"error.new.version.unable.to.checkin.message" = "无法签入 %@。\n\n%@";
 // Email
 "error.no.email.accounts.title" = "无邮件帐户";
 "error.no.email.accounts.message" = "您必须至少在设备上设置一个邮件帐户才能发送此文件。";

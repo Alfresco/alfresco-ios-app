@@ -97,29 +97,29 @@
  * Errors
  */
 "error.generic.title" = "Ein Fehler ist aufgetreten";
-"error.filefolder.rootfolder.notfound" = "Root-Ordner konnte nicht geladen werden. Fehler: %@.";
-"error.filefolder.permission.notfound" = "Berechtigung für den Knoten wurde nicht gefunden. Fehler: %@.";
-"error.filefolder.content.failedtodownload" = "Datei konnte nicht heruntergeladen werden. Fehler: %@.";
-"error.filefolder.search.searchfailed" = "Der Suchvorgang ist fehlgeschlagen. Fehler: %@.";
-"error.filefolder.createfolder.createfolder" = "Der Ordner wurde nicht erstellt. Fehler: %@.";
-"error.filefolder.content.failedtoretrieve" = "Inhalt konnte nicht abgerufen werden. Fehler: %@.";
-"error.filefolder.unable.to.delete" = "Löschen nicht möglich. Fehler: %@.";
-"error.sites.documentlibrary.failed" = "Auf Dokumentenbibliothek kann nicht zugegriffen werden. Fehler: %@.";
-"error.sites.retrieval.failed" = "Sites können nicht abgerufen werden. Fehler: %@.";
-"error.sites.folder.failed" = "Sites-Ordner kann nicht abgerufen werden. Fehler: %@.";
-"error.sites.search.failed" = "Site-übergreifender Suchvorgang nicht möglich. Fehler: %@.";
-"error.upload.failed" = "Datei konnte nicht hochgeladen werden. Fehler: %@.";
-"error.upload.addtags.failed" = "Der Datei konnten keine Tags hinzugefügt werden. Fehler: %@.";
-"error.tags.retrieve.failed" = "Tags konnten nicht abgerufen werden. Fehler: %@.";
+"error.filefolder.rootfolder.notfound" = "Root-Ordner konnte nicht geladen werden.\n\n%@.";
+"error.filefolder.permission.notfound" = "Berechtigung für den Knoten wurde nicht gefunden.\n\n%@.";
+"error.filefolder.content.failedtodownload" = "Datei konnte nicht heruntergeladen werden.\n\n%@.";
+"error.filefolder.search.searchfailed" = "Der Suchvorgang ist fehlgeschlagen.\n\n%@.";
+"error.filefolder.createfolder.createfolder" = "Der Ordner wurde nicht erstellt.\n\n%@.";
+"error.filefolder.content.failedtoretrieve" = "Inhalt konnte nicht abgerufen werden.\n\n%@.";
+"error.filefolder.unable.to.delete" = "Löschen nicht möglich.\n\n%@.";
+"error.sites.documentlibrary.failed" = "Auf Dokumentenbibliothek kann nicht zugegriffen werden.\n\n%@.";
+"error.sites.retrieval.failed" = "Sites können nicht abgerufen werden.\n\n%@.";
+"error.sites.folder.failed" = "Sites-Ordner kann nicht abgerufen werden.\n\n%@.";
+"error.sites.search.failed" = "Site-übergreifender Suchvorgang nicht möglich.\n\n%@.";
+"error.upload.failed" = "Datei konnte nicht hochgeladen werden.\n\n%@.";
+"error.upload.addtags.failed" = "Der Datei konnten keine Tags hinzugefügt werden.\n\n%@.";
+"error.tags.retrieve.failed" = "Tags konnten nicht abgerufen werden.\n\n%@.";
 "error.login.failed" = "Anmeldung fehlgeschlagen. Achten Sie auf eine korrekte Eingabe des Benutzernamens und Passworts.";
-"error.comments.retrieve.failed" = "Kommentare können nicht abgerufen werden. Fehler: %@.";
-"error.add.comment.failed" = "Kommentar kann nicht hinzugefügt werden. Fehler: %@.";
+"error.comments.retrieve.failed" = "Kommentare können nicht abgerufen werden.\n\n%@.";
+"error.add.comment.failed" = "Kommentar kann nicht hinzugefügt werden.\n\n%@.";
 "error.sites.unable.to.favorite" = "%@ kann nicht als Favorit markiert werden.";
 "error.sites.unable.to.unfavorite" = "Markierung von %@ als Favorit kann nicht aufgehoben werden.";
 "error.sites.unable.to.join" = "%@ kann nicht beigetreten werden.";
 "error.sites.unable.to.cancel.request" = "Anfrage, %@ beizutreten, kann nicht zurückgezogen werden.";
 "error.sites.unable.to.leave" = "Abmeldung von %@ nicht möglich.";
-"error.version.history.unable.to.retrieve" = "Versionsverlauf kann nicht abgerufen werden. Fehler: %@.";
+"error.version.history.unable.to.retrieve" = "Versionsverlauf kann nicht abgerufen werden.\n\n%@.";
 "error.version.history.no.latest.version" = "Neueste Version der Datei wurde nicht gefunden.";
 "error.alfresco.node.notfound" = "Datei nicht gefunden";
 "error.print.failed.message" = "Drucken dieser Datei wird nicht unterstützt.";
@@ -132,13 +132,13 @@
 "error.retrieving.metadata" = "Eigenschaften für %@ konnten nicht abgerufen werden.";
 "error.server.message" = "Auf dem Server ist ein Fehler aufgetreten.";
 // Workflow
-"error.workflow.unable.to.complete.process" = "Prozess für Aufgabe kann nicht abgeschlossen werden. Fehler: %@.";
-"error.workflow.unable.to.reassign.task" = "Aufgabe kann nicht neu zugewiesen werden. Fehler: %@.";
+"error.workflow.unable.to.complete.process" = "Prozess für Aufgabe kann nicht abgeschlossen werden.\n\n%@.";
+"error.workflow.unable.to.reassign.task" = "Aufgabe kann nicht neu zugewiesen werden.\n\n%@.";
 // New Version
 "error.new.version.unable.to.checkout.title" = "Auschecken nicht möglich";
-"error.new.version.unable.to.checkout.message" = "%@ kann nicht ausgecheckt werden. Fehler: %@.";
+"error.new.version.unable.to.checkout.message" = "%@ kann nicht ausgecheckt werden.\n\n%@.";
 "error.new.version.unable.to.checkin.title" = "Einchecken nicht möglich";
-"error.new.version.unable.to.checkin.message" = "%@ kann nicht eingecheckt werden. Fehler: %@.";
+"error.new.version.unable.to.checkin.message" = "%@ kann nicht eingecheckt werden.\n\n%@.";
 // Email
 "error.no.email.accounts.title" = "Keine E-Mail-Accounts";
 "error.no.email.accounts.message" = "Auf Ihrem Gerät muss mindestens ein E-Mail-Account eingerichtet sein, damit Sie diese Datei senden können.";

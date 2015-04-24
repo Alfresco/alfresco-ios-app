@@ -97,29 +97,29 @@
  * Errors
  */
 "error.generic.title" = "エラーが発生しました";
-"error.filefolder.rootfolder.notfound" = "ルートフォルダをロードできませんでした。エラー: %@。";
-"error.filefolder.permission.notfound" = "ノードの許可が見つかりませんでした。エラー: %@。";
-"error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。エラー: %@。";
-"error.filefolder.search.searchfailed" = "検索できませんでした。エラー: %@。";
-"error.filefolder.createfolder.createfolder" = "フォルダが作成されませんでした。エラー: %@。";
-"error.filefolder.content.failedtoretrieve" = "コンテンツが取得できませんでした。エラー: %@。";
-"error.filefolder.unable.to.delete" = "削除できません。エラー: %@";
-"error.sites.documentlibrary.failed" = "ドキュメントのライブラリにアクセスできません。エラー: %@。";
-"error.sites.retrieval.failed" = "サイトを取得できません。エラー: %@。";
-"error.sites.folder.failed" = "サイトのフォルダを取得できません。エラー: %@。";
-"error.sites.search.failed" = "サイトをまたいで検索できません。エラー: %@。";
-"error.upload.failed" = "ファイルをアップロードできませんでした。エラー: %@。";
-"error.upload.addtags.failed" = "ファイルにタグを追加できませんでした。エラー: %@。";
-"error.tags.retrieve.failed" = "タグを取得できませんでした。エラー: %@。";
+"error.filefolder.rootfolder.notfound" = "ルートフォルダをロードできませんでした。\n\n%@。";
+"error.filefolder.permission.notfound" = "ノードの許可が見つかりませんでした。\n\n%@。";
+"error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。\n\n%@。";
+"error.filefolder.search.searchfailed" = "検索できませんでした。\n\n%@。";
+"error.filefolder.createfolder.createfolder" = "フォルダが作成されませんでした。\n\n%@。";
+"error.filefolder.content.failedtoretrieve" = "コンテンツが取得できませんでした。\n\n%@。";
+"error.filefolder.unable.to.delete" = "削除できません。\n\n%@";
+"error.sites.documentlibrary.failed" = "ドキュメントのライブラリにアクセスできません。\n\n%@。";
+"error.sites.retrieval.failed" = "サイトを取得できません。\n\n%@。";
+"error.sites.folder.failed" = "サイトのフォルダを取得できません。\n\n%@。";
+"error.sites.search.failed" = "サイトをまたいで検索できません。\n\n%@。";
+"error.upload.failed" = "ファイルをアップロードできませんでした。\n\n%@。";
+"error.upload.addtags.failed" = "ファイルにタグを追加できませんでした。\n\n%@。";
+"error.tags.retrieve.failed" = "タグを取得できませんでした。\n\n%@。";
 "error.login.failed" = "ログインできませんでした。ユーザー名とパスワードが正しいことを確認してください。";
-"error.comments.retrieve.failed" = "コメントを取得できません。エラー: %@";
-"error.add.comment.failed" = "コメントを追加できません。エラー: %@";
+"error.comments.retrieve.failed" = "コメントを取得できません。\n\n%@";
+"error.add.comment.failed" = "コメントを追加できません。\n\n%@";
 "error.sites.unable.to.favorite" = "%@をお気に入りに追加できません";
 "error.sites.unable.to.unfavorite" = "%@をお気に入りから削除できません";
 "error.sites.unable.to.join" = "%@に参加できません";
 "error.sites.unable.to.cancel.request" = "%@への参加リクエストを取り消せません";
 "error.sites.unable.to.leave" = "%@から退会できません";
-"error.version.history.unable.to.retrieve" = "バージョン履歴を取得できません。エラー: %@";
+"error.version.history.unable.to.retrieve" = "バージョン履歴を取得できません。\n\n%@";
 "error.version.history.no.latest.version" = "ファイルの最新のバージョンが見つかりませんでした。";
 "error.alfresco.node.notfound" = "ファイルが見つかりません";
 "error.print.failed.message" = "このファイルの印刷はサポートされていません";
@@ -132,13 +132,13 @@
 "error.retrieving.metadata" = "%@ のプロパティを検索できませんでした。";
 "error.server.message" = "サーバーでエラーが発生しました。";
 // Workflow
-"error.workflow.unable.to.complete.process" = "タスクの処理を完了することができません。エラー: %@";
-"error.workflow.unable.to.reassign.task" = "タスクを再割り当てできません。エラー: %@";
+"error.workflow.unable.to.complete.process" = "タスクの処理を完了することができません。\n\n%@";
+"error.workflow.unable.to.reassign.task" = "タスクを再割り当てできません。\n\n%@";
 // New Version
 "error.new.version.unable.to.checkout.title" = "チェックアウトできません。";
-"error.new.version.unable.to.checkout.message" = " %@ をチェックアウトできません。エラー: %@";
+"error.new.version.unable.to.checkout.message" = " %@ をチェックアウトできません。\n\n%@";
 "error.new.version.unable.to.checkin.title" = "チェックインできません。";
-"error.new.version.unable.to.checkin.message" = " %@ にチェックインできません。エラー: %@";
+"error.new.version.unable.to.checkin.message" = " %@ にチェックインできません。\n\n%@";
 // Email
 "error.no.email.accounts.title" = "メールアカウントがありません";
 "error.no.email.accounts.message" = "このファイルを送信するには、デバイスに少なくとも1つのメールアカウントが設定する必要があります。";
