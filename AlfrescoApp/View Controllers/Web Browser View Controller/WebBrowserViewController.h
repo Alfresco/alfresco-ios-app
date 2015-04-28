@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -22,7 +22,7 @@
 
 @property (nonatomic, copy) DismissCompletionBlock dismissCompletionBlock;
 
-- (instancetype)initWithURLString:(NSString *)urlString initialTitle:(NSString *)initialTitle errorLoadingURLString:(NSString *)errorURLString;
-- (instancetype)initWithURL:(NSURL *)url initialTitle:(NSString *)initialTitle errorLoadingURL:(NSURL *)errorURL;
+- (instancetype)initWithURLString:(NSString *)urlString initialFallbackURLString:(NSString *)fallbackURLString initialTitle:(NSString *)initialTitle errorLoadingURLString:(NSString *)errorURLString;
+- (instancetype)initWithURL:(NSURL *)url initialFallbackURL:(NSURL *)fallbackURL initialTitle:(NSString *)initialTitle errorLoadingURL:(NSURL *)errorURL;
 
 @end

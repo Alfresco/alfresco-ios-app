@@ -190,6 +190,13 @@ NSString * const kAlfrescoCloudAPIAccountID = @"{AccountId}";
 // Help/Documentation
 NSString * const kAlfrescoHelpURLPlistFilename = @"HelpURLKeys";
 NSString * const kAlfrescoHelpURLString = @"http://docs.alfresco.com/%@/topics/mobile-overview.html";
+NSString * const kAlfrescoISO6391EnglishCode = @"en";
+NSString * const kAlfrescoISO6391GermanCode = @"de";
+NSString * const kAlfrescoISO6391FrenchCode = @"fr";
+NSString * const kAlfrescoISO6391SpanishCode = @"es";
+NSString * const kAlfrescoISO6391ItalianCode = @"it";
+NSString * const kAlfrescoISO6391JapaneseCode = @"ja";
+NSString * const kAlfrescoISO6391ChineseCode = @"zh";
 
 // Workflow
 NSString * const kAlfrescoWorkflowActivitiEngine = @"activiti$";
