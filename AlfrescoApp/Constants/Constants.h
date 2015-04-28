@@ -222,6 +222,13 @@ extern NSString * const kAlfrescoCloudAPIAccountID;
 // Help/Documentation
 extern NSString * const kAlfrescoHelpURLPlistFilename;
 extern NSString * const kAlfrescoHelpURLString;
+extern NSString * const kAlfrescoISO6391EnglishCode;
+extern NSString * const kAlfrescoISO6391GermanCode;
+extern NSString * const kAlfrescoISO6391FrenchCode;
+extern NSString * const kAlfrescoISO6391SpanishCode;
+extern NSString * const kAlfrescoISO6391ItalianCode;
+extern NSString * const kAlfrescoISO6391JapaneseCode;
+extern NSString * const kAlfrescoISO6391ChineseCode;
 
 // Workflow
 extern NSString * const kAlfrescoWorkflowActivitiEngine;

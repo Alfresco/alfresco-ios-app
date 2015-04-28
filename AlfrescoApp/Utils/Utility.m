@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -783,7 +783,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 
 + (NSArray *)localisationsThatRequireTwoRowsInActionView
 {
-    return @[@"it", @"de", @"es", @"ja"];
+    return @[kAlfrescoISO6391ItalianCode, kAlfrescoISO6391GermanCode, kAlfrescoISO6391SpanishCode, kAlfrescoISO6391JapaneseCode];
 }
 
 + (NSString *)helpURLLocaleIdentifierForAppLocale
@@ -802,7 +802,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     // if locale language is not in the dictionary, default to english
     if (!urlLanguageKey)
     {
-        urlLanguageKey = helpURLLocaleIdentifiers[@"en"];
+        urlLanguageKey = helpURLLocaleIdentifiers[kAlfrescoISO6391EnglishCode];
     }
     
     return urlLanguageKey;

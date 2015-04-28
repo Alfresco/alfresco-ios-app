@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -36,6 +36,7 @@ static CGFloat const kProgressBarHeight = 2.0f;
 @property (nonatomic, strong) NJKWebViewProgress *progressProxy;
 // Data Structure
 @property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) NSURL *fallbackURL;
 @property (nonatomic, strong) NSURL *errorURL;
 @property (nonatomic, strong) NSString *initalTitle;
 @property (nonatomic, assign) BOOL shouldHideToolbar;
@@ -47,17 +48,18 @@ static CGFloat const kProgressBarHeight = 2.0f;
 
 @implementation WebBrowserViewController
 
-- (instancetype)initWithURLString:(NSString *)urlString initialTitle:(NSString *)initialTitle errorLoadingURLString:(NSString *)errorURLString
+- (instancetype)initWithURLString:(NSString *)urlString initialFallbackURLString:(NSString *)fallbackURLString initialTitle:(NSString *)initialTitle errorLoadingURLString:(NSString *)errorURLString
 {
-    return [self initWithURL:[NSURL URLWithString:urlString] initialTitle:initialTitle errorLoadingURL:(errorURLString) ? [NSURL fileURLWithPath:errorURLString] : nil];
+    return [self initWithURL:[NSURL URLWithString:urlString] initialFallbackURL:[NSURL URLWithString:fallbackURLString] initialTitle:initialTitle errorLoadingURL:(errorURLString) ? [NSURL fileURLWithPath:errorURLString] : nil];
 }
 
-- (instancetype)initWithURL:(NSURL *)url initialTitle:(NSString *)initialTitle errorLoadingURL:(NSURL *)errorURL
+- (instancetype)initWithURL:(NSURL *)url initialFallbackURL:(NSURL *)fallbackURL initialTitle:(NSString *)initialTitle errorLoadingURL:(NSURL *)errorURL
 {
     self = [self init];
     if (self)
     {
         self.url = url;
+        self.fallbackURL = url;
         self.initalTitle = initialTitle;
         self.errorURL = errorURL;
         
@@ -125,13 +127,33 @@ static CGFloat const kProgressBarHeight = 2.0f;
         self.toolbarHeightConstraint.constant = 0;
     }
     
-    // make inital request
-    [self makeInitialRequest];
+    // Make an initial HTTP request to check if the page is accessible
+    [self initiateHTTPRequestToURL:self.url];
 }
 
 #pragma mark - Private Functions
 
-- (void)makeInitialRequest
+- (void)initiateHTTPRequestToURL:(NSURL *)url
+{
+    [self showWebView];
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        NSURLRequest *httpRequest = [NSURLRequest requestWithURL:url];
+        NSURLConnection *connection = [NSURLConnection connectionWithRequest:httpRequest delegate:self];
+        [connection start];
+    }
+    else if (self.errorURL)
+    {
+        NSURLRequest *request = [NSURLRequest requestWithURL:self.errorURL];
+        [self.webView loadRequest:request];
+    }
+    else
+    {
+        [self hideWebView];
+    }
+}
+
+- (void)makeInitialWebViewRequest
 {
     [self showWebView];
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
@@ -211,7 +233,7 @@ static CGFloat const kProgressBarHeight = 2.0f;
         NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
         self.navigationItem.title = title;
     }
-    
+
     [self updateButtons];
 }
 
@@ -225,6 +247,40 @@ static CGFloat const kProgressBarHeight = 2.0f;
 - (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
 {
     self.progressView.progress = progress;
+}
+
+#pragma mark - NSURLConnectionDataDelegate Methods
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    if ([response isKindOfClass:[NSHTTPURLResponse class]])
+    {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        NSInteger statusCode = httpResponse.statusCode;
+        
+        // If the page receives a 404, and is the initial request, redirect to the fallback URL, error URL or hide the webview
+        if (statusCode == 404 && !self.webView.canGoBack)
+        {
+            if (self.fallbackURL)
+            {
+                NSURLRequest *redirectURLRequest = [NSURLRequest requestWithURL:self.fallbackURL];
+                [self.webView loadRequest:redirectURLRequest];
+            }
+            else if (self.errorURL)
+            {
+                NSURLRequest *errorURLRequest = [NSURLRequest requestWithURL:self.errorURL];
+                [self.webView loadRequest:errorURLRequest];
+            }
+            else
+            {
+                [self hideWebView];
+            }
+        }
+        else
+        {
+            [self makeInitialWebViewRequest];
+        }
+    }
 }
 
 @end

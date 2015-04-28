@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -124,7 +124,9 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 - (IBAction)helpButtonPressed:(id)sender
 {
     NSString *helpURLString = [NSString stringWithFormat:kAlfrescoHelpURLString, [Utility helpURLLocaleIdentifierForAppLocale]];
+    NSString *fallbackURLString = [NSString stringWithFormat:kAlfrescoHelpURLString, kAlfrescoISO6391EnglishCode];
     WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:helpURLString
+                                                                              initialFallbackURLString:fallbackURLString
                                                                                           initialTitle:NSLocalizedString(@"help.title", @"Help Title")
                                                                                  errorLoadingURLString:nil];
     NavigationViewController *helpNavigationController = [[NavigationViewController alloc] initWithRootViewController:helpViewController];
