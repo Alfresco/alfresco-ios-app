@@ -283,4 +283,9 @@ static CGFloat const kProgressBarHeight = 2.0f;
     }
 }
 
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    [self hideWebView];
+}
+
 @end
