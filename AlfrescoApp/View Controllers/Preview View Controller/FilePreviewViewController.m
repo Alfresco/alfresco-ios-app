@@ -233,19 +233,22 @@ static CGFloat sDownloadProgressHeight;
 
 - (void)destroyPreviewerAnimated:(BOOL)animated
 {
-    if (animated)
+    if(self.previewController)
     {
-        [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
-            self.previewController.view.alpha = 0.0f;
-        } completion:^(BOOL finished) {
+        if (animated)
+        {
+            [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
+                self.previewController.view.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                [self.previewController.view removeFromSuperview];
+                self.previewController = nil;
+            }];
+        }
+        else
+        {
             [self.previewController.view removeFromSuperview];
             self.previewController = nil;
-        }];
-    }
-    else
-    {
-        [self.previewController.view removeFromSuperview];
-        self.previewController = nil;
+        }
     }
 }
 
@@ -384,6 +387,7 @@ static CGFloat sDownloadProgressHeight;
     }
     else
     {
+        [self destroyPreviewerAnimated:NO];
         [self createPreviewerForFilePath:filePathToDisplay animated:YES];
     }
 }
