@@ -89,5 +89,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier;
 + (NSArray *)localisationsThatRequireTwoRowsInActionView;
 + (NSString *)helpURLLocaleIdentifierForAppLocale;
++ (NSString *)helpURLLocaleIdentifierForLocale:(NSString *)locale;
 
 @end

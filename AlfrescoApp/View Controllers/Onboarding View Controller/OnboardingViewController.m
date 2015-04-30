@@ -124,7 +124,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 - (IBAction)helpButtonPressed:(id)sender
 {
     NSString *helpURLString = [NSString stringWithFormat:kAlfrescoHelpURLString, [Utility helpURLLocaleIdentifierForAppLocale]];
-    NSString *fallbackURLString = [NSString stringWithFormat:kAlfrescoHelpURLString, kAlfrescoISO6391EnglishCode];
+    NSString *fallbackURLString = [NSString stringWithFormat:kAlfrescoHelpURLString, [Utility helpURLLocaleIdentifierForLocale:kAlfrescoISO6391EnglishCode]];
     WebBrowserViewController *helpViewController = [[WebBrowserViewController alloc] initWithURLString:helpURLString
                                                                               initialFallbackURLString:fallbackURLString
                                                                                           initialTitle:NSLocalizedString(@"help.title", @"Help Title")

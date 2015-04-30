@@ -59,7 +59,7 @@ static CGFloat const kProgressBarHeight = 2.0f;
     if (self)
     {
         self.url = url;
-        self.fallbackURL = url;
+        self.fallbackURL = fallbackURL;
         self.initalTitle = initialTitle;
         self.errorURL = errorURL;
         
