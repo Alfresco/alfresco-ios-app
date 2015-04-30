@@ -788,6 +788,11 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 
 + (NSString *)helpURLLocaleIdentifierForAppLocale
 {
+    return [Utility helpURLLocaleIdentifierForLocale:[[NSBundle mainBundle] preferredLocalizations].firstObject];
+}
+
++ (NSString *)helpURLLocaleIdentifierForLocale:(NSString *)locale
+{
     NSString *urlLanguageKey = nil;
     
     if (!helpURLLocaleIdentifiers)
@@ -796,8 +801,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
         helpURLLocaleIdentifiers = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     }
     
-    NSString *localeLanguageCode = [[NSBundle mainBundle] preferredLocalizations].firstObject;
-    urlLanguageKey = helpURLLocaleIdentifiers[localeLanguageCode];
+    urlLanguageKey = helpURLLocaleIdentifiers[locale];
     
     // if locale language is not in the dictionary, default to english
     if (!urlLanguageKey)
