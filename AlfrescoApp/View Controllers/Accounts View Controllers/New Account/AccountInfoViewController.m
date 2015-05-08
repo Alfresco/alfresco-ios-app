@@ -328,7 +328,6 @@ static NSInteger const kTagCertificateCell = 1;
             isHTTPSOn = YES;
         }
         [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-        protocolCell.valueSwitch.enabled = self.canEditAccounts;
         
         TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
         portCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -360,6 +359,16 @@ static NSInteger const kTagCertificateCell = 1;
         certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
         certificateCell.valueLabel.text = self.account.accountCertificate.summary;
         self.certificateLabel = certificateCell.valueLabel;
+        
+         /**
+          * Selectively disable some controls if required
+          */
+        for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.descriptionTextField,
+                                     self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
+        {
+            control.enabled = self.canEditAccounts;
+            control.alpha = self.canEditAccounts ? 1.0f : 0.2f;
+        }
         
         /**
          * Note: Additional account-specific settings should be in their own group with an empty header string.

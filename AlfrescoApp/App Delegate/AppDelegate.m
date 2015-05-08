@@ -163,7 +163,15 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                 [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     if (!successful)
                     {
-                        displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                        if (accountManager.selectedAccount.password)
+                        {
+                            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                        }
+                        else
+                        {
+                            // Missing password - possibly first launch of an MDM-configured account
+                            displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                        }
                     }
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }];
@@ -354,7 +362,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
             userAccount = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
             userAccount.serverAddress = serverURL.host;
             userAccount.accountDescription = [managedDictionary valueForKey:kAlfrescoMDMDisplayNameKey];
-            userAccount.serverPort = ([serverURL.scheme isEqualToString:kProtocolHTTPS]) ? kAlfrescoDefaultHTTPSPortString : serverURL.port.stringValue;
+            userAccount.serverPort = ([serverURL.scheme caseInsensitiveCompare:kProtocolHTTPS] == NSOrderedSame) ? kAlfrescoDefaultHTTPSPortString : serverURL.port.stringValue;
             userAccount.protocol = serverURL.scheme;
             userAccount.serviceDocument = serverURL.path;
             userAccount.username = [managedDictionary valueForKey:kAlfrescoMDMUsernameKey];
@@ -388,9 +396,10 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
             {
                 userAccount.accountDescription = [managedDictionary valueForKey:kAlfrescoMDMDisplayNameKey];
             }
-            if (![userAccount.serverPort isEqualToString:serverURL.port.stringValue])
+            NSString *updatedPort = ([serverURL.scheme caseInsensitiveCompare:kProtocolHTTPS] == NSOrderedSame) ? kAlfrescoDefaultHTTPSPortString : serverURL.port.stringValue;
+            if (![userAccount.serverPort isEqualToString:updatedPort])
             {
-                userAccount.serverPort = serverURL.port.stringValue;
+                userAccount.serverPort = updatedPort;
             }
             if (![userAccount.protocol isEqualToString:serverURL.scheme])
             {

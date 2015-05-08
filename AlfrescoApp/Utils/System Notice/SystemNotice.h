@@ -46,6 +46,7 @@ typedef enum
 // Note: An error notice without given title will be given a generic "An Error Occurred" title
 + (SystemNotice *)showErrorNoticeInView:(UIView *)view message:(NSString *)message;
 + (SystemNotice *)showErrorNoticeInView:(UIView *)view message:(NSString *)message title:(NSString *)title;
++ (SystemNotice *)showWarningNoticeInView:(UIView *)view message:(NSString *)message;
 + (SystemNotice *)showWarningNoticeInView:(UIView *)view message:(NSString *)message title:(NSString *)title;
 + (SystemNotice *)systemNoticeWithStyle:(SystemNoticeStyle)style inView:(UIView *)view message:(NSString *)message title:(NSString *)title;
 

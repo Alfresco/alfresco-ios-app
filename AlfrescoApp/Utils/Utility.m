@@ -67,6 +67,11 @@ SystemNotice *displayErrorMessageWithTitle(NSString *message, NSString *title)
     return [SystemNotice showErrorNoticeInView:activeView() message:message title:title];
 }
 
+SystemNotice *displayWarningMessage(NSString *message)
+{
+    return [SystemNotice showWarningNoticeInView:activeView() message:message];
+}
+
 SystemNotice *displayWarningMessageWithTitle(NSString *message, NSString *title)
 {
     return [SystemNotice showWarningNoticeInView:activeView() message:message title:title];
@@ -617,7 +622,15 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account
 {
-    return [NSString stringWithFormat:kAlfrescoOnPremiseServerURLTemplate, account.protocol, account.serverAddress, account.serverPort];
+    NSURLComponents *url = [[NSURLComponents alloc] init];
+    url.scheme = account.protocol;
+    url.host = account.serverAddress;
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterDecimalStyle;
+    url.port = [formatter numberFromString:account.serverPort];
+    url.path = account.serviceDocument;
+    
+    return [url string];
 }
 
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock

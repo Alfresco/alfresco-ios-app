@@ -70,7 +70,7 @@ CGFloat hiddenYOrigin;
                 self.systemNoticeBackgroundColour = [UIColor systemNoticeWarningColor];
                 self.icon = @"system_notice_exclamation.png";
                 self.labelColor = [UIColor blackColor];
-                self.displayTime = 3.0f;
+                self.displayTime = 4.0f;
                 break;
 
             default:
@@ -286,6 +286,14 @@ CGFloat hiddenYOrigin;
 + (SystemNotice *)showErrorNoticeInView:(UIView *)view message:(NSString *)message title:(NSString *)title
 {
     SystemNotice *notice =  [SystemNotice systemNoticeWithStyle:SystemNoticeStyleError inView:view message:message title:title];
+    [notice show];
+    return notice;
+}
+
++ (SystemNotice *)showWarningNoticeInView:(UIView *)view message:(NSString *)message
+{
+    // We use the title for a simple warning message type
+    SystemNotice *notice =  [SystemNotice systemNoticeWithStyle:SystemNoticeStyleWarning inView:view message:nil title:message];
     [notice show];
     return notice;
 }
