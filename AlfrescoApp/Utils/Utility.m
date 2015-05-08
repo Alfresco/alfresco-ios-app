@@ -67,6 +67,11 @@ SystemNotice *displayErrorMessageWithTitle(NSString *message, NSString *title)
     return [SystemNotice showErrorNoticeInView:activeView() message:message title:title];
 }
 
+SystemNotice *displayWarningMessage(NSString *message)
+{
+    return [SystemNotice showWarningNoticeInView:activeView() message:message];
+}
+
 SystemNotice *displayWarningMessageWithTitle(NSString *message, NSString *title)
 {
     return [SystemNotice showWarningNoticeInView:activeView() message:message title:title];

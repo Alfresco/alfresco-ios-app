@@ -163,7 +163,15 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                 [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     if (!successful)
                     {
-                        displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                        if (accountManager.selectedAccount.password)
+                        {
+                            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                        }
+                        else
+                        {
+                            // Missing password - possibly first launch of an MDM-configured account
+                            displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                        }
                     }
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }];

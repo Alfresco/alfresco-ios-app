@@ -36,6 +36,7 @@
  */
 SystemNotice *displayErrorMessage(NSString *message);
 SystemNotice *displayErrorMessageWithTitle(NSString *message, NSString *title);
+SystemNotice *displayWarningMessage(NSString *message);
 SystemNotice *displayWarningMessageWithTitle(NSString *message, NSString *title);
 SystemNotice *displayInformationMessage(NSString *message);
 SystemNotice *displayInformationMessageWithTitle(NSString *message, NSString *title);
