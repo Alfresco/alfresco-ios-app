@@ -90,8 +90,8 @@
 "sync-errors.unfavorited-on-server-with-local-changes.header" = "The following files have been unfavorited on the server but have local changes. Select how to proceed for each file.\n\nFiles will be saved to \"Local Files\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "The following files have been deleted on the server but copies have been saved to your \"Local Files\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "The following files are pending sync and have local changes. Select how to proceed for each file.\n\nFiles will be saved to \"Local Files\"";
-"sync-errors.button.sync" = "Sync";
-"sync-errors.button.save" = "Save";
+"sync-errors.button.sync" = "Sync"; // string length should not be extended
+"sync-errors.button.save" = "Save"; // string length should not be extended
 
 /**
  * Errors
@@ -154,9 +154,9 @@
  */
 "sites.title" = "Sites";
 "sites.empty" = "No Sites";
-"sites.segmentControl.mysites" = "My Sites";
-"sites.segmentControl.favoritesites" = "Favorite Sites";
-"sites.segmentControl.allsites" = "All Sites";
+"sites.segmentControl.mysites" = "My Sites"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "Favorite Sites"; // string length should not be extended
+"sites.segmentControl.allsites" = "All Sites"; // string length should not be extended
 "sites.site.favorited.banner" = "You have favorited %@";
 "sites.site.unfavorited.banner" = "You have unfavorited %@";
 "sites.site.requested.to.join.banner" = "A request to join %@ has been sent";
@@ -165,12 +165,12 @@
 "sites.site.left.banner" = "You have left %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Favorite";
-"sites.siteCell.unfavorite" = "Unfavorite";
-"sites.siteCell.leave" = "Leave";
-"sites.siteCell.cancel.request" = "Cancel Request";
-"sites.siteCell.request.to.join" = "Request to Join";
-"sites.siteCell.join" = "Join";
+"sites.siteCell.favorite" = "Favorite"; // string length should not be extended
+"sites.siteCell.unfavorite" = "Unfavorite"; // string length should not be extended
+"sites.siteCell.leave" = "Leave"; // string length should not be extended
+"sites.siteCell.cancel.request" = "Cancel Request"; // string length should not be extended
+"sites.siteCell.request.to.join" = "Request to Join"; // string length should not be extended
+"sites.siteCell.join" = "Join"; // string length should not be extended
 
 /**
  * Accounts View Controller
