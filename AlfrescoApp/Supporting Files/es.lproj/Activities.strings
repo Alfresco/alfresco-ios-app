@@ -4,13 +4,13 @@
  *
  * Spanish (es)
  *
- * Copyright (c) 2014 Alfresco. All rights reserved.
+ * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 /**
  * Messages
  */
-"activity.no-activities" = "Sin actividades";
+"activity.no-activities" = "Ninguna actividad";
 "activity.unknown-user" = "Usuario desconocido";
 "activity.unknown-item" = "Fichero desconocido";
 "activity.unknown-site" = "Sitio desconocido";
@@ -26,7 +26,7 @@
 "activity.role.None" = "Sin privilegios";
 "activity.role.SiteManager" = "Administrador";
 "activity.role.SiteCollaborator" = "Colaborador";
-"activity.role.SiteContributor" = "Contribuyente";
+"activity.role.SiteContributor" = "Contribuidor";
 "activity.role.SiteConsumer" = "Consumidor";
 
 /**
@@ -57,11 +57,11 @@
 "org.alfresco.documentlibrary.folder-deleted" = "{1} eliminó la carpeta {0}";
 "org.alfresco.documentlibrary.folders-added" = "{1} añadió {0} carpetas";
 "org.alfresco.documentlibrary.folders-deleted" = "{1} eliminó {0} carpetas";
-"org.alfresco.documentlibrary.google-docs-checkout" = "{1} sacó el fichero {0} de Google Docs";
-"org.alfresco.documentlibrary.google-docs-checkin" = "{1} subió el fichero {0} a Google Docs";
+"org.alfresco.documentlibrary.google-docs-checkout" = "{1} desbloqueó el fichero {0} en Google Docs";
+"org.alfresco.documentlibrary.google-docs-checkin" = "{1} bloqueó el fichero {0} de Google Docs";
 "org.alfresco.documentlibrary.inline-edit" = "{1} editó el fichero {0}";
-"org.alfresco.documentlibrary.file-previewed" = "{1} documento previsualizado {0}";
-"org.alfresco.documentlibrary.file-downloaded" = "{1} documento descargado {0}";
+"org.alfresco.documentlibrary.file-previewed" = "{1} previsualizó el documento {0}";
+"org.alfresco.documentlibrary.file-downloaded" = "{1} descargó el documento {0}";
 "org.alfresco.documentlibrary.file-liked" = "A {1} le gustó el fichero {0}";
 "org.alfresco.documentlibrary.folder-liked" = "A {1} le gustó la carpeta {0}";
 "org.alfresco.wiki.page-created" = "{1} creó la página wiki {0}";

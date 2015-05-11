@@ -4,7 +4,7 @@
  *
  * Japanese (ja)
  *
- * Copyright (c) 2014 Alfresco. All rights reserved.
+ * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 /**
@@ -12,7 +12,7 @@
  */
 "Yes" = "はい";
 "No" = "いいえ";
-"Cancel" = "取り消し";
+"Cancel" = "キャンセル";
 "Add" = "追加";
 "Done" = "完了";
 "Retry" = "再試行";
@@ -24,34 +24,34 @@
 /**
  * Relative Dates
  */
-"relative.date.past.n-years" = "%d年前";
-"relative.date.past.one-year" = "1年前";
-"relative.date.past.n-months" = "%dヵ月前";
-"relative.date.past.one-month" = "1ヵ月前";
-"relative.date.past.n-weeks" = "%d週間前";
-"relative.date.past.one-week" = "1週間前";
-"relative.date.past.n-days" = "%d日前";
+"relative.date.past.n-years" = "%d 年前";
+"relative.date.past.one-year" = "1 年前";
+"relative.date.past.n-months" = "%d か月前";
+"relative.date.past.one-month" = "1 か月前";
+"relative.date.past.n-weeks" = "%d 週間前";
+"relative.date.past.one-week" = "1 週間前";
+"relative.date.past.n-days" = "%d 日前";
 "relative.date.past.one-day" = "昨日";
-"relative.date.past.n-hours" = "%d時間前";
-"relative.date.past.one-hour" = "1時間前";
-"relative.date.past.n-minutes" = "%d分前";
-"relative.date.past.one-minute" = "1分前";
-"relative.date.past.n-seconds" = "%d秒前";
+"relative.date.past.n-hours" = "%d 時間前";
+"relative.date.past.one-hour" = "1 時間前";
+"relative.date.past.n-minutes" = "%d 分前";
+"relative.date.past.one-minute" = "1 分前";
+"relative.date.past.n-seconds" = "%d 秒前";
 "relative.date.just-now" = "今すぐ";
 "relative.date.today" = "今日";
-"relative.date.future.n-seconds" = "今から%d秒後";
-"relative.date.future.one-minute" = "今から1分後";
-"relative.date.future.n-minutes" = "今から%d分後";
-"relative.date.future.one-hour" = "今から1時間後";
-"relative.date.future.n-hours" = "今から%d時間後";
+"relative.date.future.n-seconds" = "%d 秒後";
+"relative.date.future.one-minute" = "1 分後";
+"relative.date.future.n-minutes" = "%d 分後";
+"relative.date.future.one-hour" = "1 時間後";
+"relative.date.future.n-hours" = "%d 時間後";
 "relative.date.future.one-day" = "明日";
-"relative.date.future.n-days" = "今から%d日後";
-"relative.date.future.one-week" = "今から1週間後";
-"relative.date.future.n-weeks" = "今から%d週間後";
-"relative.date.future.one-month" = "今から1ヵ月後";
-"relative.date.future.n-months" = "今から%dヵ月後";
-"relative.date.future.one-year" = "今から1年後";
-"relative.date.future.n-years" = "今から%d年後";
+"relative.date.future.n-days" = "%d 日後";
+"relative.date.future.one-week" = "1 週間後";
+"relative.date.future.n-weeks" = "%d 週間後";
+"relative.date.future.one-month" = "1 か月後";
+"relative.date.future.n-months" = "%d か月後";
+"relative.date.future.one-year" = "1 年後";
+"relative.date.future.n-years" = "%d 年後";
 
 /**
  * File Sizes
@@ -68,18 +68,18 @@
 "favourites.empty" = "お気に入りはありません";
 "sync.title" = "同期されているコンテンツ";
 "sync.empty" = "同期されているコンテンツはありません";
-"sync.downloadsize.prompt.title" = "ダウンロード サイズ";
-"sync.downloadsize.prompt.message" = "同期ダウンロードサイズ %@。続けますか?";
+"sync.downloadsize.prompt.title" = "ダウンロードサイズ";
+"sync.downloadsize.prompt.message" = "ダウンロードサイズ %@ を同期します。 続けますか?";
 "sync.downloadsize.prompt.cancel" = "同期しない";
 "sync.downloadsize.prompt.confirm" = "今すぐ同期する";
-"sync.enable.title" = "ファイルを同期する";
-"sync.enable.message" = "お気に入りファイルをこの%@と自動的に同期しますか?";
+"sync.enable.title" = "ファイルの同期";
+"sync.enable.message" = "お気に入りのファイルをこの %@ と自動的に同期し続けますか?";
 "sync.state.waiting-to-sync" = "同期しています。しばらくお待ちください...";
 "sync.state.failed-to-sync" = "同期できませんでした";
-"sync.progress.label.singular" = "1つのファイルを同期中、 残り%@"; // example: "Syncing 1 file, 238.3 MB left"
-"sync.progress.label.plural" = "%d個のファイルを同期中、 残り%@"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.progress.label.singular" = "1 個のファイルを同期しています。 残り %@"; // example: "Syncing 1 file, 238.3 MB left"
+"sync.progress.label.plural" = "%d 個のファイルを同期しています。 残り %@"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "同期";
-"sync.cancelAll.alert.message" = "すべての同期の操作を取り消しますか?";
+"sync.cancelAll.alert.message" = "すべての同期処理を取り消しますか?";
 "sync.cancelAll.alert.button.continue" = "続ける";
 "sync.cancelAll.alert.button.stop" = "同期をやめる";
 
@@ -87,85 +87,86 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同期エラー";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "次のファイルは、サーバー上でお気に入りから解除されましたがローカルで変更されました。各ファイルの保存先を選択してください。\n\nファイルは、\"ローカルファイル\"に保存されます";
-"sync-errors.deleted-on-server-with-local-changes.header" = "次のファイルは、サーバーから削除され、 \"ローカルファイル\"にコピーが保存されました。";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "次のファイルは、 同期が保留中で、ローカルで変更されました。各ファイルの保存先を選択してください.\n\nファイルは、\"ローカルファイル\"に保存されます";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "次のファイルは、サーバー上ではお気に入りから削除されていますが、ローカルで変更されています。 各ファイルの処理方法を選択してください。\n\nファイルは \"ローカルファイル\"に保存されます。";
+"sync-errors.deleted-on-server-with-local-changes.header" = "次のファイルは、サーバーでは削除されていますが、コピーが \"ローカルファイル\"に保存されています。";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "次のファイルは、 同期が保留中で、ローカルで変更されています。 各ファイルの処理方法を選択してください。\n\nファイルは \"ローカルファイル\"に保存されます。";
 "sync-errors.button.sync" = "同期";
 "sync-errors.button.save" = "保存";
 
 /**
  * Errors
  */
-"error.generic.title" = "エラーが発生しました";
-"error.filefolder.rootfolder.notfound" = "ルートフォルダをロードできませんでした。\n\n%@。";
-"error.filefolder.permission.notfound" = "ノードの許可が見つかりませんでした。\n\n%@。";
+"error.generic.title" = "問題が発生しました";
+"error.filefolder.rootfolder.notfound" = "ルートフォルダを読み込めませんでした。\n\n%@。";
+"error.filefolder.permission.notfound" = "このファイル/フォルダの権限が見つかりませんでした。\n\n%@。";
 "error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。\n\n%@。";
 "error.filefolder.search.searchfailed" = "検索できませんでした。\n\n%@。";
-"error.filefolder.createfolder.createfolder" = "フォルダが作成されませんでした。\n\n%@。";
-"error.filefolder.content.failedtoretrieve" = "コンテンツが取得できませんでした。\n\n%@。";
-"error.filefolder.unable.to.delete" = "削除できません。\n\n%@";
-"error.sites.documentlibrary.failed" = "ドキュメントのライブラリにアクセスできません。\n\n%@。";
-"error.sites.retrieval.failed" = "サイトを取得できません。\n\n%@。";
-"error.sites.folder.failed" = "サイトのフォルダを取得できません。\n\n%@。";
-"error.sites.search.failed" = "サイトをまたいで検索できません。\n\n%@。";
-"error.upload.failed" = "ファイルをアップロードできませんでした。\n\n%@。";
-"error.upload.addtags.failed" = "ファイルにタグを追加できませんでした。\n\n%@。";
-"error.tags.retrieve.failed" = "タグを取得できませんでした。\n\n%@。";
+"error.filefolder.createfolder.invalidname" = "フォルダ名に無効な文字が含まれています。操作をやり直してください。";
+"error.filefolder.createfolder.createfolder" = "フォルダは作成されませんでした。\n\n%@。";
+"error.filefolder.content.failedtoretrieve" = "ファイル/フォルダを取得できませんでした。\n\n%@。";
+"error.filefolder.unable.to.delete" = "ファイル/フォルダを削除できませんでした。\n\n%@";
+"error.sites.documentlibrary.failed" = "文書ライブラリにアクセスできませんでした。\n\n%@。";
+"error.sites.retrieval.failed" = "サイトを取得できませんでした。\n\n%@。";
+"error.sites.folder.failed" = "サイトフォルダを取得できませんでした。\n\n%@。";
+"error.sites.search.failed" = "サイトをまたいで検索できませんでした。\n\n%@。";
+"error.upload.failed" = "このファイルは現在アップロードできません。\n\n%@。";
+"error.upload.addtags.failed" = "タグをファイルに追加できませんでした。\n\n%@。";
+"error.tags.retrieve.failed" = "タグは現在取得できません。\n\n%@。";
 "error.login.failed" = "ログインできませんでした。ユーザー名とパスワードが正しいことを確認してください。";
-"error.comments.retrieve.failed" = "コメントを取得できません。\n\n%@";
-"error.add.comment.failed" = "コメントを追加できません。\n\n%@";
-"error.sites.unable.to.favorite" = "%@をお気に入りに追加できません";
-"error.sites.unable.to.unfavorite" = "%@をお気に入りから削除できません";
-"error.sites.unable.to.join" = "%@に参加できません";
-"error.sites.unable.to.cancel.request" = "%@への参加リクエストを取り消せません";
-"error.sites.unable.to.leave" = "%@から退会できません";
-"error.version.history.unable.to.retrieve" = "バージョン履歴を取得できません。\n\n%@";
-"error.version.history.no.latest.version" = "ファイルの最新のバージョンが見つかりませんでした。";
+"error.comments.retrieve.failed" = "コメントは現在取得できません。\n\n%@";
+"error.add.comment.failed" = "このコメントは現在追加できません。\n\n%@";
+"error.sites.unable.to.favorite" = "%@ は現在お気に入りに追加できません";
+"error.sites.unable.to.unfavorite" = "%@ は現在お気に入りから削除できません";
+"error.sites.unable.to.join" = "%@ には現在参加できません";
+"error.sites.unable.to.cancel.request" = "%@ への参加リクエストは現在キャンセルできません";
+"error.sites.unable.to.leave" = "%@ からの退会リクエストは現在処理できません";
+"error.version.history.unable.to.retrieve" = "バージョン履歴は現在取得できません。\n\n%@";
+"error.version.history.no.latest.version" = "このファイルの最新バージョンが見つかりませんでした。";
 "error.alfresco.node.notfound" = "ファイルが見つかりません";
 "error.print.failed.message" = "このファイルの印刷はサポートされていません";
 // Internet connection error
 "error.no.internet.access.title" = "接続できませんでした";
-"error.no.internet.access.message" = "インターネットに接続しているか確認し、もう一度やり直してください。接続されていなくても、ダウンロード済みのファイルにアクセスできます。";
-"error.access.permissions.message" = "この操作を実行するアクセス許可があるか確認してください";
+"error.no.internet.access.message" = "インターネットに接続していることを確認してから、もう一度やり直してください。 ダウンロード済みのファイルの場合は、インターネットに接続しなくてもアクセスできます。";
+"error.access.permissions.message" = "この操作を行うためのアクセス権があることを確認してください";
 "error.host.unreachable.title" = "接続エラー";
-"error.host.unreachable.message" = "ホスト名の値が間違っているか、お使いのVPNを有効にする必要があります。アカウント設定を確認してください。";
-"error.retrieving.metadata" = "%@ のプロパティを検索できませんでした。";
+"error.host.unreachable.message" = "ホスト名の値が間違っているか、お使いの VPN を有効にする必要があります。 アカウント設定を確認してください。";
+"error.retrieving.metadata" = "%@ のプロパティを取得できませんでした。";
 "error.server.message" = "サーバーでエラーが発生しました。";
 // Workflow
-"error.workflow.unable.to.complete.process" = "タスクの処理を完了することができません。\n\n%@";
-"error.workflow.unable.to.reassign.task" = "タスクを再割り当てできません。\n\n%@";
+"error.workflow.unable.to.complete.process" = "このタスク処理は現在完了できません。\n\n%@";
+"error.workflow.unable.to.reassign.task" = "このタスクは現在再割り当てできません。\n\n%@";
 // New Version
-"error.new.version.unable.to.checkout.title" = "チェックアウトできません。";
-"error.new.version.unable.to.checkout.message" = " %@ をチェックアウトできません。\n\n%@";
-"error.new.version.unable.to.checkin.title" = "チェックインできません。";
-"error.new.version.unable.to.checkin.message" = " %@ にチェックインできません。\n\n%@";
+"error.new.version.unable.to.checkout.title" = "チェックアウトできません";
+"error.new.version.unable.to.checkout.message" = "%@ をチェックアウトできません。\n\n%@";
+"error.new.version.unable.to.checkin.title" = "チェックインできません";
+"error.new.version.unable.to.checkin.message" = "%@ をチェックインできません。\n\n%@";
 // Email
 "error.no.email.accounts.title" = "メールアカウントがありません";
-"error.no.email.accounts.message" = "このファイルを送信するには、デバイスに少なくとも1つのメールアカウントが設定する必要があります。";
+"error.no.email.accounts.message" = "このファイルを送信するには、デバイスに少なくとも 1 つのメールアカウントが設定されている必要があります。";
 
 /**
  * Custom error descriptions
  */
-"error.description.kErrorFileSuffixMaxAttempts" = "一意のファイル名を生成できませんでした";
+"error.description.kErrorFileSuffixMaxAttempts" = "固有のファイル名を生成できませんでした";
 
 /**
  * Sites View Controller
  */
 "sites.title" = "サイト";
-"sites.empty" = "サイトがありません";
-"sites.segmentControl.mysites" = "マイサイト";
-"sites.segmentControl.favoritesites" = "お気に入り";
+"sites.empty" = "サイトはありません";
+"sites.segmentControl.mysites" = "あなたのサイト";
+"sites.segmentControl.favoritesites" = "お気に入りのサイト";
 "sites.segmentControl.allsites" = "すべてのサイト";
-"sites.site.favorited.banner" = "%@をお気に入りに追加しました";
-"sites.site.unfavorited.banner" = "%@をお気に入りから削除しました";
-"sites.site.requested.to.join.banner" = "%@に参加リクエストが送信されました";
-"sites.site.joined.banner" = "%@に参加しました";
-"sites.site.request.cancelled.banner" = "%@へのリクエストが取り消されました";
-"sites.site.left.banner" = "%@から退会しました";
+"sites.site.favorited.banner" = "%@ をお気に入りに追加しました";
+"sites.site.unfavorited.banner" = "%@ をお気に入りから削除しました";
+"sites.site.requested.to.join.banner" = "%@ への参加リクエストが送信されました";
+"sites.site.joined.banner" = "%@ に参加しました";
+"sites.site.request.cancelled.banner" = "%@ のリクエストがキャンセルされました";
+"sites.site.left.banner" = "%@ から退会しました";
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "お気に入り";
-"sites.siteCell.unfavorite" = "お気に入りを解除";
+"sites.siteCell.unfavorite" = "お気に入りの解除";
 "sites.siteCell.leave" = "退会";
 "sites.siteCell.cancel.request" = "リクエストのキャンセル";
 "sites.siteCell.request.to.join" = "参加リクエストの送信";
@@ -175,85 +176,85 @@
  * Accounts View Controller
  */
 "accounts.title" = "アカウント";
-"accounts.empty" = "アカウントがありません";
+"accounts.empty" = "アカウントはありません";
 "accountdetails.title.newaccount" = "新しいアカウント";
 "accountdetails.title.editingaccount" = "アカウントの編集";
 "accounttype.cloud" = "Alfresco Cloud";
 "accounttype.alfrescoServer" = "Alfresco Server";
 
-"accounttype.footer.alfrescoServer" = "Alfresco Serverに接続する";
-"accounttype.footer.alfrescoCloud" = "Alfresco in the cloudアカウントにアクセスします";
+"accounttype.footer.alfrescoServer" = "Alfresco Server に接続します";
+"accounttype.footer.alfrescoCloud" = "Alfresco Cloud アカウントにアクセスします";
 
 "accountdetails.placeholder.required" = "必須";
-"accountdetails.placeholder.optional" = "オプション";
-"accountdetails.fields.email" = "Eメール";
+"accountdetails.placeholder.optional" = "任意";
+"accountdetails.fields.email" = "E メール";
 "accountdetails.placeholder.email" = "example@acme.com";
 "accountdetails.fields.hostname" = "ホスト名";
 "accountdetails.fields.description" = "説明";
 "accountdetails.fields.port" = "ポート";
 "accountdetails.fields.protocol" = "HTTPS";
-"accountdetails.fields.servicedocument" = "サービス ドキュメント";
+"accountdetails.fields.servicedocument" = "サービスマニュアル";
 "accountdetails.fields.syncPreference" = "ファイルを同期する";
-"accountdetails.fields.syncPreference.footer" = "デバイスに同期するお気に入りのコンテンツを選択してください。20MBを超えるコンテンツを同期する場合は、警告が表示されます";
+"accountdetails.fields.syncPreference.footer" = "デバイスと同期するお気に入りのコンテンツを選択してください。 20 MB を超えるコンテンツを同期する場合は、警告が表示されます";
 "accountdetails.buttons.client-certificate" = "クライアント証明書";
 "accountdetails.header.authentication" = "アカウントの詳細";
 "accountdetails.header.advanced" = "詳細";
 "accountdetails.header.setting" = "設定";
 
 "accountdetails.alert.save.title" = "アカウントの保存";
-"accountdetails.alert.save.validationerror" = "認証に失敗しました。システム管理者に、ご利用のアカウントの設定を確認してください。";
+"accountdetails.alert.save.validationerror" = "アカウントを保存できませんでした。 Alfresco 管理者に、お使いのアカウントの設定を確認してください。";
 
 /* Client Certificate */
 "certificate-manage.import.label" = "ローカルファイルからインポート";
-"certificate-manage.download.label" = "ウェブサーバーからダウンロード";
+"certificate-manage.download.label" = "Web サーバーからダウンロード";
 "certificate-import.tableHeader" = "PCKS 12 パスコード";
 "certificate-import.fields.passcode" = "パスコード";
 "certificate-import.tableFooter" = "PKCS 12 ファイルのパスコードを入力してください";
 "certificate-import.button.import" = "インポート";
 "certificate-import.error.title" = "証明書のインポート";
-"certificate-import.error.authentication" = "証明書のパスコードが有効ではありません";
-"certificate-import.error.format" = "証明書ファイルが無効で、インポートできません。";
-"certificate-download.title" = "ウェブサーバー";
+"certificate-import.error.authentication" = "指定した証明書のパスコードが無効です";
+"certificate-import.error.format" = "証明書ファイルが正しくないため、インポートできません";
+"certificate-download.title" = "Web サーバー";
 "certificate-download.field.url" = "URL";
 "certificate-details.title" = "クライアント証明書";
-"certificate-details.issuer" = "発行者：%@";
+"certificate-details.issuer" = "発行者: %@";
 "certificate-details.delete.title" = "クライアント証明書の削除";
-"certificate-details.delete.message" = "このクライアント証明書を削除すると、元に戻せません。続行しますか?";
+"certificate-details.delete.message" = "一度このクライアント証明書を削除すると、元に戻せません。 続けてもよろしいですか?";
 "certificate-details.importSuccess" = "証明書は正常にインポートされました";
-"certificate-details.buttons.delete" = "証明書を削除します";
-"certificate-details.delete.confirm" = "削除する";
+"certificate-details.buttons.delete" = "証明書の削除";
+"certificate-details.delete.confirm" = "削除";
 
 /**
  * Cloud Signup
  */
-"cloudsignup.title" = "Alfresco in the cloud";
+"cloudsignup.title" = "Alfresco Cloud";
 "accountdetails.fields.firstName" = "名";
 "accountdetails.fields.lastName" = "姓";
 "accountdetails.fields.username" = "ユーザー名";
 "accountdetails.fields.password" = "パスワード";
-"accountdetails.fields.confirmPassword" = "パスワードの確認";
+"accountdetails.fields.confirmPassword" = "パスワードの再入力";
 "accountdetails.placeholder.password.requirement" = "6文字以上";
 "cloudsignup.button.signup" = "登録";
-"cloudsignup.footer" = "タップしてサインアップすることによって、 以下に同意したとみなされますAlfrescoサービス規約およびプライバシーポリシー";
-"cloudsignup.label.termsOfService" = "サービス規約";
-"cloudsignup.label.privacyPolicy" = "プライバシー保護方針";
-"cloudsignup.alert.title" = "Alfresco in the cloudのサインアップ";
-"cloudsignup.unsuccessful.message" = "クラウドのサインアップができませんでした。しばらくしてから、やり直してください";
-"cloudsignup.already-registered.message" = "お客様はすでにこのEメールアドレスでAlfrescoアカウントを取得されています";
+"cloudsignup.footer" = "「登録」をタップすると、Alfresco のサービス利用規約と個人情報保護方針に同意したとみなされます";
+"cloudsignup.label.termsOfService" = "サービス利用規約";
+"cloudsignup.label.privacyPolicy" = "個人情報保護方針";
+"cloudsignup.alert.title" = "Alfresco Cloud への登録";
+"cloudsignup.unsuccessful.message" = "Alfresco Cloud に登録できませんでした。しばらくしてから、やり直してください";
+"cloudsignup.already-registered.message" = "すでにこの E メールアドレスで登録されている Alfresco アカウントがあります";
 
-"awaitingverification.description" = "アカウントは電子メール認証待ちです\n\n電子メールアドレスを使用してAlfresco in the cloudにサインアップしました %@\n\n電子メールを確認してください。登録手続きの完了に必要なリンクを送信しました。\n\nアクティベートに問題がありますか?\n\nアカウントを有効にできない場合は、こちらまでご連絡ください。";
-"awaitingverification.description.title" = "アカウントはEメールの認証中です。";
+"awaitingverification.description" = "アカウントは E メールの認証待ちです\n\n次の E メールアドレスで Alfresco Cloud に登録しました： %@\n\nお使いの E メールを確認してください。 登録手続きの完了に必要なリンクを送信しました。\n\nアカウントを有効にできない場合\n\nアカウントを有効にできない場合は、弊社までご連絡ください。";
+"awaitingverification.description.title" = "アカウントは E メールの認証待ちです";
 "awaitingverification.description.subtitle" = "アカウントを有効にできない場合";
-"awaitingverification.title" = "Alfresco in the cloud";
+"awaitingverification.title" = "Alfresco Cloud";
 "awaitingverification.buttons.refresh" = "再読み込み";
-"awaitingverification.buttons.resendEmail" = "Eメールの再送信";
-"awaitingverification.buttons.customercare" = "カスタマーサポート ";
-"awaitingverification.alerts.title" = "Alfresco in the cloud";
-"awaitingverification.alert.resendEmail.title" = "Eメールを再送信しました";
-"awaitingverification.alert.resendEmail.success" = "電子メールが受信できない場合 入力したEメールアドレスが正しいかを確認し、迷惑メールフォルダを確認してください。";
-"awaitingverification.alert.resendEmail.error" = "電子メールは今回再送信できませんでした。しばらくしてから、やり直してください";
+"awaitingverification.buttons.resendEmail" = "E メールの再送信";
+"awaitingverification.buttons.customercare" = "カスタマーサポート";
+"awaitingverification.alerts.title" = "Alfresco Cloud";
+"awaitingverification.alert.resendEmail.title" = "E メールを再送信しました";
+"awaitingverification.alert.resendEmail.success" = "E メールが届かない場合は、 入力した E メールアドレスが正しいことを確認してください。迷惑メールフォルダに入っている場合もあるので、併せて確認してください。";
+"awaitingverification.alert.resendEmail.error" = "E メールは現在再送信できません。 しばらくしてから、やり直してください";
 "awaitingverification.alert.refresh.awaiting" = "アカウントはまだ認証待ちです";
-"awaitingverification.alert.refresh.verified" = "アカウントは認証されました";
+"awaitingverification.alert.refresh.verified" = "アカウントが認証されました";
 
 /**
  * Company Home View Controller
@@ -268,49 +269,49 @@
 /**
  * My Files View Controller
  */
-"myFiles.title" = "マイファイル";
+"myFiles.title" = "あなたのファイル";
 
 /**
  * Folder/Document View Controller
  */
-"browser.actionsheet.addfolder" = "フォルダを作成";
+"browser.actionsheet.addfolder" = "フォルダの作成";
 "browser.actionsheet.upload" = "アップロード";
-"browser.actionsheet.upload.existingPhotos" = "写真を選択";
-"browser.actionsheet.upload.existingPhotosOrVideos" = "写真または動画を選択";
-"browser.actionsheet.upload.documents" = "ローカルファイルを選択";
-"browser.actionsheet.takephoto" = "写真を撮影";
-"browser.actionsheet.takephotovideo" = "写真または動画を撮影";
-"browser.actionsheet.createfile" = "テキスト ファイルを作成";
+"browser.actionsheet.upload.existingPhotos" = "写真の選択";
+"browser.actionsheet.upload.existingPhotosOrVideos" = "写真または動画の選択";
+"browser.actionsheet.upload.documents" = "ローカルファイルの選択";
+"browser.actionsheet.takephoto" = "写真の撮影";
+"browser.actionsheet.takephotovideo" = "写真または動画の撮影";
+"browser.actionsheet.createfile" = "テキストファイルの作成";
 
-"browser.alertview.addfolder.title" = "フォルダを作成";
-"browser.alertview.addfolder.message" = "名前を付けてフォルダを作成:";
+"browser.alertview.addfolder.title" = "フォルダの作成";
+"browser.alertview.addfolder.message" = "作成するォルダの名前を入力してください:";
 "browser.alertview.addfolder.create" = "作成";
 
-"browser.actionsheet.record.audio" = "音声を録音";
+"browser.actionsheet.record.audio" = "オーディオの録音";
 
 /**
  * MultiSelect
  */
 "multiselect.button.delete" = "削除";
-"multiselect.button.delete.counter" = "(%u)を削除";
-"multiselect.delete.confirmation.message.one-item" = "サーバーから1つのファイルを削除しますか?";
-"multiselect.delete.confirmation.message.n-items" = "サーバーから%d個のファイルを削除しますか?";
-"multiselect.delete.confirmation.message.one-download" = "ローカルファイルから1つのファイルを削除しますか?";
-"multiselect.delete.confirmation.message.n-downloads" = "ローカルファイルから%d個のファイルを削除しますか?";
+"multiselect.button.delete.counter" = "(%u) 個を削除";
+"multiselect.delete.confirmation.message.one-item" = "サーバーから 1 個のファイルを削除しますか?";
+"multiselect.delete.confirmation.message.n-items" = "サーバーから %d個 のファイルを削除しますか?";
+"multiselect.delete.confirmation.message.one-download" = "ローカルファイルから 1 つのファイルを削除しますか?";
+"multiselect.delete.confirmation.message.n-downloads" = "ローカルファイルから %d 個のファイルを削除しますか?";
 "multiselect.delete.completed.title" = "削除の完了時にエラーが発生しました";
-"multiselect.delete.completed.message" = "%@個のファイルをサーバーから削除しました。";
-"multiselect.delete.partial.message" = "%@個のファイルのみをサーバーから削除しました。";
+"multiselect.delete.completed.message" = "%@ 個のファイルをサーバーから削除しました。";
+"multiselect.delete.partial.message" = "%@ 個のファイルのみをサーバーから削除しました。";
 "multiselect.delete.failure.message" = "どのファイルもサーバーから削除できませんでした。";
 
 /**
  * Node Picker
  */
-"nodes.picker.attachments.select" = "添付ファイルを選択...";
+"nodes.picker.attachments.select" = "添付ファイルの選択...";
 "nodes.picker.list.title" = "添付ファイル";
-"nodes.picker.list.attachments.section.title" = "選択済み添付ファイル";
-"nodes.picker.list.attachments.section.footer" = "スワイプして削除";
-"nodes.picker.button.select.documents" = "ファイルを選択";
-"nodes.picker.button.select.documents.counter" = "%u個のファイルを選択";
+"nodes.picker.list.attachments.section.title" = "選択した添付ファイル";
+"nodes.picker.list.attachments.section.footer" = "削除するにはスワイプします";
+"nodes.picker.button.select.documents" = "ファイルの選択";
+"nodes.picker.button.select.documents.counter" = "%u 個 のファイルを選択";
 "nodes.picker.button.deselectAll" = "すべての選択を解除";
 "nodes.picker.button.deselectAll.counter" = "すべての選択を解除";
 "nodes.picker.button.select.folder" = "このフォルダを選択";
@@ -319,40 +320,40 @@
 /**
  * People Picker
  */
-"people.picker.title" = "担当者を選択";
-"people.picker.assignees.select" = "担当者を選択...";
-"people.picker.assignee.select" = "担当者を選択...";
+"people.picker.title" = "担当者の選択";
+"people.picker.assignees.select" = "担当者の選択...";
+"people.picker.assignee.select" = "担当者の選択...";
 "people.picker.list.title" = "担当者";
 "people.picker.search.results.section.title" = "検索結果";
-"people.picker.selected.people.section.title" = "選択されたユーザー";
+"people.picker.selected.people.section.title" = "選択したユーザー";
 "people.picker.search.title" = "ユーザーの検索";
-"people.picker.search.no.results" = "検索結果がありません";
+"people.picker.search.no.results" = "検索結果はありません";
 
 /**
  * About View Controller
  */
-"about.title" = "プロフィール";
-"about.content" = "Alfresco は、ビジネスに不可欠なコンテンツ管理およびコラボレーションのためのオープンプラットフォーム です。\n\nAlfresco モバイルは、Alfresco Software, Inc. によって設計・開発され、Alfresco in the cloudおよびAlfresco オンプレミスサーバー (3.4.8以降) に接続します。外出先からでも、社用ファイルに安全にアクセスできます。このモバイルアプリケーションは、Alfresco ログイン認証（HTTP または HTTPSを経由）を使用して、お客様のAlfresco リポジトリに接続し、お客様のアクセス許可に基づいてアクセスを管理します。";
-"about.version.number" = "バージョン：%@ (%@)";
-"about.build.date.time" = "構築日：%s %s";
+"about.title" = "バージョン情報";
+"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco Cloud やオンプレミスの Alfresco Server (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。 このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って（HTTP または HTTPS 経由で） 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
+"about.version.number" = "バージョン: %@ (%@)";
+"about.build.date.time" = "ビルド日時: %s %s";
 
 /**
  * Activities View Controller
  */
 "activities.title" = "アクティビティ";
-"activities.empty" = "アクティビティなし";
+"activities.empty" = "アクティビティはありません";
 "activities.section.today" = "今日";
 "activities.section.yesterday" = "昨日";
-"activities.section.older" = "古い";
+"activities.section.older" = "それ以前";
 
 /**
  * Upload Form Controller
  */
-"upload.photo.title" = "画像をアップロード";
-"upload.document.title" = "ファイルをアップロード";
-"upload.video.title" = "動画をアップロード";
-"upload.audio.title" = "音声をアップロード";
-"upload.photo.namecell.title" = "氏名";
+"upload.photo.title" = "画像のアップロード";
+"upload.document.title" = "ファイルのアップロード";
+"upload.video.title" = "動画のアップロード";
+"upload.audio.title" = "オーディオのアップロード";
+"upload.photo.namecell.title" = "名前";
 "upload.photo.namecell.textfield.placeholder.text" = "ファイル名";
 "upload.photo.tagcell.textlabel.placeholder.text" = "タグがありません";
 "upload.photo.photocell.title" = "写真";
@@ -362,25 +363,25 @@
 "upload.videoTitleCell.label" = "動画";
 "upload.default.video.name" = "動画 %@";
 // audio
-"upload.audio.cell.label" = "音声";
+"upload.audio.cell.label" = "オーディオ";
 "upload.audio.cell.button.record" = "記録";
 "upload.audio.cell.button.play" = "再生";
 "upload.audio.cell.button.stop" = "停止";
 "upload.audio.setting.disabled.title" = "権限";
-"upload.audio.setting.disabled.message" = "このアプリは、マイクにアクセスする許可がありません\n\n[設定] > [プライバシー] > [マイク]で変更してください。";
+"upload.audio.setting.disabled.message" = "このアプリには、マイクにアクセスする権限がありません。\n\nこの設定をデバイスの 「設定」 -> 「プライバシー」 -> 「マイク」で変更してください。";
 // confirmation
 "upload.confirm.dismissal.title" = "保存されていないコンテンツ";
-"upload.confirm.dismissal.message" = "このコンテンツをアップロードしますか? 今すぐアップロードしないと、コンテンツが失われます。";
+"upload.confirm.dismissal.message" = "このコンテンツをアップロードしますか? ここでアップロードしないと、コンテンツが失われます。";
 "upload.confirm.dismissal.cancel" = "アップロードしない";
-"upload.success-as.message" = "%@としてアップロードされたファイル";
+"upload.success-as.message" = "ファイルが %@ としてアップロードされました";
 
 /**
  * Tag Selection Controller
  */
 "tagselection.title" = "タグ";
-"tagselection.empty" = "タグがありません";
-"tagselection.newTag.buttonTitle" = "新しいタグを追加";
-"tagselection.newTag.alertTitle" = "新しいタグを追加";
+"tagselection.empty" = "タグはありません";
+"tagselection.newTag.buttonTitle" = "新しいタグの追加";
+"tagselection.newTag.alertTitle" = "新しいタグの追加";
 "tagselection.newTag.error.invalidtag.title" = "無効なタグ";
 "tagselection.newTag.error.invalidtag.message" = "タグにテキストを入力してください";
 
@@ -403,11 +404,11 @@
 /**
  * Document Preview Controller
  */
-"document.video.not.supported" = "再生機能はご利用いただけません";
-"document.open-in.not.supported.title" = "オープンイン機能はご利用いただけません";
-"document.open-in.not.supported.message" = "このアプリケーションでは、オープンイン機能はご利用いただけません。";
-"document.open-in.noapps.title" = "サポートするアプリはありません";
-"document.open-in.noapps.message" = "このファイルを開くアプリは、このデバイスにインストールされていません。";
+"document.video.not.supported" = "再生機能は使用できません";
+"document.open-in.not.supported.title" = "「次の方法で開く」は使用できません";
+"document.open-in.not.supported.message" = "「次の方法で開く」は、このアプリケーションでは使用できません。";
+"document.open-in.noapps.title" = "対応するアプリがありません";
+"document.open-in.noapps.message" = "このファイルを開けるアプリがこのデバイスにインストールされていません。";
 
 /**
  * Login View Controller
@@ -418,45 +419,46 @@
 "login.username.textfield.placeholder" = "ユーザー名";
 "login.password.cell.label" = "パスワード";
 "login.password.textfield.placeholder" = "パスワード";
-"login.hud.label" = "接続中...";
-"login.hud.cancel.label" = "タップして取り消し";
+"login.hud.label" = "接続しています...";
+"login.hud.cancel.label" = "タップしてキャンセル";
 
 /**
  * Download View Controller
  */
 "downloads.title" = "ローカルファイル";
-"downloads.empty" = "ローカルファイルがありません";
+"downloads.empty" = "ローカルファイルはありません";
 
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.message" = "同じ名前のローカルファイルがすでにあります。既存のファイルを上書きしますか";
+"download.overwrite.prompt.message" = "同じ名前のローカルファイルがすでにあります。 既存のファイルを上書きしますか?";
 "download.success.message" = "ファイルが保存されました";
-"download.success-as.message" = "ファイルが%@として保存されました";
-"download.failure.message" = "ファイルを保存できません";
+"download.success-as.message" = "ファイルが %@ として保存されました";
+"download.failure.message" = "ファイルを保存できませんでした";
 "download.delete.failure.message" = "ローカルファイルを削除できませんでした";
 
 /**
  * Comments View Controller
  */
 "comments.title" = "コメント";
-"comments.empty" = "コメントがありません";
+"comments.empty" = "コメントはありません";
 "comments.post.button" = "投稿";
-"comments.placeholder.text" = "コメントを追加...";
+"comments.placeholder.text" = "コメントの追加...";
 
 /**
  * Help
  */
 "help.title" = "ヘルプ";
+"help.no.internet.message" = "オフラインのため、Alfresco Mobile のヘルプにアクセスできません。\n\nオンラインに戻ったときに、やり直してください。";
 
 /**
  * Metadata View Controller
  */
-"metadata.cmis:name" = "氏名";
+"metadata.cmis:name" = "名前";
 "metadata.cm:title" = "タイトル";
 "metadata.cmis:createdBy" = "作成者";
 "metadata.cmis:creationDate" = "作成日";
-"metadata.cmis:lastModifiedBy" = "最終更新者";
+"metadata.cmis:lastModifiedBy" = "最終変更者";
 "metadata.cmis:lastModificationDate" = "最後変更日";
 "metadata.cm:author" = "作成者";
 "metadata.cmis:versionLabel" = "バージョン";
@@ -464,25 +466,25 @@
 "metadata.cm:longitude" = "経度";
 "metadata.cm:latitude" = "緯度";
 
-"metadata.exif:dateTimeOriginal" = "作成日時";
+"metadata.exif:dateTimeOriginal" = "元の作成日時";
 "metadata.exif:exposureTime" = "露光時間";
 "metadata.exif:flash" = "フラッシュ";
 "metadata.exif:fNumber" = "F値";
 "metadata.exif:focalLength" = "焦点距離";
-"metadata.exif:isoSpeedRatings" = "ISO速度";
+"metadata.exif:isoSpeedRatings" = "ISO 感度";
 "metadata.exif:manufacturer" = "製造元";
 "metadata.exif:model" = "モデル";
 "metadata.exif:orientation" = "向き";
-"metadata.exif:pixelXDimension" = "ピクセルX寸法";
-"metadata.exif:pixelYDimension" = "ピクセルY寸法";
-"metadata.exif:resolutionUnit" = "解像度単位";
-"metadata.exif:xResolution" = "X解像度";
-"metadata.exif:yResolution" = "Y解像度";
+"metadata.exif:pixelXDimension" = "X のピクセル寸法";
+"metadata.exif:pixelYDimension" = "Y のピクセル寸法";
+"metadata.exif:resolutionUnit" = "解像度の単位";
+"metadata.exif:xResolution" = "X の解像度";
+"metadata.exif:yResolution" = "Y の解像度";
 "metadata.exif:software" = "ソフトウェア";
-"metadata.exif.orientation.landscape.left" = "横 左";
-"metadata.exif.orientation.landscape.right" = "横 右";
+"metadata.exif.orientation.landscape.left" = "横 ホームボタン左";
+"metadata.exif.orientation.landscape.right" = "横 ホームボタン右";
 "metadata.exif.orientation.portrait" = "縦";
-"metadata.exif.orientation.portrait.upsidedown" = "縦 上下逆";
+"metadata.exif.orientation.portrait.upsidedown" = "縦 ホームボタン上";
 "metadata.exif.orientation.undefined" = "未定義";
 
 "metadata.audio:album" = "アルバム";
@@ -498,109 +500,114 @@
 "metadata.audio:compressor" = "圧縮ツール";
 
 "metadata.nodeTags" = "タグ";
-"metadata.version.history.cell" = "バージョン履歴を表示";
+"metadata.version.history.cell" = "バージョン履歴の表示";
 
 "metadata.section.header.general" = "一般";
-"metadata.section.header.geographic" = "位置情報 ";
+"metadata.section.header.geographic" = "位置情報";
 "metadata.section.header.image" = "画像情報";
-"metadata.section.header.audio" = "音声情報";
+"metadata.section.header.audio" = "オーディオ情報";
 
 /**
  * Version History View Controller
  */
 "version.history.title" = "バージョン履歴";
-"version.history.empty" = "バージョン履歴がありません";
+"version.history.empty" = "バージョン履歴はありません";
 "version.history.version.cell.text" = "バージョン: %@";
 "version.history.last.modified.cell.text" = "最終更新日時: %@";
-"version.history.last.modified.by.cell.text" = "最終更新者: %@";
+"version.history.last.modified.by.cell.text" = "最終変更者: %@";
 "version.history.comment.cell.text" = "コメント: %@";
 "version.history.current.version.cell.text" = "現在のバージョン: %@";
-"version.history.download.latest.text" = "最新バージョンをダウンロード";
+"version.history.download.latest.text" = "最新バージョンのダウンロード";
 
 /**
  * Map View Controller
  */
-"map.no.location.data" = "場所のデータはありません";
+"map.no.location.data" = "位置データがありません";
 
 /**
  * Text File View Controller
  */
-"createtextfile.title" = "テキスト ファイルを作成";
-"createtextfile.dismiss.confirmation.title" = "終了しますか?";
-"createtextfile.dismiss.confirmation.message" = "このテキストファイルの作成を取り消してもよろしいですか?\n\nすべての作業が破棄されますのでご注意ください。";
-"document.edit.button.discard" = "変更を取り消す";
+"createtextfile.title" = "テキスト ファイルの作成";
+"createtextfile.dismiss.confirmation.title" = "取り消しますか?";
+"createtextfile.dismiss.confirmation.message" = "このテキストファイルの作成を取り消してもよろしいですか?\n\nすべての作業が取り消されます。";
+"document.edit.button.discard" = "変更の取り消し";
 "document.edit.button.save" = "保存";
-"document.edit.failed.title" = "ファイルを保存";
-"document.edit.savefailed.message" = "サーバーにファイルを保存できませんでした。ローカルファイルにファイルを保存しますか?";
-"document.edit.dismiss.confirmation.message" = "ファイルの変更を取り消してもよろしいですか?";
+"document.edit.failed.title" = "ファイルの保存";
+"document.edit.savefailed.message" = "サーバーにファイルを保存できませんでした。 ローカルファイルにファイルを保存しますか?";
+"document.edit.dismiss.confirmation.message" = "このファイルに加えた変更をキャンセルしてもよろしいですか?";
+"document.edit.discard" = "取り消し";
+"document.edit.continue.editing" = "編集を続ける";
 
 /**
  * Policy Updated
  */
 "policy.updated.title" = "ポリシーの更新";
-"policy.updated.message" = "アプリの設定ポリシーが、管理者によって更新されました";
+"policy.updated.message" = "お使いのアプリの設定ポリシーが、管理者によって更新されました";
 
 /**
  * Location Manager
  */
-"location.manager.purpose" = "現在の位置は、このデバイスで撮影した写真の位置情報（ジオタグ）に使用されます。";
+"location.manager.purpose" = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用されます。";
 
 /**
  * UIRefreshControl
  */
 "ui.refreshcontrol.pulltorefresh" = "プルダウンして更新...";
-"ui.refreshcontrol.refreshing" = "読み込み中...";
+"ui.refreshcontrol.refreshing" = "読み込んでいます...";
 
 /**
  * Tasks
  */
 "tasks.title" = "タスク";
-"tasks.empty" = "タスクなし";
+"tasks.empty" = "タスクはありません";
 "tasks.process.unnamed" = "無題のプロセス";
 "tasks.view.button" = "表示";
-"tasks.title.mytasks" = "マイタスク";
-"tasks.title.taskistarted" = "開始した仕事";
+"tasks.title.mytasks" = "あなたのタスク";
+"tasks.title.taskistarted" = "あなたが開始したタスク";
 "tasks.list.no-due-date" = "締切日なし";
 // Details
 "tasks.calendar.no-due-date" = "日付なし";
 "tasks.attachments.empty" = "添付ファイルなし";
 "tasks.tasks.empty" = "タスクなし";
-"tasks.initiated-by" = "開始者 %@ ";
+"tasks.initiated-by" = "開始者 %@";
 "tasks.priority.high" = "優先度: 高";
 "tasks.priority.medium" = "優先度: 中";
 "tasks.priority.low" = "優先度: 低";
-"tasks.textview.addcomment.placeholder" = "コメントを追加";
+"tasks.textview.addcomment.placeholder" = "コメントの追加";
 "task.details.section.header.details" = "詳細";
 "task.details.section.header.attachments" = "添付ファイル";
 "task.details.section.header.tasks" = "タスク";
 "task.reassign.button.title" = "再割り当て";
-"task.reassign.success.message" = "再度割り当てられた仕事 ";
+"task.reassign.success.message" = "タスクが再割り当てされました";
 "task.transition.approve" = "承認";
 "task.transition.reject" = "却下";
 "task.transition.done" = "完了";
-"task.completed.success.message" = "完了済みタスク";
+"task.completed.success.message" = "タスクが完了しました";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@は、このタスクを完了しました";
-"tasks.cell.tasknotcompleted" = "%@は、このタスクを完了していません";
+"tasks.cell.taskcompleted" = "%@ がこのタスクを完了しました";
+"tasks.cell.tasknotcompleted" = "%@ はこのタスクを完了していません";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "新しいタスク";
 "tasks.process.activitiParallelReview" = "ファイルをレビュー用に送信";
 "tasks.process.activitiReview" = "レビューと承認";
+"tasks.process.activitiInvitationNominated" = "招待";
 "tasks.process.jbpm$wf:adhoc" = "アドホックワークフロー";
 "tasks.process.jbpm$wf:parallelreview" = "並列のレビューと承認";
 "tasks.process.jbpm$wf:review" = "レビューと承認";
+"tasks.process.jbpm$invitationNominated" = "招待";
 
 /**
  * Create Tasks
  */
-"task.choose.task.type.title" = "タスクのタイプを選択";
-"task.type.workflow.todo" = "To do";
+"task.choose.task.type.title" = "タスクの種類の選択";
+"task.type.workflow.todo" = "タスクの割り当て";
 "task.type.workflow.review.and.approve" = "レビューと承認";
+"task.type.workflow.invitation" = "招待";
 "task.type.workflow.todo.footer" = "タスクを担当者に割り当てます。";
-"task.type.workflow.review.and.approve.footer" = "タスクを複数の担当者に割り当て、ファイルのレビューと承認を行います。";
+"task.type.workflow.review.and.approve.footer" = "ファイルのレビューと承認を行う担当者にタスクを割り当てます。";
 
-"task.create.title" = "タスクを作成";
+"task.create.title" = "タスクの作成";
 "task.create.button" = "作成";
 "task.create.taskTitle" = "タイトル";
 "task.create.taskTitle.placeholder" = "新しいタスク";
@@ -616,11 +623,11 @@
 "task.create.priority.high" = "高";
 "task.create.priority.medium" = "中";
 "task.create.priority.low" = "低";
-"task.create.emailnotification" = "Eメール通知";
+"task.create.emailnotification" = "E メール通知";
 "task.create.approvers" = "承認者";
 "task.create.approver" = "承認者";
-"task.create.created" = "作成済みタスク";
-"task.create.error" = "タスクの作成ができませんでした";
+"task.create.created" = "タスクが作成されました";
+"task.create.error" = "タスクを作成できませんでした";
 
 /* Date picker */
 "date.picker.title" = "カレンダー";
@@ -631,73 +638,86 @@
  */
 "settings.title" = "設定";
 "settings.general.title" = "一般";
-"settings.sync.on.cellular" = "セルラー同期";
+"settings.sync.on.cellular" = "携帯電話の同期";
 "settings.sync.on.cellular.description" = "Wi-Fi 経由でお気に入りのコンテンツを同期する場合にのみスイッチをオフにしてください。";
-"settings.send.diagnostics" = "診断を送信";
-"settings.send.diagnostics.description" = "Alfrescoモバイルの改善に役立てるため、弊社は匿名の技術的な診断データを収集しています。よろしければ、スイッチをオフにしてください。";
+"settings.send.diagnostics" = "診断データの送信";
+"settings.send.diagnostics.description" = "弊社は、Alfresco Mobile の改善に役立てるために技術的な診断データを匿名で収集しています。 データの提供を希望されない場合は、スイッチをオフにしてください。";
 "settings.security.title" = "セキュリティ";
 "settings.security.file.protection" = "ファイルの保護";
-"settings.security.file.protection.description" = "デバイスをロックするとデバイスに保存したファイルを暗号化します";
+"settings.security.file.protection.description" = "デバイスがロックされているときに、デバイスに保存されているファイルを暗号化します。";
+"settings.reset.title" = "データの消去";
+"settings.reset.accounts" = "アカウントの消去";
+"settings.reset.accounts.confirmation.title" = "アカウントを消去しますか?";
+"settings.reset.accounts.confirmation.message" = "すべてのアカウントを削除してもよろしいですか?\n\n一度削除すると元に戻せません。";
+"settings.reset.entire.app" = "アカウント、キャッシュ、ダウンロード済みファイルの消去";
+"settings.reset.entire.app.confirmation.title" = "アカウント、キャッシュ、ダウンロード済みファイルを消去しますか?";
+"settings.reset.entire.app.confirmation.message" = "すべてのアカウント、キャッシュ、ダウンロード済みファイルを削除してもよろしいですか?\n\n一度削除すると元に戻せません。";
+"settings.reset.confirmation.title" = "データが消去されました";
+"settings.reset.confirmation.message" = "消去を完了するために Alfresco を再起動してください。\n\n再起動するには、デバイスのホームボタンを 2 回押して、実行中のアプリを表示します。 「Alfresco」を画面の上の方にスワイプして消去します。 これでまた Alfresco が使えるようになります。";
+"settings.reset.description" = "アカウントを消去すると、そのアプリからすべてのアカウントが削除されます。 アカウント、キャッシュ、ダウンロード済みファイルを消去すると、アプリがリセットされ、新しくインストールできる状態になります。";
+"settings.full.text.search" = "全コンテンツ検索";
+"settings.full.text.search.description" = "ファイルだけでなく、そのコンテンツも一緒に検索する場合は、全コンテンツ検索のスイッチをオンにします。";
+
 
 /**
  * Onboarding View Controller
  */
-"onboarding.setup.cloud.button.title" = "Alfresco Cloudを登録";
+"onboarding.setup.cloud.button.title" = "Alfresco Cloud への登録";
 "onboarding.setup.existing.account.button.title" = "ログイン";
 "onboarding.help.button.title" = "ヘルプ";
 
 /**
  * Action Sheet Actions
  */
-"action.email" = "Eメール";
-"action.emailAsLink" = "Eメール リンク";
-"action.open.in" = "プログラムから開く...";
+"action.email" = "E メール";
+"action.emailAsLink" = "E メールリンク";
+"action.open.in" = "次の方法で開く...";
 "action.like" = "いいね!";
-"action.unlike" = "[いいね!]を取り消す";
+"action.unlike" = "[いいね!] の削除";
 "action.favourite" = "お気に入り";
-"action.unfavourite" = "お気に入りを解除";
+"action.unfavourite" = "お気に入りの解除";
 "action.comment" = "コメント";
 "action.download" = "ダウンロード";
 "action.print" = "印刷";
-"action.rename" = "名前を変更";
-"action.subfolder" = "フォルダーを追加";
+"action.rename" = "名前の変更";
+"action.subfolder" = "フォルダの追加";
 "action.upload" = "アップロード";
 "action.review" = "レビュー";
 "action.edit" = "編集";
 "action.new.version" = "更新";
 // Alerts
-"action.rename.alert.title" = "名前を変更";
-"action.rename.alert.message" = "ファイル名を変更する:";
-"action.rename.success.title" = "名前の変更は正常に行なわれました";
-"action.rename.success.message" = "%@から%@への名前の変更は正常に行われました。";
-"action.subfolder.success.title" = "追加されたサブフォルダ";
-"action.subfolder.success.message" = "%@は、正常に作成されました。";
-"action.subfolder.failure.title" = "サブフォルダを作成できません。";
+"action.rename.alert.title" = "名前の変更";
+"action.rename.alert.message" = "ファイルを次の名前に変更:";
+"action.rename.success.title" = "名前が変更されました";
+"action.rename.success.message" = "名前が %@ から %@ に変更されました。";
+"action.subfolder.success.title" = "サブフォルダが追加されました";
+"action.subfolder.success.message" = "%@ が正常に作成されました。";
+"action.subfolder.failure.title" = "サブフォルダを作成できません";
 "action.delete" = "削除";
-"action.delete.confirmation.title" = "確認を削除";
-"action.delete.confirmation.message" = "このファイルを削除してもよろしいですか？";
-"action.delete.success.title" = "正常に削除";
-"action.delete.success.message" = "%@を正常に削除しました。";
-"action.delete.success.message.sync" = "%@を正常に削除しました。コピーをローカルファイルに保存しました";
+"action.delete.confirmation.title" = "削除の確認";
+"action.delete.confirmation.message" = "このファイルを削除してもよろしいですか?";
+"action.delete.success.title" = "正常に削除されました";
+"action.delete.success.message" = "%@ が正常に削除されました。";
+"action.delete.success.message.sync" = "%@ が正常に削除されました。コピーはローカルファイルに保存されています。";
 "action.delete.failed.title" = "削除できませんでした";
-"action.delete.failed.message" = "%@を削除できませんでした。";
+"action.delete.failed.message" = "%@ を削除できませんでした。";
 
 /**
  * SaveBack
  */
-"saveback.hud.message" = "保存中...";
-"saveback.saved.successfully.message" = "ファイル%@は正常に保存されました。";
-"saveback.completed.title" = "セーブバックしました";
-"saveback.completed.message" = "%@は、正常にセーブバックされました";
-"saveback.failed.title" = "セーブバックできませんでした";
-"saveback.failed.message" = "%@は、ローカルファイルに保存されました";
+"saveback.hud.message" = "保存しています...";
+"saveback.saved.successfully.message" = "ファイル %@ が正常に保存されました。";
+"saveback.completed.title" = "元の場所に保存されました";
+"saveback.completed.message" = "%@ が Alfresco の元の場所に保存されました。";
+"saveback.failed.title" = "元の場所に保存できませんでした";
+"saveback.failed.message" = "%@ は元のローカルファイルに保存されました";
 // Location Picker
 "saveback.locationpicker.title" = "場所を選択してください";
 "saveback.locationpicker.other" = "その他";
 "saveback.upload.completed.title" = "アップロードが完了しました";
-"saveback.upload.completed.message" = "%@は正常に%@にアップロードされました";
+"saveback.upload.completed.message" = "%@ が %@ に正常にアップロードされました";
 "saveback.upload.failed.title" = "アップロードできませんでした";
-"saveback.upload.failed.message" = "%@は%@にアップロードできませんでした";
+"saveback.upload.failed.message" = "%@ を %@ にアップロードできませんでした";
 
 /**
  * New Version View Controller
@@ -706,33 +726,49 @@
 "new.version.upload" = "更新";
 "new.version.file.title" = "新しいバージョン";
 "new.version.file.placeholder" = "ファイルが選択されていません";
-"new.version.major.version.title" = "主な変更";
+"new.version.major.version.title" = "大きな変更";
 "new.version.comment.title" = "コメント";
 "new.version.commet.placeholder" = "バージョンへのコメント (任意)";
-"new.version.upload.successful.title" = "ファイルを更新しました";
-"new.version.upload.successful.message" = "%@は正常に更新されました";
+"new.version.upload.successful.title" = "ファイルが更新されました";
+"new.version.upload.successful.message" = "%@ は正常に更新されました";
 
 /**
  * File Preview Controller
  */
-"file.preview.loading.document.from.file" = "ファイルの読み込み";
+"file.preview.loading.document.from.file" = "ファイルを読み込んでいます";
 
 /**
  * File Protection Manager
  */
 "fileprotection.title" = "ファイルの保護";
-"fileprotection.available.message" = "ファイルの保護が利用できます。有効にしますか?";
+"fileprotection.available.message" = "ファイルの保護を使用できます。 この機能を有効にしますか?";
 "fileprotection.available.confirm" = "保護する";
-"fileprotection.unavailable.message" = "ファイル保護機能はこれ以上ご利用いただけません";
-"fileprotection.protecting.message" = "ローカルファイルを保護中...";
-"fileprotection.unprotecting.message" = "ローカルファイルの保護を解除中...";
+"fileprotection.unavailable.message" = "ファイルの保護機能は使用できなくなりました";
+"fileprotection.protecting.message" = "ローカルファイルを保護しています...";
+"fileprotection.unprotecting.message" = "ローカルファイルの保護を解除しています...";
 
 /**
  * Mail Action
  */
 // e.g. "Sent from Alfresco Mobile". 'Alfresco Mobile' will not be localized.
-"mail.footer" = "送信者 %@";
+"mail.footer" = "%@ から送信されました";
+
+/**
+ * MDM
+ */
+"mdm.missing.keys.description" = "次のキーは設定されていません:\n%@\n管理者にお問い合わせください。";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */
+
+/**
+ * Connection Diagnostic
+ */
+"connectiondiagnostic.event.reachability" = "ネットワークの接続をチェックしています";
+"connectiondiagnostic.event.serverversion" = "サーバーの接続をチェックしています";
+"connectiondiagnostic.event.repositoriesavailable" = "Alfresco で認証しています";
+"connectiondiagnostic.event.connectrepository" = "Alfresco に接続しています";
+"connectiondiagnostic.event.retrieverootfolder" = "リポジトリの接続をチェックしています";
+"connectiondiagnostic.button.retrywithdiagnostic" = "診断を再試行";
+"connectiondiagnostic.title" = "接続の診断";
