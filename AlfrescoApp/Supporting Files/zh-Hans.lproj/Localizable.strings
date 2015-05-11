@@ -90,8 +90,8 @@
 "sync-errors.unfavorited-on-server-with-local-changes.header" = "以下文件已在服务器上取消收藏，但有本地更改。 选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在服务器上删除，但副本已保存到您的 \"本地文件\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。 选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
-"sync-errors.button.sync" = "同步";
-"sync-errors.button.save" = "保存";
+"sync-errors.button.sync" = "同步"; // string length should not be extended
+"sync-errors.button.save" = "保存"; // string length should not be extended
 
 /**
  * Errors
@@ -154,9 +154,9 @@
  */
 "sites.title" = "站点";
 "sites.empty" = "无站点";
-"sites.segmentControl.mysites" = "我的站点";
-"sites.segmentControl.favoritesites" = "收藏站点";
-"sites.segmentControl.allsites" = "所有站点";
+"sites.segmentControl.mysites" = "我的站点"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "收藏站点"; // string length should not be extended
+"sites.segmentControl.allsites" = "所有站点"; // string length should not be extended
 "sites.site.favorited.banner" = "您已收藏 %@";
 "sites.site.unfavorited.banner" = "您已取消收藏 %@";
 "sites.site.requested.to.join.banner" = "已发出加入 %@ 的请求";
@@ -165,12 +165,12 @@
 "sites.site.left.banner" = "您已离开 %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "收藏";
-"sites.siteCell.unfavorite" = "取消收藏";
-"sites.siteCell.leave" = "离开";
-"sites.siteCell.cancel.request" = "取消请求";
-"sites.siteCell.request.to.join" = "请求加入";
-"sites.siteCell.join" = "加入";
+"sites.siteCell.favorite" = "收藏"; // string length should not be extended
+"sites.siteCell.unfavorite" = "取消收藏"; // string length should not be extended
+"sites.siteCell.leave" = "离开"; // string length should not be extended
+"sites.siteCell.cancel.request" = "取消请求"; // string length should not be extended
+"sites.siteCell.request.to.join" = "请求加入"; // string length should not be extended
+"sites.siteCell.join" = "加入"; // string length should not be extended
 
 /**
  * Accounts View Controller

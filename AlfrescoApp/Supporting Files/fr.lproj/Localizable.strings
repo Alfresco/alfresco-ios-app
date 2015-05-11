@@ -90,8 +90,8 @@
 "sync-errors.unfavorited-on-server-with-local-changes.header" = "Les fichiers suivants ont été retirés des favoris sur le serveur, mais ils comportent des modifications locales. Choisissez comment procéder pour chaque fichier.\n\nLes fichiers seront enregistrés dans \"Fichiers locaux\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "Les fichiers suivants ont été supprimés du serveur mais des copies ont été enregistrées dans vos \"Fichiers locaux\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "Les fichiers suivants sont en attente de synchronisation et comportent de modifications locales. Choisissez comment procéder pour chaque fichier.\n\nLes fichiers seront enregistrés dans \"Fichiers locaux\"";
-"sync-errors.button.sync" = "Synchronisation";
-"sync-errors.button.save" = "Enregistrer";
+"sync-errors.button.sync" = "Synchronisation"; // string length should not be extended
+"sync-errors.button.save" = "Enregistrer"; // string length should not be extended
 
 /**
  * Errors
@@ -154,9 +154,9 @@
  */
 "sites.title" = "Sites";
 "sites.empty" = "Pas de site";
-"sites.segmentControl.mysites" = "Mes sites";
-"sites.segmentControl.favoritesites" = "Sites favoris";
-"sites.segmentControl.allsites" = "Tous les sites";
+"sites.segmentControl.mysites" = "Mes sites"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "Sites favoris"; // string length should not be extended
+"sites.segmentControl.allsites" = "Tous les sites"; // string length should not be extended
 "sites.site.favorited.banner" = "Vous avez ajouté %@ aux favoris";
 "sites.site.unfavorited.banner" = "Vous avez retiré %@ des favoris";
 "sites.site.requested.to.join.banner" = "Une demande à rejoindre %@ a été envoyée";
@@ -165,12 +165,12 @@
 "sites.site.left.banner" = "Vous êtes désabonné de %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Favori";
-"sites.siteCell.unfavorite" = "Supprimer des favoris";
-"sites.siteCell.leave" = "Se désabonner";
-"sites.siteCell.cancel.request" = "Annuler la demande";
-"sites.siteCell.request.to.join" = "Demander à rejoindre";
-"sites.siteCell.join" = "Rejoindre";
+"sites.siteCell.favorite" = "Favori"; // string length should not be extended
+"sites.siteCell.unfavorite" = "Supprimer des favoris"; // string length should not be extended
+"sites.siteCell.leave" = "Se désabonner"; // string length should not be extended
+"sites.siteCell.cancel.request" = "Annuler la demande"; // string length should not be extended
+"sites.siteCell.request.to.join" = "Demander à rejoindre"; // string length should not be extended
+"sites.siteCell.join" = "Rejoindre"; // string length should not be extended
 
 /**
  * Accounts View Controller

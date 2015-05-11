@@ -90,8 +90,8 @@
 "sync-errors.unfavorited-on-server-with-local-changes.header" = "次のファイルは、サーバー上ではお気に入りから削除されていますが、ローカルで変更されています。 各ファイルの処理方法を選択してください。\n\nファイルは \"ローカルファイル\"に保存されます。";
 "sync-errors.deleted-on-server-with-local-changes.header" = "次のファイルは、サーバーでは削除されていますが、コピーが \"ローカルファイル\"に保存されています。";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "次のファイルは、 同期が保留中で、ローカルで変更されています。 各ファイルの処理方法を選択してください。\n\nファイルは \"ローカルファイル\"に保存されます。";
-"sync-errors.button.sync" = "同期";
-"sync-errors.button.save" = "保存";
+"sync-errors.button.sync" = "同期"; // string length should not be extended
+"sync-errors.button.save" = "保存"; // string length should not be extended
 
 /**
  * Errors
@@ -154,9 +154,9 @@
  */
 "sites.title" = "サイト";
 "sites.empty" = "サイトはありません";
-"sites.segmentControl.mysites" = "あなたのサイト";
-"sites.segmentControl.favoritesites" = "お気に入りのサイト";
-"sites.segmentControl.allsites" = "すべてのサイト";
+"sites.segmentControl.mysites" = "あなたのサイト"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "お気に入りのサイト"; // string length should not be extended
+"sites.segmentControl.allsites" = "すべてのサイト"; // string length should not be extended
 "sites.site.favorited.banner" = "%@ をお気に入りに追加しました";
 "sites.site.unfavorited.banner" = "%@ をお気に入りから削除しました";
 "sites.site.requested.to.join.banner" = "%@ への参加リクエストが送信されました";
@@ -165,12 +165,12 @@
 "sites.site.left.banner" = "%@ から退会しました";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "お気に入り";
-"sites.siteCell.unfavorite" = "お気に入りの解除";
-"sites.siteCell.leave" = "退会";
-"sites.siteCell.cancel.request" = "リクエストのキャンセル";
-"sites.siteCell.request.to.join" = "参加リクエストの送信";
-"sites.siteCell.join" = "参加";
+"sites.siteCell.favorite" = "お気に入り"; // string length should not be extended
+"sites.siteCell.unfavorite" = "お気に入りの解除"; // string length should not be extended
+"sites.siteCell.leave" = "退会"; // string length should not be extended
+"sites.siteCell.cancel.request" = "リクエストのキャンセル"; // string length should not be extended
+"sites.siteCell.request.to.join" = "参加リクエストの送信"; // string length should not be extended
+"sites.siteCell.join" = "参加"; // string length should not be extended
 
 /**
  * Accounts View Controller

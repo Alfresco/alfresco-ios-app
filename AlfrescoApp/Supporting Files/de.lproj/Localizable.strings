@@ -90,8 +90,8 @@
 "sync-errors.unfavorited-on-server-with-local-changes.header" = "Bei den folgenden Dateien wurde die Markierung als Favorit auf dem Server aufgehoben. Es wurden jedoch lokale Änderungen vorgenommen. Wählen Sie aus, wie mit jeder Datei fortgefahren werden soll.\n\nDateien werden in \"Lokale Dateien\" gespeichert";
 "sync-errors.deleted-on-server-with-local-changes.header" = "Die folgenden Dateien wurden auf dem Server gelöscht, aber es wurden Kopien im Ordner \"Lokale Dateien\" gespeichert.";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "Die Synchronisierung folgender Dateien mit lokalen Änderungen steht aus. Wählen Sie aus, wie mit jeder Datei fortgefahren werden soll.\n\nDateien werden in \"Lokale Dateien\" gespeichert";
-"sync-errors.button.sync" = "Synchronisieren";
-"sync-errors.button.save" = "Speichern";
+"sync-errors.button.sync" = "Synchronisieren"; // string length should not be extended
+"sync-errors.button.save" = "Speichern"; // string length should not be extended
 
 /**
  * Errors
@@ -154,9 +154,9 @@
  */
 "sites.title" = "Sites";
 "sites.empty" = "Keine Sites";
-"sites.segmentControl.mysites" = "Meine Sites";
-"sites.segmentControl.favoritesites" = "Favoriten-Sites";
-"sites.segmentControl.allsites" = "Alle Sites";
+"sites.segmentControl.mysites" = "Meine Sites"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "Favoriten-Sites"; // string length should not be extended
+"sites.segmentControl.allsites" = "Alle Sites"; // string length should not be extended
 "sites.site.favorited.banner" = "Sie haben %@ als Favoriten markiert";
 "sites.site.unfavorited.banner" = "Sie haben die Markierung von %@ als Favoriten aufgehoben";
 "sites.site.requested.to.join.banner" = "Eine Anfrage, %@ beizutreten, wurde gesendet";
@@ -165,12 +165,12 @@
 "sites.site.left.banner" = "Sie haben sich bei %@ abgemeldet";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Favorit";
-"sites.siteCell.unfavorite" = "Entfernen";
-"sites.siteCell.leave" = "Abmelden";
-"sites.siteCell.cancel.request" = "Antrag zurückziehen";
-"sites.siteCell.request.to.join" = "Beitritt beantragen";
-"sites.siteCell.join" = "Beitreten";
+"sites.siteCell.favorite" = "Favorit"; // string length should not be extended
+"sites.siteCell.unfavorite" = "Entfernen"; // string length should not be extended
+"sites.siteCell.leave" = "Abmelden"; // string length should not be extended
+"sites.siteCell.cancel.request" = "Antrag zurückziehen"; // string length should not be extended
+"sites.siteCell.request.to.join" = "Beitritt beantragen"; // string length should not be extended
+"sites.siteCell.join" = "Beitreten"; // string length should not be extended
 
 /**
  * Accounts View Controller
