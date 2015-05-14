@@ -16,7 +16,7 @@
 "Add" = "Ajouter";
 "Done" = "Terminé";
 "Retry" = "Réessayer";
-"Upload" = "Envoyer";
+"Upload" = "Ajouter";
 "Close" = "Fermer";
 "Next" = "Suivant";
 "No Files" = "Aucun fichier";
@@ -275,7 +275,7 @@
  * Folder/Document View Controller
  */
 "browser.actionsheet.addfolder" = "Créer un dossier";
-"browser.actionsheet.upload" = "Envoyer";
+"browser.actionsheet.upload" = "Ajouter";
 "browser.actionsheet.upload.existingPhotos" = "Sélectionner photos";
 "browser.actionsheet.upload.existingPhotosOrVideos" = "Sélectionner photos ou vidéos";
 "browser.actionsheet.upload.documents" = "Choisir un fichier local";
@@ -287,7 +287,7 @@
 "browser.alertview.addfolder.message" = "Créer un dossier du nom de :";
 "browser.alertview.addfolder.create" = "Créer";
 
-"browser.actionsheet.record.audio" = "Enregistrer son";
+"browser.actionsheet.record.audio" = "Enregistrer un fichier audio";
 
 /**
  * MultiSelect
@@ -349,10 +349,10 @@
 /**
  * Upload Form Controller
  */
-"upload.photo.title" = "Télécharger l’image";
-"upload.document.title" = "Télécharger un fichier";
+"upload.photo.title" = "Ajouter une mage";
+"upload.document.title" = "Ajouter un fichier";
 "upload.video.title" = "Ajouter une vidéo";
-"upload.audio.title" = "Envoyer. audio";
+"upload.audio.title" = "Ajouter un fichier audio";
 "upload.photo.namecell.title" = "Nom";
 "upload.photo.namecell.textfield.placeholder.text" = "Nom de fichier";
 "upload.photo.tagcell.textlabel.placeholder.text" = "Aucun tag";
@@ -371,9 +371,9 @@
 "upload.audio.setting.disabled.message" = "Cette application ne dispose pas des permissions pour accéder au microphone.\n\nModifiez cette configuration dans Paramètres -> Confidentialité -> Microphone.";
 // confirmation
 "upload.confirm.dismissal.title" = "Contenu non enregistré";
-"upload.confirm.dismissal.message" = "Voulez-vous envoyer ce contenu au serveur ? Votre contenu sera perdu si vous ne l’envoyez pas maintenant.";
-"upload.confirm.dismissal.cancel" = "Ne pas envoyer";
-"upload.success-as.message" = "Fichier envoyé en tant que %@";
+"upload.confirm.dismissal.message" = "Voulez-vous ajouter ce contenu au serveur ? Votre contenu sera perdu si vous ne l’ajoutez pas maintenant.";
+"upload.confirm.dismissal.cancel" = "Ne pas ajouter";
+"upload.success-as.message" = "Fichier ajouté en tant que %@";
 
 /**
  * Tag Selection Controller
@@ -503,9 +503,9 @@
 "metadata.version.history.cell" = "Afficher l’historique des versions";
 
 "metadata.section.header.general" = "Général";
-"metadata.section.header.geographic" = "Infos géographiques";
-"metadata.section.header.image" = "Infos sur l’image";
-"metadata.section.header.audio" = "Information sur le son";
+"metadata.section.header.geographic" = "Informations géographiques";
+"metadata.section.header.image" = "Informations sur l’image";
+"metadata.section.header.audio" = "Informations audio";
 
 /**
  * Version History View Controller
@@ -681,7 +681,7 @@
 "action.print" = "Imprimer";
 "action.rename" = "Renommer";
 "action.subfolder" = "Ajouter dossier";
-"action.upload" = "Envoyer";
+"action.upload" = "Ajouter";
 "action.review" = "Réviser";
 "action.edit" = "Éditer";
 "action.new.version" = "Mis à jour";
@@ -714,10 +714,10 @@
 // Location Picker
 "saveback.locationpicker.title" = "Choisir l’emplacement";
 "saveback.locationpicker.other" = "Autres";
-"saveback.upload.completed.title" = "Envoi vers le serveur terminé";
-"saveback.upload.completed.message" = "L’envoi de %@ vers %@ a réussi";
-"saveback.upload.failed.title" = "L’envoi a échoué";
-"saveback.upload.failed.message" = "L'envoi de %@ vers %@ a échoué";
+"saveback.upload.completed.title" = "Ajout au serveur terminé";
+"saveback.upload.completed.message" = "L’ajout de %@ à %@ a réussi";
+"saveback.upload.failed.title" = "L’ajout a échoué";
+"saveback.upload.failed.message" = "L'ajout de %@ à %@ a échoué";
 
 /**
  * New Version View Controller
