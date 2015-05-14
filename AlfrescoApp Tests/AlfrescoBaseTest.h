@@ -17,14 +17,10 @@
  ******************************************************************************/
 
 #import <XCTest/XCTest.h>
-//#import "AlfrescoTestMacros.h"
-#import "AlfrescoRepositorySession.h"
-#import "AlfrescoCloudSession.h"
-#import "AlfrescoDocument.h"
-#import "AlfrescoDocumentFolderService.h"
-#import "AlfrescoSiteService.h"
-#import "CMISSession.h"
-#import "CMISFolder.h"
+#import <AlfrescoSDK-iOS/AlfrescoSDK.h>
+
+@class CMISSession;
+@class CMISFolder;
 
 #define TIMEINTERVAL 120
 #define TIMEGAP 5
@@ -80,5 +76,6 @@ typedef void (^AlfrescoSessionTestBlock)(id<AlfrescoSession> session);
 - (void)setUpTestImageFile:(NSString *)filePath;
 - (void)resetTestVariables;
 - (NSString *)userTestConfigFolder;
+- (NSString *)failureMessageFromError:(NSError *)error;
 
 @end

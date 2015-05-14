@@ -1,0 +1,899 @@
+{
+    "info":
+    {
+        "schema-version": 0.1
+    },
+    "repository":
+    {
+        "share-url": "http://ec2-176-34-173-67.eu-west-1.compute.amazonaws.com/share",
+        "cmis-url": "http://ec2-176-34-173-67.eu-west-1.compute.amazonaws.com/alfresco/cmisatom"
+    },
+    "profiles":
+    {
+        "default":
+        {
+            "default": true,
+            "label-id": "profile.default.label",
+            "description-id": "profile.default.description",
+            "root-view-id": "root-navigation"
+        },
+        "custom":
+        {
+            "label-id": "profile.custom.label",
+            "description-id": "profile.custom.description",
+            "root-view-id": "views-menu-default"
+        }
+    },
+    "features":
+    [
+        {
+            "id": "com.alfresco.client.feature.dataprotection",
+            "label-id": "feature.data-protection.label",
+            "description-id": "feature.data-protection.description"
+        },
+        {
+             "id": "com.alfresco.client.feature.storage",
+             "label-id": "feature.storgage.label",
+             "description-id": "feature.storgage.description"
+        }
+    ],
+    "view-groups":
+    [
+        {
+            "id": "root-navigation",
+            "label-id": "Root Navigation",
+            "items":
+            [
+                {
+                    "item-type": "view-group-id",
+                    "view-group-id": "views-menu-default"
+                },
+                {
+                    "item-type": "view-id",
+                    "view-id": "view-tasks"
+                }
+            ]
+        },
+        {
+            "id": "views-menu-default",
+            "label-id": "Default Menu",
+            "items":
+            [
+                {
+                    "item-type": "view-id",
+                    "view-id": "view-activities-default"
+                },
+                {
+                    "item-type": "view-id",
+                    "view-id": "view-repository-default"
+                },
+                {
+                    "item-type": "view",
+                    "view":
+                    {
+                        "type": "com.alfresco.client.view.sites",
+                        "label-id": "Sites",
+                        "icon-id": "Sites Icon",
+                        "description-id": "Sites Description"
+                    }
+                }
+             ]
+        },
+        {
+            "id": "sub-group-test",
+            "label-id": "Sub Group Test",
+            "items":
+            [
+                {
+                    "item-type": "view-group",
+                    "view-group":
+                    {
+                        "id": "level1",
+                        "label-id": "Level 1",
+                        "items":
+                        [
+                            {
+                                "item-type": "view-group",
+                                "view-group":
+                                {
+                                    "id": "level2",
+                                    "label-id": "Level 2",
+                                    "items":
+                                    [
+                                        {
+                                            "item-type": "view-group",
+                                            "view-group":
+                                            {
+                                                "id": "level3",
+                                                "label-id": "Level 3",
+                                                "items":
+                                                [
+                                                    {
+                                                        "item-type": "view",
+                                                        "view":
+                                                        {
+                                                            "id": "viewAtLevel3",
+                                                            "type": "com.alfresco.client.view.sites"
+                                                        }
+                                                    },
+                                                    {
+                                                        "item-type": "view-group-id",
+                                                        "view-group-id": "views-menu-default"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "evaluator-test",
+            "label-id": "Evaluator Test",
+            "items":
+            [
+                {
+                    "item-type": "view-id",
+                    "view-id": "view-tasks"
+                },
+                {
+                    "evaluator": "isAlfrescoV42",
+                    "item-type": "view-id",
+                    "view-id": "view-my-repository-files"
+                }
+            ]
+        }
+    ],
+    "views":
+    {
+        "view-activities-default":
+        {
+            "type": "com.alfresco.client.view.activities",
+            "label-id": "Activities",
+            "icon-id": "Activities Icon",
+            "description-id": "Activities Description"
+        },
+        "view-repository-default":
+        {
+            "type": "com.alfresco.client.view.repository",
+            "params":
+            {
+                "startLocation": "companyhome"
+            }
+        },
+        "view-tasks":
+        {
+            "type": "com.alfresco.client.view.tasks",
+            "label-id": "Tasks"
+        },
+        "view-my-repository-files":
+        {
+            "type": "com.alfresco.client.view.repository",
+            "params":
+            {
+                "startLocation": "userhome"
+            }
+        }
+    },
+    "creation":
+    {
+        "mime-types":
+        [
+            {
+                "id": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "label-id": "Word Document",
+                "icon-id": "Word Icon",
+                "description-id": "Microsoft Office 2007 Word Document"
+            }
+        ],
+        "folder-types":
+        [
+            {
+                "id": "cm:folder",
+                "label-id": "Default Folder",
+                "icon-id": "Default Folder Icon",
+                "description-id": "Default Description Folder"
+            }
+         ]
+    },
+    "forms":
+    [
+        {
+            "id": "view-properties",
+            "label-id": "view.properties.title",
+            "description-id": "view.properties.description",
+            "layout": "1column",
+            "items":
+            [
+                {
+                    "item-type": "field-group-id",
+                    "field-group-id": "${type-properties}"
+                },
+                {
+                    "item-type": "field-group-id",
+                    "field-group-id": "${aspects}"
+                }
+             ]
+        },
+        {
+            "id": "edit-properties",
+            "items":
+            [
+                {
+                    "item-type": "field-group-id",
+                    "field-group-id": "edit:cm:content"
+                }
+            ]
+        },
+        {
+            "id": "sub-group-test",
+            "label-id": "Sub Group Test",
+            "items":
+            [
+                {
+                    "item-type": "field-group",
+                    "field-group":
+                    {
+                        "id": "level1",
+                        "label-id": "Level 1",
+                        "items":
+                        [
+                            {
+                                "item-type": "field-group",
+                                "field-group":
+                                {
+                                    "id": "level2",
+                                    "label-id": "Level 2",
+                                    "items":
+                                    [
+                                        {
+                                            "item-type": "field-group",
+                                            "field-group":
+                                            {
+                                                "id": "level3",
+                                                "label-id": "Level 3",
+                                                "items":
+                                                [
+                                                    {
+                                                        "item-type": "field",
+                                                        "field":
+                                                        {
+                                                            "model-id": "viewAtLevel3"
+                                                        }
+                                                    },
+                                                    {
+                                                        "item-type": "field-group-id",
+                                                        "field-group-id": "type:cm:content"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "evaluator-test",
+            "label-id": "Evaluator Test",
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:name"
+                },
+                {
+                    "evaluator": "usingDefaultProfile",
+                    "item-type": "field-id",
+                    "field-id": "cm:title"
+                },
+                {
+                    "evaluator": "formInViewMode",
+                    "item-type": "field-id",
+                    "field-id": "cm:modified"
+                },
+                {
+                    "evaluator": "fdkEverythingType",
+                    "item-type": "field-id",
+                    "field-id": "size"
+                },
+                {
+                    "evaluator": "hasAudioAspect",
+                    "item-type": "field-id",
+                    "field-id": "audio:album"
+                }
+            ]
+        }
+    ],
+    "field-groups":
+    {
+        "type:cm:content":
+        {
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:name"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:title"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:description"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "mimetype"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:author"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "size"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:creator"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:created"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:modifier"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:modified"
+                }
+            ]
+        },
+        "type:cm:folder":
+        {
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:name"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:title"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:description"
+                }
+            ]
+        },
+        "type:fdk:everything":
+        {
+            "items":
+            [
+                {
+                    "item-type": "field-group-id",
+                    "field-group-id": "edit:cm:content"
+                },
+                {
+                    "item-type": "field",
+                    "field":
+                    {
+                        "model-id": "fdk:text",
+                        "label-id": "Text"
+                    }
+                },
+                {
+                    "item-type": "field",
+                    "field":
+                    {
+                        "model-id": "fdk:int",
+                        "label-id": "Int"
+                    }
+                }
+            ]
+        },
+        "edit:cm:content":
+        {
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:name"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:title"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:created"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:description"
+                }
+            ]
+        },
+        "aspect:cm:dublincore":
+        {
+            "label-id": "cm_contentmodel.aspect.cm_dublincore.title",
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:publisher"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:contributor"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:type"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:identifier"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:dcsource"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:coverage"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:rights"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "cm:subject"
+                }
+            ]
+        },
+        "aspect:audio:audio":
+        {
+            "label-id": "cm_contentmodel.aspect.audio_audio.title",
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:album"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:artist"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:composer"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:engineer"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:genre"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:trackNumber"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:releaseDate"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:sampleRate"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:sampleType"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:channelType"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "audio:compressor"
+                }
+            ]
+        },
+        "aspect:exif:exif":
+        {
+            "label-id": "cm_contentmodel.aspect.exif_exif.title",
+            "items":
+            [
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:dateTimeOriginal"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:pixelXDimension"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:pixelYDimension"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:exposureTime"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:fNumber"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:flash"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:focalLength"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:isoSpeedRatings"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:manufacturer"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:model"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:software"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:orientation"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:xResolution"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:yResolution"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "exif:resolutionUnit"
+                }
+            ]
+        },
+        "aspect:cm:geographic":
+        {
+            "label-id": "cm_contentmodel.aspect.cm_geographic.title",
+            "items":
+            [
+                {
+                    "item-type": "field",
+                    "field":
+                    {
+                        "id": "cm:latitude",
+                        "model-id": "cm:latitude",
+                        "label-id": "cm_contentmodel.property.cm_latitude.title"
+                    }
+                },
+                {
+                    "item-type": "field",
+                    "field":
+                    {
+                        "id": "cm:longitude",
+                        "model-id": "cm:longitude",
+                        "label-id": "cm_contentmodel.property.cm_longitude.title"
+                    }
+                }
+            ]
+        }
+    },
+    "fields":
+    {
+        "cm:name":
+        {
+            "model-id": "cm:name",
+            "label-id": "cm_contentmodel.property.cm_name.title"
+        },
+        "cm:title":
+        {
+            "model-id": "cm:title",
+            "label-id": "cm_contentmodel.property.cm_title.title"
+        },
+        "cm:description":
+        {
+            "model-id": "cm:description",
+            "type": "com.alfresco.client.field.textMultiLine",
+            "label-id": "cm_contentmodel.property.cm_description.title"
+        },
+        "mimetype":
+        {
+            "model-id": "mimetype",
+            "label-id": "cm_contentmodel.property.cm_mimetype.title"
+        },
+        "cm:author":
+        {
+            "model-id": "cm:author",
+            "label-id": "cm_contentmodel.property.cm_author.title"
+        },
+        "size":
+        {
+            "model-id": "size",
+            "type": "com.alfresco.client.field.fileSize",
+            "label-id": "cm_contentmodel.property.cm_size.title"
+        },
+        "cm:creator":
+        {
+            "model-id": "cm:creator",
+            "label-id": "cm_contentmodel.property.cm_creator.title"
+        },
+        "cm:created":
+        {
+            "model-id": "cm:created",
+            "type": "com.alfresco.client.field.dateTime",
+            "label-id": "cm_contentmodel.property.cm_created.title"
+        },
+        "cm:modifier":
+        {
+            "model-id": "cm:modifier",
+            "label-id": "cm_contentmodel.property.cm_modifier.title"
+        },
+        "cm:modified":
+        {
+            "model-id": "cm:modified",
+            "type": "com.alfresco.client.field.dateTime",
+            "label-id": "cm_contentmodel.property.cm_modified.title"
+        },
+        "cm:publisher":
+        {
+            "model-id": "cm:publisher",
+            "label-id": "cm_contentmodel.property.cm_publisher.title"
+        },
+        "cm:contributor":
+        {
+            "model-id": "cm:contributor",
+            "label-id": "cm_contentmodel.property.cm_contributor.title"
+        },
+        "cm:type":
+        {
+            "model-id": "cm:type",
+            "label-id": "cm_contentmodel.property.cm_type.title"
+        },
+        "cm:identifier":
+        {
+            "model-id": "cm:identifier",
+            "label-id": "cm_contentmodel.property.cm_identifier.title"
+        },
+        "cm:dcsource":
+        {
+            "model-id": "cm:dcsource",
+            "label-id": "cm_contentmodel.property.cm_dcsource.title"
+        },
+        "cm:coverage":
+        {
+            "model-id": "cm:coverage",
+            "label-id": "cm_contentmodel.property.cm_coverage.title"
+        },
+        "cm:rights":
+        {
+            "model-id": "cm:rights",
+            "label-id": "cm_contentmodel.property.cm_rights.title"
+        },
+        "cm:subject":
+        {
+            "model-id": "cm:subject",
+            "label-id": "cm_contentmodel.property.cm_subject.title"
+        },
+        "audio:album":
+        {
+            "model-id": "audio:album",
+            "label-id": "cm_contentmodel.property.audio_album.title"
+        },
+        "audio:artist":
+        {
+            "model-id": "audio:artist",
+            "label-id": "cm_contentmodel.property.audio_artist.title"
+        },
+        "audio:composer":
+        {
+            "model-id": "audio:composer",
+            "label-id": "cm_contentmodel.property.audio_composer.title"
+        },
+        "audio:engineer":
+        {
+            "model-id": "audio:engineer",
+            "label-id": "cm_contentmodel.property.audio_engineer.title"
+        },
+        "audio:genre":
+        {
+            "model-id": "audio:genre",
+            "label-id": "cm_contentmodel.property.audio_genre.title"
+        },
+        "audio:trackNumber":
+        {
+            "model-id": "audio:trackNumber",
+            "label-id": "cm_contentmodel.property.audio_trackNumber.title"
+        },
+        "audio:releaseDate":
+        {
+            "model-id": "audio:releaseDate",
+            "label-id": "cm_contentmodel.property.audio_releaseDate.title"
+        },
+        "audio:sampleRate":
+        {
+            "model-id": "audio:sampleRate",
+            "label-id": "cm_contentmodel.property.audio_sampleRate.title"
+        },
+        "audio:sampleType":
+        {
+            "model-id": "audio:sampleType",
+            "label-id": "cm_contentmodel.property.audio_sampleType.title"
+        },
+        "audio:channelType":
+        {
+            "model-id": "audio:channelType",
+            "label-id": "cm_contentmodel.property.audio_channelType.title"
+        },
+        "audio:compressor":
+        {
+            "model-id": "audio:compressor",
+            "label-id": "cm_contentmodel.property.audio_compressor.title"
+        },
+        "exif:dateTimeOriginal":
+        {
+            "model-id": "exif:dateTimeOriginal",
+            "label-id": "cm_contentmodel.property.exif_dateTimeOriginal.title"
+        },
+        "exif:pixelXDimension":
+        {
+            "model-id": "exif:pixelXDimension",
+            "label-id": "cm_contentmodel.property.exif_pixelXDimension.title"
+        },
+        "exif:pixelYDimension":
+        {
+            "model-id": "exif:pixelYDimension",
+            "label-id": "cm_contentmodel.property.exif_pixelYDimension.title"
+        },
+        "exif:exposureTime":
+        {
+            "model-id": "exif:exposureTime",
+            "label-id": "cm_contentmodel.property.exif_exposureTime.title"
+        },
+        "exif:fNumber":
+        {
+            "model-id": "exif:fNumber",
+            "label-id": "cm_contentmodel.property.exif_fNumber.title"
+        },
+        "exif:flash": {
+            "model-id": "exif:flash",
+            "label-id": "cm_contentmodel.property.exif_flash.title"
+        },
+        "exif:focalLength":
+        {
+            "model-id": "exif:focalLength",
+            "label-id": "cm_contentmodel.property.exif_focalLength.title"
+        },
+        "exif:isoSpeedRatings":
+        {
+            "model-id": "exif:isoSpeedRatings",
+            "label-id": "cm_contentmodel.property.exif_isoSpeedRatings.title"
+        },
+        "exif:manufacturer":
+        {
+            "model-id": "exif:manufacturer",
+            "label-id": "cm_contentmodel.property.exif_manufacturer.title"
+        },
+        "exif:model":
+        {
+            "model-id": "exif:model",
+            "label-id": "cm_contentmodel.property.exif_model.title"
+        },
+        "exif:software":
+        {
+            "model-id": "exif:software",
+            "label-id": "cm_contentmodel.property.exif_software.title"
+        },
+        "exif:orientation":
+        {
+            "model-id": "exif:orientation",
+            "label-id": "cm_contentmodel.property.exif_orientation.title"
+        },
+        "exif:xResolution":
+        {
+            "model-id": "exif:xResolution",
+            "label-id": "cm_contentmodel.property.exif_xResolution.title"
+        },
+        "exif:yResolution":
+        {
+            "model-id": "exif:yResolution",
+            "label-id": "cm_contentmodel.property.exif_yResolution.title"
+        },
+        "exif:resolutionUnit":
+        {
+            "model-id": "exif:resolutionUnit",
+            "label-id": "cm_contentmodel.property.exif_resolutionUnit.title"
+        }
+    },
+    "evaluators":
+    {
+        "isAlfrescoV42":
+        {
+            "match-any": ["isAlfrescoV42-EE", "isAlfrescoV42-CE"]
+        },
+        "isAlfrescoV42-EE":
+        {
+            "type": "com.alfresco.client.evaluator.isRepositoryVersion",
+            "params":
+            {
+                "operator": ">=",
+                "edition": "Enterprise",
+                "majorVersion": 4,
+                "minorVersion": 2
+            }
+        },
+        "isAlfrescoV42-CE":
+        {
+            "type": "com.alfresco.client.evaluator.isRepositoryVersion",
+            "params":
+            {
+                "operator": ">=",
+                "edition": "Community",
+                "majorVersion": 4,
+                "minorVersion": 2
+            }
+        },
+        "usingDefaultProfile":
+        {
+            "type": "com.alfresco.client.evaluator.hasProfile",
+            "params":
+            {
+                "profile": "default"
+            }
+        },
+        "formInViewMode":
+        {
+            "type": "com.alfresco.client.evaluator.formMode",
+            "params":
+            {
+                "mode": "view"
+            }
+        },
+        "fdkEverythingType":
+        {
+            "type": "com.alfresco.client.evaluator.nodeType",
+            "params":
+            {
+                "typeName": "fdk:everything"
+            }
+        },
+        "hasAudioAspect":
+        {
+            "type": "com.alfresco.client.evaluator.hasAspect",
+            "params":
+            {
+                "aspectName": "audio:audio"
+            }
+        }
+    }
+}
