@@ -78,7 +78,7 @@
 "sync.state.failed-to-sync" = "Sincronizzazione non riuscita";
 "sync.progress.label.singular" = "Sincronizzazione di 1 file in corso, %@ rimanenti"; // example: "Syncing 1 file, 238.3 MB left"
 "sync.progress.label.plural" = "Sincronizzazione di %d file in corso, %@ rimanenti"; // example: "Syncing 5 files, 238.3 MB left"
-"sync.cancelAll.alert.title" = "Sincr.";
+"sync.cancelAll.alert.title" = "Sincronizza";
 "sync.cancelAll.alert.message" = "Vuoi annullare tutte le operazioni di sincronizzazione?";
 "sync.cancelAll.alert.button.continue" = "Continua";
 "sync.cancelAll.alert.button.stop" = "Interrompi sincronizzazione";

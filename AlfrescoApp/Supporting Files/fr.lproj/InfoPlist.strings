@@ -9,4 +9,4 @@
 
 /* Localized versions of Info.plist keys */
 NSLocationUsageDescription = "Votre emplacement géographique servira à géotaguer les photos prises avec cet appareil.";
-NSMicrophoneUsageDescription = "Le microphone servira à enregistrer du son qui pourra alors être envoyé à l’entrepôt.";
+NSMicrophoneUsageDescription = "Le microphone servira à enregistrer du son qui pourra alors être ajouté à l’entrepôt.";
