@@ -233,9 +233,14 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     return progressHUD;
 }
 
+- (void)displayErrorAlertWithMessage:(NSString *)message error:(NSError *)error
+{
+    [self displayErrorAlertWithTitle:NSLocalizedString(@"error.generic.title", @"We hit a problem") message:message error:error];
+}
+
 - (void)displayErrorAlertWithTitle:(NSString *)title message:(NSString *)message error:(NSError *)error
 {
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", @"Ok") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:nil];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];
@@ -267,7 +272,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             AlfrescoOAuthUILoginViewController *loginController = [[AlfrescoOAuthUILoginViewController alloc] initWithAPIKey:CLOUD_OAUTH_KEY secretKey:CLOUD_OAUTH_SECRET completionBlock:^(AlfrescoOAuthData *oauthData, NSError *loginControllerError) {
                 if (loginControllerError)
                 {
-                    [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:loginControllerError.localizedDescription error:loginControllerError];
+                    [self displayErrorAlertWithMessage:loginControllerError.localizedDescription error:loginControllerError];
                 }
                 else
                 {
@@ -286,7 +291,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                         }
                         else
                         {
-                            [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:loginError.localizedDescription error:loginError];
+                            [self displayErrorAlertWithMessage:loginError.localizedDescription error:loginError];
                         }
                     }];
                 }
@@ -350,7 +355,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             [progressHUD hide:YES];
             if (error)
             {
-                [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
+                [self displayErrorAlertWithMessage:error.localizedDescription error:error];
             }
             else
             {
@@ -381,7 +386,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             [progressHUD hide:YES];
             if (error)
             {
-                [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
+                [self displayErrorAlertWithMessage:error.localizedDescription error:error];
             }
             else
             {
@@ -411,7 +416,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 }
                 else
                 {
-                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", "Ok")
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", "OK")
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction *action) {
                         cacheAndDismissBlock(FileMetadataSaveLocationLocalFiles);
@@ -456,7 +461,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     }
     else
     {
-        [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
+        [self displayErrorAlertWithMessage:error.localizedDescription error:error];
     }
 }
 
@@ -582,7 +587,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     [progressHUD hide:YES];
                     if (error)
                     {
-                        [self displayErrorAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription error:error];
+                        [self displayErrorAlertWithMessage:error.localizedDescription error:error];
                     }
                     else
                     {

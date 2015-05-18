@@ -17,24 +17,35 @@
  ******************************************************************************/
 
 /**
+ * Localizable.strings
+ * AlfrescoDocumentPicker
+ *
+ * French (fr)
+ */
+
+/**
  * General
  */
-"Yes" = "Yes";
-"No" = "No";
-"Ok" = "Ok";
-"Error" = "Error";
+"Yes" = "Oui";
+"No" = "Non";
+"OK" = "OK";
 
 /**
- * Sites Scope
+ * Error Messages
  */
-"document.picker.scope.repository" = "Repository";
-"document.picker.scope.sites" = "Sites";
-"document.picker.scope.favourites" = "Favorites";
-"document.picker.scope.shared.files" = "Shared Files";
-"document.picker.scope.my.files" = "My Files";
+"error.generic.title" = "Nous avons rencontré un problème";
 
 /**
- * Local Files
+ * Browsing Scope
+ */
+"document.picker.scope.repository" = "Entrepôt";
+"document.picker.scope.sites" = "Sites";
+"document.picker.scope.favourites" = "Favoris";
+"document.picker.scope.shared.files" = "Fichiers partagés";
+"document.picker.scope.my.files" = "Mes fichiers";
+
+/**
+ * Existing File Handling
  */
 "document.picker.scope.overwrite.title" = "File Exists";
 "document.picker.scope.overwrite.message" = "A file with this name already exists. Would you like to overwrite it?";
