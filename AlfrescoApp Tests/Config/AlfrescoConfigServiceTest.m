@@ -28,7 +28,30 @@
 
 NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
 
+@interface AlfrescoConfigServiceTest ()
+@property (nonatomic, strong) NSString *localConfigFileLocation;
+@end
+
 @implementation AlfrescoConfigServiceTest
+
+- (void)setUp
+{
+    [super setUp];
+    
+    self.localConfigFileLocation = NSTemporaryDirectory();
+}
+
+- (void)tearDown
+{
+    [super tearDown];
+    
+    // Delete the local path so that the cached file is not used in follow up test runs
+    NSString *completePathToLocalConfig = [NSTemporaryDirectory() stringByAppendingPathComponent:kAlfrescoConfigServiceDefaultFileName];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:completePathToLocalConfig])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:completePathToLocalConfig error:nil];
+    }
+}
 
 - (NSDictionary *)dictionaryForConfigServiceValidTests
 {
@@ -60,6 +83,7 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
 - (id<AlfrescoSession>)sessionForConfigService
 {
     [self.currentSession setObject:kAlfrescoTestApplicationId forParameter:kAlfrescoConfigServiceParameterApplicationId];
+    [self.currentSession setObject:self.localConfigFileLocation forParameter:kAlfrescoConfigServiceParameterConfigLocalDestinationFolder];
     return self.currentSession;
 }
 

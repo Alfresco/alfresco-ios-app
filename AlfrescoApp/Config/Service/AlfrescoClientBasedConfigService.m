@@ -42,8 +42,7 @@
 @property (nonatomic, strong) NSDictionary *parameters;
 @property (nonatomic, assign) BOOL isCacheBuilt;
 @property (nonatomic, assign) BOOL isCacheBuilding;
-@property (nonatomic, strong) NSString *applicationId;
-@property (nonatomic, strong) NSURL *localFileURL;
+@property (nonatomic, strong) NSMutableArray *queuedCompletionBlocks;
 
 // cached configuration
 @property (nonatomic, strong) NSBundle *stringsBundle;
@@ -66,6 +65,19 @@
 
 #pragma mark - Initialization methods
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.isCacheBuilt = NO;
+        self.isCacheBuilding = NO;
+        self.defaultConfigScope = [[AlfrescoConfigScope alloc] initWithProfile:kAlfrescoConfigProfileDefaultIdentifier];
+        self.queuedCompletionBlocks = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
     // we can't do much without a session so just return nil
@@ -74,35 +86,45 @@
         return nil;
     }
     
-    self = [super init];
-    if (nil != self)
+    self = [self init];
+    if (self)
     {
         self.session = session;
-        self.isCacheBuilt = NO;
-        self.isCacheBuilding = NO;
-        self.defaultConfigScope = [[AlfrescoConfigScope alloc] initWithProfile:kAlfrescoConfigProfileDefaultIdentifier];
     }
-    
     return self;
 }
 
 - (instancetype)initWithDictionary:(NSDictionary *)parameters
 {
-    self = [super init];
-    if (nil != self)
+    self = [self init];
+    if (self)
     {
         self.parameters = parameters;
-        self.isCacheBuilt = NO;
-        self.isCacheBuilding = NO;
-        self.defaultConfigScope = [[AlfrescoConfigScope alloc] initWithProfile:kAlfrescoConfigProfileDefaultIdentifier];
     }
-    
     return self;
 }
+
+#pragma mark - Private Methods
 
 - (void)clear
 {
     self.isCacheBuilt = NO;
+}
+
+- (void)queueCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
+{
+    [self.queuedCompletionBlocks addObject:completionBlock];
+}
+
+- (void)runAndDequeueAllCompletionBlocksWithSuccess:(BOOL)success error:(NSError *)error
+{
+    NSArray *completionBlocks = self.queuedCompletionBlocks.copy;
+    
+    for (AlfrescoBOOLCompletionBlock block in completionBlocks)
+    {
+        block(success, error);
+        [self.queuedCompletionBlocks removeObject:block];
+    }
 }
 
 - (AlfrescoRequest *)initializeInternalStateWithCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
@@ -111,49 +133,124 @@
     {
         self.isCacheBuilding = YES;
         
+        void (^runAllCompletionBlocks)(BOOL success, NSError *error) = ^(BOOL success, NSError *error) {
+            completionBlock(success, error);
+            [self runAndDequeueAllCompletionBlocksWithSuccess:success error:error];
+        };
+        
         if (self.session != nil)
         {
-            // pull parameters from session
-            self.applicationId = [self.session objectForParameter:kAlfrescoConfigServiceParameterApplicationId];
-            
-            // TODO: use the internal non localised path, this may require us to use a query
-            NSString *configPath = [NSString stringWithFormat:@"/Data Dictionary/Mobile/%@/configuration.json", self.applicationId];
-            if (!self.applicationId)
-            {
-                configPath = [NSString stringWithFormat:@"/Data Dictionary/Mobile/configuration.json"];
-            }
-            
-            // retrieve the configuration content
-            AlfrescoDocumentFolderService *docFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
             AlfrescoRequest *request = nil;
-            request = [docFolderService retrieveNodeWithFolderPath:configPath completionBlock:^(AlfrescoNode *configNode, NSError *retrieveNodeError) {
-                if (configNode != nil)
+            AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+            request = [searchService searchWithStatement:kAlfrescoConfigApplicationDirectoryCMISSearchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *appDirectoryContents, NSError *applicationDirectoryError) {
+                if (applicationDirectoryError)
                 {
-                    AlfrescoRequest *contentRequest = [docFolderService retrieveContentOfDocument:(AlfrescoDocument*)configNode completionBlock:^(AlfrescoContentFile *contentFile, NSError *retrieveContentError) {
-                        if (configNode != nil)
-                        {
-                            // TODO: pull all *.strings files from the server's Messages folder and create a bundle from them
-                            //self.stringsBundle = [self processRemoteMessageFiles:completionBlock];
-                            
-                            AlfrescoLogDebug(@"Attempting to read configuration from %@", contentFile.fileUrl.path);
-                            
-                            // process the JSON
-                            [self processJSONData:[NSData dataWithContentsOfFile:contentFile.fileUrl.path]
-                                  completionBlock:completionBlock];
-                        }
-                        else
-                        {
-                            completionBlock(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:retrieveContentError
-                                                                            andAlfrescoErrorCode:kAlfrescoErrorCodeConfigInitializationFailed]);
-                        }
-                    } progressBlock:nil];
-                    
-                    request.httpRequest = contentRequest.httpRequest;
+                    runAllCompletionBlocks(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:applicationDirectoryError andAlfrescoErrorCode:kAlfrescoErrorCodeConfigInitializationFailed]);
                 }
                 else
                 {
-                    completionBlock(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:retrieveNodeError
-                                                                    andAlfrescoErrorCode:kAlfrescoErrorCodeConfigInitializationFailed]);
+                    AlfrescoFolder *dataDictionaryFolder = appDirectoryContents.firstObject;
+                    if (dataDictionaryFolder)
+                    {
+                        // Determine path components
+                        NSMutableArray *pathComponents = [NSMutableArray array];
+                        /// Add the localised Data Dictionary name
+                        [pathComponents addObject:dataDictionaryFolder.name];
+                        [pathComponents addObject:kAlfrescoConfigFolderPathToConfigFileRelativeToApplicationDirectory];
+                        /// Pull parameters from session
+                        NSString *applicationId = [self.session objectForParameter:kAlfrescoConfigServiceParameterApplicationId];
+                        if (applicationId)
+                        {
+                            [pathComponents addObject:applicationId];
+                        }
+                        /// Add the file name
+                        [pathComponents addObject:kAlfrescoConfigServiceDefaultFileName];
+                        
+                        // Build the full path
+                        NSString *configurationFileLocationOnServer = [self buildPathFromPathComponents:pathComponents];
+                        
+                        // Retrieve the configuration content
+                        AlfrescoDocumentFolderService *docFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+                        AlfrescoRequest *nodeRequest = [docFolderService retrieveNodeWithFolderPath:configurationFileLocationOnServer completionBlock:^(AlfrescoNode *configNode, NSError *retrieveNodeError) {
+                            if (configNode != nil)
+                            {
+                                // Has the user provided a location for the configuration file to live?
+                                NSString *configDestinationFolderPath = [self.session objectForParameter:kAlfrescoConfigServiceParameterConfigLocalDestinationFolder];
+                                if (!configDestinationFolderPath)
+                                {
+                                    configDestinationFolderPath = NSTemporaryDirectory();
+                                }
+                                
+                                NSString *completeFileConfigPath = [configDestinationFolderPath stringByAppendingPathComponent:kAlfrescoConfigServiceDefaultFileName];
+                                
+                                // Check to see if the file has been modified on the server
+                                NSError *attributesError = nil;
+                                NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:completeFileConfigPath error:&attributesError];
+                                
+                                if (attributesError)
+                                {
+                                    AlfrescoLogError(@"Unable to retrieve attributes for file at path: %@", completeFileConfigPath);
+                                }
+                                
+                                // Only initiate the download if required
+                                if (![attributes.fileModificationDate isEqualToDate:configNode.modifiedAt])
+                                {
+                                    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:completeFileConfigPath append:NO];
+                                    
+                                    AlfrescoRequest *contentRequest = [docFolderService retrieveContentOfDocument:(AlfrescoDocument *)configNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *downloadError) {
+                                        if (succeeded)
+                                        {
+                                            // TODO: pull all *.strings files from the server's Messages folder and create a bundle from them
+                                            //self.stringsBundle = [self processRemoteMessageFiles:completionBlock];
+                                            
+                                            AlfrescoLogDebug(@"Attempting to read configuration from %@", completeFileConfigPath);
+                                            
+                                            NSError *updateAttributesError = nil;
+                                            NSDictionary *updatedAttributes = @{NSFileModificationDate : configNode.modifiedAt};
+                                            [[NSFileManager defaultManager] setAttributes:updatedAttributes ofItemAtPath:completeFileConfigPath error:&updateAttributesError];
+                                            
+                                            if (updateAttributesError)
+                                            {
+                                                AlfrescoLogError(@"Unable to set the attributes: %@ on file at path: %@", updatedAttributes, completeFileConfigPath);
+                                            }
+                                            
+                                            // process the JSON
+                                            [self processJSONData:[NSData dataWithContentsOfFile:completeFileConfigPath] completionBlock:^(BOOL succeeded, NSError *error) {
+                                                // Notify processing is complete
+                                                if (succeeded)
+                                                {
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
+                                                }
+                                                runAllCompletionBlocks(succeeded, error);
+                                            }];
+                                        }
+                                        else
+                                        {
+                                            runAllCompletionBlocks(NO, downloadError);
+                                        }
+                                    } progressBlock:nil];
+                                    
+                                    request.httpRequest = contentRequest.httpRequest;
+                                }
+                                else
+                                {
+                                    // Process the file we have cached
+                                    [self processJSONData:[NSData dataWithContentsOfFile:completeFileConfigPath] completionBlock:runAllCompletionBlocks];
+                                }
+                            }
+                            else
+                            {
+                                runAllCompletionBlocks(NO, retrieveNodeError);
+                            }
+                        }];
+                        
+                        request.httpRequest = nodeRequest.httpRequest;
+                        
+                    }
+                    else
+                    {
+                        runAllCompletionBlocks(NO, applicationDirectoryError);
+                    }
                 }
             }];
             
@@ -162,7 +259,7 @@
         else
         {
             // pull parameters from dictionary
-            self.applicationId = self.parameters[kAlfrescoConfigServiceParameterApplicationId];
+//            NSString *applicationId = self.parameters[kAlfrescoConfigServiceParameterApplicationId];
             NSString *configFolder = self.parameters[kAlfrescoConfigServiceParameterFolder];
             NSString *configFileName = self.parameters[kAlfrescoConfigServiceParameterFileName];
             if (configFileName == nil)
@@ -171,7 +268,7 @@
             }
             
             // strip the extension from the config file name
-            NSString* configFileNameWithoutExtension = [[configFileName lastPathComponent] stringByDeletingPathExtension];
+            NSString *configFileNameWithoutExtension = [[configFileName lastPathComponent] stringByDeletingPathExtension];
             
             // build paths to config json and bundle
             NSString *configFilePath = [NSString stringWithFormat:@"%@/%@", configFolder, configFileName];
@@ -185,17 +282,15 @@
             AlfrescoLogDebug(@"Attempting to read configuration from %@", configFilePath);
             
             // process the JSON data from the local file
-            [self processJSONData:[NSData dataWithContentsOfFile:configFilePath]
-                  completionBlock:completionBlock];
+            [self processJSONData:[NSData dataWithContentsOfFile:configFilePath] completionBlock:runAllCompletionBlocks];
             
             return nil;
         }
     }
     else
     {
-        // TODO: handle concurrent requests, for now fail so we explicitly highlight concurrency issues
-        completionBlock(NO, [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeConfigInitializationFailed
-                                                                        reason:@"Request to initialize config whilst cache is being built"]);
+        // Queue any requests that are made whilst the cache is built.
+        [self queueCompletionBlock:completionBlock];
         return nil;
     }
 }
@@ -382,7 +477,18 @@
     }
 }
 
-#pragma mark - Retrieval methods
+- (NSString *)buildPathFromPathComponents:(NSArray *)pathComponents
+{
+    NSString *returnString = @"/";
+    for (NSString *pathComponent in pathComponents)
+    {
+        returnString = [returnString stringByAppendingPathComponent:pathComponent];
+    }
+    
+    return returnString;
+}
+
+#pragma mark - Retrieval Public Methods
 
 - (AlfrescoRequest *)retrieveConfigInfoWithCompletionBlock:(AlfrescoConfigInfoCompletionBlock)completionBlock
 {
