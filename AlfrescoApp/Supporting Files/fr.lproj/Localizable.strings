@@ -618,12 +618,12 @@
 "task.create.assignee.placeholder" = "Aucun acteur";
 "task.create.attachment" = "Pièce jointe";
 "task.create.attachments" = "Éléments attachés";
-"task.create.attachments.placeholder" = "Aucun élément attaché";
+"task.create.attachments.placeholder" = "Aucun élément"; // string length should not be extended
 "task.create.priority" = "Priorité";
 "task.create.priority.high" = "Élevée";
 "task.create.priority.medium" = "Moyenne";
 "task.create.priority.low" = "Basse";
-"task.create.emailnotification" = "Envoyer des notifications par e-mail";
+"task.create.emailnotification" = "Notifier par e-mail"; // string length should not be extended
 "task.create.approvers" = "Approbateurs";
 "task.create.approver" = "Approbateur";
 "task.create.created" = "Tâche créée";
