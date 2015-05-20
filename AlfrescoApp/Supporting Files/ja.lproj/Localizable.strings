@@ -193,7 +193,7 @@
 "accountdetails.fields.description" = "説明";
 "accountdetails.fields.port" = "ポート";
 "accountdetails.fields.protocol" = "HTTPS";
-"accountdetails.fields.servicedocument" = "サービスマニュアル";
+"accountdetails.fields.servicedocument" = "サービスドキュメント";
 "accountdetails.fields.syncPreference" = "ファイルを同期する";
 "accountdetails.fields.syncPreference.footer" = "デバイスと同期するお気に入りのコンテンツを選択してください。 20 MB を超えるコンテンツを同期する場合は、警告が表示されます";
 "accountdetails.buttons.client-certificate" = "クライアント証明書";
@@ -649,13 +649,13 @@
 "settings.reset.accounts" = "アカウントの消去";
 "settings.reset.accounts.confirmation.title" = "アカウントを消去しますか?";
 "settings.reset.accounts.confirmation.message" = "すべてのアカウントを削除してもよろしいですか?\n\n一度削除すると元に戻せません。";
-"settings.reset.entire.app" = "アカウント、キャッシュ、ダウンロード済みファイルの消去";
+"settings.reset.entire.app" = "アカウントとダウンロード済みファイルの消去";
 "settings.reset.entire.app.confirmation.title" = "アカウント、キャッシュ、ダウンロード済みファイルを消去しますか?";
 "settings.reset.entire.app.confirmation.message" = "すべてのアカウント、キャッシュ、ダウンロード済みファイルを削除してもよろしいですか?\n\n一度削除すると元に戻せません。";
 "settings.reset.confirmation.title" = "データが消去されました";
 "settings.reset.confirmation.message" = "消去を完了するために Alfresco を再起動してください。\n\n再起動するには、デバイスのホームボタンを 2 回押して、実行中のアプリを表示します。 「Alfresco」を画面の上の方にスワイプして消去します。 これでまた Alfresco が使えるようになります。";
 "settings.reset.description" = "アカウントを消去すると、そのアプリからすべてのアカウントが削除されます。 アカウント、キャッシュ、ダウンロード済みファイルを消去すると、アプリがリセットされ、新しくインストールできる状態になります。";
-"settings.full.text.search" = "全コンテンツ検索";
+"settings.full.text.search" = "全文検索";
 "settings.full.text.search.description" = "ファイルだけでなく、そのコンテンツも一緒に検索する場合は、全コンテンツ検索のスイッチをオンにします。";
 
 

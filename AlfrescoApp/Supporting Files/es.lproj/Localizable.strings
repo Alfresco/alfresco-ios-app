@@ -129,7 +129,7 @@
 "error.no.internet.access.message" = "Compruebe que está conectado a Internet e inténtelo de nuevo. Podrá continuar accediendo a los ficheros que ha descargado sin disponer de conexión.";
 "error.access.permissions.message" = "Compruebe que cuenta con los derechos de acceso necesarios para hacerlo";
 "error.host.unreachable.title" = "Error de conexión";
-"error.host.unreachable.message" = "El valor de su hostname parece erróneo o podría necesitar activar su VPN. Compruebe los ajustes de su cuenta de Google.";
+"error.host.unreachable.message" = "El valor de su nombre de host parece erróneo o podría necesitar activar su VPN. Compruebe los ajustes de su cuenta de Google.";
 "error.retrieving.metadata" = "No se han podido recuperar las propiedades de %@.";
 "error.server.message" = "Se ha producido un error en el servidor.";
 // Workflow
@@ -189,7 +189,7 @@
 "accountdetails.placeholder.optional" = "Opcional";
 "accountdetails.fields.email" = "Correo electrónico";
 "accountdetails.placeholder.email" = "example@acme.com";
-"accountdetails.fields.hostname" = "Hostname";
+"accountdetails.fields.hostname" = "Nombre de host";
 "accountdetails.fields.description" = "Descripción";
 "accountdetails.fields.port" = "Puerto";
 "accountdetails.fields.protocol" = "HTTPS";
@@ -644,7 +644,7 @@
 "settings.send.diagnostics.description" = "Para ayudarnos a mejorar Alfresco Mobile, recogemos datos de diagnóstico técnicos de forma anónima. Desactívelo si lo prefiere.";
 "settings.security.title" = "Seguridad";
 "settings.security.file.protection" = "Protección de ficheros";
-"settings.security.file.protection.description" = "Los ficheros encriptados se almacenan en este dispositivo al bloquearlo.";
+"settings.security.file.protection.description" = "Los ficheros cifrados se almacenan en este dispositivo al bloquearlo.";
 "settings.reset.title" = "Borrar datos";
 "settings.reset.accounts" = "Borrar cuentas";
 "settings.reset.accounts.confirmation.title" = "¿Borrar cuentas?";
@@ -655,8 +655,8 @@
 "settings.reset.confirmation.title" = "Datos borrados";
 "settings.reset.confirmation.message" = "Reinicie Alfresco para completar.\n\nPara reiniciar, presione el botón Inicio de su dispositivo dos veces para mostrar las aplicaciones que se están ejecutando. Deslice Alfresco desde la parte superior de la pantalla para eliminarlo. Ahora puede volver a usar Alfresco.";
 "settings.reset.description" = "Al borrar las cuentas se eliminarán todas las cuentas de la aplicación. Al borrar las cuentas, la caché y las descargas se restablecerá la aplicación en una instalación nueva.";
-"settings.full.text.search" = "Búsqueda de contenido completo";
-"settings.full.text.search.description" = "Active la búsqueda de contenido completo para buscar ficheros Y su contenido.";
+"settings.full.text.search" = "Buscar texto completo";  // string length should not be extended
+"settings.full.text.search.description" = "Active la búsqueda de texto completo para buscar ficheros Y su contenido.";
 
 
 /**
@@ -712,7 +712,7 @@
 "saveback.failed.title" = "Error al volver a guardar";
 "saveback.failed.message" = "%@ guardado en ficheros locales";
 // Location Picker
-"saveback.locationpicker.title" = "Escoja una localización";
+"saveback.locationpicker.title" = "Escoger ubicación";
 "saveback.locationpicker.other" = "Otro";
 "saveback.upload.completed.title" = "Subida completada";
 "saveback.upload.completed.message" = "%@ subida correctamente a %@";

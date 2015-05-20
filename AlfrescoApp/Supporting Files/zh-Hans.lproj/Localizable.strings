@@ -655,7 +655,7 @@
 "settings.reset.confirmation.title" = "数据已清除";
 "settings.reset.confirmation.message" = "请重新启动 Alfresco 以完成。\n\n要重新启动，请按两次设备的 \"主页\" 按钮以显示正在运行的应用程序。 滑动 Alfresco 离开屏幕顶部，以将其清除。 您现在可以重新使用 Alfresco。";
 "settings.reset.description" = "清除帐户会从应用程序中删除所有帐户。 清除帐户、缓存和下载会将应用程序重新设置为全新安装。";
-"settings.full.text.search" = "完整内容搜索";
+"settings.full.text.search" = "全文搜索";
 "settings.full.text.search.description" = "搜索时，打开完整内容搜索以搜索文件及其内容。";
 
 

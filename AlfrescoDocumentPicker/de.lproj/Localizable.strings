@@ -17,30 +17,41 @@
  ******************************************************************************/
 
 /**
- * General
+ * Localizable.strings
+ * AlfrescoDocumentPicker
+ *
+ * German (de)
  */
-"Yes" = "Yes";
-"No" = "No";
-"Ok" = "Ok";
-"Error" = "Error";
 
 /**
- * Sites Scope
+ * General
+ */
+"Yes" = "Ja";
+"No" = "Nein";
+"OK" = "OK";
+
+/**
+ * Error Messages
+ */
+"error.generic.title" = "Es ist ein Problem aufgetreten.";
+
+/**
+ * Browsing Scope
  */
 "document.picker.scope.repository" = "Repository";
 "document.picker.scope.sites" = "Sites";
-"document.picker.scope.favourites" = "Favorites";
-"document.picker.scope.shared.files" = "Shared Files";
-"document.picker.scope.my.files" = "My Files";
+"document.picker.scope.favourites" = "Favoriten";
+"document.picker.scope.shared.files" = "Freigegebene Dateien";
+"document.picker.scope.my.files" = "Meine Dateien";
 
 /**
- * Local Files
+ * Existing File Handling
  */
-"document.picker.scope.overwrite.title" = "File Exists";
-"document.picker.scope.overwrite.message" = "A file with this name already exists. Would you like to overwrite it?";
+"document.picker.scope.overwrite.title" = "Datei bereits vorhanden";
+"document.picker.scope.overwrite.message" = "Eine Datei mit diesem Namen gibt es bereits. Möchten Sie sie überschreiben?";
 
 /**
  * Permissions
  */
-"document.picker.scope.permissions.cannot.edit.title" = "Edit Permissions";
-"document.picker.scope.permissions.cannot.edit.message" = "You do not have editing permissions.\n\nAny changes you make will be saved back to Local Files in the Alfresco App.";
+"document.picker.scope.permissions.cannot.edit.title" = "Bearbeitungsberechtigungen";
+"document.picker.scope.permissions.cannot.edit.message" = "Sie haben keine Bearbeitungsberechtigungen.\n\nAlle vorgenommenen Änderungen werden in der Alfresco App in 'Lokale Dateien' zurückgespeichert.";
