@@ -14,7 +14,7 @@
 	<string>ios-it</string>
 	<key>ja</key>
 	<string>ios-ja</string>
-	<key>zh</key>
+	<key>zh-Hans</key>
 	<string>ios-zh-CN</string>
 </dict>
 </plist>
