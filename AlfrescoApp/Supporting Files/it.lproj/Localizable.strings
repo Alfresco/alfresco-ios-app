@@ -655,8 +655,8 @@
 "settings.reset.confirmation.title" = "Dati cancellati";
 "settings.reset.confirmation.message" = "Riavvia Alfresco per completare l'operazione.\n\nPer riavviare, premi due volte il tasto Home per visualizzare le app in esecuzione. Passa il dito sull'app Alfresco e scorri verso l'alto per chiuderla. Ora puoi utilizzare di nuovo Alfresco.";
 "settings.reset.description" = "Cancellando gli account eliminerai tutti gli account dall'app. Cancellando gli account, i dati in cache e i download riporterai l'app alle impostazioni di fabbrica.";
-"settings.full.text.search" = "Ricerca contenuti completa";
-"settings.full.text.search.description" = "Attiva la ricerca completa per i file E i relativi contenuti.";
+"settings.full.text.search" = "Ricerca globale";  // string length should not be extended
+"settings.full.text.search.description" = "Attiva la ricerca globale per i file E i relativi contenuti.";
 
 
 /**

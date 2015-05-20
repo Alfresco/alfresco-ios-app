@@ -655,8 +655,8 @@
 "settings.reset.confirmation.title" = "Daten gelöscht";
 "settings.reset.confirmation.message" = "Starten Sie Alfresco neu, um den Vorgang abzuschließen.\n\nUm neu zu starten, drücken Sie zwei Mal die Startseite-Taste Ihres Geräts, um die ausgeführten Apps anzuzeigen. Wischen Sie Alfresco von der Bildschirmoberfläche, um die Anwendung zu löschen. Sie können Alfresco nun erneut verwenden.";
 "settings.reset.description" = "Durch das Löschen der Accounts werden alle Accounts von der App gelöscht. Durch das Löschen von Accounts, Zwischenspeicher und Downloads wird die App auf eine Neuinstallation zurückgesetzt.";
-"settings.full.text.search" = "Vollständigen Inhalt durchsuchen";
-"settings.full.text.search.description" = "Aktivieren Sie die vollständige Inhaltssuche, um bei der Suche nach Dateien UND deren Inhalten zu suchen.";
+"settings.full.text.search" = "Volltextsuche"; // string length should not be extended
+"settings.full.text.search.description" = "Aktivieren Sie die Volltextsuche, um bei der Suche nach Dateien UND deren Inhalten zu suchen.";
 
 
 /**

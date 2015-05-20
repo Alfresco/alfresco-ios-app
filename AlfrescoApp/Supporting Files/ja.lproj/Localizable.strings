@@ -655,7 +655,7 @@
 "settings.reset.confirmation.title" = "データが消去されました";
 "settings.reset.confirmation.message" = "消去を完了するために Alfresco を再起動してください。\n\n再起動するには、デバイスのホームボタンを 2 回押して、実行中のアプリを表示します。 「Alfresco」を画面の上の方にスワイプして消去します。 これでまた Alfresco が使えるようになります。";
 "settings.reset.description" = "アカウントを消去すると、そのアプリからすべてのアカウントが削除されます。 アカウント、キャッシュ、ダウンロード済みファイルを消去すると、アプリがリセットされ、新しくインストールできる状態になります。";
-"settings.full.text.search" = "全コンテンツ検索";
+"settings.full.text.search" = "全文検索";
 "settings.full.text.search.description" = "ファイルだけでなく、そのコンテンツも一緒に検索する場合は、全コンテンツ検索のスイッチをオンにします。";
 
 
