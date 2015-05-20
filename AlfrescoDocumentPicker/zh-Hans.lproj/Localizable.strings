@@ -47,11 +47,11 @@
 /**
  * Existing File Handling
  */
-"document.picker.scope.overwrite.title" = "File Exists";
-"document.picker.scope.overwrite.message" = "A file with this name already exists. Would you like to overwrite it?";
+"document.picker.scope.overwrite.title" = "文件存在";
+"document.picker.scope.overwrite.message" = "已存在相同名称的文件。是否想要覆盖它？";
 
 /**
  * Permissions
  */
-"document.picker.scope.permissions.cannot.edit.title" = "Edit Permissions";
-"document.picker.scope.permissions.cannot.edit.message" = "You do not have editing permissions.\n\nAny changes you make will be saved back to Local Files in the Alfresco App.";
+"document.picker.scope.permissions.cannot.edit.title" = "编辑权限";
+"document.picker.scope.permissions.cannot.edit.message" = "您没有编辑权限。\n\n您所做的任何更改都将被保存回 Alfresco 应用程序中的''本地文件''。";
