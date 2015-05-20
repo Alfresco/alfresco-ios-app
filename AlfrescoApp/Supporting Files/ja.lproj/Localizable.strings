@@ -649,7 +649,7 @@
 "settings.reset.accounts" = "アカウントの消去";
 "settings.reset.accounts.confirmation.title" = "アカウントを消去しますか?";
 "settings.reset.accounts.confirmation.message" = "すべてのアカウントを削除してもよろしいですか?\n\n一度削除すると元に戻せません。";
-"settings.reset.entire.app" = "アカウント、キャッシュ、ダウンロード済みファイルの消去";
+"settings.reset.entire.app" = "アカウントとダウンロード済みファイルの消去";
 "settings.reset.entire.app.confirmation.title" = "アカウント、キャッシュ、ダウンロード済みファイルを消去しますか?";
 "settings.reset.entire.app.confirmation.message" = "すべてのアカウント、キャッシュ、ダウンロード済みファイルを削除してもよろしいですか?\n\n一度削除すると元に戻せません。";
 "settings.reset.confirmation.title" = "データが消去されました";
