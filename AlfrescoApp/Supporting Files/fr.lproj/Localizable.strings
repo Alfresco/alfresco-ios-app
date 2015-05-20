@@ -655,8 +655,8 @@
 "settings.reset.confirmation.title" = "Données effacées";
 "settings.reset.confirmation.message" = "Redémarrez Alfresco pour finaliser.\n\nPour redémarrer, appuyez deux fois sur le bouton Accueil de votre appareil pour afficher les applications en cours d'exécution. Faites glisser Alfresco vers le haut de l'écran pour fermer l'application. Vous pouvez désormais recommencer à utiliser Alfresco.";
 "settings.reset.description" = "L'effacement des comptes supprimera tous les comptes de l'application. L'effacement des comptes, du cache et des téléchargements réinitialise l'application pour une nouvelle installation.";
-"settings.full.text.search" = "Recherche dans l'ensemble du contenu";
-"settings.full.text.search.description" = "Activez la recherche dans l'ensemble du contenu pour rechercher les fichiers ET leur contenu.";
+"settings.full.text.search" = "Recherche de texte"; // string length should not be extended
+"settings.full.text.search.description" = "Activez la recherche de texte pour rechercher les fichiers ET leur contenu.";
 
 
 /**

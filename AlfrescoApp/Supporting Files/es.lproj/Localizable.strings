@@ -655,8 +655,8 @@
 "settings.reset.confirmation.title" = "Datos borrados";
 "settings.reset.confirmation.message" = "Reinicie Alfresco para completar.\n\nPara reiniciar, presione el botón Inicio de su dispositivo dos veces para mostrar las aplicaciones que se están ejecutando. Deslice Alfresco desde la parte superior de la pantalla para eliminarlo. Ahora puede volver a usar Alfresco.";
 "settings.reset.description" = "Al borrar las cuentas se eliminarán todas las cuentas de la aplicación. Al borrar las cuentas, la caché y las descargas se restablecerá la aplicación en una instalación nueva.";
-"settings.full.text.search" = "Búsqueda de contenido completo";
-"settings.full.text.search.description" = "Active la búsqueda de contenido completo para buscar ficheros Y su contenido.";
+"settings.full.text.search" = "Buscar texto completo";  // string length should not be extended
+"settings.full.text.search.description" = "Active la búsqueda de texto completo para buscar ficheros Y su contenido.";
 
 
 /**
