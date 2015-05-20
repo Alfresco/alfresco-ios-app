@@ -649,7 +649,7 @@
 "settings.reset.accounts" = "Effacer les comptes";
 "settings.reset.accounts.confirmation.title" = "Effacer les comptes ?";
 "settings.reset.accounts.confirmation.message" = "Êtes-vous sûr de vouloir supprimer tous les comptes ?\n\nCette action ne peut pas être annulée.";
-"settings.reset.entire.app" = "Effacer les comptes, le cache et les téléchargements";
+"settings.reset.entire.app" = "Effacer les comptes et les téléchargements";  // string length should not be extended
 "settings.reset.entire.app.confirmation.title" = "Effacer les comptes, le cache et les téléchargements ?";
 "settings.reset.entire.app.confirmation.message" = "Êtes-vous sûr de vouloir supprimer tous les comptes, toutes les données en cache et tous les téléchargements ?\n\nCette action ne peut pas être annulée";
 "settings.reset.confirmation.title" = "Données effacées";

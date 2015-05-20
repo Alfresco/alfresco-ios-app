@@ -649,7 +649,7 @@
 "settings.reset.accounts" = "Accounts löschen";
 "settings.reset.accounts.confirmation.title" = "Accounts löschen?";
 "settings.reset.accounts.confirmation.message" = "Möchten Sie wirklich alle Accounts löschen?\n\nSie können diesen Vorgang nicht rückgängig machen.";
-"settings.reset.entire.app" = "Accounts, Zwischenspeicher und Downloads löschen";
+"settings.reset.entire.app" = "Accounts und Downloads löschen"; // string length should not be extended
 "settings.reset.entire.app.confirmation.title" = "Accounts, Zwischenspeicher und Downloads löschen?";
 "settings.reset.entire.app.confirmation.message" = "Möchten Sie wirklich alle Accounts, zwischengespeicherten Daten und Downloads löschen?\n\nSie können diesen Vorgang nicht rückgängig machen";
 "settings.reset.confirmation.title" = "Daten gelöscht";
