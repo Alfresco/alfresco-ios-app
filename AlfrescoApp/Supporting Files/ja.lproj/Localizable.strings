@@ -193,7 +193,7 @@
 "accountdetails.fields.description" = "説明";
 "accountdetails.fields.port" = "ポート";
 "accountdetails.fields.protocol" = "HTTPS";
-"accountdetails.fields.servicedocument" = "サービスマニュアル";
+"accountdetails.fields.servicedocument" = "サービスドキュメント";
 "accountdetails.fields.syncPreference" = "ファイルを同期する";
 "accountdetails.fields.syncPreference.footer" = "デバイスと同期するお気に入りのコンテンツを選択してください。 20 MB を超えるコンテンツを同期する場合は、警告が表示されます";
 "accountdetails.buttons.client-certificate" = "クライアント証明書";

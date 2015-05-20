@@ -169,7 +169,7 @@
 "sites.siteCell.unfavorite" = "Rimuovi dai preferiti"; // string length should not be extended
 "sites.siteCell.leave" = "Abbandona"; // string length should not be extended
 "sites.siteCell.cancel.request" = "Annulla richiesta"; // string length should not be extended
-"sites.siteCell.request.to.join" = "Partecipa"; // string length should not be extended
+"sites.siteCell.request.to.join" = "Posso partecipare?"; // string length should not be extended
 "sites.siteCell.join" = "Partecipa"; // string length should not be extended
 
 /**
@@ -269,7 +269,7 @@
 /**
  * My Files View Controller
  */
-"myFiles.title" = "File personali";
+"myFiles.title" = "I miei file";
 
 /**
  * Folder/Document View Controller
