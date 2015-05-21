@@ -462,7 +462,6 @@
 		73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */; };
 		73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
-		73A6410B1A7B9B57009EA445 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
 		73B078A0189AB4F800D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0789F189AB4F800D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -3777,7 +3776,6 @@
 			files = (
 				735F95D61A711A2B00D8B81E /* DocumentPickerViewController.xib in Resources */,
 				27E0FE411B0A009F00CD6C5D /* Localizable.strings in Resources */,
-				73A6410B1A7B9B57009EA445 /* Localizable.strings in Resources */,
 				735F95CF1A71038600D8B81E /* AlfrescoKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
