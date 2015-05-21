@@ -150,28 +150,28 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     if (showRepository)
     {
         AKScopeItem *repoScope = [[AKScopeItem alloc] initWithIdentifier:kAppConfigurationRepositoryKey
-                                                                imageURL:nil
+                                                                scopeType:AKScopeType_Repository
                                                                     name:NSLocalizedString(@"document.picker.scope.repository", @"Respository")];
         [scopeItems addObject:repoScope];
     }
     if (showSites)
     {
         AKScopeItem *siteScope = [[AKScopeItem alloc] initWithIdentifier:kAppConfigurationSitesKey
-                                                                imageURL:nil
+                                                                scopeType:AKScopeType_Sites
                                                                     name:NSLocalizedString(@"document.picker.scope.sites", @"Sites")];
         [scopeItems addObject:siteScope];
     }
     if (showFavourites)
     {
         AKScopeItem *favouriteScope = [[AKScopeItem alloc] initWithIdentifier:kAppConfigurationFavoritesKey
-                                                                     imageURL:nil
+                                                                     scopeType:AKScopeType_Favorites
                                                                          name:NSLocalizedString(@"document.picker.scope.favourites", @"Favourites")];
         [scopeItems addObject:favouriteScope];
     }
     if (showSharedFiles)
     {
         AKScopeItem *sharedFilesScope = [[AKScopeItem alloc] initWithIdentifier:kAppConfigurationSharedFilesKey
-                                                                       imageURL:nil
+                                                                       scopeType:AKScopeType_SharedFiles
                                                                            name:NSLocalizedString(@"document.picker.scope.shared.files", @"Shared Files")
                                                                        userInfo:sharedFilesFolder];
         [scopeItems addObject:sharedFilesScope];
@@ -179,7 +179,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     if (showMyFiles)
     {
         AKScopeItem *myFilesScope = [[AKScopeItem alloc] initWithIdentifier:kAppConfigurationMyFilesKey
-                                                                   imageURL:nil
+                                                                   scopeType:AKScopeType_MyFiles
                                                                        name:NSLocalizedString(@"document.picker.scope.my.files", @"My Files")
                                                                    userInfo:myFilesFolder];
         [scopeItems addObject:myFilesScope];
