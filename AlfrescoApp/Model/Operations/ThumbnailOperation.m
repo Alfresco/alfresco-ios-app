@@ -49,6 +49,16 @@
 - (void)rateLimitMonitor:(NSTimer *)timer
 {
     [timer invalidate];
+
+    [self.documentFolderService retrieveRenditionOfNode:self.document renditionName:self.rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+        if (self.contentFileCompletionBlock)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.contentFileCompletionBlock(contentFile, error);
+            });
+        }
+        [self setComplete];
+    }];
 }
 
 - (void)main
@@ -58,16 +68,10 @@
     NSTimer *myTimer = [NSTimer timerWithTimeInterval:self.minimumDelayBetweenRequests target:self selector:@selector(rateLimitMonitor:) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:NSDefaultRunLoopMode];
     
-    [self.documentFolderService retrieveRenditionOfNode:self.document renditionName:self.rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
-        if (self.contentFileCompletionBlock)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.contentFileCompletionBlock(contentFile, error);
-            });
-        }
-    }];
-    
-    while ((!_stopRunLoop || [myTimer isValid]) && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
+    while (!self.isCancelled && !_stopRunLoop)
+    {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
     _complete = YES;
 }
 
