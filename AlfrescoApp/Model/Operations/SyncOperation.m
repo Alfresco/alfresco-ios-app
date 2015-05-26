@@ -90,8 +90,8 @@
                     {
                         weakSelf.downloadCompletionBlock(succeeded, error);
                     }
-                    operationCompleted = YES;
                 });
+                operationCompleted = YES;
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (weakSelf.progressBlock)
@@ -109,8 +109,8 @@
                     {
                         weakSelf.uploadCompletionBlock(uploadedDocument, error);
                     }
-                    operationCompleted = YES;
                 });
+                operationCompleted = YES;
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (weakSelf.progressBlock)
@@ -120,7 +120,7 @@
                 });
             }];
         }
-        
+
         while (![self isCancelled] && !operationCompleted)
         {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
@@ -138,6 +138,7 @@
 {
     self.documentFolderService = nil;
     self.document = nil;
+    self.syncRequest = nil;
     self.stream = nil;
     self.downloadCompletionBlock = nil;
     self.uploadCompletionBlock = nil;
