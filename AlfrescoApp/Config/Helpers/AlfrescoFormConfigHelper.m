@@ -22,10 +22,8 @@
 #import "AlfrescoConfigConstants.h"
 #import "AlfrescoConfigInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
-#import "AlfrescoLog.h"
 #import "AlfrescoFieldConfig.h"
 #import "AlfrescoFieldGroupConfig.h"
-#import "AlfrescoNode.h"
 
 @interface AlfrescoFormConfigHelper ()
 @property (nonatomic, strong) NSDictionary *fields;

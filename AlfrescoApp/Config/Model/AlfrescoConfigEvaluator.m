@@ -21,8 +21,6 @@
 #import "AlfrescoConfigEvaluator.h"
 #import "AlfrescoConfigConstants.h"
 #import "AlfrescoConfigInternalConstants.h"
-#import "AlfrescoRepositoryInfo.h"
-#import "AlfrescoLog.h"
 
 @interface AlfrescoConfigEvaluator ()
 @property (nonatomic, strong, readwrite) NSString *identifier;

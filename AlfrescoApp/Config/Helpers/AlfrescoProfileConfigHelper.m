@@ -21,7 +21,6 @@
 #import "AlfrescoProfileConfigHelper.h"
 #import "AlfrescoConfigInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
-#import "AlfrescoLog.h"
 
 @interface AlfrescoProfileConfigHelper ()
 @property (nonatomic, strong, readwrite) NSArray *profiles;

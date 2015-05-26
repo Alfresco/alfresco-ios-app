@@ -21,7 +21,6 @@
 #import "AlfrescoCreationConfigHelper.h"
 #import "AlfrescoConfigInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
-#import "AlfrescoLog.h"
 #import "AlfrescoItemConfig.h"
 
 @interface AlfrescoCreationConfigHelper ()

@@ -21,7 +21,6 @@
 #import "AlfrescoViewConfigHelper.h"
 #import "AlfrescoConfigInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
-#import "AlfrescoLog.h"
 
 @interface AlfrescoViewConfigHelper ()
 @property (nonatomic, strong) NSDictionary *views;

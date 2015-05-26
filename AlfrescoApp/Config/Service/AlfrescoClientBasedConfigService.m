@@ -19,18 +19,15 @@
  */
 
 #import "AlfrescoClientBasedConfigService.h"
-#import "AlfrescoErrors.h"
 #import "AlfrescoSDKInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
 #import "AlfrescoConfigInternalConstants.h"
-#import "AlfrescoDocumentFolderService.h"
 #import "AlfrescoProfileConfigHelper.h"
 #import "AlfrescoFeatureConfigHelper.h"
 #import "AlfrescoCreationConfigHelper.h"
 #import "AlfrescoViewConfigHelper.h"
 #import "AlfrescoFormConfigHelper.h"
 #import "AlfrescoConfigEvaluator.h"
-#import "AlfrescoLog.h"
 
 /**
  * Configuration service implementation

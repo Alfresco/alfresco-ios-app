@@ -20,7 +20,6 @@
 
 #import "AlfrescoPlaceholderConfigService.h"
 #import "AlfrescoClientBasedConfigService.h"
-#import "AlfrescoCloudSession.h"
 
 @implementation AlfrescoPlaceholderConfigService
 

@@ -22,7 +22,6 @@
 #import "AlfrescoConfigInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
 #import "AlfrescoConfigEvaluator.h"
-#import "AlfrescoLog.h"
 
 @implementation AlfrescoConfigData
 @end

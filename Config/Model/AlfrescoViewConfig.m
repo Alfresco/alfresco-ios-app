@@ -20,7 +20,7 @@
 
 #import "AlfrescoViewConfig.h"
 #import "AlfrescoPropertyConstants.h"
-#import "CMISDictionaryUtil.h"
+#import "NSDictionary+Extension.h"
 
 @interface AlfrescoViewConfig ()
 @property (nonatomic, strong, readwrite) NSString *formIdentifier;
@@ -33,7 +33,7 @@
     self = [super initWithDictionary:properties];
     if (nil != self)
     {
-        self.formIdentifier = [properties cmis_objectForKeyNotNull:kAlfrescoViewConfigPropertyFormIdentifier];
+        self.formIdentifier = [properties objectForKeyNotNSNull:kAlfrescoViewConfigPropertyFormIdentifier];
     }
     return self;
 }

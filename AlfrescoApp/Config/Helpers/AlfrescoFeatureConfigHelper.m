@@ -21,7 +21,6 @@
 #import "AlfrescoFeatureConfigHelper.h"
 #import "AlfrescoConfigInternalConstants.h"
 #import "AlfrescoConfigPropertyConstants.h"
-#import "AlfrescoLog.h"
 
 @interface AlfrescoFeatureConfigHelper ()
 @property (nonatomic, strong) NSMutableDictionary *featuresConfigData;
