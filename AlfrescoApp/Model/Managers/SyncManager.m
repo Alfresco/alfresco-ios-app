@@ -130,8 +130,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 - (NSMutableArray *)syncDocumentsAndFoldersForSession:(id<AlfrescoSession>)alfrescoSession withCompletionBlock:(void (^)(NSMutableArray *syncedNodes))completionBlock
 {
-    [self.currentQueue setSuspended:YES];
-    
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
     self.selectedAccountIdentifier = [self accountIdentifierForAccount:selectedAccount];
     NSOperationQueue *syncQueue = self.syncQueues[self.selectedAccountIdentifier];
@@ -148,7 +146,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         AccountSyncProgress *syncProgress = [[AccountSyncProgress alloc] initWithObserver:self];
         self.accountsSyncProgress[self.selectedAccountIdentifier] = syncProgress;
     }
-    [syncQueue setSuspended:NO];
+    
+    if (![self.currentQueue isEqual:syncQueue])
+    {
+        self.currentQueue.suspended = YES;
+    }
+    
+    syncQueue.suspended = NO;
     self.currentQueue = syncQueue;
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     
@@ -1096,7 +1100,10 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                                                     }];
     syncOperationsForSelectedAccount[[self.syncHelper syncIdentifierForNode:document]] = downloadOperation;
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+    
+    syncQueueForSelectedAccount.suspended = YES;
     [syncQueueForSelectedAccount addOperation:downloadOperation];
+    syncQueueForSelectedAccount.suspended = NO;
 }
 
 - (void)uploadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock

@@ -130,7 +130,7 @@ typedef NS_ENUM(NSUInteger, RenditionType)
             else
             {
                 operation.minimumDelayBetweenRequests = 0;
-                self.operationQueue.maxConcurrentOperationCount = 2;
+                self.operationQueue.maxConcurrentOperationCount = 4;
             }
             [self.operationQueue addOperation:operation];
         }
