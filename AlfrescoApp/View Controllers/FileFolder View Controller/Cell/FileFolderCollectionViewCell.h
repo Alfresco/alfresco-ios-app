@@ -17,6 +17,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *details;
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *image;
 @property (nonatomic, weak) IBOutlet UIProgressView *progressBar;
+@property (nonatomic, weak) UIView *accessoryView;
 
 + (NSString *)cellIdentifier;
 - (void)registerForNotifications;

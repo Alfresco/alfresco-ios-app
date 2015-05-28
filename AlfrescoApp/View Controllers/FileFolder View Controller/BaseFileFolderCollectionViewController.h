@@ -17,7 +17,25 @@
  ******************************************************************************/
 
 #import "ParentCollectionViewController.h"
+#import "FileFolderCollectionViewCell.h"
+#import "SyncManager.h"
+#import "FavouriteManager.h"
+#import "ThumbnailManager.h"
 
-@interface BaseFileFolderCollectionViewController : ParentCollectionViewController
+@interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchBarDelegate, UISearchDisplayDelegate >
+
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) AlfrescoSearchService *searchService;
+@property (nonatomic, strong) AlfrescoFolder *displayFolder;
+@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) NSMutableArray *searchResults;
+@property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
+
+- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session;
+- (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
+            usingListingContext:(AlfrescoListingContext *)listingContext
+                completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
+- (void)showSearchProgressHUD;
+- (void)hideSearchProgressHUD;
 
 @end

@@ -182,6 +182,7 @@
 		27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */; };
 		27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7418AD53510024B658 /* mainmenu-tasks.png */; };
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
+		2B19C0801B17357B005CF636 /* ALFCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C07F1B17357B005CF636 /* ALFCollectionView.m */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
 		2BFB07FD1B149FFD00ED8DFF /* ParentCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */; };
@@ -956,6 +957,8 @@
 		27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-sync@2x.png"; sourceTree = "<group>"; };
 		27E84E7418AD53510024B658 /* mainmenu-tasks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks.png"; sourceTree = "<group>"; };
 		27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks@2x.png"; sourceTree = "<group>"; };
+		2B19C07E1B17357B005CF636 /* ALFCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFCollectionView.h; sourceTree = "<group>"; };
+		2B19C07F1B17357B005CF636 /* ALFCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFCollectionView.m; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
@@ -1796,6 +1799,8 @@
 			children = (
 				2711979C1912ADE60073C3EC /* ALFTableView.h */,
 				2711979D1912ADE60073C3EC /* ALFTableView.m */,
+				2B19C07E1B17357B005CF636 /* ALFCollectionView.h */,
+				2B19C07F1B17357B005CF636 /* ALFCollectionView.m */,
 			);
 			path = Subclasses;
 			sourceTree = "<group>";
@@ -4135,6 +4140,7 @@
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */,
 				7366F74A1ACAD8DE008DD92E /* NSDictionary+Extension.m in Sources */,
+				2B19C0801B17357B005CF636 /* ALFCollectionView.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,

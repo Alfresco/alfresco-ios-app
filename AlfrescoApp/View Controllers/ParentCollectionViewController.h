@@ -17,9 +17,44 @@
  ******************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
+#import "ErrorDescriptions.h"
 
-@interface ParentCollectionViewController : UIViewController
+@class AlfrescoFolder;
+@class AlfrescoPagingResult;
+@protocol AlfrescoSession;
+@class ALFCollectionView;
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (weak, nonatomic) IBOutlet ALFCollectionView *collectionView;
+
+@property (nonatomic, strong) NSMutableArray *collectionViewData;
+@property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
+@property (nonatomic, assign) BOOL moreItemsAvailable;
+@property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong, readonly) MBProgressHUD *progressHUD;
+@property (nonatomic, assign) BOOL allowsPullToRefresh;
+
+- (id)initWithSession:(id<AlfrescoSession>)session;
+- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
+/* to change */
+- (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
+- (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
+- (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
+- (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
+/* end to change*/
+- (void) addAlfrescoNodes:(NSArray *)alfrescoNodes completion:(void (^)(BOOL finished))completion;
+- (void)showHUD;
+- (void)showHUDWithMode:(MBProgressHUDMode)mode;
+- (void)hideHUD;
+- (void)hidePullToRefreshView;
+- (BOOL)shouldRefresh;
+- (void)enablePullToRefresh;
+- (void)disablePullToRefresh;
+- (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers;
+- (void)refreshCollectionView:(UIRefreshControl *)refreshControl;
+- (void)showLoadingTextInRefreshControl:(UIRefreshControl *)refreshControl;
 
 @end

@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import "BaseFileFolderCollectionViewController.h"
+#import "PreferenceManager.h"
 
 @interface BaseFileFolderCollectionViewController ()
 
@@ -24,14 +25,182 @@
 
 @implementation BaseFileFolderCollectionViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
+{
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
+            usingListingContext:(AlfrescoListingContext *)listingContext
+                completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock
+{
+    AlfrescoLogDebug(@"should be implemented by subclasses");
+    [self doesNotRecognizeSelector:_cmd];
+}
+
+- (void)showSearchProgressHUD
+{
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
+    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    [self.searchProgressHUD show:YES];
+}
+
+- (void)hideSearchProgressHUD
+{
+    [self.searchProgressHUD hide:YES];
+    self.searchProgressHUD = nil;
+}
+
+#pragma mark - Custom getters and setters
+
+- (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
+{
+    _displayFolder = displayFolder;
+    
+    if (_displayFolder)
+    {
+        [self showHUD];
+        [self retrieveContentOfFolder:_displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            if (pagingResult)
+            {
+                [self reloadTableViewWithPagingResult:pagingResult error:error];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+}
+
+#pragma mark CollectionView Delegate and Datasource Methods
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FileFolderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
+    
+    // config the cell here...
+    AlfrescoNode *currentNode = nil;
+    if (collectionView == self.searchController.searchResultsTableView)
+    {
+        currentNode = [self.searchResults objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        currentNode = [self.collectionViewData objectAtIndex:indexPath.row];
+    }
+    
+    SyncManager *syncManager = [SyncManager sharedManager];
+    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    
+    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+    
+    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        
+        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+    }];
+    
+    if ([currentNode isKindOfClass:[AlfrescoFolder class]])
+    {
+        [cell.image setImage:smallImageForType(@"folder") withFade:NO];
+    }
+    else
+    {
+        AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
+        
+        UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+        if (thumbnail)
+        {
+            [cell.image setImage:thumbnail withFade:NO];
+        }
+        else
+        {
+            [cell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
+            
+            [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                @try
+                {
+                    if (image)
+                    {
+                        // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
+                        // by the time completion block is called the table view could have been unloaded.
+                        if (collectionView && indexPath)
+                        {
+                            FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+                            [updateCell.image setImage:image withFade:YES];
+                        }
+                    }
+                }
+                @catch (NSException *exception)
+                {
+                    AlfrescoLogError(@"Exception thrown is %@", exception);
+                }
+            }];
+        }
+    }
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    //the last cell index of the table data
+    NSUInteger lastSiteCellIndex = self.collectionViewData.count - 1;
+    // if the last cell is about to be drawn, check if there are more sites
+    if (indexPath.row == lastSiteCellIndex)
+    {
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
+        if (self.moreItemsAvailable)
+        {
+            // show more items are loading ...
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [spinner startAnimating];
+//            self.collectionView.tableFooterView = spinner;
+//            
+//            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//                [self addMoreToTableViewWithPagingResult:pagingResult error:error];
+//                self.tableView.tableFooterView = nil;
+//            }];
+        }
+    }
+
+}
+
+#pragma mark - UISearchBarDelegate Functions
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
+    
+    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:self.displayFolder includeDescendants:YES];
+    
+    [self showSearchProgressHUD];
+    [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
+        [self hideSearchProgressHUD];
+        if (array)
+        {
+            self.searchResults = [array mutableCopy];
+            [self.searchController.searchResultsTableView reloadData];
+        }
+        else
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
+        }
+    }];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    self.searchResults = nil;
+    [self.collectionView reloadData];
 }
 
 @end
