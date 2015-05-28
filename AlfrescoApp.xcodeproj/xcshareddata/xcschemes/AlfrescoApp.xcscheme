@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Stamp version numbers"
-               scriptText = "if [ &quot;${CONFIGURATION}&quot; == &quot;AdHoc&quot; ]; then&#10;    echo &quot;Pre-build: Stamping version number...&quot;&#10;${PROJECT_DIR}/tools/set_build_number.sh &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot; ${CF_BUNDLE_VERSION} &quot;${PROJECT_DIR}/AlfrescoApp/Supporting Files/Settings.bundle/Root.plist&quot; &quot;PreferenceSpecifiers:1:DefaultValue&quot;&#10;fi&#10;">
+               scriptText = "if [ &quot;${CONFIGURATION}&quot; == &quot;AdHoc&quot; -o &quot;${CONFIGURATION}&quot; == &quot;Release&quot; ]; then&#10;    echo &quot;Pre-build: Stamping version number...&quot;&#10;${PROJECT_DIR}/tools/set_build_number.sh &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot; ${CF_BUNDLE_VERSION} &quot;${PROJECT_DIR}/AlfrescoApp/Supporting Files/Settings.bundle/Root.plist&quot; &quot;PreferenceSpecifiers:1:DefaultValue&quot;&#10;fi&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
