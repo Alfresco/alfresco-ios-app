@@ -3,33 +3,34 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="FileFolderCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
+            <rect key="frame" x="0.0" y="0.0" width="360" height="73"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
+                <rect key="frame" x="0.0" y="0.0" width="360" height="73"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KVy-Qt-Ot0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
+                    <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="KVy-Qt-Ot0">
+                        <rect key="frame" x="0.0" y="0.0" width="287" height="73"/>
                         <subviews>
                             <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QXh-1g-W4B">
-                                <rect key="frame" x="11" y="71" width="309" height="2"/>
+                                <rect key="frame" x="11" y="71" width="276" height="2"/>
                             </progressView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwC-rb-2UE" userLabel="nodeContainer">
-                                <rect key="frame" x="58" y="18" width="250" height="38"/>
+                                <rect key="frame" x="58" y="15" width="217" height="38"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Alfresco Node Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG7-Dv-cqZ" userLabel="nodeName">
-                                        <rect key="frame" x="0.0" y="0.0" width="250" height="21"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="217" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Node Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7el-18-244" userLabel="nodeDetails">
-                                        <rect key="frame" x="44" y="22" width="205" height="17"/>
+                                        <rect key="frame" x="44" y="22" width="172" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -76,27 +77,39 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hzd-mq-4pj" firstAttribute="leading" secondItem="KVy-Qt-Ot0" secondAttribute="leading" constant="8" id="8sG-rc-U5T"/>
-                            <constraint firstItem="pwC-rb-2UE" firstAttribute="top" secondItem="KVy-Qt-Ot0" secondAttribute="top" constant="18" id="GTa-TC-Dci"/>
+                            <constraint firstItem="pwC-rb-2UE" firstAttribute="top" secondItem="KVy-Qt-Ot0" secondAttribute="top" constant="15" id="GTa-TC-Dci"/>
                             <constraint firstAttribute="centerY" secondItem="hzd-mq-4pj" secondAttribute="centerY" id="I0f-oe-MLK"/>
                             <constraint firstItem="pwC-rb-2UE" firstAttribute="leading" secondItem="hzd-mq-4pj" secondAttribute="trailing" constant="10" id="STZ-Lj-yMB"/>
                             <constraint firstAttribute="trailing" secondItem="QXh-1g-W4B" secondAttribute="trailing" id="c9f-eK-Fz3"/>
                             <constraint firstAttribute="trailing" secondItem="pwC-rb-2UE" secondAttribute="trailing" constant="12" id="lFM-jx-Wjh"/>
-                            <constraint firstItem="QXh-1g-W4B" firstAttribute="top" secondItem="pwC-rb-2UE" secondAttribute="bottom" priority="750" constant="15" id="s2i-Bp-FB2"/>
+                            <constraint firstItem="QXh-1g-W4B" firstAttribute="top" secondItem="pwC-rb-2UE" secondAttribute="bottom" priority="750" constant="18" id="s2i-Bp-FB2"/>
                             <constraint firstItem="QXh-1g-W4B" firstAttribute="leading" secondItem="KVy-Qt-Ot0" secondAttribute="leading" constant="11" id="vCf-G2-Jdl"/>
                             <constraint firstAttribute="bottom" secondItem="QXh-1g-W4B" secondAttribute="bottom" id="w4L-fw-8Bb"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFi-K2-MXt">
+                        <rect key="frame" x="287" y="0.0" width="73" height="73"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="EFi-K2-MXt" secondAttribute="height" multiplier="1:1" id="3S1-go-UTD"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="KVy-Qt-Ot0" secondAttribute="trailing" id="1WI-ME-KSD"/>
+                <constraint firstItem="EFi-K2-MXt" firstAttribute="leading" secondItem="KVy-Qt-Ot0" secondAttribute="trailing" id="0Hf-3S-jGa"/>
                 <constraint firstAttribute="bottom" secondItem="KVy-Qt-Ot0" secondAttribute="bottom" id="2kM-c3-JnD"/>
+                <constraint firstAttribute="centerY" secondItem="EFi-K2-MXt" secondAttribute="centerY" id="Rbg-fN-0pI"/>
                 <constraint firstItem="KVy-Qt-Ot0" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="aog-i2-Gwz"/>
                 <constraint firstItem="KVy-Qt-Ot0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="faK-xF-OBj"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EFi-K2-MXt" secondAttribute="bottom" id="ixM-EB-FQW"/>
+                <constraint firstItem="EFi-K2-MXt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="top" id="jjm-F3-ghk"/>
+                <constraint firstAttribute="trailing" secondItem="EFi-K2-MXt" secondAttribute="trailing" id="peg-w6-rxt"/>
             </constraints>
             <size key="customSize" width="417" height="60"/>
             <connections>
+                <outlet property="accessoryView" destination="EFi-K2-MXt" id="XZP-gr-BI0"/>
                 <outlet property="details" destination="7el-18-244" id="VDE-Be-Xyq"/>
                 <outlet property="favoriteIconRightSpaceConstraint" destination="yAI-Nl-yxb" id="96F-kT-gE9"/>
                 <outlet property="favoriteIconTopSpaceConstraint" destination="3iF-bd-0Pm" id="xVH-PD-7xW"/>

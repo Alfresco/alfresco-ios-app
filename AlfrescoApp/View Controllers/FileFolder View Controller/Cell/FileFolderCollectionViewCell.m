@@ -43,8 +43,14 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 @implementation FileFolderCollectionViewCell
 
-- (void)awakeFromNib {
-    // Initialization code
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        
+    }
+    return self;
 }
 
 - (void)registerForNotifications

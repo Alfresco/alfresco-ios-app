@@ -36,8 +36,9 @@
     }
     
     self.numberOfColumns = 1;
-    
     self.itemHeight = -1;
+    
+    self.minimumLineSpacing = 1;
     
     return self;
 }

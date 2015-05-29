@@ -124,56 +124,51 @@
 
 #pragma mark - Public Functions
 
-/* to change */
-- (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
 {
-//    [self reloadTableViewWithPagingResult:pagingResult data:nil error:error];
+    [self reloadCollectionViewWithPagingResult:pagingResult data:nil error:error];
 }
 
-- (void)reloadTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data  error:(NSError *)error
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
 {
-//    if (pagingResult)
-//    {
-//        self.tableViewData = data ?: [pagingResult.objects mutableCopy];
-//        self.moreItemsAvailable = pagingResult.hasMoreItems;
-//        [self.tableView reloadData];
-//    }
-//    else
-//    {
-//        // display error
-//    }
+    if (pagingResult)
+    {
+        self.collectionViewData = data ?: [pagingResult.objects mutableCopy];
+        self.moreItemsAvailable = pagingResult.hasMoreItems;
+        [self.collectionView reloadData];
+    }
+    else
+    {
+        // display error
+    }
 }
 
-- (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
+- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
 {
-//    [self addMoreToTableViewWithPagingResult:pagingResult data:nil error:error];
+    [self addMoreToCollectionViewWithPagingResult:pagingResult data:nil error:error];
 }
 
-- (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
+- (void) addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
 {
-//    if (pagingResult)
-//    {
-//        if (data)
-//        {
-//            self.tableViewData = data;
-//        }
-//        else
-//        {
-//            [self.tableViewData addObjectsFromArray:pagingResult.objects];
-//        }
-//        
-//        self.moreItemsAvailable = pagingResult.hasMoreItems;
-//        [self.tableView reloadData];
-//    }
-//    else
-//    {
-//        // display error
-//    }
+    if (pagingResult)
+    {
+        if (data)
+        {
+            self.collectionViewData = data;
+        }
+        else
+        {
+            [self.collectionViewData addObjectsFromArray:pagingResult.objects];
+        }
+        
+        self.moreItemsAvailable = pagingResult.hasMoreItems;
+        [self.collectionView reloadData];
+    }
+    else
+    {
+        // display error
+    }
 }
-
-/*
- end to change
- */
 
 - (void) addAlfrescoNodes:(NSArray *)alfrescoNodes completion:(void (^)(BOOL finished))completion
 {

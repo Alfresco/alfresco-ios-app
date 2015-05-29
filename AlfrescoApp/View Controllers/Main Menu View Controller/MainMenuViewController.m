@@ -34,6 +34,7 @@
 #import "WebBrowserViewController.h"
 #import "DownloadsViewController.h"
 #import "ConnectivityManager.h"
+#import "FileFolderCollectionViewController.h"
 
 #import "AvatarManager.h"
 #import "DismissCompletionProtocol.h"
@@ -492,10 +493,14 @@ static NSUInteger const kAccountsRowNumber = 0;
             {
                 [repositoryMenuItems removeObject:myFilesMenuItem];
             }
-            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
-                                                                                                     folderPermissions:configurationManager.myFilesPermissions
-                                                                                                     folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
-                                                                                                               session:self.alfrescoSession];
+//            FileFolderListViewController *myFilesViewController = [[FileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
+//                                                                                                     folderPermissions:configurationManager.myFilesPermissions
+//                                                                                                     folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
+//                                                                                                               session:self.alfrescoSession];
+            FileFolderCollectionViewController *myFilesViewController = [[FileFolderCollectionViewController alloc] initWithFolder:configurationManager.myFiles
+                                                                                                                 folderPermissions:configurationManager.myFilesPermissions
+                                                                                                                 folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
+                                                                                                                           session:self.alfrescoSession];
             NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
             myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeMyFiles
                                                                  imageName:@"mainmenu-myfiles.png"

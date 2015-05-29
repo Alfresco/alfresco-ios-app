@@ -65,7 +65,7 @@
             [self hideHUD];
             if (pagingResult)
             {
-                [self reloadTableViewWithPagingResult:pagingResult error:error];
+                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
             }
             else
             {
@@ -84,14 +84,14 @@
     
     // config the cell here...
     AlfrescoNode *currentNode = nil;
-    if (collectionView == self.searchController.searchResultsTableView)
-    {
-        currentNode = [self.searchResults objectAtIndex:indexPath.row];
-    }
-    else
-    {
+//    if (collectionView == self.searchController.searchResultsTableView)
+//    {
+//        currentNode = [self.searchResults objectAtIndex:indexPath.row];
+//    }
+//    else
+//    {
         currentNode = [self.collectionViewData objectAtIndex:indexPath.row];
-    }
+//    }
     
     SyncManager *syncManager = [SyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
