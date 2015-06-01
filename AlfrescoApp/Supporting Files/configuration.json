@@ -1,0 +1,926 @@
+{
+    "info": {
+        "schema-version": 0.1
+    },
+    "repository": {
+        "share-url": "https://ts.alfresco.com/share"
+    },
+    "profiles": {
+        "alfresco": {
+            "label-id": "Alfresco",
+            "description-id": "Alfresco Intranet Sites",
+            "root-view-id": "views-menu-alfresco"
+        },
+        "mobile-engineering": {
+            "label-id": "Mobile Engineering",
+            "description-id": "Mobile Engineering dashboard",
+            "root-view-id": "views-menu-mobeng"
+        },
+        "engineering": {
+            "label-id": "Engineering",
+            "description-id": "Engineering dashboard",
+            "root-view-id": "views-menu-engineering"
+        },
+        "sales": {
+            "label-id": "Sales",
+            "description-id": "Sales dashboard",
+            "root-view-id": "views-menu-sales"
+        },
+        "case-study": {
+            "label-id": "Vertical Case Study",
+            "description-id": "Vertical Case Study",
+            "root-view-id": "views-menu-casestudy-vertical"
+        },
+        "business": {
+            "label-id": "Tasks",
+            "description-id": "Predefined List of Tasks",
+            "root-view-id": "views-business"
+        },
+        "default": {
+            "default": true,
+            "label-id": "Default",
+            "description-id": "Default Profile",
+            "root-view-id": "views-menu-default"
+        }
+    },
+    "view-groups": [
+                    {
+                    "id": "views-menu-mobile-admin",
+                    "items": [
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "mobile-folder",
+                              "type": "org.alfresco.client.view.repository",
+                              "label-id": "Mobile Folder",
+                              "params": {
+                              "path": "/Data Dictionary/Mobile"
+                              }
+                              }
+                              },
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "mobile-configuration",
+                              "type": "org.alfresco.client.view.node-details",
+                              "label-id": "Configuration file",
+                              "params": {
+                              "path": "/Data Dictionary/Mobile/configuration.json"
+                              }
+                              }
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-alfresco",
+                    "items": [
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-alfresco-intranet"
+                              },
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-alfresco-departmentals"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-alfresco-intranet",
+                    "label-id": "Global Sites",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-intranet"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-alfresco-departmentals",
+                    "label-id": "Departmental Sites",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-hr"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-marketing"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-engineering"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-prodman"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-sales"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-customer-service"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-legal"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-qa"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-mobeng",
+                    "items": [
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-mobeng-team"
+                              },
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-mobeng-general"
+                              },
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-mobeng-android"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-mobeng-team",
+                    "label-id": "Team",
+                    "items": [
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "marc-profile",
+                              "type": "org.alfresco.client.view.person-profile",
+                              "label-id": "PM : Marc Dubresson",
+                              "params": {
+                              "userName": "mdubresson"
+                              }
+                              }
+                              },
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "mike-profile",
+                              "type": "org.alfresco.client.view.person-profile",
+                              "label-id": "Lead : Mike Hatfield",
+                              "params": {
+                              "userName": "mhatfield"
+                              }
+                              }
+                              },
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "members-profile",
+                              "type": "org.alfresco.client.view.people",
+                              "label-id": "Members",
+                              "params": {
+                              "siteShortName": "MobileEngineeringTeam"
+                              }
+                              }
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-mobeng-general",
+                    "label-id": "Shortcuts",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-activities-mobile-engineering"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-site-mobile-engineering"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-mobeng-android",
+                    "label-id": "Android",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-shortcut-mobeng-android-prototypes"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-shortcut-mobeng-android-projects"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-details-mobeng-android-cookbook"
+                              },
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "gallery-prototype",
+                              "type": "org.alfresco.client.view.preview-carousel",
+                              "label-id": "Gallery Prototypes",
+                              "params": {
+                              "nodeRef": "workspace://SpacesStore/e1db8fed-ded7-46ef-af30-02bdce6a1a39"
+                              }
+                              }
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-sales",
+                    "label-id": "Sales Views",
+                    "items": [
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-sales-price"
+                              },
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-sales-product"
+                              },
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-sales-corporate"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-sales-price",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-details-sales-docs-pricelist"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-sales-product",
+                    "label-id": "Company and Product Information",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-shortcut-sales-products"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-details-sales-products-status"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-sales-corporate",
+                    "label-id": "Corporate Information",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-shortcut-sales-corporate-competitive"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-shortcut-sales-corporate-branding"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-shortcut-sales-corporate-analyst"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-casestudy-vertical",
+                    "label-id": "Vertical Case Study",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-construction"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-education"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-financial"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-healthcare"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-life"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-manufacturing"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-media"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-non-profit"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-public"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-retail"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-services"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-technology"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-casestudy-query-transport"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-engineering",
+                    "items": [
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-engineering-teams"
+                              },
+                              {
+                              "item-type": "view-group-id",
+                              "view-group-id": "views-menu-engineering-teams-activities"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-engineering-teams",
+                    "label-id": "Teams",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-wat1"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-wat2"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-platform"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-clientapps"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-desktopsync"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-dam"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-site-customer"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-engineering-teams-activities",
+                    "label-id": "Teams activities",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-wat1"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-wat2"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-platform"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-clientapps"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-desktopsync"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-dam"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-engineering-activities-customer"
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-business",
+                    "label-id": "Business Tasks",
+                    "items": [
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "business-task",
+                              "type": "org.alfresco.client.view.tasks",
+                              "label-id": "High Priority Overdue",
+                              "hasFilter": true,
+                              "params": {
+                              "filters": {
+                              "priority": "high",
+                              "due": "overdue"
+                              }
+                              }
+                              }
+                              },
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "business-task1",
+                              "type": "org.alfresco.client.view.tasks",
+                              "label-id": "Overdue",
+                              "params": {
+                              "filters": {
+                              "due": "overdue"
+                              }
+                              }
+                              }
+                              },
+                              {
+                              "item-type": "view",
+                              "view": {
+                              "id": "business-task2",
+                              "type": "org.alfresco.client.view.tasks",
+                              "label-id": "Initiated High Priority",
+                              "params": {
+                              "filters": {
+                              "iniator": "me",
+                              "priority": "high"
+                              }
+                              }
+                              }
+                              }
+                              ]
+                    },
+                    {
+                    "id": "views-menu-default",
+                    "label-id": "Views",
+                    "items": [
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-activities-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-repository-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-sites-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-task-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-favorite-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-local-default"
+                              }
+                              ]
+                    }
+                    ],
+    "views": {
+        "view-site-intranet": {
+            "label-id": "Intranet",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "glue"
+            }
+        },
+        "view-site-hr": {
+            "label-id": "HR",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "hr"
+            }
+        },
+        "view-site-marketing": {
+            "label-id": "Marketing",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "marketing"
+            }
+        },
+        "view-site-engineering": {
+            "label-id": "Engineering",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "eng"
+            }
+        },
+        "view-site-operations": {
+            "label-id": "Operations",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "Operations"
+            }
+        },
+        "view-site-prodman": {
+            "label-id": "Product Management",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "prodman"
+            }
+        },
+        "view-site-sales": {
+            "label-id": "Sales Enablement",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "SalesDocs"
+            }
+        },
+        "view-site-customer-services": {
+            "label-id": "Customer Services",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "customerservices"
+            }
+        },
+        "view-site-legal": {
+            "label-id": "Legal",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "LegalIntranet"
+            }
+        },
+        "view-site-qa": {
+            "label-id": "QA",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "alfqa"
+            }
+        },
+        "view-site-mobile-engineering": {
+            "label-id": "Site",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "MobileEngineeringTeam"
+            }
+        },
+        "view-shortcut-mobeng-android-prototypes": {
+            "label-id": "Prototypes",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "path": "/sites/MobileEngineeringTeam/documentLibrary/UX/Prototypes"
+            }
+        },
+        "view-shortcut-sales-corporate-branding": {
+            "label-id": "Corporate Branding",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "path": "/sites/SalesDocs/documentLibrary/Alfresco Marketing/Corporate Branding"
+            }
+        },
+        "view-shortcut-sales-products": {
+            "label-id": "Product Marketing",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "nodeRef": "workspace://SpacesStore/88cea1b5-ff5e-4c51-b6e5-328692b4be3f"
+            }
+        },
+        "view-shortcut-sales-corporate-competitive": {
+            "label-id": "Competitive Information",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "nodeRef": "workspace://SpacesStore/2d07ef43-b8b7-4e8f-b4cd-c0755b9392fc"
+            }
+        },
+        "view-shortcut-sales-corporate-analyst": {
+            "label-id": "Analyst Reports",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "path": "/sites/SalesDocs/documentLibrary/Alfresco Marketing/Analyst Reports"
+            }
+        },
+        "view-details-sales-products-status": {
+            "label-id": "Product Status Dashboard",
+            "type": "org.alfresco.client.view.node-details",
+            "params": {
+                "nodeRef": "workspace://SpacesStore/cf1eb5f6-03e0-4815-bd30-d0eac143e2d1"
+            }
+        },
+        "view-details-sales-docs-pricelist": {
+            "label-id": "Price List",
+            "type": "org.alfresco.client.view.node-details",
+            "params": {
+                "nodeRef": "workspace://SpacesStore/75f5ba42-f2c0-4718-a6ce-a8674a501051"
+            }
+        },
+        "view-shortcut-mobeng-android-projects": {
+            "label-id": "Projects",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "path": "/sites/MobileEngineeringTeam/documentLibrary/Projects/App/Android"
+            }
+        },
+        "view-details-mobeng-android-cookbook": {
+            "label-id": "Cookbook",
+            "type": "org.alfresco.client.view.node-details",
+            "params": {
+                "nodeRef": "workspace://SpacesStore/8d526ace-3e17-4d69-8557-1b391378d427"
+            }
+        },
+        "view-activities-mobile-engineering": {
+            "label-id": "Activities",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "MobileEngineeringTeam"
+            }
+        },
+        "view-casestudy-query-construction": {
+            "label-id": "Construction",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Construction\\'')"
+            }
+        },
+        "view-casestudy-query-education": {
+            "label-id": "Education",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Education\\'') "
+            }
+        },
+        "view-casestudy-query-financial": {
+            "label-id": "Financial Services",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Financial Services\\'') "
+            }
+        },
+        "view-casestudy-query-healthcare": {
+            "label-id": "Healthcare",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Healthcare\\'') "
+            }
+        },
+        "view-casestudy-query-life": {
+            "label-id": "Life Sciences",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Life Sciences\\'') "
+            }
+        },
+        "view-casestudy-query-manufacturing": {
+            "label-id": "Manufacturing",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Manufacturing\\'') "
+            }
+        },
+        "view-casestudy-query-media": {
+            "label-id": "Media",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Media\\'') "
+            }
+        },
+        "view-casestudy-query-non-profit": {
+            "label-id": "Non-Profit",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Non-Profit\\'') "
+            }
+        },
+        "view-casestudy-query-public": {
+            "label-id": "Public Administration & Government",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Public Administration & Government\\'') "
+            }
+        },
+        "view-casestudy-query-retail": {
+            "label-id": "Retail",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Retail\\'') "
+            }
+        },
+        "view-casestudy-query-services": {
+            "label-id": "Services",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Services\\'') "
+            }
+        },
+        "view-casestudy-query-technology": {
+            "label-id": "Technology",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Technology\\'') "
+            }
+        },
+        "view-casestudy-query-transport": {
+            "label-id": "Transportation & Utilities",
+            "type": "org.alfresco.client.view.repository-search",
+            "params": {
+                "statement": "SELECT * FROM cmis:folder where IN_TREE('workspace://SpacesStore/9147ca71-2e81-4756-8fee-0427c85b0e6f') AND CONTAINS('~cmis:name:\\'Transportation & Utilities\\'') "
+            }
+        },
+        "view-engineering-site-wat1": {
+            "label-id": "Web Application Team 1",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "web-application-team-1"
+            }
+        },
+        "view-engineering-site-wat2": {
+            "label-id": "Web Application Team 2",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "web-application-team-2"
+            }
+        },
+        "view-engineering-site-platform": {
+            "label-id": "Platform Team",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "alfresco-one-platform-team"
+            }
+        },
+        "view-engineering-site-clientapps": {
+            "label-id": "Client Apps",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "MobileEngineeringTeam"
+            }
+        },
+        "view-engineering-site-desktopsync": {
+            "label-id": "Desktop Sync",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "desktop-sync"
+            }
+        },
+        "view-engineering-site-dam": {
+            "label-id": "Digital Asset Management",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "dam"
+            }
+        },
+        "view-engineering-site-customer": {
+            "label-id": "Customer Engineering",
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "siteShortName": "customer-engineering"
+            }
+        },
+        "view-engineering-activities-wat1": {
+            "label-id": "Web Application Team 1",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "web-application-team-1"
+            }
+        },
+        "view-engineering-activities-wat2": {
+            "label-id": "Web Application Team 2",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "web-application-team-2"
+            }
+        },
+        "view-engineering-activities-platform": {
+            "label-id": "Platform Team",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "alfresco-one-platform-team"
+            }
+        },
+        "view-engineering-activities-clientapps": {
+            "label-id": "Client Apps",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "MobileEngineeringTeam"
+            }
+        },
+        "view-engineering-activities-desktopsync": {
+            "label-id": "Desktop Sync",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "desktop-sync"
+            }
+        },
+        "view-engineering-activities-dam": {
+            "label-id": "Digital Asset Management",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "dam"
+            }
+        },
+        "view-engineering-activities-customer": {
+            "label-id": "Customer Engineering",
+            "type": "org.alfresco.client.view.activities",
+            "params": {
+                "siteShortName": "customer-engineering"
+            }
+        },
+        "view-activities-default": {
+            "type": "org.alfresco.client.view.activities"
+        },
+        "view-repository-default": {
+            "type": "org.alfresco.client.view.repository"
+        },
+        "view-repository-shared-default": {
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "folderTypeId": "shared"
+            },
+            "evaluator": "isAlfrescoV42"
+        },
+        "view-sites-default": {
+            "type": "org.alfresco.client.view.site-browser"
+        },
+        "view-repository-userhome-default": {
+            "type": "org.alfresco.client.view.repository",
+            "params": {
+                "folderTypeId": "userhome"
+            },
+            "evaluator": "isAlfrescoV42"
+        },
+        "view-task-default": {
+            "type": "org.alfresco.client.view.tasks",
+            "evaluator": "isOnPremise"
+        },
+        "view-favorite-default": {
+            "type": "org.alfresco.client.view.sync"
+        },
+        "view-search-default": {
+            "type": "org.alfresco.client.view.search"
+        },
+        "view-local-default": {
+            "type": "org.alfresco.client.view.local"
+        }
+    },
+    "evaluators": {
+        "isMobileAdmin": {
+            "type": "org.alfresco.client.evaluator.isUser",
+            "params": {
+                "users": [
+                          "admin"
+                          ]
+            }
+        },
+        "isAlfrescoV42": {
+            "match-any": [
+                          "isAlfrescoV42-EE",
+                          "isAlfrescoV42-CE"
+                          ]
+        },
+        "isOnPremise": {
+            "type": "org.alfresco.client.evaluator.hasRepositoryCapability",
+            "params": {
+                "session": "onpremise"
+            }
+        },
+        "isAlfrescoV42-EE": {
+            "type": "org.alfresco.client.evaluator.hasRepositoryCapability",
+            "params": {
+                "operator": ">=",
+                "edition": "Enterprise",
+                "majorVersion": 4,
+                "minorVersion": 2
+            }
+        },
+        "isAlfrescoV42-CE": {
+            "type": "org.alfresco.client.evaluator.hasRepositoryCapability",
+            "params": {
+                "operator": ">=",
+                "edition": "Community",
+                "majorVersion": 4,
+                "minorVersion": 2,
+                "maintenanceVersion": "e"
+            }
+        }
+    }
+}

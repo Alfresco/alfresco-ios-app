@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -17,7 +17,6 @@
  ******************************************************************************/
  
 #import "NodePickerScopeViewController.h"
-#import "AppConfigurationManager.h"
 #import "MainMenuItem.h"
 #import "NodePickerFileFolderListViewController.h"
 #import "NodePickerSitesViewController.h"
@@ -83,79 +82,37 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
 
 - (void)configureScopeView
 {
+    // App configuration code has been removed as it is not required as part of the document node picking workflow
+    // To be confirmed with Marc
     self.tableViewData = [NSMutableArray array];
     
-    AppConfigurationManager *configurationManager = [AppConfigurationManager sharedManager];
+    NodePickerFileFolderListViewController *companyHomeViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:nil folderDisplayName:@"companyHome.title" session:self.session nodePickerController:self.nodePicker];
+    MainMenuItem *companyHomeItem = [[MainMenuItem alloc] initWithIdentifier:kAlfrescoMainMenuItemCompanyHomeIdentifier
+                                                                       title:NSLocalizedString(@"companyHome.title", @"Company Home")
+                                                                       image:[UIImage imageNamed:@"mainmenu-repository.png"]
+                                                                 description:nil
+                                                                 displayType:MainMenuDisplayTypeDetail
+                                                            associatedObject:companyHomeViewController];
+    [self.tableViewData addObject:companyHomeItem];
     
-    if (configurationManager.showRepositorySpecificItems)
-    {
-        BOOL showRepository = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationRepositoryKey];
-        if (showRepository)
-        {
-            NodePickerFileFolderListViewController *companyHomeViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:nil folderDisplayName:@"companyHome.title" session:self.session nodePickerController:self.nodePicker];
-            MainMenuItem *companyHomeMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeRepository
-                                                                                   imageName:@"mainmenu-repository.png"
-                                                                           localizedTitleKey:@"companyHome.title"
-                                                                              viewController:companyHomeViewController
-                                                                             displayInDetail:NO];
-            [self.tableViewData addObject:companyHomeMenuItem];
-        }
-        
-        BOOL showSites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSitesKey];
-        if (showSites)
-        {
-            NodePickerSitesViewController *sitesListViewController = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self.nodePicker];
-            MainMenuItem *sitesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSites
-                                                                             imageName:@"mainmenu-sites.png"
-                                                                     localizedTitleKey:@"sites.title"
-                                                                        viewController:sitesListViewController
-                                                                       displayInDetail:NO];
-            [self.tableViewData addObject:sitesMenuItem];
-        }
-        
-        BOOL showFavorites = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationFavoritesKey];
-        if (showFavorites)
-        {
-            BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-            NodePickerFavoritesViewController *syncViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
-            MainMenuItem *favoritesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSync
-                                                                                 imageName:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"
-                                                                         localizedTitleKey:isSyncOn ? @"sync.title" : @"favourites.title"
-                                                                            viewController:syncViewController
-                                                                           displayInDetail:NO];
-            [self.tableViewData addObject:favoritesMenuItem];
-        }
-        
-        BOOL showSharedFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationSharedFilesKey];
-        if (showSharedFiles)
-        {
-            NodePickerFileFolderListViewController *sharedFilesViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:configurationManager.sharedFiles
-                                                                                                                             folderDisplayName:NSLocalizedString(@"sharedFiles.title", @"Shared Files")
-                                                                                                                                       session:self.session
-                                                                                                                          nodePickerController:self.nodePicker];
-            MainMenuItem *sharedFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeSharedFiles
-                                                                                   imageName:@"mainmenu-sharedfiles.png"
-                                                                           localizedTitleKey:@"sharedFiles.title"
-                                                                              viewController:sharedFilesViewController
-                                                                             displayInDetail:NO];
-            [self.tableViewData addObject:sharedFilesMenuItem];
-        }
-        
-        BOOL showMyFiles = [configurationManager visibilityForMainMenuItemWithKey:kAppConfigurationMyFilesKey];
-        if (showMyFiles)
-        {
-            NodePickerFileFolderListViewController *myFilesViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:configurationManager.myFiles
-                                                                                                                         folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
-                                                                                                                                   session:self.session
-                                                                                                                      nodePickerController:self.nodePicker];
-            MainMenuItem *myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeMyFiles
-                                                                               imageName:@"mainmenu-myfiles.png"
-                                                                       localizedTitleKey:@"myFiles.title"
-                                                                          viewController:myFilesViewController
-                                                                         displayInDetail:NO];
-            [self.tableViewData addObject:myFilesMenuItem];
-        }
-    }
+    NodePickerSitesViewController *sitesListViewController = [[NodePickerSitesViewController alloc] initWithSession:self.session nodePickerController:self.nodePicker];
+    MainMenuItem *sitesItem = [[MainMenuItem alloc] initWithIdentifier:kAlfrescoMainMenuItemSitesIdentifier
+                                                                       title:NSLocalizedString(@"sites.title", @"Sites")
+                                                                       image:[UIImage imageNamed:@"mainmenu-sites.png"]
+                                                                 description:nil
+                                                                 displayType:MainMenuDisplayTypeDetail
+                                                            associatedObject:sitesListViewController];
+    [self.tableViewData addObject:sitesItem];
+    
+    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+    NodePickerFavoritesViewController *syncViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
+    MainMenuItem *syncItem = [[MainMenuItem alloc] initWithIdentifier:kAlfrescoMainMenuItemSyncIdentifier
+                                                                title:NSLocalizedString(isSyncOn ? @"sync.title" : @"favourites.title", @"Sites")
+                                                                 image:[UIImage imageNamed:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"]
+                                                           description:nil
+                                                           displayType:MainMenuDisplayTypeDetail
+                                                      associatedObject:syncViewController];
+    [self.tableViewData addObject:syncItem];
 }
 
 #pragma mark - Table view data source
@@ -180,9 +137,9 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     NodePickerScopeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kNodePickerScopeCellIdentifier];
     
     MainMenuItem *currentItem = self.tableViewData[indexPath.row];
-    cell.label.text = NSLocalizedString(currentItem.localizedTitleKey, @"Localised Cell Title");
+    cell.label.text = currentItem.itemTitle;
     cell.thumbnail.tintColor = [UIColor appTintColor];
-    [cell.thumbnail setImage:[[UIImage imageNamed:currentItem.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] withFade:NO];
+    [cell.thumbnail setImage:[currentItem.itemImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] withFade:NO];
     
     return cell;
 }
@@ -190,7 +147,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuItem *selectedMenuItem = self.tableViewData[indexPath.row];
-    UIViewController *viewController = selectedMenuItem.viewController;
+    UIViewController *viewController = selectedMenuItem.associatedObject;
     
     if (viewController)
     {

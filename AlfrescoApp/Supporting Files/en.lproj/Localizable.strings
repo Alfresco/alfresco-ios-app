@@ -197,9 +197,11 @@
 "accountdetails.fields.syncPreference" = "Sync Files";
 "accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
+"accountdetails.buttons.configuration" = "Configure Main Menu";
 "accountdetails.header.authentication" = "Account Details";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
+"accountdetails.header.main.menu.config" = "Main Menu Configuration";
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "The account couldn’t be saved. Check your account settings with your Alfresco administrator.";
@@ -757,6 +759,24 @@
  * MDM
  */
 "mdm.missing.keys.description" = "The following keys have not been setup:\n%@\nPlease contact your administrator.";
+
+/**
+ * Configuration
+ */
+"view-activities-default" = "Activities";
+"view-repository-default" = "Repository";
+"view-sites-default" = "Sites";
+"view-task-default" = "Tasks";
+"view-favorite-default" = "Favorites";
+"view-local-default" = "Local Files";
+
+/**
+ * Main Menu Rorder View Controller
+ */
+"main.menu.reorder.title" = "Menu Configuration";
+"main.menu.reorder.header.visible.title" = "Visible";
+"main.menu.reorder.footer.visible.description" = "To hide menu items, drag the item that you no longer need to the hidden section.";
+"main.menu.reorder.header.hidden.title" = "Hidden";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS

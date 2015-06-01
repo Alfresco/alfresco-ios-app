@@ -62,7 +62,6 @@ NSString * const kAlfrescoJSONModelId = @"model-id";
 NSString * const kAlfrescoConfigApplicationDirectoryCMISSearchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:dictionary\"')";
 NSString * const kAlfrescoConfigFolderPathToConfigFileRelativeToApplicationDirectory = @"Mobile";
 
-NSString * const kAlfrescoConfigServiceParameterFileName = @"org.alfresco.mobile.internal.config.file.name";
 NSString * const kAlfrescoConfigServiceDefaultFileName = @"configuration.json";
 NSString * const kAlfrescoConfigProfileDefaultIdentifier = @"default";
 NSString * const kAlfrescoConfigProfileDefaultLabel = @"Default";

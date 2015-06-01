@@ -43,6 +43,7 @@ typedef void (^AlfrescoViewGroupConfigCompletionBlock)(AlfrescoViewGroupConfig *
 extern NSString * const kAlfrescoConfigServiceParameterApplicationId;
 extern NSString * const kAlfrescoConfigServiceParameterProfileId;
 extern NSString * const kAlfrescoConfigServiceParameterFolder;
+extern NSString * const kAlfrescoConfigServiceParameterFileName;
 extern NSString * const kAlfrescoConfigServiceParameterConfigLocalDestinationFolder;
 
 extern NSString * const kAlfrescoConfigScopeContextNode;
