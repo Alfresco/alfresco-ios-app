@@ -13,4 +13,6 @@
 @property (nonatomic, getter=isEditing) BOOL editing;                             // default is NO. setting is not animated.
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 
+@property (nonatomic, getter=isInDeleteMode) BOOL deleteMode;
+
 @end

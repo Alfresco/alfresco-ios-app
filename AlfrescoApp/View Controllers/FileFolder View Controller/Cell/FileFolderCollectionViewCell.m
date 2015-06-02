@@ -26,6 +26,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, assign) BOOL isSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
 
+// from the old code
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
 
@@ -37,6 +38,13 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconTopSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconTopSpaceConstraint;
+
+// from the new code
+// for deleting
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingContentViewContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trainlingContentViewContraint;
+
+
 
 @end
 
@@ -142,6 +150,26 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 + (NSString *)cellIdentifier
 {
     return kAlfrescoNodeCellIdentifier;
+}
+
+- (void)showDeleteAction:(BOOL)showDelete animated:(BOOL)animated
+{
+    double shiftAmount;
+    if(showDelete)
+    {
+        shiftAmount = 70.0;
+    }
+    else
+    {
+        shiftAmount = 0.0;
+    }
+    
+    [self layoutIfNeeded];
+    self.leadingContentViewContraint.constant = -shiftAmount;
+    self.trainlingContentViewContraint.constant = shiftAmount;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self layoutIfNeeded];
+    }];
 }
 
 #pragma mark - Notification Methods
@@ -364,6 +392,5 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 @end

@@ -18,11 +18,17 @@
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *image;
 @property (nonatomic, weak) IBOutlet UIProgressView *progressBar;
 @property (nonatomic, weak) IBOutlet UIView *accessoryView;
+@property (nonatomic, weak) IBOutlet UIView *actionsView;
+@property (nonatomic, weak) IBOutlet UIView *editView;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
 
 + (NSString *)cellIdentifier;
 - (void)registerForNotifications;
 - (void)removeNotifications;
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
+
+- (void) showDeleteAction:(BOOL) showDelete animated:(BOOL)animated;
 
 @end
