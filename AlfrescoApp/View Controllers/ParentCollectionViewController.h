@@ -23,7 +23,6 @@
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;
 @protocol AlfrescoSession;
-@class ALFCollectionView;
 
 @interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 

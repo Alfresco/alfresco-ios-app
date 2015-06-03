@@ -1,10 +1,20 @@
-//
-//  ALFCollectionView.m
-//  AlfrescoApp
-//
-//  Created by Silviu Odobescu on 28/05/15.
-//  Copyright (c) 2015 Alfresco. All rights reserved.
-//
+/*******************************************************************************
+ * Copyright (C) 2005-2014 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
 
 #import "ALFCollectionView.h"
 #import "FileFolderCollectionViewCell.h"
@@ -12,6 +22,9 @@
 @interface ALFCollectionView()
 
 @property (nonatomic, strong) NSIndexPath *indexPathForCurrentSwipeToDelete;
+@property (nonatomic) CGPoint initialPanPoint;
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 
 @end
 
@@ -19,13 +32,14 @@
 
 - (void)awakeFromNib
 {
-    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
-    swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self addGestureRecognizer:swipeGestureRecognizer];
+    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
+    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self addGestureRecognizer:self.swipeGestureRecognizer];
     
-    UITapGestureRecognizer *tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
-    tapToDismissDeleteAction.numberOfTapsRequired = 1;
-    [self addGestureRecognizer:tapToDismissDeleteAction];
+    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
+    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
+    self.tapToDismissDeleteAction.delegate = self;
+    [self addGestureRecognizer:self.tapToDismissDeleteAction];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -63,16 +77,30 @@
         if([cell isKindOfClass:[FileFolderCollectionViewCell class]])
         {
             FileFolderCollectionViewCell *properCell = (FileFolderCollectionViewCell *)cell;
-            if((CGRectContainsPoint(self.bounds, touchPoint)) && (!CGRectContainsPoint(properCell.deleteButton.bounds, touchPoint)))
+            CGPoint touchPointInButton = [gestureReconizer locationInView:properCell.deleteButton];
+            
+            if((CGRectContainsPoint(self.bounds, touchPoint)) && (!CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton)))
             {
                 [self showDeleteAction:NO forCellAtIndexPath:self.indexPathForCurrentSwipeToDelete animated:YES];
             }
-            else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPoint))
+            else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
             {
-                [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:self.indexPathForCurrentSwipeToDelete]];
+                [self.swipeToDeleteDelegate collectionView:self didSwipeToDeleteItemAtIndex:self.indexPathForCurrentSwipeToDelete];
             }
         }
     }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if(gestureRecognizer == self.tapToDismissDeleteAction)
+    {
+        if(self.isInDeleteMode)
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Private methods
@@ -82,7 +110,7 @@
     if([cell isKindOfClass:[FileFolderCollectionViewCell class]])
     {
         FileFolderCollectionViewCell *properCell = (FileFolderCollectionViewCell *)cell;
-        self.deleteMode = showDelete;
+        self.isInDeleteMode = showDelete;
         [properCell showDeleteAction:showDelete animated:animated];
         self.indexPathForCurrentSwipeToDelete = showDelete? indexPath : nil;
     }

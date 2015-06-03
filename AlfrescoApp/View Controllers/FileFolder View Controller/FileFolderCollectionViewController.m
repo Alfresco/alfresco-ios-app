@@ -165,6 +165,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    self.tableView.tableHeaderView = self.searchBar;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
+    self.collectionView.swipeToDeleteDelegate = self;
     self.listLayout = [BaseCollectionViewFlowLayout new];
     self.listLayout.itemHeight = kCellHeight;
     [self.collectionView setCollectionViewLayout:self.listLayout];
@@ -628,7 +629,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             indexPathForNode = [self indexPathForNodeWithIdentifier:nodeToDelete.identifier inNodeIdentifiers:collectionViewNodeIdentifiers];
             if (indexPathForNode != nil)
             {
-//                [weakSelf.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
                 [weakSelf.collectionView performBatchUpdates:^{
                     [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode]];
                 } completion:nil];
@@ -878,20 +878,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //        nodePermission = self.nodePermissions[[self.tableViewData[indexPath.row] identifier]];
 //    }
 //    return (tableView.isEditing) ? YES : nodePermission.canDelete;
-//}
-//
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (editingStyle == UITableViewCellEditingStyleDelete)
-//    {
-//        AlfrescoNode *nodeToDelete = (tableView == self.searchController.searchResultsTableView) ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
-//        AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
-//        
-//        if (permissionsForNodeToDelete.canDelete)
-//        {
-//            [self deleteNode:nodeToDelete completionBlock:nil];
-//        }
-//    }
 //}
 
 #pragma mark - Collection view delegate
@@ -1422,6 +1408,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.retrySyncPopover dismissPopoverAnimated:YES];
     self.retrySyncNode = nil;
     self.retrySyncPopover = nil;
+}
+
+#pragma mark - SwipeToDeleteDelegate methods
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *nodeToDelete = /*(collectionView == self.searchController.searchResultsTableView) ? self.searchResults[indexOfItemToDelete] : */self.collectionViewData[indexPath.item];
+    AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
+    
+    if (permissionsForNodeToDelete.canDelete)
+    {
+        [self deleteNode:nodeToDelete completionBlock:nil];
+    }
 }
 
 @end

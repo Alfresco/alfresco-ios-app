@@ -25,7 +25,7 @@
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate >
+@interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate >
 
 /**
  Providing nil to the folder parameter will result in the root folder (Company Home) being displayed.
