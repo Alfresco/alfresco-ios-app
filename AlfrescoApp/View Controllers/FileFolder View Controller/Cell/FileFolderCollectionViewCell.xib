@@ -38,20 +38,17 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AUG-iM-IPt" userLabel="editView">
                         <rect key="frame" x="0.0" y="0.0" width="40" height="73"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Kc-u7-vcb">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OGS-DE-5O6">
                                 <rect key="frame" x="0.0" y="0.0" width="40" height="73"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="1Kc-u7-vcb" secondAttribute="trailing" id="3c9-F3-GCb"/>
-                            <constraint firstAttribute="bottom" secondItem="1Kc-u7-vcb" secondAttribute="bottom" id="4cO-kh-Tdu"/>
                             <constraint firstAttribute="width" constant="40" id="BuE-XY-KGj"/>
-                            <constraint firstItem="1Kc-u7-vcb" firstAttribute="leading" secondItem="AUG-iM-IPt" secondAttribute="leading" id="GGg-WS-7Bs"/>
-                            <constraint firstItem="1Kc-u7-vcb" firstAttribute="top" secondItem="AUG-iM-IPt" secondAttribute="top" id="RYu-Ej-FHJ"/>
+                            <constraint firstItem="OGS-DE-5O6" firstAttribute="leading" secondItem="AUG-iM-IPt" secondAttribute="leading" id="Mtf-Xa-tU1"/>
+                            <constraint firstAttribute="trailing" secondItem="OGS-DE-5O6" secondAttribute="trailing" id="RTA-uM-Ni3"/>
+                            <constraint firstAttribute="bottom" secondItem="OGS-DE-5O6" secondAttribute="bottom" id="WqE-Ga-T6w"/>
+                            <constraint firstItem="OGS-DE-5O6" firstAttribute="top" secondItem="AUG-iM-IPt" secondAttribute="top" id="uS3-tS-b3G"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jUU-kB-gwC" userLabel="content">
@@ -91,7 +88,7 @@
                                                 </constraints>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="nk4-8f-6JV" firstAttribute="top" secondItem="jG7-Dv-cqZ" secondAttribute="bottom" priority="750" constant="3" id="3iF-bd-0Pm"/>
                                             <constraint firstItem="c5v-Cp-feq" firstAttribute="top" secondItem="jG7-Dv-cqZ" secondAttribute="bottom" priority="750" constant="3" id="4lP-Nu-r9i"/>
@@ -117,7 +114,7 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="hzd-mq-4pj" firstAttribute="leading" secondItem="KVy-Qt-Ot0" secondAttribute="leading" constant="8" id="8sG-rc-U5T"/>
                                     <constraint firstItem="pwC-rb-2UE" firstAttribute="top" secondItem="KVy-Qt-Ot0" secondAttribute="top" constant="15" id="GTa-TC-Dci"/>
@@ -132,7 +129,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFi-K2-MXt" userLabel="accessoryView">
                                 <rect key="frame" x="287" y="0.0" width="73" height="73"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="EFi-K2-MXt" secondAttribute="height" multiplier="1:1" id="3S1-go-UTD"/>
                                 </constraints>
@@ -168,9 +165,10 @@
             <connections>
                 <outlet property="accessoryView" destination="EFi-K2-MXt" id="XZP-gr-BI0"/>
                 <outlet property="actionsView" destination="ziG-7Y-fag" id="Fz8-It-bkw"/>
+                <outlet property="content" destination="jUU-kB-gwC" id="NE3-fB-z7F"/>
                 <outlet property="deleteButton" destination="Uz1-87-9cL" id="UJ8-a5-MMp"/>
                 <outlet property="details" destination="7el-18-244" id="VDE-Be-Xyq"/>
-                <outlet property="editButton" destination="1Kc-u7-vcb" id="IVn-k3-TCI"/>
+                <outlet property="editImageView" destination="OGS-DE-5O6" id="0qY-9A-VaW"/>
                 <outlet property="editView" destination="AUG-iM-IPt" id="ztb-cE-q0i"/>
                 <outlet property="favoriteIconRightSpaceConstraint" destination="yAI-Nl-yxb" id="96F-kT-gE9"/>
                 <outlet property="favoriteIconTopSpaceConstraint" destination="3iF-bd-0Pm" id="xVH-PD-7xW"/>

@@ -160,8 +160,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     [self.searchController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     
-//    self.tableView.delegate = self;
-//    self.tableView.dataSource = self;
 //    self.tableView.tableHeaderView = self.searchBar;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -897,6 +895,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self.collectionView.isEditing)
     {
         [self.multiSelectToolbar userDidSelectItem:selectedNode];
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [cell wasSelectedInEditMode:YES];
     }
     else
     {
@@ -959,6 +959,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         AlfrescoNode *selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
         [self.multiSelectToolbar userDidDeselectItem:selectedNode];
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [cell wasSelectedInEditMode:NO];
     }
 }
 

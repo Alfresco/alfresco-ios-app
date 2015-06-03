@@ -31,7 +31,9 @@
 @property (nonatomic, weak) IBOutlet UIView *actionsView;
 @property (nonatomic, weak) IBOutlet UIView *editView;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIImageView *editImageView;
+@property (weak, nonatomic) IBOutlet UIView *content;
+
 
 + (NSString *)cellIdentifier;
 - (void)registerForNotifications;
@@ -40,5 +42,7 @@
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
 
 - (void) showDeleteAction:(BOOL) showDelete animated:(BOOL)animated;
+- (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated;
+- (void) wasSelectedInEditMode:(BOOL)wasSelected;
 
 @end

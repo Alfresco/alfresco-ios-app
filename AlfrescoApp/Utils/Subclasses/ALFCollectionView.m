@@ -44,7 +44,13 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-    
+    self.editing = editing;
+    NSArray *visibleIndexPaths = [self indexPathsForVisibleItems];
+    for(NSIndexPath *indexPath in visibleIndexPaths)
+    {
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self cellForItemAtIndexPath:indexPath];
+        [cell showEditMode:editing animated:animated];
+    }
 }
 
 #pragma mark - Gesture reconizer handlers

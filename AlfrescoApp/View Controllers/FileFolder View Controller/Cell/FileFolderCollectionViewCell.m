@@ -36,6 +36,9 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, assign) BOOL isSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
 
+@property (nonatomic, assign) BOOL isShowingDelete;
+@property (nonatomic, assign) BOOL isSelectedInEditMode;
+
 // from the old code
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
@@ -178,9 +181,66 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     self.leadingContentViewContraint.constant = -shiftAmount;
     self.trainlingContentViewContraint.constant = shiftAmount;
     
-    [UIView animateWithDuration:0.40 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    if(animated)
+    {
+        [UIView animateWithDuration:0.40 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            self.isShowingDelete = showDelete;
+        }];
+    }
+    else
+    {
         [self layoutIfNeeded];
-    } completion:nil];
+    }
+}
+
+- (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated
+{
+    double shiftAmount;
+    if(showEdit)
+    {
+        shiftAmount = 40.0;
+        self.editImageView.image = [UIImage imageNamed:@"cell-button-unchecked.png"];
+        self.isSelectedInEditMode = NO;
+    }
+    else
+    {
+        shiftAmount = 0.0;
+    }
+    
+    [self layoutIfNeeded];
+    self.leadingContentViewContraint.constant = shiftAmount;
+    self.trainlingContentViewContraint.constant = -shiftAmount;
+    
+    if(animated)
+    {
+        [UIView animateWithDuration:0.40 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self layoutIfNeeded];
+        } completion:nil];
+    }
+    else
+    {
+        [self layoutIfNeeded];
+    }
+}
+
+- (void) wasSelectedInEditMode:(BOOL)wasSelected
+{
+    self.isSelectedInEditMode = wasSelected;
+    if(wasSelected)
+    {
+        self.editImageView.image = [[UIImage imageNamed:@"cell-button-checked-filled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.editImageView.tintColor = [UIColor appTintColor];
+        self.editView.backgroundColor = [UIColor selectedCollectionViewCellBackground];
+        self.content.backgroundColor = [UIColor selectedCollectionViewCellBackground];
+    }
+    else
+    {
+        self.editImageView.image = [UIImage imageNamed:@"cell-button-unchecked.png"];
+        self.editView.backgroundColor = [UIColor whiteColor];
+        self.content.backgroundColor = [UIColor whiteColor];
+    }
 }
 
 #pragma mark - Notification Methods
