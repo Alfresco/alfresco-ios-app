@@ -16,16 +16,19 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
-#import "CollectionViewProtocols.h"
+#ifndef AlfrescoApp_CollectionViewProtocols_h
+#define AlfrescoApp_CollectionViewProtocols_h
 
-@interface ALFCollectionView : UICollectionView < UIGestureRecognizerDelegate >
+@protocol SwipeToDeleteDelegate <NSObject>
 
-@property (nonatomic, strong) id<SwipeToDeleteDelegate> swipeToDeleteDelegate;
-
-@property (nonatomic, getter=isEditing) BOOL editing;                             // default is NO. setting is not animated.
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
-
-@property (nonatomic) BOOL isInDeleteMode;
+- (void) collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath;
 
 @end
+
+@protocol CollectionViewCellAccessoryViewDelegate <NSObject>
+
+- (void) didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node;
+
+@end
+
+#endif

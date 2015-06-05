@@ -57,7 +57,10 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingContentViewContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trainlingContentViewContraint;
 
-
+// for accessory view
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *accessoryViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingAccessoryViewConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *accessoryViewButton;
 
 @end
 
@@ -352,43 +355,48 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)setAccessoryViewForState:(SyncStatus)status
 {
-//    if (self.node.isFolder)
-//    {
-//        self.accessoryType = UITableViewCellAccessoryDetailButton;
-//    }
-//    else
-//    {
-//        self.accessoryType = UITableViewCellAccessoryNone;
-//        
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        UIImage *buttonImage;
-//        
-//        switch (status)
-//        {
-//            case SyncStatusLoading:
-//                buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//                button.tintColor = [UIColor appTintColor];
-//                break;
-//                
-//            case SyncStatusFailed:
-//                buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//                button.tintColor = [UIColor syncFailedColor];
-//                break;
-//                
-//            default:
-//                [self setAccessoryView:nil];
-//                break;
-//        }
-//        
-//        if (buttonImage)
-//        {
-//            [button setFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
-//            [button setImage:buttonImage forState:UIControlStateNormal];
-//            [button setShowsTouchWhenHighlighted:YES];
-//            [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-//            [self setAccessoryView:button];
-//        }
-//    }
+    if (self.node.isFolder)
+    {
+        UIImage *buttonImage = [[UIImage imageNamed:@"cell-button-info.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.accessoryViewButton.tintColor = [UIColor appTintColor];
+        [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
+        [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
+        [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
+        [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+        self.accessoryViewWidthConstraint.constant = 50.0;
+    }
+    else
+    {
+        UIImage *buttonImage;
+        
+        switch (status)
+        {
+            case SyncStatusLoading:
+                buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
+                self.accessoryViewButton.tintColor = [UIColor appTintColor];
+                break;
+                
+            case SyncStatusFailed:
+                buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
+                self.accessoryViewButton.tintColor = [UIColor syncFailedColor];
+                break;
+                
+            default:
+                self.accessoryViewWidthConstraint.constant = 0.0;
+                break;
+        }
+        
+        if (buttonImage)
+        {
+            [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
+            [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
+            [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+            self.accessoryViewWidthConstraint.constant = buttonImage.size.width;
+        }
+    }
+    [self layoutIfNeeded];
 }
 
 - (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus
@@ -441,22 +449,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)accessoryButtonTapped:(UIControl *)button withEvent:(UIEvent *)event
 {
-    UIView *cell = button.superview;
-    
-    if (![cell isKindOfClass:[UITableViewCell class]])
-    {
-        cell = (UITableViewCell *)cell.superview;
-    }
-    UIView *table = cell.superview;
-    
-    if (![table isKindOfClass:[UITableView class]])
-    {
-        table = (UITableView *)table.superview;
-    }
-    UITableView *tableView = (UITableView *)table;
-    
-    NSIndexPath *indexPath = [tableView indexPathForCell:(UITableViewCell *)cell];
-    [tableView.delegate tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+    [self.accessoryViewDelegate didTapCollectionViewCellAccessorryView:self.node];
 }
 
 - (void)dealloc

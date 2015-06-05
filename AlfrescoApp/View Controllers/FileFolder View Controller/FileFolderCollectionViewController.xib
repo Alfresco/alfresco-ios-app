@@ -24,18 +24,18 @@
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tUN-bZ-5hX">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="50" height="50"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BeG-AU-GzT" customClass="MultiSelectActionsToolbar">
                     <rect key="frame" x="0.0" y="600" width="600" height="0.0"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" id="1Ht-TC-xEq"/>
                     </constraints>
                     <items/>
-                    <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -49,6 +49,11 @@
                 <constraint firstItem="66G-2H-fU6" firstAttribute="top" secondItem="6y6-ab-gWu" secondAttribute="top" id="U21-Jd-vj9"/>
                 <constraint firstItem="BeG-AU-GzT" firstAttribute="leading" secondItem="6y6-ab-gWu" secondAttribute="leading" id="gRZ-SQ-VIt"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Nt5-lZ-uW1"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="1678" y="465"/>
         </view>
     </objects>

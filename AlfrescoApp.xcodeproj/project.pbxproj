@@ -189,6 +189,8 @@
 		2B19C0801B17357B005CF636 /* ALFCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C07F1B17357B005CF636 /* ALFCollectionView.m */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
+		2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */; };
+		2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */; };
 		2BFB07FD1B149FFD00ED8DFF /* ParentCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */; };
 		2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */; };
 		2BFB08071B14A1F400ED8DFF /* FileFolderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */; };
@@ -970,6 +972,9 @@
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
+		2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info.png"; sourceTree = "<group>"; };
+		2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info@2x.png"; sourceTree = "<group>"; };
+		2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewProtocols.h; sourceTree = "<group>"; };
 		2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentCollectionViewController.h; sourceTree = "<group>"; };
 		2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentCollectionViewController.m; sourceTree = "<group>"; };
 		2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderCollectionViewController.h; sourceTree = "<group>"; };
@@ -1915,6 +1920,15 @@
 				2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */,
 			);
 			path = "Connection Diagnostic View Controller";
+			sourceTree = "<group>";
+		};
+		2BC7CA791B219037009BB2A9 /* Collection View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */,
+				2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */,
+			);
+			path = "Collection View Cells";
 			sourceTree = "<group>";
 		};
 		2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */ = {
@@ -2986,6 +3000,7 @@
 				73B9580017A6750E0099FB84 /* UniversalDevice.m */,
 				73B9580117A6750E0099FB84 /* Utility.h */,
 				73B9580217A6750E0099FB84 /* Utility.m */,
+				2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3126,6 +3141,7 @@
 		73B959F117A68B7E0099FB84 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2BC7CA791B219037009BB2A9 /* Collection View Cells */,
 				2B114E5B1B1F39C7005A05AA /* Edit Mode Collection View */,
 				2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */,
 				73B959F217A68B7E0099FB84 /* About */,
@@ -3758,6 +3774,7 @@
 				732DBF9D18E1BC6B00F7A0BF /* small_video@2x.png in Resources */,
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
+				2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
 				730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */,
 				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
@@ -3861,6 +3878,7 @@
 				738BE94A1A960787006264E5 /* Launch Screen.xib in Resources */,
 				732DBF9818E1BC6B00F7A0BF /* small_pdf.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
+				2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */,
 				08E1EA3918DB073A00F9052F /* TaskTypeViewController.xib in Resources */,
 				271DC775189C2D250059D1B2 /* status-sync-synced-highlighted@2x.png in Resources */,
 				73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */,

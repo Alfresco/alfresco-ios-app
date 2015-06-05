@@ -18,6 +18,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ThumbnailImageView.h"
+#import "CollectionViewProtocols.h"
+
 
 @class SyncNodeStatus;
 
@@ -34,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *editImageView;
 @property (weak, nonatomic) IBOutlet UIView *content;
 
+@property (nonatomic, weak) id<CollectionViewCellAccessoryViewDelegate> accessoryViewDelegate;
 
 + (NSString *)cellIdentifier;
 - (void)registerForNotifications;

@@ -56,7 +56,7 @@
 #pragma mark - Gesture reconizer handlers
 - (void) swipeToDeleteGesture:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    if ((gestureRecognizer.state == UIGestureRecognizerStateEnded) && (!self.isEditing))
     {
         CGPoint touchPoint = [gestureRecognizer locationInView:self];
         if (CGRectContainsPoint(self.bounds, touchPoint))
@@ -101,7 +101,7 @@
 {
     if(gestureRecognizer == self.tapToDismissDeleteAction)
     {
-        if(self.isInDeleteMode)
+        if((self.isInDeleteMode) && (!self.isEditing))
         {
             return YES;
         }
