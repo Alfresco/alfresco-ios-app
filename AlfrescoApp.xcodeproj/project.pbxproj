@@ -187,10 +187,14 @@
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
 		2B114E631B1F39D4005A05AA /* cell-button-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */; };
 		2B19C0801B17357B005CF636 /* ALFCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C07F1B17357B005CF636 /* ALFCollectionView.m */; };
+		2B5879A51B25CB1F001C7616 /* DumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B5879A41B25CB1F001C7616 /* DumbCell.m */; };
+		2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
 		2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */; };
 		2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */; };
+		2BC7CA851B21E523009BB2A9 /* LoadingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BC7CA841B21E523009BB2A9 /* LoadingCollectionViewCell.m */; };
+		2BC7CA871B21E540009BB2A9 /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA861B21E540009BB2A9 /* LoadingCollectionViewCell.xib */; };
 		2BFB07FD1B149FFD00ED8DFF /* ParentCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */; };
 		2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */; };
 		2BFB08071B14A1F400ED8DFF /* FileFolderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */; };
@@ -969,12 +973,18 @@
 		2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked@2x.png"; sourceTree = "<group>"; };
 		2B19C07E1B17357B005CF636 /* ALFCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFCollectionView.h; sourceTree = "<group>"; };
 		2B19C07F1B17357B005CF636 /* ALFCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFCollectionView.m; sourceTree = "<group>"; };
+		2B5879A31B25CB1F001C7616 /* DumbCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DumbCell.h; sourceTree = "<group>"; };
+		2B5879A41B25CB1F001C7616 /* DumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DumbCell.m; sourceTree = "<group>"; };
+		2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FileFolderCollectionViewController.storyboard; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
 		2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info.png"; sourceTree = "<group>"; };
 		2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info@2x.png"; sourceTree = "<group>"; };
 		2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewProtocols.h; sourceTree = "<group>"; };
+		2BC7CA831B21E523009BB2A9 /* LoadingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingCollectionViewCell.h; sourceTree = "<group>"; };
+		2BC7CA841B21E523009BB2A9 /* LoadingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingCollectionViewCell.m; sourceTree = "<group>"; };
+		2BC7CA861B21E540009BB2A9 /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentCollectionViewController.h; sourceTree = "<group>"; };
 		2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentCollectionViewController.m; sourceTree = "<group>"; };
 		2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderCollectionViewController.h; sourceTree = "<group>"; };
@@ -2492,6 +2502,7 @@
 				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
 				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
 				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
+				2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2545,6 +2556,11 @@
 				2BFB08151B14BE9F00ED8DFF /* FileFolderCollectionViewCell.h */,
 				2BFB08161B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m */,
 				2BFB08171B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib */,
+				2BC7CA831B21E523009BB2A9 /* LoadingCollectionViewCell.h */,
+				2BC7CA841B21E523009BB2A9 /* LoadingCollectionViewCell.m */,
+				2BC7CA861B21E540009BB2A9 /* LoadingCollectionViewCell.xib */,
+				2B5879A31B25CB1F001C7616 /* DumbCell.h */,
+				2B5879A41B25CB1F001C7616 /* DumbCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -3624,6 +3640,7 @@
 				272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */,
+				2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
@@ -3776,6 +3793,7 @@
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
 				2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
+				2BC7CA871B21E540009BB2A9 /* LoadingCollectionViewCell.xib in Resources */,
 				730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */,
 				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
 				27E84E8618AD53510024B658 /* mainmenu-settings.png in Resources */,
@@ -4061,6 +4079,7 @@
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
+				2B5879A51B25CB1F001C7616 /* DumbCell.m in Sources */,
 				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
@@ -4069,6 +4088,7 @@
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
+				2BC7CA851B21E523009BB2A9 /* LoadingCollectionViewCell.m in Sources */,
 				277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,

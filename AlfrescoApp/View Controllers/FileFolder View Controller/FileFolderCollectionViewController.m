@@ -34,6 +34,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "BaseCollectionViewFlowLayout.h"
+#import "DumbCell.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -117,6 +118,39 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
+- (void) setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+{
+    [super setupWithSession:session];
+    [self createAlfrescoServicesWithSession:session];
+    self.initialFolder = folder;
+    self.folderPermissions = permissions;
+    self.folderDisplayName = (displayName) ? displayName : folder.name;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(documentUpdated:)
+                                                 name:kAlfrescoDocumentUpdatedOnServerNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(documentDeleted:)
+                                                 name:kAlfrescoDocumentDeletedOnServerNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(nodeAdded:)
+                                                 name:kAlfrescoNodeAddedOnServerNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(documentUpdatedOnServer:)
+                                                 name:kAlfrescoSaveBackRemoteComplete
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(editingDocumentCompleted:)
+                                                 name:kAlfrescoDocumentEditedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(connectivityStatusChanged:)
+                                                 name:kAlfrescoConnectivityChangedNotification
+                                               object:nil];
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -155,6 +189,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
 //    UINib *nib = [UINib nibWithNibName:@"FileFolderCollectionViewCell" bundle:nil];
 //    [self.collectionView registerNib:nib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
+//    UINib *loadingNib = [UINib nibWithNibName:@"LoadingCollectionViewCell" bundle:nil];
+//    [self.collectionView registerNib:loadingNib forCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier]];
 //    [self.searchController. registerNib:nib forCellReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     
 //    self.tableView.tableHeaderView = self.searchBar;
@@ -163,7 +199,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.collectionView.swipeToDeleteDelegate = self;
     self.listLayout = [BaseCollectionViewFlowLayout new];
     self.listLayout.itemHeight = kCellHeight;
-    [self.collectionView setCollectionViewLayout:self.listLayout];
+    [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
@@ -395,6 +431,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     self.actionSheet = actionSheet;
     self.actionSheetSender = sender;
+    
 }
 
 - (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated
@@ -451,6 +488,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 self.navigationItem.title = rootFolder.name;
                 [self retrieveAndSetPermissionsOfCurrentFolder];
                 [self hidePullToRefreshView];
+                [self.view bringSubviewToFront:self.collectionView];
             }
             else
             {
@@ -461,6 +499,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         self.navigationItem.title = folder.name;
                         [self retrieveAndSetPermissionsOfCurrentFolder];
                         [self hidePullToRefreshView];
+                        [self.view bringSubviewToFront:self.collectionView];
                     }
                     else
                     {
@@ -488,6 +527,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self hideHUD];
                 [self hidePullToRefreshView];
                 [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+                
+                [self.view bringSubviewToFront:self.collectionView];
             }];
         }
     }
@@ -759,15 +800,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
-    [self.searchProgressHUD show:YES];
+//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
+//    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+//    [self.searchProgressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-    [self.searchProgressHUD hide:YES];
-    self.searchProgressHUD = nil;
+//    [self.searchProgressHUD hide:YES];
+//    self.searchProgressHUD = nil;
 }
 
 - (void)connectivityStatusChanged:(NSNotification *)notification
@@ -906,27 +947,51 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // the last row index of the table data
-    NSUInteger lastSiteRowIndex = self.collectionViewData.count - 1;
-    
-    // if the last cell is about to be drawn, check if there are more sites
-    if (indexPath.row == lastSiteRowIndex)
-    {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
-        if (self.moreItemsAvailable)
-        {
-            // show more items are loading ...
-            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [spinner startAnimating];
-//            self.tableView.tableFooterView = spinner;
-            
-            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
-//                self.tableView.tableFooterView = nil;
-            }];
-        }
-    }
+//    // the last row index of the table data
+//    NSUInteger lastSiteRowIndex = self.collectionViewData.count - 1;
+//    
+//    // if the last cell is about to be drawn, check if there are more sites
+//    if (indexPath.row == lastSiteRowIndex)
+//    {
+//        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
+//        if (self.moreItemsAvailable)
+//        {
+//            // show more items are loading ...
+//            self.isLoadingAnotherPage = YES;
+//            [self.collectionView performBatchUpdates:^{
+//                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
+//            } completion:^(BOOL finished) {
+//                [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//                    [self.collectionView performBatchUpdates:^{
+//                        self.isLoadingAnotherPage = NO;
+//                        [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
+//                    } completion:^(BOOL finished) {
+//                        [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
+//                    }];
+//                }];
+//            }];
+//        }
+//    }
 }
+
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if((self.isLoadingAnotherPage) && (indexPath.item == self.collectionViewData.count))
+//    {
+//        UIEdgeInsets insets = self.collectionView.contentInset;
+//        CGFloat width = CGRectGetWidth(self.collectionView.bounds) - (insets.left + insets.right);
+//        return CGSizeMake(width, 40);
+//    }
+//    else
+//    {
+//        if([collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+//        {
+//            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionViewLayout;
+//            return properLayout.itemSize;
+//        }
+//        return CGSizeZero;
+//    }
+//}
 
 #pragma mark - UIActionSheetDelegate Functions
 

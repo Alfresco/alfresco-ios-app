@@ -497,10 +497,16 @@ static NSUInteger const kAccountsRowNumber = 0;
 //                                                                                                     folderPermissions:configurationManager.myFilesPermissions
 //                                                                                                     folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
 //                                                                                                               session:self.alfrescoSession];
-            FileFolderCollectionViewController *myFilesViewController = [[FileFolderCollectionViewController alloc] initWithFolder:configurationManager.myFiles
-                                                                                                                 folderPermissions:configurationManager.myFilesPermissions
-                                                                                                                 folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
-                                                                                                                           session:self.alfrescoSession];
+            
+            
+//            FileFolderCollectionViewController *myFilesViewController = [[FileFolderCollectionViewController alloc] initWithFolder:configurationManager.myFiles
+//                                                                                                                 folderPermissions:configurationManager.myFilesPermissions
+//                                                                                                                 folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files")
+//                                                                                                                           session:self.alfrescoSession];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FileFolderCollectionViewController" bundle:[NSBundle mainBundle]];
+            FileFolderCollectionViewController *myFilesViewController = (FileFolderCollectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"FileFolderCollectionViewController"];
+            [myFilesViewController setupWithFolder:configurationManager.myFiles folderPermissions:configurationManager.myFilesPermissions folderDisplayName:NSLocalizedString(@"myFiles.title", @"My Files") session:self.alfrescoSession];
             NavigationViewController *myFilesNavigationController = [[NavigationViewController alloc] initWithRootViewController:myFilesViewController];
             myFilesMenuItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeMyFiles
                                                                  imageName:@"mainmenu-myfiles.png"

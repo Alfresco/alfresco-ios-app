@@ -57,6 +57,23 @@
     return [self initWithNibName:nil andSession:session];
 }
 
+- (void)setupWithSession:(id<AlfrescoSession>)session
+{
+    self.session = session;
+    self.collectionViewData = [NSMutableArray array];
+    self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
+    self.moreItemsAvailable = NO;
+    self.allowsPullToRefresh = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sessionReceived:)
+                                                 name:kAlfrescoSessionReceivedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(connectivityChanged:)
+                                                 name:kAlfrescoConnectivityChangedNotification
+                                               object:nil];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -247,7 +264,7 @@
 
 - (void)showHUD
 {
-    [self showHUDWithMode:MBProgressHUDModeIndeterminate];
+//    [self showHUDWithMode:MBProgressHUDModeIndeterminate];
 }
 
 - (void)showHUDWithMode:(MBProgressHUDMode)mode
@@ -265,10 +282,10 @@
 
 - (void)hideHUD
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.progressHUD hide:YES];
-        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.progressHUD hide:YES];
+//        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+//    });
 }
 
 - (void)hidePullToRefreshView
@@ -291,24 +308,22 @@
 /* to change */
 - (void)enablePullToRefresh
 {
-//    if (self.allowsPullToRefresh)
-//    {
-//        UITableViewController *tableViewController = [[UITableViewController alloc] init];
-//        tableViewController.tableView = self.tableView;
-//        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-//        refreshControl.backgroundColor = [UIColor whiteColor];
-//        refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
-//        [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
-//        tableViewController.refreshControl = refreshControl;
-//        self.refreshControl = refreshControl;
-//        
-//        // bug with iOS 7's UIRefreshControl - Displacement of the initial title.
-//        // Force a begin and end refresh action to resolve the displacement of text.
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.refreshControl beginRefreshing];
-//            [self.refreshControl endRefreshing];
-//        });
-//    }
+    if (self.allowsPullToRefresh)
+    {
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        refreshControl.backgroundColor = [UIColor whiteColor];
+        refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
+        [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
+        self.refreshControl = refreshControl;
+        [self.collectionView addSubview:refreshControl];
+        
+        // bug with iOS 7's UIRefreshControl - Displacement of the initial title.
+        // Force a begin and end refresh action to resolve the displacement of text.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshControl beginRefreshing];
+            [self.refreshControl endRefreshing];
+        });
+    }
 }
 
 /* to change */

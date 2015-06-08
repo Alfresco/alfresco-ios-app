@@ -39,6 +39,7 @@
     self.itemHeight = -1;
     
     self.minimumLineSpacing = 1;
+    self.minimumInteritemSpacing = 1;
     
     return self;
 }

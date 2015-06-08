@@ -41,15 +41,15 @@
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
-    [self.searchProgressHUD show:YES];
+//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
+//    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+//    [self.searchProgressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-    [self.searchProgressHUD hide:YES];
-    self.searchProgressHUD = nil;
+//    [self.searchProgressHUD hide:YES];
+//    self.searchProgressHUD = nil;
 }
 
 #pragma mark - Custom getters and setters
@@ -80,6 +80,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+//    if(indexPath.item == self.collectionViewData.count)
+//    {
+//        LoadingCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier] forIndexPath:indexPath];
+//        
+//        return cell;
+//    }
+    
     FileFolderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
     
     // config the cell here...
@@ -158,18 +165,21 @@
         AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
         if (self.moreItemsAvailable)
         {
-            // show more items are loading ...
-            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [spinner startAnimating];
-//            self.collectionView.tableFooterView = spinner;
-//            
-//            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-//                [self addMoreToTableViewWithPagingResult:pagingResult error:error];
-//                self.tableView.tableFooterView = nil;
-//            }];
+            self.isLoadingAnotherPage = YES;
+            [self.collectionView performBatchUpdates:^{
+                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
+            } completion:^(BOOL finished) {
+                [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    [self.collectionView performBatchUpdates:^{
+                        self.isLoadingAnotherPage = NO;
+                        [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
+                    } completion:^(BOOL finished) {
+                        [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
+                    }];
+                }];
+            }];
         }
     }
-
 }
 
 #pragma mark - UISearchBarDelegate Functions

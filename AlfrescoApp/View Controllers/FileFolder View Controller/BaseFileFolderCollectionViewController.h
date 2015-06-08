@@ -21,6 +21,7 @@
 #import "SyncManager.h"
 #import "FavouriteManager.h"
 #import "ThumbnailManager.h"
+#import "LoadingCollectionViewCell.h"
 
 @interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchBarDelegate, UISearchDisplayDelegate >
 
@@ -29,7 +30,8 @@
 @property (nonatomic, strong) AlfrescoFolder *displayFolder;
 @property (nonatomic, strong) UISearchDisplayController *searchController;
 @property (nonatomic, strong) NSMutableArray *searchResults;
-@property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
+//@property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
+@property (nonatomic, assign) BOOL isLoadingAnotherPage;
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session;
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder

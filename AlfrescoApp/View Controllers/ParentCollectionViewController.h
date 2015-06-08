@@ -24,7 +24,7 @@
 @class AlfrescoPagingResult;
 @protocol AlfrescoSession;
 
-@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet ALFCollectionView *collectionView;
 
@@ -38,6 +38,9 @@
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
+
+- (void)setupWithSession:(id<AlfrescoSession>)session;
+
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 - (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
