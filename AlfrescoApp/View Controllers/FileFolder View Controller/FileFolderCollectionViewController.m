@@ -34,7 +34,6 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "BaseCollectionViewFlowLayout.h"
-#import "DumbCell.h"
 
 static CGFloat const kCellHeight = 64.0f;
 

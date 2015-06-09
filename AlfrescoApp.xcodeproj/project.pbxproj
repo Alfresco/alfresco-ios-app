@@ -187,7 +187,6 @@
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
 		2B114E631B1F39D4005A05AA /* cell-button-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */; };
 		2B19C0801B17357B005CF636 /* ALFCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C07F1B17357B005CF636 /* ALFCollectionView.m */; };
-		2B5879A51B25CB1F001C7616 /* DumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B5879A41B25CB1F001C7616 /* DumbCell.m */; };
 		2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
@@ -973,8 +972,6 @@
 		2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked@2x.png"; sourceTree = "<group>"; };
 		2B19C07E1B17357B005CF636 /* ALFCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFCollectionView.h; sourceTree = "<group>"; };
 		2B19C07F1B17357B005CF636 /* ALFCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFCollectionView.m; sourceTree = "<group>"; };
-		2B5879A31B25CB1F001C7616 /* DumbCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DumbCell.h; sourceTree = "<group>"; };
-		2B5879A41B25CB1F001C7616 /* DumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DumbCell.m; sourceTree = "<group>"; };
 		2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FileFolderCollectionViewController.storyboard; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; };
@@ -2559,8 +2556,6 @@
 				2BC7CA831B21E523009BB2A9 /* LoadingCollectionViewCell.h */,
 				2BC7CA841B21E523009BB2A9 /* LoadingCollectionViewCell.m */,
 				2BC7CA861B21E540009BB2A9 /* LoadingCollectionViewCell.xib */,
-				2B5879A31B25CB1F001C7616 /* DumbCell.h */,
-				2B5879A41B25CB1F001C7616 /* DumbCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -4079,7 +4074,6 @@
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
-				2B5879A51B25CB1F001C7616 /* DumbCell.m in Sources */,
 				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
