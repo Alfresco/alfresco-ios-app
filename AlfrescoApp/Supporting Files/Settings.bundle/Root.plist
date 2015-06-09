@@ -5,10 +5,10 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Title</key>
-			<string>settings.about</string>
 			<key>FooterText</key>
 			<string>settings.about.footer</string>
+			<key>Title</key>
+			<string>settings.about</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
@@ -31,22 +31,22 @@
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
-			<key>Title</key>
-			<string>settings.advanced</string>
 			<key>FooterText</key>
 			<string>settings.advanced.footer</string>
+			<key>Title</key>
+			<string>settings.advanced</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>settings.advanced.safe.mode</string>
-			<key>Key</key>
-			<string>Prefs_SafeMode</string>
 			<key>DefaultValue</key>
 			<false/>
+			<key>Key</key>
+			<string>Prefs_SafeMode</string>
+			<key>Title</key>
+			<string>settings.advanced.safe.mode</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>
