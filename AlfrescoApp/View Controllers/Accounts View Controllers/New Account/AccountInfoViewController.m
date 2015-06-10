@@ -28,10 +28,13 @@
 #import "ClientCertificateViewController.h"
 #import "UniversalDevice.h"
 #import "ConnectionDiagnosticViewController.h"
+#import "MainMenuReorderViewController.h"
+#import "MainMenuConfigurationBuilder.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
 static NSInteger const kTagCertificateCell = 1;
+static NSInteger const kTagReorderCell = 2;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
@@ -265,6 +268,12 @@ static NSInteger const kTagCertificateCell = 1;
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
         [self.navigationController pushViewController:clientCertificate animated:YES];
     }
+    else if (cell.tag == kTagReorderCell)
+    {
+        MainMenuConfigurationBuilder *mainBuilder = [[MainMenuConfigurationBuilder alloc] initWithAccount:self.account];
+        MainMenuReorderViewController *reorderController = [[MainMenuReorderViewController alloc] initWithAccount:self.account mainMenuBuilder:mainBuilder];
+        [self.navigationController pushViewController:reorderController animated:YES];
+    }
 }
 
 - (void)constructTableCellsForAlfrescoServer
@@ -360,6 +369,13 @@ static NSInteger const kTagCertificateCell = 1;
         certificateCell.valueLabel.text = self.account.accountCertificate.summary;
         self.certificateLabel = certificateCell.valueLabel;
         
+        LabelCell *configurationCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        configurationCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        configurationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        configurationCell.tag = kTagReorderCell;
+        configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
+        configurationCell.valueLabel.text = @"";
+        
          /**
           * Selectively disable some controls if required
           */
@@ -376,9 +392,10 @@ static NSInteger const kTagCertificateCell = 1;
          */
         self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
                                                                @[syncPreferenceCell],
+                                                               @[configurationCell],
                                                                @[portCell, serviceDocumentCell, certificateCell]]];
-        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.advanced"];
-        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer", @""];
+        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.main.menu.config", @"accountdetails.header.advanced"];
+        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer", @"", @""];
     }
     else
     {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>view-activities-default</key>
+	<string>mainmenu-activities.png</string>
+	<key>view-repository-default</key>
+	<string>mainmenu-repository.png</string>
+	<key>view-sites-default</key>
+	<string>mainmenu-sites.png</string>
+	<key>view-task-default</key>
+	<string>mainmenu-tasks.png</string>
+	<key>view-favorite-default</key>
+	<string>mainmenu-favourites.png</string>
+	<key>view-search-default</key>
+	<string>mainmenu-help.png</string>
+	<key>view-local-default</key>
+	<string>mainmenu-localfiles.png</string>
+</dict>
+</plist>

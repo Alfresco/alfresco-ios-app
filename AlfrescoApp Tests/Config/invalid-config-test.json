@@ -1,0 +1,154 @@
+{
+    "repository":
+    {
+        "unknown-property": "unknown-value"
+    },
+    "features":
+    [
+        {
+            "label-id": "Missing ID"
+        },
+        {
+            "evaluator": "non-existant-evaluator",
+            "id": "com.alfresco.client.feature.dataprotection"
+        }
+    ],
+    "view-groups":
+    [
+        {
+            "id": "missing-references",
+            "items":
+            [
+                {
+                    "item-type": "view-group-id",
+                    "view-group-id": "non-existant-group-id"
+                },
+                {
+                    "item-type": "view-id",
+                    "view-id": "non-existant-view-id"
+                },
+                {
+                    "evaluator": "non-existant-evaluator",
+                    "item-type": "view",
+                    "view":
+                    {
+                        "type": "com.alfresco.client.view.sites"
+                    }
+                },
+                {
+                    "item-type": "view-group-id"
+                },
+                {
+                    "item-type": "view-id"
+                },
+                {
+                    "item-type": "view"
+                },
+                {
+                    "item-type": "view-group"
+                }
+             ]
+        },
+        {
+            "id": "missing-items"
+        },
+        {
+            "label-id": "Missing ID"
+        }
+    ],
+    "creation":
+    {
+        "mime-types":
+        [
+            {
+                "label-id": "Mime Type"
+            }
+        ],
+        "document-types":
+        [
+            {
+                "label-id": "Default Document"
+            }
+        ],
+        "folder-types":
+        [
+            {
+                "label-id": "Default Folder"
+            }
+        ]
+    },
+    "forms":
+    [
+        {
+            "id": "missing-references",
+            "items":
+            [
+                {
+                    "item-type": "field-group-id",
+                    "field-group-id": "non-existant-group-id"
+                },
+                {
+                    "item-type": "field-id",
+                    "field-id": "non-existant-field-id"
+                },
+                {
+                    "evaluator": "non-existant-evaluator",
+                    "item-type": "field",
+                    "field":
+                    {
+                        "model-id": "cm:name"
+                    }
+                },
+                {
+                    "item-type": "field-group-id"
+                },
+                {
+                    "item-type": "field-id"
+                },
+                {
+                    "item-type": "field-group"
+                },
+                {
+                    "item-type": "field"
+                }
+            ]
+        },
+        {
+            "id": "missing-items"
+        },
+        {
+            "label-id": "Missing ID"
+        }
+    ],
+    "fields":
+    {
+        "missing-model-id":
+        {
+            "label-id": "Missing Model ID"
+        }
+    },
+    "views":
+    {
+        "missing-view-type":
+        {
+            "label-id": "Missing View Type"
+        }
+    },
+    "evaluators":
+    {
+        "invalid-type":
+        {
+            "type": "unknown-evaluator"
+        },
+        "type-and-match":
+        {
+            "type": "com.alfresco.client.evaluator.hasAspect",
+            "match-any": ["invalid-type"]
+        },
+        "both-match-properties":
+        {
+            "match-any": ["invalid-type"],
+            "match-all": ["invalid-type"]
+        }
+    }
+}

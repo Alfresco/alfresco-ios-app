@@ -34,6 +34,9 @@ extern NSString * const kSyncFolder;
 - (NSString *)downloadsInfoContentPath;
 - (NSString *)downloadsContentFolderPath;
 
+// configuration
+- (NSString *)defaultConfigurationFolderPath;
+
 // clear
 - (void)clearTemporaryDirectory;
 

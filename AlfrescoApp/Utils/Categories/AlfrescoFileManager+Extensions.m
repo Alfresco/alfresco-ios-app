@@ -44,6 +44,9 @@ static NSString * const kDownloadsFolder = @"Downloads";
 static NSString * const kDownloadsInfoFolder = @"info";
 static NSString * const kDownloadsContentFolder = @"content";
 
+// configuration
+static NSString * const kConfigurationFolder = @"Configuration";
+
 @implementation AlfrescoFileManager (Extensions)
 
 - (NSString *)documentPreviewDocumentFolderPath
@@ -90,6 +93,14 @@ static NSString * const kDownloadsContentFolder = @"content";
     [self createFolderAtPathIfItDoesNotExist:downloadsContentFolderPathString];
     
     return downloadsContentFolderPathString;
+}
+
+- (NSString *)defaultConfigurationFolderPath
+{
+    NSString *configurationPathString = [[self documentsDirectory] stringByAppendingPathComponent:kConfigurationFolder];
+    [self createFolderAtPathIfItDoesNotExist:configurationPathString];
+    
+    return configurationPathString;
 }
 
 - (void)clearTemporaryDirectory

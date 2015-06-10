@@ -46,6 +46,17 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 @implementation AccountsViewController
 
+- (instancetype)initWithSession:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
+    if (self)
+    {
+        self.canAddAccounts = YES;
+        self.canRemoveAccounts = YES;
+    }
+    return self;
+}
+
 - (instancetype)initWithConfiguration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
 {
     self = [self initWithSession:session];

@@ -20,6 +20,57 @@
 
 @implementation NSDictionary (Extension)
 
+///returns the object or nil if value is NSNull for given key
+- (id)objectForKeyNotNSNull:(id)aKey
+{
+    id returnObject = self[aKey];
+    
+    if ([returnObject isKindOfClass:[NSNull class]])
+    {
+        returnObject = nil;
+    }
+    
+    return returnObject;
+}
+
+///convenient method; returns BOOL value or NO if value is NSNull for given key
+- (BOOL)boolForKeyNotNSNull:(id)aKey
+{
+    BOOL returnBOOL = NO;
+    
+    id returnObject = self[aKey];
+    
+    if ([returnObject isKindOfClass:[NSNull class]])
+    {
+        returnBOOL = NO;
+    }
+    else if ([returnObject isKindOfClass:[NSNumber class]])
+    {
+        returnBOOL = [(NSNumber *)returnObject boolValue];
+    }
+    
+    return returnBOOL;
+}
+
+///convenient method; returns int value or 0 if value is NSNull for given key
+- (int)intForKeyNotNSNull:(id)aKey
+{
+    int returnInt = 0;
+    
+    id returnObject = self[aKey];
+    
+    if ([returnObject isKindOfClass:[NSNull class]])
+    {
+        returnInt = 0;
+    }
+    else if ([returnObject isKindOfClass:[NSNumber class]])
+    {
+        returnInt = [(NSNumber *)returnObject intValue];
+    }
+    
+    return returnInt;
+}
+
 - (NSArray *)findMissingKeysFromArray:(NSArray *)searchKeys
 {
     __block NSMutableArray *missingKeys = [NSMutableArray array];
