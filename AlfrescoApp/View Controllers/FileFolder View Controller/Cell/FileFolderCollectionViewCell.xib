@@ -174,31 +174,6 @@
                 <constraint firstAttribute="bottom" secondItem="AUG-iM-IPt" secondAttribute="bottom" id="slu-nL-OFe"/>
             </constraints>
             <size key="customSize" width="417" height="60"/>
-            <connections>
-                <outlet property="accessoryView" destination="EFi-K2-MXt" id="XZP-gr-BI0"/>
-                <outlet property="accessoryViewButton" destination="7Y1-Cb-PwK" id="jJZ-X5-Thh"/>
-                <outlet property="accessoryViewWidthConstraint" destination="dIA-E1-Buh" id="xJv-z2-pMP"/>
-                <outlet property="actionsView" destination="ziG-7Y-fag" id="Fz8-It-bkw"/>
-                <outlet property="content" destination="jUU-kB-gwC" id="NE3-fB-z7F"/>
-                <outlet property="deleteButton" destination="Uz1-87-9cL" id="UJ8-a5-MMp"/>
-                <outlet property="details" destination="7el-18-244" id="VDE-Be-Xyq"/>
-                <outlet property="editImageView" destination="OGS-DE-5O6" id="0qY-9A-VaW"/>
-                <outlet property="editView" destination="AUG-iM-IPt" id="ztb-cE-q0i"/>
-                <outlet property="favoriteIconRightSpaceConstraint" destination="yAI-Nl-yxb" id="96F-kT-gE9"/>
-                <outlet property="favoriteIconTopSpaceConstraint" destination="3iF-bd-0Pm" id="xVH-PD-7xW"/>
-                <outlet property="favoriteIconWidthConstraint" destination="WCA-4g-k3S" id="b9n-iz-U5d"/>
-                <outlet property="favoriteStatusImageView" destination="nk4-8f-6JV" id="gXH-9u-h34"/>
-                <outlet property="filename" destination="jG7-Dv-cqZ" id="OIH-aM-Q96"/>
-                <outlet property="image" destination="hzd-mq-4pj" id="d7q-Nf-Hek"/>
-                <outlet property="leadingContentViewContraint" destination="EX4-El-msa" id="bAU-fy-MoT"/>
-                <outlet property="progressBar" destination="QXh-1g-W4B" id="UHR-cJ-mau"/>
-                <outlet property="syncIconRightSpaceConstraint" destination="5GD-2s-u0f" id="0ZX-z8-EZ5"/>
-                <outlet property="syncIconTopSpaceConstraint" destination="4lP-Nu-r9i" id="9lN-y8-o8V"/>
-                <outlet property="syncIconWidthConstraint" destination="jqh-ML-dWX" id="Ffq-fb-41t"/>
-                <outlet property="syncStatusImageView" destination="c5v-Cp-feq" id="SKW-1Q-20C"/>
-                <outlet property="trailingAccessoryViewConstraint" destination="AH2-Zj-0QJ" id="ELQ-Ao-faK"/>
-                <outlet property="trainlingContentViewContraint" destination="fuH-JY-Iro" id="Tvg-oE-g0P"/>
-            </connections>
             <point key="canvasLocation" x="454.5" y="497"/>
         </collectionViewCell>
     </objects>

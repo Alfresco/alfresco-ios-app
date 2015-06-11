@@ -82,10 +82,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.collectionView.dataSource = self;
-    
-    self.view.autoresizesSubviews = YES;
-    
     if (!IS_IPAD && !self.presentingViewController)
     {
         UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
@@ -264,7 +260,7 @@
 
 - (void)showHUD
 {
-//    [self showHUDWithMode:MBProgressHUDModeIndeterminate];
+    [self showHUDWithMode:MBProgressHUDModeIndeterminate];
 }
 
 - (void)showHUDWithMode:(MBProgressHUDMode)mode
@@ -282,10 +278,10 @@
 
 - (void)hideHUD
 {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.progressHUD hide:YES];
-//        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-//    });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.progressHUD hide:YES];
+        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    });
 }
 
 - (void)hidePullToRefreshView
@@ -313,7 +309,7 @@
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
         refreshControl.backgroundColor = [UIColor whiteColor];
         refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
-        [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
+        [refreshControl addTarget:self action:@selector(refreshCollectionView:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refreshControl;
         [self.collectionView addSubview:refreshControl];
         

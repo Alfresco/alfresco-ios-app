@@ -32,13 +32,13 @@
 
 - (void)awakeFromNib
 {
-    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
-    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+//    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
+//    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
 //    [self addGestureRecognizer:self.swipeGestureRecognizer];
-    
-    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
-    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
-    self.tapToDismissDeleteAction.delegate = self;
+//    
+//    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
+//    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
+//    self.tapToDismissDeleteAction.delegate = self;
 //    [self addGestureRecognizer:self.tapToDismissDeleteAction];
 }
 
@@ -56,7 +56,7 @@
 #pragma mark - Gesture reconizer handlers
 - (void) swipeToDeleteGesture:(UIGestureRecognizer *)gestureRecognizer
 {
-    if ((gestureRecognizer.state == UIGestureRecognizerStateEnded) && (!self.isEditing))
+    if ((gestureRecognizer.state == UIGestureRecognizerStateEnded) && (!self.editing))
     {
         CGPoint touchPoint = [gestureRecognizer locationInView:self];
         if (CGRectContainsPoint(self.bounds, touchPoint))
@@ -101,7 +101,7 @@
 {
     if(gestureRecognizer == self.tapToDismissDeleteAction)
     {
-        if((self.isInDeleteMode) && (!self.isEditing))
+        if((self.isInDeleteMode) && (!self.editing))
         {
             return YES;
         }

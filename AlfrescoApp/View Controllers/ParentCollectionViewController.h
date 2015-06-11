@@ -26,7 +26,7 @@
 
 @interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet ALFCollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) NSMutableArray *collectionViewData;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;

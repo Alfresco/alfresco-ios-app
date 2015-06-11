@@ -26,6 +26,10 @@
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
+@interface TestCell : UICollectionViewCell
+
+@end
+
 @interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate >
 
 /**
@@ -51,5 +55,7 @@
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 - (void) setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+
+@property (nonatomic, weak) IBOutlet UICollectionView *testCollectionView;
 
 @end

@@ -35,11 +35,19 @@
 
 #import "BaseCollectionViewFlowLayout.h"
 
-static CGFloat const kCellHeight = 64.0f;
+static CGFloat const kCellHeight = 73.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
+
+@interface TestCell()
+
+@end
+
+@implementation TestCell
+
+@end
 
 @interface FileFolderCollectionViewController ()
 
@@ -61,6 +69,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
+
+@property (nonatomic, strong) UICollectionViewFlowLayout *someLayout;
 
 @end
 
@@ -168,19 +178,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //        self.collectionView.contentOffset = CGPointMake(0., 40.);
 //    }
     
-    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    // create searchBar
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-                                                                           view.frame.origin.y,
-                                                                           view.frame.size.width,
-                                                                           44.0f)];
-    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    searchBar.delegate = self;
-    searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    searchBar.backgroundColor = [UIColor whiteColor];
-    self.searchBar = searchBar;
+//    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    
+//    // create searchBar
+//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
+//                                                                           view.frame.origin.y,
+//                                                                           view.frame.size.width,
+//                                                                           44.0f)];
+//    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//    searchBar.delegate = self;
+//    searchBar.searchBarStyle = UISearchBarStyleMinimal;
+//    searchBar.backgroundColor = [UIColor whiteColor];
+//    self.searchBar = searchBar;
     
     // search controller
 //    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:self];
@@ -195,13 +205,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    self.tableView.tableHeaderView = self.searchBar;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.collectionView.swipeToDeleteDelegate = self;
+//    self.collectionView.swipeToDeleteDelegate = self;
     self.listLayout = [BaseCollectionViewFlowLayout new];
     self.listLayout.itemHeight = kCellHeight;
+
+    
+    self.testCollectionView.dataSource = self;
+    self.testCollectionView.delegate = self;
+    
     [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMe) name:@"ReloadCollectionView" object:nil];
     
     if (self.initialFolder)
     {
@@ -213,6 +230,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
+- (void) reloadMe
+{
+    [self.testCollectionView reloadData];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -222,23 +244,25 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
     }
     
-    if (self.collectionView.isEditing)
-    {
-        self.collectionView.editing = NO;
-    }
+//    if (self.collectionView.isEditing)
+//    {
+//        self.collectionView.editing = NO;
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self selectIndexPathForAlfrescoNodeInDetailView];
+    
+    [self.testCollectionView reloadData];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
     self.collectionView.allowsMultipleSelection = editing;
-    [self.collectionView setEditing:editing animated:animated];
+//    [self.collectionView setEditing:editing animated:animated];
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
@@ -353,46 +377,56 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
 {
-    [self setEditing:!self.collectionView.editing animated:YES];
+//    [self setEditing:!self.collectionView.editing animated:YES];
+    NSLog(@"collection view content size is %f %f", self.collectionView.contentSize.width, self.collectionView.contentSize.height);
+    NSLog(@"collection view size is %f %f", self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
+    NSLog(@"collection view frame is %f %f %f %f", self.collectionView.frame.origin.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    NSLog(@"%f", self.collectionView.contentOffset.y);
+    [self.collectionView setUserInteractionEnabled:YES];
+    self.collectionView.scrollEnabled = YES;
+    self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.contentOffset = CGPointMake(0, 10);
+    self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, 3000);
+    [self.view bringSubviewToFront:self.collectionView];
 }
 
 - (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated
 {
-    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
-    
-    // update the UI based on permissions
-    if (!self.collectionView.editing)
-    {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                               target:self
-                                                                               action:@selector(performEditBarButtonItemAction:)];
-    }
-    else
-    {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                               target:self
-                                                                               action:@selector(performEditBarButtonItemAction:)];
-    }
-    
-    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
-    [rightBarButtonItems addObject:self.editBarButtonItem];
-    
-    if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
-    {
-        if (!self.collectionView.isEditing)
-        {
-            if (!self.actionSheetBarButton)
-            {
-                UIBarButtonItem *displayActionSheetButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                                          target:self
-                                                                                                          action:@selector(displayActionSheet:event:)];
-                self.actionSheetBarButton = displayActionSheetButton;
-            }
-            
-            [rightBarButtonItems addObject:self.actionSheetBarButton];
-        }
-    }
-    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
+//    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
+//    
+//    // update the UI based on permissions
+//    if (!self.collectionView.editing)
+//    {
+//        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+//                                                                               target:self
+//                                                                               action:@selector(performEditBarButtonItemAction:)];
+//    }
+//    else
+//    {
+//        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+//                                                                               target:self
+//                                                                               action:@selector(performEditBarButtonItemAction:)];
+//    }
+//    
+//    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
+//    [rightBarButtonItems addObject:self.editBarButtonItem];
+//    
+//    if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
+//    {
+//        if (!self.collectionView.isEditing)
+//        {
+//            if (!self.actionSheetBarButton)
+//            {
+//                UIBarButtonItem *displayActionSheetButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+//                                                                                                          target:self
+//                                                                                                          action:@selector(displayActionSheet:event:)];
+//                self.actionSheetBarButton = displayActionSheetButton;
+//            }
+//            
+//            [rightBarButtonItems addObject:self.actionSheetBarButton];
+//        }
+//    }
+//    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event
@@ -826,7 +860,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    {
 //        return self.searchResults.count;
 //    }
-    return self.collectionViewData.count;
+        return self.collectionViewData.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -871,15 +905,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
 //    }
     
-    if (self.collectionView.isEditing)
-    {
-        [self.multiSelectToolbar userDidSelectItem:selectedNode];
-        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        self.collectionView.isInDeleteMode = NO;
-        [cell wasSelectedInEditMode:YES];
-    }
-    else
-    {
+//    if (self.collectionView.isEditing)
+//    {
+//        [self.multiSelectToolbar userDidSelectItem:selectedNode];
+//        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+//        self.collectionView.isInDeleteMode = NO;
+//        [cell wasSelectedInEditMode:YES];
+//    }
+//    else
+//    {
         if ([selectedNode isKindOfClass:[AlfrescoFolder class]])
         {
             [self showHUD];
@@ -930,18 +964,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
             }];
         }
-    }
+//    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.collectionView.isEditing)
-    {
-        AlfrescoNode *selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-        [self.multiSelectToolbar userDidDeselectItem:selectedNode];
-        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        [cell wasSelectedInEditMode:NO];
-    }
+//    if (self.collectionView.isEditing)
+//    {
+//        AlfrescoNode *selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+//        [self.multiSelectToolbar userDidDeselectItem:selectedNode];
+//        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+//        [cell wasSelectedInEditMode:NO];
+//    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
