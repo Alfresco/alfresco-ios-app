@@ -16,13 +16,13 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "LoadingCollectionViewCell.h"
+#import "LoadingCollectionViewFooter.h"
 
-@implementation LoadingCollectionViewCell
+@implementation LoadingCollectionViewFooter
 
-+ (NSString *)cellIdentifier
++ (NSString *)footerIdentifier
 {
-    return @"LoadingCollectionViewCell";
+    return @"SectionFooter";
 }
 
 @end

@@ -23,4 +23,9 @@
 @property (nonatomic) NSUInteger numberOfColumns;
 @property (nonatomic) CGFloat itemHeight;
 
+@property (nonatomic, strong) NSIndexPath *selectedIndexPathForSwipeToDelete;
+@property (nonatomic) BOOL isEditing;
+
+- (void) selectedIndexPathForSwipeWasDeleted;
+
 @end

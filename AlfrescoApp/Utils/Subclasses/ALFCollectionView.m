@@ -32,14 +32,14 @@
 
 - (void)awakeFromNib
 {
-//    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
-//    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [self addGestureRecognizer:self.swipeGestureRecognizer];
-//    
-//    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
-//    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
-//    self.tapToDismissDeleteAction.delegate = self;
-//    [self addGestureRecognizer:self.tapToDismissDeleteAction];
+    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
+    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self addGestureRecognizer:self.swipeGestureRecognizer];
+    
+    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
+    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
+    self.tapToDismissDeleteAction.delegate = self;
+    [self addGestureRecognizer:self.tapToDismissDeleteAction];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated

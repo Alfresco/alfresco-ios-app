@@ -34,6 +34,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "BaseCollectionViewFlowLayout.h"
+#import "BaseLayoutAttributes.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -69,8 +70,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 
-@property (nonatomic, strong) UICollectionViewFlowLayout *someLayout;
+@property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
 
 @end
 
@@ -93,7 +96,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [super initWithNibName:@"FileFolderCollectionViewController" andSession:session];
+    self = [super initWithStoryboardId:@"FileFolderCollectionViewController" andSesstion:session];
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
@@ -205,20 +208,23 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    self.tableView.tableHeaderView = self.searchBar;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-//    self.collectionView.swipeToDeleteDelegate = self;
     self.listLayout = [BaseCollectionViewFlowLayout new];
     self.listLayout.itemHeight = kCellHeight;
-
-    
-    self.testCollectionView.dataSource = self;
-    self.testCollectionView.delegate = self;
     
     [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMe) name:@"ReloadCollectionView" object:nil];
+    //Swipe to Delete
+    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
+    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.collectionView addGestureRecognizer:self.swipeGestureRecognizer];
+    
+    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
+    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
+    self.tapToDismissDeleteAction.delegate = self;
+    [self.collectionView addGestureRecognizer:self.tapToDismissDeleteAction];
     
     if (self.initialFolder)
     {
@@ -230,11 +236,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void) reloadMe
-{
-    [self.testCollectionView reloadData];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -244,25 +245,29 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
     }
     
-//    if (self.collectionView.isEditing)
-//    {
-//        self.collectionView.editing = NO;
-//    }
+    if (self.isEditing)
+    {
+        self.editing = NO;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self selectIndexPathForAlfrescoNodeInDetailView];
-    
-    [self.testCollectionView reloadData];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
     self.collectionView.allowsMultipleSelection = editing;
-//    [self.collectionView setEditing:editing animated:animated];
+
+    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+    {
+        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+        properLayout.isEditing = editing;
+    }
+    
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
     [self.navigationItem setHidesBackButton:editing animated:YES];
     
@@ -377,56 +382,46 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
 {
-//    [self setEditing:!self.collectionView.editing animated:YES];
-    NSLog(@"collection view content size is %f %f", self.collectionView.contentSize.width, self.collectionView.contentSize.height);
-    NSLog(@"collection view size is %f %f", self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
-    NSLog(@"collection view frame is %f %f %f %f", self.collectionView.frame.origin.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
-    NSLog(@"%f", self.collectionView.contentOffset.y);
-    [self.collectionView setUserInteractionEnabled:YES];
-    self.collectionView.scrollEnabled = YES;
-    self.collectionView.alwaysBounceVertical = YES;
-    self.collectionView.contentOffset = CGPointMake(0, 10);
-    self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, 3000);
-    [self.view bringSubviewToFront:self.collectionView];
+    [self setEditing:!self.editing animated:YES];
 }
 
 - (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated
 {
-//    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
-//    
-//    // update the UI based on permissions
-//    if (!self.collectionView.editing)
-//    {
-//        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-//                                                                               target:self
-//                                                                               action:@selector(performEditBarButtonItemAction:)];
-//    }
-//    else
-//    {
-//        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-//                                                                               target:self
-//                                                                               action:@selector(performEditBarButtonItemAction:)];
-//    }
-//    
-//    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
-//    [rightBarButtonItems addObject:self.editBarButtonItem];
-//    
-//    if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
-//    {
-//        if (!self.collectionView.isEditing)
-//        {
-//            if (!self.actionSheetBarButton)
-//            {
-//                UIBarButtonItem *displayActionSheetButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-//                                                                                                          target:self
-//                                                                                                          action:@selector(displayActionSheet:event:)];
-//                self.actionSheetBarButton = displayActionSheetButton;
-//            }
-//            
-//            [rightBarButtonItems addObject:self.actionSheetBarButton];
-//        }
-//    }
-//    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
+    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
+    
+    // update the UI based on permissions
+    if (!self.editing)
+    {
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                               target:self
+                                                                               action:@selector(performEditBarButtonItemAction:)];
+    }
+    else
+    {
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self
+                                                                               action:@selector(performEditBarButtonItemAction:)];
+    }
+    
+    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
+    [rightBarButtonItems addObject:self.editBarButtonItem];
+    
+    if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
+    {
+        if (!self.isEditing)
+        {
+            if (!self.actionSheetBarButton)
+            {
+                UIBarButtonItem *displayActionSheetButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                                          target:self
+                                                                                                          action:@selector(displayActionSheet:event:)];
+                self.actionSheetBarButton = displayActionSheetButton;
+            }
+            
+            [rightBarButtonItems addObject:self.actionSheetBarButton];
+        }
+    }
+    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event
@@ -833,15 +828,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showSearchProgressHUD
 {
-//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-//    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
-//    [self.searchProgressHUD show:YES];
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
+    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    [self.searchProgressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-//    [self.searchProgressHUD hide:YES];
-//    self.searchProgressHUD = nil;
+    [self.searchProgressHUD hide:YES];
+    self.searchProgressHUD = nil;
 }
 
 - (void)connectivityStatusChanged:(NSNotification *)notification
@@ -860,11 +855,22 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    {
 //        return self.searchResults.count;
 //    }
-        return self.collectionViewData.count;
+//    NSInteger loadingIndex = 0;
+//    if(self.isLoadingAnotherPage)
+//    {
+//        loadingIndex = 1;
+//    }
+    return self.collectionViewData.count;// + loadingIndex;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+//    if(indexPath.item == self.collectionViewData.count)
+//    {
+//        LoadingCollectionViewCell *cell = (LoadingCollectionViewCell *)[super collectionView: collectionView cellForItemAtIndexPath:indexPath];
+//        return cell;
+//    }
+    
     FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     [cell registerForNotifications];
     cell.accessoryViewDelegate = self;
@@ -873,8 +879,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FileFolderCollectionViewCell *nodeCell = (FileFolderCollectionViewCell *)cell;
-    [nodeCell removeNotifications];
+    if([cell isKindOfClass:[FileFolderCollectionViewCell class]])
+    {
+        FileFolderCollectionViewCell *nodeCell = (FileFolderCollectionViewCell *)cell;
+        [nodeCell removeNotifications];
+    }
 }
 
 //- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -905,15 +914,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
 //    }
     
-//    if (self.collectionView.isEditing)
-//    {
-//        [self.multiSelectToolbar userDidSelectItem:selectedNode];
-//        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-//        self.collectionView.isInDeleteMode = NO;
-//        [cell wasSelectedInEditMode:YES];
-//    }
-//    else
-//    {
+    if (self.isEditing)
+    {
+        [self.multiSelectToolbar userDidSelectItem:selectedNode];
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [cell wasSelectedInEditMode:YES];
+    }
+    else
+    {
         if ([selectedNode isKindOfClass:[AlfrescoFolder class]])
         {
             [self showHUD];
@@ -964,67 +972,71 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
             }];
         }
-//    }
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (self.collectionView.isEditing)
-//    {
-//        AlfrescoNode *selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-//        [self.multiSelectToolbar userDidDeselectItem:selectedNode];
-//        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-//        [cell wasSelectedInEditMode:NO];
-//    }
+    if (self.isEditing)
+    {
+        AlfrescoNode *selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+        [self.multiSelectToolbar userDidDeselectItem:selectedNode];
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [cell wasSelectedInEditMode:NO];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    // the last row index of the table data
-//    NSUInteger lastSiteRowIndex = self.collectionViewData.count - 1;
-//    
-//    // if the last cell is about to be drawn, check if there are more sites
-//    if (indexPath.row == lastSiteRowIndex)
-//    {
-//        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
-//        if (self.moreItemsAvailable)
-//        {
-//            // show more items are loading ...
-//            self.isLoadingAnotherPage = YES;
-//            [self.collectionView performBatchUpdates:^{
-//                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
-//            } completion:^(BOOL finished) {
-//                [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-//                    [self.collectionView performBatchUpdates:^{
-//                        self.isLoadingAnotherPage = NO;
-//                        [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
-//                    } completion:^(BOOL finished) {
-//                        [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
-//                    }];
-//                }];
-//            }];
-//        }
-//    }
+    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+    {
+        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+        BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[properLayout layoutAttributesForItemAtIndexPath:indexPath];
+        [cell applyLayoutAttributes:attributes];
+    }
+    // the last row index of the table data
+    NSUInteger lastSiteRowIndex = self.collectionViewData.count - 1;
+    
+    // if the last cell is about to be drawn, check if there are more sites
+    if (indexPath.item == lastSiteRowIndex)
+    {
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
+        if (self.moreItemsAvailable)
+        {
+            // show more items are loading ...
+            self.isLoadingAnotherPage = YES;
+            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                [self.collectionView performBatchUpdates:^{
+                    [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
+                } completion:^(BOOL finished) {
+                    self.isLoadingAnotherPage = NO;
+                }];
+            }];
+        }
+    }
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if((self.isLoadingAnotherPage) && (indexPath.item == self.collectionViewData.count))
-//    {
-//        UIEdgeInsets insets = self.collectionView.contentInset;
-//        CGFloat width = CGRectGetWidth(self.collectionView.bounds) - (insets.left + insets.right);
-//        return CGSizeMake(width, 40);
-//    }
-//    else
-//    {
-//        if([collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-//        {
-//            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionViewLayout;
-//            return properLayout.itemSize;
-//        }
-//        return CGSizeZero;
-//    }
-//}
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        LoadingCollectionViewFooter *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"SectionFooter" forIndexPath:indexPath];
+        
+        reusableview = footerview;
+    }
+    
+    return reusableview;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    if(self.isLoadingAnotherPage)
+    {
+        return CGSizeMake(self.collectionView.frame.size.width, 40);
+    }
+    return CGSizeMake(0.001, 0.001);
+}
 
 #pragma mark - UIActionSheetDelegate Functions
 
@@ -1458,7 +1470,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (permissionsForNodeToDelete.canDelete)
     {
-        [self deleteNode:nodeToDelete completionBlock:nil];
+        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+            if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+            {
+                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+                [properLayout selectedIndexPathForSwipeWasDeleted];
+            }
+        }];
     }
 }
 
@@ -1523,6 +1541,67 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             }
         }
     }
+}
+
+#pragma mark - Gesture Recognizers methods
+- (void) swipeToDeleteGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ((gestureRecognizer.state == UIGestureRecognizerStateEnded) && (!self.editing))
+    {
+        CGPoint touchPoint = [gestureRecognizer locationInView:self.collectionView];
+        if (CGRectContainsPoint(self.collectionView.bounds, touchPoint))
+        {
+            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touchPoint];
+            if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+            {
+                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+                properLayout.selectedIndexPathForSwipeToDelete = indexPath;
+            }
+        }
+    }
+}
+
+- (void) tapToDismissDeleteGesture:(UIGestureRecognizer *)gestureReconizer
+{
+    if(gestureReconizer.state == UIGestureRecognizerStateEnded)
+    {
+        CGPoint touchPoint = [gestureReconizer locationInView:self.collectionView];
+        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+        {
+            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+            UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:properLayout.selectedIndexPathForSwipeToDelete];
+            if([cell isKindOfClass:[FileFolderCollectionViewCell class]])
+            {
+                FileFolderCollectionViewCell *properCell = (FileFolderCollectionViewCell *)cell;
+                CGPoint touchPointInButton = [gestureReconizer locationInView:properCell.deleteButton];
+                
+                if((CGRectContainsPoint(self.collectionView.bounds, touchPoint)) && (!CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton)))
+                {
+                    properLayout.selectedIndexPathForSwipeToDelete = nil;
+                }
+                else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
+                {
+                    [self collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete];
+                }
+            }
+        }
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if(gestureRecognizer == self.tapToDismissDeleteAction)
+    {
+        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+        {
+            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+            if((properLayout.selectedIndexPathForSwipeToDelete != nil) && (!self.editing))
+            {
+                return YES;
+            }
+        }
+    }
+    return NO;
 }
 
 @end

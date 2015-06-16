@@ -56,6 +56,4 @@
 
 - (void) setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
-@property (nonatomic, weak) IBOutlet UICollectionView *testCollectionView;
-
 @end

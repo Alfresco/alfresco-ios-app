@@ -18,6 +18,7 @@
 
 #import "FileFolderCollectionViewCell.h"
 #import "SyncNodeStatus.h"
+#import "BaseLayoutAttributes.h"
 
 static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
@@ -442,6 +443,19 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     else
     {
         self.details.text = self.nodeDetails;
+    }
+}
+
+#pragma mark - Overriden methods
+- (void)applyLayoutAttributes:(BaseLayoutAttributes *)layoutAttributes
+{
+    if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
+    {
+        [self showDeleteAction:layoutAttributes.showDeleteButton animated:YES];
+    }
+    else
+    {
+        [self showEditMode:layoutAttributes.isEditing animated:YES];
     }
 }
 

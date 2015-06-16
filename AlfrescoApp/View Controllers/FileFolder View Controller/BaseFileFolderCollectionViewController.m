@@ -41,15 +41,15 @@
 
 - (void)showSearchProgressHUD
 {
-//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-//    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
-//    [self.searchProgressHUD show:YES];
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
+    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    [self.searchProgressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-//    [self.searchProgressHUD hide:YES];
-//    self.searchProgressHUD = nil;
+    [self.searchProgressHUD hide:YES];
+    self.searchProgressHUD = nil;
 }
 
 #pragma mark - Custom getters and setters
@@ -81,13 +81,6 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if(indexPath.item == self.collectionViewData.count)
-//    {
-//        LoadingCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier] forIndexPath:indexPath];
-//        
-//        return cell;
-//    }
-    
     FileFolderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
     
     // config the cell here...

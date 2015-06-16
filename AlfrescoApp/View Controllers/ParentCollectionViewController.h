@@ -24,7 +24,7 @@
 @class AlfrescoPagingResult;
 @protocol AlfrescoSession;
 
-@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -35,8 +35,13 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong, readonly) MBProgressHUD *progressHUD;
 @property (nonatomic, assign) BOOL allowsPullToRefresh;
+@property (nonatomic, assign) BOOL allowsSwipeToDelete;
+@property (nonatomic, strong) NSString *emptyMessage;
+
+- (id) initWithStoryboardId:(NSString *)storyboardId andSesstion:(id<AlfrescoSession>)session;
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
+
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
 
 - (void)setupWithSession:(id<AlfrescoSession>)session;

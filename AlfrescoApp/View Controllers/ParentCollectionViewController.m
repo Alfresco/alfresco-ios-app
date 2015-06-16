@@ -25,10 +25,21 @@
 
 @property (nonatomic, strong) NSDictionary *imageMappings;
 @property (nonatomic, strong, readwrite) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) UILabel *alfEmptyLabel;
 
 @end
 
 @implementation ParentCollectionViewController
+
+- (id) initWithStoryboardId:(NSString *)storyboardId andSesstion:(id<AlfrescoSession>)session
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FileFolderCollectionViewController" bundle:[NSBundle mainBundle]];
+    self = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
+    
+    [self setupWithSession:session];
+    
+    return self;
+}
 
 - (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
 {
@@ -149,6 +160,7 @@
         self.collectionViewData = data ?: [pagingResult.objects mutableCopy];
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.collectionView reloadData];
+        [self updateEmptyView];
     }
     else
     {
@@ -168,14 +180,26 @@
         if (data)
         {
             self.collectionViewData = data;
+            [self.collectionView reloadData];
+            [self updateEmptyView];
         }
         else
         {
+            NSMutableArray *arrayOfIndexPaths = [NSMutableArray new];
+            for(NSInteger initialIndex = self.collectionViewData.count; initialIndex < self.collectionViewData.count + pagingResult.objects.count; initialIndex ++)
+            {
+                [arrayOfIndexPaths addObject:[NSIndexPath indexPathForItem:initialIndex inSection:0]];
+            }
             [self.collectionViewData addObjectsFromArray:pagingResult.objects];
+            
+            [self.collectionView performBatchUpdates:^{
+                [self.collectionView insertItemsAtIndexPaths:arrayOfIndexPaths];
+            } completion:^(BOOL finished) {
+                [self updateEmptyView];
+            }];
         }
         
         self.moreItemsAvailable = pagingResult.hasMoreItems;
-        [self.collectionView reloadData];
     }
     else
     {
@@ -202,7 +226,10 @@
     
     [self.collectionView performBatchUpdates:^{
         [self.collectionView insertItemsAtIndexPaths:newNodeIndexPaths];
-    } completion:completion];
+    } completion:^(BOOL finished) {
+        [self updateEmptyView];
+        completion(finished);
+    }];
 }
 
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers
@@ -380,6 +407,47 @@
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
     AlfrescoLogDebug(@"refreshTableView: is not implemented in the subclass of %@", [self class]);
+}
+
+#pragma mark - Empty view message
+- (void)updateEmptyView
+{
+    if (!self.alfEmptyLabel)
+    {
+        UILabel *emptyLabel = [[UILabel alloc] init];
+        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
+        emptyLabel.numberOfLines = 0;
+        emptyLabel.textAlignment = NSTextAlignmentCenter;
+        emptyLabel.textColor = [UIColor noItemsTextColor];
+        emptyLabel.hidden = YES;
+        
+        [self.collectionView addSubview:emptyLabel];
+        self.alfEmptyLabel = emptyLabel;
+    }
+    
+    CGRect frame = self.collectionView.bounds;
+    frame.origin = CGPointMake(0, 0);
+    frame.size.height -= self.collectionView.contentInset.top;
+    
+    self.alfEmptyLabel.frame = frame;
+    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
+    self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
+    self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+    
+    BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
+    BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
+    
+    if (shouldShowEmptyLabel == isShowingEmptyLabel)
+    {
+        // Nothing to do
+        return;
+    }
+    self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+}
+
+- (BOOL)isDataSetEmpty
+{
+    return (self.collectionViewData.count == 0);
 }
 
 @end
