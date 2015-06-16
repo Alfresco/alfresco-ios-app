@@ -29,7 +29,7 @@
 #import "UniversalDevice.h"
 #import "ConnectionDiagnosticViewController.h"
 #import "MainMenuReorderViewController.h"
-#import "MainMenuConfigurationBuilder.h"
+#import "MainMenuLocalConfigurationBuilder.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
@@ -56,16 +56,17 @@ static NSInteger const kTagReorderCell = 2;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
 @property (nonatomic, strong) NSDictionary *configuration;
 @property (nonatomic, assign) BOOL canEditAccounts;
+@property (nonatomic, assign) BOOL canReorderMainMenuItems;
 @end
 
 @implementation AccountInfoViewController
 
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
 {
     return [self initWithAccount:account accountActivityType:activityType configuration:nil];
 }
 
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if (self)
@@ -83,6 +84,9 @@ static NSInteger const kTagReorderCell = 2;
         self.configuration = configuration;
         NSNumber *canEditAccounts = configuration[kAppConfigurationCanEditAccountsKey];
         self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
+        
+        NSNumber *canReorderMenuItems = configuration[kAppConfigurationUserCanEditMainMenuKey];
+        self.canReorderMainMenuItems = (canReorderMenuItems && account == [AccountManager sharedManager].selectedAccount) ? canReorderMenuItems.boolValue : YES;
     }
     return self;
 }
@@ -270,7 +274,7 @@ static NSInteger const kTagReorderCell = 2;
     }
     else if (cell.tag == kTagReorderCell)
     {
-        MainMenuConfigurationBuilder *mainBuilder = [[MainMenuConfigurationBuilder alloc] initWithAccount:self.account];
+        MainMenuLocalConfigurationBuilder *mainBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:self.account session:self.session];
         MainMenuReorderViewController *reorderController = [[MainMenuReorderViewController alloc] initWithAccount:self.account mainMenuBuilder:mainBuilder];
         [self.navigationController pushViewController:reorderController animated:YES];
     }
@@ -375,6 +379,11 @@ static NSInteger const kTagReorderCell = 2;
         configurationCell.tag = kTagReorderCell;
         configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
         configurationCell.valueLabel.text = @"";
+        if (!self.canReorderMainMenuItems)
+        {
+            configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
+            configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
+        }
         
          /**
           * Selectively disable some controls if required
@@ -390,12 +399,22 @@ static NSInteger const kTagReorderCell = 2;
          * Note: Additional account-specific settings should be in their own group with an empty header string.
          * This will allow a description footer to be added under each setting if required.
          */
-        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                                                               @[syncPreferenceCell],
-                                                               @[configurationCell],
-                                                               @[portCell, serviceDocumentCell, certificateCell]]];
-        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.main.menu.config", @"accountdetails.header.advanced"];
-        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer", @"", @""];
+        if (self.activityType == AccountActivityTypeNewAccount)
+        {
+            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                                   @[portCell, serviceDocumentCell, certificateCell]]];
+            self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+            self.tableGroupFooters = @[@"", @""];
+        }
+        else
+        {
+            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[configurationCell],
+                                                                   @[syncPreferenceCell],
+                                                                   @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                                   @[portCell, serviceDocumentCell, certificateCell]]];
+            self.tableGroupHeaders = @[@"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+            self.tableGroupFooters = @[(self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @"",  @""];
+        }
     }
     else
     {

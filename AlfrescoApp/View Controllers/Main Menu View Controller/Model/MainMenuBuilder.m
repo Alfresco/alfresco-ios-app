@@ -30,21 +30,21 @@
     return self;
 }
 
-- (NSArray *)sectionsForHeaderGroup
+- (void)sectionsForHeaderGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock
 {
     @throw [NSException exceptionWithName:@"Invalid Sections"
                                    reason:[NSString stringWithFormat:@"Class does not implement %@", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (NSArray *)sectionsForContentGroup
+- (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock
 {
     @throw [NSException exceptionWithName:@"Invalid Sections"
                                    reason:[NSString stringWithFormat:@"Class does not implement %@", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (NSArray *)sectionsForFooterGroup
+- (void)sectionsForFooterGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock
 {
     @throw [NSException exceptionWithName:@"Invalid Sections"
                                    reason:[NSString stringWithFormat:@"Class does not implement %@", NSStringFromSelector(_cmd)]

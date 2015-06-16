@@ -20,6 +20,9 @@
 #import "AccountManager.h"
 #import "MainMenuVisibilityScope.h"
 #import "MainMenuItem.h"
+#import "MainMenuLocalConfigurationBuilder.h"
+#import "MainMenuRemoteConfigurationBuilder.h"
+#import "Utility.h"
 
 static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
@@ -46,6 +49,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationFileUpdatedFromServer:) name:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
         
         [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
             NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
@@ -64,6 +68,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
                 }
             }];
         }];
+
     }
     return self;
 }
@@ -166,7 +171,55 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 - (void)sessionReceived:(NSNotification *)notification
 {
-    // TODO
+    id<AlfrescoSession> session = notification.object;
+
+    [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
+        NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
+                                     kAlfrescoConfigServiceParameterFileName: configurationFilePath.lastPathComponent};
+        self.configService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+        [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
+            if (defaultProfileError)
+            {
+                AlfrescoLogError(@"Error retieving the default profile. Error: %@", defaultProfileError.localizedDescription);
+            }
+            else
+            {
+                self.selectedProfile = defaultProfile;
+                
+                // Update the Main Menu Controller
+                MainMenuLocalConfigurationBuilder *localBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:[AccountManager sharedManager].selectedAccount session:session];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationDidUpdateNotification object:localBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @YES}];
+                
+                if (![session isKindOfClass:[AlfrescoCloudSession class]])
+                {
+                    // Create the local path to store the configuration file
+                    NSString *repositorySpecificFolderPath = [self repositorySpecificConfigurationPath:session.repositoryInfo];
+                    
+                    // Add parameters to the session
+                    NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder : repositorySpecificFolderPath,
+                                                 kAlfrescoConfigServiceParameterFileName : kAlfrescoEmbeddedConfigurationFileName};
+                    [session addParametersFromDictionary:parameters];
+                    
+                    // Attempt to download and select the default profile
+                    AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithSession:session];
+                    [configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultServerProfile, NSError *defaultServerProfileError) {
+                        if (defaultServerProfileError)
+                        {
+                            AlfrescoLogError(@"Error retieving the default profile from server config. Error: %@", defaultServerProfileError.localizedDescription);
+                        }
+                        else
+                        {
+                            self.configService = configService;
+                            self.selectedProfile = defaultServerProfile;
+                            
+                            MainMenuRemoteConfigurationBuilder *remoteBuilder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:[AccountManager sharedManager].selectedAccount session:session];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationDidUpdateNotification object:remoteBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @NO}];
+                        }
+                    }];
+                }
+            }
+        }];
+    }];
 }
 
 - (void)accountRemoved:(NSNotification *)notification
@@ -176,10 +229,37 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 - (void)noMoreAccounts:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAppConfigurationUpdatedNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationDidUpdateNotification object:nil userInfo:nil];
+}
+
+- (void)configurationFileUpdatedFromServer:(NSNotificationCenter *)notification
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        displayInformationMessageWithTitle(NSLocalizedString(@"configuration.manager.configuration.file.updated.title", @"Updated Message Text"), NSLocalizedString(@"configuration.manager.configuration.file.updated.message", @"Updated Title Text"));
+    });
 }
 
 #pragma mark - Private Methods
+
+- (NSString *)repositorySpecificConfigurationPath:(AlfrescoRepositoryInfo *)repositoryInfo
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    NSString *repositoryIdentifier = repositoryInfo.identifier;
+    NSString *repositorySpecificFolderPath = [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:repositoryIdentifier];
+    
+    if (![fileManager fileExistsAtPath:repositorySpecificFolderPath])
+    {
+        NSError *createError = nil;
+        [fileManager createDirectoryAtPath:repositorySpecificFolderPath withIntermediateDirectories:YES attributes:nil error:&createError];
+        
+        if (createError)
+        {
+            AlfrescoLogError(@"Unable to create folder at path: %@", repositorySpecificFolderPath);
+        }
+    }
+    
+    return repositorySpecificFolderPath;
+}
 
 - (void)setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:(void (^)(NSString *configurationFilePath))completionBlock
 {
@@ -204,18 +284,6 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
     {
         completionBlock(completeDestinationPath);
     }
-}
-
-- (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount
-{
-    NSString *accountIdentifier = userAccount.accountIdentifier;
-    
-    if (userAccount.accountType == UserAccountTypeCloud)
-    {
-        accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, userAccount.selectedNetworkId];
-    }
-    
-    return accountIdentifier;
 }
 
 @end

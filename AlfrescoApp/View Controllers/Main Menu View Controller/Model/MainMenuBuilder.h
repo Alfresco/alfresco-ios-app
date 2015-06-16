@@ -22,13 +22,12 @@
 
 @interface MainMenuBuilder : NSObject
 
-@property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UserAccount *account;
 
 - (instancetype)initWithAccount:(UserAccount *)account;
 
-- (NSArray *)sectionsForHeaderGroup;
-- (NSArray *)sectionsForContentGroup;
-- (NSArray *)sectionsForFooterGroup;
+- (void)sectionsForHeaderGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock;
+- (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock;
+- (void)sectionsForFooterGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock;
 
 @end

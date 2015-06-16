@@ -22,7 +22,7 @@
 #import "SyncManager.h"
 #import "MainMenuTableViewCell.h"
 #import "AppConfigurationManager.h"
-#import "MainMenuConfigurationBuilder.h"
+#import "MainMenuRemoteConfigurationBuilder.h"
 
 static NSString * const kSitesViewIdentifier = @"view-sites-default";
 static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
@@ -51,8 +51,8 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationDidChange:) name:kAlfrescoConfigurationDidUpdateNotification object:nil];
         
-        [self loadGroupType:MainMenuGroupTypeHeader];
-        [self loadGroupType:MainMenuGroupTypeFooter];
+        [self loadGroupType:MainMenuGroupTypeHeader completionBlock:nil];
+        [self loadGroupType:MainMenuGroupTypeFooter completionBlock:nil];
     }
     return self;
 }
@@ -61,13 +61,14 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 {
     id<AlfrescoSession> session = (id<AlfrescoSession>)notification.object;
     UserAccount *account = [AccountManager sharedManager].selectedAccount;
-    self.builder.session = session;
-    self.builder.account = account;
     self.session = session;
     
     NSString *accountName = account.accountDescription;
     [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withDescription:accountName];
-    [self reloadGroupType:MainMenuGroupTypeContent];
+    [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
+        // select sites
+        [self selectMenuItemWithIdentifier:kSitesViewIdentifier];
+    }];
     
     [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:self.session.personIdentifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
         if (image)
@@ -75,9 +76,6 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
             [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withImage:image];
         }
     }];
-    
-    // select sites
-    [self selectMenuItemWithIdentifier:kSitesViewIdentifier];
 }
 
 - (void)accountListEmpty:(NSNotification *)notification
@@ -92,7 +90,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     
     if ([selectedAccount.accountIdentifier isEqualToString:updatedAccount.accountIdentifier])
     {
-        [self reloadGroupType:MainMenuGroupTypeContent];
+        [self reloadGroupType:MainMenuGroupTypeContent completionBlock:nil];
     }
 }
 
@@ -112,7 +110,16 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 - (void)configurationDidChange:(NSNotification *)notification
 {
-    [self reloadGroupType:MainMenuGroupTypeContent];
+    MainMenuConfigurationBuilder *builder = notification.object;
+    if (builder)
+    {
+        self.builder = builder;
+    }
+    
+    [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
+        // select sites
+        [self selectMenuItemWithIdentifier:kSitesViewIdentifier];
+    }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
