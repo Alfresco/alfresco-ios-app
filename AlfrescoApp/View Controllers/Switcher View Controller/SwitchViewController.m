@@ -104,7 +104,10 @@
     {
         id<DismissCompletionProtocol> dismissBlockConformingObject = conformanceObject;
         dismissBlockConformingObject.dismissCompletionBlock = ^{
-            [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier];
+            if (self.previouslySelectedItem)
+            {
+                [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier];
+            }
         };
     }
     

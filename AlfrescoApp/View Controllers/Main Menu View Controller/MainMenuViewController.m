@@ -229,53 +229,59 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     }
 }
 
-- (void)loadGroupType:(MainMenuGroupType)groupType
+- (void)loadGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(void))completionBlock
 {
-    NSArray *loadSections = [self sectionsForGroupType:groupType];
-    
-    if (loadSections)
-    {
-        [self addSectionsFromArray:loadSections toGroupType:groupType];
-    }
+    [self sectionsForGroupType:groupType completionBlock:^(NSArray *sections) {
+        if (sections)
+        {
+            [self addSectionsFromArray:sections toGroupType:groupType];
+        }
+        
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
 }
 
-- (void)reloadGroupType:(MainMenuGroupType)groupType
+- (void)reloadGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(void))completionBlock
 {
-    NSArray *reloadSections = [self sectionsForGroupType:groupType];
-    
-    if (reloadSections)
-    {
-        [self clearGroupType:groupType];
-        [self addSectionsFromArray:reloadSections toGroupType:groupType];
-    }
+    [self sectionsForGroupType:groupType completionBlock:^(NSArray *sections) {
+        if (sections)
+        {
+            [self clearGroupType:groupType];
+            [self addSectionsFromArray:sections toGroupType:groupType];
+        }
+        
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
 }
 
-- (NSArray *)sectionsForGroupType:(MainMenuGroupType)groupType
+- (void)sectionsForGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(NSArray *sections))completionBlock
 {
-    NSArray *sections = nil;
-    
     switch (groupType)
     {
         case MainMenuGroupTypeHeader:
         {
-            sections = [self.builder sectionsForHeaderGroup];
+            [self.builder sectionsForHeaderGroupWithCompletionBlock:completionBlock];
         }
         break;
             
         case MainMenuGroupTypeContent:
         {
-            sections = [self.builder sectionsForContentGroup];
+            [self.builder sectionsForContentGroupWithCompletionBlock:completionBlock];
         }
         break;
             
         case MainMenuGroupTypeFooter:
         {
-            sections = [self.builder sectionsForFooterGroup];
+            [self.builder sectionsForFooterGroupWithCompletionBlock:completionBlock];
         }
         break;
     }
-    
-    return sections;
 }
 
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withImage:(UIImage *)updateImage

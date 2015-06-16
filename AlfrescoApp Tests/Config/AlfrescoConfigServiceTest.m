@@ -83,7 +83,7 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
 - (id<AlfrescoSession>)sessionForConfigService
 {
     [self.currentSession setObject:kAlfrescoTestApplicationId forParameter:kAlfrescoConfigServiceParameterApplicationId];
-    [self.currentSession setObject:self.localConfigFileLocation forParameter:kAlfrescoConfigServiceParameterConfigLocalDestinationFolder];
+    [self.currentSession setObject:self.localConfigFileLocation forParameter:kAlfrescoConfigServiceParameterFolder];
     return self.currentSession;
 }
 

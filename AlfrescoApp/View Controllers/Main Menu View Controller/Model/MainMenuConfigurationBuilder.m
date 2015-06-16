@@ -33,31 +33,32 @@
 static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 @interface MainMenuConfigurationBuilder ()
-@property (nonatomic, strong, readwrite) AlfrescoConfigService *configService;
+
 @end
 
 @implementation MainMenuConfigurationBuilder
 
-- (instancetype)init
+- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session
 {
-    self = [super init];
+    self = [super initWithAccount:account];
     if (self)
     {
         self.configService = [AppConfigurationManager sharedManager].configService;
+        self.session = session;
     }
     return self;
 }
 
 #pragma mark - Public Methods
 
-- (NSArray *)sectionsForHeaderGroup
+- (void)sectionsForHeaderGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
     // Accounts Menu Item
     AccountsViewController *accountsController = [[AccountsViewController alloc] initWithSession:self.session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsController];
     MainMenuItem *accountsItem = [MainMenuItem itemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier
                                                             title:NSLocalizedString(@"accounts.title", @"Accounts")
-                                                            image:[[UIImage imageNamed:@"mainmenu-accounts.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                                            image:[[UIImage imageNamed:@"mainmenu-alfresco.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                       description:nil
                                                   displayType:MainMenuDisplayTypeMaster
                                                  associatedObject:accountsNavigationController];
@@ -65,10 +66,10 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     // Create the accounts section
     MainMenuSection *accountsSection = [MainMenuSection sectionItemWithTitle:nil sectionItems:@[accountsItem]];
     
-    return @[accountsSection];
+    completionBlock(@[accountsSection]);
 }
 
-- (NSArray *)sectionsForContentGroup
+- (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
     __block NSArray *sections = nil;
     
@@ -84,24 +85,13 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
             NSLog(@"ViewGroupConfig: %@", rootViewConfig.identifier);
             
             sections = [self buildSectionsForRootView:rootViewConfig];
+            
+            completionBlock(sections);
         }
     }];
-    
-    // For each section, we ask the app configuration manager to set the visibility flags on each item and
-    // reorder the visible section in the correct order
-    // (The order for hidden items is not important)
-    [sections enumerateObjectsUsingBlock:^(MainMenuSection *section, NSUInteger idx, BOOL *stop) {
-        [configManager setVisibilityForMenuItems:section.allSectionItems forAccount:self.account];
-        NSArray *sortedVisibleItems = [configManager orderedArrayFromUnorderedMainMenuItems:section.allSectionItems
-                                                                    usingOrderedIdentifiers:[configManager visibleItemIdentifiersForAccount:self.account]
-                                                                      appendNotFoundObjects:YES];
-        section.allSectionItems = sortedVisibleItems.mutableCopy;
-    }];
-    
-    return sections;
 }
 
-- (NSArray *)sectionsForFooterGroup
+- (void)sectionsForFooterGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
     // Settings Menu Item
     SettingsViewController *settingsController = [[SettingsViewController alloc] initWithSession:self.session];
@@ -131,7 +121,7 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     // Create the section
     MainMenuSection *footerSection = [MainMenuSection sectionItemWithTitle:nil sectionItems:@[settingsItem, helpItem]];
     
-    return @[footerSection];
+    completionBlock(@[footerSection]);
 }
 
 #pragma mark - Private Methods
@@ -168,20 +158,26 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
         }
         else if ([subItem isKindOfClass:[AlfrescoViewConfig class]])
         {
+            // define a block
+            void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem) {
+                NSString *bundledIconName = iconLookup[subItem.identifier];
+                bundledIconName = (bundledIconName) ?: @"mainmenu-help.png";
+                id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
+                MainMenuItem *item = [[MainMenuItem alloc] initWithIdentifier:subItem.identifier
+                                                                        title:(subItem.label) ?: NSLocalizedString(subItem.identifier, @"Item Title")
+                                                                        image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                                                  description:nil
+                                                                  displayType:MainMenuDisplayTypeMaster
+                                                             associatedObject:associatedObject];
+                [section addMainMenuItem:item];
+            };
+            
             // For some reason there seems to be inline view definition in the embeded JSON configuration file
             // Not sure if this is documented behaviour?
             // Determine if a view retrieval is required
             if (![subItem.type isEqualToString:@"view-id"])
             {
-                NSString *bundledIconName = iconLookup[subItem.identifier];
-                id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
-                MainMenuItem *item = [[MainMenuItem alloc] initWithIdentifier:subItem.identifier
-                                                                        title:NSLocalizedString(subItem.identifier, @"Item Title")
-                                                                        image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                                                  description:nil
-                                                              displayType:MainMenuDisplayTypeMaster
-                                                             associatedObject:associatedObject];
-                [section addMainMenuItem:item];
+                createMenuItem((AlfrescoViewConfig *)subItem);
             }
             else
             {
@@ -193,15 +189,7 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
                     }
                     else
                     {
-                        NSString *bundledIconName = iconLookup[subItem.identifier];
-                        id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
-                        MainMenuItem *item = [[MainMenuItem alloc] initWithIdentifier:viewConfig.identifier
-                                                                                title:NSLocalizedString(viewConfig.identifier, @"Item Title")
-                                                                                image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                                                          description:nil
-                                                                          displayType:MainMenuDisplayTypeMaster
-                                                                     associatedObject:associatedObject];
-                        [section addMainMenuItem:item];
+                        createMenuItem((AlfrescoViewConfig *)subItem);
                     }
                 }];
             }
@@ -218,7 +206,6 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
 - (id)associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
 {
     id associatedObject = nil;
-    NavigationViewController *navigationController = nil;
     
     if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeActivities])
     {
@@ -257,10 +244,13 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
         associatedObject = localFilesViewController;
     }
     
-    if (associatedObject)
+    // If it's nil, use an empty controller in order to stop a runtime error
+    if (!associatedObject)
     {
-        navigationController = [[NavigationViewController alloc] initWithRootViewController:associatedObject];
+        associatedObject = [[UIViewController alloc] init];
     }
+    
+    NavigationViewController *navigationController = [[NavigationViewController alloc] initWithRootViewController:associatedObject];
     
     return navigationController;
 }

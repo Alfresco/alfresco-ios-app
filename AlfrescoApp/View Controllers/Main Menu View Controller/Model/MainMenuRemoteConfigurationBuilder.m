@@ -16,15 +16,13 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "MainMenuBuilder.h"
+#import "MainMenuRemoteConfigurationBuilder.h"
+#import "AlfrescoConfigService.h"
+#import "AppConfigurationManager.h"
 
-@class AlfrescoConfigService;
+@interface MainMenuRemoteConfigurationBuilder ()
+@end
 
-@interface MainMenuConfigurationBuilder : MainMenuBuilder
-
-@property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, strong) AlfrescoConfigService *configService;
-
-- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session;
+@implementation MainMenuRemoteConfigurationBuilder
 
 @end

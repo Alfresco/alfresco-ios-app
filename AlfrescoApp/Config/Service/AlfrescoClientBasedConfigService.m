@@ -172,7 +172,7 @@
                             if (configNode != nil)
                             {
                                 // Has the user provided a location for the configuration file to live?
-                                NSString *configDestinationFolderPath = [self.session objectForParameter:kAlfrescoConfigServiceParameterConfigLocalDestinationFolder];
+                                NSString *configDestinationFolderPath = [self.session objectForParameter:kAlfrescoConfigServiceParameterFolder];
                                 if (!configDestinationFolderPath)
                                 {
                                     configDestinationFolderPath = NSTemporaryDirectory();
