@@ -199,12 +199,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:self];
 //    self.searchController = searchController;
     
-//    UINib *nib = [UINib nibWithNibName:@"FileFolderCollectionViewCell" bundle:nil];
-//    [self.collectionView registerNib:nib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
-//    UINib *loadingNib = [UINib nibWithNibName:@"LoadingCollectionViewCell" bundle:nil];
-//    [self.collectionView registerNib:loadingNib forCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier]];
-//    [self.searchController. registerNib:nib forCellReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
-    
 //    self.tableView.tableHeaderView = self.searchBar;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -855,22 +849,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 //    {
 //        return self.searchResults.count;
 //    }
-//    NSInteger loadingIndex = 0;
-//    if(self.isLoadingAnotherPage)
-//    {
-//        loadingIndex = 1;
-//    }
-    return self.collectionViewData.count;// + loadingIndex;
+    return self.collectionViewData.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if(indexPath.item == self.collectionViewData.count)
-//    {
-//        LoadingCollectionViewCell *cell = (LoadingCollectionViewCell *)[super collectionView: collectionView cellForItemAtIndexPath:indexPath];
-//        return cell;
-//    }
-    
     FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     [cell registerForNotifications];
     cell.accessoryViewDelegate = self;

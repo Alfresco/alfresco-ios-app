@@ -40,7 +40,6 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, assign) BOOL isShowingDelete;
 @property (nonatomic, assign) BOOL isSelectedInEditMode;
 
-// from the old code
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
 
@@ -53,12 +52,9 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconTopSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconTopSpaceConstraint;
 
-// from the new code
-// for deleting
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingContentViewContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trainlingContentViewContraint;
 
-// for accessory view
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *accessoryViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingAccessoryViewConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *accessoryViewButton;
