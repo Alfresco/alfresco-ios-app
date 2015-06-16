@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
- * 
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
+ *
  * This file is part of the Alfresco Mobile iOS App.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,16 +16,26 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "Constants.h"
+#import <Foundation/Foundation.h>
+
+typedef NS_ENUM (NSUInteger, MainMenuDisplayType)
+{
+    MainMenuDisplayTypeMaster,
+    MainMenuDisplayTypeDetail,
+    MainMenuDisplayTypeModal
+};
 
 @interface MainMenuItem : NSObject
 
-@property (nonatomic, assign, readonly) MainMenuType controllerType;
-@property (nonatomic, strong, readonly) NSString *imageName;
-@property (nonatomic, strong, readonly) NSString *localizedTitleKey;
-@property (nonatomic, strong, readonly) UIViewController *viewController;
-@property (nonatomic, assign, readonly, getter = shouldDisplayInDetailView) BOOL displayInDetail;
+@property (nonatomic, strong) NSString *itemIdentifier;
+@property (nonatomic, strong) UIImage *itemImage;
+@property (nonatomic, strong) NSString *itemTitle;
+@property (nonatomic, strong) NSString *itemDescription;
+@property (nonatomic, assign) BOOL hidden; // defaults to NO
+@property (nonatomic, assign) MainMenuDisplayType displayType;
+@property (nonatomic, strong) id associatedObject;
 
-- (instancetype)initWithControllerType:(MainMenuType)controllerType imageName:(NSString *)imageName localizedTitleKey:(NSString *)localizedKey viewController:(UIViewController *)viewController displayInDetail:(BOOL)displayInDetail;
++ (instancetype)itemWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject;
+- (instancetype)initWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject;
 
 @end

@@ -15,18 +15,32 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
+
+#import <Foundation/Foundation.h>
+#import "AlfrescoConfigService.h"
+
 @interface AppConfigurationManager : NSObject
 
-@property (nonatomic, strong, readonly) AlfrescoFolder *myFiles;
-@property (nonatomic, strong, readonly) AlfrescoPermissions *myFilesPermissions;
-@property (nonatomic, strong, readonly) AlfrescoFolder *sharedFiles;
-@property (nonatomic, strong, readonly) AlfrescoPermissions *sharedFilesPermissions;
-@property (nonatomic, assign, readonly) BOOL showRepositorySpecificItems;
-
-- (void)checkIfConfigurationFileExistsLocallyAndUpdateAppConfiguration;
-- (BOOL)visibilityForMainMenuItemWithKey:(NSString *)menuItemKey;
+@property (nonatomic, strong) AlfrescoConfigService *configService;
+@property (nonatomic, strong) AlfrescoProfileConfig *selectedProfile;
 
 + (AppConfigurationManager *)sharedManager;
+
+// Convience method to retrieve item identifiers for visible items
+- (NSArray *)visibleItemIdentifiersForAccount:(UserAccount *)account;
+
+// Convience method to retrieve item identifiers for hidden items
+- (NSArray *)hiddenItemIdentifiersForAccount:(UserAccount *)account;
+
+// Determines the visibility of each MainMenuItem passed in through the array
+// and sets the 'hidden' flag when required
+- (void)setVisibilityForMenuItems:(NSArray *)menuItems forAccount:(UserAccount *)account;
+
+// Persists the visible and hidden menu items. Takes arrays of MainMenuItems
+- (void)saveVisibleMenuItems:(NSArray *)visibleMenuItems hiddenMenuItems:(NSArray *)hiddenMenuItems forAccount:(UserAccount *)account;
+
+// Takes an array of unordered main menu items and attempts to order then according to the ordered list of identifiers passed in.
+// The append bool can be set to append the 'not found' objects to the result or not
+- (NSArray *)orderedArrayFromUnorderedMainMenuItems:(NSArray *)unorderedMenuItems usingOrderedIdentifiers:(NSArray *)orderListIdentifiers appendNotFoundObjects:(BOOL)append;
 
 @end

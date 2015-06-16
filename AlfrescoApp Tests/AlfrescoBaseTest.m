@@ -17,12 +17,7 @@
  ******************************************************************************/
 
 #import "AlfrescoBaseTest.h"
-#import "AlfrescoContentFile.h"
-#import "AlfrescoInternalConstants.h"
-#import "AlfrescoCMISObjectConverter.h"
-#import "AlfrescoLog.h"
-#import "CMISConstants.h"
-#import "CMISDocument.h"
+#import "AlfrescoSDKInternalConstants.h"
 
 // kAlfrescoTestServersConfigDirectory is expected to be found in the user's home folder.
 // Note: the entry in userhome can be a symbolic link created via "ln -s"
@@ -462,6 +457,43 @@ static NSString * const kAlfrescoTestServersPlist = @"test-servers.plist";
             }];
         }
     }];
+}
+
+- (NSString *)failureMessageFromError:(NSError *)error
+{
+    // just return if error has not been provided
+    if (error == nil)
+    {
+        return nil;
+    }
+    
+    NSString *message = error.localizedDescription;
+    
+    // add the failure reason, if there is one!
+    if (error.localizedFailureReason != nil)
+    {
+        message = [message stringByAppendingFormat:@" - %@", error.localizedFailureReason];
+    }
+    else
+    {
+        // try looking for an underlying error and output the whole error object
+        NSError *underlyingError = error.userInfo[NSUnderlyingErrorKey];
+        if (underlyingError != nil)
+        {
+            message = [message stringByAppendingFormat:@" - %@", underlyingError];
+        }
+        else
+        {
+            // look for HTTP error code as a last resort
+            NSNumber *httpStatusCode = error.userInfo[kAlfrescoErrorKeyHTTPResponseCode];
+            if (httpStatusCode)
+            {
+                message = [message stringByAppendingFormat:@" (HTTP Status Code: %d)", [httpStatusCode intValue]];
+            }
+        }
+    }
+    
+    return message;
 }
 
 @end

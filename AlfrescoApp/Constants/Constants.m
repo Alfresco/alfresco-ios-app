@@ -232,6 +232,26 @@ NSString * const kAlfrescoMDMRepositoryURLKey = @"AlfrescoRepositoryURL";
 NSString * const kAlfrescoMDMUsernameKey = @"AlfrescoUserName";
 NSString * const kAlfrescoMDMDisplayNameKey = @"AlfrescoDisplayName";
 
+// Main Menu
+///
+NSString * const kAlfrescoEmbeddedConfigurationFileName = @"configuration.json";
+/// Notifications
+NSString * const kAlfrescoConfigurationDidUpdateNotification = @"AlfrescoConfigurationDidUpdateNotification";
+/// Menu Item Identifiers
+NSString * const kAlfrescoMainMenuItemAccountsIdentifier = @"org.alfresco.com.mobile.main.menu.accounts.identifier";
+NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier = @"org.alfresco.com.mobile.main.menu.company.home.identifier";
+NSString * const kAlfrescoMainMenuItemSitesIdentifier = @"org.alfresco.com.mobile.main.menu.sites.identifier";
+NSString * const kAlfrescoMainMenuItemSyncIdentifier = @"org.alfresco.com.mobile.main.menu.sync.identifier";
+NSString * const kAlfrescoMainMenuItemSettingsIdentifier = @"org.alfresco.com.mobile.main.menu.settings.identifier";
+NSString * const kAlfrescoMainMenuItemHelpIdentifier = @"org.alfresco.com.mobile.main.menu.help.identifier";
+// View Types
+NSString * const kAlfrescoMainMenuConfigurationViewTypeActivities = @"org.alfresco.client.view.activities";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeRepository = @"org.alfresco.client.view.repository";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeSiteBrowser = @"org.alfresco.client.view.site-browser";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeTasks = @"org.alfresco.client.view.tasks";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeFavourites = @"org.alfresco.client.view.sync";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeLocal = @"org.alfresco.client.view.local";
+
 // App Configuration
 //// Notifictaions
 NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"AppConfigurationAccountsConfigurationUpdatedNotification";

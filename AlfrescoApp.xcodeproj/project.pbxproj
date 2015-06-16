@@ -83,8 +83,6 @@
 		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
-		08E89CB117E75BA6006936DF /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
-		08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
 		27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */; };
@@ -292,6 +290,9 @@
 		73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEB1806F5D2007172EE /* SwitchViewController.m */; };
 		73632AF01806F674007172EE /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AEF1806F674007172EE /* MainMenuViewController.m */; };
 		73632AF518080E7C007172EE /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
+		736474E81B175E0C00715B4F /* MainMenuConfigurationBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 736474E71B175E0C00715B4F /* MainMenuConfigurationBuilder.m */; };
+		736474EF1B175F0F00715B4F /* MainMenuBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 736474EE1B175F0F00715B4F /* MainMenuBuilder.m */; };
+		736474F51B1879E400715B4F /* MainMenuConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 736474F41B1879E400715B4F /* MainMenuConfigurationViewController.m */; };
 		7366F7451ACAB78F008DD92E /* MDMLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7366F7441ACAB78F008DD92E /* MDMLaunchViewController.m */; };
 		7366F7471ACAB7A1008DD92E /* MDMLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7366F7461ACAB7A1008DD92E /* MDMLaunchViewController.xib */; };
 		7366F74A1ACAD8DE008DD92E /* NSDictionary+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */; };
@@ -424,6 +425,47 @@
 		738BE95C1A962AFB006264E5 /* HelpURLKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 738BE95B1A962AFB006264E5 /* HelpURLKeys.plist */; };
 		7390619B189676F600B1920C /* ButtonBarArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 73906199189676F600B1920C /* ButtonBarArrowDown.png */; };
 		7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */; };
+		7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3151B03681D00E7191F /* AlfrescoConfigConstants.m */; };
+		7390B35A1B03681E00E7191F /* AlfrescoConfigInternalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3171B03681D00E7191F /* AlfrescoConfigInternalConstants.m */; };
+		7390B35B1B03681E00E7191F /* AlfrescoConfigPropertyConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3191B03681D00E7191F /* AlfrescoConfigPropertyConstants.m */; };
+		7390B35C1B03681E00E7191F /* AlfrescoConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B31C1B03681D00E7191F /* AlfrescoConfigHelper.m */; };
+		7390B35D1B03681E00E7191F /* AlfrescoCreationConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B31E1B03681D00E7191F /* AlfrescoCreationConfigHelper.m */; };
+		7390B35E1B03681E00E7191F /* AlfrescoFeatureConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3201B03681D00E7191F /* AlfrescoFeatureConfigHelper.m */; };
+		7390B35F1B03681E00E7191F /* AlfrescoFormConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3221B03681E00E7191F /* AlfrescoFormConfigHelper.m */; };
+		7390B3601B03681E00E7191F /* AlfrescoProfileConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3241B03681E00E7191F /* AlfrescoProfileConfigHelper.m */; };
+		7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3261B03681E00E7191F /* AlfrescoViewConfigHelper.m */; };
+		7390B3621B03681E00E7191F /* AlfrescoActionConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3291B03681E00E7191F /* AlfrescoActionConfig.m */; };
+		7390B3631B03681E00E7191F /* AlfrescoActionGroupConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B32B1B03681E00E7191F /* AlfrescoActionGroupConfig.m */; };
+		7390B3641B03681E00E7191F /* AlfrescoBaseConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B32D1B03681E00E7191F /* AlfrescoBaseConfig.m */; };
+		7390B3651B03681E00E7191F /* AlfrescoConfigEvaluator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B32F1B03681E00E7191F /* AlfrescoConfigEvaluator.m */; };
+		7390B3661B03681E00E7191F /* AlfrescoConfigInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3311B03681E00E7191F /* AlfrescoConfigInfo.m */; };
+		7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3331B03681E00E7191F /* AlfrescoConfigScope.m */; };
+		7390B3681B03681E00E7191F /* AlfrescoCreationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3351B03681E00E7191F /* AlfrescoCreationConfig.m */; };
+		7390B3691B03681E00E7191F /* AlfrescoFeatureConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3371B03681E00E7191F /* AlfrescoFeatureConfig.m */; };
+		7390B36A1B03681E00E7191F /* AlfrescoFieldConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3391B03681E00E7191F /* AlfrescoFieldConfig.m */; };
+		7390B36B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B33B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m */; };
+		7390B36C1B03681E00E7191F /* AlfrescoFormConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B33D1B03681E00E7191F /* AlfrescoFormConfig.m */; };
+		7390B36D1B03681E00E7191F /* AlfrescoGroupConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B33F1B03681E00E7191F /* AlfrescoGroupConfig.m */; };
+		7390B36E1B03681E00E7191F /* AlfrescoItemConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3411B03681E00E7191F /* AlfrescoItemConfig.m */; };
+		7390B36F1B03681E00E7191F /* AlfrescoProcessConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3431B03681E00E7191F /* AlfrescoProcessConfig.m */; };
+		7390B3701B03681E00E7191F /* AlfrescoProfileConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3451B03681E00E7191F /* AlfrescoProfileConfig.m */; };
+		7390B3711B03681E00E7191F /* AlfrescoRepositoryConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3471B03681E00E7191F /* AlfrescoRepositoryConfig.m */; };
+		7390B3721B03681E00E7191F /* AlfrescoSearchConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3491B03681E00E7191F /* AlfrescoSearchConfig.m */; };
+		7390B3731B03681E00E7191F /* AlfrescoTaskConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B34B1B03681E00E7191F /* AlfrescoTaskConfig.m */; };
+		7390B3741B03681E00E7191F /* AlfrescoViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B34D1B03681E00E7191F /* AlfrescoViewConfig.m */; };
+		7390B3751B03681E00E7191F /* AlfrescoViewGroupConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B34F1B03681E00E7191F /* AlfrescoViewGroupConfig.m */; };
+		7390B3761B03681E00E7191F /* AlfrescoWorkflowConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3511B03681E00E7191F /* AlfrescoWorkflowConfig.m */; };
+		7390B3771B03681E00E7191F /* AlfrescoClientBasedConfigService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3541B03681E00E7191F /* AlfrescoClientBasedConfigService.m */; };
+		7390B3781B03681E00E7191F /* AlfrescoConfigService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3561B03681E00E7191F /* AlfrescoConfigService.m */; };
+		7390B3791B03681E00E7191F /* AlfrescoPlaceholderConfigService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3581B03681E00E7191F /* AlfrescoPlaceholderConfigService.m */; };
+		7390B3811B03684400E7191F /* AlfrescoConfigServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B37C1B03684400E7191F /* AlfrescoConfigServiceTest.m */; };
+		7390B3821B03684400E7191F /* empty-config-test.json in Resources */ = {isa = PBXBuildFile; fileRef = 7390B37D1B03684400E7191F /* empty-config-test.json */; };
+		7390B3831B03684400E7191F /* invalid-config-test.json in Resources */ = {isa = PBXBuildFile; fileRef = 7390B37E1B03684400E7191F /* invalid-config-test.json */; };
+		7390B3841B03684400E7191F /* valid-config-test.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7390B37F1B03684400E7191F /* valid-config-test.bundle */; };
+		7390B3851B03684400E7191F /* valid-config-test.json in Resources */ = {isa = PBXBuildFile; fileRef = 7390B3801B03684400E7191F /* valid-config-test.json */; };
+		7390B3861B03741F00E7191F /* SyncTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB017E75BA6006936DF /* SyncTest.m */; };
+		7390B3871B03742200E7191F /* AlfrescoBaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89CB317E76012006936DF /* AlfrescoBaseTest.m */; };
+		7390B38C1B03793400E7191F /* AlfrescoSDKInternalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B38B1B03793400E7191F /* AlfrescoSDKInternalConstants.m */; };
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7396E85619742645001FB9A9 /* SettingButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7396E85519742645001FB9A9 /* SettingButtonCell.m */; };
 		7396E85819742661001FB9A9 /* SettingButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7396E85719742661001FB9A9 /* SettingButtonCell.xib */; };
@@ -437,13 +479,18 @@
 		739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */; };
 		73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */; };
 		73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */; };
-		73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
 		73B078A0189AB4F800D02C43 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B0789F189AB4F800D02C43 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73B2679D1ADD581400310592 /* UITextField+RightAlignmentSpacingFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 7367CFBF1AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m */; };
 		73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B350B61851E8BF0037E3E3 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		73B5798F1B15EC4E009D30B6 /* MainMenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B5798C1B15EC4E009D30B6 /* MainMenuGroup.m */; };
+		73B579901B15EC4E009D30B6 /* MainMenuSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B5798E1B15EC4E009D30B6 /* MainMenuSection.m */; };
+		73B579941B15EC5F009D30B6 /* MainMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B579921B15EC5F009D30B6 /* MainMenuTableViewCell.m */; };
+		73B579951B15EC5F009D30B6 /* MainMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B579931B15EC5F009D30B6 /* MainMenuTableViewCell.xib */; };
+		73B579971B15FBF1009D30B6 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 73B579961B15FBF1009D30B6 /* configuration.json */; };
+		73B579B11B172C2A009D30B6 /* MenuIconMappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B579B01B172C2A009D30B6 /* MenuIconMappings.plist */; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
 		73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D217A6750E0099FB84 /* ConnectivityManager.m */; };
@@ -514,7 +561,8 @@
 		73CD5B0E1A729526000A5523 /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0D1A729526000A5523 /* SharedConstants.m */; };
 		73CD5B0F1A729543000A5523 /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0D1A729526000A5523 /* SharedConstants.m */; };
 		73CD5B101A729544000A5523 /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0D1A729526000A5523 /* SharedConstants.m */; };
-		73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73D6491F18AD803F00333266 /* MainMenuItemCell.xib */; };
+		73CF6CE21B1C90A600D79CA0 /* MainMenuReorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CF6CE11B1C90A600D79CA0 /* MainMenuReorderViewController.m */; };
+		73CF6CE81B21BCC900D79CA0 /* MainMenuVisibilityScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CF6CE71B21BCC900D79CA0 /* MainMenuVisibilityScope.m */; };
 		73D6492418AD855D00333266 /* actionsheet-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492218AD855D00333266 /* actionsheet-folder.png */; };
 		73D6492518AD855D00333266 /* actionsheet-folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73D6492318AD855D00333266 /* actionsheet-folder@2x.png */; };
 		73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
@@ -674,6 +722,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 73B8C1191A5EAB1D00571B28;
 			remoteInfo = AlfrescoKitBundle;
+		};
+		7390B3881B03744800E7191F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73036F281886E3CC002AF6DC /* AlfrescoSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EB0769615B00D8E00DF7DED;
+			remoteInfo = "AlfrescoSDK-iOS";
 		};
 		73F14C0F1A8389620042D91E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1115,6 +1170,12 @@
 		73632AEF1806F674007172EE /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MainMenuViewController.m; path = "Main Menu View Controller/MainMenuViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73632AF318080E7C007172EE /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItem.h; path = "Main Menu View Controller/Model/MainMenuItem.h"; sourceTree = "<group>"; };
 		73632AF418080E7C007172EE /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuItem.m; path = "Main Menu View Controller/Model/MainMenuItem.m"; sourceTree = "<group>"; };
+		736474E61B175E0C00715B4F /* MainMenuConfigurationBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuConfigurationBuilder.h; path = "Main Menu View Controller/Model/MainMenuConfigurationBuilder.h"; sourceTree = "<group>"; };
+		736474E71B175E0C00715B4F /* MainMenuConfigurationBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuConfigurationBuilder.m; path = "Main Menu View Controller/Model/MainMenuConfigurationBuilder.m"; sourceTree = "<group>"; };
+		736474ED1B175F0F00715B4F /* MainMenuBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuBuilder.h; path = "Main Menu View Controller/Model/MainMenuBuilder.h"; sourceTree = "<group>"; };
+		736474EE1B175F0F00715B4F /* MainMenuBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuBuilder.m; path = "Main Menu View Controller/Model/MainMenuBuilder.m"; sourceTree = "<group>"; };
+		736474F31B1879E400715B4F /* MainMenuConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuConfigurationViewController.h; path = "Main Menu View Controller/MainMenuConfigurationViewController.h"; sourceTree = "<group>"; };
+		736474F41B1879E400715B4F /* MainMenuConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuConfigurationViewController.m; path = "Main Menu View Controller/MainMenuConfigurationViewController.m"; sourceTree = "<group>"; };
 		7366F7431ACAB78F008DD92E /* MDMLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDMLaunchViewController.h; sourceTree = "<group>"; };
 		7366F7441ACAB78F008DD92E /* MDMLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDMLaunchViewController.m; sourceTree = "<group>"; };
 		7366F7461ACAB7A1008DD92E /* MDMLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MDMLaunchViewController.xib; sourceTree = "<group>"; };
@@ -1299,6 +1360,80 @@
 		738BE95B1A962AFB006264E5 /* HelpURLKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpURLKeys.plist; sourceTree = "<group>"; };
 		73906199189676F600B1920C /* ButtonBarArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonBarArrowDown.png; sourceTree = "<group>"; };
 		7390619A189676F600B1920C /* ButtonBarArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonBarArrowDown@2x.png"; sourceTree = "<group>"; };
+		7390B3141B03681D00E7191F /* AlfrescoConfigConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigConstants.h; sourceTree = "<group>"; };
+		7390B3151B03681D00E7191F /* AlfrescoConfigConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigConstants.m; sourceTree = "<group>"; };
+		7390B3161B03681D00E7191F /* AlfrescoConfigInternalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigInternalConstants.h; sourceTree = "<group>"; };
+		7390B3171B03681D00E7191F /* AlfrescoConfigInternalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigInternalConstants.m; sourceTree = "<group>"; };
+		7390B3181B03681D00E7191F /* AlfrescoConfigPropertyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigPropertyConstants.h; sourceTree = "<group>"; };
+		7390B3191B03681D00E7191F /* AlfrescoConfigPropertyConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigPropertyConstants.m; sourceTree = "<group>"; };
+		7390B31B1B03681D00E7191F /* AlfrescoConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigHelper.h; sourceTree = "<group>"; };
+		7390B31C1B03681D00E7191F /* AlfrescoConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigHelper.m; sourceTree = "<group>"; };
+		7390B31D1B03681D00E7191F /* AlfrescoCreationConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoCreationConfigHelper.h; sourceTree = "<group>"; };
+		7390B31E1B03681D00E7191F /* AlfrescoCreationConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoCreationConfigHelper.m; sourceTree = "<group>"; };
+		7390B31F1B03681D00E7191F /* AlfrescoFeatureConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFeatureConfigHelper.h; sourceTree = "<group>"; };
+		7390B3201B03681D00E7191F /* AlfrescoFeatureConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFeatureConfigHelper.m; sourceTree = "<group>"; };
+		7390B3211B03681D00E7191F /* AlfrescoFormConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormConfigHelper.h; sourceTree = "<group>"; };
+		7390B3221B03681E00E7191F /* AlfrescoFormConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormConfigHelper.m; sourceTree = "<group>"; };
+		7390B3231B03681E00E7191F /* AlfrescoProfileConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoProfileConfigHelper.h; sourceTree = "<group>"; };
+		7390B3241B03681E00E7191F /* AlfrescoProfileConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoProfileConfigHelper.m; sourceTree = "<group>"; };
+		7390B3251B03681E00E7191F /* AlfrescoViewConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoViewConfigHelper.h; sourceTree = "<group>"; };
+		7390B3261B03681E00E7191F /* AlfrescoViewConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoViewConfigHelper.m; sourceTree = "<group>"; };
+		7390B3281B03681E00E7191F /* AlfrescoActionConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoActionConfig.h; sourceTree = "<group>"; };
+		7390B3291B03681E00E7191F /* AlfrescoActionConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoActionConfig.m; sourceTree = "<group>"; };
+		7390B32A1B03681E00E7191F /* AlfrescoActionGroupConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoActionGroupConfig.h; sourceTree = "<group>"; };
+		7390B32B1B03681E00E7191F /* AlfrescoActionGroupConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoActionGroupConfig.m; sourceTree = "<group>"; };
+		7390B32C1B03681E00E7191F /* AlfrescoBaseConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseConfig.h; sourceTree = "<group>"; };
+		7390B32D1B03681E00E7191F /* AlfrescoBaseConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseConfig.m; sourceTree = "<group>"; };
+		7390B32E1B03681E00E7191F /* AlfrescoConfigEvaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigEvaluator.h; sourceTree = "<group>"; };
+		7390B32F1B03681E00E7191F /* AlfrescoConfigEvaluator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigEvaluator.m; sourceTree = "<group>"; };
+		7390B3301B03681E00E7191F /* AlfrescoConfigInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigInfo.h; sourceTree = "<group>"; };
+		7390B3311B03681E00E7191F /* AlfrescoConfigInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigInfo.m; sourceTree = "<group>"; };
+		7390B3321B03681E00E7191F /* AlfrescoConfigScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigScope.h; sourceTree = "<group>"; };
+		7390B3331B03681E00E7191F /* AlfrescoConfigScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigScope.m; sourceTree = "<group>"; };
+		7390B3341B03681E00E7191F /* AlfrescoCreationConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoCreationConfig.h; sourceTree = "<group>"; };
+		7390B3351B03681E00E7191F /* AlfrescoCreationConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoCreationConfig.m; sourceTree = "<group>"; };
+		7390B3361B03681E00E7191F /* AlfrescoFeatureConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFeatureConfig.h; sourceTree = "<group>"; };
+		7390B3371B03681E00E7191F /* AlfrescoFeatureConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFeatureConfig.m; sourceTree = "<group>"; };
+		7390B3381B03681E00E7191F /* AlfrescoFieldConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFieldConfig.h; sourceTree = "<group>"; };
+		7390B3391B03681E00E7191F /* AlfrescoFieldConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFieldConfig.m; sourceTree = "<group>"; };
+		7390B33A1B03681E00E7191F /* AlfrescoFieldGroupConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFieldGroupConfig.h; sourceTree = "<group>"; };
+		7390B33B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFieldGroupConfig.m; sourceTree = "<group>"; };
+		7390B33C1B03681E00E7191F /* AlfrescoFormConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoFormConfig.h; sourceTree = "<group>"; };
+		7390B33D1B03681E00E7191F /* AlfrescoFormConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFormConfig.m; sourceTree = "<group>"; };
+		7390B33E1B03681E00E7191F /* AlfrescoGroupConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoGroupConfig.h; sourceTree = "<group>"; };
+		7390B33F1B03681E00E7191F /* AlfrescoGroupConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoGroupConfig.m; sourceTree = "<group>"; };
+		7390B3401B03681E00E7191F /* AlfrescoItemConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoItemConfig.h; sourceTree = "<group>"; };
+		7390B3411B03681E00E7191F /* AlfrescoItemConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoItemConfig.m; sourceTree = "<group>"; };
+		7390B3421B03681E00E7191F /* AlfrescoProcessConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoProcessConfig.h; sourceTree = "<group>"; };
+		7390B3431B03681E00E7191F /* AlfrescoProcessConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoProcessConfig.m; sourceTree = "<group>"; };
+		7390B3441B03681E00E7191F /* AlfrescoProfileConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoProfileConfig.h; sourceTree = "<group>"; };
+		7390B3451B03681E00E7191F /* AlfrescoProfileConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoProfileConfig.m; sourceTree = "<group>"; };
+		7390B3461B03681E00E7191F /* AlfrescoRepositoryConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoRepositoryConfig.h; sourceTree = "<group>"; };
+		7390B3471B03681E00E7191F /* AlfrescoRepositoryConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoRepositoryConfig.m; sourceTree = "<group>"; };
+		7390B3481B03681E00E7191F /* AlfrescoSearchConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoSearchConfig.h; sourceTree = "<group>"; };
+		7390B3491B03681E00E7191F /* AlfrescoSearchConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoSearchConfig.m; sourceTree = "<group>"; };
+		7390B34A1B03681E00E7191F /* AlfrescoTaskConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoTaskConfig.h; sourceTree = "<group>"; };
+		7390B34B1B03681E00E7191F /* AlfrescoTaskConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoTaskConfig.m; sourceTree = "<group>"; };
+		7390B34C1B03681E00E7191F /* AlfrescoViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoViewConfig.h; sourceTree = "<group>"; };
+		7390B34D1B03681E00E7191F /* AlfrescoViewConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoViewConfig.m; sourceTree = "<group>"; };
+		7390B34E1B03681E00E7191F /* AlfrescoViewGroupConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoViewGroupConfig.h; sourceTree = "<group>"; };
+		7390B34F1B03681E00E7191F /* AlfrescoViewGroupConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoViewGroupConfig.m; sourceTree = "<group>"; };
+		7390B3501B03681E00E7191F /* AlfrescoWorkflowConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoWorkflowConfig.h; sourceTree = "<group>"; };
+		7390B3511B03681E00E7191F /* AlfrescoWorkflowConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoWorkflowConfig.m; sourceTree = "<group>"; };
+		7390B3531B03681E00E7191F /* AlfrescoClientBasedConfigService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoClientBasedConfigService.h; sourceTree = "<group>"; };
+		7390B3541B03681E00E7191F /* AlfrescoClientBasedConfigService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoClientBasedConfigService.m; sourceTree = "<group>"; };
+		7390B3551B03681E00E7191F /* AlfrescoConfigService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigService.h; sourceTree = "<group>"; };
+		7390B3561B03681E00E7191F /* AlfrescoConfigService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigService.m; sourceTree = "<group>"; };
+		7390B3571B03681E00E7191F /* AlfrescoPlaceholderConfigService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoPlaceholderConfigService.h; sourceTree = "<group>"; };
+		7390B3581B03681E00E7191F /* AlfrescoPlaceholderConfigService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoPlaceholderConfigService.m; sourceTree = "<group>"; };
+		7390B37B1B03684400E7191F /* AlfrescoConfigServiceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoConfigServiceTest.h; sourceTree = "<group>"; };
+		7390B37C1B03684400E7191F /* AlfrescoConfigServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoConfigServiceTest.m; sourceTree = "<group>"; };
+		7390B37D1B03684400E7191F /* empty-config-test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "empty-config-test.json"; sourceTree = "<group>"; };
+		7390B37E1B03684400E7191F /* invalid-config-test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "invalid-config-test.json"; sourceTree = "<group>"; };
+		7390B37F1B03684400E7191F /* valid-config-test.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "valid-config-test.bundle"; sourceTree = "<group>"; };
+		7390B3801B03684400E7191F /* valid-config-test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "valid-config-test.json"; sourceTree = "<group>"; };
+		7390B38A1B03793400E7191F /* AlfrescoSDKInternalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoSDKInternalConstants.h; sourceTree = "<group>"; };
+		7390B38B1B03793400E7191F /* AlfrescoSDKInternalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoSDKInternalConstants.m; sourceTree = "<group>"; };
 		73922271187C1BF700BFCE21 /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		73922272187C1BF700BFCE21 /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		7396E85419742645001FB9A9 /* SettingButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingButtonCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.h"; sourceTree = SOURCE_ROOT; };
@@ -1322,8 +1457,6 @@
 		73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "BaseDocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/BaseDocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
 		73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+AutoLayout.h"; sourceTree = "<group>"; };
 		73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+AutoLayout.m"; sourceTree = "<group>"; };
-		73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuItemCell.h; path = "Main Menu View Controller/Cell/MainMenuItemCell.h"; sourceTree = "<group>"; };
-		73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MainMenuItemCell.m; path = "Main Menu View Controller/Cell/MainMenuItemCell.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
@@ -1332,6 +1465,15 @@
 		73B0789F189AB4F800D02C43 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		73B350B51851E8BF0037E3E3 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		73B350B61851E8BF0037E3E3 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		73B5798B1B15EC4E009D30B6 /* MainMenuGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuGroup.h; path = "Main Menu View Controller/Model/MainMenuGroup.h"; sourceTree = "<group>"; };
+		73B5798C1B15EC4E009D30B6 /* MainMenuGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuGroup.m; path = "Main Menu View Controller/Model/MainMenuGroup.m"; sourceTree = "<group>"; };
+		73B5798D1B15EC4E009D30B6 /* MainMenuSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuSection.h; path = "Main Menu View Controller/Model/MainMenuSection.h"; sourceTree = "<group>"; };
+		73B5798E1B15EC4E009D30B6 /* MainMenuSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuSection.m; path = "Main Menu View Controller/Model/MainMenuSection.m"; sourceTree = "<group>"; };
+		73B579911B15EC5F009D30B6 /* MainMenuTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuTableViewCell.h; path = "Main Menu View Controller/Cell/MainMenuTableViewCell.h"; sourceTree = "<group>"; };
+		73B579921B15EC5F009D30B6 /* MainMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuTableViewCell.m; path = "Main Menu View Controller/Cell/MainMenuTableViewCell.m"; sourceTree = "<group>"; };
+		73B579931B15EC5F009D30B6 /* MainMenuTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuTableViewCell.xib; path = "Main Menu View Controller/Cell/MainMenuTableViewCell.xib"; sourceTree = "<group>"; };
+		73B579961B15FBF1009D30B6 /* configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
+		73B579B01B172C2A009D30B6 /* MenuIconMappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MenuIconMappings.plist; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B957C617A6728A0099FB84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		73B957C817A673A90099FB84 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1438,7 +1580,10 @@
 		73CD5B0A1A727D88000A5523 /* AppConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppConfiguration.m; path = Model/AppConfiguration.m; sourceTree = "<group>"; };
 		73CD5B0C1A729526000A5523 /* SharedConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedConstants.h; sourceTree = "<group>"; };
 		73CD5B0D1A729526000A5523 /* SharedConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedConstants.m; sourceTree = "<group>"; };
-		73D6491F18AD803F00333266 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuItemCell.xib; path = "Main Menu View Controller/Cell/MainMenuItemCell.xib"; sourceTree = "<group>"; };
+		73CF6CE01B1C90A600D79CA0 /* MainMenuReorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuReorderViewController.h; sourceTree = "<group>"; };
+		73CF6CE11B1C90A600D79CA0 /* MainMenuReorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuReorderViewController.m; sourceTree = "<group>"; };
+		73CF6CE61B21BCC900D79CA0 /* MainMenuVisibilityScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuVisibilityScope.h; sourceTree = "<group>"; };
+		73CF6CE71B21BCC900D79CA0 /* MainMenuVisibilityScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuVisibilityScope.m; sourceTree = "<group>"; };
 		73D6492218AD855D00333266 /* actionsheet-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-folder.png"; sourceTree = "<group>"; };
 		73D6492318AD855D00333266 /* actionsheet-folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-folder@2x.png"; sourceTree = "<group>"; };
 		73E9E20B17E7394900A198B4 /* UserAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAccount.h; sourceTree = "<group>"; };
@@ -1795,6 +1940,7 @@
 				08E89CB317E76012006936DF /* AlfrescoBaseTest.m */,
 				08E89CAF17E75BA6006936DF /* SyncTest.h */,
 				08E89CB017E75BA6006936DF /* SyncTest.m */,
+				7390B37A1B03684400E7191F /* Config */,
 				08E89C9F17E7593B006936DF /* Supporting Files */,
 			);
 			path = "AlfrescoApp Tests";
@@ -2209,6 +2355,8 @@
 				73632AF618080E80007172EE /* Model */,
 				73632AEE1806F674007172EE /* MainMenuViewController.h */,
 				73632AEF1806F674007172EE /* MainMenuViewController.m */,
+				736474F31B1879E400715B4F /* MainMenuConfigurationViewController.h */,
+				736474F41B1879E400715B4F /* MainMenuConfigurationViewController.m */,
 			);
 			name = "Main Menu View Controller";
 			sourceTree = "<group>";
@@ -2218,6 +2366,14 @@
 			children = (
 				73632AF318080E7C007172EE /* MainMenuItem.h */,
 				73632AF418080E7C007172EE /* MainMenuItem.m */,
+				73B5798D1B15EC4E009D30B6 /* MainMenuSection.h */,
+				73B5798E1B15EC4E009D30B6 /* MainMenuSection.m */,
+				73B5798B1B15EC4E009D30B6 /* MainMenuGroup.h */,
+				73B5798C1B15EC4E009D30B6 /* MainMenuGroup.m */,
+				736474ED1B175F0F00715B4F /* MainMenuBuilder.h */,
+				736474EE1B175F0F00715B4F /* MainMenuBuilder.m */,
+				736474E61B175E0C00715B4F /* MainMenuConfigurationBuilder.h */,
+				736474E71B175E0C00715B4F /* MainMenuConfigurationBuilder.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2281,6 +2437,7 @@
 				73B9583617A6750F0099FB84 /* Views */,
 				73B9587617A67A110099FB84 /* Alfresco SDK */,
 				734CC39D1A6FBB96005D148E /* AlfrescoKit */,
+				7390B30E1B03672300E7191F /* Config */,
 				73B959CD17A67A760099FB84 /* Third Party Libraries */,
 				2715E03619300C520049FA32 /* Images.xcassets */,
 				7373B4FF17A66E9400869949 /* Supporting Files */,
@@ -2291,6 +2448,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73B579961B15FBF1009D30B6 /* configuration.json */,
 				27C2EBF71907044A003B09B9 /* Activities.strings */,
 				274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */,
 				73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */,
@@ -2305,6 +2463,7 @@
 				73B957C617A6728A0099FB84 /* main.m */,
 				2744021F18AA83C400DF23DD /* Settings.bundle */,
 				738BE9491A960787006264E5 /* Launch Screen.xib */,
+				73B579B01B172C2A009D30B6 /* MenuIconMappings.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -2790,6 +2949,126 @@
 			path = "Version History";
 			sourceTree = "<group>";
 		};
+		7390B30E1B03672300E7191F /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				7390B3131B03681D00E7191F /* Constants */,
+				7390B31A1B03681D00E7191F /* Helpers */,
+				7390B3271B03681E00E7191F /* Model */,
+				7390B3521B03681E00E7191F /* Service */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		7390B3131B03681D00E7191F /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				7390B38A1B03793400E7191F /* AlfrescoSDKInternalConstants.h */,
+				7390B38B1B03793400E7191F /* AlfrescoSDKInternalConstants.m */,
+				7390B3141B03681D00E7191F /* AlfrescoConfigConstants.h */,
+				7390B3151B03681D00E7191F /* AlfrescoConfigConstants.m */,
+				7390B3161B03681D00E7191F /* AlfrescoConfigInternalConstants.h */,
+				7390B3171B03681D00E7191F /* AlfrescoConfigInternalConstants.m */,
+				7390B3181B03681D00E7191F /* AlfrescoConfigPropertyConstants.h */,
+				7390B3191B03681D00E7191F /* AlfrescoConfigPropertyConstants.m */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		7390B31A1B03681D00E7191F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7390B31B1B03681D00E7191F /* AlfrescoConfigHelper.h */,
+				7390B31C1B03681D00E7191F /* AlfrescoConfigHelper.m */,
+				7390B31D1B03681D00E7191F /* AlfrescoCreationConfigHelper.h */,
+				7390B31E1B03681D00E7191F /* AlfrescoCreationConfigHelper.m */,
+				7390B31F1B03681D00E7191F /* AlfrescoFeatureConfigHelper.h */,
+				7390B3201B03681D00E7191F /* AlfrescoFeatureConfigHelper.m */,
+				7390B3211B03681D00E7191F /* AlfrescoFormConfigHelper.h */,
+				7390B3221B03681E00E7191F /* AlfrescoFormConfigHelper.m */,
+				7390B3231B03681E00E7191F /* AlfrescoProfileConfigHelper.h */,
+				7390B3241B03681E00E7191F /* AlfrescoProfileConfigHelper.m */,
+				7390B3251B03681E00E7191F /* AlfrescoViewConfigHelper.h */,
+				7390B3261B03681E00E7191F /* AlfrescoViewConfigHelper.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		7390B3271B03681E00E7191F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7390B3281B03681E00E7191F /* AlfrescoActionConfig.h */,
+				7390B3291B03681E00E7191F /* AlfrescoActionConfig.m */,
+				7390B32A1B03681E00E7191F /* AlfrescoActionGroupConfig.h */,
+				7390B32B1B03681E00E7191F /* AlfrescoActionGroupConfig.m */,
+				7390B32C1B03681E00E7191F /* AlfrescoBaseConfig.h */,
+				7390B32D1B03681E00E7191F /* AlfrescoBaseConfig.m */,
+				7390B32E1B03681E00E7191F /* AlfrescoConfigEvaluator.h */,
+				7390B32F1B03681E00E7191F /* AlfrescoConfigEvaluator.m */,
+				7390B3301B03681E00E7191F /* AlfrescoConfigInfo.h */,
+				7390B3311B03681E00E7191F /* AlfrescoConfigInfo.m */,
+				7390B3321B03681E00E7191F /* AlfrescoConfigScope.h */,
+				7390B3331B03681E00E7191F /* AlfrescoConfigScope.m */,
+				7390B3341B03681E00E7191F /* AlfrescoCreationConfig.h */,
+				7390B3351B03681E00E7191F /* AlfrescoCreationConfig.m */,
+				7390B3361B03681E00E7191F /* AlfrescoFeatureConfig.h */,
+				7390B3371B03681E00E7191F /* AlfrescoFeatureConfig.m */,
+				7390B3381B03681E00E7191F /* AlfrescoFieldConfig.h */,
+				7390B3391B03681E00E7191F /* AlfrescoFieldConfig.m */,
+				7390B33A1B03681E00E7191F /* AlfrescoFieldGroupConfig.h */,
+				7390B33B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m */,
+				7390B33C1B03681E00E7191F /* AlfrescoFormConfig.h */,
+				7390B33D1B03681E00E7191F /* AlfrescoFormConfig.m */,
+				7390B33E1B03681E00E7191F /* AlfrescoGroupConfig.h */,
+				7390B33F1B03681E00E7191F /* AlfrescoGroupConfig.m */,
+				7390B3401B03681E00E7191F /* AlfrescoItemConfig.h */,
+				7390B3411B03681E00E7191F /* AlfrescoItemConfig.m */,
+				7390B3421B03681E00E7191F /* AlfrescoProcessConfig.h */,
+				7390B3431B03681E00E7191F /* AlfrescoProcessConfig.m */,
+				7390B3441B03681E00E7191F /* AlfrescoProfileConfig.h */,
+				7390B3451B03681E00E7191F /* AlfrescoProfileConfig.m */,
+				7390B3461B03681E00E7191F /* AlfrescoRepositoryConfig.h */,
+				7390B3471B03681E00E7191F /* AlfrescoRepositoryConfig.m */,
+				7390B3481B03681E00E7191F /* AlfrescoSearchConfig.h */,
+				7390B3491B03681E00E7191F /* AlfrescoSearchConfig.m */,
+				7390B34A1B03681E00E7191F /* AlfrescoTaskConfig.h */,
+				7390B34B1B03681E00E7191F /* AlfrescoTaskConfig.m */,
+				7390B34C1B03681E00E7191F /* AlfrescoViewConfig.h */,
+				7390B34D1B03681E00E7191F /* AlfrescoViewConfig.m */,
+				7390B34E1B03681E00E7191F /* AlfrescoViewGroupConfig.h */,
+				7390B34F1B03681E00E7191F /* AlfrescoViewGroupConfig.m */,
+				7390B3501B03681E00E7191F /* AlfrescoWorkflowConfig.h */,
+				7390B3511B03681E00E7191F /* AlfrescoWorkflowConfig.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7390B3521B03681E00E7191F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7390B3551B03681E00E7191F /* AlfrescoConfigService.h */,
+				7390B3561B03681E00E7191F /* AlfrescoConfigService.m */,
+				7390B3571B03681E00E7191F /* AlfrescoPlaceholderConfigService.h */,
+				7390B3581B03681E00E7191F /* AlfrescoPlaceholderConfigService.m */,
+				7390B3531B03681E00E7191F /* AlfrescoClientBasedConfigService.h */,
+				7390B3541B03681E00E7191F /* AlfrescoClientBasedConfigService.m */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		7390B37A1B03684400E7191F /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				7390B37B1B03684400E7191F /* AlfrescoConfigServiceTest.h */,
+				7390B37C1B03684400E7191F /* AlfrescoConfigServiceTest.m */,
+				7390B37D1B03684400E7191F /* empty-config-test.json */,
+				7390B37E1B03684400E7191F /* invalid-config-test.json */,
+				7390B37F1B03684400E7191F /* valid-config-test.bundle */,
+				7390B3801B03684400E7191F /* valid-config-test.json */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		7399A00117F9A720005B8648 /* Root Reveal Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2812,9 +3091,9 @@
 		73A26A6B183532D6006C1D81 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				73A26A6C1835330F006C1D81 /* MainMenuItemCell.h */,
-				73A26A6D1835330F006C1D81 /* MainMenuItemCell.m */,
-				73D6491F18AD803F00333266 /* MainMenuItemCell.xib */,
+				73B579911B15EC5F009D30B6 /* MainMenuTableViewCell.h */,
+				73B579921B15EC5F009D30B6 /* MainMenuTableViewCell.m */,
+				73B579931B15EC5F009D30B6 /* MainMenuTableViewCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -3074,6 +3353,7 @@
 				7386649A1906AD840021D1BD /* FileFolder View Controller */,
 				737972F218A39E59007613B2 /* Folder Preview Controller */,
 				73B95ACF17A68DF20099FB84 /* Login View Controller */,
+				73CF6CDB1B1C908200D79CA0 /* Main Menu Reorder View Controller */,
 				73632AED1806F62C007172EE /* Main Menu View Controller */,
 				272CC7B919466B380009FADA /* Map View Controller */,
 				7366F7421ACAB764008DD92E /* MDM Launch View Controller */,
@@ -3345,6 +3625,17 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		73CF6CDB1B1C908200D79CA0 /* Main Menu Reorder View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73CF6CE61B21BCC900D79CA0 /* MainMenuVisibilityScope.h */,
+				73CF6CE71B21BCC900D79CA0 /* MainMenuVisibilityScope.m */,
+				73CF6CE01B1C90A600D79CA0 /* MainMenuReorderViewController.h */,
+				73CF6CE11B1C90A600D79CA0 /* MainMenuReorderViewController.m */,
+			);
+			path = "Main Menu Reorder View Controller";
+			sourceTree = "<group>";
+		};
 		73F14C191A8CDDC40042D91E /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -3390,6 +3681,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7390B3891B03744800E7191F /* PBXTargetDependency */,
 				08E89CA817E7593C006936DF /* PBXTargetDependency */,
 			);
 			name = "AlfrescoApp Tests";
@@ -3601,7 +3893,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7390B3851B03684400E7191F /* valid-config-test.json in Resources */,
+				7390B3841B03684400E7191F /* valid-config-test.bundle in Resources */,
+				7390B3831B03684400E7191F /* invalid-config-test.json in Resources */,
 				08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */,
+				7390B3821B03684400E7191F /* empty-config-test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3666,7 +3962,6 @@
 				732DBF9318E1BC6B00F7A0BF /* small_excel@2x.png in Resources */,
 				732DBF9918E1BC6B00F7A0BF /* small_pdf@2x.png in Resources */,
 				732DBF8F18E1BC6B00F7A0BF /* small_audio@2x.png in Resources */,
-				73D6492018AD803F00333266 /* MainMenuItemCell.xib in Resources */,
 				73881F731889800C0052C75F /* Help Error in Resources */,
 				73BE41F318F3FCF100DB8912 /* actionsheet-review.png in Resources */,
 				271DC764189C2D250059D1B2 /* status-favourite-highlighted.png in Resources */,
@@ -3814,6 +4109,7 @@
 				73D6492518AD855D00333266 /* actionsheet-folder@2x.png in Resources */,
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
 				272CC7CF194690AD0009FADA /* segment-icon-map@2x.png in Resources */,
+				73B579971B15FBF1009D30B6 /* configuration.json in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
 				271DC76E189C2D250059D1B2 /* status-sync-failed.png in Resources */,
 				73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */,
@@ -3824,7 +4120,9 @@
 				080A812318561E6D00B79306 /* certificate.png in Resources */,
 				73FF558818ACE2370009CA56 /* large_video@2x.png in Resources */,
 				73881FD5188FF6B00052C75F /* actionsheet-unlike@2x.png in Resources */,
+				73B579951B15EC5F009D30B6 /* MainMenuTableViewCell.xib in Resources */,
 				733638B91913BA1600472A57 /* system_notice_exclamation.png in Resources */,
+				73B579B11B172C2A009D30B6 /* MenuIconMappings.plist in Resources */,
 				2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				2BFE12951AC2E734000EB19D /* circle_cross.png in Resources */,
@@ -4012,8 +4310,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08E89CB417E76012006936DF /* AlfrescoBaseTest.m in Sources */,
-				08E89CB117E75BA6006936DF /* SyncTest.m in Sources */,
+				7390B3871B03742200E7191F /* AlfrescoBaseTest.m in Sources */,
+				7390B3861B03741F00E7191F /* SyncTest.m in Sources */,
+				7390B3811B03684400E7191F /* AlfrescoConfigServiceTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4065,22 +4364,31 @@
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
+				7390B36E1B03681E00E7191F /* AlfrescoItemConfig.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
 				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
+				7390B3741B03681E00E7191F /* AlfrescoViewConfig.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
 				27B01F37193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m in Sources */,
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
+				7390B3601B03681E00E7191F /* AlfrescoProfileConfigHelper.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				2BC7CA851B21E523009BB2A9 /* LoadingCollectionViewFooter.m in Sources */,
 				277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
+				7390B3651B03681E00E7191F /* AlfrescoConfigEvaluator.m in Sources */,
+				7390B3661B03681E00E7191F /* AlfrescoConfigInfo.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */,
+				7390B3761B03681E00E7191F /* AlfrescoWorkflowConfig.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
+				7390B35E1B03681E00E7191F /* AlfrescoFeatureConfigHelper.m in Sources */,
+				73B579901B15EC4E009D30B6 /* MainMenuSection.m in Sources */,
 				738664A61906AD8E0021D1BD /* SitesListViewController.m in Sources */,
+				7390B35F1B03681E00E7191F /* AlfrescoFormConfigHelper.m in Sources */,
 				08E1EA2D18DB057900F9052F /* TaskViewController.m in Sources */,
 				73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
@@ -4110,14 +4418,19 @@
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
+				7390B3621B03681E00E7191F /* AlfrescoActionConfig.m in Sources */,
+				7390B3791B03681E00E7191F /* AlfrescoPlaceholderConfigService.m in Sources */,
 				7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
+				7390B36C1B03681E00E7191F /* AlfrescoFormConfig.m in Sources */,
 				73B9585417A6750F0099FB84 /* ErrorDescriptions.m in Sources */,
+				7390B3641B03681E00E7191F /* AlfrescoBaseConfig.m in Sources */,
 				08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
+				73B5798F1B15EC4E009D30B6 /* MainMenuGroup.m in Sources */,
 				738664BF1906B14C0021D1BD /* SitesCell.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
 				7384BE0017F3556900C6A54F /* SettingTextFieldCell.m in Sources */,
@@ -4125,9 +4438,11 @@
 				738664DE1906B2260021D1BD /* ButtonCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
 				73CD5B0E1A729526000A5523 /* SharedConstants.m in Sources */,
+				7390B36B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
 				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
+				7390B35B1B03681E00E7191F /* AlfrescoConfigPropertyConstants.m in Sources */,
 				738664E21906B2260021D1BD /* LabelCell.m in Sources */,
 				737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */,
 				739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */,
@@ -4142,6 +4457,8 @@
 				08E1EA3118DB057900F9052F /* TasksAndAttachmentsViewController.m in Sources */,
 				7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
+				7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */,
+				736474F51B1879E400715B4F /* MainMenuConfigurationViewController.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				731A8F51192F5B1F0099BE7B /* NewVersionTextViewCell.m in Sources */,
@@ -4161,10 +4478,13 @@
 				7379733818AA8E9B007613B2 /* SyncError.m in Sources */,
 				2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */,
 				0876A04818D99FF60035370A /* NodePickerScopeViewController.m in Sources */,
+				7390B3751B03681E00E7191F /* AlfrescoViewGroupConfig.m in Sources */,
 				738664E41906B2260021D1BD /* SwitchCell.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
+				73B579941B15EC5F009D30B6 /* MainMenuTableViewCell.m in Sources */,
 				73881F6D188956390052C75F /* WebBrowserViewController.m in Sources */,
 				7396E85619742645001FB9A9 /* SettingButtonCell.m in Sources */,
+				73CF6CE81B21BCC900D79CA0 /* MainMenuVisibilityScope.m in Sources */,
 				738664F41906B2420021D1BD /* TaskPriorityCell.m in Sources */,
 				73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */,
 				739E107D18F6D83600495616 /* SaveBackMetadata.m in Sources */,
@@ -4176,19 +4496,24 @@
 				731901B2184770F5002C82C1 /* MigrationAssistant.m in Sources */,
 				08E1EA2F18DB057900F9052F /* ProcessTasksCell.m in Sources */,
 				08E1EA3718DB06D100F9052F /* TaskTypeViewController.m in Sources */,
+				7390B3731B03681E00E7191F /* AlfrescoTaskConfig.m in Sources */,
 				738664981906AD740021D1BD /* ActivitiesViewController.m in Sources */,
 				738664FF1906B27C0021D1BD /* NodePickerScopeCell.m in Sources */,
 				73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */,
 				082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */,
 				2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */,
 				7379733618AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld in Sources */,
+				7390B3681B03681E00E7191F /* AlfrescoCreationConfig.m in Sources */,
 				0804DCA8181962E700E3ACC2 /* AccountsViewController.m in Sources */,
+				7390B3701B03681E00E7191F /* AlfrescoProfileConfig.m in Sources */,
+				736474EF1B175F0F00715B4F /* MainMenuBuilder.m in Sources */,
 				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				0804DCC9181AB08100E3ACC2 /* AccountInfoViewController.m in Sources */,
 				731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */,
 				7366F74A1ACAD8DE008DD92E /* NSDictionary+Extension.m in Sources */,
 				2B19C0801B17357B005CF636 /* ALFCollectionView.m in Sources */,
+				736474E81B175E0C00715B4F /* MainMenuConfigurationBuilder.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,
@@ -4196,10 +4521,16 @@
 				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
 				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
+				7390B35C1B03681E00E7191F /* AlfrescoConfigHelper.m in Sources */,
+				7390B38C1B03793400E7191F /* AlfrescoSDKInternalConstants.m in Sources */,
+				7390B3771B03681E00E7191F /* AlfrescoClientBasedConfigService.m in Sources */,
+				7390B35D1B03681E00E7191F /* AlfrescoCreationConfigHelper.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
 				7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */,
+				7390B3631B03681E00E7191F /* AlfrescoActionGroupConfig.m in Sources */,
+				7390B36F1B03681E00E7191F /* AlfrescoProcessConfig.m in Sources */,
 				274863A41951E1A2006A91C5 /* ClientCertificateDownloadViewController.m in Sources */,
 				730B445818ED7B96008A0977 /* FilePreviewViewController.m in Sources */,
 				73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */,
@@ -4212,26 +4543,34 @@
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				738664AA1906AE2E0021D1BD /* ThumbnailImageView.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
-				73A26A6E1835330F006C1D81 /* MainMenuItemCell.m in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
+				7390B36A1B03681E00E7191F /* AlfrescoFieldConfig.m in Sources */,
 				2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
+				73CF6CE21B1C90A600D79CA0 /* MainMenuReorderViewController.m in Sources */,
 				73B95AF517A68DF20099FB84 /* CommentViewController.m in Sources */,
+				7390B3781B03681E00E7191F /* AlfrescoConfigService.m in Sources */,
 				739E108018F6F10700495616 /* FileHandlerManager.m in Sources */,
+				7390B3721B03681E00E7191F /* AlfrescoSearchConfig.m in Sources */,
 				738664FD1906B27C0021D1BD /* NodePickerListCell.m in Sources */,
+				7390B35A1B03681E00E7191F /* AlfrescoConfigInternalConstants.m in Sources */,
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
+				7390B36D1B03681E00E7191F /* AlfrescoGroupConfig.m in Sources */,
 				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
+				7390B3711B03681E00E7191F /* AlfrescoRepositoryConfig.m in Sources */,
 				08E1EA2A18DB057900F9052F /* TasksCell.m in Sources */,
 				08E1EA2C18DB057900F9052F /* TaskGroupItem.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
+				7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
+				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
@@ -4242,6 +4581,7 @@
 				27DA1B651915362300885F0F /* BaseInboundURLHandler.m in Sources */,
 				080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */,
 				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
+				7390B3691B03681E00E7191F /* AlfrescoFeatureConfig.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
 			);
@@ -4304,6 +4644,11 @@
 			isa = PBXTargetDependency;
 			name = AlfrescoKitBundle;
 			targetProxy = 73697BB01A9B8D5A009F10BA /* PBXContainerItemProxy */;
+		};
+		7390B3891B03744800E7191F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AlfrescoSDK-iOS";
+			targetProxy = 7390B3881B03744800E7191F /* PBXContainerItemProxy */;
 		};
 		73F14C101A8389620042D91E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4467,7 +4812,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4495,8 +4840,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4560,8 +4903,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPicker/AlfrescoDocumentPicker-Prefix.pch";
@@ -4594,8 +4935,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4625,8 +4964,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4655,8 +4992,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4686,8 +5021,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
@@ -4714,8 +5047,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
@@ -4782,7 +5113,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4810,8 +5141,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4845,8 +5174,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

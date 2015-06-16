@@ -17,12 +17,12 @@
  ******************************************************************************/
   
 #import "NavigationViewController.h"
-#import "MainMenuViewController.h"
+#import "MainMenuConfigurationViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, strong, readonly) MainMenuViewController *mainMenuViewController;
+@property (nonatomic, strong, readonly) MainMenuConfigurationViewController *mainMenuViewController;
 
 - (void)updateAppFirstLaunchFlag;
 

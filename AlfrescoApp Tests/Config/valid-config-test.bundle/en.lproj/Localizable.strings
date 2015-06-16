@@ -1,0 +1,25 @@
+/* Profile strings */
+"profile.default.label" = "Default Profile";
+"profile.default.description" = "Description of the default profile";
+"profile.custom.label" = "Custom Profile";
+"profile.custom.description" = "Description of the custom profile";
+
+/* Feature strings */
+"feature.data-protection.label" = "Data Protection";
+"feature.data-protection.description" = "Enable data protection by default for all account";
+"feature.storgage.label" = "Storage";
+"feature.storgage.description" = "Define where to store the information in general";
+
+/* Model strings */
+"cm_contentmodel.property.cm_name.title" = "Name";
+"cm_contentmodel.property.cm_title.title" = "Title";
+"cm_contentmodel.property.cm_description.title" = "Description";
+"cm_contentmodel.property.cm_mimetype.title" = "Mimetype";
+"cm_contentmodel.property.cm_author.title" = "Author";
+"cm_contentmodel.property.cm_size.title" = "Size";
+"cm_contentmodel.property.cm_creator.title" = "Created By";
+"cm_contentmodel.property.cm_created.title" = "Created";
+"cm_contentmodel.property.cm_modifier.title" = "Modified By";
+"cm_contentmodel.property.cm_modified.title" = "Modified";
+"cm_contentmodel.property.cm_latitude.title" = "Latitude";
+"cm_contentmodel.property.cm_longitude.title" = "Longitude";
