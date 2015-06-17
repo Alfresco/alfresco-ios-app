@@ -115,7 +115,7 @@
     return [UIColor colorWithRed:0 green:0.5 blue:0 alpha:1.0];
 }
 
-+ (UIColor *)selectedCollectionViewCellBackground
++ (UIColor *)selectedCollectionViewCellBackgroundColor
 {
     return [UIColor colorWithRed:228/255.0f green:236/255.0f blue:249/255.0f alpha:2.0f];
 }

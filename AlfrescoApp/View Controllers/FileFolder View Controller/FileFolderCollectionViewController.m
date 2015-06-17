@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -259,7 +259,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
     {
         BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-        properLayout.isEditing = editing;
+        properLayout.editing = editing;
     }
     
     [self updateUIUsingFolderPermissionsWithAnimation:YES];

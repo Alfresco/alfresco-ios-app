@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -69,9 +69,9 @@
     _selectedIndexPathForSwipeToDelete = nil;
 }
 
-- (void)setIsEditing:(BOOL)isEditing
+- (void)setIsEditing:(BOOL)editing
 {
-    _isEditing = isEditing;
+    _editing = editing;
     _selectedIndexPathForSwipeToDelete = nil;
     NSArray *visibleItems = [self.collectionView indexPathsForVisibleItems];
     for(NSIndexPath *index in visibleItems)

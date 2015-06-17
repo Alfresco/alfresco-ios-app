@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -232,8 +232,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         self.editImageView.image = [[UIImage imageNamed:@"cell-button-checked-filled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.editImageView.tintColor = [UIColor appTintColor];
-        self.editView.backgroundColor = [UIColor selectedCollectionViewCellBackground];
-        self.content.backgroundColor = [UIColor selectedCollectionViewCellBackground];
+        self.editView.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
+        self.content.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
     }
     else
     {

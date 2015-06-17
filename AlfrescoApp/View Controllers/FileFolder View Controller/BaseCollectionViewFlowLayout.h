@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -24,7 +24,7 @@
 @property (nonatomic) CGFloat itemHeight;
 
 @property (nonatomic, strong) NSIndexPath *selectedIndexPathForSwipeToDelete;
-@property (nonatomic) BOOL isEditing;
+@property (nonatomic, getter=isEditing) BOOL editing;
 
 - (void) selectedIndexPathForSwipeWasDeleted;
 
