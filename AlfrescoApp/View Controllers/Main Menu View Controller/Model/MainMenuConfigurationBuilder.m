@@ -30,6 +30,8 @@
 #import "WebBrowserViewController.h"
 #import "AppConfigurationManager.h"
 
+#import "FileFolderCollectionViewController.h"
+
 static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 @interface MainMenuConfigurationBuilder ()
@@ -216,8 +218,10 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepository])
     {
         // file folder
-        FileFolderListViewController *fileFolderListViewController = [[FileFolderListViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
-        associatedObject = fileFolderListViewController;
+//        FileFolderListViewController *fileFolderListViewController = [[FileFolderListViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
+//        associatedObject = fileFolderListViewController;
+        FileFolderCollectionViewController *fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
+        associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSiteBrowser])
     {

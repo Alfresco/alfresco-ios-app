@@ -36,3 +36,4 @@
 #import "UIViewController+Swizzled.h"
 #import "NSObject+DebugCheck.h"
 #import "UITextField+RightAlignmentSpacingFix.h"
+#import "ALFCollectionView.h"
