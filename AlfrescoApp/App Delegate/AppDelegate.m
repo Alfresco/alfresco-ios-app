@@ -48,7 +48,7 @@
 #import "DownloadsViewController.h"
 #import "SyncViewController.h"
 #import "TaskViewController.h"
-#import "MainMenuConfigurationBuilder.h"
+#import "MainMenuLocalConfigurationBuilder.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -268,7 +268,8 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
-    MainMenuConfigurationBuilder *menuBuilder = [[MainMenuConfigurationBuilder alloc] initWithAccount:[AccountManager sharedManager].selectedAccount];
+    // Main Menu Configuration
+    MainMenuLocalConfigurationBuilder *menuBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:[AccountManager sharedManager].selectedAccount session:self.session];
     MainMenuConfigurationViewController *mainMenuController = [[MainMenuConfigurationViewController alloc] initWithTitle:nil menuBuilder:menuBuilder delegate:switchController];
     mainMenuController.backgroundColour = [UIColor mainMenuBackgroundColor];
     mainMenuController.selectionColour = [UIColor appTintColor];

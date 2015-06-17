@@ -202,6 +202,7 @@
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
 "accountdetails.header.main.menu.config" = "Main Menu Configuration";
+"accountdetails.footer.main.menu.config.disabled" = "Your Alfresco Administrator has disabled this feature.";
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "The account couldn’t be saved. Check your account settings with your Alfresco administrator.";
@@ -765,10 +766,16 @@
  */
 "view-activities-default" = "Activities";
 "view-repository-default" = "Repository";
+"view-repository-shared-default" = "Shared Files";
 "view-sites-default" = "Sites";
+"view-repository-userhome-default" = "My Files";
 "view-task-default" = "Tasks";
 "view-favorite-default" = "Favorites";
+"view-search-default" = "Search";
 "view-local-default" = "Local Files";
+
+"configuration.manager.configuration.file.updated.title" = "Configuration Updated";
+"configuration.manager.configuration.file.updated.message" = "The configuration file has been updated";
 
 /**
  * Main Menu Rorder View Controller

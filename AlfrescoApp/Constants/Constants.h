@@ -274,3 +274,5 @@ extern NSString * const kAppConfigurationAccountsConfigurationUpdatedNotificatio
 extern NSString * const kAppConfigurationCanAddAccountsKey;
 extern NSString * const kAppConfigurationCanEditAccountsKey;
 extern NSString * const kAppConfigurationCanRemoveAccountsKey;
+///// Main Menu
+extern NSString * const kAppConfigurationUserCanEditMainMenuKey;

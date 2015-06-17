@@ -101,7 +101,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         // Only need to post a notifictaion informing the app if the current account order has been modified
         if ([AccountManager sharedManager].selectedAccount == self.account)
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationDidUpdateNotification object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationDidUpdateNotification object:self.mainMenuBuilder];
         }
     }
 }
@@ -110,28 +110,30 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 
 - (void)loadData
 {
-    AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
-    
-    NSMutableArray *sectionsForConfigGroup = [self.mainMenuBuilder sectionsForContentGroup].mutableCopy;
-    MainMenuSection *firstSection = sectionsForConfigGroup.firstObject;
-    
-    // Let the app configuration manager determine which of these items should be displayed and update the visibility flag
-    [[AppConfigurationManager sharedManager] setVisibilityForMenuItems:firstSection.allSectionItems forAccount:self.account];
-    
-    // Order the visible and hidden items
-    NSArray *sortedVisibleItems = [configManager orderedArrayFromUnorderedMainMenuItems:firstSection.visibleSectionItems
-                                                                usingOrderedIdentifiers:[configManager visibleItemIdentifiersForAccount:self.account]
-                                                                  appendNotFoundObjects:NO];
-    
-    NSArray *sortedHiddenItems = [configManager orderedArrayFromUnorderedMainMenuItems:firstSection.hiddenSectionItems
-                                                               usingOrderedIdentifiers:[configManager hiddenItemIdentifiersForAccount:self.account]
-                                                                 appendNotFoundObjects:NO];
-    
-    self.visibleItems = sortedVisibleItems.mutableCopy;
-    self.oldData = sortedVisibleItems;
-    self.hiddenItems = sortedHiddenItems.mutableCopy;
-    
-    [self.tableView reloadData];
+    [self.mainMenuBuilder sectionsForContentGroupWithCompletionBlock:^(NSArray *sections) {
+        AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
+        
+        NSMutableArray *sectionsForConfigGroup = sections.mutableCopy;
+        MainMenuSection *firstSection = sectionsForConfigGroup.firstObject;
+        
+        // Let the app configuration manager determine which of these items should be displayed and update the visibility flag
+        [[AppConfigurationManager sharedManager] setVisibilityForMenuItems:firstSection.allSectionItems forAccount:self.account];
+        
+        // Order the visible and hidden items
+        NSArray *sortedVisibleItems = [configManager orderedArrayFromUnorderedMainMenuItems:firstSection.visibleSectionItems
+                                                                    usingOrderedIdentifiers:[configManager visibleItemIdentifiersForAccount:self.account]
+                                                                      appendNotFoundObjects:NO];
+        
+        NSArray *sortedHiddenItems = [configManager orderedArrayFromUnorderedMainMenuItems:firstSection.hiddenSectionItems
+                                                                   usingOrderedIdentifiers:[configManager hiddenItemIdentifiersForAccount:self.account]
+                                                                     appendNotFoundObjects:NO];
+        
+        self.visibleItems = sortedVisibleItems.mutableCopy;
+        self.oldData = sortedVisibleItems;
+        self.hiddenItems = sortedHiddenItems.mutableCopy;
+        
+        [self.tableView reloadData];
+    }];
 }
 
 - (NSMutableArray *)arrayForSection:(MainMenuReorderSections)section

@@ -259,3 +259,5 @@ NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"A
 NSString * const kAppConfigurationCanAddAccountsKey = @"AppConfigurationCanAddAccounts";
 NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEditAccounts";
 NSString * const kAppConfigurationCanRemoveAccountsKey = @"AppConfigurationCanRemoveAccounts";
+///// Main Menu
+NSString * const kAppConfigurationUserCanEditMainMenuKey = @"AppConfigurationUserCanEditMainMenuKey";

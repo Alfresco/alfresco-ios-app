@@ -13,8 +13,12 @@
 	<key>view-favorite-default</key>
 	<string>mainmenu-favourites.png</string>
 	<key>view-search-default</key>
-	<string>mainmenu-help.png</string>
+	<string>mainmenu-search.png</string>
 	<key>view-local-default</key>
 	<string>mainmenu-localfiles.png</string>
+	<key>view-repository-shared-default</key>
+	<string>mainmenu-sharedfiles.png</string>
+	<key>view-repository-userhome-default</key>
+	<string>mainmenu-myfiles.png</string>
 </dict>
 </plist>

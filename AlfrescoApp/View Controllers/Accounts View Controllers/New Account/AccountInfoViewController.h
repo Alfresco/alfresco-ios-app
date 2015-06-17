@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
  Only use one of these initialiser to init this view controller. Passing through nil for the account will display an empty controller
  which can be used for a new account setup.
  */
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType;
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration;
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType;
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration;
 
 @end
