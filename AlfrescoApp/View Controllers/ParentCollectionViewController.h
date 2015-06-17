@@ -42,8 +42,6 @@
 
 - (id)initWithSession:(id<AlfrescoSession>)session;
 
-- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session;
-
 - (void)setupWithSession:(id<AlfrescoSession>)session;
 
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;

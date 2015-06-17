@@ -19,6 +19,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LoadingCollectionViewFooter : UICollectionReusableView
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 + (NSString *)footerIdentifier;

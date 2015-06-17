@@ -210,7 +210,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
     
-    //Swipe to Delete
+    //Swipe to Delete Gestures
     self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
     self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.collectionView addGestureRecognizer:self.swipeGestureRecognizer];

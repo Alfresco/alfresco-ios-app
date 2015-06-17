@@ -151,29 +151,26 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //the last cell index of the table data
-//    NSUInteger lastSiteCellIndex = self.collectionViewData.count - 1;
-//    // if the last cell is about to be drawn, check if there are more sites
-//    if (indexPath.row == lastSiteCellIndex)
-//    {
-//        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
-//        if (self.moreItemsAvailable)
-//        {
-//            self.isLoadingAnotherPage = YES;
-//            [self.collectionView performBatchUpdates:^{
-//                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
-//            } completion:^(BOOL finished) {
-//                [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-//                    [self.collectionView performBatchUpdates:^{
-//                        self.isLoadingAnotherPage = NO;
-//                        [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.collectionViewData.count inSection:0]]];
-//                    } completion:^(BOOL finished) {
-//                        [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
-//                    }];
-//                }];
-//            }];
-//        }
-//    }
+    // the last row index of the table data
+    NSUInteger lastSiteRowIndex = self.collectionViewData.count - 1;
+    
+    // if the last cell is about to be drawn, check if there are more sites
+    if (indexPath.item == lastSiteRowIndex)
+    {
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
+        if (self.moreItemsAvailable)
+        {
+            // show more items are loading ...
+            self.isLoadingAnotherPage = YES;
+            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                [self.collectionView performBatchUpdates:^{
+                    [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
+                } completion:^(BOOL finished) {
+                    self.isLoadingAnotherPage = NO;
+                }];
+            }];
+        }
+    }
 }
 
 #pragma mark - UISearchBarDelegate Functions

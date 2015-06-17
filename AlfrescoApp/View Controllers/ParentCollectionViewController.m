@@ -41,31 +41,9 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibName andSession:(id<AlfrescoSession>)session
-{
-    self = [super initWithNibName:nibName bundle:nil];
-    if (self)
-    {
-        self.session = session;
-        self.collectionViewData = [NSMutableArray array];
-        self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
-        self.moreItemsAvailable = NO;
-        self.allowsPullToRefresh = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(sessionReceived:)
-                                                     name:kAlfrescoSessionReceivedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(connectivityChanged:)
-                                                     name:kAlfrescoConnectivityChangedNotification
-                                                   object:nil];
-    }
-    return self;
-}
-
 - (id)initWithSession:(id<AlfrescoSession>)session
 {
-    return [self initWithNibName:nil andSession:session];
+    return [self initWithStoryboardId:nil andSesstion:session];
 }
 
 - (void)setupWithSession:(id<AlfrescoSession>)session
@@ -328,7 +306,6 @@
     return NO;
 }
 
-/* to change */
 - (void)enablePullToRefresh
 {
     if (self.allowsPullToRefresh)
@@ -348,8 +325,6 @@
         });
     }
 }
-
-/* to change */
 
 - (void)disablePullToRefresh
 {
