@@ -167,6 +167,19 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
     }
     else
     {
+        if (viewController.navigationController)
+        {
+            NSArray *navigationStackControllers = viewController.navigationController.viewControllers;
+            NSMutableArray *mutableNavigationStackControllers = viewController.navigationController.viewControllers.mutableCopy;
+            [navigationStackControllers enumerateObjectsUsingBlock:^(UIViewController *currentController, NSUInteger idx, BOOL *stop) {
+                if (currentController == viewController)
+                {
+                    [mutableNavigationStackControllers removeObject:currentController];
+                }
+            }];
+            viewController.navigationController.viewControllers = mutableNavigationStackControllers;
+        }
+
         [navigationController pushViewController:viewController animated:animated];
     }
 }
