@@ -53,6 +53,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 -(void)prepareForPresentationInMode:(UIDocumentPickerMode)mode
 {
+    self.navigationController.navigationBar.translucent = NO;
+    
     NSError *keychainError = nil;
     NSArray *savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
     
