@@ -173,7 +173,6 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (void)handleActionWithPreferenceIdentifier:(NSString *)preferenceIdentifier
 {
-    NSLog(@"Pressed %@", preferenceIdentifier);
     if ([preferenceIdentifier isEqualToString:kSettingsResetAccountsIdentifier])
     {
         UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
@@ -240,6 +239,11 @@ static NSUInteger const kCellLeftInset = 10;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.tableViewData.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
