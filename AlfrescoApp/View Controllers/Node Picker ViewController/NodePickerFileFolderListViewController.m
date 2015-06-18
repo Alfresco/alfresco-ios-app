@@ -265,16 +265,13 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
         if (self.nodePicker.type == NodePickerTypeFolders && self.nodePicker.mode == NodePickerModeSingleSelect)
         {
             [self.nodePicker selectNode:selectedNode];
-            [self.nodePicker pickingNodesComplete];
         }
-        else
-        {
-            NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
-                                                                                                                         folderDisplayName:selectedNode.title
-                                                                                                                                   session:self.session
-                                                                                                                      nodePickerController:self.nodePicker];
-            [self.navigationController pushViewController:browserViewController animated:YES];
-        }
+
+        NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
+                                                                                                                     folderDisplayName:selectedNode.title
+                                                                                                                               session:self.session
+                                                                                                                  nodePickerController:self.nodePicker];
+        [self.navigationController pushViewController:browserViewController animated:YES];
     }
     else
     {
