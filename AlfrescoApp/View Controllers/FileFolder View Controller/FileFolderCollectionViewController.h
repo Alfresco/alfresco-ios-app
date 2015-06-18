@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -25,10 +25,6 @@
 @class AlfrescoFolder;
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
-
-@interface TestCell : UICollectionViewCell
-
-@end
 
 @interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate >
 

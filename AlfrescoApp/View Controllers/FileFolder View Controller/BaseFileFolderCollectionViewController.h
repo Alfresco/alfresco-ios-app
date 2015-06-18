@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -23,12 +23,12 @@
 #import "ThumbnailManager.h"
 #import "LoadingCollectionViewFooter.h"
 
-@interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchBarDelegate, UISearchDisplayDelegate >
+@interface BaseFileFolderCollectionViewController : ParentCollectionViewController < UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate >
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) AlfrescoFolder *displayFolder;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 @property (nonatomic, assign) BOOL isLoadingAnotherPage;

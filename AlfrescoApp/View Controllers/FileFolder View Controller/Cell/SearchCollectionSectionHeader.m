@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,15 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
-#import "CollectionViewProtocols.h"
+#import "SearchCollectionSectionHeader.h"
 
-@interface ALFCollectionView : UICollectionView < UIGestureRecognizerDelegate >
-
-@property (nonatomic, strong) id<SwipeToDeleteDelegate> swipeToDeleteDelegate;
-
-@property (nonatomic) BOOL editing;
-
-@property (nonatomic) BOOL isInDeleteMode;
+@implementation SearchCollectionSectionHeader
 
 @end

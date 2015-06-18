@@ -16,13 +16,11 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "LoadingCollectionViewFooter.h"
+#import <UIKit/UIKit.h>
 
-@implementation LoadingCollectionViewFooter
+@interface SearchCollectionSectionHeader : UICollectionReusableView
 
-+ (NSString *)footerIdentifier
-{
-    return @"SectionFooter";
-}
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic) BOOL hasAddedSearchBar;
 
 @end

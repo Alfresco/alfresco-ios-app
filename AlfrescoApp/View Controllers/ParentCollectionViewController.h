@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -37,6 +37,7 @@
 @property (nonatomic, assign) BOOL allowsPullToRefresh;
 @property (nonatomic, assign) BOOL allowsSwipeToDelete;
 @property (nonatomic, strong) NSString *emptyMessage;
+@property (nonatomic, assign) BOOL isOnSearchResults;
 
 - (id) initWithStoryboardId:(NSString *)storyboardId andSesstion:(id<AlfrescoSession>)session;
 
@@ -44,6 +45,7 @@
 
 - (void)setupWithSession:(id<AlfrescoSession>)session;
 
+- (void)reloadCollectionView;
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 - (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;

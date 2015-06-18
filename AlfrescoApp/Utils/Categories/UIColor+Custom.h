@@ -37,6 +37,6 @@
 + (UIColor *)onboardingOffWhiteColor;
 + (UIColor *)siteActionsBackgroundColor;
 + (UIColor *)addTagButtonTintColor;
-+ (UIColor *)selectedCollectionViewCellBackground;
++ (UIColor *)selectedCollectionViewCellBackgroundColor;
 
 @end
