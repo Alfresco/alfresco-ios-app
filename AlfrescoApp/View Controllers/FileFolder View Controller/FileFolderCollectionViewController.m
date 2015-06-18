@@ -802,16 +802,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showSearchProgressHUD
 {
-//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.collectionView];
-//    [self.searchController.searchResultsController.view addSubview:self.searchProgressHUD];
-//    [self.searchProgressHUD show:YES];
     [self.progressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-//    [self.searchProgressHUD hide:YES];
-//    self.searchProgressHUD = nil;
     [self.progressHUD hide:YES];
 }
 
@@ -850,20 +845,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [nodeCell removeNotifications];
     }
 }
-
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    AlfrescoPermissions *nodePermission = nil;
-//    if (tableView == self.searchController.searchResultsTableView)
-//    {
-//        nodePermission = self.nodePermissions[[self.searchResults[indexPath.row] identifier]];
-//    }
-//    else
-//    {
-//        nodePermission = self.nodePermissions[[self.tableViewData[indexPath.row] identifier]];
-//    }
-//    return (tableView.isEditing) ? YES : nodePermission.canDelete;
-//}
 
 #pragma mark - Collection view delegate
 
