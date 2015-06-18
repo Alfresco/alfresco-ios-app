@@ -35,6 +35,7 @@
 
 #import "BaseCollectionViewFlowLayout.h"
 #import "BaseLayoutAttributes.h"
+#import "SearchCollectionSectionHeader.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -42,19 +43,11 @@ static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface TestCell()
-
-@end
-
-@implementation TestCell
-
-@end
-
 @interface FileFolderCollectionViewController ()
 
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
 @property (nonatomic, strong) NSString *folderDisplayName;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, strong) AlfrescoFolder *initialFolder;
 @property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
@@ -175,31 +168,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.title = self.folderDisplayName;
     self.nodePermissions = [[NSMutableDictionary alloc] init];
     
-//    if (!IS_IPAD)
-//    {
-//        // hide search bar initially
-//        self.collectionView.contentOffset = CGPointMake(0., 40.);
-//    }
-    
-//    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    
-//    // create searchBar
-//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-//                                                                           view.frame.origin.y,
-//                                                                           view.frame.size.width,
-//                                                                           44.0f)];
-//    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-//    searchBar.delegate = self;
-//    searchBar.searchBarStyle = UISearchBarStyleMinimal;
-//    searchBar.backgroundColor = [UIColor whiteColor];
-//    self.searchBar = searchBar;
-    
-    // search controller
-//    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:self];
-//    self.searchController = searchController;
-    
-//    self.tableView.tableHeaderView = self.searchBar;
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.delegate = self;
+    self.searchController.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.definesPresentationContext = YES;
+
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     self.listLayout = [BaseCollectionViewFlowLayout new];
@@ -242,6 +217,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self.isEditing)
     {
         self.editing = NO;
+    }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    if (!IS_IPAD)
+    {
+        // hide search bar initially
+        self.collectionView.contentOffset = CGPointMake(0., 40.);
     }
 }
 
@@ -561,7 +545,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     id<AlfrescoSession> session = notification.object;
     self.session = session;
     self.displayFolder = nil;
-//    self.tableView.tableHeaderView = nil;
     
     [self createAlfrescoServicesWithSession:session];
     
@@ -598,20 +581,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             NSIndexPath *indexPathForNode = nil;
             
             // remove nodeToDelete from search tableview if search view is present
-            if (weakSelf.searchController.searchResultsTableView.window)
+            if (self.isOnSearchResults)
             {
                 collectionViewNodeIdentifiers = [weakSelf.searchResults valueForKeyPath:@"identifier"];
                 [weakSelf.searchResults removeObject:nodeToDelete];
                 indexPathForNode = [weakSelf indexPathForNodeWithIdentifier:nodeToDelete.identifier inNodeIdentifiers:collectionViewNodeIdentifiers];
                 if (indexPathForNode != nil)
                 {
-                    [weakSelf.searchController.searchResultsTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
+                    [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode]];
                 }
             }
             
             // remove nodeToDelete from collection view
             collectionViewNodeIdentifiers = [weakSelf.collectionViewData valueForKeyPath:@"identifier"];
-            if (weakSelf.searchController.searchResultsTableView.window)
+            if (self.isOnSearchResults)
             {
                 [collectionViewNodeIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger index, BOOL *stop) {
                     if ([identifier isEqualToString:nodeToDelete.identifier])
@@ -822,15 +805,17 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
-    [self.searchProgressHUD show:YES];
+//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.collectionView];
+//    [self.searchController.searchResultsController.view addSubview:self.searchProgressHUD];
+//    [self.searchProgressHUD show:YES];
+    [self.progressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-    [self.searchProgressHUD hide:YES];
-    self.searchProgressHUD = nil;
+//    [self.searchProgressHUD hide:YES];
+//    self.searchProgressHUD = nil;
+    [self.progressHUD hide:YES];
 }
 
 - (void)connectivityStatusChanged:(NSNotification *)notification
@@ -845,10 +830,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-//    if (collectionView == self.searchController.searchResultsTableView)
-//    {
-//        return self.searchResults.count;
-//    }
+    if (self.isOnSearchResults)
+    {
+        return self.searchResults.count;
+    }
     return self.collectionViewData.count;
 }
 
@@ -888,15 +873,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *selectedNode = nil;
-//    if (tableView == self.searchController.searchResultsTableView)
-//    {
-//        selectedNode = [self.searchResults objectAtIndex:indexPath.row];
-//    }
-//    else
-//    {
+    if (self.isOnSearchResults)
+    {
+        selectedNode = [self.searchResults objectAtIndex:indexPath.row];
+    }
+    else
+    {
         selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-//    }
-    
+    }
+
     if (self.isEditing)
     {
         [self.multiSelectToolbar userDidSelectItem:selectedNode];
@@ -1007,6 +992,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         LoadingCollectionViewFooter *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"SectionFooter" forIndexPath:indexPath];
         
         reusableview = footerview;
+    }
+    else if (kind == UICollectionElementKindSectionHeader)
+    {
+        SearchCollectionSectionHeader *headerView = (SearchCollectionSectionHeader *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader" forIndexPath:indexPath];
+        
+        if(!headerView.hasAddedSearchBar)
+        {
+            headerView.searchBar = self.searchController.searchBar;
+            [headerView addSubview:self.searchController.searchBar];
+            [self.searchController.searchBar sizeToFit];
+        }
+        
+        reusableview = headerView;
     }
     
     return reusableview;
@@ -1468,7 +1466,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     NSIndexPath *selectedIndexPath = nil;
     
-    if (self.searchController.searchResultsTableView.window)
+    if (self.isOnSearchResults)
     {
         NSUInteger item = [self.searchResults indexOfObject:node];
         selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];

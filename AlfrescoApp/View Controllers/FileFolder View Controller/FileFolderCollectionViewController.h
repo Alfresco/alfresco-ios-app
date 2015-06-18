@@ -26,10 +26,6 @@
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface TestCell : UICollectionViewCell
-
-@end
-
 @interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate >
 
 /**

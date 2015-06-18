@@ -42,6 +42,8 @@
     self.minimumInteritemSpacing = 0;
     self.selectedIndexPathForSwipeToDelete = nil;
     
+    self.headerReferenceSize = CGSizeMake(self.width, 40);
+    
     return self;
 }
 

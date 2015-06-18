@@ -126,6 +126,12 @@
 
 #pragma mark - Public Functions
 
+- (void)reloadCollectionView
+{
+    [self.collectionView reloadData];
+    [self updateEmptyView];
+}
+
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
 {
     [self reloadCollectionViewWithPagingResult:pagingResult data:nil error:error];
@@ -422,7 +428,7 @@
 
 - (BOOL)isDataSetEmpty
 {
-    return (self.collectionViewData.count == 0);
+    return ([self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:0] == 0);
 }
 
 @end

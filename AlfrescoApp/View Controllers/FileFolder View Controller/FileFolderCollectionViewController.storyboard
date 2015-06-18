@@ -20,11 +20,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" indicatorStyle="white" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jAM-Aa-rZi">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Fgf-6S-Ysl">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="50" height="50"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
@@ -232,6 +232,10 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SectionHeader" id="Jgb-ef-96B" customClass="SearchCollectionSectionHeader">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionReusableView>
                                 <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SectionFooter" id="ar9-al-jAE" customClass="LoadingCollectionViewFooter">
                                     <rect key="frame" x="0.0" y="163" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
@@ -262,9 +266,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jAM-Aa-rZi" firstAttribute="bottom" secondItem="RRa-W1-p3L" secondAttribute="top" id="8BG-tR-0dV"/>
-                            <constraint firstItem="jAM-Aa-rZi" firstAttribute="top" secondItem="nGj-4a-MGo" secondAttribute="top" id="BWO-Jg-xmy"/>
                             <constraint firstItem="RRa-W1-p3L" firstAttribute="leading" secondItem="nGj-4a-MGo" secondAttribute="leading" id="DCb-sV-8cJ"/>
                             <constraint firstAttribute="bottomMargin" secondItem="RRa-W1-p3L" secondAttribute="bottom" id="FiC-nt-t8T"/>
+                            <constraint firstItem="jAM-Aa-rZi" firstAttribute="top" secondItem="TO2-Si-Hp4" secondAttribute="bottom" id="JtK-aC-VrC"/>
                             <constraint firstItem="jAM-Aa-rZi" firstAttribute="leading" secondItem="nGj-4a-MGo" secondAttribute="leading" id="NlV-R9-wMY"/>
                             <constraint firstAttribute="trailing" secondItem="RRa-W1-p3L" secondAttribute="trailing" id="WBw-Aq-ZQz"/>
                             <constraint firstAttribute="trailing" secondItem="jAM-Aa-rZi" secondAttribute="trailing" id="uMg-gC-Q0q"/>

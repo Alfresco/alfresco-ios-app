@@ -41,15 +41,17 @@
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
-    [self.searchProgressHUD show:YES];
+//    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.collectionView];
+//    [self.searchController.searchResultsController.view addSubview:self.searchProgressHUD];
+//    [self.searchProgressHUD show:YES];
+    [self.progressHUD show:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-    [self.searchProgressHUD hide:YES];
-    self.searchProgressHUD = nil;
+//    [self.searchProgressHUD hide:YES];
+//    self.searchProgressHUD = nil;
+    [self.progressHUD hide:YES];
 }
 
 #pragma mark - Custom getters and setters
@@ -85,15 +87,15 @@
     
     // config the cell here...
     AlfrescoNode *currentNode = nil;
-//    if (collectionView == self.searchController.searchResultsTableView)
-//    {
-//        currentNode = [self.searchResults objectAtIndex:indexPath.row];
-//    }
-//    else
-//    {
+    if (self.isOnSearchResults)
+    {
+        currentNode = [self.searchResults objectAtIndex:indexPath.row];
+    }
+    else
+    {
         currentNode = [self.collectionViewData objectAtIndex:indexPath.row];
-//    }
-    
+    }
+
     SyncManager *syncManager = [SyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
     
@@ -187,7 +189,8 @@
         if (array)
         {
             self.searchResults = [array mutableCopy];
-            [self.searchController.searchResultsTableView reloadData];
+            self.isOnSearchResults = YES;
+            [self reloadCollectionView];
         }
         else
         {
@@ -195,13 +198,37 @@
             displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
             [Notifier notifyWithAlfrescoError:error];
         }
-    }];
-}
+    }];}
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
-    [self.collectionView reloadData];
+    self.isOnSearchResults = NO;
+    [self reloadCollectionView];
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+//    BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
+//    
+//    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:self.displayFolder includeDescendants:YES];
+//    
+//    [self showSearchProgressHUD];
+//    [self.searchService searchWithKeywords:searchController.searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
+//        [self hideSearchProgressHUD];
+//        if (array)
+//        {
+//            self.searchResults = [array mutableCopy];
+//            self.isOnSearchResults = YES;
+//            [self.collectionView reloadData];
+//        }
+//        else
+//        {
+//            // display error
+//            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+//            [Notifier notifyWithAlfrescoError:error];
+//        }
+//    }];
 }
 
 @end
