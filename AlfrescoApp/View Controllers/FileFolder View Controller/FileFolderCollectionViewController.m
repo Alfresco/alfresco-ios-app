@@ -165,6 +165,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
     }
     
+    if (!IS_IPAD)
+    {
+        // hide search bar initially
+        self.collectionView.contentOffset = CGPointMake(0., 40.);
+    }
+    
     self.title = self.folderDisplayName;
     self.nodePermissions = [[NSMutableDictionary alloc] init];
     
@@ -217,15 +223,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self.isEditing)
     {
         self.editing = NO;
-    }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    if (!IS_IPAD)
-    {
-        // hide search bar initially
-        self.collectionView.contentOffset = CGPointMake(0., 40.);
     }
 }
 
