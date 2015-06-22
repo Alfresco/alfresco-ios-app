@@ -21,7 +21,7 @@
 #import "SyncManager.h"
 #import "FavouriteManager.h"
 #import "ThumbnailManager.h"
-#import "LoadingCollectionViewFooter.h"
+#import "LoadingCollectionViewCell.h"
 
 @interface BaseFileFolderCollectionViewController : ParentCollectionViewController < UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate >
 

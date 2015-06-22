@@ -69,7 +69,6 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        
     }
     return self;
 }
@@ -352,6 +351,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)setAccessoryViewForState:(SyncStatus)status
 {
+    [self layoutIfNeeded];
     if (self.node.isFolder)
     {
         UIImage *buttonImage = [[UIImage imageNamed:@"cell-button-info.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -447,11 +447,11 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 {
     if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
     {
-        [self showDeleteAction:layoutAttributes.showDeleteButton animated:YES];
+        [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];
     }
     else
     {
-        [self showEditMode:layoutAttributes.isEditing animated:YES];
+        [self showEditMode:layoutAttributes.isEditing animated:layoutAttributes.animated];
     }
 }
 

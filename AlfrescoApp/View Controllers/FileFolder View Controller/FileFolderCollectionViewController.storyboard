@@ -19,13 +19,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" indicatorStyle="white" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jAM-Aa-rZi">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jAM-Aa-rZi">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Fgf-6S-Ysl">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
-                                    <size key="footerReferenceSize" width="50" height="50"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
@@ -172,6 +172,9 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m97-hv-4ce" userLabel="separatorView">
                                                             <rect key="frame" x="0.0" y="72" width="320" height="1"/>
                                                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="1" id="wjx-Nz-7Vw"/>
+                                                            </constraints>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -183,7 +186,6 @@
                                                         <constraint firstAttribute="centerY" secondItem="XKt-8v-PxY" secondAttribute="centerY" id="Fp5-Wz-MhE"/>
                                                         <constraint firstItem="1pz-8E-Psz" firstAttribute="leading" secondItem="RR1-Gg-VuB" secondAttribute="leading" id="HNI-za-Tak"/>
                                                         <constraint firstAttribute="trailing" secondItem="m97-hv-4ce" secondAttribute="trailing" id="JbT-sC-0d5"/>
-                                                        <constraint firstAttribute="bottom" secondItem="1pz-8E-Psz" secondAttribute="bottom" constant="1" id="Nyl-6E-Igm"/>
                                                         <constraint firstItem="m97-hv-4ce" firstAttribute="top" secondItem="1pz-8E-Psz" secondAttribute="bottom" id="QRF-i6-Fs0"/>
                                                         <constraint firstItem="XKt-8v-PxY" firstAttribute="leading" secondItem="1pz-8E-Psz" secondAttribute="trailing" id="z0g-Rl-rXy"/>
                                                     </constraints>
@@ -231,26 +233,32 @@
                                             <outlet property="trainlingContentViewContraint" destination="oen-tC-sHO" id="oSA-dv-aAJ"/>
                                         </connections>
                                     </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AlfrescoLoadingCollectionViewCellIdentifier" id="wIF-MV-9x1" customClass="LoadingCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="NJC-lv-Ct0">
+                                                    <rect key="frame" x="150" y="10" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="centerX" secondItem="NJC-lv-Ct0" secondAttribute="centerX" id="BeX-GY-JEC"/>
+                                            <constraint firstAttribute="centerY" secondItem="NJC-lv-Ct0" secondAttribute="centerY" id="hCB-fd-uCR"/>
+                                        </constraints>
+                                        <size key="customSize" width="320" height="40"/>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="NJC-lv-Ct0" id="zw8-X1-HtZ"/>
+                                        </connections>
+                                    </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SectionHeader" id="Jgb-ef-96B" customClass="SearchCollectionSectionHeader">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                </collectionReusableView>
-                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SectionFooter" id="ar9-al-jAE" customClass="LoadingCollectionViewFooter">
-                                    <rect key="frame" x="0.0" y="163" width="600" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1ia-YJ-1Te">
-                                            <rect key="frame" x="290" y="15" width="20" height="20"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="centerY" secondItem="1ia-YJ-1Te" secondAttribute="centerY" id="OnE-Jc-4EE"/>
-                                        <constraint firstAttribute="centerX" secondItem="1ia-YJ-1Te" secondAttribute="centerX" id="QQx-9F-2Oc"/>
-                                    </constraints>
-                                    <connections>
-                                        <outlet property="activityIndicator" destination="1ia-YJ-1Te" id="C5z-bD-1Um"/>
-                                    </connections>
                                 </collectionReusableView>
                             </collectionView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RRa-W1-p3L" customClass="MultiSelectActionsToolbar">

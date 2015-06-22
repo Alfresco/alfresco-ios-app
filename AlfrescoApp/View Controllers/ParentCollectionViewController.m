@@ -164,7 +164,6 @@
         if (data)
         {
             self.collectionViewData = data;
-            [self.collectionView reloadData];
             [self updateEmptyView];
         }
         else
@@ -184,6 +183,7 @@
         }
         
         self.moreItemsAvailable = pagingResult.hasMoreItems;
+        [self.collectionView reloadData];
     }
     else
     {
@@ -212,7 +212,10 @@
         [self.collectionView insertItemsAtIndexPaths:newNodeIndexPaths];
     } completion:^(BOOL finished) {
         [self updateEmptyView];
-        completion(finished);
+        if(completion)
+        {
+            completion(finished);
+        }
     }];
 }
 

@@ -18,10 +18,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoadingCollectionViewFooter : UICollectionReusableView
+@interface LoadingCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-+ (NSString *)footerIdentifier;
++ (NSString *)cellIdentifier;
 
 @end
