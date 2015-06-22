@@ -4564,7 +4564,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -4590,7 +4593,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -4616,7 +4622,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
