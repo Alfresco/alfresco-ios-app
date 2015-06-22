@@ -294,51 +294,60 @@
 
 - (void)processJSONData:(NSData *)data completionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
 {
-    if (data != nil)
-    {
-        // parse the JSON
-        NSError *error = nil;
-        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        if (jsonDictionary != nil)
+    // Parsing takes a while so dispatch this work onto a background queue
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (data != nil)
         {
-            // build internal state
-            [self parseEvaluators:jsonDictionary];
-            [self parseConfigInfo:jsonDictionary];
-            [self parseRepositoryConfig:jsonDictionary];
-            
-            self.profileConfigHelper = [[AlfrescoProfileConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
-            [self.profileConfigHelper parse];
-            
-            self.featureConfigHelper = [[AlfrescoFeatureConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
-            [self.featureConfigHelper parse];
-            
-            self.creationConfigHelper = [[AlfrescoCreationConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
-            [self.creationConfigHelper parse];
-            
-            self.viewConfigHelper = [[AlfrescoViewConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
-            [self.viewConfigHelper parse];
-            
-            self.formConfigHelper = [[AlfrescoFormConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
-            [self.formConfigHelper parse];
-            
-            // TODO: Determine if we fail if anything mandatory is missing i.e. configInfo?
-            
-            // set status flags and call completion block
-            self.isCacheBuilt = YES;
-            self.isCacheBuilding = NO;
-            completionBlock(YES, nil);
+            // parse the JSON
+            NSError *error = nil;
+            NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            if (jsonDictionary != nil)
+            {
+                // build internal state
+                [self parseEvaluators:jsonDictionary];
+                [self parseConfigInfo:jsonDictionary];
+                [self parseRepositoryConfig:jsonDictionary];
+                
+                self.profileConfigHelper = [[AlfrescoProfileConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
+                [self.profileConfigHelper parse];
+                
+                self.featureConfigHelper = [[AlfrescoFeatureConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
+                [self.featureConfigHelper parse];
+                
+                self.creationConfigHelper = [[AlfrescoCreationConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
+                [self.creationConfigHelper parse];
+                
+                self.viewConfigHelper = [[AlfrescoViewConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
+                [self.viewConfigHelper parse];
+                
+                self.formConfigHelper = [[AlfrescoFormConfigHelper alloc] initWithJSON:jsonDictionary bundle:self.stringsBundle evaluators:self.evaluators];
+                [self.formConfigHelper parse];
+                
+                // TODO: Determine if we fail if anything mandatory is missing i.e. configInfo?
+                
+                // set status flags and call completion block
+                self.isCacheBuilt = YES;
+                self.isCacheBuilding = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(YES, nil);
+                });
+            }
+            else
+            {
+                self.isCacheBuilding = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:error andAlfrescoErrorCode:kAlfrescoErrorCodeJSONParsing]);
+                });
+            }
         }
         else
         {
             self.isCacheBuilding = NO;
-            completionBlock(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:error andAlfrescoErrorCode:kAlfrescoErrorCodeJSONParsing]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(NO, [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeJSONParsingNilData]);
+            });
         }
-    }
-    else
-    {
-        self.isCacheBuilding = NO;
-        completionBlock(NO, [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeJSONParsingNilData]);
-    }
+    });
 }
 
 - (void)parseEvaluators:(NSDictionary *)json

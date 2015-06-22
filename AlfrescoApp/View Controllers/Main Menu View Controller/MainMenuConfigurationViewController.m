@@ -111,10 +111,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 - (void)configurationDidChange:(NSNotification *)notification
 {
     MainMenuConfigurationBuilder *builder = notification.object;
-    if (builder)
-    {
-        self.builder = builder;
-    }
+    self.builder = builder;
     
     [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
         // select sites
