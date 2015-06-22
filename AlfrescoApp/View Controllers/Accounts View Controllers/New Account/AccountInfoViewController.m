@@ -675,7 +675,7 @@ static NSInteger const kTagCertificateCell = 1;
     UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
     
     BOOL foundTableViewCell = NO;
-    while (!foundTableViewCell)
+    while (cell && !foundTableViewCell)
     {
         if (![cell isKindOfClass:[UITableViewCell class]])
         {
