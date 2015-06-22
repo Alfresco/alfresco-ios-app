@@ -35,6 +35,8 @@
 @property (nonatomic, assign) SEL selectorToPerform;
 @end
 
+static const CGFloat kTableCellHeight = 60.f;
+
 @implementation ConnectionDiagnosticViewController
 
 - (void)viewDidLoad
@@ -66,6 +68,8 @@
 
 - (void)dealloc
 {
+    self.mainTableView.delegate = nil;
+    self.mainTableView.dataSource = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -88,7 +92,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40;
+    return kTableCellHeight;
+}
+
+// Required for iOS 7 support
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kTableCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
