@@ -63,7 +63,9 @@
     [previousCell applyLayoutAttributes:[self layoutAttributesForItemAtIndexPath:previousIndex]];
     //show the new delete button
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
-    [cell applyLayoutAttributes:[self layoutAttributesForItemAtIndexPath:_selectedIndexPathForSwipeToDelete]];
+    BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
+    attributes.animated = YES;
+    [cell applyLayoutAttributes:attributes];
 }
 
 - (void)selectedIndexPathForSwipeWasDeleted
@@ -71,7 +73,7 @@
     _selectedIndexPathForSwipeToDelete = nil;
 }
 
-- (void)setIsEditing:(BOOL)editing
+- (void)setEditing:(BOOL)editing
 {
     _editing = editing;
     _selectedIndexPathForSwipeToDelete = nil;
@@ -79,7 +81,9 @@
     for(NSIndexPath *index in visibleItems)
     {
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:index];
-        [cell applyLayoutAttributes:[self layoutAttributesForItemAtIndexPath:index]];
+        BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:index];
+        attributes.animated = YES;
+        [cell applyLayoutAttributes:attributes];
     }
 }
 
@@ -125,13 +129,13 @@
         {
             attributes.showDeleteButton = NO;
         }
-        attributes.isEditing = self.isEditing;
+        attributes.editing = self.isEditing;
     }
     
     return layoutAttributes;
 }
 
-- (BaseLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[super layoutAttributesForItemAtIndexPath:indexPath];
     if(!self.isEditing)
@@ -145,13 +149,17 @@
     {
         attributes.showDeleteButton = NO;
     }
-    attributes.isEditing = self.isEditing;
+    attributes.animated = NO;
+    attributes.editing = self.isEditing;
     return attributes;
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
 {
-    UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:indexPath];
+    BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
+    attributes.animated = NO;
+    attributes.showDeleteButton = NO;
+    attributes.editing = self.isEditing;
     
     return attributes;
 }

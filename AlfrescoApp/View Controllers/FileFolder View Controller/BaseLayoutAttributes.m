@@ -20,4 +20,17 @@
 
 @implementation BaseLayoutAttributes
 
+- (BOOL)isEqual:(id)object
+{
+    if([object isKindOfClass:[BaseLayoutAttributes class]])
+    {
+        BaseLayoutAttributes *otherAttributes = (BaseLayoutAttributes *)object;
+        if((self.showDeleteButton == otherAttributes.showDeleteButton) && (self.isEditing == otherAttributes.isEditing) && (self.animated == otherAttributes.animated))
+        {
+            return [super isEqual:object];
+        }
+    }
+    return NO;
+}
+
 @end

@@ -16,13 +16,15 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "LoadingCollectionViewFooter.h"
+#import "LoadingCollectionViewCell.h"
 
-@implementation LoadingCollectionViewFooter
+static NSString * const kAlfrescoLoadingCollectionViewCellIdentifier = @"AlfrescoLoadingCollectionViewCellIdentifier";
 
-+ (NSString *)footerIdentifier
+@implementation LoadingCollectionViewCell
+
++ (NSString *)cellIdentifier
 {
-    return @"SectionFooter";
+    return kAlfrescoLoadingCollectionViewCellIdentifier;
 }
 
 @end

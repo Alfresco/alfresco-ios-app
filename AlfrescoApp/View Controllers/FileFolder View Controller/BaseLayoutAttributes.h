@@ -21,6 +21,7 @@
 @interface BaseLayoutAttributes : UICollectionViewLayoutAttributes
 
 @property (nonatomic) BOOL showDeleteButton;
-@property (nonatomic) BOOL isEditing;
+@property (nonatomic, getter=isEditing) BOOL editing;
+@property (nonatomic) BOOL animated;
 
 @end
