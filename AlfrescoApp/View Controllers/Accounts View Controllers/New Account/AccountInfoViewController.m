@@ -68,7 +68,12 @@ static NSInteger const kTagReorderCell = 2;
 
 - (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
+    return [self initWithAccount:account accountActivityType:activityType configuration:configuration session:nil];
+}
+
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
     if (self)
     {
         if (account)

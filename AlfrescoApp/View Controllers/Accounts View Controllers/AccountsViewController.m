@@ -307,7 +307,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         }
         else
         {
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount configuration:self.configuration];
+            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount configuration:self.configuration session:self.session];
         }
         
         if (viewController)
