@@ -57,5 +57,6 @@ typedef NS_ENUM(NSInteger, AccountActivityType)
  */
 - (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType;
 - (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration;
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session;
 
 @end
