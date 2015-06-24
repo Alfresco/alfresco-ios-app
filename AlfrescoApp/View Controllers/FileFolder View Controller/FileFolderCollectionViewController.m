@@ -63,7 +63,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *openSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *closeSwipeGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 
 @property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
@@ -192,11 +193,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
     
     //Swipe to Delete Gestures
-    self.swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGesture:)];
-    self.swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.collectionView addGestureRecognizer:self.swipeGestureRecognizer];
+    self.openSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGestureHandler:)];
+    self.openSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.collectionView addGestureRecognizer:self.openSwipeGestureRecognizer];
     
-    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGesture:)];
+    self.closeSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeSwipeToDeleteGestureHandler:)];
+    self.closeSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    self.closeSwipeGestureRecognizer.delegate = self;
+    [self.collectionView addGestureRecognizer:self.closeSwipeGestureRecognizer];
+    
+    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGestureHandler:)];
     self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
     self.tapToDismissDeleteAction.delegate = self;
     [self.collectionView addGestureRecognizer:self.tapToDismissDeleteAction];
@@ -1507,7 +1513,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 }
 
 #pragma mark - Gesture Recognizers methods
-- (void) swipeToDeleteGesture:(UIGestureRecognizer *)gestureRecognizer
+- (void) swipeToDeleteGestureHandler:(UIGestureRecognizer *)gestureRecognizer
 {
     if ((gestureRecognizer.state == UIGestureRecognizerStateEnded) && (!self.editing))
     {
@@ -1524,7 +1530,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void) tapToDismissDeleteGesture:(UIGestureRecognizer *)gestureReconizer
+- (void) closeSwipeToDeleteGestureHandler:(UIGestureRecognizer *)gestureRecognizer
+{
+    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+    {
+        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+        properLayout.selectedIndexPathForSwipeToDelete = nil;
+    }
+}
+
+- (void) tapToDismissDeleteGestureHandler:(UIGestureRecognizer *)gestureReconizer
 {
     if(gestureReconizer.state == UIGestureRecognizerStateEnded)
     {
@@ -1562,6 +1577,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             {
                 return YES;
             }
+        }
+    }
+    else if (gestureRecognizer == self.closeSwipeGestureRecognizer)
+    {
+        CGPoint touchPoint = [touch locationInView:self.collectionView];
+        if(CGRectContainsPoint(self.collectionView.bounds, touchPoint))
+        {
+            return YES;
         }
     }
     return NO;

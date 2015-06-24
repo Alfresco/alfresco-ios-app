@@ -60,7 +60,9 @@
     _selectedIndexPathForSwipeToDelete = selectedIndexPathForSwipeToDelete;
     //hide the delete button from the previous selected index path
     UICollectionViewCell *previousCell = [self.collectionView cellForItemAtIndexPath:previousIndex];
-    [previousCell applyLayoutAttributes:[self layoutAttributesForItemAtIndexPath:previousIndex]];
+    BaseLayoutAttributes *previousAttributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:previousIndex];
+    previousAttributes.animated = YES;
+    [previousCell applyLayoutAttributes:previousAttributes];
     //show the new delete button
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
     BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
