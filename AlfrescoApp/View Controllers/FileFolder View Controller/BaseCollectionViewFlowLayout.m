@@ -120,18 +120,21 @@
     NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
     for(BaseLayoutAttributes *attributes in layoutAttributes)
     {
-        if(!self.isEditing)
+        if (attributes.representedElementCategory == UICollectionElementCategoryCell)
         {
-            if(self.selectedIndexPathForSwipeToDelete)
+            if(!self.isEditing)
             {
-                attributes.showDeleteButton = attributes.indexPath.item == self.selectedIndexPathForSwipeToDelete.item ? YES : NO;
+                if(self.selectedIndexPathForSwipeToDelete)
+                {
+                    attributes.showDeleteButton = attributes.indexPath.item == self.selectedIndexPathForSwipeToDelete.item ? YES : NO;
+                }
             }
+            else
+            {
+                attributes.showDeleteButton = NO;
+            }
+            attributes.editing = self.isEditing;
         }
-        else
-        {
-            attributes.showDeleteButton = NO;
-        }
-        attributes.editing = self.isEditing;
     }
     
     return layoutAttributes;
@@ -163,6 +166,12 @@
     attributes.showDeleteButton = NO;
     attributes.editing = self.isEditing;
     
+    return attributes;
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:indexPath];
     return attributes;
 }
 
