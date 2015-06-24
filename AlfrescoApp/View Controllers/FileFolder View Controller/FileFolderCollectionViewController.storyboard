@@ -61,15 +61,17 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="40" height="73"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bwJ-PE-30W">
-                                                            <rect key="frame" x="0.0" y="0.0" width="40" height="73"/>
+                                                            <rect key="frame" x="0.0" y="17" width="40" height="40"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="bwJ-PE-30W" secondAttribute="height" multiplier="1:1" id="36i-kY-hwH"/>
+                                                            </constraints>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="bwJ-PE-30W" firstAttribute="leading" secondItem="eue-g6-H66" secondAttribute="leading" id="71a-LF-09L"/>
-                                                        <constraint firstItem="bwJ-PE-30W" firstAttribute="top" secondItem="eue-g6-H66" secondAttribute="top" id="RfS-Cw-LgY"/>
                                                         <constraint firstAttribute="trailing" secondItem="bwJ-PE-30W" secondAttribute="trailing" id="eqN-JK-fKL"/>
-                                                        <constraint firstAttribute="bottom" secondItem="bwJ-PE-30W" secondAttribute="bottom" id="hIq-yy-WE1"/>
+                                                        <constraint firstAttribute="centerY" secondItem="bwJ-PE-30W" secondAttribute="centerY" id="m6g-NT-fks"/>
                                                         <constraint firstAttribute="width" constant="40" id="r9v-6m-XOG"/>
                                                     </constraints>
                                                 </view>
