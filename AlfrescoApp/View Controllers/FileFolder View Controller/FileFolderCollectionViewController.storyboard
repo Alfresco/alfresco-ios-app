@@ -171,7 +171,7 @@
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m97-hv-4ce" userLabel="separatorView">
                                                             <rect key="frame" x="0.0" y="72" width="320" height="1"/>
-                                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="1" id="wjx-Nz-7Vw"/>
                                                             </constraints>
@@ -224,6 +224,7 @@
                                             <outlet property="image" destination="JSY-iv-Gi3" id="Edw-FI-POu"/>
                                             <outlet property="leadingContentViewContraint" destination="MHa-Kt-W9d" id="MyN-nG-bDE"/>
                                             <outlet property="progressBar" destination="qCH-zb-ScL" id="jOn-Wo-T7v"/>
+                                            <outlet property="separatorHeightConstraint" destination="wjx-Nz-7Vw" id="BBv-D4-egJ"/>
                                             <outlet property="separatorView" destination="m97-hv-4ce" id="1Lc-ll-OB6"/>
                                             <outlet property="syncIconRightSpaceConstraint" destination="PBa-Bh-T7X" id="lnO-UN-gxu"/>
                                             <outlet property="syncIconTopSpaceConstraint" destination="RZk-UD-Bbc" id="OKa-1v-Vkg"/>

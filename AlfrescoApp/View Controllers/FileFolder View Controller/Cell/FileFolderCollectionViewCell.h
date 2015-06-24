@@ -36,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *editImageView;
 @property (weak, nonatomic) IBOutlet UIView *content;
 @property (weak, nonatomic) IBOutlet UIView *separatorView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstraint;
 
 @property (nonatomic, weak) id<CollectionViewCellAccessoryViewDelegate> accessoryViewDelegate;
 

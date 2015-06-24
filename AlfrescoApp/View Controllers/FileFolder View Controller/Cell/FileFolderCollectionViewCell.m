@@ -445,6 +445,9 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 #pragma mark - Overriden methods
 - (void)applyLayoutAttributes:(BaseLayoutAttributes *)layoutAttributes
 {
+    [self layoutIfNeeded];
+    self.separatorHeightConstraint.constant = 1/[[UIScreen mainScreen] scale];
+    [self layoutIfNeeded];
     if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
     {
         [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];
