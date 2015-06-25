@@ -32,8 +32,6 @@
 #import "FailedTransferDetailViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
-
-#import "BaseCollectionViewFlowLayout.h"
 #import "BaseLayoutAttributes.h"
 #import "SearchCollectionSectionHeader.h"
 
@@ -186,6 +184,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.collectionView.delegate = self;
     self.listLayout = [BaseCollectionViewFlowLayout new];
     self.listLayout.itemHeight = kCellHeight;
+    self.listLayout.dataSourceInfoDelegate = self;
     
     [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
     
@@ -240,14 +239,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
+    [self deselectAllItems];
     [super setEditing:editing animated:animated];
     self.collectionView.allowsMultipleSelection = editing;
-
-    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-    {
-        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-        properLayout.editing = editing;
-    }
     
     [self updateUIUsingFolderPermissionsWithAnimation:YES];
     [self.navigationItem setHidesBackButton:editing animated:YES];
@@ -268,6 +262,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         [self enablePullToRefresh];
         [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+    }
+    
+    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+    {
+        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+        properLayout.editing = editing;
     }
 }
 
@@ -308,6 +308,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 }
 
 #pragma mark - Private Functions
+
+- (void) deselectAllItems
+{
+    NSArray *selectedIndexPaths = [self.collectionView indexPathsForSelectedItems];
+    for(NSIndexPath *indexPath in selectedIndexPaths)
+    {
+        [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    }
+}
 
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
 {
@@ -851,13 +860,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     [cell registerForNotifications];
     cell.accessoryViewDelegate = self;
-    
-    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-    {
-        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-        BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[properLayout layoutAttributesForItemAtIndexPath:indexPath];
-        [cell applyLayoutAttributes:attributes];
-    }
     
     return cell;
 }
@@ -1583,6 +1585,28 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         CGPoint touchPoint = [touch locationInView:self.collectionView];
         if(CGRectContainsPoint(self.collectionView.bounds, touchPoint))
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+#pragma mark - DataSourceInformationProtocol methods
+- (BOOL) isItemSelected:(NSIndexPath *) indexPath
+{
+    AlfrescoNode *selectedNode = nil;
+    if (self.isOnSearchResults)
+    {
+        selectedNode = [self.searchResults objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+    }
+    if(self.isEditing)
+    {
+        if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
         {
             return YES;
         }

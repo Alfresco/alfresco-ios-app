@@ -21,12 +21,13 @@
 #import "DownloadsViewController.h"
 #import "MultiSelectActionsToolbar.h"
 #import "CollectionViewProtocols.h"
+#import "BaseCollectionViewFlowLayout.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate >
+@interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol >
 
 /**
  Providing nil to the folder parameter will result in the root folder (Company Home) being displayed.

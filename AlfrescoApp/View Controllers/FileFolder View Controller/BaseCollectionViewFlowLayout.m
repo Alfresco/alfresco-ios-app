@@ -134,6 +134,7 @@
                 attributes.showDeleteButton = NO;
             }
             attributes.editing = self.isEditing;
+            attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:attributes.indexPath];
         }
     }
     
@@ -156,6 +157,7 @@
     }
     attributes.animated = NO;
     attributes.editing = self.isEditing;
+    attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:indexPath];
     return attributes;
 }
 
@@ -165,6 +167,7 @@
     attributes.animated = NO;
     attributes.showDeleteButton = NO;
     attributes.editing = self.isEditing;
+    attributes.isSelectedInEditMode = NO;
     
     return attributes;
 }

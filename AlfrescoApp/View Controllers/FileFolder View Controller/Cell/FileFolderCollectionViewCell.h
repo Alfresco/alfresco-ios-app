@@ -48,6 +48,7 @@
 
 - (void) showDeleteAction:(BOOL) showDelete animated:(BOOL)animated;
 - (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated;
+- (void) showEditMode:(BOOL)showEdit selected:(BOOL)isSelected animated:(BOOL)animated;
 - (void) wasSelectedInEditMode:(BOOL)wasSelected;
 
 @end
