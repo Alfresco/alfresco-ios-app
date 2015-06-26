@@ -169,7 +169,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     double shiftAmount;
     if(showDelete)
     {
-        shiftAmount = 70.0;
+        shiftAmount = self.actionsViewWidthContraint.constant;
     }
     else
     {
@@ -192,6 +192,36 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         [self layoutIfNeeded];
     }
+}
+
+- (void)revealActionViewWithAmount:(CGFloat)amount
+{
+    [self layoutIfNeeded];
+    self.leadingContentViewContraint.constant = amount;
+    if(self.leadingContentViewContraint.constant > 0.0f)
+    {
+        self.leadingContentViewContraint.constant = 0.0f;
+    }
+    self.trainlingContentViewContraint.constant = -amount;
+    if(self.trainlingContentViewContraint.constant < 0.0f)
+    {
+        self.trainlingContentViewContraint.constant = 0.0f;
+    }
+    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self layoutIfNeeded];
+    } completion:nil];
+}
+
+- (void)resetView
+{
+    [self layoutIfNeeded];
+    self.leadingContentViewContraint.constant = 0.0;
+    self.trainlingContentViewContraint.constant = 0.0;
+    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        self.isShowingDelete = NO;
+    }];
 }
 
 - (void)showEditMode:(BOOL)showEdit selected:(BOOL)isSelected animated:(BOOL)animated

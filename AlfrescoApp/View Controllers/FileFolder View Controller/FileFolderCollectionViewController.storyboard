@@ -213,6 +213,7 @@
                                             <outlet property="accessoryViewButton" destination="5xx-ay-Q5s" id="GcJ-GA-dAi"/>
                                             <outlet property="accessoryViewWidthConstraint" destination="QAd-Q1-a3a" id="EvP-tE-9cK"/>
                                             <outlet property="actionsView" destination="pbl-mc-Yhf" id="gX4-Ju-QEJ"/>
+                                            <outlet property="actionsViewWidthContraint" destination="SR3-8o-ays" id="K6e-bJ-HM1"/>
                                             <outlet property="content" destination="RR1-Gg-VuB" id="mZW-oo-l5z"/>
                                             <outlet property="deleteButton" destination="kfC-Cx-JiF" id="AYG-sv-4NP"/>
                                             <outlet property="details" destination="9Vi-mz-AUk" id="aNp-a8-ZLX"/>

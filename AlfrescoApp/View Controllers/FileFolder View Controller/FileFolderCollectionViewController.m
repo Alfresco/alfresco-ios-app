@@ -61,9 +61,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
-@property (nonatomic, strong) UISwipeGestureRecognizer *openSwipeGestureRecognizer;
-@property (nonatomic, strong) UISwipeGestureRecognizer *closeSwipeGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
+@property (nonatomic, strong) UIPanGestureRecognizer *swipeToDeleteGestureRecognizer;
+@property (nonatomic, strong) NSIndexPath *initialCellForSwipeToDelete;
+@property (nonatomic) BOOL shouldShowOrHideDelete;
+@property (nonatomic) CGFloat cellActionViewWidth;
 
 @property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
 
@@ -192,14 +194,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
     
     //Swipe to Delete Gestures
-    self.openSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeleteGestureHandler:)];
-    self.openSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.collectionView addGestureRecognizer:self.openSwipeGestureRecognizer];
     
-    self.closeSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeSwipeToDeleteGestureHandler:)];
-    self.closeSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    self.closeSwipeGestureRecognizer.delegate = self;
-    [self.collectionView addGestureRecognizer:self.closeSwipeGestureRecognizer];
+    self.swipeToDeleteGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeletePanGestureHandler:)];
+    self.swipeToDeleteGestureRecognizer.delegate = self;
+    [self.collectionView addGestureRecognizer:self.swipeToDeleteGestureRecognizer];
     
     self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGestureHandler:)];
     self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
@@ -860,6 +858,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     [cell registerForNotifications];
     cell.accessoryViewDelegate = self;
+    self.cellActionViewWidth = cell.actionsViewWidthContraint.constant;
     
     return cell;
 }
@@ -1436,7 +1435,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 #pragma mark - SwipeToDeleteDelegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *nodeToDelete = /*(collectionView == self.searchController.searchResultsTableView) ? self.searchResults[indexOfItemToDelete] : */self.collectionViewData[indexPath.item];
+    AlfrescoNode *nodeToDelete = (self.isOnSearchResults) ? self.searchResults[indexPath.item] : self.collectionViewData[indexPath.item];
     AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
     
     if (permissionsForNodeToDelete.canDelete)
@@ -1515,31 +1514,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 }
 
 #pragma mark - Gesture Recognizers methods
-- (void) swipeToDeleteGestureHandler:(UIGestureRecognizer *)gestureRecognizer
-{
-    if ((gestureRecognizer.state == UIGestureRecognizerStateEnded) && (!self.editing))
-    {
-        CGPoint touchPoint = [gestureRecognizer locationInView:self.collectionView];
-        if (CGRectContainsPoint(self.collectionView.bounds, touchPoint))
-        {
-            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touchPoint];
-            if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-            {
-                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-                properLayout.selectedIndexPathForSwipeToDelete = indexPath;
-            }
-        }
-    }
-}
-
-- (void) closeSwipeToDeleteGestureHandler:(UIGestureRecognizer *)gestureRecognizer
-{
-    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-    {
-        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-        properLayout.selectedIndexPathForSwipeToDelete = nil;
-    }
-}
 
 - (void) tapToDismissDeleteGestureHandler:(UIGestureRecognizer *)gestureReconizer
 {
@@ -1568,6 +1542,67 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
+- (void) swipeToDeletePanGestureHandler:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        CGPoint startingPoint = [gestureRecognizer locationInView:self.collectionView];
+        if (CGRectContainsPoint(self.collectionView.bounds, startingPoint))
+        {
+            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:startingPoint];
+            if(indexPath && indexPath.item < self.collectionViewData.count)
+            {
+                self.initialCellForSwipeToDelete = indexPath;
+            }
+        }
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        if(self.initialCellForSwipeToDelete)
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self.view];
+            if (translation.x < 0)
+            {
+                self.shouldShowOrHideDelete = (translation.x * -1) > self.cellActionViewWidth / 2;
+            }
+            else
+            {
+                self.shouldShowOrHideDelete = translation.x > self.cellActionViewWidth / 2;
+            }
+            
+            FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
+            [cell revealActionViewWithAmount:translation.x];
+        }
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        if(self.initialCellForSwipeToDelete)
+        {
+            if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+            {
+                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+                if(self.shouldShowOrHideDelete)
+                {
+                    if(properLayout.selectedIndexPathForSwipeToDelete)
+                    {
+                        properLayout.selectedIndexPathForSwipeToDelete = nil;
+                    }
+                    else
+                    {
+                        properLayout.selectedIndexPathForSwipeToDelete = self.initialCellForSwipeToDelete;
+                    }
+                }
+                else
+                {
+                    FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
+                    [cell resetView];
+                    properLayout.selectedIndexPathForSwipeToDelete = nil;
+                }
+            }
+        }
+    }
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     if(gestureRecognizer == self.tapToDismissDeleteAction)
@@ -1581,15 +1616,41 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             }
         }
     }
-    else if (gestureRecognizer == self.closeSwipeGestureRecognizer)
+    else if (gestureRecognizer == self.swipeToDeleteGestureRecognizer)
     {
-        CGPoint touchPoint = [touch locationInView:self.collectionView];
-        if(CGRectContainsPoint(self.collectionView.bounds, touchPoint))
-        {
-            return YES;
-        }
+        return YES;
     }
     return NO;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    BOOL shouldBegin = NO;
+    if(gestureRecognizer == self.swipeToDeleteGestureRecognizer)
+    {
+        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+        {
+            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+            CGPoint translation = [self.swipeToDeleteGestureRecognizer translationInView:self.collectionView];
+            if((translation.x < 0 && !properLayout.selectedIndexPathForSwipeToDelete) || (translation.x > 0 && properLayout.selectedIndexPathForSwipeToDelete))
+            {
+                shouldBegin = YES;
+            }
+        }
+    }
+    else if (gestureRecognizer == self.tapToDismissDeleteAction)
+    {
+        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+        {
+            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+            if((properLayout.selectedIndexPathForSwipeToDelete != nil) && (!self.editing))
+            {
+                shouldBegin = YES;
+            }
+        }
+    }
+    
+    return shouldBegin;
 }
 
 #pragma mark - DataSourceInformationProtocol methods
