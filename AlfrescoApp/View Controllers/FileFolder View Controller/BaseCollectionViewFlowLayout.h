@@ -18,7 +18,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol DataSourceInformationProtocol <NSObject>
+
+- (BOOL) isItemSelected:(NSIndexPath *) indexPath;
+
+@end
+
 @interface BaseCollectionViewFlowLayout : UICollectionViewFlowLayout
+
+@property (nonatomic, weak) id<DataSourceInformationProtocol> dataSourceInfoDelegate;
 
 @property (nonatomic) NSUInteger numberOfColumns;
 @property (nonatomic) CGFloat itemHeight;

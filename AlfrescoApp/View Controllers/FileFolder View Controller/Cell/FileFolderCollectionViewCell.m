@@ -169,7 +169,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     double shiftAmount;
     if(showDelete)
     {
-        shiftAmount = 70.0;
+        shiftAmount = self.actionsViewWidthContraint.constant;
     }
     else
     {
@@ -194,20 +194,49 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
 }
 
-- (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated
+- (void)revealActionViewWithAmount:(CGFloat)amount
+{
+    [self layoutIfNeeded];
+    self.leadingContentViewContraint.constant = amount;
+    if(self.leadingContentViewContraint.constant > 0.0f)
+    {
+        self.leadingContentViewContraint.constant = 0.0f;
+    }
+    self.trainlingContentViewContraint.constant = -amount;
+    if(self.trainlingContentViewContraint.constant < 0.0f)
+    {
+        self.trainlingContentViewContraint.constant = 0.0f;
+    }
+    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self layoutIfNeeded];
+    } completion:nil];
+}
+
+- (void)resetView
+{
+    [self layoutIfNeeded];
+    self.leadingContentViewContraint.constant = 0.0;
+    self.trainlingContentViewContraint.constant = 0.0;
+    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        self.isShowingDelete = NO;
+    }];
+}
+
+- (void)showEditMode:(BOOL)showEdit selected:(BOOL)isSelected animated:(BOOL)animated
 {
     double shiftAmount;
     if(showEdit)
     {
         shiftAmount = 40.0;
-        self.editImageView.image = [UIImage imageNamed:@"cell-button-unchecked.png"];
-        self.isSelectedInEditMode = NO;
     }
     else
     {
         shiftAmount = 0.0;
     }
     
+    [self wasSelectedInEditMode:isSelected];
     [self layoutIfNeeded];
     self.leadingContentViewContraint.constant = shiftAmount;
     self.trainlingContentViewContraint.constant = -shiftAmount;
@@ -224,22 +253,28 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
 }
 
+- (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated
+{
+    [self showEditMode:showEdit selected:NO animated:animated];
+}
+
 - (void) wasSelectedInEditMode:(BOOL)wasSelected
 {
     self.isSelectedInEditMode = wasSelected;
     if(wasSelected)
     {
-        self.editImageView.image = [[UIImage imageNamed:@"cell-button-checked-filled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.editImageView setImage:[[UIImage imageNamed:@"cell-button-checked-filled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         self.editImageView.tintColor = [UIColor appTintColor];
         self.editView.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
         self.content.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
     }
     else
     {
-        self.editImageView.image = [UIImage imageNamed:@"cell-button-unchecked.png"];
+        [self.editImageView setImage:[UIImage imageNamed:@"cell-button-unchecked.png"]];
         self.editView.backgroundColor = [UIColor whiteColor];
         self.content.backgroundColor = [UIColor whiteColor];
     }
+    
 }
 
 #pragma mark - Notification Methods
@@ -454,7 +489,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     else
     {
-        [self showEditMode:layoutAttributes.isEditing animated:layoutAttributes.animated];
+        [self showEditMode:layoutAttributes.isEditing selected:layoutAttributes.isSelectedInEditMode animated:layoutAttributes.animated];
     }
 }
 

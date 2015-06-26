@@ -23,5 +23,6 @@
 @property (nonatomic) BOOL showDeleteButton;
 @property (nonatomic, getter=isEditing) BOOL editing;
 @property (nonatomic) BOOL animated;
+@property (nonatomic) BOOL isSelectedInEditMode;
 
 @end

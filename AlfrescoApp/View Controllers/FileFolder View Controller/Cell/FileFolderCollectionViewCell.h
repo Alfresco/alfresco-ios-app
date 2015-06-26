@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIView *content;
 @property (weak, nonatomic) IBOutlet UIView *separatorView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionsViewWidthContraint;
 
 @property (nonatomic, weak) id<CollectionViewCellAccessoryViewDelegate> accessoryViewDelegate;
 
@@ -47,7 +48,10 @@
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
 
 - (void) showDeleteAction:(BOOL) showDelete animated:(BOOL)animated;
+- (void) revealActionViewWithAmount:(CGFloat)amount;
+- (void) resetView;
 - (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated;
+- (void) showEditMode:(BOOL)showEdit selected:(BOOL)isSelected animated:(BOOL)animated;
 - (void) wasSelectedInEditMode:(BOOL)wasSelected;
 
 @end
