@@ -1656,17 +1656,24 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 #pragma mark - DataSourceInformationProtocol methods
 - (BOOL) isItemSelected:(NSIndexPath *) indexPath
 {
-    AlfrescoNode *selectedNode = nil;
-    if (self.isOnSearchResults)
-    {
-        selectedNode = [self.searchResults objectAtIndex:indexPath.row];
-    }
-    else
-    {
-        selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-    }
     if(self.isEditing)
     {
+        AlfrescoNode *selectedNode = nil;
+        if (self.isOnSearchResults)
+        {
+            if(indexPath.item < self.searchResults.count)
+            {
+                selectedNode = [self.searchResults objectAtIndex:indexPath.row];
+            }
+        }
+        else
+        {
+            if(indexPath.item < self.collectionViewData.count)
+            {
+                selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+            }
+        }
+        
         if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
         {
             return YES;
