@@ -34,6 +34,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "BaseLayoutAttributes.h"
 #import "SearchCollectionSectionHeader.h"
+#import "ALFSwipeToDeleteGestureRecognizer.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -62,7 +63,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
-@property (nonatomic, strong) UIPanGestureRecognizer *swipeToDeleteGestureRecognizer;
+@property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *initialCellForSwipeToDelete;
 @property (nonatomic) BOOL shouldShowOrHideDelete;
 @property (nonatomic) CGFloat cellActionViewWidth;
@@ -195,7 +196,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     //Swipe to Delete Gestures
     
-    self.swipeToDeleteGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeletePanGestureHandler:)];
+    self.swipeToDeleteGestureRecognizer = [[ALFSwipeToDeleteGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeletePanGestureHandler:)];
     self.swipeToDeleteGestureRecognizer.delegate = self;
     [self.collectionView addGestureRecognizer:self.swipeToDeleteGestureRecognizer];
     
@@ -1542,61 +1543,75 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void) swipeToDeletePanGestureHandler:(UIPanGestureRecognizer *)gestureRecognizer
+- (void) swipeToDeletePanGestureHandler:(ALFSwipeToDeleteGestureRecognizer *)gestureRecognizer
 {
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
     {
-        CGPoint startingPoint = [gestureRecognizer locationInView:self.collectionView];
-        if (CGRectContainsPoint(self.collectionView.bounds, startingPoint))
+        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+        if(properLayout.selectedIndexPathForSwipeToDelete)
         {
-            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:startingPoint];
-            if(indexPath && indexPath.item < self.collectionViewData.count)
+            if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
             {
-                self.initialCellForSwipeToDelete = indexPath;
+                [gestureRecognizer endGestureHandling];
+            }
+            else if(gestureRecognizer.state == UIGestureRecognizerStateEnded)
+            {
+                properLayout.selectedIndexPathForSwipeToDelete = nil;
             }
         }
-    }
-    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
-    {
-        if(self.initialCellForSwipeToDelete)
+        else
         {
-            CGPoint translation = [gestureRecognizer translationInView:self.view];
-            if (translation.x < 0)
+            if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
             {
-                self.shouldShowOrHideDelete = (translation.x * -1) > self.cellActionViewWidth / 2;
-            }
-            else
-            {
-                self.shouldShowOrHideDelete = translation.x > self.cellActionViewWidth / 2;
-            }
-            
-            FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
-            [cell revealActionViewWithAmount:translation.x];
-        }
-    }
-    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        if(self.initialCellForSwipeToDelete)
-        {
-            if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-            {
-                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-                if(self.shouldShowOrHideDelete)
+                CGPoint startingPoint = [gestureRecognizer locationInView:self.collectionView];
+                if (CGRectContainsPoint(self.collectionView.bounds, startingPoint))
                 {
-                    if(properLayout.selectedIndexPathForSwipeToDelete)
+                    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:startingPoint];
+                    if(indexPath && indexPath.item < self.collectionViewData.count)
                     {
-                        properLayout.selectedIndexPathForSwipeToDelete = nil;
+                        self.initialCellForSwipeToDelete = indexPath;
+                    }
+                }
+            }
+            else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+            {
+                if(self.initialCellForSwipeToDelete)
+                {
+                    CGPoint translation = [gestureRecognizer translationInView:self.view];
+                    if (translation.x < 0)
+                    {
+                        self.shouldShowOrHideDelete = (translation.x * -1) > self.cellActionViewWidth / 2;
                     }
                     else
                     {
-                        properLayout.selectedIndexPathForSwipeToDelete = self.initialCellForSwipeToDelete;
+                        self.shouldShowOrHideDelete = translation.x > self.cellActionViewWidth / 2;
                     }
-                }
-                else
-                {
+                    
                     FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
-                    [cell resetView];
-                    properLayout.selectedIndexPathForSwipeToDelete = nil;
+                    [cell revealActionViewWithAmount:translation.x];
+                }
+            }
+            else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+            {
+                if(self.initialCellForSwipeToDelete)
+                {
+                    if(self.shouldShowOrHideDelete)
+                    {
+                        if(properLayout.selectedIndexPathForSwipeToDelete)
+                        {
+                            properLayout.selectedIndexPathForSwipeToDelete = nil;
+                        }
+                        else
+                        {
+                            properLayout.selectedIndexPathForSwipeToDelete = self.initialCellForSwipeToDelete;
+                        }
+                    }
+                    else
+                    {
+                        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
+                        [cell resetView];
+                        properLayout.selectedIndexPathForSwipeToDelete = nil;
+                    }
                 }
             }
         }
@@ -1632,7 +1647,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
             CGPoint translation = [self.swipeToDeleteGestureRecognizer translationInView:self.collectionView];
-            if((translation.x < 0 && !properLayout.selectedIndexPathForSwipeToDelete) || (translation.x > 0 && properLayout.selectedIndexPathForSwipeToDelete))
+            if((translation.x < 0 && !properLayout.selectedIndexPathForSwipeToDelete) || (properLayout.selectedIndexPathForSwipeToDelete))
             {
                 shouldBegin = YES;
             }
