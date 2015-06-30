@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, MainMenuGroupType)
 
 - (instancetype)initWithTitle:(NSString *)title menuBuilder:(MainMenuBuilder *)builder delegate:(id<MainMenuViewControllerDelegate>)delegate;
 
-- (void)selectMenuItemWithIdentifier:(NSString *)identifier;
+- (void)selectMenuItemWithIdentifier:(NSString *)identifier fallbackIdentifier:(NSString *)fallbackIdentifier;
 - (void)loadGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(void))completionBlock;
 - (void)reloadGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(void))completionBlock;
 

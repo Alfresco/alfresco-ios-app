@@ -18,8 +18,10 @@
 
 #import "MainMenuViewController.h"
 #import "MainMenuTableViewCell.h"
+#import "MainMenuHeaderView.h"
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
+static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
 
 @interface MainMenuViewController () <UITableViewDataSource, UITableViewDelegate, MainMenuGroupDelegate>
 @property (nonatomic, strong, readwrite) MainMenuBuilder *builder;
@@ -88,6 +90,10 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     // Register table view
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([MainMenuTableViewCell class]) bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kMainMenuCellIdentifier];
+    
+    // Register header view
+    UINib *headerNib = [UINib nibWithNibName:NSStringFromClass([MainMenuHeaderView class]) bundle:nil];
+    [self.tableView registerNib:headerNib forHeaderFooterViewReuseIdentifier:kMainMenuHeaderViewIdentifier];
     
     // If there is a background colour set
     if (self.backgroundColour)
@@ -208,24 +214,38 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 
 #pragma mark - Public Methods
 
-- (void)selectMenuItemWithIdentifier:(NSString *)identifier
+- (void)selectMenuItemWithIdentifier:(NSString *)identifier fallbackIdentifier:(NSString *)fallbackIdentifier
 {
-    for (NSInteger sectionIndex = 0; sectionIndex < self.tableViewData.count; sectionIndex++)
-    {
-        MainMenuSection *currentSection = self.tableViewData[sectionIndex];
-        NSArray *menuItemIdentifiersForCurrentSection = [currentSection.visibleSectionItems valueForKey:@"itemIdentifier"];
-        
-        if ([menuItemIdentifiersForCurrentSection containsObject:identifier])
+    // define a search block
+    BOOL (^searchTableViewDataForIdentifierAndSelect)(NSString *searchIdentifier) = ^(NSString *searchIdentifier) {
+        BOOL foundIdentifier = NO;
+        for (NSInteger sectionIndex = 0; sectionIndex < self.tableViewData.count; sectionIndex++)
         {
-            // Get the row index
-            NSInteger rowIndex = [menuItemIdentifiersForCurrentSection indexOfObject:identifier];
-            // Index Path
-            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-            // Select the row
-            [self.tableView.delegate tableView:self.tableView didSelectRowAtIndexPath:foundIndexPath];
-            [self.tableView selectRowAtIndexPath:foundIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            break;
+            MainMenuSection *currentSection = self.tableViewData[sectionIndex];
+            NSArray *menuItemIdentifiersForCurrentSection = [currentSection.visibleSectionItems valueForKey:@"itemIdentifier"];
+            
+            if ([menuItemIdentifiersForCurrentSection containsObject:searchIdentifier])
+            {
+                // Get the row index
+                NSInteger rowIndex = [menuItemIdentifiersForCurrentSection indexOfObject:searchIdentifier];
+                // Index Path
+                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+                // Select the row
+                [self.tableView.delegate tableView:self.tableView didSelectRowAtIndexPath:foundIndexPath];
+                [self.tableView selectRowAtIndexPath:foundIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                foundIdentifier = YES;
+                break;
+            }
         }
+        return foundIdentifier;
+    };
+    
+    // run the method
+    BOOL foundAndSelected = searchTableViewDataForIdentifierAndSelect(identifier);
+    
+    if (fallbackIdentifier && !foundAndSelected)
+    {
+        searchTableViewDataForIdentifierAndSelect(fallbackIdentifier);
     }
 }
 
@@ -360,12 +380,6 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    MainMenuSection *sectionItem = self.tableViewData[section];
-    return sectionItem.sectionTitle;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuTableViewCell *cell = (MainMenuTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -400,6 +414,32 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     
     [self.delegate mainMenuViewController:self didSelectItem:selectedItem inSectionItem:selectedSection];
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MainMenuHeaderView *header = nil;
+    MainMenuSection *sectionItem = self.tableViewData[section];
+    
+    if (sectionItem.sectionTitle)
+    {
+        header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMainMenuHeaderViewIdentifier];
+        header.headerTextLabel.text = sectionItem.sectionTitle.uppercaseString;
+        header.headerTextLabel.textColor = [UIColor whiteColor];
+    }
+    
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    MainMenuHeaderView *header = (MainMenuHeaderView *)[self tableView:tableView viewForHeaderInSection:section];
+    
+    CGFloat height = [header.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
+    
+    return height;
+}
+
+
 
 #pragma mark - MainMenuGroupDelegate Methods
 

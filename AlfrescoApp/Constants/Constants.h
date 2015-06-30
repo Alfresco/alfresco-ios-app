@@ -251,7 +251,11 @@ extern NSString * const kAlfrescoMDMDisplayNameKey;
 ///
 extern NSString * const kAlfrescoEmbeddedConfigurationFileName;
 /// Notifications
-extern NSString * const kAlfrescoConfigurationDidUpdateNotification;
+extern NSString * const kAlfrescoConfigurationFileDidUpdateNotification;
+extern NSString * const kAlfrescoConfigurationShouldUpdateMainMenuNotification;
+extern NSString * const kAlfrescoConfigurationProfileDidChangeNotification;
+/// Keys
+extern NSString * const kAlfrescoConfigurationProfileDidChangeForAccountKey;
 /// Menu Item Identifiers
 extern NSString * const kAlfrescoMainMenuItemAccountsIdentifier;
 extern NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier;

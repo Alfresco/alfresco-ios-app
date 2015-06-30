@@ -240,6 +240,10 @@
 		732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 732DBFA918E1BDB600F7A0BF /* small_folder@2x.png */; };
 		732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */; };
 		73322D871A71439D000C1118 /* AccountCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 080828A5184DEDCB000524A3 /* AccountCertificate.m */; };
+		7333D2EC1B3AC5F300644913 /* ProfileSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7333D2EA1B3AC5F300644913 /* ProfileSelectionViewController.m */; };
+		7333D2ED1B3AC5F300644913 /* ProfileSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7333D2EB1B3AC5F300644913 /* ProfileSelectionViewController.xib */; };
+		7333D2F11B3C4F4500644913 /* MainMenuHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7333D2F01B3C4F4500644913 /* MainMenuHeaderView.m */; };
+		7333D2F31B3C4F5E00644913 /* MainMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7333D2F21B3C4F5E00644913 /* MainMenuHeaderView.xib */; };
 		7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7335AA70181FBA500091CA95 /* PagedScrollView.m */; };
 		733638B91913BA1600472A57 /* system_notice_exclamation.png in Resources */ = {isa = PBXBuildFile; fileRef = 733638B51913BA1600472A57 /* system_notice_exclamation.png */; };
 		733638BA1913BA1600472A57 /* system_notice_exclamation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 733638B61913BA1600472A57 /* system_notice_exclamation@2x.png */; };
@@ -1094,6 +1098,12 @@
 		732F275217FAC5AF00BAFDDE /* DetailSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailSplitViewController.h; path = "Detail Split View Controller/DetailSplitViewController.h"; sourceTree = "<group>"; };
 		732F275317FAC5AF00BAFDDE /* DetailSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailSplitViewController.m; path = "Detail Split View Controller/DetailSplitViewController.m"; sourceTree = "<group>"; };
 		73322D8D1A714560000C1118 /* AlfrescoDocumentPicker-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocumentPicker-Prefix.pch"; sourceTree = "<group>"; };
+		7333D2E91B3AC5F300644913 /* ProfileSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileSelectionViewController.h; sourceTree = "<group>"; };
+		7333D2EA1B3AC5F300644913 /* ProfileSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileSelectionViewController.m; sourceTree = "<group>"; };
+		7333D2EB1B3AC5F300644913 /* ProfileSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileSelectionViewController.xib; sourceTree = "<group>"; };
+		7333D2EF1B3C4F4500644913 /* MainMenuHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuHeaderView.h; sourceTree = "<group>"; };
+		7333D2F01B3C4F4500644913 /* MainMenuHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuHeaderView.m; sourceTree = "<group>"; };
+		7333D2F21B3C4F5E00644913 /* MainMenuHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuHeaderView.xib; sourceTree = "<group>"; };
 		73345E35195C299D000CADC7 /* NSObject+DebugCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+DebugCheck.h"; sourceTree = "<group>"; };
 		7335AA6F181FBA500091CA95 /* PagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedScrollView.h; path = "Paged Scroll View/PagedScrollView.h"; sourceTree = "<group>"; };
 		7335AA70181FBA500091CA95 /* PagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedScrollView.m; path = "Paged Scroll View/PagedScrollView.m"; sourceTree = "<group>"; };
@@ -2155,6 +2165,27 @@
 			name = "Detail Split View Controller";
 			sourceTree = "<group>";
 		};
+		7333D2E41B3AC5B900644913 /* Profile Selection View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7333D2E91B3AC5F300644913 /* ProfileSelectionViewController.h */,
+				7333D2EA1B3AC5F300644913 /* ProfileSelectionViewController.m */,
+				7333D2EB1B3AC5F300644913 /* ProfileSelectionViewController.xib */,
+			);
+			path = "Profile Selection View Controller";
+			sourceTree = "<group>";
+		};
+		7333D2EE1B3C4E6900644913 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7333D2EF1B3C4F4500644913 /* MainMenuHeaderView.h */,
+				7333D2F01B3C4F4500644913 /* MainMenuHeaderView.m */,
+				7333D2F21B3C4F5E00644913 /* MainMenuHeaderView.xib */,
+			);
+			name = Views;
+			path = "Main Menu View Controller/Views";
+			sourceTree = "<group>";
+		};
 		7335AA6E181FBA1A0091CA95 /* Paged Scroll View */ = {
 			isa = PBXGroup;
 			children = (
@@ -2310,6 +2341,7 @@
 		73632AED1806F62C007172EE /* Main Menu View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7333D2EE1B3C4E6900644913 /* Views */,
 				73A26A6B183532D6006C1D81 /* Cell */,
 				73632AF618080E80007172EE /* Model */,
 				73632AEE1806F674007172EE /* MainMenuViewController.h */,
@@ -3319,6 +3351,7 @@
 				7319019218436504002C82C1 /* Onboarding View Controller */,
 				0876A05918D9A9E30035370A /* People Picker ViewController */,
 				73B95AD817A68DF20099FB84 /* Preview View Controller */,
+				7333D2E41B3AC5B900644913 /* Profile Selection View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
 				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
 				738664A31906AD8E0021D1BD /* Sites View Controller */,
@@ -3993,6 +4026,7 @@
 				73881FCB188FF6B00052C75F /* actionsheet-link@2x.png in Resources */,
 				731A8F47192F56470099BE7B /* NewVersionLabelCell.xib in Resources */,
 				271DC776189C2D250059D1B2 /* status-sync-synced.png in Resources */,
+				7333D2F31B3C4F5E00644913 /* MainMenuHeaderView.xib in Resources */,
 				0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */,
 				27E84E8318AD53510024B658 /* mainmenu-myfiles@2x.png in Resources */,
 				734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */,
@@ -4175,6 +4209,7 @@
 				08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */,
 				27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */,
 				735DDC281B30268D0091D7B4 /* mainmenu-groups@2x.png in Resources */,
+				7333D2ED1B3AC5F300644913 /* ProfileSelectionViewController.xib in Resources */,
 				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
 				2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */,
@@ -4469,6 +4504,7 @@
 				7390B35C1B03681E00E7191F /* AlfrescoConfigHelper.m in Sources */,
 				7390B38C1B03793400E7191F /* AlfrescoSDKInternalConstants.m in Sources */,
 				7390B3771B03681E00E7191F /* AlfrescoClientBasedConfigService.m in Sources */,
+				7333D2F11B3C4F4500644913 /* MainMenuHeaderView.m in Sources */,
 				7390B35D1B03681E00E7191F /* AlfrescoCreationConfigHelper.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
@@ -4508,6 +4544,7 @@
 				7390B36D1B03681E00E7191F /* AlfrescoGroupConfig.m in Sources */,
 				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
+				7333D2EC1B3AC5F300644913 /* ProfileSelectionViewController.m in Sources */,
 				7390B3711B03681E00E7191F /* AlfrescoRepositoryConfig.m in Sources */,
 				08E1EA2A18DB057900F9052F /* TasksCell.m in Sources */,
 				08E1EA2C18DB057900F9052F /* TaskGroupItem.m in Sources */,

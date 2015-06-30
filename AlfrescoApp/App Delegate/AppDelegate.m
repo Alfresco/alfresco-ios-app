@@ -49,6 +49,7 @@
 #import "SyncViewController.h"
 #import "TaskViewController.h"
 #import "MainMenuLocalConfigurationBuilder.h"
+#import "AppConfigurationManager.h"
 
 #import <HockeySDK/HockeySDK.h>
 

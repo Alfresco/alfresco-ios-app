@@ -106,7 +106,7 @@
         dismissBlockConformingObject.dismissCompletionBlock = ^{
             if (self.previouslySelectedItem)
             {
-                [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier];
+                [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
             }
         };
     }
