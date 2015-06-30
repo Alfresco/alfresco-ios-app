@@ -164,7 +164,6 @@
         if (data)
         {
             self.collectionViewData = data;
-            [self updateEmptyView];
         }
         else
         {
@@ -174,16 +173,11 @@
                 [arrayOfIndexPaths addObject:[NSIndexPath indexPathForItem:initialIndex inSection:0]];
             }
             [self.collectionViewData addObjectsFromArray:pagingResult.objects];
-            
-            [self.collectionView performBatchUpdates:^{
-                [self.collectionView insertItemsAtIndexPaths:arrayOfIndexPaths];
-            } completion:^(BOOL finished) {
-                [self updateEmptyView];
-            }];
         }
         
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.collectionView reloadData];
+        [self updateEmptyView];
     }
     else
     {

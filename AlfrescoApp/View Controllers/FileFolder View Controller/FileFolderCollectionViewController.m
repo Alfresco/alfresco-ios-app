@@ -256,11 +256,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
         [self disablePullToRefresh];
         [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+        self.swipeToDeleteGestureRecognizer.enabled = NO;
     }
     else
     {
         [self enablePullToRefresh];
         [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+        self.swipeToDeleteGestureRecognizer.enabled = YES;
     }
     
     if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
@@ -964,12 +966,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-    {
-        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-        BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[properLayout layoutAttributesForItemAtIndexPath:indexPath];
-        [cell applyLayoutAttributes:attributes];
-    }
     // the last row index of the table data
     NSUInteger lastSiteRowIndex = self.collectionViewData.count-1;
     
@@ -986,6 +982,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     self.isLoadingAnotherPage = NO;
             }];
         }
+    }
+    
+    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+    {
+        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+        BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[properLayout layoutAttributesForItemAtIndexPath:indexPath];
+        attributes.editing = self.isEditing;
+        attributes.animated = NO;
+        [cell applyLayoutAttributes:attributes];
     }
 }
 
@@ -1552,7 +1557,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
             {
-                [gestureRecognizer endGestureHandling];
+                [gestureRecognizer alf_endGestureHandling];
             }
             else if(gestureRecognizer.state == UIGestureRecognizerStateEnded)
             {
