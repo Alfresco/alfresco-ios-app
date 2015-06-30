@@ -21,7 +21,7 @@
 
 @implementation ALFSwipeToDeleteGestureRecognizer
 
-- (void) endGestureHandling
+- (void) alf_endGestureHandling
 {
     self.state = UIGestureRecognizerStateEnded;
 }

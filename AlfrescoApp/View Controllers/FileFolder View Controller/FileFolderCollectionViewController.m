@@ -1557,7 +1557,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
             {
-                [gestureRecognizer endGestureHandling];
+                [gestureRecognizer alf_endGestureHandling];
             }
             else if(gestureRecognizer.state == UIGestureRecognizerStateEnded)
             {

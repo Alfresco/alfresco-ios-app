@@ -19,6 +19,6 @@
 
 @interface ALFSwipeToDeleteGestureRecognizer : UIPanGestureRecognizer
 
-- (void) endGestureHandling;
+- (void) alf_endGestureHandling;
 
 @end

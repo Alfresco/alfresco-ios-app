@@ -69,7 +69,6 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
 
 - (void)leaveMultiSelectMode:(NSLayoutConstraint *)heightConstraint
 {
-    [self.selectedItems removeAllObjects];
     self.items = nil;
     heightConstraint.constant = kToolBarMinHeightConstraintValue;
     [UIView animateWithDuration:kMultiSelectAnimationDuration animations:^{
