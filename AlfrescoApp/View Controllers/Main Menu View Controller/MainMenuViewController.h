@@ -61,5 +61,7 @@ typedef NS_ENUM(NSUInteger, MainMenuGroupType)
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withDescription:(NSString *)updateDescription;
 - (void)clearGroupType:(MainMenuGroupType)groupType;
 
+- (void)visibilityForSectionHeadersHidden:(BOOL)hidden animated:(BOOL)animated;
+
 @end
 

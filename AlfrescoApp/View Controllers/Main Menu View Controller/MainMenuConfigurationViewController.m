@@ -23,6 +23,7 @@
 #import "MainMenuTableViewCell.h"
 #import "AppConfigurationManager.h"
 #import "MainMenuRemoteConfigurationBuilder.h"
+#import "RootRevealViewController.h"
 
 static NSString * const kSitesViewIdentifier = @"view-sites-default";
 static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
@@ -34,7 +35,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
-@interface MainMenuConfigurationViewController ()
+@interface MainMenuConfigurationViewController () <RootRevealViewControllerDelegate>
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) MainMenuConfigurationBuilder *builder;
 @end
@@ -148,6 +149,18 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     }
     
     return cell;
+}
+
+#pragma mark - RootRevealViewControllerDelegate Methods
+
+- (void)controllerDidExpandToDisplayMasterViewController:(RootRevealViewController *)controller
+{
+    [self visibilityForSectionHeadersHidden:NO animated:YES];
+}
+
+- (void)controllerWillCollapseToHideMasterViewController:(RootRevealViewController *)controller
+{
+    [self visibilityForSectionHeadersHidden:YES animated:YES];
 }
 
 @end

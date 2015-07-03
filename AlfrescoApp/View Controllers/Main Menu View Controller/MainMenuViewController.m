@@ -22,6 +22,7 @@
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
+static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 @interface MainMenuViewController () <UITableViewDataSource, UITableViewDelegate, MainMenuGroupDelegate>
 @property (nonatomic, strong, readwrite) MainMenuBuilder *builder;
@@ -31,6 +32,7 @@ static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIden
 @property (nonatomic, strong, readwrite) MainMenuGroup *footerGroup;
 @property (nonatomic, weak, readwrite) id<MainMenuViewControllerDelegate> delegate;
 @property (nonatomic, strong, readwrite) NSIndexPath *previouslySelectedIndexPath;
+@property (nonatomic, assign, readwrite) BOOL headersVisible;
 // Views
 @property (nonatomic, weak) UITableView *tableView;
 @end
@@ -210,6 +212,28 @@ static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIden
     }
     
     return foundIndexPath;
+}
+
+- (void)visibilityForSectionHeadersHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    NSUInteger numberOfSections = [self.tableView numberOfSections];
+    for (NSUInteger index = 0; index < numberOfSections; index++)
+    {
+        UITableViewHeaderFooterView *header = [self.tableView headerViewForSection:index];
+        CGFloat alphaValue = (hidden) ? 0.0f : 1.0f;
+        
+        if (animated)
+        {
+            [UIView animateWithDuration:kHeaderFadeSpeed animations:^{
+                header.alpha = alphaValue;
+            }];
+        }
+        else
+        {
+            header.alpha = alphaValue;
+        }
+    }
+    self.headersVisible = hidden;
 }
 
 #pragma mark - Public Methods
@@ -439,8 +463,6 @@ static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIden
     return height;
 }
 
-
-
 #pragma mark - MainMenuGroupDelegate Methods
 
 - (void)mainMenuGroupDidChange:(MainMenuGroup *)group
@@ -451,6 +473,9 @@ static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIden
     self.tableViewData = [self allTableViewSectionsItems];
     // reload the table view
     [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self visibilityForSectionHeadersHidden:YES animated:YES];
+    });
     // select the previous index path
     [self.tableView selectRowAtIndexPath:currentlySelected animated:NO scrollPosition:UITableViewScrollPositionNone];
 }

@@ -467,7 +467,7 @@
 		73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73922272187C1BF700BFCE21 /* AvatarManager.m */; };
 		7396E85619742645001FB9A9 /* SettingButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7396E85519742645001FB9A9 /* SettingButtonCell.m */; };
 		7396E85819742661001FB9A9 /* SettingButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7396E85719742661001FB9A9 /* SettingButtonCell.xib */; };
-		7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */; };
+		7399A00417F9A794005B8648 /* RootRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7399A00317F9A794005B8648 /* RootRevealViewController.m */; };
 		739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */; };
 		739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */; };
 		739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C1CB01859D1390068DB6E /* AlfrescoFileManager+Extensions.m */; };
@@ -1430,8 +1430,8 @@
 		7396E85419742645001FB9A9 /* SettingButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingButtonCell.h; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.h"; sourceTree = SOURCE_ROOT; };
 		7396E85519742645001FB9A9 /* SettingButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingButtonCell.m; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.m"; sourceTree = SOURCE_ROOT; };
 		7396E85719742661001FB9A9 /* SettingButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingButtonCell.xib; path = "AlfrescoApp/Views/Settings Cells/SettingButtonCell.xib"; sourceTree = SOURCE_ROOT; };
-		7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealControllerViewController.h; path = "Root Reveal View Controller/RootRevealControllerViewController.h"; sourceTree = "<group>"; };
-		7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealControllerViewController.m; path = "Root Reveal View Controller/RootRevealControllerViewController.m"; sourceTree = "<group>"; };
+		7399A00217F9A794005B8648 /* RootRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootRevealViewController.h; path = "Root Reveal View Controller/RootRevealViewController.h"; sourceTree = "<group>"; };
+		7399A00317F9A794005B8648 /* RootRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootRevealViewController.m; path = "Root Reveal View Controller/RootRevealViewController.m"; sourceTree = "<group>"; };
 		739B0A2B18CF7C9B00239584 /* TableviewUnderlinedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableviewUnderlinedHeaderView.h; sourceTree = "<group>"; };
 		739B0A2C18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TableviewUnderlinedHeaderView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		739B0A2D18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableviewUnderlinedHeaderView.xib; sourceTree = "<group>"; };
@@ -3053,8 +3053,8 @@
 		7399A00117F9A720005B8648 /* Root Reveal Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7399A00217F9A794005B8648 /* RootRevealControllerViewController.h */,
-				7399A00317F9A794005B8648 /* RootRevealControllerViewController.m */,
+				7399A00217F9A794005B8648 /* RootRevealViewController.h */,
+				7399A00317F9A794005B8648 /* RootRevealViewController.m */,
 			);
 			name = "Root Reveal Controller";
 			sourceTree = "<group>";
@@ -4377,7 +4377,7 @@
 				7390B35F1B03681E00E7191F /* AlfrescoFormConfigHelper.m in Sources */,
 				08E1EA2D18DB057900F9052F /* TaskViewController.m in Sources */,
 				73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */,
-				7399A00417F9A794005B8648 /* RootRevealControllerViewController.m in Sources */,
+				7399A00417F9A794005B8648 /* RootRevealViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,

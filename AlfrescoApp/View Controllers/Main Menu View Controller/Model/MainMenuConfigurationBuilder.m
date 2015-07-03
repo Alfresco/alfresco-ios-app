@@ -178,7 +178,7 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
         {
             if (!section)
             {
-                section = [[MainMenuSection alloc] initWithTitle:nil sectionItems:nil];
+                section = [[MainMenuSection alloc] initWithTitle:subItem.label sectionItems:nil];
             }
             
             // define a block
