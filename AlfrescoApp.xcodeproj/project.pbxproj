@@ -178,8 +178,25 @@
 		27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */; };
 		27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7418AD53510024B658 /* mainmenu-tasks.png */; };
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
+		2B114E601B1F39D4005A05AA /* cell-button-checked-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */; };
+		2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */; };
+		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
+		2B114E631B1F39D4005A05AA /* cell-button-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */; };
+		2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */; };
+		2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
+		2BA7FA011B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */; };
+		2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */; };
+		2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */; };
+		2BF5AECC1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */; };
+		2BFB07FD1B149FFD00ED8DFF /* ParentCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */; };
+		2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */; };
+		2BFB08071B14A1F400ED8DFF /* FileFolderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */; };
+		2BFB080C1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */; };
+		2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */; };
+		2BFB08181B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB08161B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m */; };
+		2BFB08191B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BFB08171B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib */; };
 		2BFE12951AC2E734000EB19D /* circle_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12911AC2E734000EB19D /* circle_cross.png */; };
 		2BFE12961AC2E734000EB19D /* circle_cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12921AC2E734000EB19D /* circle_cross@2x.png */; };
 		2BFE12971AC2E734000EB19D /* circle_tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12931AC2E734000EB19D /* circle_tick.png */; };
@@ -1015,9 +1032,36 @@
 		27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-sync@2x.png"; sourceTree = "<group>"; };
 		27E84E7418AD53510024B658 /* mainmenu-tasks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks.png"; sourceTree = "<group>"; };
 		27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks@2x.png"; sourceTree = "<group>"; };
+		2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled.png"; sourceTree = "<group>"; };
+		2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled@2x.png"; sourceTree = "<group>"; };
+		2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked.png"; sourceTree = "<group>"; };
+		2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked@2x.png"; sourceTree = "<group>"; };
+		2B1751DB1B3807AF00E440DD /* LoadingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingCollectionViewCell.h; sourceTree = "<group>"; };
+		2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingCollectionViewCell.m; sourceTree = "<group>"; };
+		2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FileFolderCollectionViewController.storyboard; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
+		2BA7F9FF1B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFSwipeToDeleteGestureRecognizer.h; sourceTree = "<group>"; };
+		2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFSwipeToDeleteGestureRecognizer.m; sourceTree = "<group>"; };
+		2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info.png"; sourceTree = "<group>"; };
+		2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info@2x.png"; sourceTree = "<group>"; };
+		2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewProtocols.h; sourceTree = "<group>"; };
+		2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCollectionSectionHeader.h; sourceTree = "<group>"; };
+		2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCollectionSectionHeader.m; sourceTree = "<group>"; };
+		2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentCollectionViewController.h; sourceTree = "<group>"; };
+		2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentCollectionViewController.m; sourceTree = "<group>"; };
+		2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderCollectionViewController.h; sourceTree = "<group>"; };
+		2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderCollectionViewController.m; sourceTree = "<group>"; };
+		2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderCollectionViewController.h; sourceTree = "<group>"; };
+		2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderCollectionViewController.m; sourceTree = "<group>"; };
+		2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLayoutAttributes.h; sourceTree = "<group>"; };
+		2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseLayoutAttributes.m; sourceTree = "<group>"; };
+		2BFB08151B14BE9F00ED8DFF /* FileFolderCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderCollectionViewCell.h; sourceTree = "<group>"; };
+		2BFB08161B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderCollectionViewCell.m; sourceTree = "<group>"; };
+		2BFB08171B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFolderCollectionViewCell.xib; sourceTree = "<group>"; };
 		2BFE12911AC2E734000EB19D /* circle_cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_cross.png; sourceTree = "<group>"; };
 		2BFE12921AC2E734000EB19D /* circle_cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle_cross@2x.png"; sourceTree = "<group>"; };
 		2BFE12931AC2E734000EB19D /* circle_tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_tick.png; sourceTree = "<group>"; };
@@ -1952,6 +1996,8 @@
 			children = (
 				2711979C1912ADE60073C3EC /* ALFTableView.h */,
 				2711979D1912ADE60073C3EC /* ALFTableView.m */,
+				2BA7F9FF1B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.h */,
+				2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */,
 			);
 			path = Subclasses;
 			sourceTree = "<group>";
@@ -2039,6 +2085,17 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		2B114E5B1B1F39C7005A05AA /* Edit Mode Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */,
+				2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */,
+				2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */,
+				2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */,
+			);
+			path = "Edit Mode Collection View";
+			sourceTree = "<group>";
+		};
 		2B93CBC41ABACC34003BAD2E /* Connection Diagnostic View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2047,6 +2104,15 @@
 				2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */,
 			);
 			path = "Connection Diagnostic View Controller";
+			sourceTree = "<group>";
+		};
+		2BC7CA791B219037009BB2A9 /* Collection View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */,
+				2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */,
+			);
+			path = "Collection View Cells";
 			sourceTree = "<group>";
 		};
 		2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */ = {
@@ -2640,6 +2706,15 @@
 				7386649D1906AD840021D1BD /* FileFolderListViewController.h */,
 				7386649E1906AD840021D1BD /* FileFolderListViewController.m */,
 				7386649F1906AD840021D1BD /* FileFolderListViewController.xib */,
+				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
+				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
+				2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */,
+				2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */,
+				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
+				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
+				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
+				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
+				2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2690,6 +2765,13 @@
 				738664B61906B13D0021D1BD /* FileFolderCell.h */,
 				738664B71906B13D0021D1BD /* FileFolderCell.m */,
 				738664B81906B13D0021D1BD /* FileFolderCell.xib */,
+				2BFB08151B14BE9F00ED8DFF /* FileFolderCollectionViewCell.h */,
+				2BFB08161B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m */,
+				2BFB08171B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib */,
+				2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */,
+				2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */,
+				2B1751DB1B3807AF00E440DD /* LoadingCollectionViewCell.h */,
+				2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -3273,6 +3355,7 @@
 				73B9580017A6750E0099FB84 /* UniversalDevice.m */,
 				73B9580117A6750E0099FB84 /* Utility.h */,
 				73B9580217A6750E0099FB84 /* Utility.m */,
+				2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3362,6 +3445,8 @@
 				7304DA7B1884348B00229809 /* Version View Controller */,
 				73881F5E18893BB70052C75F /* Web Browser View Controller */,
 				08E1EA0818DB057900F9052F /* Workflow Controllers */,
+				2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */,
+				2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -3413,6 +3498,8 @@
 		73B959F117A68B7E0099FB84 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2BC7CA791B219037009BB2A9 /* Collection View Cells */,
+				2B114E5B1B1F39C7005A05AA /* Edit Mode Collection View */,
 				2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */,
 				73B959F217A68B7E0099FB84 /* About */,
 				0808B9DC183BB39C000A8984 /* Accounts */,
@@ -3910,6 +3997,7 @@
 				272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */,
+				2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
@@ -4040,6 +4128,7 @@
 				27DFEBF71937644D006D85BC /* actionsheet-folder@2x~ipad.png in Resources */,
 				731A8F52192F5B1F0099BE7B /* NewVersionTextViewCell.xib in Resources */,
 				2764ABD618CE09EE003FFBF9 /* actionsheet-edit@2x.png in Resources */,
+				2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */,
 				272CC7D3194695290009FADA /* segment-icon-comments-none@2x.png in Resources */,
 				732DBF8E18E1BC6B00F7A0BF /* small_audio.png in Resources */,
 				73B95A8E17A68B7E0099FB84 /* alfresco.png in Resources */,
@@ -4060,6 +4149,7 @@
 				732DBF9D18E1BC6B00F7A0BF /* small_video@2x.png in Resources */,
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
+				2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
 				730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */,
 				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
@@ -4126,6 +4216,7 @@
 				73881FE1188FF9290052C75F /* actionsheet-favorite@2x.png in Resources */,
 				27E84E7A18AD53510024B658 /* mainmenu-activities.png in Resources */,
 				73BE420818F4021300DB8912 /* task_priority_medium.png in Resources */,
+				2B114E601B1F39D4005A05AA /* cell-button-checked-filled.png in Resources */,
 				732DBFA318E1BC6B00F7A0BF /* small_zip@2x.png in Resources */,
 				73881FD3188FF6B00052C75F /* actionsheet-email@2x.png in Resources */,
 				73BE420518F4021300DB8912 /* task_priority_high@2x.png in Resources */,
@@ -4143,6 +4234,7 @@
 				27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */,
 				73B95AB217A68B7E0099FB84 /* site-action-cancelrequest@2x.png in Resources */,
 				738664E11906B2260021D1BD /* CenterLabelCell.xib in Resources */,
+				2B114E631B1F39D4005A05AA /* cell-button-unchecked@2x.png in Resources */,
 				2BFE12961AC2E734000EB19D /* circle_cross@2x.png in Resources */,
 				73881FCD188FF6B00052C75F /* actionsheet-comment@2x.png in Resources */,
 				731901AF18475B14002C82C1 /* closeButton.png in Resources */,
@@ -4168,10 +4260,12 @@
 				738BE94A1A960787006264E5 /* Launch Screen.xib in Resources */,
 				732DBF9818E1BC6B00F7A0BF /* small_pdf.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
+				2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */,
 				08E1EA3918DB073A00F9052F /* TaskTypeViewController.xib in Resources */,
 				271DC775189C2D250059D1B2 /* status-sync-synced-highlighted@2x.png in Resources */,
 				73881F7D18898B910052C75F /* ButtonBarArrowRight.png in Resources */,
 				73B95AB917A68B7E0099FB84 /* site-action-requesttojoin.png in Resources */,
+				2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */,
 				732DBFA218E1BC6B00F7A0BF /* small_zip.png in Resources */,
 				7366F7471ACAB7A1008DD92E /* MDMLaunchViewController.xib in Resources */,
 				738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */,
@@ -4212,6 +4306,7 @@
 				7333D2ED1B3AC5F300644913 /* ProfileSelectionViewController.xib in Resources */,
 				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
+				2BFB08191B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib in Resources */,
 				2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
@@ -4392,6 +4487,7 @@
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
 				738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailManager.m in Sources */,
+				2BFB07FD1B149FFD00ED8DFF /* ParentCollectionViewController.m in Sources */,
 				08E89C9417E7488C006936DF /* SyncManager.m in Sources */,
 				738664F21906B2420021D1BD /* TaskApproversCell.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
@@ -4422,6 +4518,7 @@
 				7366F7451ACAB78F008DD92E /* MDMLaunchViewController.m in Sources */,
 				738664DE1906B2260021D1BD /* ButtonCell.m in Sources */,
 				73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */,
+				2BF5AECC1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m in Sources */,
 				73CD5B0E1A729526000A5523 /* SharedConstants.m in Sources */,
 				7390B36B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
@@ -4434,6 +4531,7 @@
 				7379733318AA8E9B007613B2 /* AvatarImageCache.m in Sources */,
 				738664911906AD660021D1BD /* AboutViewController.m in Sources */,
 				738664B31906B12B0021D1BD /* CommentCell.m in Sources */,
+				2BFB08181B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m in Sources */,
 				738665231907B9BE0021D1BD /* FileLocationSelectionViewController.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
@@ -4448,6 +4546,8 @@
 				731A8F51192F5B1F0099BE7B /* NewVersionTextViewCell.m in Sources */,
 				731A8F4C192F5A0B0099BE7B /* NewVersionToggleCell.m in Sources */,
 				73F628B7185779440050F437 /* TextFileViewController.m in Sources */,
+				2BFB080C1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m in Sources */,
+				2BFB08071B14A1F400ED8DFF /* FileFolderCollectionViewController.m in Sources */,
 				73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */,
 				73881F95188E7E160052C75F /* TextView.m in Sources */,
 				73632ADE1802C679007172EE /* ActionCollectionRow.m in Sources */,
@@ -4458,6 +4558,7 @@
 				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				7379733818AA8E9B007613B2 /* SyncError.m in Sources */,
+				2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */,
 				0876A04818D99FF60035370A /* NodePickerScopeViewController.m in Sources */,
 				7390B3751B03681E00E7191F /* AlfrescoViewGroupConfig.m in Sources */,
 				738664E41906B2260021D1BD /* SwitchCell.m in Sources */,
@@ -4528,6 +4629,7 @@
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
 				7390B36A1B03681E00E7191F /* AlfrescoFieldConfig.m in Sources */,
+				2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */,
 				2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
@@ -4551,6 +4653,7 @@
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
+				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,
@@ -4558,6 +4661,7 @@
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
+				2BA7FA011B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m in Sources */,
 				731A8F46192F56470099BE7B /* NewVersionLabelCell.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
