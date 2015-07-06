@@ -288,7 +288,6 @@ static NSInteger const kTagProfileCell = 3;
     }
     else if (cell.tag == kTagReorderCell)
     {
-//        MainMenuLocalConfigurationBuilder *mainBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithConfigurationService:[[AppConfigurationManager sharedManager] configurationServiceForEmbeddedConfiguration] account:self.account session:self.session];
         MainMenuReorderViewController *reorderController = [[MainMenuReorderViewController alloc] initWithAccount:self.account session:self.session];
         [self.navigationController pushViewController:reorderController animated:YES];
     }
