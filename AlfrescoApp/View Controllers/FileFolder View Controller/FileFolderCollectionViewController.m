@@ -62,6 +62,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
+@property (nonatomic, strong) BaseCollectionViewFlowLayout *gridLayout;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *initialCellForSwipeToDelete;
@@ -69,6 +70,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic) CGFloat cellActionViewWidth;
 
 @property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
+
+@property (nonatomic, strong) UIAlertController *actionsAlertController;
+@property (nonatomic) BOOL isOnListLayout;
 
 @end
 
@@ -189,6 +193,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.listLayout.itemHeight = kCellHeight;
     self.listLayout.dataSourceInfoDelegate = self;
     
+    self.isOnListLayout = YES;
     [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
@@ -373,7 +378,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
 {
-    [self setEditing:!self.editing animated:YES];
+    if(self.isEditing)
+    {
+        [self setEditing:!self.editing animated:YES];
+    }
+    else
+    {
+        [self setupActionsAlertController];
+        self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
+        UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
+        popPC.barButtonItem = self.editBarButtonItem;
+        popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popPC.delegate = self;
+        
+        [self presentViewController:self.actionsAlertController animated:YES completion:nil];
+    }
 }
 
 - (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated
@@ -383,9 +402,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // update the UI based on permissions
     if (!self.editing)
     {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                               target:self
-                                                                               action:@selector(performEditBarButtonItemAction:)];
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(performEditBarButtonItemAction:)];
     }
     else
     {
@@ -394,7 +411,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                                                action:@selector(performEditBarButtonItemAction:)];
     }
     
-    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
     [rightBarButtonItems addObject:self.editBarButtonItem];
     
     if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
@@ -1700,6 +1716,62 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
     }
     return NO;
+}
+
+#pragma mark - UIAdaptivePresentationControllerDelegate methods
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
+    return UIModalPresentationNone;
+}
+
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
+{
+    return self.actionsAlertController;
+}
+
+#pragma mark - Actions methods
+- (void)setupActionsAlertController
+{
+    self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self setEditing:!self.editing animated:YES];
+    }];
+    editAction.enabled = (self.collectionViewData.count > 0);
+    
+    [self.actionsAlertController addAction:editAction];
+    
+    NSString *changeLayoutTitle;
+    if(self.isOnListLayout)
+    {
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
+    }
+    else
+    {
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
+    }
+    UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if(self.isOnListLayout)
+        {
+            [self changeCollectionViewLayout:self.gridLayout animated:YES];
+        }
+        else
+        {
+            [self changeCollectionViewLayout:self.listLayout animated:YES];
+        }
+    }];
+    [self.actionsAlertController addAction:changeLayoutAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [self.actionsAlertController addAction:cancelAction];
+}
+
+- (void) changeCollectionViewLayout:(BaseCollectionViewFlowLayout *)layout animated:(BOOL) animate
+{
+    
 }
 
 @end
