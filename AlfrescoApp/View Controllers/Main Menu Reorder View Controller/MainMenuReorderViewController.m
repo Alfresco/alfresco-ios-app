@@ -54,7 +54,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     return self;
 }
 
-- (instancetype)initWithAccount:(UserAccount *)userAccount session:(id<AlfrescoSession>)session //mainMenuBuilder:(MainMenuBuilder *)mainMenuBuilder
+- (instancetype)initWithAccount:(UserAccount *)userAccount session:(id<AlfrescoSession>)session
 {
     self = [self init];
     if (self)
