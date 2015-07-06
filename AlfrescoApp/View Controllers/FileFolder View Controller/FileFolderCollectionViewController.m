@@ -1735,9 +1735,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 #pragma mark - Actions methods
 - (void)setupActionsAlertController
 {
-    self.actionsAlertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"Choose an action" preferredStyle:UIAlertControllerStyleActionSheet];
+    self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *editAction = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self setEditing:!self.editing animated:YES];
     }];
     editAction.enabled = (self.collectionViewData.count > 0);
@@ -1747,11 +1747,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     NSString *changeLayoutTitle;
     if(self.isOnListLayout)
     {
-        changeLayoutTitle = @"Grid";
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
     }
     else
     {
-        changeLayoutTitle = @"List";
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
     }
     UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         if(self.isOnListLayout)
@@ -1765,7 +1765,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }];
     [self.actionsAlertController addAction:changeLayoutAction];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
     }];
     
