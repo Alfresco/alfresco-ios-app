@@ -19,7 +19,7 @@
 #import "ParentCollectionViewController.h"
 #import "ConnectivityManager.h"
 #import "UniversalDevice.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 
 @interface ParentCollectionViewController ()
 
@@ -344,7 +344,7 @@
 
 - (void)expandRootRevealController
 {
-    [(RootRevealControllerViewController *)[UniversalDevice revealViewController] expandViewController];
+    [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
 #pragma mark - Custom Getters and Setters

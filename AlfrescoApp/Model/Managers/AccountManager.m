@@ -21,6 +21,7 @@
 #import "RequestHandler.h"
 #import "Constants.h"
 #import "AccountCertificate.h"
+#import "AlfrescoProfileConfig.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -49,6 +50,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     self = [super init];
     if (self)
     {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileChanged:) name:kAlfrescoConfigurationProfileDidChangeNotification object:nil];
         [self loadAccountsFromKeychain];
     }
     return self;
@@ -200,6 +202,17 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         }
     }
     return paidAccounts;
+}
+
+#pragma mark - Notification Methods
+
+- (void)profileChanged:(NSNotification *)notification
+{
+    AlfrescoProfileConfig *profile = notification.object;
+    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigurationProfileDidChangeForAccountKey];
+    changedAccount.selectedProfileIdentifier = profile.identifier;
+    changedAccount.selectedProfileName = profile.label;
+    [self saveAccountsToKeychain];
 }
 
 #pragma mark - Certificate Import Methods

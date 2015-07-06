@@ -30,25 +30,29 @@
 #import "ConnectionDiagnosticViewController.h"
 #import "MainMenuReorderViewController.h"
 #import "MainMenuLocalConfigurationBuilder.h"
+#import "ProfileSelectionViewController.h"
+#import "AppConfigurationManager.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
 static NSInteger const kTagCertificateCell = 1;
 static NSInteger const kTagReorderCell = 2;
+static NSInteger const kTagProfileCell = 3;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroupHeaders;
 @property (nonatomic, strong) NSArray *tableGroupFooters;
-@property (nonatomic, strong) UITextField *usernameTextField;
-@property (nonatomic, strong) UITextField *passwordTextField;
-@property (nonatomic, strong) UITextField *serverAddressTextField;
-@property (nonatomic, strong) UITextField *descriptionTextField;
-@property (nonatomic, strong) UITextField *portTextField;
-@property (nonatomic, strong) UITextField *serviceDocumentTextField;
-@property (nonatomic, strong) UILabel *certificateLabel;
-@property (nonatomic, strong) UISwitch *protocolSwitch;
-@property (nonatomic, strong) UISwitch *syncPreferenceSwitch;
+@property (nonatomic, weak) UITextField *usernameTextField;
+@property (nonatomic, weak) UITextField *passwordTextField;
+@property (nonatomic, weak) UITextField *serverAddressTextField;
+@property (nonatomic, weak) UITextField *descriptionTextField;
+@property (nonatomic, weak) UITextField *portTextField;
+@property (nonatomic, weak) UITextField *serviceDocumentTextField;
+@property (nonatomic, weak) UILabel *certificateLabel;
+@property (nonatomic, weak) UILabel *profileLabel;
+@property (nonatomic, weak) UISwitch *protocolSwitch;
+@property (nonatomic, weak) UISwitch *syncPreferenceSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
@@ -91,7 +95,7 @@ static NSInteger const kTagReorderCell = 2;
         self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
         
         NSNumber *canReorderMenuItems = configuration[kAppConfigurationUserCanEditMainMenuKey];
-        self.canReorderMainMenuItems = (canReorderMenuItems && account == [AccountManager sharedManager].selectedAccount) ? canReorderMenuItems.boolValue : YES;
+        self.canReorderMainMenuItems = ((canReorderMenuItems.boolValue && account == [AccountManager sharedManager].selectedAccount) || [[AppConfigurationManager sharedManager] serverConfigurationExistsForAccount:account]) ? canReorderMenuItems.boolValue : YES;
     }
     return self;
 }
@@ -140,6 +144,11 @@ static NSInteger const kTagReorderCell = 2;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(profileDidChange:)
+                                                 name:kAlfrescoConfigurationProfileDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -279,9 +288,14 @@ static NSInteger const kTagReorderCell = 2;
     }
     else if (cell.tag == kTagReorderCell)
     {
-        MainMenuLocalConfigurationBuilder *mainBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:self.account session:self.session];
-        MainMenuReorderViewController *reorderController = [[MainMenuReorderViewController alloc] initWithAccount:self.account mainMenuBuilder:mainBuilder];
+//        MainMenuLocalConfigurationBuilder *mainBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithConfigurationService:[[AppConfigurationManager sharedManager] configurationServiceForEmbeddedConfiguration] account:self.account session:self.session];
+        MainMenuReorderViewController *reorderController = [[MainMenuReorderViewController alloc] initWithAccount:self.account session:self.session];
         [self.navigationController pushViewController:reorderController animated:YES];
+    }
+    else if (cell.tag == kTagProfileCell)
+    {
+        ProfileSelectionViewController *profileSelectionViewController = [[ProfileSelectionViewController alloc] initWithAccount:self.account];
+        [self.navigationController pushViewController:profileSelectionViewController animated:YES];
     }
 }
 
@@ -390,6 +404,15 @@ static NSInteger const kTagReorderCell = 2;
             configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
         }
         
+        LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        profileCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        profileCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        profileCell.tag = kTagProfileCell;
+        profileCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.profile", @"Profile");
+        profileCell.valueLabel.text = self.account.selectedProfileName;
+        profileCell.valueLabel.textColor = [UIColor lightGrayColor];
+        self.profileLabel = profileCell.valueLabel;
+        
          /**
           * Selectively disable some controls if required
           */
@@ -413,12 +436,13 @@ static NSInteger const kTagReorderCell = 2;
         }
         else
         {
-            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[configurationCell],
+            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[profileCell],
+                                                                   @[configurationCell],
                                                                    @[syncPreferenceCell],
                                                                    @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
                                                                    @[portCell, serviceDocumentCell, certificateCell]]];
-            self.tableGroupHeaders = @[@"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication", @"accountdetails.header.advanced"];
-            self.tableGroupFooters = @[(self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @"",  @""];
+            self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+            self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @"",  @""];
         }
     }
     else
@@ -668,6 +692,14 @@ static NSInteger const kTagReorderCell = 2;
 - (void)textFieldDidChange:(NSNotification *)notification
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+#pragma mark - Notifictaions
+
+-(void)profileDidChange:(NSNotification *)notifictaion
+{
+    AlfrescoProfileConfig *selectedProfile = notifictaion.object;
+    self.profileLabel.text = selectedProfile.summary;
 }
 
 #pragma mark - UIKeyboard Notifications

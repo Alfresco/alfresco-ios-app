@@ -126,6 +126,15 @@
 
 - (AlfrescoRequest *)initializeInternalStateWithCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
 {
+    if (self.isCacheBuilt)
+    {
+        if (completionBlock != NULL)
+        {
+            completionBlock(YES, nil);
+        }
+        return nil;
+    }
+    
     if (!self.isCacheBuilding)
     {
         self.isCacheBuilding = YES;

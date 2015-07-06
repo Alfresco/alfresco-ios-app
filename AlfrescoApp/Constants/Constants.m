@@ -236,7 +236,11 @@ NSString * const kAlfrescoMDMDisplayNameKey = @"AlfrescoDisplayName";
 ///
 NSString * const kAlfrescoEmbeddedConfigurationFileName = @"configuration.json";
 /// Notifications
-NSString * const kAlfrescoConfigurationDidUpdateNotification = @"AlfrescoConfigurationDidUpdateNotification";
+NSString * const kAlfrescoConfigurationFileDidUpdateNotification = @"AlfrescoConfigurationFileDidUpdateNotification";
+NSString * const kAlfrescoConfigurationShouldUpdateMainMenuNotification = @"AlfrescoConfigurationShouldUpdateMainMenuNotification";
+NSString * const kAlfrescoConfigurationProfileDidChangeNotification = @"AlfrescoConfigurationProfileDidChangeNotification";
+/// Keys
+NSString * const kAlfrescoConfigurationProfileDidChangeForAccountKey = @"AlfrescoConfigurationProfileDidChangeForAccountKey";
 /// Menu Item Identifiers
 NSString * const kAlfrescoMainMenuItemAccountsIdentifier = @"org.alfresco.com.mobile.main.menu.accounts.identifier";
 NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier = @"org.alfresco.com.mobile.main.menu.company.home.identifier";

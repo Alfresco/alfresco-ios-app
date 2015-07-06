@@ -18,8 +18,11 @@
 
 #import "MainMenuViewController.h"
 #import "MainMenuTableViewCell.h"
+#import "MainMenuHeaderView.h"
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
+static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
+static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 @interface MainMenuViewController () <UITableViewDataSource, UITableViewDelegate, MainMenuGroupDelegate>
 @property (nonatomic, strong, readwrite) MainMenuBuilder *builder;
@@ -29,6 +32,7 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 @property (nonatomic, strong, readwrite) MainMenuGroup *footerGroup;
 @property (nonatomic, weak, readwrite) id<MainMenuViewControllerDelegate> delegate;
 @property (nonatomic, strong, readwrite) NSIndexPath *previouslySelectedIndexPath;
+@property (nonatomic, assign, readwrite) BOOL headersVisible;
 // Views
 @property (nonatomic, weak) UITableView *tableView;
 @end
@@ -88,6 +92,10 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     // Register table view
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([MainMenuTableViewCell class]) bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kMainMenuCellIdentifier];
+    
+    // Register header view
+    UINib *headerNib = [UINib nibWithNibName:NSStringFromClass([MainMenuHeaderView class]) bundle:nil];
+    [self.tableView registerNib:headerNib forHeaderFooterViewReuseIdentifier:kMainMenuHeaderViewIdentifier];
     
     // If there is a background colour set
     if (self.backgroundColour)
@@ -206,26 +214,62 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     return foundIndexPath;
 }
 
+- (void)visibilityForSectionHeadersHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    NSUInteger numberOfSections = [self.tableView numberOfSections];
+    for (NSUInteger index = 0; index < numberOfSections; index++)
+    {
+        UITableViewHeaderFooterView *header = [self.tableView headerViewForSection:index];
+        CGFloat alphaValue = (hidden) ? 0.0f : 1.0f;
+        
+        if (animated)
+        {
+            [UIView animateWithDuration:kHeaderFadeSpeed animations:^{
+                header.alpha = alphaValue;
+            }];
+        }
+        else
+        {
+            header.alpha = alphaValue;
+        }
+    }
+    self.headersVisible = !hidden;
+}
+
 #pragma mark - Public Methods
 
-- (void)selectMenuItemWithIdentifier:(NSString *)identifier
+- (void)selectMenuItemWithIdentifier:(NSString *)identifier fallbackIdentifier:(NSString *)fallbackIdentifier
 {
-    for (NSInteger sectionIndex = 0; sectionIndex < self.tableViewData.count; sectionIndex++)
-    {
-        MainMenuSection *currentSection = self.tableViewData[sectionIndex];
-        NSArray *menuItemIdentifiersForCurrentSection = [currentSection.visibleSectionItems valueForKey:@"itemIdentifier"];
-        
-        if ([menuItemIdentifiersForCurrentSection containsObject:identifier])
+    // define a search block
+    BOOL (^searchTableViewDataForIdentifierAndSelect)(NSString *searchIdentifier) = ^(NSString *searchIdentifier) {
+        BOOL foundIdentifier = NO;
+        for (NSInteger sectionIndex = 0; sectionIndex < self.tableViewData.count; sectionIndex++)
         {
-            // Get the row index
-            NSInteger rowIndex = [menuItemIdentifiersForCurrentSection indexOfObject:identifier];
-            // Index Path
-            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-            // Select the row
-            [self.tableView.delegate tableView:self.tableView didSelectRowAtIndexPath:foundIndexPath];
-            [self.tableView selectRowAtIndexPath:foundIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            break;
+            MainMenuSection *currentSection = self.tableViewData[sectionIndex];
+            NSArray *menuItemIdentifiersForCurrentSection = [currentSection.visibleSectionItems valueForKey:@"itemIdentifier"];
+            
+            if ([menuItemIdentifiersForCurrentSection containsObject:searchIdentifier])
+            {
+                // Get the row index
+                NSInteger rowIndex = [menuItemIdentifiersForCurrentSection indexOfObject:searchIdentifier];
+                // Index Path
+                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+                // Select the row
+                [self.tableView.delegate tableView:self.tableView didSelectRowAtIndexPath:foundIndexPath];
+                [self.tableView selectRowAtIndexPath:foundIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                foundIdentifier = YES;
+                break;
+            }
         }
+        return foundIdentifier;
+    };
+    
+    // run the method
+    BOOL foundAndSelected = searchTableViewDataForIdentifierAndSelect(identifier);
+    
+    if (fallbackIdentifier && !foundAndSelected)
+    {
+        searchTableViewDataForIdentifierAndSelect(fallbackIdentifier);
     }
 }
 
@@ -360,12 +404,6 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    MainMenuSection *sectionItem = self.tableViewData[section];
-    return sectionItem.sectionTitle;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuTableViewCell *cell = (MainMenuTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -401,6 +439,37 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     [self.delegate mainMenuViewController:self didSelectItem:selectedItem inSectionItem:selectedSection];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MainMenuHeaderView *header = nil;
+    MainMenuSection *sectionItem = self.tableViewData[section];
+    
+    if (sectionItem.sectionTitle)
+    {
+        header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMainMenuHeaderViewIdentifier];
+        header.headerTextLabel.text = sectionItem.sectionTitle.uppercaseString;
+        header.headerTextLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (!self.headersVisible)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            header.alpha = 0.0f;
+        });
+    }
+    
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    MainMenuHeaderView *header = (MainMenuHeaderView *)[self tableView:tableView viewForHeaderInSection:section];
+    
+    CGFloat height = [header.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
+    
+    return height;
+}
+
 #pragma mark - MainMenuGroupDelegate Methods
 
 - (void)mainMenuGroupDidChange:(MainMenuGroup *)group
@@ -411,6 +480,9 @@ static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
     self.tableViewData = [self allTableViewSectionsItems];
     // reload the table view
     [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self visibilityForSectionHeadersHidden:YES animated:YES];
+    });
     // select the previous index path
     [self.tableView selectRowAtIndexPath:currentlySelected animated:NO scrollPosition:UITableViewScrollPositionNone];
 }

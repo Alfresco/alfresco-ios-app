@@ -21,6 +21,6 @@
 
 @interface MainMenuReorderViewController : UIViewController
 
-- (instancetype)initWithAccount:(UserAccount *)userAccount mainMenuBuilder:(MainMenuBuilder *)mainMenuBuilder;
+- (instancetype)initWithAccount:(UserAccount *)userAccount session:(id<AlfrescoSession>)session;// mainMenuBuilder:(MainMenuBuilder *)mainMenuBuilder;
 
 @end

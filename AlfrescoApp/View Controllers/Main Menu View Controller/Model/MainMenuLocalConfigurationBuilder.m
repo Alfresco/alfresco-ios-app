@@ -24,6 +24,11 @@
 
 @implementation MainMenuLocalConfigurationBuilder
 
+- (AlfrescoConfigService *)configService
+{
+    return [[AppConfigurationManager sharedManager] configurationServiceForEmbeddedConfiguration];
+}
+
 #pragma mark - Public Methods
 
 - (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock

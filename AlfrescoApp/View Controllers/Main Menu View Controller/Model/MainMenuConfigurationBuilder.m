@@ -29,23 +29,23 @@
 #import "SettingsViewController.h"
 #import "WebBrowserViewController.h"
 #import "AppConfigurationManager.h"
+#import "AccountManager.h"
 
 #import "FileFolderCollectionViewController.h"
 
 static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 @interface MainMenuConfigurationBuilder ()
-
 @end
 
 @implementation MainMenuConfigurationBuilder
 
-- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session
+- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session;
 {
     self = [super initWithAccount:account];
     if (self)
     {
-        self.configService = [AppConfigurationManager sharedManager].configService;
+        self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         self.session = session;
     }
     return self;
@@ -73,24 +73,40 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 - (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
-    __block NSArray *sections = nil;
-    
     AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
+
+    void (^buildItemsForProfile)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *profile) {
+        [self.configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
+            if (rootViewError)
+            {
+                AlfrescoLogError(@"Could not retrieve root config for profile %@", profile.rootViewId);
+            }
+            else
+            {
+                NSLog(@"ViewGroupConfig: %@", rootViewConfig.identifier);
+                
+                [self buildSectionsForRootView:rootViewConfig completionBlock:completionBlock];
+            }
+        }];
+    };
     
-    [self.configService retrieveViewGroupConfigWithIdentifier:configManager.selectedProfile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
-        if (rootViewError)
-        {
-            NSLog(@"Could not retrieve config");
-        }
-        else
-        {
-            NSLog(@"ViewGroupConfig: %@", rootViewConfig.identifier);
-            
-            sections = [self buildSectionsForRootView:rootViewConfig];
-            
-            completionBlock(sections);
-        }
-    }];
+    if (self.account == [AccountManager sharedManager].selectedAccount)
+    {
+        buildItemsForProfile(configManager.selectedProfile);
+    }
+    else
+    {
+        [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
+            if (defaultConfigError)
+            {
+                AlfrescoLogError(@"Could not retrieve root config for profile %@", defaultConfig.rootViewId);
+            }
+            else
+            {
+                buildItemsForProfile(defaultConfig);
+            }
+        }];
+    }
 }
 
 - (void)sectionsForFooterGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
@@ -128,18 +144,20 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 #pragma mark - Private Methods
 
-- (NSArray *)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView
+- (void)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView completionBlock:(void (^)(NSArray *sections))completionBlock
 {
     NSMutableArray *sections = [NSMutableArray array];
-    MainMenuSection *rootSection = [[MainMenuSection alloc] initWithTitle:nil sectionItems:nil];
-    
+//    MainMenuSection *newSection = [[MainMenuSection alloc] initWithTitle:nil sectionItems:nil];
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:kIconMappingFileName ofType:@"plist"];
     NSDictionary *iconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    [self buildSectionsForRootView:rootView section:rootSection sectionArray:sections iconLookupDictionary:iconMappings];
-    return sections;
+    [self buildSectionsForRootView:rootView section:nil sectionArray:sections iconLookupDictionary:iconMappings completionBlock:completionBlock];
 }
 
-- (void)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView section:(MainMenuSection *)section sectionArray:(NSMutableArray *)sectionArray iconLookupDictionary:(NSDictionary *)iconLookup
+- (void)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView
+                         section:(MainMenuSection *)section
+                    sectionArray:(NSMutableArray *)sectionArray
+            iconLookupDictionary:(NSDictionary *)iconLookup
+                 completionBlock:(void (^)(NSArray *sections))completionBlock
 {
     for (AlfrescoItemConfig *subItem in rootView.items)
     {
@@ -154,12 +172,17 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
                 else
                 {
                     MainMenuSection *newSection = [[MainMenuSection alloc] initWithTitle:groupConfig.label sectionItems:nil];
-                    [self buildSectionsForRootView:groupConfig section:newSection sectionArray:sectionArray iconLookupDictionary:iconLookup];
+                    [self buildSectionsForRootView:groupConfig section:newSection sectionArray:sectionArray iconLookupDictionary:iconLookup completionBlock:completionBlock];
                 }
             }];
         }
         else if ([subItem isKindOfClass:[AlfrescoViewConfig class]])
         {
+            if (!section)
+            {
+                section = [[MainMenuSection alloc] initWithTitle:subItem.label sectionItems:nil];
+            }
+            
             // define a block
             void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem) {
                 NSString *bundledIconName = iconLookup[subItem.identifier];
@@ -196,12 +219,18 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
                 }];
             }
         }
+        
     }
     
     // Add the section to the sections array
     if (section)
     {
         [sectionArray addObject:section];
+    }
+    
+    if (completionBlock != NULL)
+    {
+        completionBlock(sectionArray);
     }
 }
 

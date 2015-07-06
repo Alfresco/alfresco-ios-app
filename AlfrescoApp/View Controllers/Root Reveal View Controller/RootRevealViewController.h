@@ -15,12 +15,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
-@interface RootRevealControllerViewController : UIViewController
+
+#import <Foundation/Foundation.h>
+
+@class RootRevealViewController;
+
+@protocol RootRevealViewControllerDelegate <NSObject>
+
+@optional
+- (void)controllerWillExpandToDisplayMasterViewController:(RootRevealViewController *)controller;
+- (void)controllerDidExpandToDisplayMasterViewController:(RootRevealViewController *)controller;
+- (void)controllerWillCollapseToHideMasterViewController:(RootRevealViewController *)controller;
+- (void)controllerDidCollapseToHideMasterViewController:(RootRevealViewController *)controller;
+
+@end
+
+@interface RootRevealViewController : UIViewController
 
 @property (nonatomic, assign, readonly) BOOL hasOverlayController;
+@property (nonatomic, assign, readonly) BOOL isExpanded;
 @property (nonatomic, strong) UIViewController *masterViewController;
 @property (nonatomic, strong) UIViewController *detailViewController;
+@property (nonatomic, weak) id<RootRevealViewControllerDelegate> delegate;
 
 - (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController;
 

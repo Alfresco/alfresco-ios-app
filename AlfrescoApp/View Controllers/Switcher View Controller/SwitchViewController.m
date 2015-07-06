@@ -17,7 +17,7 @@
  ******************************************************************************/
  
 #import "SwitchViewController.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "UniversalDevice.h"
 #import "DismissCompletionProtocol.h"
 #import "NavigationViewController.h"
@@ -106,7 +106,7 @@
         dismissBlockConformingObject.dismissCompletionBlock = ^{
             if (self.previouslySelectedItem)
             {
-                [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier];
+                [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
             }
         };
     }
@@ -126,7 +126,7 @@
     }
     
     // Collapse the menu controller
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+    RootRevealViewController *rootViewController = (RootRevealViewController *)[UniversalDevice revealViewController];
     [rootViewController collapseViewController];
 }
 

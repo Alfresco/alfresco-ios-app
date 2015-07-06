@@ -21,7 +21,7 @@
 #import "NavigationViewController.h"
 #import "CloudSignUpViewController.h"
 #import "AccountTypeSelectionViewController.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "WebBrowserViewController.h"
 
 static CGFloat const kButtonCornerRadius = 5.0f;
@@ -74,7 +74,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 
 - (void)removeControllerFromParentController
 {
-    RootRevealControllerViewController *parentViewController = (RootRevealControllerViewController *)self.parentViewController;
+    RootRevealViewController *parentViewController = (RootRevealViewController *)self.parentViewController;
     [parentViewController removeOverlayedViewControllerWithAnimation:YES];
 }
 

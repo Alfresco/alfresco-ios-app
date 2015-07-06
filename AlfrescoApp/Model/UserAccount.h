@@ -64,6 +64,10 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 // Paid account tracking
 @property (nonatomic, assign, getter = isPaidAccount) BOOL paidAccount;
 
+// Configuration
+@property (nonatomic, strong) NSString *selectedProfileIdentifier;
+@property (nonatomic, strong) NSString *selectedProfileName;
+
 - (instancetype)initWithAccountType:(UserAccountType)accountType;
 
 @end

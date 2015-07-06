@@ -23,17 +23,19 @@
 #import "MainMenuTableViewCell.h"
 #import "AppConfigurationManager.h"
 #import "MainMenuRemoteConfigurationBuilder.h"
+#import "RootRevealViewController.h"
 
 static NSString * const kSitesViewIdentifier = @"view-sites-default";
 static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 // Extend the MainMenyViewController so we have access to private properties and methods
 @interface MainMenuViewController ()
+@property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSArray *tableViewData;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
-@interface MainMenuConfigurationViewController ()
+@interface MainMenuConfigurationViewController () <RootRevealViewControllerDelegate>
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) MainMenuConfigurationBuilder *builder;
 @end
@@ -49,7 +51,8 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListEmpty:) name:kAlfrescoAccountsListEmptyNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationDidChange:) name:kAlfrescoConfigurationDidUpdateNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationDidChange:) name:kAlfrescoConfigurationFileDidUpdateNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:kAlfrescoConfigurationShouldUpdateMainMenuNotification object:nil];
         
         [self loadGroupType:MainMenuGroupTypeHeader completionBlock:nil];
         [self loadGroupType:MainMenuGroupTypeFooter completionBlock:nil];
@@ -67,7 +70,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withDescription:accountName];
     [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
         // select sites
-        [self selectMenuItemWithIdentifier:kSitesViewIdentifier];
+        [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
     }];
     
     [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:self.session.personIdentifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
@@ -113,9 +116,14 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     MainMenuConfigurationBuilder *builder = notification.object;
     self.builder = builder;
     
+    [self updateMenu:notification];
+}
+
+- (void)updateMenu:(NSNotification *)notification
+{
     [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
         // select sites
-        [self selectMenuItemWithIdentifier:kSitesViewIdentifier];
+        [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
     }];
 }
 
@@ -141,6 +149,18 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     }
     
     return cell;
+}
+
+#pragma mark - RootRevealViewControllerDelegate Methods
+
+- (void)controllerDidExpandToDisplayMasterViewController:(RootRevealViewController *)controller
+{
+    [self visibilityForSectionHeadersHidden:NO animated:YES];
+}
+
+- (void)controllerWillCollapseToHideMasterViewController:(RootRevealViewController *)controller
+{
+    [self visibilityForSectionHeadersHidden:YES animated:YES];
 }
 
 @end
