@@ -402,9 +402,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // update the UI based on permissions
     if (!self.editing)
     {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                               target:self
-                                                                               action:@selector(performEditBarButtonItemAction:)];
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(performEditBarButtonItemAction:)];
     }
     else
     {
@@ -413,7 +411,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                                                action:@selector(performEditBarButtonItemAction:)];
     }
     
-//    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
     [rightBarButtonItems addObject:self.editBarButtonItem];
     
     if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
