@@ -233,7 +233,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
             header.alpha = alphaValue;
         }
     }
-    self.headersVisible = hidden;
+    self.headersVisible = !hidden;
 }
 
 #pragma mark - Public Methods
@@ -449,6 +449,13 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
         header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kMainMenuHeaderViewIdentifier];
         header.headerTextLabel.text = sectionItem.sectionTitle.uppercaseString;
         header.headerTextLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (!self.headersVisible)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            header.alpha = 0.0f;
+        });
     }
     
     return header;
