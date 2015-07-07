@@ -22,4 +22,6 @@
 - (void)setImage:(UIImage *)image withFade:(BOOL)fadeAnimation switchingToContentMode:(UIViewContentMode)contentMode;
 - (void)setImageAtPath:(NSString *)imagePath withFade:(BOOL)fadeAnimation;
 
+- (void) updateContentMode;
+
 @end
