@@ -17,10 +17,9 @@
  ******************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "MainMenuBuilder.h"
 
-@interface MainMenuReorderViewController : UIViewController
+@interface MainMenuHeaderView : UITableViewHeaderFooterView
 
-- (instancetype)initWithAccount:(UserAccount *)userAccount session:(id<AlfrescoSession>)session;
+@property (nonatomic, weak) IBOutlet UILabel *headerTextLabel;
 
 @end

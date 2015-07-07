@@ -22,7 +22,7 @@
 #import "LocationManager.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "DetailSplitViewController.h"
 #import "SwitchViewController.h"
 #import "AccountsViewController.h"
@@ -49,6 +49,7 @@
 #import "SyncViewController.h"
 #import "TaskViewController.h"
 #import "MainMenuLocalConfigurationBuilder.h"
+#import "AppConfigurationManager.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -248,7 +249,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 
 - (UIViewController *)buildMainAppUIWithSession:(id<AlfrescoSession>)session displayingMainMenu:(BOOL)displayMainMenu
 {
-    RootRevealControllerViewController *rootRevealViewController = nil;
+    RootRevealViewController *rootRevealViewController = nil;
     
     BOOL isManaged = self.appleConfigurationHelper.isManaged || self.mobileIronConfigurationHelper.isManaged;
     
@@ -276,7 +277,8 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     self.mainMenuViewController = mainMenuController;
     
-    rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];
+    rootRevealViewController = [[RootRevealViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];
+    rootRevealViewController.delegate = (id<RootRevealViewControllerDelegate>)self.mainMenuViewController;
     
     if (IS_IPAD)
     {
@@ -445,7 +447,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     [self.mobileIronConfigurationHelper setManagedDictionary:config];
     
-    RootRevealControllerViewController *rootRevealController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+    RootRevealViewController *rootRevealController = (RootRevealViewController *)[UniversalDevice revealViewController];
     
     if (rootRevealController.hasOverlayController)
     {

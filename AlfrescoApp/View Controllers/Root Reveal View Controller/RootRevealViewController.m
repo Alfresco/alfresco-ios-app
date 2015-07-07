@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
  
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 static CGFloat kDeviceSpecificRevealWidth;
@@ -25,12 +25,12 @@ static const CGFloat kPhoneRevealWidth = 0.0f;
 static const CGFloat kMasterViewWidth = 250.0f;
 static const CGFloat kAnimationSpeed = 0.2f;
 
-@interface RootRevealControllerViewController () <UIGestureRecognizerDelegate>
+@interface RootRevealViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign, readwrite) BOOL hasOverlayController;
 @property (nonatomic, strong) UIView *masterViewContainer;
 @property (nonatomic, strong) UIView *detailViewContainer;
-@property (nonatomic, assign) BOOL isExpanded;
+@property (nonatomic, assign, readwrite) BOOL isExpanded;
 
 @property (nonatomic, assign) CGRect dragStartRect;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
@@ -41,7 +41,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
 
 @end
 
-@implementation RootRevealControllerViewController
+@implementation RootRevealViewController
 
 - (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController
 {
@@ -135,6 +135,10 @@ static const CGFloat kAnimationSpeed = 0.2f;
 {
     if (!self.isExpanded)
     {
+        if ([self.delegate respondsToSelector:@selector(controllerWillExpandToDisplayMasterViewController:)])
+        {
+            [self.delegate controllerWillExpandToDisplayMasterViewController:self];
+        }
         [UIView animateWithDuration:kAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
             CGRect detailFrame = self.detailViewContainer.frame;
             detailFrame.origin.x = kMasterViewWidth;
@@ -142,6 +146,10 @@ static const CGFloat kAnimationSpeed = 0.2f;
         } completion:^(BOOL finished) {
             self.isExpanded = YES;
             self.detailViewController.view.userInteractionEnabled = NO;
+            if ([self.delegate respondsToSelector:@selector(controllerDidExpandToDisplayMasterViewController:)])
+            {
+                [self.delegate controllerDidExpandToDisplayMasterViewController:self];
+            }
         }];
     }
 }
@@ -150,6 +158,10 @@ static const CGFloat kAnimationSpeed = 0.2f;
 {
     if (self.isExpanded)
     {
+        if ([self.delegate respondsToSelector:@selector(controllerWillCollapseToHideMasterViewController:)])
+        {
+            [self.delegate controllerWillCollapseToHideMasterViewController:self];
+        }
         [UIView animateWithDuration:kAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
             CGRect detailFrame = self.detailViewContainer.frame;
             if (IS_IPAD)
@@ -164,6 +176,10 @@ static const CGFloat kAnimationSpeed = 0.2f;
         } completion:^(BOOL finished) {
             self.isExpanded = NO;
             self.detailViewController.view.userInteractionEnabled = YES;
+            if ([self.delegate respondsToSelector:@selector(controllerDidCollapseToHideMasterViewController:)])
+            {
+                [self.delegate controllerDidCollapseToHideMasterViewController:self];
+            }
         }];
     }
 }

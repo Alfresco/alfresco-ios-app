@@ -19,7 +19,7 @@
 #import "ParentListViewController.h"
 #import "ConnectivityManager.h"
 #import "UniversalDevice.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 
 @interface ParentListViewController ()
 @property (nonatomic, strong) NSDictionary *imageMappings;
@@ -328,7 +328,7 @@
 
 - (void)expandRootRevealController
 {
-    [(RootRevealControllerViewController *)[UniversalDevice revealViewController] expandViewController];
+    [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
 #pragma mark - Custom Getters and Setters

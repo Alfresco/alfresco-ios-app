@@ -19,6 +19,8 @@
 #import "MainMenuReorderViewController.h"
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
+#import "MainMenuLocalConfigurationBuilder.h"
+#import "MBProgressHUD.h"
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
@@ -47,17 +49,18 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     {
         self.visibleItems = [NSMutableArray array];
         self.hiddenItems = [NSMutableArray array];
+        
     }
     return self;
 }
 
-- (instancetype)initWithAccount:(UserAccount *)userAccount mainMenuBuilder:(MainMenuBuilder *)mainMenuBuilder
+- (instancetype)initWithAccount:(UserAccount *)userAccount session:(id<AlfrescoSession>)session
 {
     self = [self init];
     if (self)
     {
         self.account = userAccount;
-        self.mainMenuBuilder = mainMenuBuilder;
+        self.mainMenuBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:userAccount session:nil];
     }
     return self;
 }
@@ -101,7 +104,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         // Only need to post a notifictaion informing the app if the current account order has been modified
         if ([AccountManager sharedManager].selectedAccount == self.account)
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationDidUpdateNotification object:self.mainMenuBuilder];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationFileDidUpdateNotification object:self.mainMenuBuilder];
         }
     }
 }
@@ -110,6 +113,12 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 
 - (void)loadData
 {
+    MBProgressHUD *progress = [[MBProgressHUD alloc] initWithView:self.view];
+    progress.mode = MBProgressHUDModeIndeterminate;
+    progress.labelText = NSLocalizedString(@"main.menu.reorder.retrieving.profiles", @"");
+    progress.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:progress];
+    [progress show:YES];
     [self.mainMenuBuilder sectionsForContentGroupWithCompletionBlock:^(NSArray *sections) {
         AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
         
@@ -132,6 +141,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         self.oldData = sortedVisibleItems;
         self.hiddenItems = sortedHiddenItems.mutableCopy;
         
+        [progress hide:YES];
         [self.tableView reloadData];
     }];
 }

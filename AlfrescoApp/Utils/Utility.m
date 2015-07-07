@@ -22,7 +22,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "UserAccount.h"
 #import "Constants.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "DetailSplitViewController.h"
 #import "UniversalDevice.h"
 #import "ContainerViewController.h"
@@ -636,7 +636,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock
 {
     [UIView animateWithDuration:kZoomAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        RootRevealControllerViewController *revealViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+        RootRevealViewController *revealViewController = (RootRevealViewController *)[UniversalDevice revealViewController];
         UIView *revealView = revealViewController.view;
         revealView.transform = CGAffineTransformMakeScale(0.9f, 0.9f);
     } completion:^(BOOL finished) {
@@ -650,7 +650,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock
 {
     [UIView animateWithDuration:kZoomAnimationSpeed delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        RootRevealControllerViewController *revealViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+        RootRevealViewController *revealViewController = (RootRevealViewController *)[UniversalDevice revealViewController];
         UIView *revealView = revealViewController.view;
         revealView.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
     } completion:^(BOOL finished) {

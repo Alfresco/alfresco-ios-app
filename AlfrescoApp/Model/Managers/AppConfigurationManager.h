@@ -21,7 +21,7 @@
 
 @interface AppConfigurationManager : NSObject
 
-@property (nonatomic, strong) AlfrescoConfigService *configService;
+
 @property (nonatomic, strong) AlfrescoProfileConfig *selectedProfile;
 
 + (AppConfigurationManager *)sharedManager;
@@ -42,5 +42,11 @@
 // Takes an array of unordered main menu items and attempts to order then according to the ordered list of identifiers passed in.
 // The append bool can be set to append the 'not found' objects to the result or not
 - (NSArray *)orderedArrayFromUnorderedMainMenuItems:(NSArray *)unorderedMenuItems usingOrderedIdentifiers:(NSArray *)orderListIdentifiers appendNotFoundObjects:(BOOL)append;
+
+//- (AlfrescoProfileConfig *)selectedProfileForCurrentAccount
+- (AlfrescoConfigService *)configurationServiceForCurrentAccount;
+- (AlfrescoConfigService *)configurationServiceForAccount:(UserAccount *)account;
+- (AlfrescoConfigService *)configurationServiceForEmbeddedConfiguration;
+- (BOOL)serverConfigurationExistsForAccount:(UserAccount *)account;
 
 @end

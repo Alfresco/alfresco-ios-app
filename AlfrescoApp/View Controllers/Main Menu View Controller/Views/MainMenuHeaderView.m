@@ -16,11 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
-#import "MainMenuBuilder.h"
+#import "MainMenuHeaderView.h"
 
-@interface MainMenuReorderViewController : UIViewController
-
-- (instancetype)initWithAccount:(UserAccount *)userAccount session:(id<AlfrescoSession>)session;
+@implementation MainMenuHeaderView
 
 @end

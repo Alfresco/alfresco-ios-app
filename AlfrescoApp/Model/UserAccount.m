@@ -42,6 +42,9 @@ static NSString * const kCloudAccountId = @"kCloudAccountId";
 static NSString * const kCloudAccountKey = @"kCloudAccountKey";
 // Paid account tracking
 static NSString * const kAccountIsPaid = @"kAccountIsPaid";
+// Configuration
+static NSString * const kAccountSelectedProfileIdentifierKey = @"kAccountSelectedProfileIdentifierKey";
+static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfileNameKey";
 
 @interface UserAccount ()
 @property (nonatomic, strong, readwrite) NSString *accountIdentifier;
@@ -95,6 +98,8 @@ static NSString * const kAccountIsPaid = @"kAccountIsPaid";
     [aCoder encodeObject:self.cloudAccountId forKey:kCloudAccountId];
     [aCoder encodeObject:self.cloudAccountKey forKey:kCloudAccountKey];
     [aCoder encodeInteger:self.isPaidAccount forKey:kAccountIsPaid];
+    [aCoder encodeObject:self.selectedProfileIdentifier forKey:kAccountSelectedProfileIdentifierKey];
+    [aCoder encodeObject:self.selectedProfileName forKey:kAccountSelectedProfileNameKey];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -124,6 +129,8 @@ static NSString * const kAccountIsPaid = @"kAccountIsPaid";
         self.cloudAccountId = [aDecoder decodeObjectForKey:kCloudAccountId];
         self.cloudAccountKey = [aDecoder decodeObjectForKey:kCloudAccountKey];
         self.paidAccount = [aDecoder decodeIntegerForKey:kAccountIsPaid];
+        self.selectedProfileIdentifier = [aDecoder decodeObjectForKey:kAccountSelectedProfileIdentifierKey];
+        self.selectedProfileName = [aDecoder decodeObjectForKey:kAccountSelectedProfileNameKey];
     }
     return self;
 }
@@ -147,6 +154,8 @@ static NSString * const kAccountIsPaid = @"kAccountIsPaid";
         account.accountCertificate = self.accountCertificate;
         account.isSyncOn = self.isSyncOn;
         account.paidAccount = self.isPaidAccount;
+        account.selectedProfileIdentifier = self.selectedProfileIdentifier;
+        account.selectedProfileName = self.selectedProfileName;
     }
     return account;
 }
