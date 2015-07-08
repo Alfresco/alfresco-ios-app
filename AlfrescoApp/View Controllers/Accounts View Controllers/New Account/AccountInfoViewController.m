@@ -698,7 +698,11 @@ static NSInteger const kTagProfileCell = 3;
 -(void)profileDidChange:(NSNotification *)notifictaion
 {
     AlfrescoProfileConfig *selectedProfile = notifictaion.object;
-    self.profileLabel.text = selectedProfile.summary;
+    self.profileLabel.text = selectedProfile.label;
+    
+    NSString *title = NSLocalizedString(@"main.menu.profile.selection.banner.title", @"Profile Changed Title");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"main.menu.profile.selection.banner.message", @"Profile Changed"), selectedProfile.label];
+    displayInformationMessageWithTitle(message, title);
 }
 
 #pragma mark - UIKeyboard Notifications

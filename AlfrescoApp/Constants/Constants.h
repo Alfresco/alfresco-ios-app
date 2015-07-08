@@ -270,6 +270,11 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSiteBrowser;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeTasks;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeFavourites;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeLocal;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypePersonProfile;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypePeople;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch;
 
 // App Configuration
 //// Notifictaions

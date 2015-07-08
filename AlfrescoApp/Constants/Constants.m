@@ -255,6 +255,11 @@ NSString * const kAlfrescoMainMenuConfigurationViewTypeSiteBrowser = @"org.alfre
 NSString * const kAlfrescoMainMenuConfigurationViewTypeTasks = @"org.alfresco.client.view.tasks";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeFavourites = @"org.alfresco.client.view.sync";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeLocal = @"org.alfresco.client.view.local";
+NSString * const kAlfrescoMainMenuConfigurationViewTypePersonProfile = @"org.alfresco.client.view.person-profile";
+NSString * const kAlfrescoMainMenuConfigurationViewTypePeople = @"org.alfresco.client.view.people";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery = @"org.alfresco.client.view.preview-carousel";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails = @"org.alfresco.client.view.node-details";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch = @"org.alfresco.client.view.repository-search";
 
 // App Configuration
 //// Notifictaions
