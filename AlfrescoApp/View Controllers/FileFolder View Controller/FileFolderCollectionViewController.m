@@ -189,12 +189,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.listLayout = [BaseCollectionViewFlowLayout new];
-    self.listLayout.itemHeight = kCellHeight;
+    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES];
     self.listLayout.dataSourceInfoDelegate = self;
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:kCellHeight shouldSwipeToDelete:NO];
+    self.gridLayout.dataSourceInfoDelegate = self;
     
-    self.isOnListLayout = YES;
-    [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
+    [self changeCollectionViewLayout:self.listLayout animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
@@ -1771,7 +1771,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void) changeCollectionViewLayout:(BaseCollectionViewFlowLayout *)layout animated:(BOOL) animate
 {
-    
+    if(layout == self.listLayout)
+    {
+        self.isOnListLayout = YES;
+    }
+    else
+    {
+        self.isOnListLayout = NO;
+    }
+    [self.collectionView setCollectionViewLayout:layout animated:YES];
+    self.swipeToDeleteGestureRecognizer.enabled = layout.shouldSwipeToDelete;
 }
 
 @end

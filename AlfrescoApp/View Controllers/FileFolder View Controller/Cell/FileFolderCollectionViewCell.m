@@ -59,6 +59,9 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingAccessoryViewConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *accessoryViewButton;
 
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailWidthContraint;
+
 @end
 
 
@@ -481,7 +484,13 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 - (void)applyLayoutAttributes:(BaseLayoutAttributes *)layoutAttributes
 {
     [self layoutIfNeeded];
-    self.separatorHeightConstraint.constant = 1/[[UIScreen mainScreen] scale];
+    self.thumbnailWidthContraint.constant = layoutAttributes.thumbnailWidth;
+    [self.image updateContentMode];
+    self.separatorHeightConstraint.constant = layoutAttributes.shouldShowSeparatorView ? 1/[[UIScreen mainScreen] scale] : 0;
+    if(!layoutAttributes.shouldShowAccessoryView)
+    {
+        self.accessoryViewWidthConstraint.constant = 0;
+    }
     [self layoutIfNeeded];
     if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
     {
