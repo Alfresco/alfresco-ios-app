@@ -796,6 +796,9 @@
  */
 "main.menu.profile.selection.title" = "Profiles";
 
+"main.menu.profile.selection.banner.title" = "Main Menu Updated";
+"main.menu.profile.selection.banner.message" = "The main menu has been updated to display the %@ profile.";
+
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
  */
