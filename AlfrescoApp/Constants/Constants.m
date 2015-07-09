@@ -260,6 +260,8 @@ NSString * const kAlfrescoMainMenuConfigurationViewTypePeople = @"org.alfresco.c
 NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery = @"org.alfresco.client.view.preview-carousel";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails = @"org.alfresco.client.view.node-details";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch = @"org.alfresco.client.view.repository-search";
+// View Parameter Keys
+NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey = @"siteShortName";
 
 // App Configuration
 //// Notifictaions

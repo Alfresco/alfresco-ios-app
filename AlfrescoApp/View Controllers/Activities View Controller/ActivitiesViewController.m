@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -30,32 +30,52 @@
 #import "ConnectivityManager.h"
 #import "TableviewUnderlinedHeaderView.h"
 
-
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
 static NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
 static NSString * const kActivityTableSectionOlder = @"activities.section.older";
 
 static NSString * const kActivityCellIdentifier = @"ActivityCell";
 
-@interface ActivitiesViewController ()
+typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
+{
+    ActivitiesViewControllerTypeRepository,
+    ActivitiesViewControllerTypeSite
+};
 
+@interface ActivitiesViewController ()
 @property (nonatomic, strong) AlfrescoActivityStreamService *activityService;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
+@property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) ActivityTableViewCell *prototypeCell;
 @property (nonatomic, strong) NSMutableArray *tableSectionHeaders;
-
+@property (nonatomic, assign) ActivitiesViewControllerType controllerType;
+@property (nonatomic, strong) NSString *siteShortName;
+@property (nonatomic, strong) AlfrescoSite *site;
 @end
 
 @implementation ActivitiesViewController
 
 - (id)initWithSession:(id<AlfrescoSession>)session
 {
-    self = [super initWithNibName:NSStringFromClass(self.class) andSession:session];
-    
+    self = [super initWithSession:session];
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
+    }
+    return self;
+}
+
+- (instancetype)initWithSiteShortName:(NSString *)siteShortName session:(id<AlfrescoSession>)session
+{
+    self = [self initWithSession:session];
+    if (self)
+    {
+        if (siteShortName)
+        {
+            self.controllerType = ActivitiesViewControllerTypeSite;
+            self.siteShortName = siteShortName;
+        }
     }
     return self;
 }
@@ -70,10 +90,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     UINib *cellNib = [UINib nibWithNibName:@"ActivityTableViewCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kActivityCellIdentifier];
 
-    if (self.session)
-    {
-        [self loadActivities];
-    }
+    [self loadActivities];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -159,14 +176,33 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
             [spinner startAnimating];
             self.tableView.tableFooterView = spinner;
             
-            [self.activityService retrieveActivityStreamWithListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            void (^handleMoreActivities)(AlfrescoPagingResult *, NSError *) = ^(AlfrescoPagingResult *pagingResult, NSError *pagingError) {
                 NSMutableArray *activityData = [self constructTableGroups:pagingResult];
                 // This method needs pagingResult for the hasMoreItems flag, but will use activityData in preference to pagingResult.objects
-                [self addMoreToTableViewWithPagingResult:pagingResult data:activityData error:error];
+                [self addMoreToTableViewWithPagingResult:pagingResult data:activityData error:pagingError];
                 self.tableView.tableFooterView = nil;
                 
                 [self selectIndexPathForAlfrescoNodeInDetailView];
-            }];
+            };
+            
+            switch (self.controllerType)
+            {
+                case ActivitiesViewControllerTypeRepository:
+                {
+                    [self.activityService retrieveActivityStreamWithListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                        handleMoreActivities(pagingResult, error);
+                    }];
+                }
+                break;
+                    
+                case ActivitiesViewControllerTypeSite:
+                {
+                    [self.activityService retrieveActivityStreamForSite:self.site listingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                        handleMoreActivities(pagingResult, error);
+                    }];
+                }
+                break;
+            }
         }
     }
 }
@@ -212,6 +248,7 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     self.activityService = [[AlfrescoActivityStreamService alloc] initWithSession:session];
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
     self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
+    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
 }
 
 - (void)loadActivities
@@ -219,17 +256,17 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
     self.tableViewData = nil;
     self.tableSectionHeaders = nil;
 
-    if ([ConnectivityManager sharedManager].hasInternetConnection)
+    if ([ConnectivityManager sharedManager].hasInternetConnection && self.session)
     {
-        [self showHUD];
-        [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            if (error || [pagingResult.objects count] == 0)
+        // Define an activites handling block
+        void (^handleActivitesBlock)(AlfrescoPagingResult *pagingResult, NSError *pagingError) = ^(AlfrescoPagingResult *pagingResult, NSError *pagingError) {
+            if (pagingError || [pagingResult.objects count] == 0)
             {
                 [self.tableView reloadData];
                 
-                if (error)
+                if (pagingError)
                 {
-                    [Notifier notifyWithAlfrescoError:error];
+                    [Notifier notifyWithAlfrescoError:pagingError];
                 }
             }
             else
@@ -244,8 +281,40 @@ static NSString * const kActivityCellIdentifier = @"ActivityCell";
             }
             [self hidePullToRefreshView];
             [self hideHUD];
-            
-        }];
+        };
+        
+        // Load activities depending on the controller type
+        switch (self.controllerType)
+        {
+            case ActivitiesViewControllerTypeRepository:
+            {
+                [self showHUD];
+                [self.activityService retrieveActivityStreamWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    handleActivitesBlock(pagingResult, error);
+                }];
+            }
+            break;
+                
+            case ActivitiesViewControllerTypeSite:
+            {
+                [self showHUD];
+                [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *siteError) {
+                    if (siteError)
+                    {
+                        [Notifier notifyWithAlfrescoError:siteError];
+                        [self hideHUD];
+                    }
+                    else
+                    {
+                        self.site = site;
+                        [self.activityService retrieveActivityStreamForSite:site listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *activitiesError) {
+                            handleActivitesBlock(pagingResult, activitiesError);
+                        }];
+                    }
+                }];
+            }
+            break;
+        }
     }
 }
 
