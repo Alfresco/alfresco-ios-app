@@ -26,7 +26,17 @@
 @property (nonatomic) BOOL isSelectedInEditMode;
 
 @property (nonatomic) CGFloat thumbnailWidth;
+@property (nonatomic) BOOL shouldShowSmallThumbnailImage;
 @property (nonatomic) BOOL shouldShowSeparatorView;
 @property (nonatomic) BOOL shouldShowAccessoryView;
+@property (nonatomic) BOOL shouldShowNodeDetails;
+@property (nonatomic) CGFloat nodeNameHorizontalDisplacement;
+@property (nonatomic) CGFloat nodeNameVerticalDisplacement;
+@property (nonatomic) CGFloat statusViewHorizontalDisplacement;
+
+@property (nonatomic, strong) UIFont *nodeNameFont;
+
+@property (nonatomic) BOOL shouldShowEditBelowContent;
+@property (nonatomic) CGFloat editImageTopSpace;
 
 @end

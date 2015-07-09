@@ -20,12 +20,13 @@
 #import "SyncNodeStatus.h"
 #import "BaseLayoutAttributes.h"
 
-static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
+static NSString * const kAlfrescoNodeCellIdentifier = @"TestCell";
 
 static CGFloat const FavoriteIconWidth = 14.0f;
 static CGFloat const FavoriteIconRightSpace = 8.0f;
 static CGFloat const SyncIconWidth = 14.0f;
 static CGFloat const SyncIconRightSpace = 8.0f;
+static CGFloat const UpdateStatusContainerWidth = 36.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
@@ -39,6 +40,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 @property (nonatomic, assign) BOOL isShowingDelete;
 @property (nonatomic, assign) BOOL isSelectedInEditMode;
+@property (nonatomic) BOOL shouldShowAccessoryView;
 
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
@@ -48,9 +50,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconRightSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconRightSpaceConstraint;
-
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconTopSpaceConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconTopSpaceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *updateStatusViewContainerWidthConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingContentViewContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trainlingContentViewContraint;
@@ -61,6 +61,15 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailWidthContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameTopSpaceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewLeadingContraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *editViewLeadingContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *editViewWidthContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *editImageTopSpaceConstraint;
+
+@property (nonatomic) BOOL isEditShownBelow;
 
 @end
 
@@ -97,6 +106,12 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)layoutSubviews
+{
+    [self.image updateContentMode];
+    [super layoutSubviews];
+}
+
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
 {
     self.node = node;
@@ -117,6 +132,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     
     void (^updateStatusIcons)(void) = ^{
         
+        CGFloat updateContainerWidth = UpdateStatusContainerWidth;
         if (self.isFavorite)
         {
             self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
@@ -124,27 +140,31 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
             
             self.favoriteIconWidthConstraint.constant = FavoriteIconWidth;
             self.favoriteIconRightSpaceConstraint.constant = FavoriteIconRightSpace;
-            self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
         }
         else
         {
             self.favoriteIconWidthConstraint.constant = 0;
             self.favoriteIconRightSpaceConstraint.constant = 0;
-            self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+            updateContainerWidth = updateContainerWidth - FavoriteIconWidth - FavoriteIconRightSpace;
         }
         
         if (self.isSyncNode)
         {
             self.syncIconWidthConstraint.constant = SyncIconWidth;
-            self.syncIconRightSpaceConstraint.constant = SyncIconRightSpace;
-            self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
         }
         else
         {
             self.syncIconWidthConstraint.constant = 0;
-            self.syncIconRightSpaceConstraint.constant = 0;
-            self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+            self.favoriteIconRightSpaceConstraint.constant = 0;
+            updateContainerWidth = updateContainerWidth - SyncIconWidth - FavoriteIconRightSpace;
         }
+        
+        if(updateContainerWidth < 0.0f)
+        {
+            updateContainerWidth = 0.0f;
+        }
+        
+        self.updateStatusViewContainerWidthConstraint.constant = updateContainerWidth;
         [self layoutIfNeeded];
     };
     
@@ -229,20 +249,44 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)showEditMode:(BOOL)showEdit selected:(BOOL)isSelected animated:(BOOL)animated
 {
-    double shiftAmount;
-    if(showEdit)
+    if(self.isEditShownBelow)
     {
-        shiftAmount = 40.0;
+        [self.contentView bringSubviewToFront:self.content];
+        double shiftAmount;
+        if(showEdit)
+        {
+            shiftAmount = self.editViewWidthContraint.constant;
+        }
+        else
+        {
+            shiftAmount = 0.0f;
+        }
+        
+        [self wasSelectedInEditMode:isSelected];
+        [self layoutIfNeeded];
+        self.leadingContentViewContraint.constant = shiftAmount;
+        self.trainlingContentViewContraint.constant = -shiftAmount;
     }
     else
     {
-        shiftAmount = 0.0;
+        if(animated)
+        {
+            [self.contentView bringSubviewToFront:self.editView];
+        }
+        double shiftAmount;
+        if(showEdit)
+        {
+            shiftAmount = 0.0f;
+        }
+        else
+        {
+            shiftAmount = -self.editViewWidthContraint.constant;
+        }
+        
+        [self wasSelectedInEditMode:isSelected];
+        [self layoutIfNeeded];
+        self.editViewLeadingContraint.constant = shiftAmount;
     }
-    
-    [self wasSelectedInEditMode:isSelected];
-    [self layoutIfNeeded];
-    self.leadingContentViewContraint.constant = shiftAmount;
-    self.trainlingContentViewContraint.constant = -shiftAmount;
     
     if(animated)
     {
@@ -268,14 +312,12 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         [self.editImageView setImage:[[UIImage imageNamed:@"cell-button-checked-filled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         self.editImageView.tintColor = [UIColor appTintColor];
-        self.editView.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
         self.content.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
     }
     else
     {
         [self.editImageView setImage:[UIImage imageNamed:@"cell-button-unchecked.png"]];
-        self.editView.backgroundColor = [UIColor whiteColor];
-        self.content.backgroundColor = [UIColor whiteColor];
+        self.content.backgroundColor = [UIColor whiteColor];//[UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
     }
     
 }
@@ -389,49 +431,52 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)setAccessoryViewForState:(SyncStatus)status
 {
-    [self layoutIfNeeded];
-    if (self.node.isFolder)
+    if(self.shouldShowAccessoryView)
     {
-        UIImage *buttonImage = [[UIImage imageNamed:@"cell-button-info.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.accessoryViewButton.tintColor = [UIColor appTintColor];
-        [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
-        [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
-        [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
-        [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-        self.accessoryViewWidthConstraint.constant = 50.0;
-    }
-    else
-    {
-        UIImage *buttonImage;
-        
-        switch (status)
+        [self layoutIfNeeded];
+        if (self.node.isFolder)
         {
-            case SyncStatusLoading:
-                buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
-                self.accessoryViewButton.tintColor = [UIColor appTintColor];
-                break;
-                
-            case SyncStatusFailed:
-                buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
-                self.accessoryViewButton.tintColor = [UIColor syncFailedColor];
-                break;
-                
-            default:
-                self.accessoryViewWidthConstraint.constant = 0.0;
-                break;
-        }
-        
-        if (buttonImage)
-        {
+            UIImage *buttonImage = [[UIImage imageNamed:@"cell-button-info.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            self.accessoryViewButton.tintColor = [UIColor appTintColor];
+            [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
             [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
             [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
             [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-            self.accessoryViewWidthConstraint.constant = buttonImage.size.width;
+            self.accessoryViewWidthConstraint.constant = 50.0;
         }
+        else
+        {
+            UIImage *buttonImage;
+            
+            switch (status)
+            {
+                case SyncStatusLoading:
+                    buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
+                    self.accessoryViewButton.tintColor = [UIColor appTintColor];
+                    break;
+                    
+                case SyncStatusFailed:
+                    buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
+                    self.accessoryViewButton.tintColor = [UIColor syncFailedColor];
+                    break;
+                    
+                default:
+                    self.accessoryViewWidthConstraint.constant = 0.0;
+                    break;
+            }
+            
+            if (buttonImage)
+            {
+                [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
+                [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
+                [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+                self.accessoryViewWidthConstraint.constant = buttonImage.size.width;
+            }
+        }
+        [self layoutIfNeeded];
     }
-    [self layoutIfNeeded];
 }
 
 - (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus
@@ -484,14 +529,37 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 - (void)applyLayoutAttributes:(BaseLayoutAttributes *)layoutAttributes
 {
     [self layoutIfNeeded];
+    
+    self.nodeNameLeadingConstraint.constant = layoutAttributes.nodeNameHorizontalDisplacement;
+    self.nodeNameTopSpaceConstraint.constant = layoutAttributes.nodeNameVerticalDisplacement;
     self.thumbnailWidthContraint.constant = layoutAttributes.thumbnailWidth;
-    [self.image updateContentMode];
-    self.separatorHeightConstraint.constant = layoutAttributes.shouldShowSeparatorView ? 1/[[UIScreen mainScreen] scale] : 0;
+    self.separatorHeightConstraint.constant = layoutAttributes.shouldShowSeparatorView ? 1/[[UIScreen mainScreen] scale] : 0.0f;
+    
+    self.details.hidden = !layoutAttributes.shouldShowNodeDetails;
+    self.filename.font = layoutAttributes.nodeNameFont;
     if(!layoutAttributes.shouldShowAccessoryView)
     {
-        self.accessoryViewWidthConstraint.constant = 0;
+        self.accessoryViewWidthConstraint.constant = 0.0f;
+        self.shouldShowAccessoryView = NO;
+        self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
     }
+    else
+    {
+        self.shouldShowAccessoryView = YES;
+        self.statusViewLeadingContraint.constant = 8.0f;
+    }
+    
+    self.editImageTopSpaceConstraint.constant = layoutAttributes.editImageTopSpace;
+    
     [self layoutIfNeeded];
+    
+    self.editViewLeadingContraint.constant = layoutAttributes.shouldShowEditBelowContent ? 0.0f : -self.editViewWidthContraint.constant;
+    self.isEditShownBelow = layoutAttributes.shouldShowEditBelowContent;
+    
+    [self layoutIfNeeded];
+    
+    [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:self.isFavorite animate:NO];
+    
     if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
     {
         [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];

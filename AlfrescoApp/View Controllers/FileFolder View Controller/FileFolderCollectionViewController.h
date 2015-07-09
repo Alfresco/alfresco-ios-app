@@ -21,7 +21,6 @@
 #import "DownloadsViewController.h"
 #import "MultiSelectActionsToolbar.h"
 #import "CollectionViewProtocols.h"
-#import "BaseCollectionViewFlowLayout.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPermissions;
