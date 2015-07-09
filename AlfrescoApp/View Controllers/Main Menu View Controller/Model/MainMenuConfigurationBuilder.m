@@ -243,8 +243,9 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     
     if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeActivities])
     {
-        // activities
-        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSession:self.session];
+        // Activities
+        NSString *siteShortName = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey];
+        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName session:self.session];
         associatedObject = activityListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepository])
