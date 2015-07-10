@@ -3414,6 +3414,8 @@
 				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
 				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
 				73B9582917A6750E0099FB84 /* ParentListViewController.m */,
+				2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */,
+				2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */,
 				089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */,
 				089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */,
 				7386648C1906AD660021D1BD /* About View Controller */,
@@ -3451,8 +3453,6 @@
 				7304DA7B1884348B00229809 /* Version View Controller */,
 				73881F5E18893BB70052C75F /* Web Browser View Controller */,
 				08E1EA0818DB057900F9052F /* Workflow Controllers */,
-				2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */,
-				2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
