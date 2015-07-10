@@ -19,15 +19,18 @@
 #import "BaseCollectionViewFlowLayout.h"
 #import "BaseLayoutAttributes.h"
 
+static CGFloat const itemSpacing = 10.0f;
+
 @interface BaseCollectionViewFlowLayout ()
 
-@property (nonatomic) CGFloat width;
+@property (nonatomic) CGFloat collectionViewWidth;
+@property (nonatomic) CGFloat thumbnailWidth;
 
 @end
 
 @implementation BaseCollectionViewFlowLayout
 
-- (instancetype)init
+- (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL)shouldSwipeToDelete
 {
     self = [super init];
     if(!self)
@@ -35,20 +38,20 @@
         return nil;
     }
     
-    self.numberOfColumns = 1;
-    self.itemHeight = -1;
+    self.numberOfColumns = numberOfColumns;
+    self.itemHeight = itemHeight;
+    self.shouldSwipeToDelete = shouldSwipeToDelete;
     
-    self.minimumLineSpacing = 0;
-    self.minimumInteritemSpacing = 0;
+    self.minimumInteritemSpacing = self.minimumLineSpacing = (self.numberOfColumns == 1)? 0 : itemSpacing;
+    
     self.selectedIndexPathForSwipeToDelete = nil;
-    
-    self.headerReferenceSize = CGSizeMake(self.width, 40);
+    self.headerReferenceSize = CGSizeMake(self.collectionViewWidth, 40);
     
     return self;
 }
 
 #pragma mark - Custom Getters and Setters
-- (CGFloat)width
+- (CGFloat)collectionViewWidth
 {
     UIEdgeInsets insets = self.collectionView.contentInset;
     return CGRectGetWidth(self.collectionView.bounds) - (insets.left + insets.right);
@@ -97,7 +100,7 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    return false;
+    return YES;
 }
 
 - (void)prepareLayout
@@ -105,14 +108,16 @@
     CGFloat height = 0;
     if (self.itemHeight == -1)
     {
-        height = self.width / self.numberOfColumns;
+        height = (self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns;
     }
     else
     {
         height = self.itemHeight;
     }
     
-    self.itemSize = CGSizeMake(self.width / self.numberOfColumns, height);
+    self.itemSize = CGSizeMake((self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns, height);
+    
+    self.thumbnailWidth = (self.numberOfColumns == 1)? 40 : self.itemSize.width - 20;
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -135,6 +140,9 @@
             }
             attributes.editing = self.isEditing;
             attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:attributes.indexPath];
+            attributes.thumbnailWidth = self.thumbnailWidth;
+            attributes.shouldShowSeparatorView = (self.numberOfColumns == 1) ? YES : NO;
+            attributes.shouldShowAccessoryView = (self.numberOfColumns == 1) ? YES : NO;
         }
     }
     
@@ -158,6 +166,9 @@
     attributes.animated = NO;
     attributes.editing = self.isEditing;
     attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:indexPath];
+    attributes.thumbnailWidth = self.thumbnailWidth;
+    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1) ? YES : NO;
+    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1) ? YES : NO;
     return attributes;
 }
 
@@ -168,7 +179,9 @@
     attributes.showDeleteButton = NO;
     attributes.editing = self.isEditing;
     attributes.isSelectedInEditMode = NO;
-    
+    attributes.thumbnailWidth = self.thumbnailWidth;
+    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1) ? YES : NO;
+    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1) ? YES : NO;
     return attributes;
 }
 

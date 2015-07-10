@@ -49,7 +49,7 @@ static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol>
+@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate>
 // IBOutlets
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
@@ -67,6 +67,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, assign) BOOL capturingMedia;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
+@property (nonatomic, strong) BaseCollectionViewFlowLayout *gridLayout;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *initialCellForSwipeToDelete;
@@ -76,10 +77,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, assign) FileFolderCollectionViewControllerType controllerType;
 @property (nonatomic, strong) NSString *siteShortName;
 @property (nonatomic, strong) NSString *folderPath;
+@property (nonatomic) BOOL isOnListLayout;
 // Controllers
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
+@property (nonatomic, strong) UIAlertController *actionsAlertController;
 // Services
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @end
@@ -199,11 +202,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.listLayout = [BaseCollectionViewFlowLayout new];
-    self.listLayout.itemHeight = kCellHeight;
+    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES];
     self.listLayout.dataSourceInfoDelegate = self;
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:kCellHeight shouldSwipeToDelete:NO];
+    self.gridLayout.dataSourceInfoDelegate = self;
     
-    [self.collectionView setCollectionViewLayout:self.listLayout animated:YES];
+    [self changeCollectionViewLayout:self.listLayout animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
@@ -387,7 +391,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
 {
-    [self setEditing:!self.editing animated:YES];
+    if(self.isEditing)
+    {
+        [self setEditing:!self.editing animated:YES];
+    }
+    else
+    {
+        [self setupActionsAlertController];
+        self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
+        UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
+        popPC.barButtonItem = self.editBarButtonItem;
+        popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popPC.delegate = self;
+        
+        [self presentViewController:self.actionsAlertController animated:YES completion:nil];
+    }
 }
 
 - (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated
@@ -397,9 +415,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // update the UI based on permissions
     if (!self.editing)
     {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                               target:self
-                                                                               action:@selector(performEditBarButtonItemAction:)];
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(performEditBarButtonItemAction:)];
     }
     else
     {
@@ -408,7 +424,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                                                action:@selector(performEditBarButtonItemAction:)];
     }
     
-    self.editBarButtonItem.enabled = (self.collectionViewData.count > 0);
     [rightBarButtonItems addObject:self.editBarButtonItem];
     
     if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
@@ -1802,6 +1817,71 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
     }
     return NO;
+}
+
+#pragma mark - UIAdaptivePresentationControllerDelegate methods
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
+    return UIModalPresentationNone;
+}
+
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
+{
+    return self.actionsAlertController;
+}
+
+#pragma mark - Actions methods
+- (void)setupActionsAlertController
+{
+    self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self setEditing:!self.editing animated:YES];
+    }];
+    editAction.enabled = (self.collectionViewData.count > 0);
+    
+    [self.actionsAlertController addAction:editAction];
+    
+    NSString *changeLayoutTitle;
+    if(self.isOnListLayout)
+    {
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
+    }
+    else
+    {
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
+    }
+    UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if(self.isOnListLayout)
+        {
+            [self changeCollectionViewLayout:self.gridLayout animated:YES];
+        }
+        else
+        {
+            [self changeCollectionViewLayout:self.listLayout animated:YES];
+        }
+    }];
+    [self.actionsAlertController addAction:changeLayoutAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [self.actionsAlertController addAction:cancelAction];
+}
+
+- (void) changeCollectionViewLayout:(BaseCollectionViewFlowLayout *)layout animated:(BOOL) animate
+{
+    if(layout == self.listLayout)
+    {
+        self.isOnListLayout = YES;
+    }
+    else
+    {
+        self.isOnListLayout = NO;
+    }
+    [self.collectionView setCollectionViewLayout:layout animated:YES];
+    self.swipeToDeleteGestureRecognizer.enabled = layout.shouldSwipeToDelete;
 }
 
 @end

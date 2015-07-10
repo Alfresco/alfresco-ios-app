@@ -29,10 +29,13 @@
 @property (nonatomic, weak) id<DataSourceInformationProtocol> dataSourceInfoDelegate;
 
 @property (nonatomic) NSUInteger numberOfColumns;
-@property (nonatomic) CGFloat itemHeight;
+@property (nonatomic) CGFloat itemHeight; // an item height of -1 would result in a square cell
 
 @property (nonatomic, strong) NSIndexPath *selectedIndexPathForSwipeToDelete;
 @property (nonatomic, getter=isEditing) BOOL editing;
+@property (nonatomic) BOOL shouldSwipeToDelete;
+
+- (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL) shouldSwipeToDelete;
 
 - (void) selectedIndexPathForSwipeWasDeleted;
 
