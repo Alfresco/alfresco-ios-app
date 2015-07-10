@@ -250,33 +250,48 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepository])
     {
-        // file folder
-//        FileFolderListViewController *fileFolderListViewController = [[FileFolderListViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
-//        associatedObject = fileFolderListViewController;
-        FileFolderCollectionViewController *fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
+        // File Folder
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
+        
+        if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey])
+        {
+            NSString *siteShortName = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSiteShortname:siteShortName sitePermissions:nil siteDisplayName:viewConfig.label session:self.session];
+        }
+        else if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterPathKey])
+        {
+            NSString *folderPath = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterPathKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolderPath:folderPath folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+        }
+        else
+        {
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
+        }
+        
         associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSiteBrowser])
     {
-        // sites
+        // Sites
         SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
         associatedObject = sitesListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeTasks])
     {
-        // tasks
+        // Tasks
         TaskViewController *taskListViewController = [[TaskViewController alloc] initWithSession:self.session];
         associatedObject = taskListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeFavourites])
     {
-        // sync
+        // Sync
         SyncViewController *syncViewController = [[SyncViewController alloc] initWithSession:self.session];
         associatedObject = syncViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeLocal])
     {
-        // local
+        // Local
         DownloadsViewController *localFilesViewController = [[DownloadsViewController alloc] initWithSession:self.session];
         associatedObject = localFilesViewController;
     }

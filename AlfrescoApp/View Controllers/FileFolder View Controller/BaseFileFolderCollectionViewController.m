@@ -19,8 +19,7 @@
 #import "BaseFileFolderCollectionViewController.h"
 #import "PreferenceManager.h"
 
-@interface BaseFileFolderCollectionViewController ()
-
+@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate>
 @end
 
 @implementation BaseFileFolderCollectionViewController
