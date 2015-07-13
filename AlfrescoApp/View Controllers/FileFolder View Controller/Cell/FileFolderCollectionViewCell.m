@@ -20,7 +20,7 @@
 #import "SyncNodeStatus.h"
 #import "BaseLayoutAttributes.h"
 
-static NSString * const kAlfrescoNodeCellIdentifier = @"TestCell";
+static NSString * const kAlfrescoNodeCellIdentifier = @"CollectionViewCellIdentifier";
 
 static CGFloat const FavoriteIconWidth = 14.0f;
 static CGFloat const FavoriteIconRightSpace = 8.0f;
@@ -550,11 +550,12 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     
     self.editImageTopSpaceConstraint.constant = layoutAttributes.editImageTopSpace;
-    
-    [self layoutIfNeeded];
-    
-    self.editViewLeadingContraint.constant = layoutAttributes.shouldShowEditBelowContent ? 0.0f : -self.editViewWidthContraint.constant;
-    self.isEditShownBelow = layoutAttributes.shouldShowEditBelowContent;
+
+    if(layoutAttributes.editing)
+    {
+        self.editViewLeadingContraint.constant = layoutAttributes.shouldShowEditBelowContent ? 0.0f : -self.editViewWidthContraint.constant;
+        self.isEditShownBelow = layoutAttributes.shouldShowEditBelowContent;
+    }
     
     [self layoutIfNeeded];
     
