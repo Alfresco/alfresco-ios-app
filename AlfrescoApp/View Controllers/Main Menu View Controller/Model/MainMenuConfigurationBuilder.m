@@ -36,6 +36,7 @@
 static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 @interface MainMenuConfigurationBuilder ()
+@property (nonatomic, strong) NSDictionary *iconMappings;
 @end
 
 @implementation MainMenuConfigurationBuilder
@@ -47,6 +48,8 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     {
         self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         self.session = session;
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kIconMappingFileName ofType:@"plist"];
+        self.iconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     }
     return self;
 }
@@ -147,16 +150,12 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
 - (void)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView completionBlock:(void (^)(NSArray *sections))completionBlock
 {
     NSMutableArray *sections = [NSMutableArray array];
-//    MainMenuSection *newSection = [[MainMenuSection alloc] initWithTitle:nil sectionItems:nil];
-    NSString *plistPath = [[NSBundle mainBundle] pathForResource:kIconMappingFileName ofType:@"plist"];
-    NSDictionary *iconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    [self buildSectionsForRootView:rootView section:nil sectionArray:sections iconLookupDictionary:iconMappings completionBlock:completionBlock];
+    [self buildSectionsForRootView:rootView section:nil sectionArray:sections completionBlock:completionBlock];
 }
 
 - (void)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView
                          section:(MainMenuSection *)section
                     sectionArray:(NSMutableArray *)sectionArray
-            iconLookupDictionary:(NSDictionary *)iconLookup
                  completionBlock:(void (^)(NSArray *sections))completionBlock
 {
     for (AlfrescoItemConfig *subItem in rootView.items)
@@ -172,7 +171,7 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
                 else
                 {
                     MainMenuSection *newSection = [[MainMenuSection alloc] initWithTitle:groupConfig.label sectionItems:nil];
-                    [self buildSectionsForRootView:groupConfig section:newSection sectionArray:sectionArray iconLookupDictionary:iconLookup completionBlock:completionBlock];
+                    [self buildSectionsForRootView:groupConfig section:newSection sectionArray:sectionArray completionBlock:completionBlock];
                 }
             }];
         }
@@ -185,16 +184,19 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
             
             // define a block
             void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem) {
-                NSString *bundledIconName = iconLookup[subItem.identifier];
-                bundledIconName = (bundledIconName) ?: @"mainmenu-help.png";
+                NSString *bundledIconName = [self imageFileNameForAlfrescoViewConfig:subItem];
                 id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
-                MainMenuItem *item = [[MainMenuItem alloc] initWithIdentifier:subItem.identifier
-                                                                        title:(subItem.label) ?: NSLocalizedString(subItem.identifier, @"Item Title")
-                                                                        image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                                                  description:nil
-                                                                  displayType:MainMenuDisplayTypeMaster
-                                                             associatedObject:associatedObject];
-                [section addMainMenuItem:item];
+                // Do not render the view if it's not supported
+                if (associatedObject)
+                {
+                    MainMenuItem *item = [[MainMenuItem alloc] initWithIdentifier:subItem.identifier
+                                                                            title:(subItem.label) ?: NSLocalizedString(subItem.identifier, @"Item Title")
+                                                                            image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                                                      description:nil
+                                                                      displayType:MainMenuDisplayTypeMaster
+                                                                 associatedObject:associatedObject];
+                    [section addMainMenuItem:item];
+                }
             };
             
             // For some reason there seems to be inline view definition in the embeded JSON configuration file
@@ -236,56 +238,108 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 - (id)associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
 {
+    NavigationViewController *navigationController = nil;
     id associatedObject = nil;
     
     if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeActivities])
     {
-        // activities
-        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSession:self.session];
+        // Activities
+        NSString *siteShortName = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey];
+        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName session:self.session];
         associatedObject = activityListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepository])
     {
-        // file folder
-//        FileFolderListViewController *fileFolderListViewController = [[FileFolderListViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
-//        associatedObject = fileFolderListViewController;
-        FileFolderCollectionViewController *fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
+        // File Folder
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
+        
+        if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey])
+        {
+            NSString *siteShortName = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSiteShortname:siteShortName sitePermissions:nil siteDisplayName:viewConfig.label session:self.session];
+        }
+        else if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterPathKey])
+        {
+            NSString *folderPath = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterPathKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolderPath:folderPath folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+        }
+        else
+        {
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
+        }
+        
         associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSiteBrowser])
     {
-        // sites
+        // Sites
         SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
         associatedObject = sitesListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeTasks])
     {
-        // tasks
+        // Tasks
         TaskViewController *taskListViewController = [[TaskViewController alloc] initWithSession:self.session];
         associatedObject = taskListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeFavourites])
     {
-        // sync
+        // Sync
         SyncViewController *syncViewController = [[SyncViewController alloc] initWithSession:self.session];
         associatedObject = syncViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeLocal])
     {
-        // local
+        // Local
         DownloadsViewController *localFilesViewController = [[DownloadsViewController alloc] initWithSession:self.session];
         associatedObject = localFilesViewController;
     }
-    
-    // If it's nil, use an empty controller in order to stop a runtime error
-    if (!associatedObject)
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypePersonProfile])
     {
+        // TODO: Currently place an empty view controller
+        associatedObject = [[UIViewController alloc] init];
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypePeople])
+    {
+        // TODO: Currently place an empty view controller
+        associatedObject = [[UIViewController alloc] init];
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeGallery])
+    {
+        // TODO: Currently place an empty view controller
+        associatedObject = [[UIViewController alloc] init];
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeNodeDetails])
+    {
+        // TODO: Currently place an empty view controller
+        associatedObject = [[UIViewController alloc] init];
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepositorySearch])
+    {
+        // TODO: Currently place an empty view controller
         associatedObject = [[UIViewController alloc] init];
     }
     
-    NavigationViewController *navigationController = [[NavigationViewController alloc] initWithRootViewController:associatedObject];
+    // If it's nil, use an empty controller in order to stop a runtime error
+    if (associatedObject)
+    {
+         navigationController = [[NavigationViewController alloc] initWithRootViewController:associatedObject];
+    }
     
     return navigationController;
+}
+
+- (NSString *)imageFileNameForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
+{
+    NSString *bundledIconName = self.iconMappings[viewConfig.identifier];
+    
+    if (!bundledIconName)
+    {
+        bundledIconName = @"mainmenu-help.png";
+    }
+    
+    return bundledIconName;
 }
 
 @end

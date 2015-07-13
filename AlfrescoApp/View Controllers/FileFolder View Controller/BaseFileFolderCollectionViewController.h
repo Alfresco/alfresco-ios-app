@@ -25,7 +25,7 @@
 #import "BaseLayoutAttributes.h"
 #import "BaseCollectionViewFlowLayout.h"
 
-@interface BaseFileFolderCollectionViewController : ParentCollectionViewController < UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate >
+@interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchResultsUpdating, UISearchBarDelegate>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;

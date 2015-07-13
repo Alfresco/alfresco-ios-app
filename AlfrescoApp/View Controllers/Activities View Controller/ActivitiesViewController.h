@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -19,5 +19,11 @@
 #import "ParentListViewController.h"
 
 @interface ActivitiesViewController : ParentListViewController
+
+/*
+ * Use this initialier to create an acitivity stream controller for a specific site. If the site short name is nil
+ * a repository wide activity stream controller will be returned.
+ */
+- (instancetype)initWithSiteShortName:(NSString *)siteShortName session:(id<AlfrescoSession>)session;
 
 @end

@@ -26,17 +26,17 @@
 @class AlfrescoPermissions;
 @protocol AlfrescoSession;
 
-@interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController < DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate >
+@interface FileFolderCollectionViewController : BaseFileFolderCollectionViewController
 
 /**
  Providing nil to the folder parameter will result in the root folder (Company Home) being displayed.
  
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
+ @param displayName - the name that will be visible to the user when at the root of the navigation stack.
  @param session - the user' session
  */
-- (id)initWithFolder:(AlfrescoFolder *)folder session:(id<AlfrescoSession>)session;
-
-- (id)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithFolder:(AlfrescoFolder *)folder session:(id<AlfrescoSession>)session;
+- (instancetype)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
  Use the permissions initialiser to avoid the visual refreshing of the navigationItem barbuttons. Failure to set these will result in the
@@ -44,12 +44,40 @@
  
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
  @param permissions - the permissions of the folder
+ @param displayName - the name that will be visible to the user when at the root of the navigation stack.
  @param session - the user' session
  */
-- (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+- (instancetype)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
+- (instancetype)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
-- (id)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+/**
+ Use the site short name initialiser to display the document library for the given site. Failure to provide a site short name will result in a company home controller.
+ 
+ @param siteShortName - the site short name to which the document library folder should be shown. Providing nil will result in Company Home being displayed.
+ @param permissions - the permissions of the site
+ @param displayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param session - the users session
+ */
+- (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
-- (void) setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+/**
+ Use the folder path initialiser to display the contents of a folder node at a given path. Failure to provide a folder path will result in a company home controller.
+ 
+ @param folderPath - the folder path for which the contents should be shown. Providing nil will result in Company Home being displayed.
+ @param permissions - the folder's permissions
+ @param displayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param session - the users session
+ */
+- (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+
+/**
+ Convinece method used to help initialise the internal state of the controller once initialised.
+ 
+ @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
+ @param permissions - the permissions of the folder
+ @param displayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param session - the user' session
+ */
+- (void)setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 @end

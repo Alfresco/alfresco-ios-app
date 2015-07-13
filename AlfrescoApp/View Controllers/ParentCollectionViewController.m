@@ -31,9 +31,9 @@
 
 @implementation ParentCollectionViewController
 
-- (id) initWithStoryboardId:(NSString *)storyboardId andSesstion:(id<AlfrescoSession>)session
+- (instancetype)initWithStoryboardId:(NSString *)storyboardId session:(id<AlfrescoSession>)session
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FileFolderCollectionViewController" bundle:[NSBundle mainBundle]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardId bundle:nil];
     self = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
     
     [self setupWithSession:session];
@@ -41,9 +41,9 @@
     return self;
 }
 
-- (id)initWithSession:(id<AlfrescoSession>)session
+- (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
-    return [self initWithStoryboardId:nil andSesstion:session];
+    return [self initWithStoryboardId:nil session:session];
 }
 
 - (void)setupWithSession:(id<AlfrescoSession>)session

@@ -52,8 +52,6 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     
     self.title = NSLocalizedString(@"main.menu.profile.selection.title", @"Profile Title");
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kProfileCellIdentifier];
-    
     [self loadData];
 }
 
@@ -95,8 +93,14 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kProfileCellIdentifier];
     
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kProfileCellIdentifier];
+    }
+    
     AlfrescoProfileConfig *currentProfile = self.tableViewData[indexPath.row];
     cell.textLabel.text = NSLocalizedString(currentProfile.label, @"Localised Label");
+    cell.detailTextLabel.text = NSLocalizedString(currentProfile.summary, @"Localised Summary");
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     

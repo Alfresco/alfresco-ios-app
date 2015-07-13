@@ -39,9 +39,9 @@
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, assign) BOOL isOnSearchResults;
 
-- (id) initWithStoryboardId:(NSString *)storyboardId andSesstion:(id<AlfrescoSession>)session;
+- (instancetype)initWithStoryboardId:(NSString *)storyboardId session:(id<AlfrescoSession>)session;
 
-- (id)initWithSession:(id<AlfrescoSession>)session;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session;
 
 - (void)setupWithSession:(id<AlfrescoSession>)session;
 
