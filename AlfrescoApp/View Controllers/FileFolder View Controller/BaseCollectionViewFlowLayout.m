@@ -20,6 +20,7 @@
 #import "BaseLayoutAttributes.h"
 
 static CGFloat const itemSpacing = 10.0f;
+static CGFloat const thumbnailWidthInListLayout = 40.0f;
 
 @interface BaseCollectionViewFlowLayout ()
 
@@ -108,7 +109,7 @@ static CGFloat const itemSpacing = 10.0f;
     CGFloat height = 0;
     if (self.itemHeight == -1)
     {
-        height = (self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns;
+        height = (self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns  * 1.3f;
     }
     else
     {
@@ -117,7 +118,7 @@ static CGFloat const itemSpacing = 10.0f;
     
     self.itemSize = CGSizeMake((self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns, height);
     
-    self.thumbnailWidth = (self.numberOfColumns == 1)? 40 : self.itemSize.width - 20;
+    self.thumbnailWidth = (self.numberOfColumns == 1)? thumbnailWidthInListLayout : self.itemSize.width - 20;
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -131,7 +132,7 @@ static CGFloat const itemSpacing = 10.0f;
             {
                 if(self.selectedIndexPathForSwipeToDelete)
                 {
-                    attributes.showDeleteButton = attributes.indexPath.item == self.selectedIndexPathForSwipeToDelete.item ? YES : NO;
+                    attributes.showDeleteButton = attributes.indexPath.item == self.selectedIndexPathForSwipeToDelete.item;
                 }
             }
             else
@@ -141,8 +142,15 @@ static CGFloat const itemSpacing = 10.0f;
             attributes.editing = self.isEditing;
             attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:attributes.indexPath];
             attributes.thumbnailWidth = self.thumbnailWidth;
-            attributes.shouldShowSeparatorView = (self.numberOfColumns == 1) ? YES : NO;
-            attributes.shouldShowAccessoryView = (self.numberOfColumns == 1) ? YES : NO;
+            attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
+            attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
+            attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
+            attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
+            attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
+            attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
+            attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 20;
+            attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
+            attributes.editImageTopSpace = (self.numberOfColumns == 1) ? 17 : 0;
         }
     }
     
@@ -156,7 +164,7 @@ static CGFloat const itemSpacing = 10.0f;
     {
         if(self.selectedIndexPathForSwipeToDelete)
         {
-            attributes.showDeleteButton = indexPath.item == self.selectedIndexPathForSwipeToDelete.item ? YES : NO;
+            attributes.showDeleteButton = indexPath.item == self.selectedIndexPathForSwipeToDelete.item;
         }
     }
     else
@@ -167,8 +175,16 @@ static CGFloat const itemSpacing = 10.0f;
     attributes.editing = self.isEditing;
     attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:indexPath];
     attributes.thumbnailWidth = self.thumbnailWidth;
-    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1) ? YES : NO;
-    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1) ? YES : NO;
+    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
+    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
+    attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
+    attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
+    attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
+    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 20;
+    attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
+    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? 17 : 0;
+    
     return attributes;
 }
 
@@ -180,8 +196,16 @@ static CGFloat const itemSpacing = 10.0f;
     attributes.editing = self.isEditing;
     attributes.isSelectedInEditMode = NO;
     attributes.thumbnailWidth = self.thumbnailWidth;
-    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1) ? YES : NO;
-    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1) ? YES : NO;
+    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
+    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
+    attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
+    attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
+    attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
+    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 20;
+    attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
+    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? 17 : 0;
+    
     return attributes;
 }
 
