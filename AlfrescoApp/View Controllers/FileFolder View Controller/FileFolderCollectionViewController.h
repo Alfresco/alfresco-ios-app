@@ -72,6 +72,16 @@
 - (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
+ Use the folder node ref initialiser to display the contents of a the folder associated to the nodeRef. Failure to provide a folder path will result in a company home controller.
+ 
+ @param nodeRef - the folder's node ref for which the contents should be shown. Providing nil will result in Company Home being displayed.
+ @param permissions - the folder's permissions
+ @param displayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param session - the users session
+ */
+- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+
+/**
  Convinece method used to help initialise the internal state of the controller once initialised.
  
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
