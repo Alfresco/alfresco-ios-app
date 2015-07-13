@@ -17,7 +17,7 @@
  ******************************************************************************/
  
 #import "SitesListViewController.h"
-#import "FileFolderListViewController.h"
+#import "FileFolderCollectionViewController.h"
 #import "UniversalDevice.h"
 #import "SitesCell.h"
 #import "ConnectivityManager.h"
@@ -299,7 +299,8 @@ static CGFloat kSearchCellHeight = 60.0f;
                     [self hideHUD];
                     if (permissions)
                     {
-                        FileFolderListViewController *browserListViewController = [[FileFolderListViewController alloc] initWithFolder:folder folderPermissions:permissions folderDisplayName:selectedSite.title session:self.session];
+                        FileFolderCollectionViewController *browserListViewController = [[FileFolderCollectionViewController alloc] initWithFolder:folder folderPermissions:permissions folderDisplayName:selectedSite.title session:self.session];
+                        
                         [self.navigationController pushViewController:browserListViewController animated:YES];
                     }
                     else
