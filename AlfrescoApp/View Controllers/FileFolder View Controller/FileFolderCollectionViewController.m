@@ -30,7 +30,6 @@
 #import "TextFileViewController.h"
 #import "FailedTransferDetailViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "BaseLayoutAttributes.h"
 #import "SearchCollectionSectionHeader.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
 
@@ -217,7 +216,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.collectionView.delegate = self;
     self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES];
     self.listLayout.dataSourceInfoDelegate = self;
-    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:kCellHeight shouldSwipeToDelete:NO];
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO];
     self.gridLayout.dataSourceInfoDelegate = self;
     
     [self changeCollectionViewStyle:self.style animated:YES];
@@ -293,13 +292,16 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         [self enablePullToRefresh];
         [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
-        self.swipeToDeleteGestureRecognizer.enabled = YES;
     }
     
     if ([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
     {
         BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         properLayout.editing = editing;
+        if(!editing)
+        {
+            self.swipeToDeleteGestureRecognizer.enabled = properLayout.shouldSwipeToDelete;
+        }
     }
 }
 

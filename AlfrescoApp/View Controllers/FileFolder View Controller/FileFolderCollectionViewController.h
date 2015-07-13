@@ -21,7 +21,6 @@
 #import "DownloadsViewController.h"
 #import "MultiSelectActionsToolbar.h"
 #import "CollectionViewProtocols.h"
-#import "BaseCollectionViewFlowLayout.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPermissions;
@@ -82,7 +81,7 @@
 - (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
- Convinece method used to help initialise the internal state of the controller once initialised.
+ Convenience method used to help initialise the internal state of the controller once initialised.
  
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
  @param permissions - the permissions of the folder
