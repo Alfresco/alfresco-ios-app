@@ -24,6 +24,12 @@
 @class AlfrescoPagingResult;
 @protocol AlfrescoSession;
 
+typedef NS_ENUM(NSUInteger, CollectionViewStyle)
+{
+    CollectionViewStyleList,
+    CollectionViewStyleGrid
+};
+
 @interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -38,10 +44,12 @@
 @property (nonatomic, assign) BOOL allowsSwipeToDelete;
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, assign) BOOL isOnSearchResults;
+@property (nonatomic, assign) CollectionViewStyle style;
 
 - (instancetype)initWithStoryboardId:(NSString *)storyboardId session:(id<AlfrescoSession>)session;
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session style:(CollectionViewStyle)style;
 
 - (void)setupWithSession:(id<AlfrescoSession>)session;
 

@@ -43,7 +43,17 @@
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
-    return [self initWithStoryboardId:nil session:session];
+    return [self initWithSession:session style:CollectionViewStyleList];
+}
+
+- (instancetype)initWithSession:(id<AlfrescoSession>)session style:(CollectionViewStyle)style
+{
+    self = [self initWithStoryboardId:nil session:session];
+    if (self)
+    {
+        self.style = style;
+    }
+    return self;
 }
 
 - (void)setupWithSession:(id<AlfrescoSession>)session

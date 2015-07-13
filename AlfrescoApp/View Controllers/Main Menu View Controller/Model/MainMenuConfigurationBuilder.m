@@ -30,7 +30,6 @@
 #import "WebBrowserViewController.h"
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
-
 #import "FileFolderCollectionViewController.h"
 
 static NSString * const kIconMappingFileName = @"MenuIconMappings";
@@ -307,8 +306,18 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeGallery])
     {
-        // TODO: Currently place an empty view controller
-        associatedObject = [[UIViewController alloc] init];
+        // Gallery (Grid)
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        FileFolderCollectionViewController *galleryViewController = nil;
+        
+        if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterNodeRefKey])
+        {
+            NSString *nodeRef = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterNodeRefKey];
+            galleryViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+            galleryViewController.style = CollectionViewStyleGrid;
+        }
+        
+        associatedObject = galleryViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeNodeDetails])
     {

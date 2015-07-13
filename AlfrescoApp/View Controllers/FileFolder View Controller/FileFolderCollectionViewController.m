@@ -28,9 +28,7 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
-
 #import "FailedTransferDetailViewController.h"
-
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SearchCollectionSectionHeader.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
@@ -39,7 +37,8 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
 {
     FileFolderCollectionViewControllerTypeFolderNode,
     FileFolderCollectionViewControllerTypeSiteShortName,
-    FileFolderCollectionViewControllerTypeFolderPath
+    FileFolderCollectionViewControllerTypeFolderPath,
+    FileFolderCollectionViewControllerTypeNodeRef
 };
 
 static CGFloat const kCellHeight = 73.0f;
@@ -76,7 +75,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, assign) FileFolderCollectionViewControllerType controllerType;
 @property (nonatomic, strong) NSString *siteShortName;
 @property (nonatomic, strong) NSString *folderPath;
-@property (nonatomic) BOOL isOnListLayout;
+@property (nonatomic, strong) NSString *nodeRef;
 // Controllers
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
@@ -136,6 +135,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             self.controllerType = FileFolderCollectionViewControllerTypeFolderPath;
             self.folderPath = folderPath;
+        }
+    }
+    return self;
+}
+
+- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+{
+    self = [self initWithFolder:nil folderPermissions:permissions folderDisplayName:displayName session:session];
+    if (self)
+    {
+        if (nodeRef)
+        {
+            self.controllerType = FileFolderCollectionViewControllerTypeNodeRef;
+            self.nodeRef = nodeRef;
         }
     }
     return self;
@@ -206,7 +219,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO];
     self.gridLayout.dataSourceInfoDelegate = self;
     
-    [self changeCollectionViewLayout:self.listLayout animated:YES];
+    [self changeCollectionViewStyle:self.style animated:YES];
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
@@ -657,6 +670,47 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         else
                         {
                             AlfrescoLogError(@"Node returned wwith path; %@, is not a folder node", self.folderPath);
+                        }
+                    }
+                }];
+            }
+            break;
+                
+            case FileFolderCollectionViewControllerTypeNodeRef:
+            {
+                [self showHUD];
+                [self.documentService retrieveNodeWithIdentifier:self.nodeRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
+                    if (nodeRefError)
+                    {
+                        [Notifier notifyWithAlfrescoError:nodeRefError];
+                        [self hideHUD];
+                    }
+                    else
+                    {
+                        if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
+                        {
+                            self.displayFolder = (AlfrescoFolder *)nodeRefNode;
+                            [self retrieveContentOfFolder:(AlfrescoFolder *)nodeRefNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                                // folder permissions not set, retrieve and update the UI
+                                if (!self.folderPermissions)
+                                {
+                                    [self retrieveAndSetPermissionsOfCurrentFolder];
+                                }
+                                else
+                                {
+                                    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                                }
+                                
+                                [self hideHUD];
+                                [self hidePullToRefreshView];
+                                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+                                
+                                [self.view bringSubviewToFront:self.collectionView];
+                            }];
+                        }
+                        else
+                        {
+                            AlfrescoLogError(@"Node returned with path; %@, is not a folder node", self.folderPath);
                         }
                     }
                 }];
@@ -1845,7 +1899,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.actionsAlertController addAction:editAction];
     
     NSString *changeLayoutTitle;
-    if(self.isOnListLayout)
+    if(self.style == CollectionViewStyleList)
     {
         changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
     }
@@ -1854,13 +1908,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
     }
     UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        if(self.isOnListLayout)
+        if(self.style == CollectionViewStyleList)
         {
-            [self changeCollectionViewLayout:self.gridLayout animated:YES];
+            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES];
         }
         else
         {
-            [self changeCollectionViewLayout:self.listLayout animated:YES];
+            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES];
         }
     }];
     [self.actionsAlertController addAction:changeLayoutAction];
@@ -1872,18 +1926,32 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.actionsAlertController addAction:cancelAction];
 }
 
-- (void) changeCollectionViewLayout:(BaseCollectionViewFlowLayout *)layout animated:(BOOL) animate
+- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated
 {
-    if(layout == self.listLayout)
+    BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
+    self.style = style;
+    [self.collectionView setCollectionViewLayout:associatedLayoutForStyle animated:animated];
+    self.swipeToDeleteGestureRecognizer.enabled = associatedLayoutForStyle.shouldSwipeToDelete;
+}
+
+- (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style
+{
+    BaseCollectionViewFlowLayout *returnLayout = nil;
+    switch (style)
     {
-        self.isOnListLayout = YES;
+        case CollectionViewStyleList:
+        {
+            returnLayout = self.listLayout;
+        }
+        break;
+            
+        case CollectionViewStyleGrid:
+        {
+            returnLayout = self.gridLayout;
+        }
+        break;
     }
-    else
-    {
-        self.isOnListLayout = NO;
-    }
-    [self.collectionView setCollectionViewLayout:layout animated:YES];
-    self.swipeToDeleteGestureRecognizer.enabled = layout.shouldSwipeToDelete;
+    return returnLayout;
 }
 
 @end

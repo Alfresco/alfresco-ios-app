@@ -263,6 +263,7 @@ NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch = @"org.
 // View Parameter Keys
 NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey = @"siteShortName";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey = @"path";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey = @"nodeRef";
 
 // App Configuration
 //// Notifictaions
