@@ -275,10 +275,16 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewTypePeople;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSite;
 // View Parameter Keys
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterShowKey;
+// View Parameter Values
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue;
 
 // App Configuration
 //// Notifictaions

@@ -41,6 +41,13 @@ static NSString * const kSitesPreviousSearchThumbnailMappingsFileName = @"SitesS
 
 static CGFloat kSearchCellHeight = 60.0f;
 
+typedef NS_ENUM(NSInteger, SiteListTypeSelection)
+{
+    SiteListTypeSelectionFavouriteSites = 0,
+    SiteListTypeSelectionMySites,
+    SiteListTypeSelectionAllSites
+};
+
 @interface SitesListViewController()
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
@@ -48,7 +55,8 @@ static CGFloat kSearchCellHeight = 60.0f;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSIndexPath *expandedCellIndexPath;
-@property (nonatomic, assign) SiteListType selectedListType;
+@property (nonatomic, assign) SitesListViewFilter sitesFilter;
+@property (nonatomic, assign) SiteListTypeSelection selectedListType;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 
 @end
@@ -61,6 +69,22 @@ static CGFloat kSearchCellHeight = 60.0f;
     if (self)
     {
         [self createAlfrescoServicesWithSession:session];
+        self.title = NSLocalizedString(@"sites.title", @"Sites Title");
+    }
+    return self;
+}
+
+- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session
+{
+    self = [self initWithSession:session];
+    if (self)
+    {
+        self.sitesFilter = filter;
+        self.selectedListType = [self selectionTypeForFilter:filter];
+        if (title)
+        {
+            self.title = title;
+        }
     }
     return self;
 }
@@ -80,16 +104,26 @@ static CGFloat kSearchCellHeight = 60.0f;
                                kSegmentControllerHeight - kSegmentVerticalPadding);
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    segment.selectedSegmentIndex = SiteListTypeFavouriteSites;
+    segment.selectedSegmentIndex = [self selectionTypeForFilter:self.sitesFilter];
     self.selectedListType = segment.selectedSegmentIndex;
     self.segmentedControl = segment;
     [view addSubview:self.segmentedControl];
     
     // create and configure the table view
+    BOOL shouldHideSegmentControl = (self.sitesFilter != SitesListViewFilterNoFilter);
+    CGFloat tableOrigin = view.frame.origin.y + kSegmentControllerHeight;
+    CGFloat tableHeight = view.frame.size.height - kSegmentControllerHeight;
+    
+    if (shouldHideSegmentControl)
+    {
+        tableOrigin = view.frame.origin.y;
+        tableHeight = view.frame.size.height;
+    }
+    
     ALFTableView *tableView = [[ALFTableView alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-                                                                             (view.frame.origin.y + kSegmentControllerHeight),
+                                                                             tableOrigin,
                                                                              view.frame.size.width,
-                                                                             (view.frame.size.height - kSegmentControllerHeight))
+                                                                             tableHeight)
                                                             style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -127,8 +161,6 @@ static CGFloat kSearchCellHeight = 60.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.title = NSLocalizedString(@"sites.title", @"Sites Title");
     
     if (!IS_IPAD)
     {
@@ -400,7 +432,7 @@ static CGFloat kSearchCellHeight = 60.0f;
 {
     self.expandedCellIndexPath = nil;
     
-    self.selectedListType = (SiteListType)self.segmentedControl.selectedSegmentIndex;
+    self.selectedListType = (SiteListTypeSelection)self.segmentedControl.selectedSegmentIndex;
     
     [self showHUD];
     [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
@@ -410,7 +442,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     }];
 }
 
-- (void)loadSitesForSiteType:(SiteListType)siteType
+- (void)loadSitesForSiteType:(SiteListTypeSelection)siteType
               listingContext:(AlfrescoListingContext *)listingContext
          withCompletionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
 {
@@ -418,7 +450,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     {
         switch (siteType)
         {
-            case SiteListTypeMySites:
+            case SiteListTypeSelectionMySites:
             {
                 [self.siteService retrieveSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     if (error)
@@ -431,7 +463,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             }
                 break;
                 
-            case SiteListTypeFavouriteSites:
+            case SiteListTypeSelectionFavouriteSites:
             {
                 [self.siteService retrieveFavoriteSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     if (error)
@@ -444,7 +476,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             }
                 break;
                 
-            case SiteListTypeAllSites:
+            case SiteListTypeSelectionAllSites:
             {
                 [self.siteService retrieveAllSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     if (error)
@@ -601,6 +633,40 @@ static CGFloat kSearchCellHeight = 60.0f;
     } completion:nil];
 }
 
+- (SiteListTypeSelection)selectionTypeForFilter:(SitesListViewFilter)filter
+{
+    SiteListTypeSelection returnSelectionType;
+    
+    switch (filter)
+    {
+        case SitesListViewFilterNoFilter:
+        {
+            returnSelectionType = self.selectedListType;
+        }
+        break;
+            
+        case SitesListViewFilterFavouriteSites:
+        {
+            returnSelectionType = SiteListTypeSelectionFavouriteSites;
+        }
+        break;
+            
+        case SitesListViewFilterMySites:
+        {
+            returnSelectionType = SiteListTypeSelectionMySites;
+        }
+        break;
+            
+        case SitesListViewFilterAllSites:
+        {
+            returnSelectionType = SiteListTypeSelectionAllSites;
+        }
+        break;
+    }
+    
+    return returnSelectionType;
+}
+
 #pragma mark - UISearchBarDelegate Functions
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -647,24 +713,30 @@ static CGFloat kSearchCellHeight = 60.0f;
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
-    [UIView animateWithDuration:kSearchBarSpeed animations:^{
-        CGRect tableViewFrame = self.tableView.frame;
-        tableViewFrame.origin.y -= kSegmentControllerHeight;
-        self.tableView.frame = tableViewFrame;
-    } completion:^(BOOL finished) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }];
+    if (self.sitesFilter == SitesListViewFilterNoFilter)
+    {
+        [UIView animateWithDuration:kSearchBarSpeed animations:^{
+            CGRect tableViewFrame = self.tableView.frame;
+            tableViewFrame.origin.y -= kSegmentControllerHeight;
+            self.tableView.frame = tableViewFrame;
+        } completion:^(BOOL finished) {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+        }];
+    }
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller;
 {
-    [UIView animateWithDuration:kSearchBarSpeed animations:^{
-        CGRect tableViewFrame = self.tableView.frame;
-        tableViewFrame.origin.y += kSegmentControllerHeight;
-        self.tableView.frame = tableViewFrame;
-    } completion:^(BOOL finished) {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-    }];
+    if (self.sitesFilter == SitesListViewFilterNoFilter)
+    {
+        [UIView animateWithDuration:kSearchBarSpeed animations:^{
+            CGRect tableViewFrame = self.tableView.frame;
+            tableViewFrame.origin.y += kSegmentControllerHeight;
+            self.tableView.frame = tableViewFrame;
+        } completion:^(BOOL finished) {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+        }];
+    }
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -715,7 +787,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     favoriteButton.enabled = NO;
     
     __weak SitesListViewController *weakSelf = self;
-    SiteListType siteListShowingAtSelection = self.selectedListType;
+    SiteListTypeSelection siteListShowingAtSelection = self.selectedListType;
     
     if (selectedSite.isFavorite)
     {
@@ -725,7 +797,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             if (site)
             {
                 // if the favourites are displayed, remove from the table view, otherwise replace the site with the updated one
-                if (weakSelf.selectedListType == SiteListTypeFavouriteSites)
+                if (weakSelf.selectedListType == SiteListTypeSelectionFavouriteSites)
                 {
                     weakSelf.expandedCellIndexPath = nil;
                     [weakSelf removeSites:@[selectedSite] withRowAnimation:UITableViewRowAnimationTop];
@@ -752,7 +824,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             if (site)
             {
                 // if the favourites are displayed, add the cell to the table view, otherwise replace the site with the updated one
-                if (weakSelf.selectedListType == SiteListTypeFavouriteSites)
+                if (weakSelf.selectedListType == SiteListTypeSelectionFavouriteSites)
                 {
                     weakSelf.expandedCellIndexPath = nil;
                     [weakSelf addSites:@[site] withRowAnimation:UITableViewRowAnimationFade];
@@ -782,7 +854,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     joinButton.enabled = NO;
     
     __weak SitesListViewController *weakSelf = self;
-    SiteListType siteListShowingAtSelection = self.selectedListType;
+    SiteListTypeSelection siteListShowingAtSelection = self.selectedListType;
     
     if (!selectedSite.isMember && !selectedSite.isPendingMember)
     {
@@ -792,7 +864,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             if (site)
             {
                 // if my sites are displayed, add the cell to the table view, otherwise replace the site with the updated one
-                if (weakSelf.selectedListType == SiteListTypeMySites)
+                if (weakSelf.selectedListType == SiteListTypeSelectionMySites)
                 {
                     weakSelf.expandedCellIndexPath = nil;
                     [weakSelf addSites:@[site] withRowAnimation:UITableViewRowAnimationFade];
@@ -828,7 +900,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             if (site)
             {
                 // replace the site with the updated one, if the all sites are displayed
-                if (weakSelf.selectedListType == SiteListTypeAllSites)
+                if (weakSelf.selectedListType == SiteListTypeSelectionAllSites)
                 {
                     [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
                     [siteCell updateCellStateWithSite:site];
@@ -851,7 +923,7 @@ static CGFloat kSearchCellHeight = 60.0f;
             if (site)
             {
                 // if my sites are displayed, add the cell to the table view, otherwise replace the site with the updated one
-                if (weakSelf.selectedListType == SiteListTypeMySites)
+                if (weakSelf.selectedListType == SiteListTypeSelectionMySites)
                 {
                     weakSelf.expandedCellIndexPath = nil;
                     [weakSelf removeSites:@[selectedSite] withRowAnimation:UITableViewRowAnimationTop];
