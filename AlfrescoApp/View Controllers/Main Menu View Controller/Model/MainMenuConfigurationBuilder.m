@@ -329,6 +329,41 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
         // TODO: Currently place an empty view controller
         associatedObject = [[UIViewController alloc] init];
     }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSite])
+    {
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        SitesListViewController *sitesListViewController = nil;
+        
+        if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterShowKey])
+        {
+            SitesListViewFilter filter;
+            NSString *showValue = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterShowKey];
+            if ([showValue isEqualToString:kAlfrescoMainMenuConfigurationViewParameterMySitesValue])
+            {
+                filter = SitesListViewFilterMySites;
+            }
+            else if ([showValue isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue])
+            {
+                filter = SitesListViewFilterFavouriteSites;
+            }
+            else if ([showValue isEqualToString:kAlfrescoMainMenuConfigurationViewParameterAllSitesValue])
+            {
+                filter = SitesListViewFilterAllSites;
+            }
+            else
+            {
+                filter = SitesListViewFilterNoFilter;
+            }
+            
+            sitesListViewController = [[SitesListViewController alloc] initWithSitesListFilter:filter title:viewConfig.label session:self.session];
+        }
+        else
+        {
+            sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
+        }
+        
+        associatedObject = sitesListViewController;
+    }
     
     // If it's nil, use an empty controller in order to stop a runtime error
     if (associatedObject)
