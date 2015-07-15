@@ -85,6 +85,18 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    self.contentView.frame = bounds;
+}
+
 - (void)registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -108,8 +120,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)layoutSubviews
 {
-    [self.image updateContentMode];
     [super layoutSubviews];
+    [self.image updateContentMode];
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
@@ -533,6 +545,19 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     self.nodeNameLeadingConstraint.constant = layoutAttributes.nodeNameHorizontalDisplacement;
     self.nodeNameTopSpaceConstraint.constant = layoutAttributes.nodeNameVerticalDisplacement;
     self.thumbnailWidthContraint.constant = layoutAttributes.thumbnailWidth;
+    
+    if([self.node isKindOfClass:[AlfrescoFolder class]])
+    {
+        if(layoutAttributes.shouldShowSmallThumbnailImage)
+        {
+            [self.image setImage:smallImageForType(@"folder") withFade:NO];
+        }
+        else
+        {
+            [self.image setImage:largeImageForType(@"folder") withFade:NO];
+        }
+    }
+    
     self.separatorHeightConstraint.constant = layoutAttributes.shouldShowSeparatorView ? 1/[[UIScreen mainScreen] scale] : 0.0f;
     
     self.details.hidden = !layoutAttributes.shouldShowNodeDetails;
@@ -557,11 +582,15 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         self.isEditShownBelow = layoutAttributes.shouldShowEditBelowContent;
     }
     
-    [self layoutIfNeeded];
-    
     [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:self.isFavorite animate:NO];
     
+    [self layoutIfNeeded];
+    
     if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
+    {
+        [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];
+    }
+    else if (!layoutAttributes.showDeleteButton && !layoutAttributes.isEditing && self.isShowingDelete)
     {
         [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];
     }
