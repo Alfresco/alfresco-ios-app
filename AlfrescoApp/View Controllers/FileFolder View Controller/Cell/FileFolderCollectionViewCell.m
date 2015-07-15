@@ -25,7 +25,7 @@ static NSString * const kAlfrescoNodeCellIdentifier = @"CollectionViewCellIdenti
 static CGFloat const FavoriteIconWidth = 14.0f;
 static CGFloat const FavoriteIconRightSpace = 8.0f;
 static CGFloat const SyncIconWidth = 14.0f;
-static CGFloat const SyncIconRightSpace = 8.0f;
+//static CGFloat const SyncIconRightSpace = 8.0f;
 static CGFloat const UpdateStatusContainerWidth = 36.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
