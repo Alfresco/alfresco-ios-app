@@ -21,6 +21,9 @@
 
 static CGFloat const itemSpacing = 10.0f;
 static CGFloat const thumbnailWidthInListLayout = 40.0f;
+static CGFloat const thumbnailSideSpaceInGridLayout = 10.0f;
+static CGFloat const editImageTopSpaceInListLayout = 17.0f;
+static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
 
 @interface BaseCollectionViewFlowLayout ()
 
@@ -101,7 +104,7 @@ static CGFloat const thumbnailWidthInListLayout = 40.0f;
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    return YES;
+    return NO;
 }
 
 - (void)prepareLayout
@@ -118,7 +121,7 @@ static CGFloat const thumbnailWidthInListLayout = 40.0f;
     
     self.itemSize = CGSizeMake((self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns, height);
     
-    self.thumbnailWidth = (self.numberOfColumns == 1)? thumbnailWidthInListLayout : self.itemSize.width - 20;
+    self.thumbnailWidth = (self.numberOfColumns == 1)? thumbnailWidthInListLayout : self.itemSize.width - 2 * thumbnailSideSpaceInGridLayout;
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -148,9 +151,9 @@ static CGFloat const thumbnailWidthInListLayout = 40.0f;
             attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
             attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
             attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
-            attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 20;
+            attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 2 * thumbnailSideSpaceInGridLayout;
             attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-            attributes.editImageTopSpace = (self.numberOfColumns == 1) ? 17 : 0;
+            attributes.editImageTopSpace = (self.numberOfColumns == 1) ? editImageTopSpaceInListLayout : editImageTopSpaceInGridLayout;
         }
     }
     
@@ -162,9 +165,16 @@ static CGFloat const thumbnailWidthInListLayout = 40.0f;
     BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[super layoutAttributesForItemAtIndexPath:indexPath];
     if(!self.isEditing)
     {
-        if(self.selectedIndexPathForSwipeToDelete)
+        if(self.shouldSwipeToDelete)
         {
-            attributes.showDeleteButton = indexPath.item == self.selectedIndexPathForSwipeToDelete.item;
+            if(self.selectedIndexPathForSwipeToDelete)
+            {
+                attributes.showDeleteButton = indexPath.item == self.selectedIndexPathForSwipeToDelete.item;
+            }
+        }
+        else
+        {
+            attributes.showDeleteButton = NO;
         }
     }
     else
@@ -181,9 +191,9 @@ static CGFloat const thumbnailWidthInListLayout = 40.0f;
     attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
     attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
     attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
-    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 20;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 2 * thumbnailSideSpaceInGridLayout;
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? 17 : 0;
+    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? editImageTopSpaceInListLayout : editImageTopSpaceInGridLayout;
     
     return attributes;
 }
@@ -202,9 +212,9 @@ static CGFloat const thumbnailWidthInListLayout = 40.0f;
     attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
     attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
     attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
-    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 20;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 2 * thumbnailSideSpaceInGridLayout;
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? 17 : 0;
+    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? editImageTopSpaceInListLayout : editImageTopSpaceInGridLayout;
     
     return attributes;
 }

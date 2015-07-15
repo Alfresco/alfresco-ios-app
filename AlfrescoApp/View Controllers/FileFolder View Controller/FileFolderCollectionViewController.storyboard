@@ -306,14 +306,12 @@
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dfd-JV-o6x" userLabel="syncIcon">
                                                                     <rect key="frame" x="22" y="0.0" width="14" height="14"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" secondItem="Dfd-JV-o6x" secondAttribute="height" multiplier="1:1" id="Ptg-7B-Xut"/>
                                                                         <constraint firstAttribute="width" constant="14" id="Tuk-FI-Aov"/>
                                                                     </constraints>
                                                                 </imageView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-l5-bWK" userLabel="favoriteIcon">
                                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" secondItem="ZqY-l5-bWK" secondAttribute="height" multiplier="1:1" id="KfT-yA-SnN"/>
                                                                         <constraint firstAttribute="width" constant="14" id="ZPe-UO-yD9"/>
                                                                     </constraints>
                                                                 </imageView>
@@ -323,10 +321,12 @@
                                                                 <constraint firstItem="Dfd-JV-o6x" firstAttribute="top" secondItem="7hi-A6-1DU" secondAttribute="top" id="2Rz-k5-aKH"/>
                                                                 <constraint firstItem="ZqY-l5-bWK" firstAttribute="leading" secondItem="7hi-A6-1DU" secondAttribute="leading" id="CWU-gA-7qD"/>
                                                                 <constraint firstItem="Dfd-JV-o6x" firstAttribute="leading" secondItem="ZqY-l5-bWK" secondAttribute="trailing" constant="8" id="Clv-hl-CUG"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Dfd-JV-o6x" secondAttribute="bottom" id="CwM-WV-FXJ"/>
                                                                 <constraint firstAttribute="width" constant="36" id="RRg-aX-LXs"/>
                                                                 <constraint firstItem="ZqY-l5-bWK" firstAttribute="top" secondItem="7hi-A6-1DU" secondAttribute="top" id="Zq0-WT-1zZ"/>
                                                                 <constraint firstAttribute="height" constant="14" id="fFm-Td-y8F"/>
                                                                 <constraint firstAttribute="trailing" secondItem="Dfd-JV-o6x" secondAttribute="trailing" id="jiq-RB-UC0"/>
+                                                                <constraint firstAttribute="bottom" secondItem="ZqY-l5-bWK" secondAttribute="bottom" id="xdj-Rs-skN"/>
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Node Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cg5-DI-Dip" userLabel="nodeDetails">
