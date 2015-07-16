@@ -22,12 +22,12 @@
 
 static NSString * const kAlfrescoNodeCellIdentifier = @"CollectionViewCellIdentifier";
 
-static CGFloat const FavoriteIconWidth = 14.0f;
-static CGFloat const FavoriteIconRightSpace = 8.0f;
-static CGFloat const SyncIconWidth = 14.0f;
-static CGFloat const UpdateStatusLeadingSpace = 8.0f;
-static CGFloat const UpdateStatusContainerWidth = 36.0f;
-static CGFloat const AccessoryViewInfoWidth = 50.0f;
+static CGFloat const kFavoriteIconWidth = 14.0f;
+static CGFloat const kFavoriteIconRightSpace = 8.0f;
+static CGFloat const kSyncIconWidth = 14.0f;
+static CGFloat const kUpdateStatusLeadingSpace = 8.0f;
+static CGFloat const kUpdateStatusContainerWidth = 36.0f;
+static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
@@ -145,31 +145,31 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     
     void (^updateStatusIcons)(void) = ^{
         
-        CGFloat updateContainerWidth = UpdateStatusContainerWidth;
+        CGFloat updateContainerWidth = kUpdateStatusContainerWidth;
         if (self.isFavorite)
         {
             self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
             self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
             
-            self.favoriteIconWidthConstraint.constant = FavoriteIconWidth;
-            self.favoriteIconRightSpaceConstraint.constant = FavoriteIconRightSpace;
+            self.favoriteIconWidthConstraint.constant = kFavoriteIconWidth;
+            self.favoriteIconRightSpaceConstraint.constant = kFavoriteIconRightSpace;
         }
         else
         {
             self.favoriteIconWidthConstraint.constant = 0;
             self.favoriteIconRightSpaceConstraint.constant = 0;
-            updateContainerWidth = updateContainerWidth - FavoriteIconWidth - FavoriteIconRightSpace;
+            updateContainerWidth = updateContainerWidth - kFavoriteIconWidth - kFavoriteIconRightSpace;
         }
         
         if (self.isSyncNode)
         {
-            self.syncIconWidthConstraint.constant = SyncIconWidth;
+            self.syncIconWidthConstraint.constant = kSyncIconWidth;
         }
         else
         {
             self.syncIconWidthConstraint.constant = 0;
             self.favoriteIconRightSpaceConstraint.constant = 0;
-            updateContainerWidth = updateContainerWidth - SyncIconWidth - FavoriteIconRightSpace;
+            updateContainerWidth = updateContainerWidth - kSyncIconWidth - kFavoriteIconRightSpace;
         }
         
         if(updateContainerWidth < 0.0f)
@@ -457,7 +457,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
             [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
             [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
             [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-            self.accessoryViewWidthConstraint.constant = AccessoryViewInfoWidth;
+            self.accessoryViewWidthConstraint.constant = kAccessoryViewInfoWidth;
         }
         else
         {
@@ -574,7 +574,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     else
     {
         self.shouldShowAccessoryView = YES;
-        self.statusViewLeadingContraint.constant = UpdateStatusLeadingSpace;
+        self.statusViewLeadingContraint.constant = kUpdateStatusLeadingSpace;
     }
     
     self.editImageTopSpaceConstraint.constant = layoutAttributes.editImageTopSpace;
