@@ -266,7 +266,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="thl-xj-Lgp" userLabel="separatorView">
-                                                            <rect key="frame" x="0.0" y="72" width="320" height="1"/>
+                                                            <rect key="frame" x="15" y="72" width="305" height="1"/>
                                                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="1" id="dil-SW-rI1"/>
@@ -345,7 +345,7 @@
                                                         <constraint firstItem="3eY-MB-P9F" firstAttribute="top" secondItem="eMq-Uk-88c" secondAttribute="top" constant="10" id="DYs-jx-c1G"/>
                                                         <constraint firstItem="8mI-3L-4iq" firstAttribute="leading" secondItem="3eY-MB-P9F" secondAttribute="trailing" constant="8" id="Mqf-UO-NwN"/>
                                                         <constraint firstAttribute="trailing" secondItem="8mI-3L-4iq" secondAttribute="trailing" id="N7E-vE-Qm2"/>
-                                                        <constraint firstItem="thl-xj-Lgp" firstAttribute="leading" secondItem="eMq-Uk-88c" secondAttribute="leading" id="PfT-GT-d2b"/>
+                                                        <constraint firstItem="thl-xj-Lgp" firstAttribute="leading" secondItem="eMq-Uk-88c" secondAttribute="leading" constant="15" id="PfT-GT-d2b"/>
                                                         <constraint firstAttribute="centerY" secondItem="8mI-3L-4iq" secondAttribute="centerY" id="Ph3-o1-aPd"/>
                                                         <constraint firstAttribute="bottom" secondItem="thl-xj-Lgp" secondAttribute="bottom" id="UVC-QY-ouR"/>
                                                         <constraint firstItem="8mI-3L-4iq" firstAttribute="leading" secondItem="ssp-KA-d5X" secondAttribute="trailing" id="W6q-FB-EWw"/>
