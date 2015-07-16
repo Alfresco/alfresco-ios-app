@@ -201,9 +201,4 @@
     [self reloadCollectionView];
 }
 
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
-    
-}
-
 @end
