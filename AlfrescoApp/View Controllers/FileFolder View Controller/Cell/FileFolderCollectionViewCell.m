@@ -25,8 +25,9 @@ static NSString * const kAlfrescoNodeCellIdentifier = @"CollectionViewCellIdenti
 static CGFloat const FavoriteIconWidth = 14.0f;
 static CGFloat const FavoriteIconRightSpace = 8.0f;
 static CGFloat const SyncIconWidth = 14.0f;
-//static CGFloat const SyncIconRightSpace = 8.0f;
+static CGFloat const UpdateStatusLeadingSpace = 8.0f;
 static CGFloat const UpdateStatusContainerWidth = 36.0f;
+static CGFloat const AccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
@@ -325,11 +326,13 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         [self.editImageView setImage:[[UIImage imageNamed:@"cell-button-checked-filled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         self.editImageView.tintColor = [UIColor appTintColor];
         self.content.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
+        self.contentView.backgroundColor = [UIColor selectedCollectionViewCellBackgroundColor];
     }
     else
     {
         [self.editImageView setImage:[UIImage imageNamed:@"cell-button-unchecked.png"]];
-        self.content.backgroundColor = [UIColor whiteColor];//[UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
+        self.content.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = [UIColor whiteColor];
     }
     
 }
@@ -454,7 +457,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
             [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
             [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
             [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-            self.accessoryViewWidthConstraint.constant = 50.0;
+            self.accessoryViewWidthConstraint.constant = AccessoryViewInfoWidth;
         }
         else
         {
@@ -571,7 +574,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     else
     {
         self.shouldShowAccessoryView = YES;
-        self.statusViewLeadingContraint.constant = 8.0f;
+        self.statusViewLeadingContraint.constant = UpdateStatusLeadingSpace;
     }
     
     self.editImageTopSpaceConstraint.constant = layoutAttributes.editImageTopSpace;

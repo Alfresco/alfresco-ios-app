@@ -19,11 +19,12 @@
 #import "BaseCollectionViewFlowLayout.h"
 #import "BaseLayoutAttributes.h"
 
-static CGFloat const itemSpacing = 10.0f;
-static CGFloat const thumbnailWidthInListLayout = 40.0f;
-static CGFloat const thumbnailSideSpaceInGridLayout = 10.0f;
-static CGFloat const editImageTopSpaceInListLayout = 17.0f;
-static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
+static CGFloat const ItemSpacing = 10.0f;
+static CGFloat const ThumbnailWidthInListLayout = 40.0f;
+static CGFloat const ThumbnailSideSpace = 10.0f;
+static CGFloat const EditImageTopSpaceInListLayout = 17.0f;
+static CGFloat const EditImageTopSpaceInGridLayout = 0.0f;
+static CGFloat const CollectionViewHeaderHight = 40.0f;
 
 @interface BaseCollectionViewFlowLayout ()
 
@@ -46,10 +47,10 @@ static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
     self.itemHeight = itemHeight;
     self.shouldSwipeToDelete = shouldSwipeToDelete;
     
-    self.minimumInteritemSpacing = self.minimumLineSpacing = (self.numberOfColumns == 1)? 0 : itemSpacing;
+    self.minimumInteritemSpacing = self.minimumLineSpacing = (self.numberOfColumns == 1)? 0 : ItemSpacing;
     
     self.selectedIndexPathForSwipeToDelete = nil;
-    self.headerReferenceSize = CGSizeMake(self.collectionViewWidth, 40);
+    self.headerReferenceSize = CGSizeMake(self.collectionViewWidth, CollectionViewHeaderHight);
     
     return self;
 }
@@ -121,7 +122,7 @@ static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
     
     self.itemSize = CGSizeMake((self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns, height);
     
-    self.thumbnailWidth = (self.numberOfColumns == 1)? thumbnailWidthInListLayout : self.itemSize.width - 2 * thumbnailSideSpaceInGridLayout;
+    self.thumbnailWidth = (self.numberOfColumns == 1)? ThumbnailWidthInListLayout : self.itemSize.width - 2 * ThumbnailSideSpace;
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -131,29 +132,7 @@ static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
     {
         if (attributes.representedElementCategory == UICollectionElementCategoryCell)
         {
-            if(!self.isEditing)
-            {
-                if(self.selectedIndexPathForSwipeToDelete)
-                {
-                    attributes.showDeleteButton = attributes.indexPath.item == self.selectedIndexPathForSwipeToDelete.item;
-                }
-            }
-            else
-            {
-                attributes.showDeleteButton = NO;
-            }
-            attributes.editing = self.isEditing;
-            attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:attributes.indexPath];
-            attributes.thumbnailWidth = self.thumbnailWidth;
-            attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
-            attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
-            attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
-            attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
-            attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
-            attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
-            attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 2 * thumbnailSideSpaceInGridLayout;
-            attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-            attributes.editImageTopSpace = (self.numberOfColumns == 1) ? editImageTopSpaceInListLayout : editImageTopSpaceInGridLayout;
+            [self setupLayoutAttributes:attributes forIndexPath:attributes.indexPath];
         }
     }
     
@@ -163,6 +142,20 @@ static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[super layoutAttributesForItemAtIndexPath:indexPath];
+    [self setupLayoutAttributes:attributes forIndexPath:indexPath];
+    
+    return attributes;
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:indexPath];
+    return attributes;
+}
+
+#pragma mark - Private methods
+- (void)setupLayoutAttributes:(BaseLayoutAttributes *)attributes forIndexPath:(NSIndexPath *)indexPath
+{
     if(!self.isEditing)
     {
         if(self.shouldSwipeToDelete)
@@ -190,39 +183,12 @@ static CGFloat const editImageTopSpaceInGridLayout = 0.0f;
     attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
     attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
     attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
-    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
-    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 2 * thumbnailSideSpaceInGridLayout;
+    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? ThumbnailWidthInListLayout + 2 * ThumbnailSideSpace : ThumbnailSideSpace;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? ThumbnailSideSpace : self.thumbnailWidth + 2 * ThumbnailSideSpace;
+    // On list layout - just one column - font size is 17
+    // On grid layout - 2+ columns - font and font size the same as the one used in UISegmentedControl
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? editImageTopSpaceInListLayout : editImageTopSpaceInGridLayout;
-    
-    return attributes;
-}
-
-- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
-{
-    BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
-    attributes.animated = NO;
-    attributes.showDeleteButton = NO;
-    attributes.editing = self.isEditing;
-    attributes.isSelectedInEditMode = NO;
-    attributes.thumbnailWidth = self.thumbnailWidth;
-    attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
-    attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
-    attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
-    attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
-    attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
-    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? 58 : 10;
-    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? 10 : self.thumbnailWidth + 2 * thumbnailSideSpaceInGridLayout;
-    attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? editImageTopSpaceInListLayout : editImageTopSpaceInGridLayout;
-    
-    return attributes;
-}
-
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:indexPath];
-    return attributes;
+    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? EditImageTopSpaceInListLayout : EditImageTopSpaceInGridLayout;
 }
 
 @end
