@@ -21,10 +21,10 @@
 
 static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
-static CGFloat const FavoriteIconWidth = 14.0f;
-static CGFloat const FavoriteIconRightSpace = 8.0f;
-static CGFloat const SyncIconWidth = 14.0f;
-static CGFloat const SyncIconRightSpace = 8.0f;
+static CGFloat const kFavoriteIconWidth = 14.0f;
+static CGFloat const kFavoriteIconRightSpace = 8.0f;
+static CGFloat const kSyncIconWidth = 14.0f;
+static CGFloat const kSyncIconRightSpace = 8.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
@@ -108,8 +108,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
             self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
             self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
             
-            self.favoriteIconWidthConstraint.constant = FavoriteIconWidth;
-            self.favoriteIconRightSpaceConstraint.constant = FavoriteIconRightSpace;
+            self.favoriteIconWidthConstraint.constant = kFavoriteIconWidth;
+            self.favoriteIconRightSpaceConstraint.constant = kFavoriteIconRightSpace;
             self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
         }
         else
@@ -121,8 +121,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         
         if (self.isSyncNode)
         {
-            self.syncIconWidthConstraint.constant = SyncIconWidth;
-            self.syncIconRightSpaceConstraint.constant = SyncIconRightSpace;
+            self.syncIconWidthConstraint.constant = kSyncIconWidth;
+            self.syncIconRightSpaceConstraint.constant = kSyncIconRightSpace;
             self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
         }
         else

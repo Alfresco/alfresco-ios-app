@@ -19,12 +19,12 @@
 #import "BaseCollectionViewFlowLayout.h"
 #import "BaseLayoutAttributes.h"
 
-static CGFloat const ItemSpacing = 10.0f;
-static CGFloat const ThumbnailWidthInListLayout = 40.0f;
-static CGFloat const ThumbnailSideSpace = 10.0f;
-static CGFloat const EditImageTopSpaceInListLayout = 17.0f;
-static CGFloat const EditImageTopSpaceInGridLayout = 0.0f;
-static CGFloat const CollectionViewHeaderHight = 40.0f;
+static CGFloat const kItemSpacing = 10.0f;
+static CGFloat const kThumbnailWidthInListLayout = 40.0f;
+static CGFloat const kThumbnailSideSpace = 10.0f;
+static CGFloat const kEditImageTopSpaceInListLayout = 17.0f;
+static CGFloat const kEditImageTopSpaceInGridLayout = 0.0f;
+static CGFloat const kCollectionViewHeaderHight = 40.0f;
 
 @interface BaseCollectionViewFlowLayout ()
 
@@ -47,10 +47,10 @@ static CGFloat const CollectionViewHeaderHight = 40.0f;
     self.itemHeight = itemHeight;
     self.shouldSwipeToDelete = shouldSwipeToDelete;
     
-    self.minimumInteritemSpacing = self.minimumLineSpacing = (self.numberOfColumns == 1)? 0 : ItemSpacing;
+    self.minimumInteritemSpacing = self.minimumLineSpacing = (self.numberOfColumns == 1)? 0 : kItemSpacing;
     
     self.selectedIndexPathForSwipeToDelete = nil;
-    self.headerReferenceSize = CGSizeMake(self.collectionViewWidth, CollectionViewHeaderHight);
+    self.headerReferenceSize = CGSizeMake(self.collectionViewWidth, kCollectionViewHeaderHight);
     
     return self;
 }
@@ -122,7 +122,7 @@ static CGFloat const CollectionViewHeaderHight = 40.0f;
     
     self.itemSize = CGSizeMake((self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns, height);
     
-    self.thumbnailWidth = (self.numberOfColumns == 1)? ThumbnailWidthInListLayout : self.itemSize.width - 2 * ThumbnailSideSpace;
+    self.thumbnailWidth = (self.numberOfColumns == 1)? kThumbnailWidthInListLayout : self.itemSize.width - 2 * kThumbnailSideSpace;
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -183,12 +183,12 @@ static CGFloat const CollectionViewHeaderHight = 40.0f;
     attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
     attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
     attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
-    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? ThumbnailWidthInListLayout + 2 * ThumbnailSideSpace : ThumbnailSideSpace;
-    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? ThumbnailSideSpace : self.thumbnailWidth + 2 * ThumbnailSideSpace;
+    attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? kThumbnailWidthInListLayout + 2 * kThumbnailSideSpace : kThumbnailSideSpace;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? kThumbnailSideSpace : self.thumbnailWidth + 2 * kThumbnailSideSpace;
     // On list layout - just one column - font size is 17
     // On grid layout - 2+ columns - font and font size the same as the one used in UISegmentedControl
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? EditImageTopSpaceInListLayout : EditImageTopSpaceInGridLayout;
+    attributes.editImageTopSpace = (self.numberOfColumns == 1) ? kEditImageTopSpaceInListLayout : kEditImageTopSpaceInGridLayout;
 }
 
 @end
