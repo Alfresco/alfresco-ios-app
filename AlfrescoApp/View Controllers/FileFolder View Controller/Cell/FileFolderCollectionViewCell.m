@@ -42,6 +42,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, assign) BOOL isShowingDelete;
 @property (nonatomic, assign) BOOL isSelectedInEditMode;
 @property (nonatomic) BOOL shouldShowAccessoryView;
+@property (nonatomic) BOOL statusViewIsAboveImage;
 
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
@@ -178,6 +179,16 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         }
         
         self.updateStatusViewContainerWidthConstraint.constant = updateContainerWidth;
+        
+        if(self.statusViewIsAboveImage)
+        {
+            self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
+        }
+        else
+        {
+            self.statusViewLeadingContraint.constant = kUpdateStatusLeadingSpace;
+        }
+        
         [self layoutIfNeeded];
     };
     
@@ -569,13 +580,21 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         self.accessoryViewWidthConstraint.constant = 0.0f;
         self.shouldShowAccessoryView = NO;
-        self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
     }
     else
     {
         self.shouldShowAccessoryView = YES;
+    }
+    
+    if(layoutAttributes.shouldShowStatusViewOverImage)
+    {
+        self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
+    }
+    else
+    {
         self.statusViewLeadingContraint.constant = kUpdateStatusLeadingSpace;
     }
+    self.statusViewIsAboveImage = layoutAttributes.shouldShowStatusViewOverImage;
     
     self.editImageTopSpaceConstraint.constant = layoutAttributes.editImageTopSpace;
 

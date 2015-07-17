@@ -189,6 +189,7 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     // On grid layout - 2+ columns - font and font size the same as the one used in UISegmentedControl
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
     attributes.editImageTopSpace = (self.numberOfColumns == 1) ? kEditImageTopSpaceInListLayout : kEditImageTopSpaceInGridLayout;
+    attributes.shouldShowStatusViewOverImage = (self.numberOfColumns != 1);
 }
 
 @end
