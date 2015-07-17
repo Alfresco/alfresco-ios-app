@@ -1089,6 +1089,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     {
                         // push again
                         FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderPermissions:permissions session:self.session];
+                        browserViewController.style = self.style;
                         [self.navigationController pushViewController:browserViewController animated:YES];
                     }
                     else
