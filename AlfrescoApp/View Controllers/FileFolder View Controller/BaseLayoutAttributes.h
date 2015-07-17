@@ -32,7 +32,7 @@
 @property (nonatomic) BOOL shouldShowNodeDetails;
 @property (nonatomic) CGFloat nodeNameHorizontalDisplacement;
 @property (nonatomic) CGFloat nodeNameVerticalDisplacement;
-@property (nonatomic) CGFloat statusViewHorizontalDisplacement;
+@property (nonatomic) BOOL shouldShowStatusViewOverImage;
 
 @property (nonatomic, strong) UIFont *nodeNameFont;
 
