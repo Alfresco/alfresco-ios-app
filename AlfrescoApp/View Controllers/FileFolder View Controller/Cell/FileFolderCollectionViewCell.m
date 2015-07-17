@@ -61,7 +61,6 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingAccessoryViewConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *accessoryViewButton;
 
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailWidthContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameTopSpaceConstraint;
@@ -72,6 +71,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *editImageTopSpaceConstraint;
 
 @property (nonatomic) BOOL isEditShownBelow;
+@property (nonatomic, strong) UIColor *contentBackgroundColor;
 
 @end
 
@@ -83,6 +83,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     self = [super initWithCoder:aDecoder];
     if (self)
     {
+        self.contentBackgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -124,6 +125,13 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 {
     [super layoutSubviews];
     [self.image updateContentMode];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    self.contentBackgroundColor = selected ? [UIColor lightGrayColor] : [UIColor whiteColor];
+    self.content.backgroundColor = self.contentBackgroundColor;
 }
 
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus
@@ -342,10 +350,9 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     else
     {
         [self.editImageView setImage:[UIImage imageNamed:@"cell-button-unchecked.png"]];
-        self.content.backgroundColor = [UIColor whiteColor];
+        self.content.backgroundColor = self.contentBackgroundColor;
         self.contentView.backgroundColor = [UIColor whiteColor];
     }
-    
 }
 
 #pragma mark - Notification Methods
