@@ -260,6 +260,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self deselectAllItems];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -1072,6 +1078,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         else
         {
+            [self deselectAllItems];
+            [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
             if ([selectedNode isKindOfClass:[AlfrescoFolder class]])
             {
                 [self showHUD];
