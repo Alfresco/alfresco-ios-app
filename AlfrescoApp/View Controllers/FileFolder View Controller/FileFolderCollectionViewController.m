@@ -1632,7 +1632,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
             {
                 BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-                [properLayout selectedIndexPathForSwipeWasDeleted];
+                [properLayout setSelectedIndexPathForSwipeToDelete:nil];
             }
         }];
     }

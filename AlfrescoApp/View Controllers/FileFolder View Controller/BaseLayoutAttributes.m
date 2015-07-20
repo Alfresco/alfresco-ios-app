@@ -20,12 +20,51 @@
 
 @implementation BaseLayoutAttributes
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    BaseLayoutAttributes *newAttributes = [super copyWithZone:zone];
+    if(newAttributes)
+    {
+        newAttributes.showDeleteButton = NO;
+        newAttributes.editing = self.isEditing;
+        newAttributes.animated = self.animated;
+        newAttributes.isSelectedInEditMode = self.isSelectedInEditMode;
+        newAttributes.thumbnailWidth = self.thumbnailWidth;
+        newAttributes.shouldShowSmallThumbnailImage = self.shouldShowSmallThumbnailImage;
+        newAttributes.shouldShowSeparatorView = self.shouldShowSeparatorView;
+        newAttributes.shouldShowAccessoryView = self.shouldShowAccessoryView;
+        newAttributes.shouldShowNodeDetails = self.shouldShowNodeDetails;
+        newAttributes.nodeNameHorizontalDisplacement = self.nodeNameHorizontalDisplacement;
+        newAttributes.nodeNameVerticalDisplacement = self.nodeNameVerticalDisplacement;
+        newAttributes.shouldShowStatusViewOverImage = self.shouldShowStatusViewOverImage;
+        newAttributes.nodeNameFont = self.nodeNameFont;
+        newAttributes.shouldShowEditBelowContent = self.shouldShowEditBelowContent;
+        newAttributes.editImageTopSpace = self.editImageTopSpace;
+    }
+    
+    return newAttributes;
+}
+
 - (BOOL)isEqual:(id)object
 {
     if([object isKindOfClass:[BaseLayoutAttributes class]])
     {
         BaseLayoutAttributes *otherAttributes = (BaseLayoutAttributes *)object;
-        if((self.showDeleteButton == otherAttributes.showDeleteButton) && (self.isEditing == otherAttributes.isEditing) && (self.animated == otherAttributes.animated))
+        if((self.showDeleteButton == otherAttributes.showDeleteButton)
+           && (self.isEditing == otherAttributes.isEditing)
+           && (self.animated == otherAttributes.animated)
+           && (self.isSelectedInEditMode == otherAttributes.isSelectedInEditMode)
+           && (self.thumbnailWidth == otherAttributes.thumbnailWidth)
+           && (self.shouldShowSmallThumbnailImage == otherAttributes.shouldShowSmallThumbnailImage)
+           && (self.shouldShowSeparatorView == otherAttributes.shouldShowSeparatorView)
+           && (self.shouldShowAccessoryView == otherAttributes.shouldShowAccessoryView)
+           && (self.shouldShowNodeDetails == otherAttributes.shouldShowNodeDetails)
+           && (self.nodeNameHorizontalDisplacement == otherAttributes.nodeNameHorizontalDisplacement)
+           && (self.nodeNameVerticalDisplacement == otherAttributes.nodeNameVerticalDisplacement)
+           && (self.shouldShowStatusViewOverImage == otherAttributes.shouldShowStatusViewOverImage)
+           && (self.nodeNameFont == otherAttributes.nodeNameFont)
+           && (self.shouldShowEditBelowContent == otherAttributes.shouldShowEditBelowContent)
+           && (self.editImageTopSpace == otherAttributes.editImageTopSpace))
         {
             return [super isEqual:object];
         }
