@@ -130,7 +130,9 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
-    self.contentBackgroundColor = selected ? [UIColor lightGrayColor] : [UIColor whiteColor];
+    
+    UIColor *selectedColor = self.isSelectedInEditMode ? [UIColor selectedCollectionViewCellBackgroundColor] : [UIColor lightGrayColor];
+    self.contentBackgroundColor = selected ? selectedColor : [UIColor whiteColor];
     self.content.backgroundColor = self.contentBackgroundColor;
 }
 
