@@ -21,6 +21,7 @@
 @protocol DataSourceInformationProtocol <NSObject>
 
 - (BOOL) isItemSelected:(NSIndexPath *) indexPath;
+- (NSInteger) indexOfNode:(AlfrescoNode *)node;
 
 @end
 

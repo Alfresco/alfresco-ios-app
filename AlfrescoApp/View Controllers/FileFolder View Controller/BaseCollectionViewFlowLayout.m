@@ -18,6 +18,7 @@
 
 #import "BaseCollectionViewFlowLayout.h"
 #import "BaseLayoutAttributes.h"
+#import "FileFolderCollectionViewCell.h"
 
 static CGFloat const kItemSpacing = 10.0f;
 static CGFloat const kThumbnailWidthInListLayout = 40.0f;
@@ -30,6 +31,8 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
 
 @property (nonatomic) CGFloat collectionViewWidth;
 @property (nonatomic) CGFloat thumbnailWidth;
+
+@property (nonatomic, strong) NSIndexPath *tempSwipeToDeleteIndexPath;
 
 @end
 
@@ -125,6 +128,29 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     self.thumbnailWidth = (self.numberOfColumns == 1)? kThumbnailWidthInListLayout : self.itemSize.width - 2 * kThumbnailSideSpace;
 }
 
+- (void)prepareForCollectionViewUpdates:(NSArray *)updateItems
+{
+    BOOL shouldRecomputeSwipeToDeleteIndexPath = NO;
+    for(UICollectionViewUpdateItem *item in updateItems)
+    {
+        if((item.updateAction == UICollectionUpdateActionInsert) || (item.updateAction == UICollectionUpdateActionDelete))
+        {
+            shouldRecomputeSwipeToDeleteIndexPath = YES;
+        }
+    }
+    
+    if(shouldRecomputeSwipeToDeleteIndexPath)
+    {
+        [self recomputeSelectedIndexPathForSwipeToDelete];
+    }
+}
+
+- (void)finalizeCollectionViewUpdates
+{
+    self.selectedIndexPathForSwipeToDelete = [self.tempSwipeToDeleteIndexPath copy];
+    self.tempSwipeToDeleteIndexPath = nil;
+}
+
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
@@ -169,6 +195,10 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
             {
                 attributes.showDeleteButton = indexPath.item == self.selectedIndexPathForSwipeToDelete.item;
             }
+            else
+            {
+                attributes.showDeleteButton = NO;
+            }
         }
         else
         {
@@ -195,6 +225,23 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
     attributes.editImageTopSpace = (self.numberOfColumns == 1) ? kEditImageTopSpaceInListLayout : kEditImageTopSpaceInGridLayout;
     attributes.shouldShowStatusViewOverImage = (self.numberOfColumns != 1);
+}
+
+- (void) recomputeSelectedIndexPathForSwipeToDelete
+{
+    FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.selectedIndexPathForSwipeToDelete];
+    AlfrescoNode *node = cell.node;
+    NSInteger newIndex = [self.dataSourceInfoDelegate indexOfNode:node];
+    if(newIndex != NSNotFound)
+    {
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:newIndex inSection:0];
+        self.tempSwipeToDeleteIndexPath = newIndexPath;
+        self.selectedIndexPathForSwipeToDelete = nil;
+    }
+    else
+    {
+        self.tempSwipeToDeleteIndexPath = nil;
+    }
 }
 
 @end

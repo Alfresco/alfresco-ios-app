@@ -83,11 +83,11 @@
     AlfrescoNode *currentNode = nil;
     if (self.isOnSearchResults)
     {
-        currentNode = [self.searchResults objectAtIndex:indexPath.row];
+        currentNode = [self.searchResults objectAtIndex:indexPath.item];
     }
     else
     {
-        currentNode = [self.collectionViewData objectAtIndex:indexPath.row];
+        currentNode = [self.collectionViewData objectAtIndex:indexPath.item];
     }
 
     SyncManager *syncManager = [SyncManager sharedManager];

@@ -33,13 +33,11 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 @interface FileFolderCollectionViewCell ()
 
-@property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) SyncNodeStatus *nodeStatus;
 @property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, assign) BOOL isSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
 
-@property (nonatomic, assign) BOOL isShowingDelete;
 @property (nonatomic, assign) BOOL isSelectedInEditMode;
 @property (nonatomic) BOOL shouldShowAccessoryView;
 @property (nonatomic) BOOL statusViewIsAboveImage;
@@ -241,9 +239,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         [UIView animateWithDuration:0.40 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            self.isShowingDelete = showDelete;
-        }];
+        } completion:nil];
     }
     else
     {
@@ -276,9 +272,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     self.trainlingContentViewContraint.constant = 0.0;
     [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        self.isShowingDelete = NO;
-    }];
+    } completion:nil];
 }
 
 - (void)showEditMode:(BOOL)showEdit selected:(BOOL)isSelected animated:(BOOL)animated
@@ -617,11 +611,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     
     [self layoutIfNeeded];
     
-    if(layoutAttributes.showDeleteButton && !layoutAttributes.isEditing)
-    {
-        [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];
-    }
-    else if (!layoutAttributes.showDeleteButton && !layoutAttributes.isEditing && self.isShowingDelete)
+    if(!layoutAttributes.isEditing)
     {
         [self showDeleteAction:layoutAttributes.showDeleteButton animated:layoutAttributes.animated];
     }
