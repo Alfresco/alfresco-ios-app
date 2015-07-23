@@ -39,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionsViewWidthContraint;
 
+@property (nonatomic, strong) AlfrescoNode *node;
+
 @property (nonatomic, weak) id<CollectionViewCellAccessoryViewDelegate> accessoryViewDelegate;
 
 + (NSString *)cellIdentifier;

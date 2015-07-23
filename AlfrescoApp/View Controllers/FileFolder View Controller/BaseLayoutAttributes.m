@@ -25,6 +25,8 @@
     BaseLayoutAttributes *newAttributes = [super copyWithZone:zone];
     if(newAttributes)
     {
+        //Setting show delete button to NO to avoid showing it when attributes are copied
+        //(ex: when an item that is not the last one in the list is deleted via swipe to delete)
         newAttributes.showDeleteButton = NO;
         newAttributes.editing = self.isEditing;
         newAttributes.animated = self.animated;

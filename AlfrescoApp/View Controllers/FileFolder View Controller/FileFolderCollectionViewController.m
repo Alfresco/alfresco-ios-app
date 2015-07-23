@@ -1884,6 +1884,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return NO;
 }
 
+- (NSInteger)indexOfNode:(AlfrescoNode *)node
+{
+    NSInteger index = NSNotFound;
+    if(self.isOnSearchResults)
+    {
+        index = [self.searchResults indexOfObject:node];
+    }
+    else
+    {
+        index = [self.collectionViewData indexOfObject:node];
+    }
+    
+    return index;
+}
+
 #pragma mark - UIAdaptivePresentationControllerDelegate methods
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
 {
