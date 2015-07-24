@@ -247,6 +247,9 @@ extern NSString * const kAlfrescoMDMRepositoryURLKey;
 extern NSString * const kAlfrescoMDMUsernameKey;
 extern NSString * const kAlfrescoMDMDisplayNameKey;
 
+// PagedScrollView Notifications
+extern NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification;
+
 // Main Menu
 ///
 extern NSString * const kAlfrescoEmbeddedConfigurationFileName;
