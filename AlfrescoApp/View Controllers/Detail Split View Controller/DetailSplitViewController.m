@@ -147,6 +147,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
             detailFrame.size.width = detailFrame.size.width - kRevealControllerMasterViewWidth;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoPagedScrollViewLayoutSubviewsNotification object:nil];
             self.isExpanded = YES;
         }];
     }
@@ -162,6 +163,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
             detailFrame.size.width = detailFrame.size.width + kRevealControllerMasterViewWidth;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoPagedScrollViewLayoutSubviewsNotification object:nil];
             self.isExpanded = NO;
         }];
     }

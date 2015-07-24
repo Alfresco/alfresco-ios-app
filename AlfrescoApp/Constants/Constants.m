@@ -232,6 +232,9 @@ NSString * const kAlfrescoMDMRepositoryURLKey = @"AlfrescoRepositoryURL";
 NSString * const kAlfrescoMDMUsernameKey = @"AlfrescoUserName";
 NSString * const kAlfrescoMDMDisplayNameKey = @"AlfrescoDisplayName";
 
+// PagedScrollView Notifications
+NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification = @"AlfrescoPagedScrollViewLayoutSubviewsNotification";
+
 // Main Menu
 ///
 NSString * const kAlfrescoEmbeddedConfigurationFileName = @"configuration.json";
