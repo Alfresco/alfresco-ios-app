@@ -19,7 +19,7 @@ Alternatively, use one of the [tags](https://github.com/Alfresco/alfresco-ios-ap
 License
 ---
 
-Alfresco Mobile for iOS 2.1.2
+Alfresco Mobile for iOS 2.2
 
 Copyright © 2015 Alfresco Software, Ltd.
 
