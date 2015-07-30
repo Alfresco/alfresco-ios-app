@@ -189,7 +189,9 @@
 		2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */; };
 		2B2609911B4AD2C100F2F26B /* dots-A.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098D1B4AD2C100F2F26B /* dots-A.png */; };
 		2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */; };
-		2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */; };
+		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
+		2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */; };
+		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
 		2B7169F71B567CC1009A4487 /* large_folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F51B567CC1009A4487 /* large_folder.png */; };
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
@@ -1052,7 +1054,9 @@
 		2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingCollectionViewCell.m; sourceTree = "<group>"; };
 		2B26098D1B4AD2C100F2F26B /* dots-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A.png"; sourceTree = "<group>"; };
 		2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A@2x.png"; sourceTree = "<group>"; };
-		2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FileFolderCollectionViewController.storyboard; sourceTree = "<group>"; };
+		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
+		2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
+		2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCollectionSectionHeader.xib; sourceTree = "<group>"; };
 		2B7169F51B567CC1009A4487 /* large_folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_folder.png; sourceTree = "<group>"; };
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
@@ -2734,7 +2738,6 @@
 				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
 				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
 				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
-				2B5879AF1B25CE75001C7616 /* FileFolderCollectionViewController.storyboard */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2792,6 +2795,8 @@
 				2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */,
 				2B1751DB1B3807AF00E440DD /* LoadingCollectionViewCell.h */,
 				2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */,
+				2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */,
+				2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -3434,6 +3439,7 @@
 				73B9582917A6750E0099FB84 /* ParentListViewController.m */,
 				2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */,
 				2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */,
+				2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */,
 				089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */,
 				089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */,
 				7386648C1906AD660021D1BD /* About View Controller */,
@@ -4021,7 +4027,6 @@
 				272CC7D51946977B0009FADA /* segment-icon-map-none@2x.png in Resources */,
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */,
-				2B5879B01B25CE75001C7616 /* FileFolderCollectionViewController.storyboard in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
@@ -4200,6 +4205,7 @@
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
 				735DDC251B30268D0091D7B4 /* mainmenu-document.png in Resources */,
+				2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */,
 				7302475419544AD50034D861 /* playButton.png in Resources */,
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
 				73FF557718ACE2370009CA56 /* large_audio.png in Resources */,
@@ -4279,6 +4285,7 @@
 				27DFEBF61937644D006D85BC /* actionsheet-favorite@2x~ipad.png in Resources */,
 				738664F11906B2420021D1BD /* PersonCell.xib in Resources */,
 				73B95AB517A68B7E0099FB84 /* site-action-join.png in Resources */,
+				2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */,
 				73881F7C18898B910052C75F /* ButtonBarArrowLeft@2x.png in Resources */,
 				2B2609911B4AD2C100F2F26B /* dots-A.png in Resources */,
 				73B95AB617A68B7E0099FB84 /* site-action-join@2x.png in Resources */,
@@ -4334,6 +4341,7 @@
 				27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */,
 				735DDC281B30268D0091D7B4 /* mainmenu-groups@2x.png in Resources */,
 				7333D2ED1B3AC5F300644913 /* ProfileSelectionViewController.xib in Resources */,
+				2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */,
 				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
 				2BFB08191B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib in Resources */,

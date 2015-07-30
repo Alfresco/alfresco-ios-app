@@ -48,9 +48,7 @@ static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 @interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate>
-// IBOutlets
-@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
+
 // Views
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
@@ -104,7 +102,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [super initWithStoryboardId:NSStringFromClass(self.class) session:session];
+    self = [super initWithSession:session];
     if (self)
     {
         [self setupWithFolder:folder folderPermissions:permissions folderDisplayName:displayName session:session];
@@ -201,6 +199,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         // hide search bar initially
         self.collectionView.contentOffset = CGPointMake(0., 40.);
     }
+    
+    UINib *nodeCellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
+    [self.collectionView registerNib:nodeCellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
+    UINib *loadingCellNib = [UINib nibWithNibName:NSStringFromClass([LoadingCollectionViewCell class]) bundle:nil];
+    [self.collectionView registerNib:loadingCellNib forCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier]];
+    UINib *sectionHeaderNib = [UINib nibWithNibName:NSStringFromClass([SearchCollectionSectionHeader class]) bundle:nil];
+    [self.collectionView registerNib:sectionHeaderNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader"];
     
     self.title = self.folderDisplayName;
     self.nodePermissions = [[NSMutableDictionary alloc] init];

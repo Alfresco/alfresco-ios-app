@@ -31,16 +31,6 @@
 
 @implementation ParentCollectionViewController
 
-- (instancetype)initWithStoryboardId:(NSString *)storyboardId session:(id<AlfrescoSession>)session
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardId bundle:nil];
-    self = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
-    
-    [self setupWithSession:session];
-    
-    return self;
-}
-
 - (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
     return [self initWithSession:session style:CollectionViewStyleList];
@@ -48,7 +38,8 @@
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session style:(CollectionViewStyle)style
 {
-    self = [self initWithStoryboardId:nil session:session];
+    self = [super initWithNibName:@"ParentCollectionViewController" bundle:nil];
+    [self setupWithSession:session];
     if (self)
     {
         self.style = style;

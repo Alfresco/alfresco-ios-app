@@ -19,6 +19,7 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 #import "ErrorDescriptions.h"
+#import "MultiSelectActionsToolbar.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;
@@ -32,6 +33,9 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 
 @interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate >
 
+// IBOutlets
+@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) NSMutableArray *collectionViewData;
@@ -45,8 +49,6 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, assign) BOOL isOnSearchResults;
 @property (nonatomic, assign) CollectionViewStyle style;
-
-- (instancetype)initWithStoryboardId:(NSString *)storyboardId session:(id<AlfrescoSession>)session;
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
 - (instancetype)initWithSession:(id<AlfrescoSession>)session style:(CollectionViewStyle)style;
