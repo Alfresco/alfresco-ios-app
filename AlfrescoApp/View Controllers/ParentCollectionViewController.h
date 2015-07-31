@@ -20,6 +20,9 @@
 #import "MBProgressHUD.h"
 #import "ErrorDescriptions.h"
 #import "MultiSelectActionsToolbar.h"
+#import "BaseLayoutAttributes.h"
+#import "BaseCollectionViewFlowLayout.h"
+#import "CollectionViewProtocols.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;
@@ -31,7 +34,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
     CollectionViewStyleGrid
 };
 
-@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate >
+@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate >
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
@@ -49,6 +52,10 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, assign) BOOL isOnSearchResults;
 @property (nonatomic, assign) CollectionViewStyle style;
+@property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
+@property (nonatomic, strong) BaseCollectionViewFlowLayout *gridLayout;
+
+@property (nonatomic, strong) UIAlertController *actionsAlertController;
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
 - (instancetype)initWithSession:(id<AlfrescoSession>)session style:(CollectionViewStyle)style;
@@ -71,5 +78,8 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers;
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl;
 - (void)showLoadingTextInRefreshControl:(UIRefreshControl *)refreshControl;
+
+- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated;
+- (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style;
 
 @end

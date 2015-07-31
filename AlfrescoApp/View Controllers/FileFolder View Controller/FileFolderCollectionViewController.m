@@ -47,7 +47,7 @@ static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate>
+@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, UIPopoverPresentationControllerDelegate>
 
 // Views
 @property (nonatomic, weak) UISearchBar *searchBar;
@@ -62,8 +62,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
 @property (nonatomic, assign) BOOL capturingMedia;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-@property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
-@property (nonatomic, strong) BaseCollectionViewFlowLayout *gridLayout;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *initialCellForSwipeToDelete;
@@ -78,7 +76,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
-@property (nonatomic, strong) UIAlertController *actionsAlertController;
 // Services
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @end
@@ -219,9 +216,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES];
+    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:YES];
     self.listLayout.dataSourceInfoDelegate = self;
-    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO];
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:YES];
     self.gridLayout.dataSourceInfoDelegate = self;
     
     [self changeCollectionViewStyle:self.style animated:YES];
@@ -1957,30 +1954,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated
 {
+    [super changeCollectionViewStyle:style animated:animated];
     BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
-    self.style = style;
-    [self.collectionView setCollectionViewLayout:associatedLayoutForStyle animated:animated];
     self.swipeToDeleteGestureRecognizer.enabled = associatedLayoutForStyle.shouldSwipeToDelete;
-}
-
-- (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style
-{
-    BaseCollectionViewFlowLayout *returnLayout = nil;
-    switch (style)
-    {
-        case CollectionViewStyleList:
-        {
-            returnLayout = self.listLayout;
-        }
-        break;
-            
-        case CollectionViewStyleGrid:
-        {
-            returnLayout = self.gridLayout;
-        }
-        break;
-    }
-    return returnLayout;
 }
 
 @end
