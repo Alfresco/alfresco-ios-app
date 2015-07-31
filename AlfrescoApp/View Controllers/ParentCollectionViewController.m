@@ -457,4 +457,23 @@
     return returnLayout;
 }
 
+#pragma mark - DataSourceInformationProtocol methods
+- (BOOL) isItemSelected:(NSIndexPath *) indexPath
+{
+    AlfrescoLogDebug(@"isItemSelected: is not implemented in the subclass of %@", [self class]);
+    return nil;
+}
+
+- (NSInteger)indexOfNode:(AlfrescoNode *)node
+{
+    AlfrescoLogDebug(@"indexOfNode: is not implemented in the subclass of %@", [self class]);
+    return 0;
+}
+
+#pragma mark - CollectionViewCellAccessoryViewDelegate methods
+- (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
+{
+    AlfrescoLogDebug(@"didTapCollectionViewCellAccessoryView: is not implemented in the subclass of %@", [self class]);
+}
+
 @end
