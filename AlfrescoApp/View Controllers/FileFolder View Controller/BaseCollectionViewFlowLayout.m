@@ -38,7 +38,7 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
 
 @implementation BaseCollectionViewFlowLayout
 
-- (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL)shouldSwipeToDelete
+- (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL)shouldSwipeToDelete hasHeader:(BOOL)hasHeader
 {
     self = [super init];
     if(!self)
@@ -53,7 +53,7 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     self.minimumInteritemSpacing = self.minimumLineSpacing = (self.numberOfColumns == 1)? 0 : kItemSpacing;
     
     self.selectedIndexPathForSwipeToDelete = nil;
-    self.headerReferenceSize = CGSizeMake(self.collectionViewWidth, kCollectionViewHeaderHight);
+    self.headerReferenceSize = hasHeader ? CGSizeMake(self.collectionViewWidth, kCollectionViewHeaderHight) : CGSizeZero;
     
     return self;
 }

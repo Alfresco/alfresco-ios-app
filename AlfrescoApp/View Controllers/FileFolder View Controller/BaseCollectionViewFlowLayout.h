@@ -36,7 +36,7 @@
 @property (nonatomic, getter=isEditing) BOOL editing;
 @property (nonatomic) BOOL shouldSwipeToDelete;
 
-- (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL) shouldSwipeToDelete;
+- (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL) shouldSwipeToDelete hasHeader:(BOOL)hasHeader;
 
 - (void) selectedIndexPathForSwipeWasDeleted;
 

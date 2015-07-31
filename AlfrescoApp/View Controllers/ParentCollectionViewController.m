@@ -429,4 +429,32 @@
     return ([self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:0] == 0);
 }
 
+#pragma mark - Layout changing
+- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated
+{
+    BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
+    self.style = style;
+    [self.collectionView setCollectionViewLayout:associatedLayoutForStyle animated:animated];
+}
+
+- (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style
+{
+    BaseCollectionViewFlowLayout *returnLayout = nil;
+    switch (style)
+    {
+        case CollectionViewStyleList:
+        {
+            returnLayout = self.listLayout;
+        }
+            break;
+            
+        case CollectionViewStyleGrid:
+        {
+            returnLayout = self.gridLayout;
+        }
+            break;
+    }
+    return returnLayout;
+}
+
 @end
