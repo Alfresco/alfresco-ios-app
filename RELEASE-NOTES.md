@@ -1,5 +1,10 @@
 ## Alfresco Mobile for iOS
 
+### v2.1.2
+
+- Bug fixes:
+  - MOBILE-3363: SSL Client Certificate connections fail
+
 ### v2.1.1
 
 - Bug fixes:

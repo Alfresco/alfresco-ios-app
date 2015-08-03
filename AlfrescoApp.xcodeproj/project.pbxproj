@@ -1894,9 +1894,9 @@
 		73036F291886E3CC002AF6DC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4-dev-debug.a */,
+				73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4.1-dev-debug.a */,
 				73036F301886E3CC002AF6DC /* AlfrescoSDK-iOSTests.xctest */,
-				588D9F591A0A34E2000E00B9 /* libAlfrescoSDK-OSXv1.4-dev-debug.a */,
+				588D9F591A0A34E2000E00B9 /* libAlfrescoSDK-OSXv1.4.1-dev-debug.a */,
 				588D9F5B1A0A34E2000E00B9 /* AlfrescoSDK-OSXTests.xctest */,
 			);
 			name = Products;
@@ -3463,10 +3463,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		588D9F591A0A34E2000E00B9 /* libAlfrescoSDK-OSXv1.4-dev-debug.a */ = {
+		588D9F591A0A34E2000E00B9 /* libAlfrescoSDK-OSXv1.4.1-dev-debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libAlfrescoSDK-OSXv1.4-dev-debug.a";
+			path = "libAlfrescoSDK-OSXv1.4.1-dev-debug.a";
 			remoteRef = 588D9F581A0A34E2000E00B9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3477,10 +3477,10 @@
 			remoteRef = 588D9F5A1A0A34E2000E00B9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4-dev-debug.a */ = {
+		73036F2E1886E3CC002AF6DC /* libAlfrescoSDK-iOSv1.4.1-dev-debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libAlfrescoSDK-iOSv1.4-dev-debug.a";
+			path = "libAlfrescoSDK-iOSv1.4.1-dev-debug.a";
 			remoteRef = 73036F2D1886E3CC002AF6DC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
