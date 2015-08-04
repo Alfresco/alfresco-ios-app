@@ -406,7 +406,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     if (selectedNode.isFolder)
     {
-        UIViewController *controller = nil;
+        ParentCollectionViewController *controller = nil;
         if (isSyncOn)
         {
             controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
@@ -415,6 +415,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         {
             controller = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderDisplayName:selectedNode.name session:self.session];
         }
+        controller.style = self.style;
         [self.navigationController pushViewController:controller animated:YES];
     }
     else
