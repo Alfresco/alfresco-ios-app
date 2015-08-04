@@ -221,8 +221,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:YES];
     self.gridLayout.dataSourceInfoDelegate = self;
     
-    [self changeCollectionViewStyle:self.style animated:YES];
-    
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
     
@@ -236,6 +234,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
     self.tapToDismissDeleteAction.delegate = self;
     [self.collectionView addGestureRecognizer:self.tapToDismissDeleteAction];
+    
+    [self changeCollectionViewStyle:self.style animated:YES];
     
     if (self.initialFolder)
     {
