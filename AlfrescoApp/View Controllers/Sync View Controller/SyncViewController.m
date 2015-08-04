@@ -354,9 +354,18 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
     }];
     
+    BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];
+    
     if (node.isFolder)
     {
-        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
+        if(currentLayout.shouldShowSmallThumbnail)
+        {
+            [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
+        }
+        else
+        {
+            [nodeCell.image setImage:largeImageForType(@"folder") withFade:NO];
+        }
     }
     else if (node.isDocument)
     {
@@ -370,7 +379,14 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         }
         else
         {
-            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+            if(currentLayout.shouldShowSmallThumbnail)
+            {
+                [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+            }
+            else
+            {
+                [nodeCell.image setImage:largeImageForType([document.name pathExtension]) withFade:NO];
+            }
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
