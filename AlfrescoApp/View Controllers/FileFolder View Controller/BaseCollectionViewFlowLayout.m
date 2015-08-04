@@ -54,6 +54,7 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     
     self.selectedIndexPathForSwipeToDelete = nil;
     self.headerReferenceSize = hasHeader ? CGSizeMake(self.collectionViewWidth, kCollectionViewHeaderHight) : CGSizeZero;
+    self.shouldShowSmallThumbnail = (self.numberOfColumns == 1);
     
     return self;
 }
@@ -217,7 +218,7 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
     attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
     attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
-    attributes.shouldShowSmallThumbnailImage = (self.numberOfColumns == 1);
+    attributes.shouldShowSmallThumbnailImage = self.shouldShowSmallThumbnail;
     attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? kThumbnailWidthInListLayout + 2 * kThumbnailSideSpace : kThumbnailSideSpace;
     attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? kThumbnailSideSpace : self.thumbnailWidth + 2 * kThumbnailSideSpace;
     // On list layout - just one column - font size is 17

@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSIndexPath *selectedIndexPathForSwipeToDelete;
 @property (nonatomic, getter=isEditing) BOOL editing;
 @property (nonatomic) BOOL shouldSwipeToDelete;
+@property (nonatomic) BOOL shouldShowSmallThumbnail;
 
 - (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns itemHeight:(CGFloat)itemHeight shouldSwipeToDelete:(BOOL) shouldSwipeToDelete hasHeader:(BOOL)hasHeader;
 

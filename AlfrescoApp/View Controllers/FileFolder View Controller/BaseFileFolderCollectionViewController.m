@@ -103,9 +103,17 @@
         [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
     }];
     
+    BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];
     if ([currentNode isKindOfClass:[AlfrescoFolder class]])
     {
-        [cell.image setImage:smallImageForType(@"folder") withFade:NO];
+        if(currentLayout.shouldShowSmallThumbnail)
+        {
+            [cell.image setImage:smallImageForType(@"folder") withFade:NO];
+        }
+        else
+        {
+            [cell.image setImage:largeImageForType(@"folder") withFade:NO];
+        }
     }
     else
     {
@@ -118,7 +126,14 @@
         }
         else
         {
-            [cell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
+            if(currentLayout.shouldShowSmallThumbnail)
+            {
+                [cell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
+            }
+            else
+            {
+                [cell.image setImage:largeImageForType([documentNode.name pathExtension]) withFade:NO];
+            }
             
             [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 @try

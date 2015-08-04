@@ -354,9 +354,18 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
     }];
     
+    BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];
+    
     if (node.isFolder)
     {
-        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
+        if(currentLayout.shouldShowSmallThumbnail)
+        {
+            [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
+        }
+        else
+        {
+            [nodeCell.image setImage:largeImageForType(@"folder") withFade:NO];
+        }
     }
     else if (node.isDocument)
     {
@@ -370,7 +379,14 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         }
         else
         {
-            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+            if(currentLayout.shouldShowSmallThumbnail)
+            {
+                [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+            }
+            else
+            {
+                [nodeCell.image setImage:largeImageForType([document.name pathExtension]) withFade:NO];
+            }
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
@@ -406,7 +422,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     if (selectedNode.isFolder)
     {
-        UIViewController *controller = nil;
+        ParentCollectionViewController *controller = nil;
         if (isSyncOn)
         {
             controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
@@ -415,6 +431,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         {
             controller = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderDisplayName:selectedNode.name session:self.session];
         }
+        controller.style = self.style;
         [self.navigationController pushViewController:controller animated:YES];
     }
     else
