@@ -216,6 +216,18 @@
     [self reloadCollectionView];
 }
 
+- (void)willPresentSearchController:(UISearchController *)searchController
+{
+    self.collectionViewTopConstraint.constant = 20;
+    [self.view layoutIfNeeded];
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController
+{
+    self.collectionViewTopConstraint.constant = 0;
+    [self.view layoutIfNeeded];
+}
+
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     

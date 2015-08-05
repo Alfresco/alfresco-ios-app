@@ -212,6 +212,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.searchBar.delegate = self;
     self.searchController.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchController.delegate = self;
     self.definesPresentationContext = YES;
 
     self.collectionView.dataSource = self;
