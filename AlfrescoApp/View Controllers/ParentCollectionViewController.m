@@ -463,7 +463,7 @@
 - (BOOL) isItemSelected:(NSIndexPath *) indexPath
 {
     AlfrescoLogDebug(@"isItemSelected: is not implemented in the subclass of %@", [self class]);
-    return nil;
+    return NO;
 }
 
 - (NSInteger)indexOfNode:(AlfrescoNode *)node

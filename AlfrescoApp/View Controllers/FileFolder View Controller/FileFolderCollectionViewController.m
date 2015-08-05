@@ -1034,7 +1034,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if((self.moreItemsAvailable) && (indexPath.item == self.collectionViewData.count))
+    if((self.moreItemsAvailable) && (indexPath.item == self.collectionViewData.count) && (!self.isOnSearchResults))
     {
         LoadingCollectionViewCell *cell = (LoadingCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier] forIndexPath:indexPath];
         return cell;
@@ -1061,7 +1061,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.item < self.collectionViewData.count)
+    if(((indexPath.item < self.collectionViewData.count) && (!self.isOnSearchResults)) || ((indexPath.item < self.searchResults.count) && (self.isOnSearchResults)))
     {
         AlfrescoNode *selectedNode = nil;
         if (self.isOnSearchResults)
