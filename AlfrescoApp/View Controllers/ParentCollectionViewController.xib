@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ParentCollectionViewController">
             <connections>
                 <outlet property="collectionView" destination="gcF-Po-bT9" id="41R-Wt-SOv"/>
+                <outlet property="collectionViewTopConstraint" destination="e88-1e-AbS" id="Jx0-p4-uGj"/>
                 <outlet property="multiSelectToolbar" destination="n2M-Gh-1Wi" id="NAL-8F-eyL"/>
                 <outlet property="multiSelectToolbarHeightConstraint" destination="ylz-gl-VU8" id="i61-Me-XeX"/>
                 <outlet property="view" destination="iN0-l3-epB" id="pF4-H6-dPa"/>
@@ -44,10 +45,11 @@
                 <constraint firstItem="n2M-Gh-1Wi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="G5F-L1-s3R"/>
                 <constraint firstItem="gcF-Po-bT9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VZc-B1-ETk"/>
                 <constraint firstAttribute="trailing" secondItem="gcF-Po-bT9" secondAttribute="trailing" id="azl-MF-OaJ"/>
+                <constraint firstItem="gcF-Po-bT9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="e88-1e-AbS"/>
                 <constraint firstAttribute="trailing" secondItem="n2M-Gh-1Wi" secondAttribute="trailing" id="hbb-7t-5T7"/>
-                <constraint firstItem="gcF-Po-bT9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="uxw-U3-niV"/>
                 <constraint firstItem="n2M-Gh-1Wi" firstAttribute="top" secondItem="gcF-Po-bT9" secondAttribute="bottom" id="vf7-cg-GTD"/>
             </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
 </document>

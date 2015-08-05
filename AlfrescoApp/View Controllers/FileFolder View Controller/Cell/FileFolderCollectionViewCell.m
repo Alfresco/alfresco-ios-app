@@ -601,10 +601,16 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     
     self.editImageTopSpaceConstraint.constant = layoutAttributes.editImageTopSpace;
     
-    if(layoutAttributes.editing)
+    self.editViewLeadingContraint.constant = layoutAttributes.shouldShowEditBelowContent ? 0.0f : -self.editViewWidthContraint.constant;
+    self.isEditShownBelow = layoutAttributes.shouldShowEditBelowContent;
+    
+    if(self.isEditShownBelow)
     {
-        self.editViewLeadingContraint.constant = layoutAttributes.shouldShowEditBelowContent ? 0.0f : -self.editViewWidthContraint.constant;
-        self.isEditShownBelow = layoutAttributes.shouldShowEditBelowContent;
+        [self.contentView bringSubviewToFront:self.content];
+    }
+    else if(layoutAttributes.animated)
+    {
+        [self.contentView bringSubviewToFront:self.editView];
     }
     
     [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:self.isFavorite animate:NO];

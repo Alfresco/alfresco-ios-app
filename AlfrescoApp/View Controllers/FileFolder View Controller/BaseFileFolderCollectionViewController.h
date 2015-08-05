@@ -23,7 +23,7 @@
 #import "ThumbnailManager.h"
 #import "LoadingCollectionViewCell.h"
 
-@interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchResultsUpdating, UISearchBarDelegate>
+@interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;

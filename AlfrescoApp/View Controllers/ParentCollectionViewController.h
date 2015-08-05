@@ -54,6 +54,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (nonatomic, assign) CollectionViewStyle style;
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *gridLayout;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewTopConstraint;
 
 @property (nonatomic, strong) UIAlertController *actionsAlertController;
 
