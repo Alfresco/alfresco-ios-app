@@ -629,6 +629,12 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     formatter.numberStyle = NSNumberFormatterDecimalStyle;
     url.port = [formatter numberFromString:account.serverPort];
     url.path = account.serviceDocument;
+
+    // iOS 7 support
+    if (![url respondsToSelector:@selector(string)])
+    {
+        return [[url URL] absoluteString];
+    }
     
     return [url string];
 }

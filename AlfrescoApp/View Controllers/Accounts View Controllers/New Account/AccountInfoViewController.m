@@ -751,7 +751,7 @@ static NSInteger const kTagProfileCell = 3;
     UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
     
     BOOL foundTableViewCell = NO;
-    while (!foundTableViewCell)
+    while (cell && !foundTableViewCell)
     {
         if (![cell isKindOfClass:[UITableViewCell class]])
         {
