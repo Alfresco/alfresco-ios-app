@@ -319,10 +319,23 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
         
         associatedObject = galleryViewController;
     }
-    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeNodeDetails])
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeDocumentDetails])
     {
-        // TODO: Currently place an empty view controller
-        associatedObject = [[UIViewController alloc] init];
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
+        
+        if([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterPathKey])
+        {
+            NSString *documentPath = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterPathKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithDocumentPath:documentPath session:self.session];
+        }
+        else if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterNodeRefKey])
+        {
+            NSString *documentNodeRef = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterNodeRefKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithDocumentNodeRef:documentNodeRef session:self.session];
+        }
+        
+        associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepositorySearch])
     {

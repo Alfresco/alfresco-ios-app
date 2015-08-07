@@ -38,7 +38,8 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
     FileFolderCollectionViewControllerTypeFolderNode,
     FileFolderCollectionViewControllerTypeSiteShortName,
     FileFolderCollectionViewControllerTypeFolderPath,
-    FileFolderCollectionViewControllerTypeNodeRef
+    FileFolderCollectionViewControllerTypeNodeRef,
+    FileFolderCollectionViewControllerTypeDocumentPath
 };
 
 static CGFloat const kCellHeight = 73.0f;
@@ -72,6 +73,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) NSString *siteShortName;
 @property (nonatomic, strong) NSString *folderPath;
 @property (nonatomic, strong) NSString *nodeRef;
+@property (nonatomic, strong) NSString *documentPath;
+@property (nonatomic) BOOL shouldAutoSelectFirstItem;
 // Controllers
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
@@ -146,6 +149,40 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             self.nodeRef = nodeRef;
         }
     }
+    return self;
+}
+
+- (instancetype)initWithDocumentNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
+    if(self)
+    {
+        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
+        if(nodeRef)
+        {
+            self.controllerType = FileFolderCollectionViewControllerTypeNodeRef;
+            self.nodeRef = nodeRef;
+            self.shouldAutoSelectFirstItem = YES;
+        }
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithDocumentPath:(NSString *)documentPath session:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
+    if(self)
+    {
+        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
+        if(documentPath)
+        {
+            self.controllerType = FileFolderCollectionViewControllerTypeDocumentPath;
+            self.documentPath = documentPath;
+            self.shouldAutoSelectFirstItem = YES;
+        }
+    }
+    
     return self;
 }
 
@@ -272,7 +309,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self selectIndexPathForAlfrescoNodeInDetailView];
+    if(self.shouldAutoSelectFirstItem)
+    {
+        [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    }
+    else
+    {
+        [self selectIndexPathForAlfrescoNodeInDetailView];
+    }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -717,10 +761,34 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                 [self.view bringSubviewToFront:self.collectionView];
                             }];
                         }
-                        else
+                        else if([nodeRefNode isKindOfClass:[AlfrescoDocument class]])
                         {
-                            AlfrescoLogError(@"Node returned with path; %@, is not a folder node", self.folderPath);
+                            self.collectionViewData = [NSMutableArray arrayWithObject:nodeRefNode];
+                            [self hideHUD];
+                            [self hidePullToRefreshView];
+                            self.folderDisplayName = nodeRefNode.title;
+                            [self reloadCollectionView];
+                            [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                         }
+                    }
+                }];
+            }
+            break;
+            case FileFolderCollectionViewControllerTypeDocumentPath:
+            {
+                [self.documentService retrieveNodeWithFolderPath:self.documentPath completionBlock:^(AlfrescoNode *node, NSError *error) {
+                    if(node)
+                    {
+                        self.collectionViewData = [NSMutableArray arrayWithObject:node];
+                        [self hideHUD];
+                        [self hidePullToRefreshView];
+                        [self reloadCollectionView];
+                        [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                    }
+                    else
+                    {
+                        [Notifier notifyWithAlfrescoError:error];
+                        [self hideHUD];
                     }
                 }];
             }
