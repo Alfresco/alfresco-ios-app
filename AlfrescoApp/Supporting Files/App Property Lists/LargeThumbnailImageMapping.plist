@@ -4,6 +4,8 @@
 <dict>
 	<key>generic</key>
 	<string>large_blank_document.png</string>
+	<key>folder</key>
+	<string>large_folder.png</string>
 	<key>doc</key>
 	<string>large_word.png</string>
 	<key>docx</key>

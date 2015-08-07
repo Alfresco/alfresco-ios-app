@@ -17,13 +17,14 @@
  ******************************************************************************/
  
 #import "SwitchViewController.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "UniversalDevice.h"
+#import "DismissCompletionProtocol.h"
+#import "NavigationViewController.h"
 
 @interface SwitchViewController ()
-
 @property (nonatomic, strong, readwrite) UIViewController *displayedViewController;
-
+@property (nonatomic, weak, readwrite) MainMenuItem *previouslySelectedItem;
 @end
 
 @implementation SwitchViewController
@@ -79,17 +80,53 @@
 
 #pragma mark - MainMenuViewControllerDelegate Functions
 
-- (void)didSelectMenuItem:(MainMenuItem *)mainMenuItem
+- (void)mainMenuViewController:(MainMenuViewController *)controller didDeselectItem:(MainMenuItem *)menuItem inSectionItem:(MainMenuSection *)sectionItem
 {
-    if (IS_IPAD && mainMenuItem.shouldDisplayInDetailView)
+    self.previouslySelectedItem = menuItem;
+}
+
+- (void)mainMenuViewController:(MainMenuViewController *)controller didSelectItem:(MainMenuItem *)menuItem inSectionItem:(MainMenuSection *)sectionItem
+{
+    // Need to set a dismiss block to ensure the ment controller reselects the previous item that was selected
+    id conformanceObject = nil;
+    // If the associated object is a navigation controller, check the root view controller for conformance, else, check the object itself
+    if ([menuItem.associatedObject isKindOfClass:[NavigationViewController class]])
     {
-        [UniversalDevice pushToDisplayViewController:mainMenuItem.viewController usingNavigationController:(UINavigationController *)self.displayedViewController animated:YES];
+        conformanceObject = ((NavigationViewController *)menuItem.associatedObject).rootViewController;
+    }
+    else if ([menuItem.associatedObject isKindOfClass:[UIViewController class]])
+    {
+        conformanceObject = menuItem.associatedObject;
+    }
+    
+    // If the associated object conforms to this DismissCompletionProtocol, then set the block to reselect the previously selected item
+    if ([conformanceObject conformsToProtocol:@protocol(DismissCompletionProtocol)])
+    {
+        id<DismissCompletionProtocol> dismissBlockConformingObject = conformanceObject;
+        dismissBlockConformingObject.dismissCompletionBlock = ^{
+            if (self.previouslySelectedItem)
+            {
+                [controller selectMenuItemWithIdentifier:self.previouslySelectedItem.itemIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
+            }
+        };
+    }
+    
+    // Continue with display the newly selected controller
+    if (IS_IPAD && menuItem.displayType == MainMenuDisplayTypeDetail)
+    {
+        [UniversalDevice pushToDisplayViewController:menuItem.associatedObject usingNavigationController:(UINavigationController *)self.displayedViewController animated:YES];
+    }
+    else if (menuItem.displayType == MainMenuDisplayTypeModal)
+    {
+        [UniversalDevice displayModalViewController:menuItem.associatedObject onController:self.displayedViewController withCompletionBlock:nil];
     }
     else
     {
-        [self displayViewController:mainMenuItem.viewController];
+        [self displayViewController:menuItem.associatedObject];
     }
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+    
+    // Collapse the menu controller
+    RootRevealViewController *rootViewController = (RootRevealViewController *)[UniversalDevice revealViewController];
     [rootViewController collapseViewController];
 }
 

@@ -38,6 +38,7 @@
         self.showsVerticalScrollIndicator = NO;
         self.clipsToBounds = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLayout) name:kAlfrescoPagedScrollViewLayoutSubviewsNotification object:nil];
     }
     return self;
 }
@@ -56,6 +57,8 @@
 {
     [super layoutSubviews];
     
+    self.contentSize = CGSizeMake((self.frame.size.width * self.subviews.count), self.frame.size.height);
+    
     for (int i = 0; i < self.subviews.count; i++)
     {
         UIView *subView = self.subviews[i];
@@ -67,8 +70,6 @@
         subViewFrame.size.height = scrollViewFrame.size.height;
         subView.frame = subViewFrame;
     }
-    
-    self.contentSize = CGSizeMake((self.frame.size.width * self.subviews.count), self.frame.size.height);
     
     // triggered when resizing the view
     if (!self.isDragging && !self.isScrollingToPosition)
@@ -104,6 +105,7 @@
 
 - (void)didRotate:(NSNotification *)notification
 {
+    [self layoutSubviews];
     [self scrollToDisplayViewAtIndex:self.selectedPageIndex animated:NO];
 }
 

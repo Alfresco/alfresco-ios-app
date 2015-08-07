@@ -20,6 +20,15 @@
 
 @interface NSDictionary (Extension)
 
+///returns the object or nil if value is NSNull for given key
+- (id)objectForKeyNotNSNull:(id)aKey;
+
+///convenient method; returns BOOL value or NO if value is NSNull for given key
+- (BOOL)boolForKeyNotNSNull:(id)aKey;
+
+///convenient method; returns int value or 0 if value is NSNull for given key
+- (int)intForKeyNotNSNull:(id)aKey;
+
 - (NSArray *)findMissingKeysFromArray:(NSArray *)searchKeys;
 
 @end

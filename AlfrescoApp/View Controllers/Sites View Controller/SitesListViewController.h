@@ -19,11 +19,12 @@
 #import "ParentListViewController.h"
 #import "SitesCell.h"
 
-typedef NS_ENUM(NSInteger, SiteListType)
+typedef NS_ENUM(NSUInteger, SitesListViewFilter)
 {
-    SiteListTypeFavouriteSites = 0,
-    SiteListTypeMySites,
-    SiteListTypeAllSites
+    SitesListViewFilterNoFilter,
+    SitesListViewFilterFavouriteSites,
+    SitesListViewFilterMySites,
+    SitesListViewFilterAllSites
 };
 
 @interface SitesListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate, SiteCellDelegate>
@@ -31,6 +32,8 @@ typedef NS_ENUM(NSInteger, SiteListType)
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) UISearchDisplayController *searchController;
 @property (nonatomic, strong) NSArray *searchResults;
+
+- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session;
 
 - (void)showSearchProgressHUD;
 - (void)hideSearchProgressHUD;

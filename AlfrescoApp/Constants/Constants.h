@@ -32,23 +32,6 @@ typedef NS_ENUM(NSInteger, InAppDocumentLocation)
     InAppDocumentLocationLocalFiles
 };
 
-typedef NS_ENUM(NSUInteger, MainMenuType)
-{
-    MainMenuTypeAccounts = 0,
-    MainMenuTypeActivities,
-    MainMenuTypeRepository,
-    MainMenuTypeSites,
-    MainMenuTypeTasks,
-    MainMenuTypeSync,
-    MainMenuTypeMyFiles,
-    MainMenuTypeSharedFiles,
-    MainMenuTypeDownloads,
-    MainMenuTypeSettings,
-    MainMenuTypeAbout,
-    MainMenuTypeHelp,
-    MainMenuType_MAX_ENUM    // <-- Ensure this is the last entry
-};
-
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
 
@@ -264,6 +247,48 @@ extern NSString * const kAlfrescoMDMRepositoryURLKey;
 extern NSString * const kAlfrescoMDMUsernameKey;
 extern NSString * const kAlfrescoMDMDisplayNameKey;
 
+// PagedScrollView Notifications
+extern NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification;
+
+// Main Menu
+///
+extern NSString * const kAlfrescoEmbeddedConfigurationFileName;
+/// Notifications
+extern NSString * const kAlfrescoConfigurationFileDidUpdateNotification;
+extern NSString * const kAlfrescoConfigurationShouldUpdateMainMenuNotification;
+extern NSString * const kAlfrescoConfigurationProfileDidChangeNotification;
+/// Keys
+extern NSString * const kAlfrescoConfigurationProfileDidChangeForAccountKey;
+/// Menu Item Identifiers
+extern NSString * const kAlfrescoMainMenuItemAccountsIdentifier;
+extern NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier;
+extern NSString * const kAlfrescoMainMenuItemSitesIdentifier;
+extern NSString * const kAlfrescoMainMenuItemSyncIdentifier;
+extern NSString * const kAlfrescoMainMenuItemSettingsIdentifier;
+extern NSString * const kAlfrescoMainMenuItemHelpIdentifier;
+/// View Types
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeActivities;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeRepository;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSiteBrowser;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeTasks;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeFavourites;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeLocal;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypePersonProfile;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypePeople;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSite;
+// View Parameter Keys
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterShowKey;
+// View Parameter Values
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue;
+
 // App Configuration
 //// Notifictaions
 extern NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification;
@@ -271,3 +296,5 @@ extern NSString * const kAppConfigurationAccountsConfigurationUpdatedNotificatio
 extern NSString * const kAppConfigurationCanAddAccountsKey;
 extern NSString * const kAppConfigurationCanEditAccountsKey;
 extern NSString * const kAppConfigurationCanRemoveAccountsKey;
+///// Main Menu
+extern NSString * const kAppConfigurationUserCanEditMainMenuKey;

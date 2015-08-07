@@ -8,7 +8,6 @@
 
 #import "SyncTest.h"
 #import "SyncManager.h"
-#import "AlfrescoLog.h"
 
 @implementation SyncTest
 

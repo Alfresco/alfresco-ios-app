@@ -28,24 +28,31 @@
 #import "ClientCertificateViewController.h"
 #import "UniversalDevice.h"
 #import "ConnectionDiagnosticViewController.h"
+#import "MainMenuReorderViewController.h"
+#import "MainMenuLocalConfigurationBuilder.h"
+#import "ProfileSelectionViewController.h"
+#import "AppConfigurationManager.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
 static NSInteger const kTagCertificateCell = 1;
+static NSInteger const kTagReorderCell = 2;
+static NSInteger const kTagProfileCell = 3;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroupHeaders;
 @property (nonatomic, strong) NSArray *tableGroupFooters;
-@property (nonatomic, strong) UITextField *usernameTextField;
-@property (nonatomic, strong) UITextField *passwordTextField;
-@property (nonatomic, strong) UITextField *serverAddressTextField;
-@property (nonatomic, strong) UITextField *descriptionTextField;
-@property (nonatomic, strong) UITextField *portTextField;
-@property (nonatomic, strong) UITextField *serviceDocumentTextField;
-@property (nonatomic, strong) UILabel *certificateLabel;
-@property (nonatomic, strong) UISwitch *protocolSwitch;
-@property (nonatomic, strong) UISwitch *syncPreferenceSwitch;
+@property (nonatomic, weak) UITextField *usernameTextField;
+@property (nonatomic, weak) UITextField *passwordTextField;
+@property (nonatomic, weak) UITextField *serverAddressTextField;
+@property (nonatomic, weak) UITextField *descriptionTextField;
+@property (nonatomic, weak) UITextField *portTextField;
+@property (nonatomic, weak) UITextField *serviceDocumentTextField;
+@property (nonatomic, weak) UILabel *certificateLabel;
+@property (nonatomic, weak) UILabel *profileLabel;
+@property (nonatomic, weak) UISwitch *protocolSwitch;
+@property (nonatomic, weak) UISwitch *syncPreferenceSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
@@ -53,18 +60,24 @@ static NSInteger const kTagCertificateCell = 1;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
 @property (nonatomic, strong) NSDictionary *configuration;
 @property (nonatomic, assign) BOOL canEditAccounts;
+@property (nonatomic, assign) BOOL canReorderMainMenuItems;
 @end
 
 @implementation AccountInfoViewController
 
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType
 {
     return [self initWithAccount:account accountActivityType:activityType configuration:nil];
 }
 
-- (id)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
+    return [self initWithAccount:account accountActivityType:activityType configuration:configuration session:nil];
+}
+
+- (instancetype)initWithAccount:(UserAccount *)account accountActivityType:(AccountActivityType)activityType configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
     if (self)
     {
         if (account)
@@ -80,6 +93,9 @@ static NSInteger const kTagCertificateCell = 1;
         self.configuration = configuration;
         NSNumber *canEditAccounts = configuration[kAppConfigurationCanEditAccountsKey];
         self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
+        
+        NSNumber *canReorderMenuItems = configuration[kAppConfigurationUserCanEditMainMenuKey];
+        self.canReorderMainMenuItems = ((canReorderMenuItems.boolValue && account == [AccountManager sharedManager].selectedAccount) || [[AppConfigurationManager sharedManager] serverConfigurationExistsForAccount:account]) ? canReorderMenuItems.boolValue : YES;
     }
     return self;
 }
@@ -128,6 +144,11 @@ static NSInteger const kTagCertificateCell = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(profileDidChange:)
+                                                 name:kAlfrescoConfigurationProfileDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -265,6 +286,16 @@ static NSInteger const kTagCertificateCell = 1;
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
         [self.navigationController pushViewController:clientCertificate animated:YES];
     }
+    else if (cell.tag == kTagReorderCell)
+    {
+        MainMenuReorderViewController *reorderController = [[MainMenuReorderViewController alloc] initWithAccount:self.account session:self.session];
+        [self.navigationController pushViewController:reorderController animated:YES];
+    }
+    else if (cell.tag == kTagProfileCell)
+    {
+        ProfileSelectionViewController *profileSelectionViewController = [[ProfileSelectionViewController alloc] initWithAccount:self.account];
+        [self.navigationController pushViewController:profileSelectionViewController animated:YES];
+    }
 }
 
 - (void)constructTableCellsForAlfrescoServer
@@ -360,6 +391,27 @@ static NSInteger const kTagCertificateCell = 1;
         certificateCell.valueLabel.text = self.account.accountCertificate.summary;
         self.certificateLabel = certificateCell.valueLabel;
         
+        LabelCell *configurationCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        configurationCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        configurationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        configurationCell.tag = kTagReorderCell;
+        configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
+        configurationCell.valueLabel.text = @"";
+        if (!self.canReorderMainMenuItems)
+        {
+            configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
+            configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
+        }
+        
+        LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        profileCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        profileCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        profileCell.tag = kTagProfileCell;
+        profileCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.profile", @"Profile");
+        profileCell.valueLabel.text = self.account.selectedProfileName;
+        profileCell.valueLabel.textColor = [UIColor lightGrayColor];
+        self.profileLabel = profileCell.valueLabel;
+        
          /**
           * Selectively disable some controls if required
           */
@@ -374,11 +426,23 @@ static NSInteger const kTagCertificateCell = 1;
          * Note: Additional account-specific settings should be in their own group with an empty header string.
          * This will allow a description footer to be added under each setting if required.
          */
-        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                                                               @[syncPreferenceCell],
-                                                               @[portCell, serviceDocumentCell, certificateCell]]];
-        self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting", @"accountdetails.header.advanced"];
-        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer", @""];
+        if (self.activityType == AccountActivityTypeNewAccount)
+        {
+            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                                   @[portCell, serviceDocumentCell, certificateCell]]];
+            self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+            self.tableGroupFooters = @[@"", @""];
+        }
+        else
+        {
+            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[profileCell],
+                                                                   @[configurationCell],
+                                                                   @[syncPreferenceCell],
+                                                                   @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                                   @[portCell, serviceDocumentCell, certificateCell]]];
+            self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+            self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @"",  @""];
+        }
     }
     else
     {
@@ -627,6 +691,18 @@ static NSInteger const kTagCertificateCell = 1;
 - (void)textFieldDidChange:(NSNotification *)notification
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+#pragma mark - Notifictaions
+
+-(void)profileDidChange:(NSNotification *)notifictaion
+{
+    AlfrescoProfileConfig *selectedProfile = notifictaion.object;
+    self.profileLabel.text = selectedProfile.label;
+    
+    NSString *title = NSLocalizedString(@"main.menu.profile.selection.banner.title", @"Profile Changed Title");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"main.menu.profile.selection.banner.message", @"Profile Changed"), selectedProfile.label];
+    displayInformationMessageWithTitle(message, title);
 }
 
 #pragma mark - UIKeyboard Notifications

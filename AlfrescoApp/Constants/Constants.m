@@ -232,6 +232,48 @@ NSString * const kAlfrescoMDMRepositoryURLKey = @"AlfrescoRepositoryURL";
 NSString * const kAlfrescoMDMUsernameKey = @"AlfrescoUserName";
 NSString * const kAlfrescoMDMDisplayNameKey = @"AlfrescoDisplayName";
 
+// PagedScrollView Notifications
+NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification = @"AlfrescoPagedScrollViewLayoutSubviewsNotification";
+
+// Main Menu
+///
+NSString * const kAlfrescoEmbeddedConfigurationFileName = @"configuration.json";
+/// Notifications
+NSString * const kAlfrescoConfigurationFileDidUpdateNotification = @"AlfrescoConfigurationFileDidUpdateNotification";
+NSString * const kAlfrescoConfigurationShouldUpdateMainMenuNotification = @"AlfrescoConfigurationShouldUpdateMainMenuNotification";
+NSString * const kAlfrescoConfigurationProfileDidChangeNotification = @"AlfrescoConfigurationProfileDidChangeNotification";
+/// Keys
+NSString * const kAlfrescoConfigurationProfileDidChangeForAccountKey = @"AlfrescoConfigurationProfileDidChangeForAccountKey";
+/// Menu Item Identifiers
+NSString * const kAlfrescoMainMenuItemAccountsIdentifier = @"org.alfresco.com.mobile.main.menu.accounts.identifier";
+NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier = @"org.alfresco.com.mobile.main.menu.company.home.identifier";
+NSString * const kAlfrescoMainMenuItemSitesIdentifier = @"org.alfresco.com.mobile.main.menu.sites.identifier";
+NSString * const kAlfrescoMainMenuItemSyncIdentifier = @"org.alfresco.com.mobile.main.menu.sync.identifier";
+NSString * const kAlfrescoMainMenuItemSettingsIdentifier = @"org.alfresco.com.mobile.main.menu.settings.identifier";
+NSString * const kAlfrescoMainMenuItemHelpIdentifier = @"org.alfresco.com.mobile.main.menu.help.identifier";
+// View Types
+NSString * const kAlfrescoMainMenuConfigurationViewTypeActivities = @"org.alfresco.client.view.activities";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeRepository = @"org.alfresco.client.view.repository";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeSiteBrowser = @"org.alfresco.client.view.site-browser";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeTasks = @"org.alfresco.client.view.tasks";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeFavourites = @"org.alfresco.client.view.sync";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeLocal = @"org.alfresco.client.view.local";
+NSString * const kAlfrescoMainMenuConfigurationViewTypePersonProfile = @"org.alfresco.client.view.person-profile";
+NSString * const kAlfrescoMainMenuConfigurationViewTypePeople = @"org.alfresco.client.view.people";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery = @"org.alfresco.client.view.preview-carousel";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails = @"org.alfresco.client.view.node-details";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch = @"org.alfresco.client.view.repository-search";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeSite = @"org.alfresco.client.view.sites";
+// View Parameter Keys
+NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey = @"siteShortName";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey = @"path";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey = @"nodeRef";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterShowKey = @"show";
+// View Parameter Values
+NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue = @"my";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue = @"favorites";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue = @"all";
+
 // App Configuration
 //// Notifictaions
 NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"AppConfigurationAccountsConfigurationUpdatedNotification";
@@ -239,3 +281,5 @@ NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"A
 NSString * const kAppConfigurationCanAddAccountsKey = @"AppConfigurationCanAddAccounts";
 NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEditAccounts";
 NSString * const kAppConfigurationCanRemoveAccountsKey = @"AppConfigurationCanRemoveAccounts";
+///// Main Menu
+NSString * const kAppConfigurationUserCanEditMainMenuKey = @"AppConfigurationUserCanEditMainMenuKey";

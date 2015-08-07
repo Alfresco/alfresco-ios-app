@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -19,7 +19,6 @@
 #import "SyncViewController.h"
 #import "SyncManager.h"
 #import "FavouriteManager.h"
-#import "AlfrescoNodeCell.h"
 #import "DocumentPreviewViewController.h"
 #import "MetaDataViewController.h"
 #import "UniversalDevice.h"
@@ -31,17 +30,19 @@
 #import "Constants.h"
 #import "PreferenceManager.h"
 #import "ConnectivityManager.h"
-#import "FileFolderListViewController.h"
 #import "LoginManager.h"
 #import "DownloadsDocumentPreviewViewController.h"
 #import "SyncNavigationViewController.h"
+
+#import "FileFolderCollectionViewCell.h"
+#import "FileFolderCollectionViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
 static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSeriesId.value";
 
-@interface SyncViewController ()
+@interface SyncViewController () <CollectionViewCellAccessoryViewDelegate>
 
 @property (nonatomic) AlfrescoNode *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
@@ -49,13 +50,15 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
 
+@property (nonatomic, strong) UIBarButtonItem *switchLayoutBarButtonItem;
+
 @end
 
 @implementation SyncViewController
 
 - (id)initWithParentNode:(AlfrescoNode *)node andSession:(id<AlfrescoSession>)session
 {
-    self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
+    self = [super initWithSession:session];
     if (self)
     {
         self.session = session;
@@ -97,10 +100,20 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     
     self.title = [self listTitle];
-    [self adjustTableViewForProgressView];
+    [self adjustCollectionViewForProgressView];
     
-    UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+    UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
+    [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
+    
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    
+    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:NO];
+    self.listLayout.dataSourceInfoDelegate = self;
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:NO];
+    self.gridLayout.dataSourceInfoDelegate = self;
+    
+    [self changeCollectionViewStyle:self.style animated:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
@@ -119,12 +132,14 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                                  name:kAlfrescoNodeAddedOnServerNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adjustTableViewForProgressView)
+                                             selector:@selector(adjustCollectionViewForProgressView)
                                                  name:kSyncProgressViewVisiblityChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(editingDocumentCompleted:)
                                                  name:kAlfrescoDocumentEditedNotification object:nil];
+    
+    [self setupBarButtonItems];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -150,21 +165,21 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     if (folder)
     {
-        self.tableViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
-        [self.tableView reloadData];
+        self.collectionViewData = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:(AlfrescoFolder *)self.parentNode];
+        [self reloadCollectionView];
         [self hidePullToRefreshView];
     }
     else
     {
-        self.tableViewData = [[SyncManager sharedManager] syncDocumentsAndFoldersForSession:self.session withCompletionBlock:^(NSMutableArray *syncedNodes) {
+        self.collectionViewData = [[SyncManager sharedManager] syncDocumentsAndFoldersForSession:self.session withCompletionBlock:^(NSMutableArray *syncedNodes) {
             if (syncedNodes)
             {
-                self.tableViewData = syncedNodes;
-                [self.tableView reloadData];
+                self.collectionViewData = syncedNodes;
+                [self reloadCollectionView];
                 [self hidePullToRefreshView];
             }
         }];
-        [self.tableView reloadData];
+        [self reloadCollectionView];
     }
 }
 
@@ -182,7 +197,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
     }
     
-    self.tableView.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
+    self.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
     return title;
 }
 
@@ -228,7 +243,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     if (!self.parentNode)
     {
         AlfrescoNode *nodeAdded = (AlfrescoNode *)notification.object;
-        [self addAlfrescoNodes:@[nodeAdded] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self addAlfrescoNodes:@[nodeAdded] completion:nil];
     }
 }
 
@@ -237,11 +252,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     if (!self.parentNode)
     {
         AlfrescoNode *nodeRemoved = (AlfrescoNode *)notification.object;
-        NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeRemoved.identifier inNodeIdentifiers:[self.tableViewData valueForKey:@"identifier"]];
+        NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeRemoved.identifier inNodeIdentifiers:[self.collectionViewData valueForKey:@"identifier"]];
         if (indexPath)
         {
-            [self.tableViewData removeObjectAtIndex:indexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.collectionViewData removeObjectAtIndex:indexPath.row];
+            [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
         }
     }
 }
@@ -250,12 +265,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     AlfrescoDocument *deletedDocument = notification.object;
     
-    if ([self.tableViewData containsObject:deletedDocument])
+    if ([self.collectionViewData containsObject:deletedDocument])
     {
-        NSUInteger index = [self.tableViewData indexOfObject:deletedDocument];
-        [self.tableViewData removeObject:deletedDocument];
+        NSUInteger index = [self.collectionViewData indexOfObject:deletedDocument];
+        [self.collectionViewData removeObject:deletedDocument];
         NSIndexPath *indexPathOfDeletedNode = [NSIndexPath indexPathForRow:index inSection:0];
-        [self.tableView deleteRowsAtIndexPaths:@[indexPathOfDeletedNode] withRowAnimation:UITableViewRowAnimationFade];
+        [self.collectionView deleteItemsAtIndexPaths:@[indexPathOfDeletedNode]];
     }
 }
 
@@ -264,12 +279,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     AlfrescoDocument *editedDocument = notification.object;
     NSString *editedDocumentIdentifier = [Utility nodeRefWithoutVersionID:editedDocument.identifier];
     
-    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocumentIdentifier inNodeIdentifiers:[self.tableViewData valueForKeyPath:kVersionSeriesValueKeyPath]];
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocumentIdentifier inNodeIdentifiers:[self.collectionViewData valueForKeyPath:kVersionSeriesValueKeyPath]];
     
     if (indexPath)
     {
-        [self.tableViewData replaceObjectAtIndex:indexPath.row withObject:editedDocument];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.collectionViewData replaceObjectAtIndex:indexPath.row withObject:editedDocument];
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }
 }
 
@@ -308,30 +323,25 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     else if (notificationAccount == selectedAccount)
     {
-        [self.tableView reloadData];
+        [self reloadCollectionView];
     }
 }
 
-#pragma mark - TableView Datasource
+#pragma mark - CollectionViewDataSource methods
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.tableViewData.count;
+    return self.collectionViewData.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kCellHeight;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
+    FileFolderCollectionViewCell *nodeCell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
     
     SyncManager *syncManager = [SyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
     
-    AlfrescoNode *node = self.tableViewData[indexPath.row];
+    AlfrescoNode *node = self.collectionViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
@@ -344,9 +354,18 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
     }];
     
+    BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];
+    
     if (node.isFolder)
     {
-        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
+        if(currentLayout.shouldShowSmallThumbnail)
+        {
+            [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
+        }
+        else
+        {
+            [nodeCell.image setImage:largeImageForType(@"folder") withFade:NO];
+        }
     }
     else if (node.isDocument)
     {
@@ -360,11 +379,18 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         }
         else
         {
-            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+            if(currentLayout.shouldShowSmallThumbnail)
+            {
+                [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+            }
+            else
+            {
+                [nodeCell.image setImage:largeImageForType([document.name pathExtension]) withFade:NO];
+            }
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                    FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
                     if (updateCell)
                     {
                         [updateCell.image setImage:image withFade:YES];
@@ -373,43 +399,46 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
             }];
         }
     }
+    
+    nodeCell.accessoryViewDelegate = self;
     return nodeCell;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([cell isKindOfClass:AlfrescoNodeCell.class])
+    if ([cell isKindOfClass:FileFolderCollectionViewCell.class])
     {
-        [(AlfrescoNodeCell *)cell removeNotifications];
+        [(FileFolderCollectionViewCell *)cell removeNotifications];
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     SyncManager *syncManager = [SyncManager sharedManager];
-    AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
+    AlfrescoNode *selectedNode = self.collectionViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
     
     BOOL isSyncOn = [syncManager isSyncPreferenceOn];
     
     if (selectedNode.isFolder)
     {
-        UIViewController *controller = nil;
+        ParentCollectionViewController *controller = nil;
         if (isSyncOn)
         {
             controller = [[SyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
         }
         else
         {
-            controller = [[FileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderDisplayName:selectedNode.name session:self.session];
+            controller = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderDisplayName:selectedNode.name session:self.session];
         }
+        controller.style = self.style;
         [self.navigationController pushViewController:controller animated:YES];
     }
     else
     {
         if (nodeStatus.status == SyncStatusLoading)
         {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
             return;
         }
         
@@ -466,15 +495,20 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+#pragma mark - CollectionViewCellAccessoryViewDelegate methods
+- (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {
     SyncManager *syncManager = [SyncManager sharedManager];
-    AlfrescoNode *node = self.tableViewData[indexPath.row];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
+    
+    NSIndexPath *selectedIndexPath = nil;
+    
+    NSUInteger item = [self.collectionViewData indexOfObject:node];
+    selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
     
     if (node.isFolder)
     {
-        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        [self.collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:node];
         if (syncNodePermissions)
@@ -517,7 +551,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
             case SyncStatusFailed:
             {
                 self.retrySyncNode = node;
-                [self showPopoverForFailedSyncNodeAtIndexPath:indexPath];
+                [self showPopoverForFailedSyncNodeAtIndexPath:selectedIndexPath];
                 break;
             }
             default:
@@ -531,7 +565,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
     SyncManager *syncManager = [SyncManager sharedManager];
-    AlfrescoNode *node = self.tableViewData[indexPath.row];
+    AlfrescoNode *node = self.collectionViewData[indexPath.row];
     NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
     
     if (IS_IPAD)
@@ -548,7 +582,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
         [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
         
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         
         if (cell.accessoryView.window != nil)
         {
@@ -575,10 +609,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
 #pragma mark - UIRefreshControl Functions
 
-- (void)refreshTableView:(UIRefreshControl *)refreshControl
+- (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
     [self showLoadingTextInRefreshControl:refreshControl];
-    
     if (self.session)
     {
         [self loadSyncNodesForFolder:self.parentNode];
@@ -650,11 +683,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     if ([parentFolder.identifier isEqualToString:self.parentNode.identifier])
     {
         AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
-        [self addAlfrescoNodes:@[subnode] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self addAlfrescoNodes:@[subnode] completion:nil];
     }
 }
 
-- (void)adjustTableViewForProgressView
+- (void)adjustCollectionViewForProgressView
 {
     id navigationController = self.navigationController;
     if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
@@ -666,8 +699,104 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         {
             edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
         }
-        self.tableView.contentInset = edgeInset;
+        self.collectionView.contentInset = edgeInset;
     }
+}
+
+#pragma mark - DataSourceInformationProtocol methods
+- (BOOL) isItemSelected:(NSIndexPath *) indexPath
+{
+    if(self.isEditing)
+    {
+        AlfrescoNode *selectedNode = nil;
+        if(indexPath.item < self.collectionViewData.count)
+        {
+            selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+        }
+        
+        if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSInteger)indexOfNode:(AlfrescoNode *)node
+{
+    NSInteger index = NSNotFound;
+    index = [self.collectionViewData indexOfObject:node];
+    
+    return index;
+}
+
+#pragma mark - Private methods
+- (void) setupBarButtonItems
+{
+    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
+    
+    // update the UI based on permissions
+    self.switchLayoutBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(showLayoutSwitchPopup:)];
+    
+    [rightBarButtonItems addObject:self.switchLayoutBarButtonItem];
+    
+    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:NO];
+}
+
+- (void)showLayoutSwitchPopup:(UIBarButtonItem *)sender
+{
+    [self setupActionsAlertController];
+    self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
+    UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
+    popPC.barButtonItem = self.switchLayoutBarButtonItem;
+    popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popPC.delegate = self;
+    
+    [self presentViewController:self.actionsAlertController animated:YES completion:nil];
+}
+
+#pragma mark - Actions methods
+- (void)setupActionsAlertController
+{
+    self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSString *changeLayoutTitle;
+    if(self.style == CollectionViewStyleList)
+    {
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
+    }
+    else
+    {
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
+    }
+    UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if(self.style == CollectionViewStyleList)
+        {
+            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES];
+        }
+        else
+        {
+            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES];
+        }
+    }];
+    [self.actionsAlertController addAction:changeLayoutAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [self.actionsAlertController addAction:cancelAction];
+}
+
+#pragma mark - UIAdaptivePresentationControllerDelegate methods
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
+    return UIModalPresentationNone;
+}
+
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
+{
+    return self.actionsAlertController;
 }
 
 @end

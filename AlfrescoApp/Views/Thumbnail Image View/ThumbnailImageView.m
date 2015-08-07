@@ -74,6 +74,11 @@ static NSTimeInterval const kFadeSpeed = 0.2;
     }
 }
 
+- (void)updateContentMode
+{
+    self.contentMode = [self contentModeForImage:self.image];
+}
+
 #pragma mark - Private Functions
 
 - (UIViewContentMode)contentModeForImage:(UIImage *)image

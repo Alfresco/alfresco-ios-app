@@ -197,9 +197,14 @@
 "accountdetails.fields.syncPreference" = "Sync Files";
 "accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
+"accountdetails.buttons.configuration" = "Configure Main Menu";
 "accountdetails.header.authentication" = "Account Details";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
+"accountdetails.header.main.menu.config" = "Main Menu Configuration";
+"accountdetails.footer.main.menu.config.disabled" = "Your Alfresco Administrator has disabled this feature.";
+"accountdetails.buttons.profile" = "Profile";
+"accountdetails.header.profile" = "Profile Configuration";
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "The account couldn’t be saved. Check your account settings with your Alfresco administrator.";
@@ -288,6 +293,10 @@
 "browser.alertview.addfolder.create" = "Create";
 
 "browser.actionsheet.record.audio" = "Record Audio";
+
+"browser.actioncontroller.select" = "Select";
+"browser.actioncontroller.grid" = "Show Grid View";
+"browser.actioncontroller.list" = "Show List View";
 
 /**
  * MultiSelect
@@ -757,6 +766,42 @@
  * MDM
  */
 "mdm.missing.keys.description" = "The following keys have not been setup:\n%@\nPlease contact your administrator.";
+
+/**
+ * Configuration
+ */
+// Profiles
+"profile.default.title" = "Default";
+// Views
+"view-activities-default" = "Activities";
+"view-repository-default" = "Repository";
+"view-repository-shared-default" = "Shared Files";
+"view-sites-default" = "Sites";
+"view-repository-userhome-default" = "My Files";
+"view-task-default" = "Tasks";
+"view-favorite-default" = "Favorites";
+"view-search-default" = "Search";
+"view-local-default" = "Local Files";
+
+"configuration.manager.configuration.file.updated.title" = "Configuration Updated";
+"configuration.manager.configuration.file.updated.message" = "The configuration file has been updated";
+
+/**
+ * Main Menu Rorder View Controller
+ */
+"main.menu.reorder.title" = "Menu Configuration";
+"main.menu.reorder.retrieving.profiles" = "Retrieving Profiles ...";
+"main.menu.reorder.header.visible.title" = "Visible";
+"main.menu.reorder.footer.visible.description" = "To hide menu items, drag the item that you no longer need to the hidden section.";
+"main.menu.reorder.header.hidden.title" = "Hidden";
+
+/**
+ * Profile Selection View Controller
+ */
+"main.menu.profile.selection.title" = "Profiles";
+
+"main.menu.profile.selection.banner.title" = "Main Menu Updated";
+"main.menu.profile.selection.banner.message" = "The main menu has been updated to display the %@ profile.";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS

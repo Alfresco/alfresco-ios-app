@@ -17,7 +17,7 @@
  ******************************************************************************/
  
 #import "UniversalDevice.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "DetailSplitViewController.h"
 #import "NavigationViewController.h"
 #import "ItemInDetailViewProtocol.h"
@@ -140,7 +140,7 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
         if ([rootViewController isKindOfClass:[ContainerViewController class]])
         {
             ContainerViewController *containerViewController = (ContainerViewController *)rootViewController;
-            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)containerViewController.rootViewController;
+            RootRevealViewController *splitViewController = (RootRevealViewController *)containerViewController.rootViewController;
             UIViewController *rootDetailController = splitViewController.detailViewController;
             if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
             {
@@ -179,7 +179,7 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
             }];
             viewController.navigationController.viewControllers = mutableNavigationStackControllers;
         }
-
+        
         [navigationController pushViewController:viewController animated:animated];
     }
 }
@@ -208,7 +208,7 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
     }
     else
     {
-        RootRevealControllerViewController *rootRevealViewController = (RootRevealControllerViewController *)[self revealViewController];
+        RootRevealViewController *rootRevealViewController = (RootRevealViewController *)[self revealViewController];
         SwitchViewController *switchViewController = (SwitchViewController *)[rootRevealViewController detailViewController];
         UINavigationController *navController = (UINavigationController *)[switchViewController displayedViewController];
         [navController popViewControllerAnimated:NO];
@@ -226,7 +226,7 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
         if ([rootViewController isKindOfClass:[ContainerViewController class]])
         {
             ContainerViewController *containerViewController = (ContainerViewController *)rootViewController;
-            RootRevealControllerViewController *splitViewController = (RootRevealControllerViewController *)containerViewController.rootViewController;
+            RootRevealViewController *splitViewController = (RootRevealViewController *)containerViewController.rootViewController;
             UIViewController *rootDetailController = splitViewController.detailViewController;
             if ([rootDetailController isKindOfClass:[DetailSplitViewController class]])
             {
@@ -271,13 +271,13 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
 
 + (UIViewController *)rootMasterViewController
 {
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[self revealViewController];
+    RootRevealViewController *rootViewController = (RootRevealViewController *)[self revealViewController];
     return rootViewController.masterViewController;
 }
 
 + (UIViewController *)rootDetailViewController
 {
-    RootRevealControllerViewController *rootViewController = (RootRevealControllerViewController *)[self revealViewController];
+    RootRevealViewController *rootViewController = (RootRevealViewController *)[self revealViewController];
     return rootViewController.detailViewController;
 }
 

@@ -22,14 +22,13 @@
 #import "LocationManager.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
-#import "RootRevealControllerViewController.h"
+#import "RootRevealViewController.h"
 #import "DetailSplitViewController.h"
 #import "SwitchViewController.h"
 #import "AccountsViewController.h"
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
-#import "AppConfigurationManager.h"
 
 #import "AnalyticsManager.h"
 #import "CoreDataCacheHelper.h"
@@ -41,6 +40,17 @@
 #import "NSDictionary+Extension.h"
 #import "UniversalDevice.h"
 
+#import "AlfrescoConfigConstants.h"
+#import "AlfrescoConfigService.h"
+#import "ActivitiesViewController.h"
+#import "FileFolderListViewController.h"
+#import "SitesListViewController.h"
+#import "DownloadsViewController.h"
+#import "SyncViewController.h"
+#import "TaskViewController.h"
+#import "MainMenuLocalConfigurationBuilder.h"
+#import "AppConfigurationManager.h"
+
 #import <HockeySDK/HockeySDK.h>
 
 static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
@@ -50,7 +60,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 @property (nonatomic, strong) UIViewController *appRootViewController;
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, strong, readwrite) MainMenuViewController *mainMenuViewController;
+@property (nonatomic, strong, readwrite) MainMenuConfigurationViewController *mainMenuViewController;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *appleConfigurationHelper;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *mobileIronConfigurationHelper;
 
@@ -65,7 +75,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     {
         self.appleConfigurationHelper = [[MDMUserDefaultsConfigurationHelper alloc] initWithConfigurationKey:kAppleManagedConfigurationKey];
         self.mobileIronConfigurationHelper = [[MDMUserDefaultsConfigurationHelper alloc] initWithConfigurationKey:kMobileIronManagedConfigurationKey];
-        
     }
     return self;
 }
@@ -179,8 +188,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         }
     }
     
-    [AppConfigurationManager sharedManager];
-    
     if (safeMode)
     {
         // Switch safe mode off
@@ -242,7 +249,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 
 - (UIViewController *)buildMainAppUIWithSession:(id<AlfrescoSession>)session displayingMainMenu:(BOOL)displayMainMenu
 {
-    RootRevealControllerViewController *rootRevealViewController = nil;
+    RootRevealViewController *rootRevealViewController = nil;
     
     BOOL isManaged = self.appleConfigurationHelper.isManaged || self.mobileIronConfigurationHelper.isManaged;
     
@@ -259,19 +266,19 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
-    MainMenuItem *accountsItem = [[MainMenuItem alloc] initWithControllerType:MainMenuTypeAccounts
-                                                                    imageName:@"mainmenu-accounts.png"
-                                                            localizedTitleKey:@"accounts.title"
-                                                               viewController:accountsNavigationController
-                                                              displayInDetail:NO];
     
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
-    MainMenuViewController *mainMenuController = [[MainMenuViewController alloc] initWithAccountsSectionItems:@[accountsItem]];
-    mainMenuController.delegate = switchController;
+    // Main Menu Configuration
+    MainMenuLocalConfigurationBuilder *menuBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:[AccountManager sharedManager].selectedAccount session:self.session];
+    MainMenuConfigurationViewController *mainMenuController = [[MainMenuConfigurationViewController alloc] initWithTitle:nil menuBuilder:menuBuilder delegate:switchController];
+    mainMenuController.backgroundColour = [UIColor mainMenuBackgroundColor];
+    mainMenuController.selectionColour = [UIColor appTintColor];
+    
     self.mainMenuViewController = mainMenuController;
     
-    rootRevealViewController = [[RootRevealControllerViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];
+    rootRevealViewController = [[RootRevealViewController alloc] initWithMasterViewController:mainMenuController detailViewController:switchController];
+    rootRevealViewController.delegate = (id<RootRevealViewControllerDelegate>)self.mainMenuViewController;
     
     if (IS_IPAD)
     {
@@ -440,7 +447,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     [self.mobileIronConfigurationHelper setManagedDictionary:config];
     
-    RootRevealControllerViewController *rootRevealController = (RootRevealControllerViewController *)[UniversalDevice revealViewController];
+    RootRevealViewController *rootRevealController = (RootRevealViewController *)[UniversalDevice revealViewController];
     
     if (rootRevealController.hasOverlayController)
     {

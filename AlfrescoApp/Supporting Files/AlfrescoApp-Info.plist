@@ -56,7 +56,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.2</string>
+	<string>2.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -86,5 +86,16 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.alfresco.mobile</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>alfresco</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

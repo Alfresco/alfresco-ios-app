@@ -57,7 +57,7 @@
    <TestAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldUseLaunchSchemeArgsEnv = "NO"
       buildConfiguration = "Debug">
       <Testables>
          <TestableReference
@@ -69,6 +69,14 @@
                BlueprintName = "AlfrescoApp Tests"
                ReferencedContainer = "container:AlfrescoApp.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AlfrescoBaseTest">
+               </Test>
+               <Test
+                  Identifier = "SyncTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
@@ -80,6 +88,13 @@
             ReferencedContainer = "container:AlfrescoApp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "TEST_SERVER"
+            value = "localhost"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"

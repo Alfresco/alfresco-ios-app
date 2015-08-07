@@ -429,7 +429,7 @@ static UILayoutPriority const kLowPriority = 250;
     }
     else
     {
-        properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionApprove} mutableCopy];
+        properties = [@{kAlfrescoWorkflowVariableTaskReviewOutcome : kAlfrescoWorkflowTaskTransitionReject} mutableCopy];
     }
     
     if ([WorkflowHelper isJBPMTask:self.task])

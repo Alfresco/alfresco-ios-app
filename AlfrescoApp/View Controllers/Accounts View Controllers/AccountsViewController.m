@@ -39,25 +39,37 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 @interface AccountsViewController ()
 @property (nonatomic, assign) NSInteger expandedSection;
-@property (nonatomic, strong) NSDictionary *configuration;
+@property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, assign) BOOL canAddAccounts;
 @property (nonatomic, assign) BOOL canRemoveAccounts;
 @end
 
 @implementation AccountsViewController
 
+- (instancetype)initWithSession:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
+    if (self)
+    {
+        self.canAddAccounts = YES;
+        self.canRemoveAccounts = YES;
+        self.configuration = [NSMutableDictionary dictionary];
+        
+        [self registerForNotifications];
+    }
+    return self;
+}
+
 - (instancetype)initWithConfiguration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
 {
     self = [self initWithSession:session];
     if (self)
     {
-        self.configuration = configuration;
+        self.configuration = (configuration) ? configuration.mutableCopy : [NSMutableDictionary dictionary];
         NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
         self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
         NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
         self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
-        
-        [self registerForNotifications];
     }
     return self;
 }
@@ -104,13 +116,13 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (void)accountConfigurationUpdated:(NSNotification *)notification
 {
-    NSDictionary *configuration = notification.object;
+    NSDictionary *configuration = notification.userInfo;
     [self configureViewForConfiguration:configuration];
 }
 
 - (void)configureViewForConfiguration:(NSDictionary *)configuration
 {
-    self.configuration = configuration;
+    [self.configuration addEntriesFromDictionary:configuration];
     NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
     self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
     NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
@@ -130,6 +142,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountConfigurationUpdated:) name:kAppConfigurationAccountsConfigurationUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuConfigurationChanged:) name:kAlfrescoConfigurationFileDidUpdateNotification object:nil];
 }
 
 - (void)dealloc
@@ -158,6 +171,12 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)accountListUpdated:(NSNotification *)notification
 {
     [self updateAccountList];
+}
+
+- (void)mainMenuConfigurationChanged:(NSNotification *)notification
+{
+    NSDictionary *configuration = notification.userInfo;
+    [self configureViewForConfiguration:configuration];
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -288,7 +307,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         }
         else
         {
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount configuration:self.configuration];
+            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount configuration:self.configuration session:self.session];
         }
         
         if (viewController)
