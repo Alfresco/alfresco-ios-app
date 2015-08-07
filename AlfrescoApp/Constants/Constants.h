@@ -277,6 +277,7 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewTypePersonProfile;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypePeople;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeDocumentDetails;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSite;
 // View Parameter Keys

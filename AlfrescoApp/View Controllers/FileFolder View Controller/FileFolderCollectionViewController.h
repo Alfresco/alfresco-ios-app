@@ -80,6 +80,23 @@
 - (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
+ Use the document path initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
+ 
+ @param documentPath - the path of the document to be shown. Providing nil will result in a Company Home being displayed.
+ @param sessuon - the users session
+ */
+- (instancetype) initWithDocumentPath:(NSString *)documentPath session:(id<AlfrescoSession>)session;
+
+/**
+ Use the document node ref initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
+ 
+ @param nodeRef - the node ref of the document to be shown. Providing nil will result in a Company Home being displayed.
+ @param sessuon - the users session
+ */
+- (instancetype) initWithDocumentNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session;
+
+
+/**
  Convenience method used to help initialise the internal state of the controller once initialised.
  
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
