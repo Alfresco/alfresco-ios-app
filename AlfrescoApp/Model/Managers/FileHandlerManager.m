@@ -19,6 +19,7 @@
 #import "FileHandlerManager.h"
 #import "URLHandlerProtocol.h"
 #import "FileURLHandler.h"
+#import "AlfrescoURLHandler.h"
 
 @interface FileHandlerManager ()
 
@@ -33,7 +34,7 @@
     static dispatch_once_t onceToken;
     static FileHandlerManager *sharedManager = nil;
     dispatch_once(&onceToken, ^{
-        sharedManager = [[self alloc] initWithHandlers:@[[FileURLHandler new]]];
+        sharedManager = [[self alloc] initWithHandlers:@[[FileURLHandler new], [AlfrescoURLHandler new]]];
     });
     return sharedManager;
 }

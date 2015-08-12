@@ -487,4 +487,12 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     [self.tableView selectRowAtIndexPath:currentlySelected animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
+#pragma mark - Public methods
+- (void) cleanSelection
+{
+    NSIndexPath *currentlySelected = self.tableView.indexPathForSelectedRow;
+    [self.tableView deselectRowAtIndexPath:currentlySelected animated:NO];
+    [self tableView:self.tableView didDeselectRowAtIndexPath:currentlySelected];
+}
+
 @end

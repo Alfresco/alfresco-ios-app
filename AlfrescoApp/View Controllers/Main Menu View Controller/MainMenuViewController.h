@@ -63,5 +63,7 @@ typedef NS_ENUM(NSUInteger, MainMenuGroupType)
 
 - (void)visibilityForSectionHeadersHidden:(BOOL)hidden animated:(BOOL)animated;
 
+- (void) cleanSelection;
+
 @end
 

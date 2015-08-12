@@ -59,6 +59,12 @@
     }
 }
 
+#pragma mark - Public Functions
+- (void)displayURLViewController:(UIViewController *)controller
+{
+    [self displayViewController:controller];
+}
+
 #pragma mark - Private Functions
 
 - (void)displayViewController:(UIViewController *)controller

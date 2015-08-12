@@ -1202,6 +1202,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                 }];
             }
+            
+            if(self.shouldAutoSelectFirstItem)
+            {
+                self.shouldAutoSelectFirstItem = NO;
+            }
         }
     }
 }
