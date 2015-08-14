@@ -674,6 +674,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     else
                     {
                         self.displayFolder = documentLibraryFolder;
+                        [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
+                            self.folderDisplayName = site.title;
+                            self.title = self.folderDisplayName;
+                        }];
                         [self retrieveContentOfFolder:documentLibraryFolder usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                             // folder permissions not set, retrieve and update the UI
                             if (!self.folderPermissions)
@@ -718,6 +722,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         if ([folderPathNode isKindOfClass:[AlfrescoFolder class]])
                         {
                             self.displayFolder = (AlfrescoFolder *)folderPathNode;
+                            self.folderDisplayName = self.displayFolder.name;
+                            self.title = self.folderDisplayName;
                             [self retrieveContentOfFolder:(AlfrescoFolder *)folderPathNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                                 // folder permissions not set, retrieve and update the UI
                                 if (!self.folderPermissions)
@@ -767,6 +773,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
                         {
                             self.displayFolder = (AlfrescoFolder *)nodeRefNode;
+                            self.folderDisplayName = self.displayFolder.name;
+                            self.title = self.folderDisplayName;
                             [self retrieveContentOfFolder:(AlfrescoFolder *)nodeRefNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                                 // folder permissions not set, retrieve and update the UI
                                 if (!self.folderPermissions)
@@ -780,6 +788,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                 
                                 [self hideHUD];
                                 [self hidePullToRefreshView];
+                                
                                 [self reloadCollectionViewWithPagingResult:pagingResult error:error];
                                 
                                 [self.view bringSubviewToFront:self.collectionView];
