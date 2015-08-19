@@ -79,8 +79,6 @@
 		08E1EA3918DB073A00F9052F /* TaskTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3818DB073A00F9052F /* TaskTypeViewController.xib */; };
 		08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */; };
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
-		08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */; };
-		08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
@@ -897,9 +895,6 @@
 		08E1EA3B18DB2E1200F9052F /* CreateTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTaskViewController.h; sourceTree = "<group>"; };
 		08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTaskViewController.m; sourceTree = "<group>"; };
 		08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateTaskViewController.xib; sourceTree = "<group>"; };
-		08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudSignUpViewController.h; path = "New Account/CloudSignUpViewController.h"; sourceTree = "<group>"; };
-		08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CloudSignUpViewController.m; path = "New Account/CloudSignUpViewController.m"; sourceTree = "<group>"; };
-		08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CloudSignUpViewController.xib; path = "New Account/CloudSignUpViewController.xib"; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
 		08E89C9917E7593B006936DF /* AlfrescoApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AlfrescoApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1749,9 +1744,6 @@
 				0804DCC7181AB08100E3ACC2 /* AccountInfoViewController.h */,
 				0804DCC8181AB08100E3ACC2 /* AccountInfoViewController.m */,
 				0804DCCA181AB0C400E3ACC2 /* AccountInfoViewController.xib */,
-				08E799AA182A4BDB0030FD53 /* CloudSignUpViewController.h */,
-				08E799AB182A4BDB0030FD53 /* CloudSignUpViewController.m */,
-				08E799AD182A4C270030FD53 /* CloudSignUpViewController.xib */,
 			);
 			name = "New Account";
 			sourceTree = "<group>";
@@ -4162,7 +4154,6 @@
 				734293A11899218300BDFD35 /* bubble_grey.png in Resources */,
 				27DFEBF41937644D006D85BC /* actionsheet-edit@2x~ipad.png in Resources */,
 				2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */,
-				08E799AE182A4C270030FD53 /* CloudSignUpViewController.xib in Resources */,
 				27DFEBFC1937644D006D85BC /* actionsheet-review@2x~ipad.png in Resources */,
 				27DFEBF11937644D006D85BC /* actionsheet-comment@2x~ipad.png in Resources */,
 				27DFEBF71937644D006D85BC /* actionsheet-folder@2x~ipad.png in Resources */,
@@ -4652,7 +4643,6 @@
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,
 				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
-				08E799AC182A4BDB0030FD53 /* CloudSignUpViewController.m in Sources */,
 				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				7390B35C1B03681E00E7191F /* AlfrescoConfigHelper.m in Sources */,

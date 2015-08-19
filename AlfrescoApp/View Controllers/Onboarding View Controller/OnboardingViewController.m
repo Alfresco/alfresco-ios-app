@@ -19,16 +19,14 @@
 #import "OnboardingViewController.h"
 #import "UniversalDevice.h"
 #import "NavigationViewController.h"
-#import "CloudSignUpViewController.h"
 #import "AccountTypeSelectionViewController.h"
 #import "RootRevealViewController.h"
 #import "WebBrowserViewController.h"
 
 static CGFloat const kButtonCornerRadius = 5.0f;
 
-@interface OnboardingViewController () <CloudSignUpViewControllerDelegate, AccountTypeSelectionViewControllerDelegate>
+@interface OnboardingViewController () <AccountTypeSelectionViewControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet UIButton *createCloudAccountButton;
 @property (nonatomic, weak) IBOutlet UIButton *useExistingAccountButton;
 @property (nonatomic, weak) IBOutlet UIButton *closeWelcomeScreenButton;
 @property (nonatomic, weak) IBOutlet UIButton *helpButton;
@@ -44,11 +42,6 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     
     self.useExistingAccountButton.backgroundColor = [UIColor appTintColor];
     self.useExistingAccountButton.layer.cornerRadius = kButtonCornerRadius;
-    
-    // MOBILE-2988: Remove cloud sign-up from the app
-    self.createCloudAccountButton.hidden = YES;
-    self.createCloudAccountButton.backgroundColor = [UIColor whiteColor];
-    self.createCloudAccountButton.layer.cornerRadius = kButtonCornerRadius;
     
     [self.closeWelcomeScreenButton setImage:[[UIImage imageNamed:@"closeButton.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.closeWelcomeScreenButton.tintColor = [UIColor blackColor];
@@ -80,7 +73,6 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 
 - (void)localiseUI
 {
-    [self.createCloudAccountButton setTitle:NSLocalizedString(@"onboarding.setup.cloud.button.title", @"Sign up for Alfresco Cloud") forState:UIControlStateNormal];
     [self.useExistingAccountButton setTitle:NSLocalizedString(@"onboarding.setup.existing.account.button.title", @"I already have an account") forState:UIControlStateNormal];
     [self.helpButton setTitle:NSLocalizedString(@"onboarding.help.button.title", @"Help") forState:UIControlStateNormal];
 }
@@ -90,21 +82,6 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 - (IBAction)closeButtonPressed:(id)sender
 {
     [self removeControllerFromParentController];
-}
-
-- (IBAction)createCloudAccountButtonPressed:(id)sender
-{
-    UIButton *createButton = (UIButton *)sender;
-    createButton.enabled = NO;
-    
-    CloudSignUpViewController *cloudSignupViewController = [[CloudSignUpViewController alloc] init];
-    cloudSignupViewController.delegate = self;
-    NavigationViewController *cloudNavController = [[NavigationViewController alloc] initWithRootViewController:cloudSignupViewController];
-    
-    [UniversalDevice displayModalViewController:cloudNavController onController:self withCompletionBlock:nil];
-    [Utility zoomAppLevelOutWithCompletionBlock:^{
-        createButton.enabled = YES;
-    }];
 }
 
 - (IBAction)useExistingAccountButtonPressed:(id)sender
@@ -135,13 +112,6 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     [Utility zoomAppLevelOutWithCompletionBlock:^{
         self.needsResetAppZoomLevel = YES;
     }];
-}
-
-#pragma mark - CloudSignUpViewControllerDelegate Functions
-
-- (void)cloudSignupControllerWillDismiss:(CloudSignUpViewController *)controller
-{
-    [Utility resetAppZoomLevelWithCompletionBlock:NULL];
 }
 
 #pragma mark - AccountTypeSelectionViewControllerDelegate Functions

@@ -24,7 +24,6 @@
 #import "LoginManager.h"
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
-#import "CloudSignUpViewController.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -289,11 +288,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
         
         id viewController = nil;
-        if (account.accountStatus == UserAccountStatusAwaitingVerification)
-        {
-            viewController = [[CloudSignUpViewController alloc] initWithAccount:account];
-        }
-        else if ((account.accountType == UserAccountTypeCloud) && (account.accountNetworks.count == 0))
+        if ((account.accountType == UserAccountTypeCloud) && (account.accountNetworks.count == 0))
         {
             [self showHUD];
             [[LoginManager sharedManager] attemptLoginToAccount:account networkId:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {

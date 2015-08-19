@@ -225,38 +225,6 @@
 "certificate-details.delete.confirm" = "移除";
 
 /**
- * Cloud Signup
- */
-"cloudsignup.title" = "Alfresco Cloud";
-"accountdetails.fields.firstName" = "名字";
-"accountdetails.fields.lastName" = "姓氏";
-"accountdetails.fields.username" = "用户名";
-"accountdetails.fields.password" = "密码";
-"accountdetails.fields.confirmPassword" = "确认密码";
-"accountdetails.placeholder.password.requirement" = "至少 6 个字符";
-"cloudsignup.button.signup" = "注册";
-"cloudsignup.footer" = "点按 \"注册\" 即表示您同意 Alfresco 的服务条款和隐私政策";
-"cloudsignup.label.termsOfService" = "服务条款";
-"cloudsignup.label.privacyPolicy" = "隐私政策";
-"cloudsignup.alert.title" = "Alfresco Cloud 注册";
-"cloudsignup.unsuccessful.message" = "云注册未成功，请稍后重试";
-"cloudsignup.already-registered.message" = "您已拥有与该电子邮件地址关联的 Alfresco 帐户";
-
-"awaitingverification.description" = "帐户正在等待电子邮件验证\n\n您已使用电子邮件地址 %@ 注册 Alfresco Cloud 帐户\n\n请检查您的电子邮件。 我们已发送给您完成注册流程所需的链接。\n\n激活出了问题？\n\n如果您无法激活您的帐户，请与我们联系。";
-"awaitingverification.description.title" = "帐户正在等待电子邮件验证";
-"awaitingverification.description.subtitle" = "激活出了问题？";
-"awaitingverification.title" = "Alfresco Cloud";
-"awaitingverification.buttons.refresh" = "刷新";
-"awaitingverification.buttons.resendEmail" = "重新发送电子邮件";
-"awaitingverification.buttons.customercare" = "客户服务";
-"awaitingverification.alerts.title" = "Alfresco Cloud";
-"awaitingverification.alert.resendEmail.title" = "成功重新发送电子邮件";
-"awaitingverification.alert.resendEmail.success" = "未收到我们的电子邮件？ 请检查并确认您正确输入了电子邮件地址，并注意查看您的垃圾邮件文件夹。";
-"awaitingverification.alert.resendEmail.error" = "此时无法重新发送您的电子邮件。 请稍后重试";
-"awaitingverification.alert.refresh.awaiting" = "您的帐户仍在等待验证";
-"awaitingverification.alert.refresh.verified" = "您的帐户已验证";
-
-/**
  * Company Home View Controller
  */
 "companyHome.title" = "存储库";
@@ -662,7 +630,6 @@
 /**
  * Onboarding View Controller
  */
-"onboarding.setup.cloud.button.title" = "注册 Alfresco Cloud 帐户";
 "onboarding.setup.existing.account.button.title" = "登录";
 "onboarding.help.button.title" = "帮助";
 

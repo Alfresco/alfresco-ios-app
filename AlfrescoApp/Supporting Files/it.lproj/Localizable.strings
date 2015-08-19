@@ -225,38 +225,6 @@
 "certificate-details.delete.confirm" = "Rimuovi";
 
 /**
- * Cloud Signup
- */
-"cloudsignup.title" = "Alfresco Cloud";
-"accountdetails.fields.firstName" = "Nome";
-"accountdetails.fields.lastName" = "Cognome";
-"accountdetails.fields.username" = "Nome utente";
-"accountdetails.fields.password" = "Password";
-"accountdetails.fields.confirmPassword" = "Conferma password";
-"accountdetails.placeholder.password.requirement" = "Min. 6 caratteri";
-"cloudsignup.button.signup" = "Registrati";
-"cloudsignup.footer" = "Toccando Registrati, accetti le Condizioni del servizio e l'Informativa sulla privacy di Alfresco";
-"cloudsignup.label.termsOfService" = "Condizioni del servizio";
-"cloudsignup.label.privacyPolicy" = "Informativa sulla privacy";
-"cloudsignup.alert.title" = "Registrati ad Alfresco Cloud";
-"cloudsignup.unsuccessful.message" = "Registrazione al cloud non riuscita. Riprova più tardi";
-"cloudsignup.already-registered.message" = "Hai già un account Alfresco associato a questo indirizzo e-mail";
-
-"awaitingverification.description" = "Account in attesa di verifica dell'e-mail\n\nTi sei registrato ad Alfresco Cloud utilizzando l'indirizzo e-mail %@\n\nControlla l'e-mail. Ti abbiamo inviato il link da utilizzare per completare la registrazione.\n\nProblemi con l'attivazione?\n\nInformaci nel caso in cui tu non riesca ad attivare l'account.";
-"awaitingverification.description.title" = "Account in attesa di verifica dell'e-mail";
-"awaitingverification.description.subtitle" = "Problemi con l'attivazione?";
-"awaitingverification.title" = "Alfresco Cloud";
-"awaitingverification.buttons.refresh" = "Aggiorna";
-"awaitingverification.buttons.resendEmail" = "Invia di nuovo e-mail";
-"awaitingverification.buttons.customercare" = "Servizio clienti";
-"awaitingverification.alerts.title" = "Alfresco Cloud";
-"awaitingverification.alert.resendEmail.title" = "E-mail inviata di nuovo";
-"awaitingverification.alert.resendEmail.success" = "Nessuna e-mail ricevuta? Verifica di aver fornito l'indirizzo corretto e controlla la cartella dello spam.";
-"awaitingverification.alert.resendEmail.error" = "Impossibile inviare di nuovo l'e-mail al momento. Riprova più tardi";
-"awaitingverification.alert.refresh.awaiting" = "Account in attesa di verifica";
-"awaitingverification.alert.refresh.verified" = "Account verificato";
-
-/**
  * Company Home View Controller
  */
 "companyHome.title" = "Repository";
@@ -662,7 +630,6 @@
 /**
  * Onboarding View Controller
  */
-"onboarding.setup.cloud.button.title" = "Registrati ad Alfresco Cloud";
 "onboarding.setup.existing.account.button.title" = "Login";
 "onboarding.help.button.title" = "Aiuto";
 

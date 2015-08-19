@@ -20,7 +20,6 @@
 #import "AccountInfoViewController.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
-#import "CloudSignUpViewController.h"
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
@@ -28,13 +27,9 @@ static NSInteger const kNumberOfTypesPerSection = 1;
 static NSInteger const kCloudSectionNumber = 0;
 
 static CGFloat const kAccountTypeTitleFontSize = 18.0f;
-static CGFloat const kAccountTypeInlineButtonFontSize = 14.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
-static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
-
 @interface AccountTypeSelectionViewController () <AccountInfoViewControllerDelegate>
-@property (nonatomic, assign, getter = isCloudSignUpAvailable) BOOL cloudSignUpAvailable;
 @end
 
 @implementation AccountTypeSelectionViewController
@@ -44,8 +39,6 @@ static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:nil];
     if (self)
     {
-        // MOBILE-2988: Remove cloud sign-up from the app
-        self.cloudSignUpAvailable = NO;
     }
     return self;
 }
@@ -99,7 +92,6 @@ static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
     {
         cell.imageView.image = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
-        cell.accessoryView = self.isCloudSignUpAvailable ? [self createCloudSignUpButton] : nil;
     }
     else
     {
@@ -187,34 +179,6 @@ static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
     }];
 }
 
-- (void)signUpButtonClicked:(id)sender
-{
-    CloudSignUpViewController *signUpController = [[CloudSignUpViewController alloc] initWithAccount:nil];
-    signUpController.delegate = self;
-    [self.navigationController pushViewController:signUpController animated:YES];
-}
-
-- (UIButton *)createCloudSignUpButton
-{
-    UIFont *labelFont = [UIFont systemFontOfSize:kAccountTypeInlineButtonFontSize];
-    NSString *labelText = [NSLocalizedString(@"cloudsignup.button.signup", @"Sign up") uppercaseString];
-    CGSize labelSize = [labelText sizeWithAttributes:@{NSFontAttributeName:labelFont}];
-    
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, roundf(labelSize.width), roundf(labelSize.height))];
-    button.titleLabel.font = labelFont;
-    [button addTarget:self action:@selector(signUpButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [Utility createBorderedButton:button label:labelText color:[UIColor appTintColor]];
-    [button sizeToFit];
-    
-    // giving signUp button minimum width in case its too small
-    CGRect buttonFrame = button.frame;
-    buttonFrame.size.width = (buttonFrame.size.width > kCloudSignupButtonMinimumWidth) ? buttonFrame.size.width : kCloudSignupButtonMinimumWidth;
-    button.frame = buttonFrame;
-    
-    return button;
-}
-
 #pragma mark - AccountInfoViewControllerDelegate Functions
 
 - (void)accountInfoViewControllerWillDismiss:(AccountInfoViewController *)controller
@@ -248,24 +212,6 @@ static CGFloat const kCloudSignupButtonMinimumWidth = 56.0f;
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
     {
         [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:accountAdded];
-    }
-}
-
-#pragma mark - CloudSignUpViewControllerDelegate Functions
-
-- (void)cloudSignupControllerWillDismiss:(CloudSignUpViewController *)controller
-{
-    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
-    {
-        [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:NO];
-    }
-}
-
-- (void)cloudSignupControllerDidDismiss:(CloudSignUpViewController *)controller
-{
-    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
-    {
-        [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:NO];
     }
 }
 

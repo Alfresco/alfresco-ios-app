@@ -186,13 +186,7 @@ extern NSString * const kCloudConfigParamURL;
 extern NSString * const kCloudConfigParamAPIKey;
 extern NSString * const kCloudConfigParamSecretKey;
 extern NSString * const kInternalSessionCloudURL;
-
-// Cloud Sign Up
 extern NSString * const kCloudAPIHeaderKey;
-extern NSString * const kAlfrescoCloudAPISignUpUrl;
-extern NSString * const kAlfrescoCloudTermOfServiceUrl;
-extern NSString * const kAlfrescoCloudPrivacyPolicyUrl;
-extern NSString * const kAlfrescoCloudCustomerCareUrl;
 
 // Cloud Account Status
 extern NSString * const kCloudAccountIdValuePath;

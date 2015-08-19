@@ -171,13 +171,7 @@ NSString * const kCloudConfigParamURL = @"oauth_url";
 NSString * const kCloudConfigParamAPIKey = @"apikey";
 NSString * const kCloudConfigParamSecretKey = @"apisecret";
 NSString * const kInternalSessionCloudURL = @"org.alfresco.mobile.internal.session.cloud.url";
-
-// Cloud Sign Up
 NSString * const kCloudAPIHeaderKey = @"key";
-NSString * const kAlfrescoCloudAPISignUpUrl = @"https://a.alfresco.me/alfresco/a/-default-/internal/cloud/accounts/signupqueue";
-NSString * const kAlfrescoCloudTermOfServiceUrl = @"http://www.alfresco.com/legal/agreements/cloud/";
-NSString * const kAlfrescoCloudPrivacyPolicyUrl = @"http://www.alfresco.com/privacy/";
-NSString * const kAlfrescoCloudCustomerCareUrl = @"https://getsatisfaction.com/alfresco/products/alfresco_alfresco_mobile_app";
 
 // Cloud Account Status
 NSString * const kCloudAccountIdValuePath = @"registration.id";

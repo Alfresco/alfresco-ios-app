@@ -17,7 +17,6 @@
  ******************************************************************************/
   
 #import "ParentListViewController.h"
-#import "CloudSignUpViewController.h"
 
 @class AccountTypeSelectionViewController;
 
@@ -29,7 +28,7 @@
 
 @end
 
-@interface AccountTypeSelectionViewController : ParentListViewController <CloudSignUpViewControllerDelegate>
+@interface AccountTypeSelectionViewController : ParentListViewController 
 
 @property (nonatomic, weak) id<AccountTypeSelectionViewControllerDelegate> delegate;
 
