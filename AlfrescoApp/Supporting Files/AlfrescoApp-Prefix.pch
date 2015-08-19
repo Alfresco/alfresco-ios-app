@@ -24,6 +24,7 @@
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
 #import <AlfrescoSDK-iOS/AlfrescoSDK.h>
+#import <AlfrescoKit/AlfrescoKit.h>
 #import "Constants.h"
 #import "ErrorDescriptions.h"
 #import "Notifier.h"

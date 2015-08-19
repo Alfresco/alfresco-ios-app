@@ -660,12 +660,24 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.siteService retrieveDocumentLibraryFolderForSite:self.siteShortName completionBlock:^(AlfrescoFolder *documentLibraryFolder, NSError *documentLibraryFolderError) {
                     if (documentLibraryFolderError)
                     {
-                        [Notifier notifyWithAlfrescoError:documentLibraryFolderError];
+                        if(documentLibraryFolderError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                        {
+                            // display error
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:documentLibraryFolderError]]);
+                        }
+                        else
+                        {
+                            [Notifier notifyWithAlfrescoError:documentLibraryFolderError];
+                        }
                         [self hideHUD];
                     }
                     else
                     {
                         self.displayFolder = documentLibraryFolder;
+                        [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
+                            self.folderDisplayName = site.title;
+                            self.title = self.folderDisplayName;
+                        }];
                         [self retrieveContentOfFolder:documentLibraryFolder usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                             // folder permissions not set, retrieve and update the UI
                             if (!self.folderPermissions)
@@ -694,7 +706,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.documentService retrieveNodeWithFolderPath:self.folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
                     if (folderPathNodeError)
                     {
-                        [Notifier notifyWithAlfrescoError:folderPathNodeError];
+                        if(folderPathNodeError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                        {
+                            // display error
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:folderPathNodeError]]);
+                        }
+                        else
+                        {
+                            [Notifier notifyWithAlfrescoError:folderPathNodeError];
+                        }
                         [self hideHUD];
                     }
                     else
@@ -702,6 +722,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         if ([folderPathNode isKindOfClass:[AlfrescoFolder class]])
                         {
                             self.displayFolder = (AlfrescoFolder *)folderPathNode;
+                            self.folderDisplayName = self.displayFolder.name;
+                            self.title = self.folderDisplayName;
                             [self retrieveContentOfFolder:(AlfrescoFolder *)folderPathNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                                 // folder permissions not set, retrieve and update the UI
                                 if (!self.folderPermissions)
@@ -735,7 +757,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.documentService retrieveNodeWithIdentifier:self.nodeRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
                     if (nodeRefError)
                     {
-                        [Notifier notifyWithAlfrescoError:nodeRefError];
+                        if(nodeRefError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                        {
+                            // display error
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:nodeRefError]]);
+                        }
+                        else
+                        {
+                            [Notifier notifyWithAlfrescoError:nodeRefError];
+                        }
                         [self hideHUD];
                     }
                     else
@@ -743,6 +773,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
                         {
                             self.displayFolder = (AlfrescoFolder *)nodeRefNode;
+                            self.folderDisplayName = self.displayFolder.name;
+                            self.title = self.folderDisplayName;
                             [self retrieveContentOfFolder:(AlfrescoFolder *)nodeRefNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                                 // folder permissions not set, retrieve and update the UI
                                 if (!self.folderPermissions)
@@ -756,6 +788,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                 
                                 [self hideHUD];
                                 [self hidePullToRefreshView];
+                                
                                 [self reloadCollectionViewWithPagingResult:pagingResult error:error];
                                 
                                 [self.view bringSubviewToFront:self.collectionView];
@@ -787,7 +820,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                     else
                     {
-                        [Notifier notifyWithAlfrescoError:error];
+                        if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                        {
+                            // display error
+                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
+                        }
+                        else
+                        {
+                            [Notifier notifyWithAlfrescoError:error];
+                        }
                         [self hideHUD];
                     }
                 }];
@@ -1201,6 +1242,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                                                                           animated:YES];
                     }
                 }];
+            }
+            
+            if(self.shouldAutoSelectFirstItem)
+            {
+                self.shouldAutoSelectFirstItem = NO;
             }
         }
     }
