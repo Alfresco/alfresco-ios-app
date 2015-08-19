@@ -2032,7 +2032,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self setEditing:!self.editing animated:YES];
     }];
     editAction.enabled = (self.collectionViewData.count > 0);
@@ -2042,11 +2042,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     NSString *changeLayoutTitle;
     if(self.style == CollectionViewStyleList)
     {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Grid View");
     }
     else
     {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
     }
     UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         if(self.style == CollectionViewStyleList)
