@@ -32,10 +32,12 @@
 #import "AccountManager.h"
 #import "FileFolderCollectionViewController.h"
 
-static NSString * const kIconMappingFileName = @"MenuIconMappings";
+static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
+static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
 
 @interface MainMenuConfigurationBuilder ()
-@property (nonatomic, strong) NSDictionary *iconMappings;
+@property (nonatomic, strong) NSDictionary *iconTypeMappings;
+@property (nonatomic, strong) NSDictionary *iconIdentifierMappings;
 @end
 
 @implementation MainMenuConfigurationBuilder
@@ -47,8 +49,10 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
     {
         self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         self.session = session;
-        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kIconMappingFileName ofType:@"plist"];
-        self.iconMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:kMenuIconTypeMappingFileName ofType:@"plist"];
+        self.iconTypeMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        plistPath = [[NSBundle mainBundle] pathForResource:kMenuIconIdentifierMappingFileName ofType:@"plist"];
+        self.iconIdentifierMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     }
     return self;
 }
@@ -377,6 +381,11 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
         
         associatedObject = sitesListViewController;
     }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeNodeDetails])
+    {
+        // TODO: Currently place an empty view controller
+        associatedObject = [[UIViewController alloc] init];
+    }
     
     // If it's nil, use an empty controller in order to stop a runtime error
     if (associatedObject)
@@ -389,7 +398,16 @@ static NSString * const kIconMappingFileName = @"MenuIconMappings";
 
 - (NSString *)imageFileNameForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
 {
-    NSString *bundledIconName = self.iconMappings[viewConfig.identifier];
+    NSString *bundledIconName = nil;
+    
+    if (viewConfig.iconIdentifier)
+    {
+        bundledIconName = self.iconIdentifierMappings[viewConfig.iconIdentifier];
+    }
+    else
+    {
+        bundledIconName = self.iconTypeMappings[viewConfig.type];
+    }
     
     if (!bundledIconName)
     {

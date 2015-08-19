@@ -62,7 +62,7 @@ NSString * const kAlfrescoFormConfigPropertyLayout = @"layout";
 
 NSString * const kAlfrescoGroupConfigPropertyItems = @"items";
 
-NSString * const kAlfrescoItemConfigPropertyIconIdentifier = @"iconIdentifier";
+NSString * const kAlfrescoItemConfigPropertyIconIdentifier = @"icon-id";
 NSString * const kAlfrescoItemConfigPropertyType = @"type";
 NSString * const kAlfrescoItemConfigPropertyParameters = @"parameters";
 

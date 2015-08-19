@@ -504,6 +504,7 @@
 		739E108618FC219E00495616 /* BaseDocumentPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */; };
 		73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */; };
 		73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */; };
+		73A37A0C1B8356D4007EEE0D /* MenuIconIdentifierMappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73A37A0B1B8356D3007EEE0D /* MenuIconIdentifierMappings.plist */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
@@ -515,7 +516,7 @@
 		73B579941B15EC5F009D30B6 /* MainMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B579921B15EC5F009D30B6 /* MainMenuTableViewCell.m */; };
 		73B579951B15EC5F009D30B6 /* MainMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73B579931B15EC5F009D30B6 /* MainMenuTableViewCell.xib */; };
 		73B579971B15FBF1009D30B6 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 73B579961B15FBF1009D30B6 /* configuration.json */; };
-		73B579B11B172C2A009D30B6 /* MenuIconMappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B579B01B172C2A009D30B6 /* MenuIconMappings.plist */; };
+		73B579B11B172C2A009D30B6 /* MenuIconTypeMappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B579B01B172C2A009D30B6 /* MenuIconTypeMappings.plist */; };
 		73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957C917A673A90099FB84 /* AppDelegate.m */; };
 		73B957CE17A673A90099FB84 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957CC17A673A90099FB84 /* Constants.m */; };
 		73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B957D217A6750E0099FB84 /* ConnectivityManager.m */; };
@@ -1512,6 +1513,7 @@
 		73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "BaseDocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/BaseDocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
 		73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+AutoLayout.h"; sourceTree = "<group>"; };
 		73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+AutoLayout.m"; sourceTree = "<group>"; };
+		73A37A0B1B8356D3007EEE0D /* MenuIconIdentifierMappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MenuIconIdentifierMappings.plist; sourceTree = "<group>"; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
@@ -1528,7 +1530,7 @@
 		73B579921B15EC5F009D30B6 /* MainMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMenuTableViewCell.m; path = "Main Menu View Controller/Cell/MainMenuTableViewCell.m"; sourceTree = "<group>"; };
 		73B579931B15EC5F009D30B6 /* MainMenuTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuTableViewCell.xib; path = "Main Menu View Controller/Cell/MainMenuTableViewCell.xib"; sourceTree = "<group>"; };
 		73B579961B15FBF1009D30B6 /* configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
-		73B579B01B172C2A009D30B6 /* MenuIconMappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MenuIconMappings.plist; sourceTree = "<group>"; };
+		73B579B01B172C2A009D30B6 /* MenuIconTypeMappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MenuIconTypeMappings.plist; sourceTree = "<group>"; };
 		73B957C217A6728A0099FB84 /* AlfrescoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "AlfrescoApp-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B957C617A6728A0099FB84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		73B957C817A673A90099FB84 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -2546,7 +2548,8 @@
 				73B957C617A6728A0099FB84 /* main.m */,
 				2744021F18AA83C400DF23DD /* Settings.bundle */,
 				738BE9491A960787006264E5 /* Launch Screen.xib */,
-				73B579B01B172C2A009D30B6 /* MenuIconMappings.plist */,
+				73B579B01B172C2A009D30B6 /* MenuIconTypeMappings.plist */,
+				73A37A0B1B8356D3007EEE0D /* MenuIconIdentifierMappings.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -4217,6 +4220,7 @@
 				73BE420618F4021300DB8912 /* task_priority_low.png in Resources */,
 				27DFEBFB1937644D006D85BC /* actionsheet-print@2x~ipad.png in Resources */,
 				733638BC1913BA1600472A57 /* system_notice_tick@2x.png in Resources */,
+				73A37A0C1B8356D4007EEE0D /* MenuIconIdentifierMappings.plist in Resources */,
 				73BE41FD18F3FF2900DB8912 /* account-type-onpremise@2x.png in Resources */,
 				73FF558118ACE2370009CA56 /* large_notes.png in Resources */,
 				73D6492518AD855D00333266 /* actionsheet-folder@2x.png in Resources */,
@@ -4235,7 +4239,7 @@
 				73881FD5188FF6B00052C75F /* actionsheet-unlike@2x.png in Resources */,
 				73B579951B15EC5F009D30B6 /* MainMenuTableViewCell.xib in Resources */,
 				733638B91913BA1600472A57 /* system_notice_exclamation.png in Resources */,
-				73B579B11B172C2A009D30B6 /* MenuIconMappings.plist in Resources */,
+				73B579B11B172C2A009D30B6 /* MenuIconTypeMappings.plist in Resources */,
 				2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */,
 				0833248717FEB9C400EE6AA8 /* SyncObstacleTableViewCell.xib in Resources */,
 				2BFE12951AC2E734000EB19D /* circle_cross.png in Resources */,
