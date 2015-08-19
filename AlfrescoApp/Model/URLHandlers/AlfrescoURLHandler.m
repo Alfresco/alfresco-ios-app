@@ -98,7 +98,7 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
 }
 
 #pragma mark - Private methods
-- (AlfrescoURLType)parseURLForAction: (NSString *)URLString
+- (AlfrescoURLType)parseURLForAction:(NSString *)URLString
 {
     //Removing the scheme from the url string
     NSString *urlWithoutScheme = [URLString stringByReplacingOccurrencesOfString:kHandlerPrefix withString:@""];
@@ -144,9 +144,8 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
 - (SwitchViewController *)presentingViewController
 {
     SwitchViewController *switchController = nil;
-    if([[UniversalDevice rootDetailViewController] isKindOfClass:[DetailSplitViewController class]])
+    if(IS_IPAD)
     {
-        //this is the iPad version
         DetailSplitViewController *splitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
         if([splitViewController.masterViewController isKindOfClass:[SwitchViewController class]])
         {
@@ -155,7 +154,6 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
     }
     else if ([[UniversalDevice rootDetailViewController] isKindOfClass:[SwitchViewController class]])
     {
-        //this is the iPhone version
         switchController = (SwitchViewController *)[UniversalDevice rootDetailViewController];
     }
     
