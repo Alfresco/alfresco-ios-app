@@ -105,24 +105,26 @@ static NSString * const kUserPath = @"user";
     //Removing the scheme from the url string
     NSString *urlWithoutScheme = [URLString stringByReplacingOccurrencesOfString:kHandlerPrefix withString:@""];
     
+    AlfrescoURLType urlType = AlfrescoURLTypeNone;
+    
     if([urlWithoutScheme hasPrefix:kDocumentPath])
     {
-        return AlfrescoURLTypeDocument;
+        urlType = AlfrescoURLTypeDocument;
     }
     else if ([urlWithoutScheme hasPrefix:kFolderPath])
     {
-        return AlfrescoURLTypeFolder;
+        urlType = AlfrescoURLTypeFolder;
     }
     else if ([urlWithoutScheme hasPrefix:kSitePath])
     {
-        return AlfrescoURLTypeSite;
+        urlType = AlfrescoURLTypeSite;
     }
     else if ([urlWithoutScheme hasPrefix:kUserPath])
     {
-        return AlfrescoURLTypeUser;
+        urlType = AlfrescoURLTypeUser;
     }
     
-    return AlfrescoURLTypeNone;
+    return urlType;
 }
 
 - (void)presentViewControllerFromURL:(UIViewController *)controller
