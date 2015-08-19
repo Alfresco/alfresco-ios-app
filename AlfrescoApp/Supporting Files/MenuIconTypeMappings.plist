@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>org.alfresco.client.view.activities</key>
+	<string>mainmenu-activities.png</string>
+	<key>org.alfresco.client.view.repository</key>
+	<string>mainmenu-repository.png</string>
+	<key>org.alfresco.client.view.sites</key>
+	<string>mainmenu-sites.png</string>
+	<key>org.alfresco.client.view.tasks</key>
+	<string>mainmenu-tasks.png</string>
+	<key>org.alfresco.client.view.site-browser</key>
+	<string>mainmenu-sites.png</string>
+	<key>org.alfresco.client.view.search</key>
+	<string>mainmenu-search.png</string>
+	<key>org.alfresco.client.view.local</key>
+	<string>mainmenu-localfiles.png</string>
+	<key>org.alfresco.client.view.node-details</key>
+	<string>mainmenu-activities.png</string>
+	<key>org.alfresco.client.view.repository-search</key>
+	<string>mainmenu-search.png</string>
+	<key>org.alfresco.client.view.person-profile</key>
+	<string>mainmenu-user.png</string>
+	<key>org.alfresco.client.view.people</key>
+	<string>mainmenu-groups.png</string>
+</dict>
+</plist>
