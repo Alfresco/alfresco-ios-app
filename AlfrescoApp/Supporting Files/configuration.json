@@ -51,6 +51,7 @@
         },
         "view-repository-shared-default": {
             "type": "org.alfresco.client.view.repository",
+            "icon-id": "org.alfresco.client.icon.shared-files",
             "params": {
                 "folderTypeId": "shared"
             },
@@ -61,6 +62,7 @@
         },
         "view-repository-userhome-default": {
             "type": "org.alfresco.client.view.repository",
+            "icon-id": "org.alfresco.client.icon.my-files",
             "params": {
                 "folderTypeId": "userhome"
             },
