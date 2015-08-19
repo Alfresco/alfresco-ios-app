@@ -225,38 +225,6 @@
 "certificate-details.delete.confirm" = "削除";
 
 /**
- * Cloud Signup
- */
-"cloudsignup.title" = "Alfresco Cloud";
-"accountdetails.fields.firstName" = "名";
-"accountdetails.fields.lastName" = "姓";
-"accountdetails.fields.username" = "ユーザー名";
-"accountdetails.fields.password" = "パスワード";
-"accountdetails.fields.confirmPassword" = "パスワードの再入力";
-"accountdetails.placeholder.password.requirement" = "6文字以上";
-"cloudsignup.button.signup" = "登録";
-"cloudsignup.footer" = "「登録」をタップすると、Alfresco のサービス利用規約と個人情報保護方針に同意したとみなされます";
-"cloudsignup.label.termsOfService" = "サービス利用規約";
-"cloudsignup.label.privacyPolicy" = "個人情報保護方針";
-"cloudsignup.alert.title" = "Alfresco Cloud への登録";
-"cloudsignup.unsuccessful.message" = "Alfresco Cloud に登録できませんでした。しばらくしてから、やり直してください";
-"cloudsignup.already-registered.message" = "すでにこの E メールアドレスで登録されている Alfresco アカウントがあります";
-
-"awaitingverification.description" = "アカウントは E メールの認証待ちです\n\n次の E メールアドレスで Alfresco Cloud に登録しました： %@\n\nお使いの E メールを確認してください。 登録手続きの完了に必要なリンクを送信しました。\n\nアカウントを有効にできない場合\n\nアカウントを有効にできない場合は、弊社までご連絡ください。";
-"awaitingverification.description.title" = "アカウントは E メールの認証待ちです";
-"awaitingverification.description.subtitle" = "アカウントを有効にできない場合";
-"awaitingverification.title" = "Alfresco Cloud";
-"awaitingverification.buttons.refresh" = "再読み込み";
-"awaitingverification.buttons.resendEmail" = "E メールの再送信";
-"awaitingverification.buttons.customercare" = "カスタマーサポート";
-"awaitingverification.alerts.title" = "Alfresco Cloud";
-"awaitingverification.alert.resendEmail.title" = "E メールを再送信しました";
-"awaitingverification.alert.resendEmail.success" = "E メールが届かない場合は、 入力した E メールアドレスが正しいことを確認してください。迷惑メールフォルダに入っている場合もあるので、併せて確認してください。";
-"awaitingverification.alert.resendEmail.error" = "E メールは現在再送信できません。 しばらくしてから、やり直してください";
-"awaitingverification.alert.refresh.awaiting" = "アカウントはまだ認証待ちです";
-"awaitingverification.alert.refresh.verified" = "アカウントが認証されました";
-
-/**
  * Company Home View Controller
  */
 "companyHome.title" = "リポジトリ";
@@ -662,7 +630,6 @@
 /**
  * Onboarding View Controller
  */
-"onboarding.setup.cloud.button.title" = "Alfresco Cloud への登録";
 "onboarding.setup.existing.account.button.title" = "ログイン";
 "onboarding.help.button.title" = "ヘルプ";
 

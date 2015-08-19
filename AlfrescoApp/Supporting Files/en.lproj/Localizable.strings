@@ -230,38 +230,6 @@
 "certificate-details.delete.confirm" = "Remove";
 
 /**
- * Cloud Signup
- */
-"cloudsignup.title" = "Alfresco in the cloud";
-"accountdetails.fields.firstName" = "First name";
-"accountdetails.fields.lastName" = "Last name";
-"accountdetails.fields.username" = "User name";
-"accountdetails.fields.password" = "Password";
-"accountdetails.fields.confirmPassword" = "Confirm password";
-"accountdetails.placeholder.password.requirement" = "6 characters min.";
-"cloudsignup.button.signup" = "Sign Up";
-"cloudsignup.footer" = "By tapping Sign Up, you are agreeing to the Alfresco Terms of Service and Privacy Policy";
-"cloudsignup.label.termsOfService" = "Terms of Service";
-"cloudsignup.label.privacyPolicy" = "Privacy Policy";
-"cloudsignup.alert.title" = "Alfresco in the cloud Sign Up";
-"cloudsignup.unsuccessful.message" = "The cloud sign up was unsuccessful, please try again later";
-"cloudsignup.already-registered.message" = "You already have an Alfresco account associated with this e-mail address";
-
-"awaitingverification.description" = "Account waiting for email verification\n\nYou've signed up for Alfresco in the cloud using the email address %@\n\nPlease check your email. We've sent you a link that you'll need to use to complete the registration process.\n\nHaving trouble activating?\n\nPlease let us know if you are unable to activate your account.";
-"awaitingverification.description.title" = "Account waiting for email verification";
-"awaitingverification.description.subtitle" = "Having trouble activating?";
-"awaitingverification.title" = "Alfresco in the cloud";
-"awaitingverification.buttons.refresh" = "Refresh";
-"awaitingverification.buttons.resendEmail" = "Resend Email";
-"awaitingverification.buttons.customercare" = "Customer Care";
-"awaitingverification.alerts.title" = "Alfresco in the cloud";
-"awaitingverification.alert.resendEmail.title" = "Successfully Resent Email";
-"awaitingverification.alert.resendEmail.success" = "Not receiving our emails? Please check you entered the email address correctly and remember to look in your spam folders.";
-"awaitingverification.alert.resendEmail.error" = "Your email could not be resent at this time. Please try again later";
-"awaitingverification.alert.refresh.awaiting" = "Your account is still waiting for verification";
-"awaitingverification.alert.refresh.verified" = "Your account is now verified";
-
-/**
  * Company Home View Controller
  */
 "companyHome.title" = "Repository";
@@ -671,7 +639,6 @@
 /**
  * Onboarding View Controller
  */
-"onboarding.setup.cloud.button.title" = "Sign up for Alfresco Cloud";
 "onboarding.setup.existing.account.button.title" = "Login";
 "onboarding.help.button.title" = "Help";
 

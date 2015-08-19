@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingViewController">
             <connections>
                 <outlet property="closeWelcomeScreenButton" destination="Q36-Ki-rGv" id="Bi8-1Q-yQk"/>
-                <outlet property="createCloudAccountButton" destination="ynq-Zb-vUs" id="FqT-12-jbQ"/>
                 <outlet property="helpButton" destination="yjd-SG-Xih" id="H5K-Ki-JTj"/>
                 <outlet property="useExistingAccountButton" destination="2ox-5D-XrO" id="icr-dK-196"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -32,26 +31,12 @@
                         <action selector="closeButtonPressed:" destination="-1" eventType="touchUpInside" id="I6Q-8x-JUe"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ta7-Ya-swz" userLabel="Container View">
-                    <rect key="frame" x="0.0" y="65" width="320" height="440"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ta7-Ya-swz" userLabel="Container View">
+                    <rect key="frame" x="0.0" y="64" width="320" height="445"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alfrescoColourLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="WNL-qv-5ke" userLabel="Logo Image View">
                             <rect key="frame" x="60" y="20" width="200" height="193"/>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ynq-Zb-vUs" userLabel="Sign Up For Cloud Button">
-                            <rect key="frame" x="25" y="343" width="270" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="50" id="ccj-Fl-7aF"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <state key="normal" title="Sign up for cloud">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="createCloudAccountButtonPressed:" destination="-1" eventType="touchUpInside" id="Ng8-od-ak5"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ox-5D-XrO" userLabel="Use Existing Account Button">
                             <rect key="frame" x="25" y="279" width="270" height="50"/>
                             <constraints>
@@ -88,12 +73,9 @@
                         <constraint firstItem="WNL-qv-5ke" firstAttribute="top" secondItem="Ta7-Ya-swz" secondAttribute="top" constant="20" id="21O-BS-6rN"/>
                         <constraint firstAttribute="bottom" secondItem="yjd-SG-Xih" secondAttribute="bottom" priority="850" constant="20" id="4J9-Mz-H2F"/>
                         <constraint firstAttribute="centerX" secondItem="yjd-SG-Xih" secondAttribute="centerX" id="Gfk-y2-iOV"/>
-                        <constraint firstItem="ynq-Zb-vUs" firstAttribute="top" secondItem="2ox-5D-XrO" secondAttribute="bottom" constant="14" id="Uek-Gg-X2Z"/>
                         <constraint firstItem="2ox-5D-XrO" firstAttribute="top" secondItem="WNL-qv-5ke" secondAttribute="bottom" constant="66" id="UwU-pd-hjJ"/>
-                        <constraint firstAttribute="trailing" secondItem="ynq-Zb-vUs" secondAttribute="trailing" constant="25" id="WOI-2D-um2"/>
                         <constraint firstAttribute="centerX" secondItem="WNL-qv-5ke" secondAttribute="centerX" id="ZWJ-rf-0Ur"/>
                         <constraint firstItem="yjd-SG-Xih" firstAttribute="top" secondItem="2ox-5D-XrO" secondAttribute="bottom" constant="66" id="nqa-I3-oC5"/>
-                        <constraint firstItem="ynq-Zb-vUs" firstAttribute="leading" secondItem="Ta7-Ya-swz" secondAttribute="leading" constant="25" id="pRb-Xc-nAi"/>
                         <constraint firstItem="2ox-5D-XrO" firstAttribute="leading" secondItem="Ta7-Ya-swz" secondAttribute="leading" constant="25" id="sUS-8g-oSQ"/>
                         <constraint firstAttribute="width" constant="320" id="x5C-SR-0bw"/>
                     </constraints>
