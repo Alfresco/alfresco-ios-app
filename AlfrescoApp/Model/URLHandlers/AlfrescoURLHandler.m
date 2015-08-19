@@ -28,6 +28,11 @@
 #import "UserAccountWrapper.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
+static NSString * const kHandlerPrefix = @"alfresco://";
+static NSString * const kDocumentPath = @"document";
+static NSString * const kFolderPath = @"folder";
+static NSString * const kSitePath = @"site";
+static NSString * const kUserPath = @"user";
 
 typedef NS_ENUM(NSInteger, AlfrescoURLType)
 {
@@ -46,13 +51,6 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
 @end
 
 @implementation AlfrescoURLHandler
-
-static NSString * const kHandlerPrefix = @"alfresco://";
-static NSString * const kDocumentPath = @"document";
-static NSString * const kFolderPath = @"folder";
-static NSString * const kSitePath = @"site";
-static NSString * const kUserPath = @"user";
-
 
 #pragma mark - URLHandlerProtocol
 
@@ -83,7 +81,7 @@ static NSString * const kUserPath = @"user";
             // Display the accounts controller
             AKUserAccountListViewController *userAccountViewController = [[AKUserAccountListViewController alloc] initWithAccountList:wrapperAccounts delegate:self];
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userAccountViewController];
-            SwitchViewController *switchController = [self getPresentingViewController];
+            SwitchViewController *switchController = [self presentingViewController];
             if(switchController)
             {
                 [UniversalDevice displayModalViewController:navigationController onController:switchController withCompletionBlock:nil];
@@ -100,7 +98,7 @@ static NSString * const kUserPath = @"user";
 }
 
 #pragma mark - Private methods
-- (AlfrescoURLType) parseURLForAction: (NSString *)URLString
+- (AlfrescoURLType)parseURLForAction: (NSString *)URLString
 {
     //Removing the scheme from the url string
     NSString *urlWithoutScheme = [URLString stringByReplacingOccurrencesOfString:kHandlerPrefix withString:@""];
@@ -129,7 +127,7 @@ static NSString * const kUserPath = @"user";
 
 - (void)presentViewControllerFromURL:(UIViewController *)controller
 {
-    SwitchViewController *switchController = [self getPresentingViewController];
+    SwitchViewController *switchController = [self presentingViewController];
     if(switchController)
     {
         NavigationViewController *navigationController = [[NavigationViewController alloc] initWithRootViewController:controller];
@@ -143,29 +141,28 @@ static NSString * const kUserPath = @"user";
     }
 }
 
-- (SwitchViewController *)getPresentingViewController
+- (SwitchViewController *)presentingViewController
 {
+    SwitchViewController *switchController = nil;
     if([[UniversalDevice rootDetailViewController] isKindOfClass:[DetailSplitViewController class]])
     {
         //this is the iPad version
         DetailSplitViewController *splitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
         if([splitViewController.masterViewController isKindOfClass:[SwitchViewController class]])
         {
-            SwitchViewController *switchController = (SwitchViewController *)splitViewController.masterViewController;
-            return switchController;
+            switchController = (SwitchViewController *)splitViewController.masterViewController;
         }
     }
     else if ([[UniversalDevice rootDetailViewController] isKindOfClass:[SwitchViewController class]])
     {
         //this is the iPhone version
-        SwitchViewController *switchController = (SwitchViewController *)[UniversalDevice rootDetailViewController];
-        return switchController;
+        switchController = (SwitchViewController *)[UniversalDevice rootDetailViewController];
     }
     
-    return nil;
+    return switchController;
 }
 
-- (BOOL) handleURL:(NSURL *)url session:(id<AlfrescoSession>)session
+- (BOOL)handleURL:(NSURL *)url session:(id<AlfrescoSession>)session
 {
     BOOL handled = NO;
     AlfrescoURLType actionType = [self parseURLForAction: url.absoluteString];
@@ -176,7 +173,7 @@ static NSString * const kUserPath = @"user";
         {
             handled = YES;
         }
-            break;
+        break;
             
         case AlfrescoURLTypeDocument:
         {
@@ -188,7 +185,7 @@ static NSString * const kUserPath = @"user";
             
             handled = YES;
         }
-            break;
+        break;
             
         case AlfrescoURLTypeFolder:
         {
@@ -199,7 +196,7 @@ static NSString * const kUserPath = @"user";
             self.viewControllerToPresent = controller;
             handled = YES;
         }
-            break;
+        break;
             
         case AlfrescoURLTypeSite:
         {
@@ -209,7 +206,7 @@ static NSString * const kUserPath = @"user";
             self.viewControllerToPresent = controller;
             handled = YES;
         }
-            break;
+        break;
             
         case AlfrescoURLTypeUser:
         {
@@ -222,10 +219,10 @@ static NSString * const kUserPath = @"user";
             self.viewControllerToPresent = controller;
             handled = YES;
         }
-            break;
+        break;
     }
     
-    if(self.viewControllerToPresent)
+    if (self.viewControllerToPresent)
     {
         [self presentViewControllerFromURL:self.viewControllerToPresent];
     }
@@ -255,7 +252,7 @@ static NSString * const kUserPath = @"user";
 {
     if(!error)
     {
-        SwitchViewController *switchController = [self getPresentingViewController];
+        SwitchViewController *switchController = [self presentingViewController];
         if(switchController)
         {
             [switchController dismissViewControllerAnimated:YES completion:^{
