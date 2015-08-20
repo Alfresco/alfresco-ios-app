@@ -30,7 +30,7 @@ typedef NS_ENUM(NSUInteger, SitesListViewFilter)
 @interface SitesListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate, SiteCellDelegate>
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSArray *searchResults;
 
 - (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session;

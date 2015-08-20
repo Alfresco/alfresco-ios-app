@@ -56,7 +56,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     
     [self createAlfrescoServicesWithSession:self.session];
     [self loadContentOfFolder];
-    self.searchController = self.searchDisplayController;
+    self.searchController = self.searchController;
     
     if (self.displayFolder)
     {
@@ -72,14 +72,14 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     self.edgesForExtendedLayout = UIRectEdgeNone;
     UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
     self.tableView.contentInset = edgeInset;
-    self.searchDisplayController.searchResultsTableView.contentInset = edgeInset;
+//    self.searchDisplayController.searchResultsTableView.contentInset = edgeInset;
     
-    [self.searchDisplayController.searchResultsTableView setEditing:YES];
-    [self.searchDisplayController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
+    [self.tableView setEditing:YES];
+    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-    [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+//    [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self
@@ -196,14 +196,14 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 - (void)deselectAllSelectedNodes:(id)sender
 {
     [self.tableView reloadData];
-    [self.searchDisplayController.searchResultsTableView reloadData];
+//    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 #pragma mark - TableView Delegates and Datasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (tableView == self.searchDisplayController.searchResultsTableView) ? self.searchResults.count : self.tableViewData.count;
+    return (self.isDisplayingSearch) ? self.searchResults.count : self.tableViewData.count;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -216,7 +216,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     AlfrescoNodeCell *cell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     AlfrescoNode *currentNode = nil;
-    if (tableView == self.searchDisplayController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         currentNode = self.searchResults[indexPath.row];
     }
@@ -251,7 +251,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *selectedNode = nil;
-    if (tableView == self.searchDisplayController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         selectedNode = self.searchResults[indexPath.row];
     }
@@ -291,7 +291,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *selectedNode = nil;
-    if (tableView == self.searchDisplayController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         selectedNode = self.searchResults[indexPath.row];
     }
@@ -322,7 +322,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
             if (array)
             {
                 self.searchResults = [array mutableCopy];
-                [self.searchController.searchResultsTableView reloadData];
+                [self.tableView reloadData];
             }
             else
             {

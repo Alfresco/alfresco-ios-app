@@ -322,7 +322,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     if (!self.contentFile)
     {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")
-                                                                         style:UIBarButtonItemStyleBordered
+                                                                         style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(closeUploadForm:)];
         [self.navigationItem setLeftBarButtonItem:cancelButton];

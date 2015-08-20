@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     SiteListTypeSelectionAllSites
 };
 
-@interface SitesListViewController()
+@interface SitesListViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
@@ -133,22 +133,35 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     [view addSubview:self.tableView];
     
     // create searchBar
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-                                                                           view.frame.origin.y,
-                                                                           view.frame.size.width,
-                                                                           44.0f)];
-    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    searchBar.delegate = self;
-    searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    searchBar.backgroundColor = [UIColor whiteColor];
-    self.searchBar = searchBar;
+//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
+//                                                                           view.frame.origin.y,
+//                                                                           view.frame.size.width,
+//                                                                           44.0f)];
+//    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//    searchBar.delegate = self;
+//    searchBar.searchBarStyle = UISearchBarStyleMinimal;
+//    searchBar.backgroundColor = [UIColor whiteColor];
+//    self.searchBar = searchBar;
     
     // search controller
-    UISearchDisplayController *searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    searchController.searchResultsDataSource = self;
-    searchController.searchResultsDelegate = self;
+    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.delegate = self;
+    searchController.searchBar.delegate = self;
+    self.searchBar = searchController.searchBar;
+    self.searchBar.frame = CGRectMake(view.frame.origin.x,
+                                      view.frame.origin.y,
+                                      view.frame.size.width,
+                                      44.0f);
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.backgroundColor = [UIColor whiteColor];
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.hidesNavigationBarDuringPresentation = YES;
+    searchController.searchResultsUpdater = self;
+    
+//    searchController.searchResultsDataSource = self;
+//    searchController.searchResultsDelegate = self;
+//    searchController.delegate = self;
     self.searchController = searchController;
     
     // add the searchBar to the tableview
@@ -156,6 +169,11 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     
     view.autoresizesSubviews = YES;
     self.view = view;
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    
 }
 
 - (void)viewDidLoad
@@ -188,7 +206,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         return self.searchResults.count;
     }
@@ -216,7 +234,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
         searchCell = (AlfrescoNodeCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([AlfrescoNodeCell class]) owner:self options:nil] lastObject];
     }
     
-    if (tableView == self.tableView)
+    if (!self.isDisplayingSearch)
     {
         returnCell = siteCell;
         
@@ -306,7 +324,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         return kSearchCellHeight;
     }
@@ -317,7 +335,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.tableView)
+    if (!self.isDisplayingSearch)
     {
         self.expandedCellIndexPath = nil;
         
@@ -591,10 +609,10 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     NSIndexPath *indexPathToSelectedCell = nil;
     
     AlfrescoNode *selectedNode = nil;
-    indexPathToSelectedCell = [self.searchController.searchResultsTableView indexPathForCell:selectedCell];
+    indexPathToSelectedCell = [self.tableView indexPathForCell:selectedCell];
     selectedNode = [self.searchResults objectAtIndex:indexPathToSelectedCell.row];
     
-    [self.searchController.searchResultsTableView selectRowAtIndexPath:indexPathToSelectedCell animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:indexPathToSelectedCell animated:YES scrollPosition:UITableViewScrollPositionNone];
     
     [self showSearchProgressHUD];
     [self.documentService retrieveNodeWithIdentifier:selectedNode.identifier completionBlock:^(AlfrescoNode *node, NSError *error) {
@@ -615,8 +633,8 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
+    [self.tableView addSubview:self.searchProgressHUD];
     [self.searchProgressHUD show:YES];
 }
 
@@ -672,6 +690,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self showSearchProgressHUD];
+    self.isDisplayingSearch = YES;
     [self.documentService retrieveNodeWithFolderPath:kSitesFolderLocation completionBlock:^(AlfrescoNode *node, NSError *error) {
         [self hideSearchProgressHUD];
         if (node)
@@ -685,7 +704,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
                 if (array)
                 {
                     self.searchResults = array;
-                    [self.searchController.searchResultsTableView reloadData];
+                    [self.tableView reloadData];
                 }
                 else
                 {
@@ -706,12 +725,13 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
+    self.isDisplayingSearch = NO;
     [self.tableView reloadData];
 }
 
-#pragma mark - UISearchDisplayDelegate Functions
+#pragma mark - UISearchControllerDelegate Methods
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+- (void)willPresentSearchController:(UISearchController *)searchController
 {
     if (self.sitesFilter == SitesListViewFilterNoFilter)
     {
@@ -719,13 +739,14 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
             CGRect tableViewFrame = self.tableView.frame;
             tableViewFrame.origin.y -= kSegmentControllerHeight;
             self.tableView.frame = tableViewFrame;
-        } completion:^(BOOL finished) {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            CGRect test = searchController.searchBar.frame;
+            test.origin.y += kSegmentControllerHeight;
+            searchController.searchBar.frame = test;
         }];
     }
 }
 
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller;
+- (void)didDismissSearchController:(UISearchController *)searchController
 {
     if (self.sitesFilter == SitesListViewFilterNoFilter)
     {
@@ -733,8 +754,6 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
             CGRect tableViewFrame = self.tableView.frame;
             tableViewFrame.origin.y += kSegmentControllerHeight;
             self.tableView.frame = tableViewFrame;
-        } completion:^(BOOL finished) {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
         }];
     }
 }

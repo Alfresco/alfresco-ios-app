@@ -58,7 +58,7 @@
 
 - (BOOL)usersLocationAuthorisation
 {
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways)
     {
         return YES;
     }
@@ -100,7 +100,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if (status == kCLAuthorizationStatusAuthorized)
+    if (status == kCLAuthorizationStatusAuthorizedAlways)
     {
         [self.locationManager startUpdatingLocation];
         self.trackingLocation = YES;

@@ -327,7 +327,7 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     self.tableSectionHeaders = self.tableSectionHeaders ?: [NSMutableArray new];
 
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *todayComponents = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *todayComponents = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:[NSDate date]];
     NSDate *today = [calendar dateFromComponents:todayComponents];
 
     for (AlfrescoActivityEntry *activity in pagingResult.objects)
@@ -353,7 +353,7 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
 - (NSString *)groupHeaderForActivity:(AlfrescoActivityEntry *)activityEntry relativeToDate:(NSDate *)date
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *activityComponents = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:activityEntry.createdAt];
+    NSDateComponents *activityComponents = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:activityEntry.createdAt];
     NSDate *activityDate = [calendar dateFromComponents:activityComponents];
     NSTimeInterval interval = [date timeIntervalSinceDate:activityDate];
     

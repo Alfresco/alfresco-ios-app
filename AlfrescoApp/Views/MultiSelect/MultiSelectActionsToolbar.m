@@ -98,7 +98,7 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
 - (UIBarButtonItem *)createToolBarButtonForTitleKey:(NSString *)titleLocalizationKey actionId:(NSString *)actionId isDestructive:(BOOL)isDestructive
 {
     MultiSelectActionItem *toolBarButton = [[MultiSelectActionItem alloc] initWithTitle:titleLocalizationKey
-                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                  style:UIBarButtonItemStylePlain
                                                                                actionId:actionId
                                                                           isDestructive:isDestructive
                                                                                  target:self
