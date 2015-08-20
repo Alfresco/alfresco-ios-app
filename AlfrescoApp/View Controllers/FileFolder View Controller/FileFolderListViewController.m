@@ -39,7 +39,7 @@ static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderListViewController ()
+@interface FileFolderListViewController () <UISearchControllerDelegate>
 
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
 @property (nonatomic, strong) NSString *folderDisplayName;
@@ -133,28 +133,28 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    // create searchBar
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-                                                                           view.frame.origin.y,
-                                                                           view.frame.size.width,
-                                                                           44.0f)];
-    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    searchBar.delegate = self;
-    searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    searchBar.backgroundColor = [UIColor whiteColor];
-    self.searchBar = searchBar;
-    
     // search controller
-    UISearchDisplayController *searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    searchController.searchResultsDataSource = self;
-    searchController.searchResultsDelegate = self;
+    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.delegate = self;
+    searchController.searchBar.delegate = self;
+    
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.hidesNavigationBarDuringPresentation = YES;
+    
+    // search bar
+    self.searchBar = searchController.searchBar;
+    self.searchBar.frame = CGRectMake(view.frame.origin.x,
+                                      view.frame.origin.y,
+                                      view.frame.size.width,
+                                      44.0f);
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.backgroundColor = [UIColor whiteColor];
+    
     self.searchController = searchController;
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-    [self.searchController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -510,7 +510,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *selectedNode = nil;
-    if (self.searchController.searchResultsTableView.window)
+    if (self.isDisplayingSearch)
     {
         selectedNode = [self.searchResults objectAtIndex:indexPath.row];
     }
@@ -589,20 +589,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             NSIndexPath *indexPathForNode = nil;
             
             // remove nodeToDelete from search tableview if search view is present
-            if (weakSelf.searchController.searchResultsTableView.window)
+            if (weakSelf.isDisplayingSearch)
             {
                 tableNodeIdentifiers = [weakSelf.searchResults valueForKeyPath:@"identifier"];
                 [weakSelf.searchResults removeObject:nodeToDelete];
                 indexPathForNode = [weakSelf indexPathForNodeWithIdentifier:nodeToDelete.identifier inNodeIdentifiers:tableNodeIdentifiers];
                 if (indexPathForNode != nil)
                 {
-                    [weakSelf.searchController.searchResultsTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
+                    [weakSelf.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode] withRowAnimation:UITableViewRowAnimationFade];
                 }
             }
             
             // remove nodeToDelete from tableview
             tableNodeIdentifiers = [weakSelf.tableViewData valueForKeyPath:@"identifier"];
-            if (weakSelf.searchController.searchResultsTableView.window)
+            if (weakSelf.isDisplayingSearch)
             {
                 [tableNodeIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger index, BOOL *stop) {
                     if ([identifier isEqualToString:nodeToDelete.identifier])
@@ -802,8 +802,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
+    [self.tableView addSubview:self.searchProgressHUD];
     [self.searchProgressHUD show:YES];
 }
 
@@ -830,7 +830,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         return self.searchResults.count;
     }
@@ -854,7 +854,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoPermissions *nodePermission = nil;
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         nodePermission = self.nodePermissions[[self.searchResults[indexPath.row] identifier]];
     }
@@ -869,7 +869,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        AlfrescoNode *nodeToDelete = (tableView == self.searchController.searchResultsTableView) ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
+        AlfrescoNode *nodeToDelete = (self.isDisplayingSearch) ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
         AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
         
         if (permissionsForNodeToDelete.canDelete)
@@ -884,7 +884,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *selectedNode = nil;
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         selectedNode = [self.searchResults objectAtIndex:indexPath.row];
     }

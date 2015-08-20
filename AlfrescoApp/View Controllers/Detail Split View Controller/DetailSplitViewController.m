@@ -101,7 +101,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
         [self.detailViewController didMoveToParentViewController:self];
     }
     
-    [self positionViewsWithOrientation:self.interfaceOrientation];
+    [self positionViewsWithOrientation:[UIApplication sharedApplication].statusBarOrientation];
     
     [self addShadowToView:self.detailViewContainer];
 }

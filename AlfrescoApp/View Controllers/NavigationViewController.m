@@ -43,7 +43,7 @@
     
     self.navigationBar.translucent = NO;
     
-    self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(expandOrCollapseDetailView:)];
+    self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandOrCollapseDetailView:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,7 +101,7 @@
 {
     if ([self isDetailViewController])
     {
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
             [self.rootViewController.navigationItem setLeftBarButtonItem:nil animated:YES];
         }

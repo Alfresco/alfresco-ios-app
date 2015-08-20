@@ -64,7 +64,7 @@
     self.tableView.emptyMessage = NSLocalizedString(@"tagselection.empty", @"No Tags");
     
     UIBarButtonItem *addNewTagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tagselection.newTag.buttonTitle", @"Add New Tag")
-                                                                        style:UIBarButtonItemStyleBordered
+                                                                        style:UIBarButtonItemStylePlain
                                                                        target:self
                                                                        action:@selector(addNewTagButtonPressed)];
     addNewTagButton.tintColor = [UIColor addTagButtonTintColor];

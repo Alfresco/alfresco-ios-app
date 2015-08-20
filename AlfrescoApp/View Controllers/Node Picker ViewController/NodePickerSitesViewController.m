@@ -52,12 +52,12 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
                                                                                   action:@selector(cancelButtonPressed:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     
-    [self.searchController.searchResultsTableView setEditing:YES];
-    [self.searchController.searchResultsTableView setAllowsMultipleSelectionDuringEditing:YES];
+    [self.tableView setEditing:YES];
+    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     
     UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
     self.tableView.contentInset = edgeInset;
-    self.searchController.searchResultsTableView.contentInset = edgeInset;
+    self.tableView.contentInset = edgeInset;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deselectAllSelectedNodes:)
@@ -99,7 +99,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 
 - (void)deselectAllSelectedNodes:(id)sender
 {
-    [self.searchController.searchResultsTableView reloadData];
+    [self.tableView reloadData];
 }
 
 #pragma mark - TableView Delegate and Datasource
@@ -115,7 +115,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
         ((SitesCell *)cell).expandButton.hidden = YES;
     }
     
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
         if ([self.nodePicker isNodeSelected:selectedNode])
@@ -129,7 +129,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
         [self.nodePicker selectNode:selectedNode];
@@ -165,7 +165,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         AlfrescoNode *selectedNode = self.searchResults[indexPath.row];
         [self.nodePicker deselectNode:selectedNode];
@@ -190,7 +190,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
                     if (array)
                     {
                         self.searchResults = array;
-                        [self.searchController.searchResultsTableView reloadData];
+                        [self.tableView reloadData];
                     }
                     else
                     {

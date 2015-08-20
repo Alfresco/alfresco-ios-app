@@ -22,12 +22,12 @@
 #import "FavouriteManager.h"
 #import "ThumbnailManager.h"
 
-@interface BaseFileFolderListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate>
+@interface BaseFileFolderListViewController : ParentListViewController <UISearchBarDelegate>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) AlfrescoFolder *displayFolder;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 
