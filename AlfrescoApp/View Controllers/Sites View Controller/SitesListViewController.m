@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     SiteListTypeSelectionAllSites
 };
 
-@interface SitesListViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
+@interface SitesListViewController () <UISearchControllerDelegate>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
@@ -132,22 +132,15 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     self.tableView = tableView;
     [view addSubview:self.tableView];
     
-    // create searchBar
-//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-//                                                                           view.frame.origin.y,
-//                                                                           view.frame.size.width,
-//                                                                           44.0f)];
-//    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-//    searchBar.delegate = self;
-//    searchBar.searchBarStyle = UISearchBarStyleMinimal;
-//    searchBar.backgroundColor = [UIColor whiteColor];
-//    self.searchBar = searchBar;
-    
     // search controller
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.delegate = self;
     searchController.searchBar.delegate = self;
+    
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.hidesNavigationBarDuringPresentation = YES;
+    
+    // search bar
     self.searchBar = searchController.searchBar;
     self.searchBar.frame = CGRectMake(view.frame.origin.x,
                                       view.frame.origin.y,
@@ -155,13 +148,6 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
                                       44.0f);
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.backgroundColor = [UIColor whiteColor];
-    searchController.dimsBackgroundDuringPresentation = NO;
-    searchController.hidesNavigationBarDuringPresentation = YES;
-    searchController.searchResultsUpdater = self;
-    
-//    searchController.searchResultsDataSource = self;
-//    searchController.searchResultsDelegate = self;
-//    searchController.delegate = self;
     self.searchController = searchController;
     
     // add the searchBar to the tableview
@@ -169,11 +155,6 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     
     view.autoresizesSubviews = YES;
     self.view = view;
-}
-
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
-    
 }
 
 - (void)viewDidLoad

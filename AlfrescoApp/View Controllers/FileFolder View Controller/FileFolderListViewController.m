@@ -133,22 +133,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    // create searchBar
-//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(view.frame.origin.x,
-//                                                                           view.frame.origin.y,
-//                                                                           view.frame.size.width,
-//                                                                           44.0f)];
-//    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-//    searchBar.delegate = self;
-//    searchBar.searchBarStyle = UISearchBarStyleMinimal;
-//    searchBar.backgroundColor = [UIColor whiteColor];
-//    self.searchBar = searchBar;
-    
     // search controller
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.delegate = self;
     searchController.searchBar.delegate = self;
+    
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.hidesNavigationBarDuringPresentation = YES;
+    
+    // search bar
     self.searchBar = searchController.searchBar;
     self.searchBar.frame = CGRectMake(view.frame.origin.x,
                                       view.frame.origin.y,
@@ -157,14 +150,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.backgroundColor = [UIColor whiteColor];
-    searchController.dimsBackgroundDuringPresentation = NO;
-    searchController.hidesNavigationBarDuringPresentation = YES;
     
     self.searchController = searchController;
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-//    [self.searchController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

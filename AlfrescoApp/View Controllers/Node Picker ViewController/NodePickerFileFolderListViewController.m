@@ -72,14 +72,12 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     self.edgesForExtendedLayout = UIRectEdgeNone;
     UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
     self.tableView.contentInset = edgeInset;
-//    self.searchDisplayController.searchResultsTableView.contentInset = edgeInset;
     
     [self.tableView setEditing:YES];
     [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     
     UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-//    [self.searchDisplayController.searchResultsTableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self
@@ -196,7 +194,6 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 - (void)deselectAllSelectedNodes:(id)sender
 {
     [self.tableView reloadData];
-//    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 #pragma mark - TableView Delegates and Datasource
