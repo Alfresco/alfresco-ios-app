@@ -763,11 +763,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     NSString *changeLayoutTitle;
     if(self.style == CollectionViewStyleList)
     {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Show Grid View");
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Grid View");
     }
     else
     {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"Show List View");
+        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
     }
     UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         if(self.style == CollectionViewStyleList)

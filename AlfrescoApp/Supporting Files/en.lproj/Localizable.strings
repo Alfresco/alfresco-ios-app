@@ -262,9 +262,9 @@
 
 "browser.actionsheet.record.audio" = "Record Audio";
 
-"browser.actioncontroller.select" = "Select";
-"browser.actioncontroller.grid" = "Show Grid View";
-"browser.actioncontroller.list" = "Show List View";
+"browser.actioncontroller.select" = "Multi-Select";
+"browser.actioncontroller.grid" = "Grid View";
+"browser.actioncontroller.list" = "List View";
 
 /**
  * MultiSelect
