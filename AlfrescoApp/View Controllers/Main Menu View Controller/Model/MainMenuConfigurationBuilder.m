@@ -342,7 +342,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         
         associatedObject = fileFolderCollectionViewController;
     }
-    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepositorySearch])
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSearchRepository])
     {
         // TODO: Currently place an empty view controller
         associatedObject = [[UIViewController alloc] init];
