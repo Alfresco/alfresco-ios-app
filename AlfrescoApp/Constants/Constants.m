@@ -257,17 +257,28 @@ NSString * const kAlfrescoMainMenuConfigurationViewTypePeople = @"org.alfresco.c
 NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery = @"org.alfresco.client.view.preview-carousel";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails = @"org.alfresco.client.view.node-details";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeDocumentDetails = @"org.alfresco.client.view.document-details";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch = @"org.alfresco.client.view.repository-search";
 NSString * const kAlfrescoMainMenuConfigurationViewTypeSite = @"org.alfresco.client.view.sites";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch = @"org.alfresco.client.view.repository-search";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeSearch = @"org.alfresco.client.view.search";
+NSString * const kAlfrescoMainMenuConfigurationViewTypeSearchAdvanced = @"org.alfresco.client.view.search-advanced";
 // View Parameter Keys
 NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey = @"siteShortName";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey = @"path";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey = @"nodeRef";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterShowKey = @"show";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterTypeKey = @"type";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterKeywordsKey = @"keywords";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterIsExactKey = @"isExact";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey = @"fullText";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey = @"searchFolderOnly";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey = @"statement";
 // View Parameter Values
 NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue = @"my";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue = @"favorites";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue = @"all";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchPerson = @"person";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchDocument = @"document";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchFolder = @"folder";
 
 // App Configuration
 //// Notifictaions

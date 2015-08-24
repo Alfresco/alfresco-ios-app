@@ -31,6 +31,7 @@
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
 #import "FileFolderCollectionViewController.h"
+#import "SearchViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -342,6 +343,16 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeRepositorySearch])
+    {
+        // TODO: Currently place an empty view controller
+        associatedObject = [[UIViewController alloc] init];
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSearch])
+    {
+        SearchViewController *controller = [[SearchViewController alloc] init];
+        associatedObject = controller;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSearchAdvanced])
     {
         // TODO: Currently place an empty view controller
         associatedObject = [[UIViewController alloc] init];
