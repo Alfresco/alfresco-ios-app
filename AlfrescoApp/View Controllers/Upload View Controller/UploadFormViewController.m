@@ -322,7 +322,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     if (!self.contentFile)
     {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")
-                                                                         style:UIBarButtonItemStyleBordered
+                                                                         style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(closeUploadForm:)];
         [self.navigationItem setLeftBarButtonItem:cancelButton];
@@ -621,7 +621,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     {
         name = [name stringByAppendingPathExtension:[Utility fileExtensionFromMimeType:self.contentFile.mimeType]];
     }
-    
+
     [self showHUDWithMode:MBProgressHUDModeDeterminate];
     
     __weak typeof(self) weakSelf = self;
@@ -820,7 +820,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
 {
     UIBarButtonItem *uploadButton = (UIBarButtonItem *)sender;
     uploadButton.enabled = NO;
-    __block NSString *documentName = [[self.nameTextField.text stringByDeletingPathExtension] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    __block NSString *documentName = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if (self.contentFile)
     {
@@ -835,6 +835,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     }
     else
     {
+        documentName = [documentName stringByDeletingPathExtension];
         [self uploadDocumentUsingContentStreamWithName:documentName completionBlock:^(BOOL filenameExistsInParentFolder) {
             uploadButton.enabled = YES;
             if (filenameExistsInParentFolder)

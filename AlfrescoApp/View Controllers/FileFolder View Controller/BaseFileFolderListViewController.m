@@ -41,8 +41,8 @@
 
 - (void)showSearchProgressHUD
 {
-    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.searchController.searchResultsTableView];
-    [self.searchController.searchResultsTableView addSubview:self.searchProgressHUD];
+    self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
+    [self.tableView addSubview:self.searchProgressHUD];
     [self.searchProgressHUD show:YES];
 }
 
@@ -84,7 +84,7 @@
     
     // config the cell here...
     AlfrescoNode *currentNode = nil;
-    if (tableView == self.searchController.searchResultsTableView)
+    if (self.isDisplayingSearch)
     {
         currentNode = [self.searchResults objectAtIndex:indexPath.row];
     }
@@ -180,13 +180,14 @@
     
     AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:self.displayFolder includeDescendants:YES];
     
+    self.isDisplayingSearch = YES;
     [self showSearchProgressHUD];
     [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
         [self hideSearchProgressHUD];
         if (array)
         {
             self.searchResults = [array mutableCopy];
-            [self.searchController.searchResultsTableView reloadData];
+            [self.tableView reloadData];
         }
         else
         {
@@ -200,6 +201,7 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
+    self.isDisplayingSearch = NO;
     [self.tableView reloadData];
 }
 

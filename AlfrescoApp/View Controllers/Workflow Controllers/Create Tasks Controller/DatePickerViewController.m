@@ -55,7 +55,7 @@
     self.datePicker.minimumDate = [NSDate date];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"date.picker.today", @"Today")
-                                                                             style:UIBarButtonItemStyleBordered
+                                                                             style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(showAndSelectToday:)];
     
