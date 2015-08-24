@@ -180,6 +180,10 @@
 		27E84E8D18AD53510024B658 /* mainmenu-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */; };
 		27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7418AD53510024B658 /* mainmenu-tasks.png */; };
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
+		2B09B0461B86121200448A52 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09B0441B86121200448A52 /* SearchViewController.m */; };
+		2B09B0471B86121200448A52 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B09B0451B86121200448A52 /* SearchViewController.xib */; };
+		2B09B04B1B86184100448A52 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09B0491B86184100448A52 /* SearchTableViewCell.m */; };
+		2B09B04C1B86184100448A52 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B09B04A1B86184100448A52 /* SearchTableViewCell.xib */; };
 		2B114E601B1F39D4005A05AA /* cell-button-checked-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */; };
 		2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */; };
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
@@ -1045,6 +1049,12 @@
 		27E84E7318AD53510024B658 /* mainmenu-sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-sync@2x.png"; sourceTree = "<group>"; };
 		27E84E7418AD53510024B658 /* mainmenu-tasks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks.png"; sourceTree = "<group>"; };
 		27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-tasks@2x.png"; sourceTree = "<group>"; };
+		2B09B0431B86121200448A52 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		2B09B0441B86121200448A52 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		2B09B0451B86121200448A52 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
+		2B09B0481B86184100448A52 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
+		2B09B0491B86184100448A52 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
+		2B09B04A1B86184100448A52 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled.png"; sourceTree = "<group>"; };
 		2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled@2x.png"; sourceTree = "<group>"; };
 		2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked.png"; sourceTree = "<group>"; };
@@ -2102,6 +2112,19 @@
 				27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		2B09B03E1B85F96500448A52 /* Search View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2B09B0431B86121200448A52 /* SearchViewController.h */,
+				2B09B0441B86121200448A52 /* SearchViewController.m */,
+				2B09B0451B86121200448A52 /* SearchViewController.xib */,
+				2B09B0481B86184100448A52 /* SearchTableViewCell.h */,
+				2B09B0491B86184100448A52 /* SearchTableViewCell.m */,
+				2B09B04A1B86184100448A52 /* SearchTableViewCell.xib */,
+			);
+			path = "Search View Controller";
 			sourceTree = "<group>";
 		};
 		2B114E5B1B1F39C7005A05AA /* Edit Mode Collection View */ = {
@@ -3471,6 +3494,7 @@
 				7333D2E41B3AC5B900644913 /* Profile Selection View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
 				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
+				2B09B03E1B85F96500448A52 /* Search View Controller */,
 				738664A31906AD8E0021D1BD /* Sites View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
 				0833244D17F981EC00EE6AA8 /* Sync View Controller */,
@@ -4048,6 +4072,7 @@
 				0808B9E0183BB40B000A8984 /* unselected_circle.png in Resources */,
 				73B0788D189A559400D02C43 /* bubble_blue.png in Resources */,
 				73BE41F418F3FCF100DB8912 /* actionsheet-review@2x.png in Resources */,
+				2B09B0471B86121200448A52 /* SearchViewController.xib in Resources */,
 				732DBF9218E1BC6B00F7A0BF /* small_excel.png in Resources */,
 				7390619B189676F600B1920C /* ButtonBarArrowDown.png in Resources */,
 				73B95A6217A68B7E0099FB84 /* AboutLogo@2x.png in Resources */,
@@ -4206,6 +4231,7 @@
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
 				735DDC251B30268D0091D7B4 /* mainmenu-document.png in Resources */,
+				2B09B04C1B86184100448A52 /* SearchTableViewCell.xib in Resources */,
 				2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */,
 				7302475419544AD50034D861 /* playButton.png in Resources */,
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
@@ -4542,6 +4568,7 @@
 				739C1CB11859D1390068DB6E /* AlfrescoFileManager+Extensions.m in Sources */,
 				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
+				2B09B0461B86121200448A52 /* SearchViewController.m in Sources */,
 				7390B3621B03681E00E7191F /* AlfrescoActionConfig.m in Sources */,
 				7390B3791B03681E00E7191F /* AlfrescoPlaceholderConfigService.m in Sources */,
 				7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */,
@@ -4649,6 +4676,7 @@
 				7390B38C1B03793400E7191F /* AlfrescoSDKInternalConstants.m in Sources */,
 				7390B3771B03681E00E7191F /* AlfrescoClientBasedConfigService.m in Sources */,
 				7333D2F11B3C4F4500644913 /* MainMenuHeaderView.m in Sources */,
+				2B09B04B1B86184100448A52 /* SearchTableViewCell.m in Sources */,
 				7390B35D1B03681E00E7191F /* AlfrescoCreationConfigHelper.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,

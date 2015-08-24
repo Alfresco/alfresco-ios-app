@@ -272,17 +272,28 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewTypePeople;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeNodeDetails;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeDocumentDetails;
-extern NSString * const kAlfrescoMainMenuConfigurationViewTypeRepositorySearch;
 extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSite;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSearchRepository;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSearch;
+extern NSString * const kAlfrescoMainMenuConfigurationViewTypeSearchAdvanced;
 // View Parameter Keys
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterShowKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterTypeKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterKeywordsKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterIsExactKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey;
 // View Parameter Values
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchPerson;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchDocument;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchFolder;
 
 // App Configuration
 //// Notifictaions

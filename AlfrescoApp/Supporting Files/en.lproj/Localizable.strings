@@ -784,3 +784,12 @@
 "connectiondiagnostic.event.retrieverootfolder" = "Checking repository connection";
 "connectiondiagnostic.button.retrywithdiagnostic" = "Retry with diagnostic";
 "connectiondiagnostic.title" = "Connection Diagnostic";
+
+/**
+ * Search View Controller
+ */
+"search.files" = "Files";
+"search.folders" = "Folders";
+"search.sites" = "Sites";
+"search.people" = "People";
+"search.searchfor" = "SEARCH FOR";
