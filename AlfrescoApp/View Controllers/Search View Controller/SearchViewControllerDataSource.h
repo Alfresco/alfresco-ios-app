@@ -16,10 +16,18 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface SearchViewController : UITableViewController
+static NSString * const kCellTextKey = @"CellText";
+static NSString * const kCellImageKey = @"CellImage";
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
+@interface SearchViewControllerDataSource : NSObject
+
+@property (nonatomic) NSInteger numberOfSections;
+@property (nonatomic) BOOL showsSearchBar;
+@property (nonatomic, strong) NSMutableArray *dataSourceArrays;
+@property (nonatomic, strong) NSMutableArray *sectionHeaderStringsArray;
+
+- (instancetype) initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
 
 @end

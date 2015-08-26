@@ -32,6 +32,15 @@ typedef NS_ENUM(NSInteger, InAppDocumentLocation)
     InAppDocumentLocationLocalFiles
 };
 
+typedef NS_ENUM(NSInteger, SearchViewControllerDataSourceType)
+{
+    SearchViewControllerDataSourceTypeLandingPage = 0,
+    SearchViewControllerDataSourceTypeSearchFiles,
+    SearchViewControllerDataSourceTypeSearchFolders,
+    SearchViewControllerDataSourceTypeSearchSites,
+    SearchViewControllerDataSourceTypeSearchUsers
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
 

@@ -16,10 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "SearchTableViewHeader.h"
 
-@interface SearchViewController : UITableViewController
-
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
+@implementation SearchTableViewHeader
 
 @end

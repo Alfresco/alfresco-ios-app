@@ -18,8 +18,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UITableViewController
+@interface SearchTableViewHeader : UIView
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
+@property (weak, nonatomic) IBOutlet UILabel *headerTextLabel;
+@property (weak, nonatomic) IBOutlet UIView *headerSearchBarContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSearchBarContainerViewHeightConstraint;
 
 @end
