@@ -339,6 +339,14 @@
 		73697BAB1A9B81D5009F10BA /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		73697BB31A9B8DC0009F10BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73697BB21A9B8DC0009F10BA /* SystemConfiguration.framework */; };
 		73697BB51A9B8DDA009F10BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73697BB41A9B8DDA009F10BA /* MobileCoreServices.framework */; };
+		736C4BFD1B8F1920008B7663 /* contact-details-email.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF51B8F1920008B7663 /* contact-details-email.png */; };
+		736C4BFE1B8F1920008B7663 /* contact-details-email@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF61B8F1920008B7663 /* contact-details-email@2x.png */; };
+		736C4BFF1B8F1920008B7663 /* contact-details-message.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF71B8F1920008B7663 /* contact-details-message.png */; };
+		736C4C001B8F1920008B7663 /* contact-details-message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF81B8F1920008B7663 /* contact-details-message@2x.png */; };
+		736C4C011B8F1920008B7663 /* contact-details-phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF91B8F1920008B7663 /* contact-details-phone.png */; };
+		736C4C021B8F1920008B7663 /* contact-details-phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BFA1B8F1920008B7663 /* contact-details-phone@2x.png */; };
+		736C4C031B8F1920008B7663 /* contact-details-skype.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BFB1B8F1920008B7663 /* contact-details-skype.png */; };
+		736C4C041B8F1920008B7663 /* contact-details-skype@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BFC1B8F1920008B7663 /* contact-details-skype@2x.png */; };
 		737972EF18A39DBE007613B2 /* FolderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737972ED18A39DBE007613B2 /* FolderPreviewViewController.m */; };
 		737972F018A39DBE007613B2 /* FolderPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972EE18A39DBE007613B2 /* FolderPreviewViewController.xib */; };
 		737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737972F318A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib */; };
@@ -510,6 +518,8 @@
 		73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */; };
 		73A04F33187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */; };
 		73A37A0C1B8356D4007EEE0D /* MenuIconIdentifierMappings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73A37A0B1B8356D3007EEE0D /* MenuIconIdentifierMappings.plist */; };
+		73A37A3A1B861E64007EEE0D /* PersonProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A37A381B861E64007EEE0D /* PersonProfileViewController.m */; };
+		73A37A3B1B861E64007EEE0D /* PersonProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73A37A391B861E64007EEE0D /* PersonProfileViewController.xib */; };
 		73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A47E46182268AD00D35FBD /* FavouriteManager.m */; };
 		73B0788D189A559400D02C43 /* bubble_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788B189A559400D02C43 /* bubble_blue.png */; };
 		73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73B0788C189A559400D02C43 /* bubble_blue@2x.png */; };
@@ -587,6 +597,8 @@
 		73BE420718F4021300DB8912 /* task_priority_low@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420118F4021300DB8912 /* task_priority_low@2x.png */; };
 		73BE420818F4021300DB8912 /* task_priority_medium.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420218F4021300DB8912 /* task_priority_medium.png */; };
 		73BE420918F4021300DB8912 /* task_priority_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420318F4021300DB8912 /* task_priority_medium@2x.png */; };
+		73C5545E1B8CBD1E00C45F56 /* ContactDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C5545D1B8CBD1E00C45F56 /* ContactDetailView.m */; };
+		73C554651B8CBD3C00C45F56 /* ContactDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C554641B8CBD3C00C45F56 /* ContactDetailView.xib */; };
 		73CD5B081A7275B7000A5523 /* CustomFolderService.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B071A7275B7000A5523 /* CustomFolderService.m */; };
 		73CD5B0B1A727D88000A5523 /* AppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0A1A727D88000A5523 /* AppConfiguration.m */; };
 		73CD5B0E1A729526000A5523 /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0D1A729526000A5523 /* SharedConstants.m */; };
@@ -1261,6 +1273,14 @@
 		73697BA51A9B7C8C009F10BA /* AlfrescoDocumentPickerFileProvider-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocumentPickerFileProvider-Prefix.pch"; sourceTree = "<group>"; };
 		73697BB21A9B8DC0009F10BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		73697BB41A9B8DDA009F10BA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		736C4BF51B8F1920008B7663 /* contact-details-email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-email.png"; sourceTree = "<group>"; };
+		736C4BF61B8F1920008B7663 /* contact-details-email@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-email@2x.png"; sourceTree = "<group>"; };
+		736C4BF71B8F1920008B7663 /* contact-details-message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-message.png"; sourceTree = "<group>"; };
+		736C4BF81B8F1920008B7663 /* contact-details-message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-message@2x.png"; sourceTree = "<group>"; };
+		736C4BF91B8F1920008B7663 /* contact-details-phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-phone.png"; sourceTree = "<group>"; };
+		736C4BFA1B8F1920008B7663 /* contact-details-phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-phone@2x.png"; sourceTree = "<group>"; };
+		736C4BFB1B8F1920008B7663 /* contact-details-skype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-skype.png"; sourceTree = "<group>"; };
+		736C4BFC1B8F1920008B7663 /* contact-details-skype@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact-details-skype@2x.png"; sourceTree = "<group>"; };
 		7373B4F517A66E9400869949 /* AlfrescoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlfrescoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		737972EC18A39DBE007613B2 /* FolderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FolderPreviewViewController.h; path = "Folder Preview View Controller/FolderPreviewViewController.h"; sourceTree = "<group>"; };
 		737972ED18A39DBE007613B2 /* FolderPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FolderPreviewViewController.m; path = "Folder Preview View Controller/FolderPreviewViewController.m"; sourceTree = "<group>"; };
@@ -1524,6 +1544,9 @@
 		73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+AutoLayout.h"; sourceTree = "<group>"; };
 		73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+AutoLayout.m"; sourceTree = "<group>"; };
 		73A37A0B1B8356D3007EEE0D /* MenuIconIdentifierMappings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MenuIconIdentifierMappings.plist; sourceTree = "<group>"; };
+		73A37A371B861E64007EEE0D /* PersonProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonProfileViewController.h; sourceTree = "<group>"; };
+		73A37A381B861E64007EEE0D /* PersonProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonProfileViewController.m; sourceTree = "<group>"; };
+		73A37A391B861E64007EEE0D /* PersonProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonProfileViewController.xib; sourceTree = "<group>"; };
 		73A47E45182268AD00D35FBD /* FavouriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteManager.h; sourceTree = "<group>"; };
 		73A47E46182268AD00D35FBD /* FavouriteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteManager.m; sourceTree = "<group>"; };
 		73B0788B189A559400D02C43 /* bubble_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_blue.png; sourceTree = "<group>"; };
@@ -1641,6 +1664,9 @@
 		73BE420118F4021300DB8912 /* task_priority_low@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_priority_low@2x.png"; sourceTree = "<group>"; };
 		73BE420218F4021300DB8912 /* task_priority_medium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_priority_medium.png; sourceTree = "<group>"; };
 		73BE420318F4021300DB8912 /* task_priority_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "task_priority_medium@2x.png"; sourceTree = "<group>"; };
+		73C5545C1B8CBD1E00C45F56 /* ContactDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactDetailView.h; path = "Contact Detail View/ContactDetailView.h"; sourceTree = "<group>"; };
+		73C5545D1B8CBD1E00C45F56 /* ContactDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactDetailView.m; path = "Contact Detail View/ContactDetailView.m"; sourceTree = "<group>"; };
+		73C554641B8CBD3C00C45F56 /* ContactDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactDetailView.xib; path = "Contact Detail View/ContactDetailView.xib"; sourceTree = "<group>"; };
 		73CD5B061A7275B7000A5523 /* CustomFolderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFolderService.h; sourceTree = "<group>"; };
 		73CD5B071A7275B7000A5523 /* CustomFolderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFolderService.m; sourceTree = "<group>"; };
 		73CD5B091A727D88000A5523 /* AppConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppConfiguration.h; path = Model/AppConfiguration.h; sourceTree = "<group>"; };
@@ -2493,6 +2519,21 @@
 			path = "MDM Launch View Controller";
 			sourceTree = "<group>";
 		};
+		736C4BF41B8F1920008B7663 /* Profile Contact Information */ = {
+			isa = PBXGroup;
+			children = (
+				736C4BF51B8F1920008B7663 /* contact-details-email.png */,
+				736C4BF61B8F1920008B7663 /* contact-details-email@2x.png */,
+				736C4BF71B8F1920008B7663 /* contact-details-message.png */,
+				736C4BF81B8F1920008B7663 /* contact-details-message@2x.png */,
+				736C4BF91B8F1920008B7663 /* contact-details-phone.png */,
+				736C4BFA1B8F1920008B7663 /* contact-details-phone@2x.png */,
+				736C4BFB1B8F1920008B7663 /* contact-details-skype.png */,
+				736C4BFC1B8F1920008B7663 /* contact-details-skype@2x.png */,
+			);
+			path = "Profile Contact Information";
+			sourceTree = "<group>";
+		};
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
@@ -3252,6 +3293,17 @@
 			path = "Main Menu Icons";
 			sourceTree = "<group>";
 		};
+		73A37A361B861E64007EEE0D /* Person Profile View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73C554631B8CBD2400C45F56 /* Contact Detail View */,
+				73A37A371B861E64007EEE0D /* PersonProfileViewController.h */,
+				73A37A381B861E64007EEE0D /* PersonProfileViewController.m */,
+				73A37A391B861E64007EEE0D /* PersonProfileViewController.xib */,
+			);
+			path = "Person Profile View Controller";
+			sourceTree = "<group>";
+		};
 		73A6860E18C87A9100FF18E0 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
@@ -3490,6 +3542,7 @@
 				0876A03318D99FF60035370A /* Node Picker ViewController */,
 				7319019218436504002C82C1 /* Onboarding View Controller */,
 				0876A05918D9A9E30035370A /* People Picker ViewController */,
+				73A37A361B861E64007EEE0D /* Person Profile View Controller */,
 				73B95AD817A68DF20099FB84 /* Preview View Controller */,
 				7333D2E41B3AC5B900644913 /* Profile Selection View Controller */,
 				7399A00117F9A720005B8648 /* Root Reveal Controller */,
@@ -3566,6 +3619,7 @@
 				73B959FD17A68B7E0099FB84 /* Icons */,
 				73B95A2417A68B7E0099FB84 /* Logo */,
 				73A26A6F18364328006C1D81 /* Main Menu Icons */,
+				736C4BF41B8F1920008B7663 /* Profile Contact Information */,
 				272CC7C7194690AD0009FADA /* Segmented Control */,
 				0833245317F98CC700EE6AA8 /* Sync */,
 				73B95A3117A68B7E0099FB84 /* System Notification */,
@@ -3742,6 +3796,16 @@
 				73B95B0717A68E770099FB84 /* UserGuide.pdf */,
 			);
 			path = "Help Guides";
+			sourceTree = "<group>";
+		};
+		73C554631B8CBD2400C45F56 /* Contact Detail View */ = {
+			isa = PBXGroup;
+			children = (
+				73C5545C1B8CBD1E00C45F56 /* ContactDetailView.h */,
+				73C5545D1B8CBD1E00C45F56 /* ContactDetailView.m */,
+				73C554641B8CBD3C00C45F56 /* ContactDetailView.xib */,
+			);
+			name = "Contact Detail View";
 			sourceTree = "<group>";
 		};
 		73CD5B011A727594000A5523 /* Services */ = {
@@ -4054,10 +4118,12 @@
 				732DBFA018E1BC6B00F7A0BF /* small_xml.png in Resources */,
 				2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */,
 				73881FCC188FF6B00052C75F /* actionsheet-comment.png in Resources */,
+				736C4C001B8F1920008B7663 /* contact-details-message@2x.png in Resources */,
 				73BE41FC18F3FF2900DB8912 /* account-type-onpremise.png in Resources */,
 				27E84E8A18AD53510024B658 /* mainmenu-sites.png in Resources */,
 				73FF558018ACE2370009CA56 /* large_image@2x.png in Resources */,
 				08E1EA3018DB057900F9052F /* ProcessTasksCell.xib in Resources */,
+				73C554651B8CBD3C00C45F56 /* ContactDetailView.xib in Resources */,
 				27DFEBF91937644D006D85BC /* actionsheet-link@2x~ipad.png in Resources */,
 				0837F298192F69A0006BE40C /* sync-button-error.png in Resources */,
 				272962771B557BF90041C32D /* mainmenu-grid.png in Resources */,
@@ -4125,6 +4191,7 @@
 				0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */,
 				738665061906B2A60021D1BD /* AlfrescoNodeCell.xib in Resources */,
 				271DC76F189C2D250059D1B2 /* status-sync-failed@2x.png in Resources */,
+				736C4C031B8F1920008B7663 /* contact-details-skype.png in Resources */,
 				735DDC261B30268D0091D7B4 /* mainmenu-document@2x.png in Resources */,
 				738664FE1906B27C0021D1BD /* NodePickerListCell.xib in Resources */,
 				732DBF9518E1BC6B00F7A0BF /* small_image@2x.png in Resources */,
@@ -4132,6 +4199,7 @@
 				738665181906B3ED0021D1BD /* ActivityTableViewCell.xib in Resources */,
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				73FF557E18ACE2370009CA56 /* large_excel@2x.png in Resources */,
+				736C4C011B8F1920008B7663 /* contact-details-phone.png in Resources */,
 				0876A04418D99FF60035370A /* NodePickerFavoritesViewController.xib in Resources */,
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
 				73632AE41802E5C6007172EE /* BaseDocumentPreviewViewController.xib in Resources */,
@@ -4156,6 +4224,7 @@
 				271DC774189C2D250059D1B2 /* status-sync-synced-highlighted.png in Resources */,
 				732DBF9A18E1BC6B00F7A0BF /* small_powerpoint.png in Resources */,
 				738665001906B27C0021D1BD /* NodePickerScopeCell.xib in Resources */,
+				736C4BFE1B8F1920008B7663 /* contact-details-email@2x.png in Resources */,
 				27DFEBF81937644D006D85BC /* actionsheet-like@2x~ipad.png in Resources */,
 				271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */,
 				73FF557A18ACE2370009CA56 /* large_document@2x.png in Resources */,
@@ -4203,13 +4272,16 @@
 				73881FE81890086F0052C75F /* actionsheet-print@2x.png in Resources */,
 				7302475519544AD50034D861 /* playButton@2x.png in Resources */,
 				73BE41FA18F3FF2900DB8912 /* account-type-cloud.png in Resources */,
+				736C4BFD1B8F1920008B7663 /* contact-details-email.png in Resources */,
 				732DBF9D18E1BC6B00F7A0BF /* small_video@2x.png in Resources */,
 				27E84E8718AD53510024B658 /* mainmenu-settings@2x.png in Resources */,
 				0876A04618D99FF60035370A /* NodePickerFileFolderListViewController.xib in Resources */,
 				2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */,
 				732DBF9B18E1BC6B00F7A0BF /* small_powerpoint@2x.png in Resources */,
+				736C4C021B8F1920008B7663 /* contact-details-phone@2x.png in Resources */,
 				730D1EB5192BB56900C85C55 /* unselected_circle@2x.png in Resources */,
 				738665241907B9BE0021D1BD /* FileLocationSelectionViewController.xib in Resources */,
+				736C4BFF1B8F1920008B7663 /* contact-details-message.png in Resources */,
 				27E84E8618AD53510024B658 /* mainmenu-settings.png in Resources */,
 				733638BB1913BA1600472A57 /* system_notice_tick.png in Resources */,
 				73FF558218ACE2370009CA56 /* large_notes@2x.png in Resources */,
@@ -4311,6 +4383,7 @@
 				2BFE12971AC2E734000EB19D /* circle_tick.png in Resources */,
 				271DC76A189C2D250059D1B2 /* status-restricted.png in Resources */,
 				27DFEBF61937644D006D85BC /* actionsheet-favorite@2x~ipad.png in Resources */,
+				736C4C041B8F1920008B7663 /* contact-details-skype@2x.png in Resources */,
 				738664F11906B2420021D1BD /* PersonCell.xib in Resources */,
 				73B95AB517A68B7E0099FB84 /* site-action-join.png in Resources */,
 				2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */,
@@ -4348,6 +4421,7 @@
 				73881F6E188956390052C75F /* WebBrowserViewController.xib in Resources */,
 				735DDC271B30268D0091D7B4 /* mainmenu-groups.png in Resources */,
 				27DFEBF51937644D006D85BC /* actionsheet-email@2x~ipad.png in Resources */,
+				73A37A3B1B861E64007EEE0D /* PersonProfileViewController.xib in Resources */,
 				27E84E8C18AD53510024B658 /* mainmenu-sync.png in Resources */,
 				08E1EA2618DB057900F9052F /* TaskHeaderView.xib in Resources */,
 				272CC7CE194690AD0009FADA /* segment-icon-history@2x.png in Resources */,
@@ -4582,6 +4656,7 @@
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
+				73A37A3A1B861E64007EEE0D /* PersonProfileViewController.m in Sources */,
 				73B5798F1B15EC4E009D30B6 /* MainMenuGroup.m in Sources */,
 				738664BF1906B14C0021D1BD /* SitesCell.m in Sources */,
 				08B61F9E1804079C00C827EA /* FailedTransferDetailViewController.m in Sources */,
@@ -4632,6 +4707,7 @@
 				2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */,
 				0876A04818D99FF60035370A /* NodePickerScopeViewController.m in Sources */,
 				7390B3751B03681E00E7191F /* AlfrescoViewGroupConfig.m in Sources */,
+				73C5545E1B8CBD1E00C45F56 /* ContactDetailView.m in Sources */,
 				738664E41906B2260021D1BD /* SwitchCell.m in Sources */,
 				737972FA18A3DCC3007613B2 /* ActionViewHandler.m in Sources */,
 				73B579941B15EC5F009D30B6 /* MainMenuTableViewCell.m in Sources */,

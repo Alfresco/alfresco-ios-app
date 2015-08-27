@@ -272,6 +272,7 @@ NSString * const kAlfrescoMainMenuConfigurationViewParameterIsExactKey = @"isExa
 NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey = @"fullText";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey = @"searchFolderOnly";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey = @"statement";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterUsernameKey = @"userName";
 // View Parameter Values
 NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue = @"my";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue = @"favorites";
@@ -289,3 +290,12 @@ NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEdit
 NSString * const kAppConfigurationCanRemoveAccountsKey = @"AppConfigurationCanRemoveAccounts";
 ///// Main Menu
 NSString * const kAppConfigurationUserCanEditMainMenuKey = @"AppConfigurationUserCanEditMainMenuKey";
+
+// Person Profile
+NSString * const kPhoneURLScheme = @"tel://";
+NSString * const kSkypeURLScheme = @"skype:";
+NSString * const kSkypeURLCommunicationTypeCall = @"call";
+NSString * const kSkypeURLCommunicationTypeChat = @"chat";
+NSString * const kSkypeAppStoreURL = @"http://itunes.com/apps/skype/skype";
+
+
