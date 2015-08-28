@@ -32,6 +32,7 @@
 #import "AccountManager.h"
 #import "FileFolderCollectionViewController.h"
 #import "SearchViewController.h"
+#import "PersonProfileViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -90,7 +91,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             }
             else
             {
-                NSLog(@"ViewGroupConfig: %@", rootViewConfig.identifier);
+                AlfrescoLogDebug(@"ViewGroupConfig: %@", rootViewConfig.identifier);
                 
                 [self buildSectionsForRootView:rootViewConfig completionBlock:completionBlock];
             }
@@ -197,7 +198,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                                                                             title:(subItem.label) ?: NSLocalizedString(subItem.identifier, @"Item Title")
                                                                             image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                                       description:nil
-                                                                      displayType:MainMenuDisplayTypeMaster
+                                                                      displayType:[self displayTypeForAlfrescoViewConfig:subItem]
                                                                  associatedObject:associatedObject];
                     [section addMainMenuItem:item];
                 }
@@ -238,6 +239,18 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         completionBlock(sectionArray);
     }
+}
+
+- (MainMenuDisplayType)displayTypeForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
+{
+    MainMenuDisplayType returnDisplayType = MainMenuDisplayTypeMaster;
+    
+    if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypePersonProfile])
+    {
+        returnDisplayType = MainMenuDisplayTypeDetail;
+    }
+    
+    return returnDisplayType;
 }
 
 - (id)associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
@@ -301,8 +314,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypePersonProfile])
     {
-        // TODO: Currently place an empty view controller
-        associatedObject = [[UIViewController alloc] init];
+        // Person
+        NSString *username = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterUsernameKey];
+        
+        PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:username session:self.session];
+        associatedObject = personProfileViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypePeople])
     {
