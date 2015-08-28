@@ -30,6 +30,7 @@ static CGFloat const kHeaderHeight = 40.0f;
 @property (nonatomic, strong) SearchViewControllerDataSource *dataSource;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic) CGRect searchBarOriginalFrame;
 
 @end
 
@@ -93,12 +94,16 @@ static CGFloat const kHeaderHeight = 40.0f;
         }
     }
     
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchResultsUpdater = self;
-    self.searchController.dimsBackgroundDuringPresentation = YES;
-    self.searchController.searchBar.delegate = self;
-    
-    self.definesPresentationContext = YES;
+    if(self.dataSource.showsSearchBar)
+    {
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+        self.searchController.searchResultsUpdater = self;
+        self.searchController.searchBar.delegate = self;
+        self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.searchController.searchBar sizeToFit];
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+        self.definesPresentationContext = YES;
+    }
     
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([SearchTableViewCell class]) bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:NSStringFromClass([SearchTableViewCell class])];
@@ -123,7 +128,6 @@ static CGFloat const kHeaderHeight = 40.0f;
     return array.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -136,25 +140,25 @@ static CGFloat const kHeaderHeight = 40.0f;
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSDictionary *cellDataSource = array[indexPath.row];
             specificCell.searchItemText.text = [cellDataSource objectForKey:kCellTextKey];
-            [specificCell.searchItemImage setImage:[UIImage imageNamed:[cellDataSource objectForKey:kCellImageKey]]];
+            if([cellDataSource objectForKey:kCellImageKey])
+            {
+                [specificCell.searchItemImage setImage:[UIImage imageNamed:[cellDataSource objectForKey:kCellImageKey]]];
+                specificCell.searchItemImageWidthConstraint.constant = kSearchItemImageWidthConstraint;
+            }
+            else
+            {
+                specificCell.searchItemImageWidthConstraint.constant = 0.0f;
+            }
             cell = specificCell;
             
             break;
         }
-        case SearchViewControllerDataSourceTypeSearchFiles:
+        default:
         {
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchFolders:
-        {
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchSites:
-        {
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchUsers:
-        {
+            if(indexPath.section > 0)
+            {
+                cell = [self configureCellForIndexPath:indexPath];
+            }
             break;
         }
     }
@@ -162,37 +166,16 @@ static CGFloat const kHeaderHeight = 40.0f;
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    SearchTableViewHeader* searchHeader = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SearchTableViewHeader class]) owner:self options:nil] firstObject];
-    searchHeader.backgroundColor = [UIColor colorWithRed:240/255.0f green:240/255.0f blue:240/255.0f alpha:1.0f];
+    NSString *title = self.dataSource.showsSearchBar ? ((section == 0) ? @"" : [self.dataSource.sectionHeaderStringsArray objectAtIndex:section]) : [self.dataSource.sectionHeaderStringsArray objectAtIndex:section];
     
-    if((section == 0) && (self.dataSource.showsSearchBar))
-    {
-        //if should show search bar always show it in the first header
-        searchHeader.headerSearchBarContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        [searchHeader.headerSearchBarContainerView addSubview:self.searchController.searchBar];
-        self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        searchHeader.headerSearchBarContainerViewHeightConstraint.constant = 44.0f;
-        [self.searchController.searchBar sizeToFit];
-    }
-    else
-    {
-        searchHeader.headerSearchBarContainerViewHeightConstraint.constant = 0.0f;
-    }
-    
-    searchHeader.headerTextLabel.text = [self.dataSource.sectionHeaderStringsArray objectAtIndex:section];
-    
-    return searchHeader;
+    return title;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    CGFloat height = kHeaderHeight;
-    if((self.dataSource.showsSearchBar) && (section == 0))
-    {
-        height += 44.0f;
-    }
+    CGFloat height = self.dataSource.showsSearchBar ? ((section == 0)? 0.0f : kHeaderHeight) : kHeaderHeight;
     return height;
 }
 
@@ -233,10 +216,32 @@ static CGFloat const kHeaderHeight = 40.0f;
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
+- (SearchTableViewCell *) configureCellForIndexPath:(NSIndexPath *)indexPath
+{
+    SearchTableViewCell *specificCell = [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SearchTableViewCell class]) forIndexPath:indexPath];
+    NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+    specificCell.searchItemText.text = array[indexPath.row];
+    specificCell.searchItemImageWidthConstraint.constant = 0.0f;
+    return specificCell;
+}
+
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    
+    /* handling of search is done in the delegate method from the search bar because this method is called for every caracter that the user types;
+    see searchBarSearchButtonClicked method for implementation */
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSString *searchText = searchBar.text;
+    NSString *strippedString = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if(strippedString.length > 0)
+    {
+        [self.dataSource saveSearchString:strippedString forSearchType:self.dataSourceType];
+        
+        [self.tableView reloadData];
+    }
+}
 @end

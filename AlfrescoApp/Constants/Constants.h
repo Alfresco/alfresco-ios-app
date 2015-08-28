@@ -76,6 +76,10 @@ extern CGFloat const kRevealControllerMasterViewWidth;
 
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
+extern NSString * const kSearchTypeFiles;
+extern NSString * const kSearchTypeFolders;
+extern NSString * const kSearchTypeSites;
+extern NSString * const kSearchTypeUsers;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;

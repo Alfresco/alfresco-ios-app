@@ -30,4 +30,7 @@ static NSString * const kCellImageKey = @"CellImage";
 
 - (instancetype) initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
 
+- (void)saveSearchString:(NSString *)stringToSave forSearchType:(SearchViewControllerDataSourceType)searchType;
+- (NSArray *)retriveSearchStringsArrayForSearchType:(SearchViewControllerDataSourceType)searchType;
+
 @end

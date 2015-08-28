@@ -25,11 +25,11 @@
     self = [super init];
     if(self)
     {
-        self.dataSourceArrays = [NSMutableArray new];
-        self.sectionHeaderStringsArray = [NSMutableArray new];
         switch (dataSourceType) {
             case SearchViewControllerDataSourceTypeLandingPage:
             {
+                self.dataSourceArrays = [NSMutableArray new];
+                self.sectionHeaderStringsArray = [NSMutableArray new];
                 self.numberOfSections = 1;
                 self.showsSearchBar = NO;
                 
@@ -66,23 +66,88 @@
     return self;
 }
 
+#pragma mark - Private methods
 - (void) setupDataSourceForSearchType:(SearchViewControllerDataSourceType)searchType
 {
+    self.dataSourceArrays = [NSMutableArray new];
+    self.sectionHeaderStringsArray = [NSMutableArray new];
+    
     [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.search", @"Search")];
     [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.previoussearches", @"Previous searches")];
     
     [self.dataSourceArrays addObject:[NSMutableArray new]];
-    [self.dataSourceArrays addObject:[self arrayOfPreviousSearchesOfType:searchType]];
+    [self.dataSourceArrays addObject:[self retriveSearchStringsArrayForSearchType:searchType]];
     
     self.numberOfSections = 2;
     self.showsSearchBar = YES;
 }
 
-- (NSArray *) arrayOfPreviousSearchesOfType:(SearchViewControllerDataSourceType)searchType
+- (NSString *)userDefaultsKeyForSearchType:(SearchViewControllerDataSourceType)searchType
 {
-    NSArray *resultsArray = [NSArray new];
+    NSString *key;
     
-    return resultsArray;
+    switch (searchType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            key = kSearchTypeFiles;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            key = kSearchTypeFolders;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            key = kSearchTypeSites;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            key = kSearchTypeUsers;
+            break;
+        }
+        default:
+        {
+            key = @"";
+            break;
+        }
+    }
+    
+    return key;
+}
+
+#pragma mark - Public methods
+- (void)saveSearchString:(NSString *)stringToSave forSearchType:(SearchViewControllerDataSourceType)searchType
+{
+    NSMutableArray *savedStringsForCurrentDataSourceType = [[[NSUserDefaults standardUserDefaults] objectForKey:[self userDefaultsKeyForSearchType:searchType]] mutableCopy];
+    if((!savedStringsForCurrentDataSourceType) || (savedStringsForCurrentDataSourceType.count == 0))
+    {
+        savedStringsForCurrentDataSourceType = [NSMutableArray new];
+    }
+    
+    if([savedStringsForCurrentDataSourceType indexOfObject:stringToSave] == NSNotFound)
+    {
+        //Always insert a new string at the begining of the array in order to have the newest strings at the top
+        [savedStringsForCurrentDataSourceType insertObject:stringToSave atIndex:0];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:savedStringsForCurrentDataSourceType forKey:[self userDefaultsKeyForSearchType:searchType]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self setupDataSourceForSearchType:searchType];
+}
+
+- (NSArray *)retriveSearchStringsArrayForSearchType:(SearchViewControllerDataSourceType)searchType
+{
+    NSArray *previousSearches = [[NSUserDefaults standardUserDefaults] objectForKey:[self userDefaultsKeyForSearchType:searchType]];
+    if(!previousSearches)
+    {
+        previousSearches = [NSArray new];
+    }
+    
+    return previousSearches;
 }
 
 @end

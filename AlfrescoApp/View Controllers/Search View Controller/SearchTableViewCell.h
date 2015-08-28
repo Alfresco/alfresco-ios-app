@@ -18,6 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+static CGFloat const kSearchItemImageWidthConstraint = 27.0f;
+
 @interface SearchTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *searchItemImage;
