@@ -22,6 +22,7 @@
 #import "UniversalDevice.h"
 #import "SyncManager.h"
 #import "SearchViewController.h"
+#import "FavouriteManager.h"
 
 @interface SearchResultsTableViewController ()
 
@@ -88,8 +89,18 @@
             AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
             
             AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
-            [properCell updateCellInfoWithNode:currentNode nodeStatus:nil];
-            [properCell updateStatusIconsIsSyncNode:NO isFavoriteNode:NO animate:NO];
+            SyncManager *syncManager = [SyncManager sharedManager];
+            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+            
+            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+            [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+            [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+            
+            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+                
+                [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+            }];
             
             AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
             UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
@@ -129,8 +140,18 @@
             AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
             
             AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
-            [properCell updateCellInfoWithNode:currentNode nodeStatus:nil];
-            [properCell updateStatusIconsIsSyncNode:NO isFavoriteNode:NO animate:NO];
+            SyncManager *syncManager = [SyncManager sharedManager];
+            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+            
+            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+            [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+            [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+            
+            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+                
+                [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+            }];
             
             [properCell.image setImage:smallImageForType(@"folder") withFade:NO];
             
