@@ -349,7 +349,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSearch])
     {
-        SearchViewController *controller = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeLandingPage];
+        SearchViewController *controller = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeLandingPage session:self.session];
         associatedObject = controller;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSearchAdvanced])

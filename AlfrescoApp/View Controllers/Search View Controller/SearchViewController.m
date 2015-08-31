@@ -21,7 +21,8 @@
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
 #import "SearchViewControllerDataSource.h"
-#import "SearchTableViewHeader.h"
+#import "SearchResultsTableViewController.h"
+#import "FileFolderCollectionViewController.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 
@@ -31,17 +32,20 @@ static CGFloat const kHeaderHeight = 40.0f;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) CGRect searchBarOriginalFrame;
+@property (nonatomic, strong) AlfrescoSearchService *searchService;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
 
 @implementation SearchViewController
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType
+- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session
 {
     self = [super init];
     if(self)
     {
         self.dataSourceType = dataSourceType;
+        self.session = session;
     }
     
     return self;
@@ -52,6 +56,7 @@ static CGFloat const kHeaderHeight = 40.0f;
     [super viewDidLoad];
     
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType];
+    self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
     
     NSString *title = nil;
     switch (self.dataSourceType)
@@ -96,7 +101,10 @@ static CGFloat const kHeaderHeight = 40.0f;
     
     if(self.dataSource.showsSearchBar)
     {
-        self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+        SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] init];
+        resultsController.dataType = self.dataSourceType;
+        resultsController.session = self.session;
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultsController];
         self.searchController.searchResultsUpdater = self;
         self.searchController.searchBar.delegate = self;
         self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -186,16 +194,24 @@ static CGFloat const kHeaderHeight = 40.0f;
         case SearchViewControllerDataSourceTypeLandingPage:
         {
             SearchViewControllerDataSourceType selectedType = indexPath.row + 1;
-            SearchViewController *newVC = [[SearchViewController alloc] initWithDataSourceType:selectedType];
-            [self.navigationController pushViewController:newVC animated:YES];
+            SearchViewController *newVC = [[SearchViewController alloc] initWithDataSourceType:selectedType session:self.session];
+            [UniversalDevice pushToDisplayViewController:newVC usingNavigationController:self.navigationController animated:YES];
             break;
         }
         case SearchViewControllerDataSourceTypeSearchFiles:
         {
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSString *selectedString = [array objectAtIndex:indexPath.row];
+            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType]];
+            [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
             break;
         }
         case SearchViewControllerDataSourceTypeSearchFolders:
         {
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSString *selectedString = [array objectAtIndex:indexPath.row];
+            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType]];
+            [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
             break;
         }
         case SearchViewControllerDataSourceTypeSearchSites:
@@ -225,6 +241,51 @@ static CGFloat const kHeaderHeight = 40.0f;
     return specificCell;
 }
 
+- (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType
+{
+    AlfrescoKeywordSearchOptions *searchOptions;
+    switch (searchType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithTypeName:kAlfrescoModelTypeContent];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithTypeName:kAlfrescoModelTypeFolder];
+            break;
+        }
+        default:
+        {
+            searchOptions = nil;
+            break;
+        }
+    }
+    
+    return searchOptions;
+}
+
+- (void)searchFor:(NSString *)searchString
+{
+    [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
+        if (array)
+        {
+            if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+            {
+                SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                resultsController.results = [array mutableCopy];
+            }
+        }
+        else
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
+        }
+    }];
+}
+
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
@@ -240,8 +301,36 @@ static CGFloat const kHeaderHeight = 40.0f;
     if(strippedString.length > 0)
     {
         [self.dataSource saveSearchString:strippedString forSearchType:self.dataSourceType];
-        
+        [self searchFor:strippedString];
         [self.tableView reloadData];
     }
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+    {
+        SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+        resultsController.results = [NSMutableArray new];
+    }
+}
+
+#pragma mark - Public methods
+- (void)pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions
+{
+    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)node
+                                                                   permissions:permissions
+                                                                   contentFile:contentPath
+                                                              documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                       session:self.session
+                                                          navigationController:self.navigationController
+                                                                      animated:YES];
+}
+
+- (void)pushFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions
+{
+    // push again
+    FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)node folderPermissions:permissions session:self.session];
+    [UniversalDevice pushToDisplayViewController:browserViewController usingNavigationController:self.navigationController animated:YES];
 }
 @end

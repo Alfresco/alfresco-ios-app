@@ -18,10 +18,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchTableViewHeader : UIView
+@interface SearchResultsTableViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UILabel *headerTextLabel;
-@property (weak, nonatomic) IBOutlet UIView *headerSearchBarContainerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSearchBarContainerViewHeightConstraint;
+@property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic) SearchViewControllerDataSourceType dataType;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
