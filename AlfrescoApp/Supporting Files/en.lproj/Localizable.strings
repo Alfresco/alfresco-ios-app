@@ -143,6 +143,9 @@
 // Email
 "error.no.email.accounts.title" = "No Mail Accounts";
 "error.no.email.accounts.message" = "You must have at least one mail account setup on your device to send this file.";
+// Person Profile
+"error.person.profile.no.profile.title" = "Profile Error";
+"error.person.profile.no.profile.message" = "Unable to located user; %@";
 
 /**
  * Custom error descriptions
@@ -769,6 +772,20 @@
 
 "main.menu.profile.selection.banner.title" = "Main Menu Updated";
 "main.menu.profile.selection.banner.message" = "The main menu has been updated to display the %@ profile.";
+
+/**
+ * Person Profile View Controller
+ */
+"person.profile.view.controller.header.title.summary" = "Summary";
+"person.profile.view.controller.header.title.contact.information" = "Contact Information";
+"person.profile.view.controller.contact.information.type.email.title" = "Email";
+"person.profile.view.controller.contact.information.type.skype.title" = "Skype";
+"person.profile.view.controller.contact.information.type.skype.message" = "How would you like to contact %@?";
+"person.profile.view.controller.contact.information.type.skype.chat" = "Chat";
+"person.profile.view.controller.contact.information.type.skype.call" = "Call";
+"person.profile.view.controller.contact.information.type.instant.message.title" = "Instant Message";
+"person.profile.view.controller.contact.information.type.telephone.title" = "Telephone";
+"person.profile.view.controller.contact.information.type.mobile.title" = "Mobile";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS

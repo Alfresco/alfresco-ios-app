@@ -300,6 +300,7 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewParameterIsExactKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterUsernameKey;
 // View Parameter Values
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue;
@@ -317,3 +318,10 @@ extern NSString * const kAppConfigurationCanEditAccountsKey;
 extern NSString * const kAppConfigurationCanRemoveAccountsKey;
 ///// Main Menu
 extern NSString * const kAppConfigurationUserCanEditMainMenuKey;
+
+// Person Profile
+extern NSString * const kPhoneURLScheme;
+extern NSString * const kSkypeURLScheme;
+extern NSString * const kSkypeURLCommunicationTypeCall;
+extern NSString * const kSkypeURLCommunicationTypeChat;
+extern NSString * const kSkypeAppStoreURL;
