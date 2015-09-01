@@ -24,6 +24,8 @@
 #import "SearchViewController.h"
 #import "FavouriteManager.h"
 
+static CGFloat const kCellHeight = 73.0f;
+
 @interface SearchResultsTableViewController ()
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
@@ -174,6 +176,11 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kCellHeight;
+}
+
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -204,6 +211,7 @@
                     }
                 }
             }];
+            break;
         }
         case SearchViewControllerDataSourceTypeSearchFolders:
         {
@@ -223,6 +231,7 @@
                     [Notifier notifyWithAlfrescoError:error];
                 }
             }];
+            break;
         }
         default:
         {
@@ -231,20 +240,12 @@
     }
 }
 
-
-
 #pragma mark - Custom setters/getters
 - (void)setResults:(NSMutableArray *)results
 {
     _results = results;
-    if(_results.count == 0)
-    {
-        [self updateEmptyView];
-    }
-    else
-    {
-        [self.tableView reloadData];
-    }
+    [self updateEmptyView];
+    [self.tableView reloadData];
 }
 
 - (void)updateEmptyView
