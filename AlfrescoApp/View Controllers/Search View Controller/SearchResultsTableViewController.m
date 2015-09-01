@@ -27,6 +27,9 @@
 @interface SearchResultsTableViewController ()
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) NSString *emptyMessage;
+@property (nonatomic, strong) UILabel *alfEmptyLabel;
+@property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
 
 @end
 
@@ -42,12 +45,14 @@
         {
             UINib *nib = [UINib nibWithNibName:NSStringFromClass([AlfrescoNodeCell class]) bundle:nil];
             [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+            self.emptyMessage = NSLocalizedString(@"No Files", @"No Files");
             break;
         }
         case SearchViewControllerDataSourceTypeSearchFolders:
         {
             UINib *nib = [UINib nibWithNibName:NSStringFromClass([AlfrescoNodeCell class]) bundle:nil];
             [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+            self.emptyMessage = NSLocalizedString(@"No Folders", @"No Folders");
             break;
         }
         case SearchViewControllerDataSourceTypeSearchSites:
@@ -232,7 +237,77 @@
 - (void)setResults:(NSMutableArray *)results
 {
     _results = results;
-    [self.tableView reloadData];
+    if(_results.count == 0)
+    {
+        [self updateEmptyView];
+    }
+    else
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (void)updateEmptyView
+{
+    if (!self.alfEmptyLabel)
+    {
+        UILabel *emptyLabel = [[UILabel alloc] init];
+        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
+        emptyLabel.numberOfLines = 0;
+        emptyLabel.textAlignment = NSTextAlignmentCenter;
+        emptyLabel.textColor = [UIColor noItemsTextColor];
+        emptyLabel.hidden = YES;
+        
+        [self.tableView addSubview:emptyLabel];
+        self.alfEmptyLabel = emptyLabel;
+    }
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin = CGPointMake(0, 0);
+    frame = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(CGRectGetHeight(self.tableView.tableHeaderView.frame), 0, 0, 0));
+    frame.size.height -= self.tableView.contentInset.top;
+    
+    self.alfEmptyLabel.frame = frame;
+    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
+    self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
+    self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+    
+    BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
+    BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
+    
+    if (shouldShowEmptyLabel == isShowingEmptyLabel)
+    {
+        // Nothing to do
+        return;
+    }
+    
+    // Need to remove the separator lines in empty mode and restore afterwards
+    if (shouldShowEmptyLabel)
+    {
+        self.previousSeparatorStyle = self.tableView.separatorStyle;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = self.previousSeparatorStyle;
+    }
+    self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+}
+
+- (BOOL)isDataSetEmpty
+{
+    BOOL result = (self.results.count == 0);
+    return result;
+}
+
+- (UITableViewCellSeparatorStyle)previousSeparatorStyle
+{
+    return self.alfPreviousSeparatorStyle ? [self.alfPreviousSeparatorStyle integerValue] : self.tableView.separatorStyle;
+}
+
+- (void)setPreviousSeparatorStyle:(UITableViewCellSeparatorStyle)value
+{
+    self.alfPreviousSeparatorStyle = [NSNumber numberWithInteger:value];
 }
 
 @end
