@@ -146,6 +146,8 @@
 // Person Profile
 "error.person.profile.no.profile.title" = "Profile Error";
 "error.person.profile.no.profile.message" = "Unable to located user; %@";
+"error.person.profile.email.failed.title" = "Sending Failed";
+"error.person.profile.email.failed.message" = "Unable to send the email. Please try again later.";
 
 /**
  * Custom error descriptions
@@ -776,13 +778,16 @@
 /**
  * Person Profile View Controller
  */
-"person.profile.view.controller.header.title.summary" = "Summary";
+"person.profile.view.controller.header.title.about" = "About";
 "person.profile.view.controller.header.title.contact.information" = "Contact Information";
+"person.profile.view.controller.header.title.company.information" = "Company Information";
 "person.profile.view.controller.contact.information.type.email.title" = "Email";
 "person.profile.view.controller.contact.information.type.skype.title" = "Skype";
 "person.profile.view.controller.contact.information.type.skype.message" = "How would you like to contact %@?";
 "person.profile.view.controller.contact.information.type.skype.chat" = "Chat";
 "person.profile.view.controller.contact.information.type.skype.call" = "Call";
+"person.profile.view.controller.contact.information.type.skype.install.required.message" = "You need to download the Skype app before you can contact this person using Skype";
+"person.profile.view.controller.contact.information.type.skype.download" = "Download Skype";
 "person.profile.view.controller.contact.information.type.instant.message.title" = "Instant Message";
 "person.profile.view.controller.contact.information.type.telephone.title" = "Telephone";
 "person.profile.view.controller.contact.information.type.mobile.title" = "Mobile";
