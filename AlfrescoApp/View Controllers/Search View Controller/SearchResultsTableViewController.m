@@ -25,6 +25,7 @@
 #import "FavouriteManager.h"
 #import "PersonCell.h"
 #import "AvatarManager.h"
+#import "PersonProfileViewController.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -34,10 +35,24 @@ static CGFloat const kCellHeight = 73.0f;
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, strong) UILabel *alfEmptyLabel;
 @property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
+@property (nonatomic) BOOL shouldPush;
 
 @end
 
 @implementation SearchResultsTableViewController
+
+- (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush
+{
+    self = [super init];
+    if (self)
+    {
+        self.dataType = dataType;
+        self.session = session;
+        self.shouldPush = shouldPush;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -178,7 +193,15 @@ static CGFloat const kCellHeight = 73.0f;
             AvatarManager *avatarManager = [AvatarManager sharedManager];
             
             [avatarManager retrieveAvatarForPersonIdentifier:currentPerson.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                properCell.avatarImageView.image = image;
+                if(image)
+                {
+                    properCell.avatarImageView.image = image;
+                }
+                else
+                {
+                    UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
+                    properCell.avatarImageView.image = placeholderImage;
+                }
             }];
             cell = properCell;
             break;
@@ -254,10 +277,18 @@ static CGFloat const kCellHeight = 73.0f;
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
             AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
-            if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+            if(self.shouldPush)
             {
-                SearchViewController *vc = (SearchViewController *)self.presentingViewController;
-                [vc pushUser:currentPerson];
+                PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
+                [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
+            }
+            else
+            {
+                if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                {
+                    SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                    [vc pushUser:currentPerson];
+                }
             }
         }
         default:

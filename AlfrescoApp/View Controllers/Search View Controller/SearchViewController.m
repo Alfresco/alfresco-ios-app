@@ -105,9 +105,7 @@ static CGFloat const kHeaderHeight = 40.0f;
     
     if(self.dataSource.showsSearchBar)
     {
-        SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] init];
-        resultsController.dataType = self.dataSourceType;
-        resultsController.session = self.session;
+        SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:NO];
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultsController];
         self.searchController.searchResultsUpdater = self;
         self.searchController.searchBar.delegate = self;
@@ -224,6 +222,12 @@ static CGFloat const kHeaderHeight = 40.0f;
         }
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSString *selectedString = [array objectAtIndex:indexPath.row];
+            SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:YES];
+            [self searchUserForString:selectedString showOnController:resultsController];
+            resultsController.title = selectedString;
+            [UniversalDevice pushToDisplayViewController:resultsController usingNavigationController:self.navigationController animated:YES];
             break;
         }
     }
@@ -297,22 +301,11 @@ static CGFloat const kHeaderHeight = 40.0f;
         }
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
-            [self.personService searchWithKeywords:searchString completionBlock:^(NSArray *array, NSError *error) {
-                if (error)
-                {
-                    // display error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-                else
-                {
-                    if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
-                    {
-                        SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
-                        resultsController.results = [array mutableCopy];
-                    }
-                }
-            }];
+            if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+            {
+                SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                [self searchUserForString:searchString showOnController:resultsController];
+            }
             break;
         }
         default:
@@ -320,6 +313,22 @@ static CGFloat const kHeaderHeight = 40.0f;
             break;
         }
     }
+}
+
+- (void) searchUserForString:(NSString *)username showOnController:(SearchResultsTableViewController *)controller
+{
+    [self.personService searchWithKeywords:username completionBlock:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
+        }
+        else
+        {
+            controller.results = [array mutableCopy];
+        }
+    }];
 }
 
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods
