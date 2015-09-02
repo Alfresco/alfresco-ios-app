@@ -1,0 +1,314 @@
+/*******************************************************************************
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
+
+#import "SearchResultsTableViewController.h"
+#import "AlfrescoNodeCell.h"
+#import "ThumbnailManager.h"
+#import "UniversalDevice.h"
+#import "SyncManager.h"
+#import "SearchViewController.h"
+#import "FavouriteManager.h"
+
+static CGFloat const kCellHeight = 73.0f;
+
+@interface SearchResultsTableViewController ()
+
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) NSString *emptyMessage;
+@property (nonatomic, strong) UILabel *alfEmptyLabel;
+@property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
+
+@end
+
+@implementation SearchResultsTableViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+    switch (self.dataType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            UINib *nib = [UINib nibWithNibName:NSStringFromClass([AlfrescoNodeCell class]) bundle:nil];
+            [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+            self.emptyMessage = NSLocalizedString(@"No Files", @"No Files");
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            UINib *nib = [UINib nibWithNibName:NSStringFromClass([AlfrescoNodeCell class]) bundle:nil];
+            [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+            self.emptyMessage = NSLocalizedString(@"No Folders", @"No Folders");
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.results.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    
+    switch (self.dataType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
+            
+            AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
+            SyncManager *syncManager = [SyncManager sharedManager];
+            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+            
+            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+            [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+            [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+            
+            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+                
+                [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+            }];
+            
+            AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
+            UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
+            if (thumbnail)
+            {
+                [properCell.image setImage:thumbnail withFade:NO];
+            }
+            else
+            {
+                [properCell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
+                [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                    @try
+                    {
+                        if (image)
+                        {
+                            // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
+                            // by the time completion block is called the table view could have been unloaded.
+                            if (tableView && indexPath)
+                            {
+                                AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
+                                [updateCell.image setImage:image withFade:YES];
+                            }
+                        }
+                    }
+                    @catch (NSException *exception)
+                    {
+                        AlfrescoLogError(@"Exception thrown is %@", exception);
+                    }
+                }];
+            }
+
+            cell = properCell;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
+            
+            AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
+            SyncManager *syncManager = [SyncManager sharedManager];
+            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+            
+            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
+            [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
+            [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+            
+            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+                
+                [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+            }];
+            
+            [properCell.image setImage:smallImageForType(@"folder") withFade:NO];
+            
+            cell = properCell;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kCellHeight;
+}
+
+#pragma mark - Table view delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
+    
+    switch (self.dataType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            [self.documentService retrievePermissionsOfNode:currentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                if (error)
+                {
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+                else
+                {
+                    NSString *contentPath = [[SyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)currentNode];
+                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+                    {
+                        contentPath = nil;
+                    }
+                    
+                    if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                    {
+                        SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                        [vc pushDocument:currentNode contentPath:contentPath permissions:permissions];
+                    }
+                }
+            }];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            [self.documentService retrievePermissionsOfNode:currentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                if (permissions)
+                {
+                    if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                    {
+                        SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                        [vc pushFolder:(AlfrescoFolder *)currentNode folderPermissions:permissions];
+                    }
+                }
+                else
+                {
+                    // display permission retrieval error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission failed to be retrieved"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+#pragma mark - Custom setters/getters
+- (void)setResults:(NSMutableArray *)results
+{
+    _results = results;
+    [self updateEmptyView];
+    [self.tableView reloadData];
+}
+
+- (void)updateEmptyView
+{
+    if (!self.alfEmptyLabel)
+    {
+        UILabel *emptyLabel = [[UILabel alloc] init];
+        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
+        emptyLabel.numberOfLines = 0;
+        emptyLabel.textAlignment = NSTextAlignmentCenter;
+        emptyLabel.textColor = [UIColor noItemsTextColor];
+        emptyLabel.hidden = YES;
+        
+        [self.tableView addSubview:emptyLabel];
+        self.alfEmptyLabel = emptyLabel;
+    }
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin = CGPointMake(0, 0);
+    frame = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(CGRectGetHeight(self.tableView.tableHeaderView.frame), 0, 0, 0));
+    frame.size.height -= self.tableView.contentInset.top;
+    
+    self.alfEmptyLabel.frame = frame;
+    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
+    self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
+    self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+    
+    BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
+    BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
+    
+    if (shouldShowEmptyLabel == isShowingEmptyLabel)
+    {
+        // Nothing to do
+        return;
+    }
+    
+    // Need to remove the separator lines in empty mode and restore afterwards
+    if (shouldShowEmptyLabel)
+    {
+        self.previousSeparatorStyle = self.tableView.separatorStyle;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = self.previousSeparatorStyle;
+    }
+    self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+}
+
+- (BOOL)isDataSetEmpty
+{
+    BOOL result = (self.results.count == 0);
+    return result;
+}
+
+- (UITableViewCellSeparatorStyle)previousSeparatorStyle
+{
+    return self.alfPreviousSeparatorStyle ? [self.alfPreviousSeparatorStyle integerValue] : self.tableView.separatorStyle;
+}
+
+- (void)setPreviousSeparatorStyle:(UITableViewCellSeparatorStyle)value
+{
+    self.alfPreviousSeparatorStyle = [NSNumber numberWithInteger:value];
+}
+
+@end

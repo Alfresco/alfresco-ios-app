@@ -39,7 +39,8 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
     FileFolderCollectionViewControllerTypeSiteShortName,
     FileFolderCollectionViewControllerTypeFolderPath,
     FileFolderCollectionViewControllerTypeNodeRef,
-    FileFolderCollectionViewControllerTypeDocumentPath
+    FileFolderCollectionViewControllerTypeDocumentPath,
+    FileFolderCollectionViewControllerTypeSearchString
 };
 
 static CGFloat const kCellHeight = 73.0f;
@@ -75,6 +76,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) NSString *nodeRef;
 @property (nonatomic, strong) NSString *documentPath;
 @property (nonatomic) BOOL shouldAutoSelectFirstItem;
+@property (nonatomic, strong) NSString *previousSearchString;
+@property (nonatomic, strong) AlfrescoKeywordSearchOptions *previousSearchOptions;
 // Controllers
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
@@ -181,6 +184,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             self.documentPath = documentPath;
             self.shouldAutoSelectFirstItem = YES;
         }
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage
+{
+    self = [super initWithSession:session];
+    if(self)
+    {
+        self.controllerType = FileFolderCollectionViewControllerTypeSearchString;
+        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:string session:session];
+        self.previousSearchString = string;
+        self.previousSearchOptions = options;
+        self.emptyMessage = emptyMessage;
     }
     
     return self;
@@ -832,6 +850,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         [self hideHUD];
                     }
                 }];
+            }
+            break;
+            case FileFolderCollectionViewControllerTypeSearchString:
+            {
+                [self searchString:self.previousSearchString isFromSearchBar:NO searchOptions:self.previousSearchOptions];
+                [self updateUIUsingFolderPermissionsWithAnimation:NO];
             }
             break;
         }

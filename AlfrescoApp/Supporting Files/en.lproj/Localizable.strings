@@ -20,6 +20,7 @@
 "Close" = "Close";
 "Next" = "Next";
 "No Files" = "No Files";
+"No Folders" = "No Folders";
 
 /**
  * Relative Dates
@@ -809,4 +810,6 @@
 "search.folders" = "Folders";
 "search.sites" = "Sites";
 "search.people" = "People";
-"search.searchfor" = "SEARCH FOR";
+"search.searchfor" = "Search For";
+"search.search" = "Search";
+"search.previoussearches" = "Previous Searches";

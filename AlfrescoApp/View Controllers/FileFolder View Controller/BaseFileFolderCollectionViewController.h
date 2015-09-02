@@ -39,5 +39,6 @@
                 completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
 - (void)showSearchProgressHUD;
 - (void)hideSearchProgressHUD;
+- (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options;
 
 @end

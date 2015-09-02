@@ -95,6 +95,13 @@
  */
 - (instancetype) initWithDocumentNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session;
 
+/**
+ Use the document node ref initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
+ 
+ @param string - previous search string
+ @param sessuon - the users session
+ */
+- (instancetype) initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage;
 
 /**
  Convenience method used to help initialise the internal state of the controller once initialised.

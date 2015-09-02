@@ -16,14 +16,21 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-static CGFloat const kSearchItemImageWidthConstraint = 27.0f;
+static NSString * const kCellTextKey = @"CellText";
+static NSString * const kCellImageKey = @"CellImage";
 
-@interface SearchTableViewCell : UITableViewCell
+@interface SearchViewControllerDataSource : NSObject
 
-@property (weak, nonatomic) IBOutlet UIImageView *searchItemImage;
-@property (weak, nonatomic) IBOutlet UILabel *searchItemText;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchItemImageWidthConstraint;
+@property (nonatomic) NSInteger numberOfSections;
+@property (nonatomic) BOOL showsSearchBar;
+@property (nonatomic, strong) NSMutableArray *dataSourceArrays;
+@property (nonatomic, strong) NSMutableArray *sectionHeaderStringsArray;
+
+- (instancetype) initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
+
+- (void)saveSearchString:(NSString *)stringToSave forSearchType:(SearchViewControllerDataSourceType)searchType;
+- (NSArray *)retriveSearchStringsArrayForSearchType:(SearchViewControllerDataSourceType)searchType;
 
 @end

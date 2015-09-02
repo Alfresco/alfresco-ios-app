@@ -191,23 +191,8 @@
     BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
     
     AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:self.displayFolder includeDescendants:YES];
-    
-    [self showSearchProgressHUD];
-    [self.searchService searchWithKeywords:searchBar.text options:searchOptions completionBlock:^(NSArray *array, NSError *error) {
-        [self hideSearchProgressHUD];
-        if (array)
-        {
-            self.searchResults = [array mutableCopy];
-            self.isOnSearchResults = YES;
-            [self reloadCollectionView];
-        }
-        else
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-    }];}
+    [self searchString:searchBar.text isFromSearchBar:YES searchOptions:searchOptions];
+}
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
@@ -231,6 +216,34 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     
+}
+
+#pragma mark - Public methods
+- (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options
+{
+    [self showSearchProgressHUD];
+    [self.searchService searchWithKeywords:stringToSearch options:options completionBlock:^(NSArray *array, NSError *error) {
+        [self hideSearchProgressHUD];
+        if (array)
+        {
+            self.isOnSearchResults = isFromSearchBar;
+            if(isFromSearchBar)
+            {
+                self.searchResults = [array mutableCopy];
+            }
+            else
+            {
+                self.collectionViewData = [array mutableCopy];
+            }
+            [self reloadCollectionView];
+        }
+        else
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
+        }
+    }];
 }
 
 @end

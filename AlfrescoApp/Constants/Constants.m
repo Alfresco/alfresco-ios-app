@@ -46,6 +46,10 @@ CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
+NSString * const kSearchTypeFiles = @"ALFSearchTypeFiles";
+NSString * const kSearchTypeFolders = @"ALFSearchTypeFolders";
+NSString * const kSearchTypeSites = @"ALFSearchTypeSites";
+NSString * const kSearchTypeUsers = @"ALFSearchTypeUsers";
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";

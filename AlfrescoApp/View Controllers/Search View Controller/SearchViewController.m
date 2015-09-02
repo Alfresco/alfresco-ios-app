@@ -20,25 +20,75 @@
 #import "SearchTableViewCell.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
+#import "SearchViewControllerDataSource.h"
+#import "SearchResultsTableViewController.h"
+#import "FileFolderCollectionViewController.h"
 
-static NSString * const kCellTextKey = @"CellText";
-static NSString * const kCellImageKey = @"CellImage";
+static CGFloat const kHeaderHeight = 40.0f;
 
-@interface SearchViewController ()
+@interface SearchViewController () < UISearchResultsUpdating, UISearchBarDelegate >
 
-@property (nonatomic, strong) NSMutableArray *dataSourceInfo;
+@property (nonatomic, strong) SearchViewControllerDataSource *dataSource;
+@property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic) CGRect searchBarOriginalFrame;
+@property (nonatomic, strong) AlfrescoSearchService *searchService;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
 
 @implementation SearchViewController
 
+- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session
+{
+    self = [super init];
+    if(self)
+    {
+        self.dataSourceType = dataSourceType;
+        self.session = session;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType];
+    self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
     
-    self.dataSourceInfo = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"small_document", kCellImageKey, nil], [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.folders", @"Folders"), kCellTextKey, @"small_folder", kCellImageKey, nil], [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.sites", @"Sites"), kCellTextKey, @"mainmenu-sites", kCellImageKey, nil], [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.people", @"People"), kCellTextKey, @"mainmenu-user", kCellImageKey, nil], nil];
-    self.title = NSLocalizedString(@"view-search-default", @"Search");
+    NSString *title = nil;
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeLandingPage:
+        {
+            title = NSLocalizedString(@"view-search-default", @"Search");
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            title = NSLocalizedString(@"search.files", @"Files");
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            title = NSLocalizedString(@"search.folders", @"Folders");
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            title = NSLocalizedString(@"search.sites", @"Sites");
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            title = NSLocalizedString(@"search.people", @"People");
+            break;
+        }
+    }
+    
+    self.title = title;
     
     if (!IS_IPAD && !self.presentingViewController)
     {
@@ -47,6 +97,20 @@ static NSString * const kCellImageKey = @"CellImage";
         {
             self.navigationItem.leftBarButtonItem = hamburgerButtom;
         }
+    }
+    
+    if(self.dataSource.showsSearchBar)
+    {
+        SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] init];
+        resultsController.dataType = self.dataSourceType;
+        resultsController.session = self.session;
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultsController];
+        self.searchController.searchResultsUpdater = self;
+        self.searchController.searchBar.delegate = self;
+        self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.searchController.searchBar sizeToFit];
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+        self.definesPresentationContext = YES;
     }
     
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([SearchTableViewCell class]) bundle:nil];
@@ -59,39 +123,214 @@ static NSString * const kCellImageKey = @"CellImage";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.dataSource.numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSourceInfo.count;
+    NSArray *array = [NSArray new];
+    if([[self.dataSource.dataSourceArrays objectAtIndex:section] isKindOfClass:[NSArray class]])
+    {
+        array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:section];
+    }
+    return array.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SearchTableViewCell class]) forIndexPath:indexPath];
+    UITableViewCell *cell = nil;
     
-    NSDictionary *cellDataSource = self.dataSourceInfo[indexPath.row];
-    cell.searchItemText.text = [cellDataSource objectForKey:kCellTextKey];
-    [cell.searchItemImage setImage:[UIImage imageNamed:[cellDataSource objectForKey:kCellImageKey]]];
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeLandingPage:
+        {
+            SearchTableViewCell *specificCell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SearchTableViewCell class]) forIndexPath:indexPath];
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSDictionary *cellDataSource = array[indexPath.row];
+            specificCell.searchItemText.text = [cellDataSource objectForKey:kCellTextKey];
+            if([cellDataSource objectForKey:kCellImageKey])
+            {
+                [specificCell.searchItemImage setImage:[UIImage imageNamed:[cellDataSource objectForKey:kCellImageKey]]];
+                specificCell.searchItemImageWidthConstraint.constant = kSearchItemImageWidthConstraint;
+            }
+            else
+            {
+                specificCell.searchItemImageWidthConstraint.constant = 0.0f;
+            }
+            cell = specificCell;
+            
+            break;
+        }
+        default:
+        {
+            if(indexPath.section > 0)
+            {
+                cell = [self configureCellForIndexPath:indexPath];
+            }
+            break;
+        }
+    }
     
     return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedString(@"search.searchfor", @"Search for");
+    NSString *title = self.dataSource.showsSearchBar ? ((section == 0) ? @"" : [self.dataSource.sectionHeaderStringsArray objectAtIndex:section]) : [self.dataSource.sectionHeaderStringsArray objectAtIndex:section];
+    
+    return title;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50;
+    CGFloat height = self.dataSource.showsSearchBar ? ((section == 0)? 0.0f : kHeaderHeight) : kHeaderHeight;
+    return height;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeLandingPage:
+        {
+            SearchViewControllerDataSourceType selectedType = indexPath.row + 1;
+            SearchViewController *newVC = [[SearchViewController alloc] initWithDataSourceType:selectedType session:self.session];
+            [UniversalDevice pushToDisplayViewController:newVC usingNavigationController:self.navigationController animated:YES];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSString *selectedString = [array objectAtIndex:indexPath.row];
+            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
+            [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSString *selectedString = [array objectAtIndex:indexPath.row];
+            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
+            [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            break;
+        }
+    }
+}
+
+#pragma mark - Private methods
 
 - (void)expandRootRevealController
 {
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
+- (SearchTableViewCell *) configureCellForIndexPath:(NSIndexPath *)indexPath
+{
+    SearchTableViewCell *specificCell = [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SearchTableViewCell class]) forIndexPath:indexPath];
+    NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+    specificCell.searchItemText.text = array[indexPath.row];
+    specificCell.searchItemImageWidthConstraint.constant = 0.0f;
+    return specificCell;
+}
+
+- (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType
+{
+    AlfrescoKeywordSearchOptions *searchOptions;
+    switch (searchType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithTypeName:kAlfrescoModelTypeContent];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithTypeName:kAlfrescoModelTypeFolder];
+            break;
+        }
+        default:
+        {
+            searchOptions = nil;
+            break;
+        }
+    }
+    
+    return searchOptions;
+}
+
+- (void)searchFor:(NSString *)searchString
+{
+    [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
+        if (array)
+        {
+            if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+            {
+                SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                resultsController.results = [array mutableCopy];
+            }
+        }
+        else
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
+        }
+    }];
+}
+
+#pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    /* handling of search is done in the delegate method from the search bar because this method is called for every caracter that the user types;
+    see searchBarSearchButtonClicked method for implementation */
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSString *searchText = searchBar.text;
+    NSString *strippedString = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if(strippedString.length > 0)
+    {
+        [self.dataSource saveSearchString:strippedString forSearchType:self.dataSourceType];
+        [self searchFor:strippedString];
+        [self.tableView reloadData];
+    }
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+    {
+        SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+        resultsController.results = [NSMutableArray new];
+    }
+}
+
+#pragma mark - Public methods
+- (void)pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions
+{
+    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)node
+                                                                   permissions:permissions
+                                                                   contentFile:contentPath
+                                                              documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                       session:self.session
+                                                          navigationController:self.navigationController
+                                                                      animated:YES];
+}
+
+- (void)pushFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions
+{
+    // push again
+    FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)node folderPermissions:permissions session:self.session];
+    [UniversalDevice pushToDisplayViewController:browserViewController usingNavigationController:self.navigationController animated:YES];
+}
 @end

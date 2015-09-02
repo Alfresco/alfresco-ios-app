@@ -18,12 +18,10 @@
 
 #import <UIKit/UIKit.h>
 
-static CGFloat const kSearchItemImageWidthConstraint = 27.0f;
+@interface SearchResultsTableViewController : UITableViewController
 
-@interface SearchTableViewCell : UITableViewCell
-
-@property (weak, nonatomic) IBOutlet UIImageView *searchItemImage;
-@property (weak, nonatomic) IBOutlet UILabel *searchItemText;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchItemImageWidthConstraint;
+@property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic) SearchViewControllerDataSourceType dataType;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
