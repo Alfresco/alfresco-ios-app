@@ -24,6 +24,7 @@
 #import "SearchResultsTableViewController.h"
 #import "FileFolderCollectionViewController.h"
 
+
 static CGFloat const kHeaderHeight = 40.0f;
 
 @interface SearchViewController () < UISearchResultsUpdating, UISearchBarDelegate >
@@ -32,7 +33,9 @@ static CGFloat const kHeaderHeight = 40.0f;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) CGRect searchBarOriginalFrame;
+// Searvices
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
+@property (nonatomic, strong) AlfrescoPersonService *personService;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
@@ -57,6 +60,7 @@ static CGFloat const kHeaderHeight = 40.0f;
     
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType];
     self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+    self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
     
     NSString *title = nil;
     switch (self.dataSourceType)
@@ -268,22 +272,54 @@ static CGFloat const kHeaderHeight = 40.0f;
 
 - (void)searchFor:(NSString *)searchString
 {
-    [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
-        if (array)
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        case SearchViewControllerDataSourceTypeSearchFolders:
         {
-            if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
-            {
-                SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
-                resultsController.results = [array mutableCopy];
-            }
+            [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
+                if (array)
+                {
+                    if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+                    {
+                        SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                        resultsController.results = [array mutableCopy];
+                    }
+                }
+                else
+                {
+                    // display error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
+            break;
         }
-        else
+        case SearchViewControllerDataSourceTypeSearchUsers:
         {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
+            [self.personService searchWithKeywords:searchString completionBlock:^(NSArray *array, NSError *error) {
+                if (error)
+                {
+                    // display error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+                else
+                {
+                    if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+                    {
+                        SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                        resultsController.results = [array mutableCopy];
+                    }
+                }
+            }];
+            break;
         }
-    }];
+        default:
+        {
+            break;
+        }
+    }
 }
 
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods

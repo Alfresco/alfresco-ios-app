@@ -23,6 +23,8 @@
 #import "SyncManager.h"
 #import "SearchViewController.h"
 #import "FavouriteManager.h"
+#import "PersonCell.h"
+#import "AvatarManager.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -63,6 +65,9 @@ static CGFloat const kCellHeight = 73.0f;
         }
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
+            UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
+            [self.tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass([PersonCell class])];
+            self.emptyMessage = NSLocalizedString(@"No Users", @"No Users");
             break;
         }
         default:
@@ -83,7 +88,6 @@ static CGFloat const kCellHeight = 73.0f;
 {
     return self.results.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -162,6 +166,20 @@ static CGFloat const kCellHeight = 73.0f;
             
             [properCell.image setImage:smallImageForType(@"folder") withFade:NO];
             
+            cell = properCell;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            PersonCell *properCell = (PersonCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([PersonCell class]) forIndexPath:indexPath];
+            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
+            properCell.nameLabel.text = currentPerson.fullName;
+            
+            AvatarManager *avatarManager = [AvatarManager sharedManager];
+            
+            [avatarManager retrieveAvatarForPersonIdentifier:currentPerson.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                properCell.avatarImageView.image = image;
+            }];
             cell = properCell;
             break;
         }
