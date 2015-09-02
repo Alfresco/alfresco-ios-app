@@ -297,6 +297,8 @@ NSString * const kAppConfigurationUserCanEditMainMenuKey = @"AppConfigurationUse
 
 // Person Profile
 NSString * const kPhoneURLScheme = @"tel://";
+NSString * const kMapsURLScheme = @"http://maps.apple.com/";
+NSString * const kMapsURLSchemeQueryParameter = @"q";
 NSString * const kSkypeURLScheme = @"skype:";
 NSString * const kSkypeURLCommunicationTypeCall = @"call";
 NSString * const kSkypeURLCommunicationTypeChat = @"chat";
