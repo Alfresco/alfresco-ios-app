@@ -23,7 +23,7 @@
 #import "SearchViewControllerDataSource.h"
 #import "SearchResultsTableViewController.h"
 #import "FileFolderCollectionViewController.h"
-
+#import "PersonProfileViewController.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 
@@ -368,5 +368,11 @@ static CGFloat const kHeaderHeight = 40.0f;
     // push again
     FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)node folderPermissions:permissions session:self.session];
     [UniversalDevice pushToDisplayViewController:browserViewController usingNavigationController:self.navigationController animated:YES];
+}
+
+- (void)pushUser:(AlfrescoPerson *)person
+{
+    PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:person.identifier session:self.session];
+    [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
 }
 @end

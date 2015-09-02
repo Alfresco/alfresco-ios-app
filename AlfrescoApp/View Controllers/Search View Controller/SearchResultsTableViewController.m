@@ -251,6 +251,15 @@ static CGFloat const kCellHeight = 73.0f;
             }];
             break;
         }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
+            if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+            {
+                SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                [vc pushUser:currentPerson];
+            }
+        }
         default:
         {
             break;
