@@ -202,7 +202,7 @@ static CGFloat const kHeaderHeight = 40.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType]];
+            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
             [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
             break;
         }
@@ -210,7 +210,7 @@ static CGFloat const kHeaderHeight = 40.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType]];
+            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
             [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
             break;
         }

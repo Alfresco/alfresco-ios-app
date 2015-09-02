@@ -810,6 +810,6 @@
 "search.folders" = "Folders";
 "search.sites" = "Sites";
 "search.people" = "People";
-"search.searchfor" = "SEARCH FOR";
-"search.search" = "SEARCH";
-"search.previoussearches" = "PREVIOUS SEARCHES";
+"search.searchfor" = "Search For";
+"search.search" = "Search";
+"search.previoussearches" = "Previous Searches";

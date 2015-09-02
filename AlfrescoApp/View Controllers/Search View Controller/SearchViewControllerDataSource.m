@@ -73,12 +73,16 @@
     self.sectionHeaderStringsArray = [NSMutableArray new];
     
     [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.search", @"Search")];
-    [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.previoussearches", @"Previous searches")];
-    
     [self.dataSourceArrays addObject:[NSMutableArray new]];
-    [self.dataSourceArrays addObject:[self retriveSearchStringsArrayForSearchType:searchType]];
     
-    self.numberOfSections = 2;
+    NSArray *previousSearchesArray = [self retriveSearchStringsArrayForSearchType:searchType];
+    if(previousSearchesArray.count > 0)
+    {
+        [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.previoussearches", @"Previous searches")];
+        [self.dataSourceArrays addObject:previousSearchesArray];
+    }
+    self.numberOfSections = (previousSearchesArray.count > 0) ? 2 : 1;
+    
     self.showsSearchBar = YES;
 }
 

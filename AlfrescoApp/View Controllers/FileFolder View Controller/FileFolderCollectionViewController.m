@@ -189,7 +189,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options
+- (instancetype)initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage
 {
     self = [super initWithSession:session];
     if(self)
@@ -198,6 +198,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [self setupWithFolder:nil folderPermissions:nil folderDisplayName:string session:session];
         self.previousSearchString = string;
         self.previousSearchOptions = options;
+        self.emptyMessage = emptyMessage;
     }
     
     return self;

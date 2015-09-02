@@ -101,7 +101,7 @@
  @param string - previous search string
  @param sessuon - the users session
  */
-- (instancetype) initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options;
+- (instancetype) initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage;
 
 /**
  Convenience method used to help initialise the internal state of the controller once initialised.
