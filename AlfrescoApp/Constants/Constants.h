@@ -321,6 +321,8 @@ extern NSString * const kAppConfigurationUserCanEditMainMenuKey;
 
 // Person Profile
 extern NSString * const kPhoneURLScheme;
+extern NSString * const kMapsURLScheme;
+extern NSString * const kMapsURLSchemeQueryParameter;
 extern NSString * const kSkypeURLScheme;
 extern NSString * const kSkypeURLCommunicationTypeCall;
 extern NSString * const kSkypeURLCommunicationTypeChat;

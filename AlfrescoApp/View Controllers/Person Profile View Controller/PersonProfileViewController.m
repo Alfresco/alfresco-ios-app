@@ -26,9 +26,9 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
+#import "ThumbnailImageView.h"
 
 static CGFloat const kFadeSpeed = 0.3f;
-static CGFloat const kAvatarImageViewCornerRadius = 10.0f;
 
 typedef NS_ENUM(NSUInteger, ContactInformationType)
 {
@@ -64,19 +64,27 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 
 @interface PersonProfileViewController () <MFMailComposeViewControllerDelegate>
 // Layout Constraints
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *summaryHeightConstraint;
+@property (nonatomic, weak) NSLayoutConstraint *summaryHeightConstraint;
+@property (nonatomic, weak) NSLayoutConstraint *companyHeightConstraint;
+// Views
+@property (nonatomic, weak) UIRefreshControl *refreshControl;
+// Gestures
+@property (nonatomic, weak) UIGestureRecognizer *addressTappedGesture;
 // IBOutlets
-@property (nonatomic, weak) IBOutlet UIImageView *avatarImageView;
-@property (nonatomic, weak) IBOutlet UILabel *nameTextLabel;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *avatarImageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *companyTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *countryTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *summaryTitleTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *summaryValueTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *contactInfomationTitleTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *companyInfomationTitleTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *companyValueTextLabel;
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *underlineViews;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIView *summaryContainerView;
 @property (nonatomic, weak) IBOutlet UIView *contactDetailsListViewContainer;
+@property (nonatomic, weak) IBOutlet UIView *companyContainerView;
 // Model
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) id<AlfrescoSession> session;
@@ -121,7 +129,15 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
     else
     {
-        [self retrievePersonForUsername:self.username];
+        // Display progress
+        MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:progressHUD];
+        progressHUD.removeFromSuperViewOnHide = YES;
+        
+        [progressHUD show:YES];
+        [self retrievePersonForUsername:self.username completionBlock:^(AlfrescoPerson *person, NSError *personError) {
+            [progressHUD hide:YES];
+        }];
     }
 }
 
@@ -132,20 +148,18 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
 }
 
-- (void)retrievePersonForUsername:(NSString *)username
+- (void)reloadView:(id)sender
+{
+    [self retrievePersonForUsername:self.username completionBlock:nil];
+}
+
+- (void)retrievePersonForUsername:(NSString *)username completionBlock:(void (^)(AlfrescoPerson *person, NSError *personError))completionBlock
 {
     // Hide the content
     [self showScrollView:NO aminated:YES];
     
-    // Display progress
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:progressHUD];
-    progressHUD.removeFromSuperViewOnHide = YES;
-    [progressHUD show:YES];
-    
     // Get the user
     [self.personService retrievePersonWithIdentifier:self.username completionBlock:^(AlfrescoPerson *person, NSError *error) {
-        [progressHUD hide:YES];
         if (error)
         {
             NSString *errorTitle = NSLocalizedString(@"error.person.profile.no.profile.title", @"Profile Error Title");
@@ -157,17 +171,31 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             self.person = person;
             [self updateViewWithPerson:person];
             [self showScrollView:YES aminated:YES];
+            [self.refreshControl endRefreshing];
+        }
+        
+        if (completionBlock != NULL)
+        {
+            completionBlock(person, error);
         }
     }];
 }
 
 - (void)initialViewSetup
 {
-    self.avatarImageView.layer.cornerRadius = kAvatarImageViewCornerRadius;
-    self.summaryTitleTextLabel.text = NSLocalizedString(@"person.profile.view.controller.header.title.summary", @"Summary").uppercaseString;
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(reloadView:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+    [self.scrollView addSubview:refreshControl];
+    
+    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2;
+    self.avatarImageView.clipsToBounds = YES;
+    self.summaryTitleTextLabel.text = NSLocalizedString(@"person.profile.view.controller.header.title.about", @"About").uppercaseString;
     self.summaryTitleTextLabel.textColor = [UIColor appTintColor];
     self.contactInfomationTitleTextLabel.text = NSLocalizedString(@"person.profile.view.controller.header.title.contact.information", @"Contact Info").uppercaseString;
     self.contactInfomationTitleTextLabel.textColor = [UIColor appTintColor];
+    self.companyInfomationTitleTextLabel.text = NSLocalizedString(@"person.profile.view.controller.header.title.company.information", @"Company Information").uppercaseString;
+    self.companyInfomationTitleTextLabel.textColor = [UIColor appTintColor];
     
     for (UIView *underlineView in self.underlineViews)
     {
@@ -181,13 +209,19 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 
 - (void)updateViewWithPerson:(AlfrescoPerson *)person
 {
+    // Remove all prior settings
+    [self.companyContainerView removeGestureRecognizer:self.addressTappedGesture];
+    
+    // Update the view of the person
+    /// Header View
     self.title = (person.fullName) ?: self.username;
-    self.nameTextLabel.text = (person.fullName) ?: self.username;
     self.titleTextLabel.text = person.jobTitle;
     self.companyTextLabel.text = person.company.name;
+    self.countryTextLabel.text = person.location;
     
+    /// Person Details - (About)
     // If there is no summary, hide this view
-    if (!person.summary)
+    if (!person.summary || [person.summary isEqualToString:@""])
     {
         self.summaryHeightConstraint = [NSLayoutConstraint constraintWithItem:self.summaryContainerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0];
         [self.summaryContainerView addConstraint:self.summaryHeightConstraint];
@@ -198,12 +232,46 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
     
     self.summaryValueTextLabel.text = (person.summary) ?: NSLocalizedString(@"person.profile.view.controller.value.summary.no.summary", @"No Summary");
-    
+
+    /// Contact Details
     NSArray *availableContactInformation = [self availableContactInformationFromPerson:person];
     self.availableContactInformation = availableContactInformation;
     [self.contactDetailsListViewContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self setupSubviewsInContainer:self.contactDetailsListViewContainer forContactInformation:availableContactInformation];
     
+    /// Company Information
+    NSMutableString *completeAddress = [[NSMutableString alloc] init];
+    
+    if (person.company.name)
+    {
+        [completeAddress appendString:[NSString stringWithFormat:@"%@\n", person.company.name]];
+    }
+    
+    NSString *address = [person.company.fullAddress stringByReplacingOccurrencesOfString:@", " withString:@",\n"];
+    if (address)
+    {
+        [completeAddress appendString:address];
+    }
+    self.companyValueTextLabel.text = completeAddress;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCompanyAddress:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    self.addressTappedGesture = tap;
+    [self.companyContainerView addGestureRecognizer:tap];
+    
+    // If there is no address, hide this view
+    if (!address || [address isEqualToString:@""])
+    {
+        self.companyHeightConstraint = [NSLayoutConstraint constraintWithItem:self.companyContainerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0];
+        [self.companyContainerView addConstraint:self.companyHeightConstraint];
+    }
+    else if (self.summaryHeightConstraint)
+    {
+        [self.companyContainerView removeConstraint:self.companyHeightConstraint];
+    }
+    
+    /// Request the avatar
     UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:self.username];
     if (avatar)
     {
@@ -216,7 +284,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:self.username session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
             if (avatarImage)
             {
-                self.avatarImageView.image = avatarImage;
+                [self.avatarImageView setImage:avatarImage withFade:YES];
             }
         }];
     }
@@ -226,7 +294,6 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 {
     BOOL canSendEmail = [MFMailComposeViewController canSendMail];
     BOOL canMakeCalls = [self canDeviceMakeVoiceCalls];
-    BOOL skypeInstalled = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kSkypeURLScheme]];
     
     NSMutableArray *contactDetails = [NSMutableArray array];
     
@@ -244,17 +311,8 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.title", @"Skype")
                                                         contactInformation:person.skypeId
-                                                                     image:(skypeInstalled) ? [[UIImage imageNamed:@"contact-details-skype.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] : nil
+                                                                     image:[[UIImage imageNamed:@"contact-details-skype.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                                contactType:ContactInformationTypeSkype];
-        [contactDetails addObject:contactInformation];
-    }
-    
-    if (person.instantMessageId && ![person.instantMessageId isEqualToString:@""])
-    {
-        contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.instant.message.title", @"Instant Messaging")
-                                                        contactInformation:person.instantMessageId
-                                                                     image:nil
-                                                               contactType:ContactInformationTypeInstantMessage];
         [contactDetails addObject:contactInformation];
     }
     
@@ -342,18 +400,16 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 
 - (void)showScrollView:(BOOL)show aminated:(BOOL)animated
 {
+    CGFloat transitionAlphaValue = (show) ? 1.0f : 0.0f;
     if (animated)
     {
         [UIView animateWithDuration:kFadeSpeed animations:^{
-            CGFloat transitionAlphaValue = (show) ? 1.0f : 0.0f;
             self.scrollView.alpha = transitionAlphaValue;
-        } completion:^(BOOL finished) {
-            self.scrollView.hidden = !show;
         }];
     }
     else
     {
-        self.scrollView.hidden = !show;
+        self.scrollView.alpha = transitionAlphaValue;
     }
 }
 
@@ -371,6 +427,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         {
             MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
             mailViewController.mailComposeDelegate = self;
+            mailViewController.view.tintColor = [UIColor appTintColor];
             
             [mailViewController setToRecipients:@[selectedContactInformation.contactInformation]];
             
@@ -386,40 +443,52 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             
         case ContactInformationTypeSkype:
         {
-            void (^handleSkypeRequestWithSkypeCommunicationType)(NSString *) = ^(NSString *contactType) {
-                BOOL installed = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kSkypeURLScheme]];
-                if(installed)
-                {
+            BOOL skypeInstalled = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kSkypeURLScheme]];
+            
+            if (skypeInstalled)
+            {
+                void (^handleSkypeRequestWithSkypeCommunicationType)(NSString *) = ^(NSString *contactType) {
                     NSString *skypeString = [NSString stringWithFormat:@"%@%@?%@", kSkypeURLScheme, selectedContactInformation.contactInformation, contactType];
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeString]];
-                }
-                else
-                {
+                };
+                
+                // Actions
+                UIAlertAction *chatAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.chat", @"Chat") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeChat);
+                }];
+                UIAlertAction *callAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.call", @"Call") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeCall);
+                }];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil];
+                
+                // Display options
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.title", @"Skype")
+                                                                                         message:[NSString stringWithFormat:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.message", @"Message"), selectedContactInformation.contactInformation]
+                                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+                [alertController addAction:chatAction];
+                [alertController addAction:callAction];
+                [alertController addAction:cancelAction];
+                
+                alertController.popoverPresentationController.sourceView = buttonSuperview;
+                alertController.popoverPresentationController.sourceRect = button.frame;
+                
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertAction *goToAppStoreAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.download", @"Download Skype") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kSkypeAppStoreURL]];
-                }
-            };
-            
-            // Actions
-            UIAlertAction *chatAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.chat", @"Chat") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeChat);
-            }];
-            UIAlertAction *callAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.call", @"Call") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeCall);
-            }];
-            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil];
-            
-            // Display options
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.title", @"Skype")
-                                                                                     message:[NSString stringWithFormat:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.message", @"Message"), selectedContactInformation.contactInformation]
-                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
-            [alertController addAction:chatAction];
-            [alertController addAction:callAction];
-            [alertController addAction:cancelAction];
-            
-            alertController.popoverPresentationController.sourceView = buttonSuperview;
-            alertController.popoverPresentationController.sourceRect = button.frame;
-            
-            [self presentViewController:alertController animated:YES completion:nil];
+                }];
+                
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil];
+                
+                UIAlertController *goToAppStoreController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.download", @"Download Skype") message:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.install.required.message", @"Skype Required") preferredStyle:UIAlertControllerStyleAlert];
+                
+                [goToAppStoreController addAction:goToAppStoreAction];
+                [goToAppStoreController addAction:cancelAction];
+                
+                [self presentViewController:goToAppStoreController animated:YES completion:nil];
+            }
         }
         break;
             
@@ -460,6 +529,16 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     return canMakeCalls;
 }
 
+- (void)didTapCompanyAddress:(UIGestureRecognizer *)gesture
+{
+    NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];;
+    
+    NSString *query = [NSString stringWithFormat:@"%@?%@=%@", kMapsURLScheme, kMapsURLSchemeQueryParameter, address];
+    NSURL *mapsQueryURL = [NSURL URLWithString:query];
+    
+    [[UIApplication sharedApplication] openURL:mapsQueryURL];
+}
+
 #pragma mark - MFMailComposeViewControllerDelegate Methods
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -476,7 +555,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         case MFMailComposeResultFailed:
         {
             [controller dismissViewControllerAnimated:YES completion:^{
-                displayErrorMessageWithTitle(@"Unable to send the email", @"Email Failed");
+                displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
             }];
         }
         break;
