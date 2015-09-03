@@ -26,6 +26,8 @@
 #import "AccountManager.h"
 #import "KeychainUtils.h"
 #import "UserAccountWrapper.h"
+#import "PersonProfileViewController.h"
+#import "SearchResultsTableViewController.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 static NSString * const kHandlerPrefix = @"alfresco://";
@@ -47,6 +49,7 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
 
 @property (nonatomic, strong) UIViewController *viewControllerToPresent;
 @property (nonatomic, strong) NSURL *urlReceived;
+@property (nonatomic, strong) AlfrescoPersonService *personService;
 
 @end
 
@@ -210,11 +213,24 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
         {
             NSString *initialCommandPath = [NSString stringWithFormat:@"%@%@/", kHandlerPrefix, kUserPath];
             NSString *username = [url.absoluteString stringByReplacingOccurrencesOfString:initialCommandPath withString:@""];
-            UIViewController *controller = [UIViewController new];
-            UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-            newLabel.text = username;
-            [controller.view addSubview: newLabel];
-            self.viewControllerToPresent = controller;
+            self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
+            [self.personService retrievePersonWithIdentifier:username completionBlock:^(AlfrescoPerson *person, NSError *error) {
+                if (error)
+                {
+                    NSString *errorTitle = NSLocalizedString(@"error.person.profile.no.profile.title", @"Profile Error Title");
+                    NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.person.profile.no.profile.message", @"Profile Error Message"), username];
+                    displayErrorMessageWithTitle(errorMessage, errorTitle);
+                }
+                else
+                {
+                    SearchResultsTableViewController *controller = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:session pushesSelection:YES];
+                    controller.results = [NSMutableArray arrayWithObject:person];
+                    controller.shouldAutoPushFirstResult = YES;
+//                    PersonProfileViewController *controller = [[PersonProfileViewController alloc] initWithUsername:username session:session];
+                    [self presentViewControllerFromURL:controller];
+                }
+            }];
+            
             handled = YES;
         }
         break;

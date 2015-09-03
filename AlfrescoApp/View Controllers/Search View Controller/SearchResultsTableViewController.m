@@ -49,6 +49,7 @@ static CGFloat const kCellHeight = 73.0f;
         self.dataType = dataType;
         self.session = session;
         self.shouldPush = shouldPush;
+        self.shouldAutoPushFirstResult = NO;
     }
     
     return self;
@@ -89,6 +90,15 @@ static CGFloat const kCellHeight = 73.0f;
         {
             break;
         }
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if(self.shouldAutoPushFirstResult)
+    {
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     }
 }
 

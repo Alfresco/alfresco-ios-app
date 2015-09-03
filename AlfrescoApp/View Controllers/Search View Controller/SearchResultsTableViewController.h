@@ -25,5 +25,6 @@
 @property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic) SearchViewControllerDataSourceType dataType;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic) BOOL shouldAutoPushFirstResult;
 
 @end
