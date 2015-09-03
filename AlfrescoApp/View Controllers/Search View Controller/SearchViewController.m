@@ -109,7 +109,7 @@ static CGFloat const kHeaderHeight = 40.0f;
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultsController];
         self.searchController.searchResultsUpdater = self;
         self.searchController.searchBar.delegate = self;
-        self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.searchController.searchBar sizeToFit];
         self.tableView.tableHeaderView = self.searchController.searchBar;
         self.definesPresentationContext = YES;
@@ -196,24 +196,24 @@ static CGFloat const kHeaderHeight = 40.0f;
         case SearchViewControllerDataSourceTypeLandingPage:
         {
             SearchViewControllerDataSourceType selectedType = indexPath.row + 1;
-            SearchViewController *newVC = [[SearchViewController alloc] initWithDataSourceType:selectedType session:self.session];
-            [UniversalDevice pushToDisplayViewController:newVC usingNavigationController:self.navigationController animated:YES];
+            SearchViewController *resultsController = [[SearchViewController alloc] initWithDataSourceType:selectedType session:self.session];
+            [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
         case SearchViewControllerDataSourceTypeSearchFiles:
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
-            [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
+            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
+            [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
         case SearchViewControllerDataSourceTypeSearchFolders:
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *vc = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
-            [UniversalDevice pushToDisplayViewController:vc usingNavigationController:self.navigationController animated:YES];
+            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
+            [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
         case SearchViewControllerDataSourceTypeSearchSites:
@@ -227,7 +227,7 @@ static CGFloat const kHeaderHeight = 40.0f;
             SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:YES];
             [self searchUserForString:selectedString showOnController:resultsController];
             resultsController.title = selectedString;
-            [UniversalDevice pushToDisplayViewController:resultsController usingNavigationController:self.navigationController animated:YES];
+            [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
     }
@@ -376,7 +376,7 @@ static CGFloat const kHeaderHeight = 40.0f;
 {
     // push again
     FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)node folderPermissions:permissions session:self.session];
-    [UniversalDevice pushToDisplayViewController:browserViewController usingNavigationController:self.navigationController animated:YES];
+    [self.navigationController pushViewController:browserViewController animated:YES];
 }
 
 - (void)pushUser:(AlfrescoPerson *)person
