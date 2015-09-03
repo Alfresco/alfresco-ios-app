@@ -25,7 +25,15 @@
                               },
                               {
                               "item-type": "view-id",
+                              "view-id": "view-repository-shared-default"
+                              },
+                              {
+                              "item-type": "view-id",
                               "view-id": "view-sites-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-repository-userhome-default"
                               },
                               {
                               "item-type": "view-id",
@@ -34,6 +42,10 @@
                               {
                               "item-type": "view-id",
                               "view-id": "view-favorite-default"
+                              },
+                              {
+                              "item-type": "view-id",
+                              "view-id": "view-search-default"
                               },
                               {
                               "item-type": "view-id",
