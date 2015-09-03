@@ -23,6 +23,9 @@
 #import "SyncManager.h"
 #import "SearchViewController.h"
 #import "FavouriteManager.h"
+#import "PersonCell.h"
+#import "AvatarManager.h"
+#import "PersonProfileViewController.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -32,10 +35,24 @@ static CGFloat const kCellHeight = 73.0f;
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, strong) UILabel *alfEmptyLabel;
 @property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
+@property (nonatomic) BOOL shouldPush;
 
 @end
 
 @implementation SearchResultsTableViewController
+
+- (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush
+{
+    self = [super init];
+    if (self)
+    {
+        self.dataType = dataType;
+        self.session = session;
+        self.shouldPush = shouldPush;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -63,6 +80,9 @@ static CGFloat const kCellHeight = 73.0f;
         }
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
+            UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
+            [self.tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass([PersonCell class])];
+            self.emptyMessage = NSLocalizedString(@"No Users", @"No Users");
             break;
         }
         default:
@@ -83,7 +103,6 @@ static CGFloat const kCellHeight = 73.0f;
 {
     return self.results.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -165,6 +184,28 @@ static CGFloat const kCellHeight = 73.0f;
             cell = properCell;
             break;
         }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            PersonCell *properCell = (PersonCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([PersonCell class]) forIndexPath:indexPath];
+            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
+            properCell.nameLabel.text = currentPerson.fullName;
+            
+            AvatarManager *avatarManager = [AvatarManager sharedManager];
+            
+            [avatarManager retrieveAvatarForPersonIdentifier:currentPerson.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                if(image)
+                {
+                    properCell.avatarImageView.image = image;
+                }
+                else
+                {
+                    UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
+                    properCell.avatarImageView.image = placeholderImage;
+                }
+            }];
+            cell = properCell;
+            break;
+        }
         default:
         {
             break;
@@ -232,6 +273,23 @@ static CGFloat const kCellHeight = 73.0f;
                 }
             }];
             break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
+            if(self.shouldPush)
+            {
+                PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
+                [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
+            }
+            else
+            {
+                if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                {
+                    SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                    [vc pushUser:currentPerson];
+                }
+            }
         }
         default:
         {

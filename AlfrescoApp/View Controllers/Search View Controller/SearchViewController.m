@@ -23,6 +23,7 @@
 #import "SearchViewControllerDataSource.h"
 #import "SearchResultsTableViewController.h"
 #import "FileFolderCollectionViewController.h"
+#import "PersonProfileViewController.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 
@@ -32,7 +33,9 @@ static CGFloat const kHeaderHeight = 40.0f;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) CGRect searchBarOriginalFrame;
+// Searvices
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
+@property (nonatomic, strong) AlfrescoPersonService *personService;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
@@ -57,6 +60,7 @@ static CGFloat const kHeaderHeight = 40.0f;
     
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType];
     self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+    self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
     
     NSString *title = nil;
     switch (self.dataSourceType)
@@ -101,9 +105,7 @@ static CGFloat const kHeaderHeight = 40.0f;
     
     if(self.dataSource.showsSearchBar)
     {
-        SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] init];
-        resultsController.dataType = self.dataSourceType;
-        resultsController.session = self.session;
+        SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:NO];
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultsController];
         self.searchController.searchResultsUpdater = self;
         self.searchController.searchBar.delegate = self;
@@ -220,6 +222,12 @@ static CGFloat const kHeaderHeight = 40.0f;
         }
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
+            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+            NSString *selectedString = [array objectAtIndex:indexPath.row];
+            SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:YES];
+            [self searchUserForString:selectedString showOnController:resultsController];
+            resultsController.title = selectedString;
+            [UniversalDevice pushToDisplayViewController:resultsController usingNavigationController:self.navigationController animated:YES];
             break;
         }
     }
@@ -268,20 +276,57 @@ static CGFloat const kHeaderHeight = 40.0f;
 
 - (void)searchFor:(NSString *)searchString
 {
-    [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
-        if (array)
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
+                if (array)
+                {
+                    if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
+                    {
+                        SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                        resultsController.results = [array mutableCopy];
+                    }
+                }
+                else
+                {
+                    // display error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
         {
             if([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
             {
                 SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
-                resultsController.results = [array mutableCopy];
+                [self searchUserForString:searchString showOnController:resultsController];
             }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+- (void) searchUserForString:(NSString *)username showOnController:(SearchResultsTableViewController *)controller
+{
+    [self.personService searchWithKeywords:username completionBlock:^(NSArray *array, NSError *error) {
+        if (error)
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results"), [ErrorDescriptions descriptionForError:error]]);
+            [Notifier notifyWithAlfrescoError:error];
         }
         else
         {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
+            controller.results = [array mutableCopy];
         }
     }];
 }
@@ -332,5 +377,11 @@ static CGFloat const kHeaderHeight = 40.0f;
     // push again
     FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)node folderPermissions:permissions session:self.session];
     [UniversalDevice pushToDisplayViewController:browserViewController usingNavigationController:self.navigationController animated:YES];
+}
+
+- (void)pushUser:(AlfrescoPerson *)person
+{
+    PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:person.identifier session:self.session];
+    [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
 }
 @end

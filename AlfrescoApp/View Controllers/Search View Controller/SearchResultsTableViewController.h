@@ -20,6 +20,8 @@
 
 @interface SearchResultsTableViewController : UITableViewController
 
+- (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush;
+
 @property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic) SearchViewControllerDataSourceType dataType;
 @property (nonatomic, strong) id<AlfrescoSession> session;
