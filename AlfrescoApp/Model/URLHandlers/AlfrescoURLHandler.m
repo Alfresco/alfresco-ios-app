@@ -226,7 +226,6 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
                     SearchResultsTableViewController *controller = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:session pushesSelection:YES];
                     controller.results = [NSMutableArray arrayWithObject:person];
                     controller.shouldAutoPushFirstResult = YES;
-//                    PersonProfileViewController *controller = [[PersonProfileViewController alloc] initWithUsername:username session:session];
                     [self presentViewControllerFromURL:controller];
                 }
             }];
