@@ -302,6 +302,5 @@ NSString * const kMapsURLSchemeQueryParameter = @"q";
 NSString * const kSkypeURLScheme = @"skype:";
 NSString * const kSkypeURLCommunicationTypeCall = @"call";
 NSString * const kSkypeURLCommunicationTypeChat = @"chat";
-NSString * const kSkypeAppStoreURL = @"http://itunes.com/apps/skype/skype";
-
-
+NSString * const kSkypeAppStoreiPhoneURL = @"http://itunes.apple.com/app/skype-for-iphone/id304878510?mt=8";
+NSString * const KSkypeAppStoreiPadURL = @"http://itunes.apple.com/app/skype-for-ipad/id442012681?mt=8";
