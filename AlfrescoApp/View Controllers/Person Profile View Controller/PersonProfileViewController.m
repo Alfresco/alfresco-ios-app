@@ -36,7 +36,10 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     ContactInformationTypeSkype,
     ContactInformationTypeInstantMessage,
     ContactInformationTypePhone,
-    ContactInformationTypeMobile
+    ContactInformationTypeMobile,
+    ContactInformationTypeFax,
+    ContactInformationTypeAddress,
+    ContactInformationTypeCompanyName
 };
 
 @interface ContactInformation : NSObject
@@ -68,8 +71,6 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 @property (nonatomic, weak) NSLayoutConstraint *companyHeightConstraint;
 // Views
 @property (nonatomic, weak) UIRefreshControl *refreshControl;
-// Gestures
-@property (nonatomic, weak) UIGestureRecognizer *addressTappedGesture;
 // IBOutlets
 @property (nonatomic, weak) IBOutlet ThumbnailImageView *avatarImageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleTextLabel;
@@ -79,17 +80,18 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 @property (nonatomic, weak) IBOutlet UILabel *summaryValueTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *contactInfomationTitleTextLabel;
 @property (nonatomic, weak) IBOutlet UILabel *companyInfomationTitleTextLabel;
-@property (nonatomic, weak) IBOutlet UILabel *companyValueTextLabel;
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *underlineViews;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIView *summaryContainerView;
 @property (nonatomic, weak) IBOutlet UIView *contactDetailsListViewContainer;
 @property (nonatomic, weak) IBOutlet UIView *companyContainerView;
+@property (nonatomic, weak) IBOutlet UIView *companyDetailListViewContainer;
 // Model
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoPerson *person;
-@property (nonatomic, strong) NSArray *availableContactInformation;
+@property (nonatomic, strong) NSArray *availableUserContactInformation;
+@property (nonatomic, strong) NSArray *availableCompanyContactInformation;
 // Services
 @property (nonatomic, strong) AlfrescoPersonService *personService;
 @end
@@ -209,9 +211,6 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 
 - (void)updateViewWithPerson:(AlfrescoPerson *)person
 {
-    // Remove all prior settings
-    [self.companyContainerView removeGestureRecognizer:self.addressTappedGesture];
-    
     // Update the view of the person
     /// Header View
     self.title = (person.fullName) ?: self.username;
@@ -234,39 +233,24 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     self.summaryValueTextLabel.text = (person.summary) ?: NSLocalizedString(@"person.profile.view.controller.value.summary.no.summary", @"No Summary");
 
     /// Contact Details
-    NSArray *availableContactInformation = [self availableContactInformationFromPerson:person];
-    self.availableContactInformation = availableContactInformation;
+    NSArray *availableUserContactInformation = [self availableUserContactInformationFromPerson:person];
     [self.contactDetailsListViewContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self setupSubviewsInContainer:self.contactDetailsListViewContainer forContactInformation:availableContactInformation];
+    [self setupSubviewsInContainer:self.contactDetailsListViewContainer forContactInformation:availableUserContactInformation];
+    self.availableUserContactInformation = availableUserContactInformation;
     
     /// Company Information
-    NSMutableString *completeAddress = [[NSMutableString alloc] init];
-    
-    if (person.company.name)
-    {
-        [completeAddress appendString:[NSString stringWithFormat:@"%@\n", person.company.name]];
-    }
-    
-    NSString *address = [person.company.fullAddress stringByReplacingOccurrencesOfString:@", " withString:@",\n"];
-    if (address)
-    {
-        [completeAddress appendString:address];
-    }
-    self.companyValueTextLabel.text = completeAddress;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCompanyAddress:)];
-    tap.numberOfTapsRequired = 1;
-    tap.numberOfTouchesRequired = 1;
-    self.addressTappedGesture = tap;
-    [self.companyContainerView addGestureRecognizer:tap];
+    NSArray *availableCompanyContactInformation = [self availableCompanyContactInformationFromCompany:person.company];
+    [self.companyDetailListViewContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self setupSubviewsInContainer:self.companyDetailListViewContainer forContactInformation:availableCompanyContactInformation];
+    self.availableCompanyContactInformation = availableCompanyContactInformation;
     
     // If there is no address, hide this view
-    if (!address || [address isEqualToString:@""])
+    if (availableCompanyContactInformation.count == 0)
     {
         self.companyHeightConstraint = [NSLayoutConstraint constraintWithItem:self.companyContainerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0];
         [self.companyContainerView addConstraint:self.companyHeightConstraint];
     }
-    else if (self.summaryHeightConstraint)
+    else if (self.companyHeightConstraint)
     {
         [self.companyContainerView removeConstraint:self.companyHeightConstraint];
     }
@@ -290,7 +274,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
 }
 
-- (NSArray *)availableContactInformationFromPerson:(AlfrescoPerson *)person
+- (NSArray *)availableUserContactInformationFromPerson:(AlfrescoPerson *)person
 {
     BOOL canSendEmail = [MFMailComposeViewController canSendMail];
     BOOL canMakeCalls = [self canDeviceMakeVoiceCalls];
@@ -331,6 +315,63 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
                                                         contactInformation:person.mobileNumber
                                                                      image:(canMakeCalls) ? [[UIImage imageNamed:@"contact-details-phone.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] : nil
                                                                contactType:ContactInformationTypeMobile];
+        [contactDetails addObject:contactInformation];
+    }
+    
+    return contactDetails;
+}
+
+- (NSArray *)availableCompanyContactInformationFromCompany:(AlfrescoCompany *)company
+{
+    BOOL canSendEmail = [MFMailComposeViewController canSendMail];
+    BOOL canMakeCalls = [self canDeviceMakeVoiceCalls];
+    
+    NSMutableArray *contactDetails = [NSMutableArray array];
+    
+    ContactInformation *contactInformation = nil;
+    
+    if (company.name && ![company.name isEqualToString:@""])
+    {
+        contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.name.title", @"Name")
+                                                        contactInformation:company.name
+                                                                     image:nil
+                                                               contactType:ContactInformationTypeCompanyName];
+        [contactDetails addObject:contactInformation];
+    }
+    
+    if (company.fullAddress && ![company.fullAddress isEqualToString:@""])
+    {
+        contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.address.title", @"Address")
+                                                        contactInformation:[company.fullAddress stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
+                                                                     image:[[UIImage imageNamed:@"segment-icon-map-none.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                                               contactType:ContactInformationTypeAddress];
+        [contactDetails addObject:contactInformation];
+    }
+    
+    if (company.telephoneNumber && ![company.telephoneNumber isEqualToString:@""])
+    {
+        contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.telephone.title", @"Email")
+                                                        contactInformation:company.telephoneNumber
+                                                                     image:(canMakeCalls) ? [[UIImage imageNamed:@"contact-details-phone.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] : nil
+                                                               contactType:ContactInformationTypePhone];
+        [contactDetails addObject:contactInformation];
+    }
+    
+    if (company.faxNumber && ![company.faxNumber isEqualToString:@""])
+    {
+        contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.fax.title", @"Fax")
+                                                        contactInformation:company.faxNumber
+                                                                     image:nil
+                                                               contactType:ContactInformationTypeFax];
+        [contactDetails addObject:contactInformation];
+    }
+    
+    if (company.email && ![company.email isEqualToString:@""])
+    {
+        contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.email.title", @"Email")
+                                                        contactInformation:company.email
+                                                                     image:(canSendEmail) ? [[UIImage imageNamed:@"contact-details-email.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] : nil
+                                                               contactType:ContactInformationTypeEmail];
         [contactDetails addObject:contactInformation];
     }
     
@@ -415,11 +456,25 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 
 - (void)contactInformationButtonPressed:(UIButton *)button
 {
-    NSArray *contactViews = self.contactDetailsListViewContainer.subviews;
+    // Which container view was tapped
+    UIView *containerViewTapped = button.superview.superview;
+    
+    // Which contacts array do we need to use
+    NSArray *contactDetailsArrayToUse = nil;
+    if (containerViewTapped == self.contactDetailsListViewContainer)
+    {
+        contactDetailsArrayToUse = self.availableUserContactInformation;
+    }
+    else
+    {
+        contactDetailsArrayToUse = self.availableCompanyContactInformation;
+    }
+    
+    NSArray *contactViews = containerViewTapped.subviews;
     UIView *buttonSuperview = button.superview;
     NSInteger index = [contactViews indexOfObject:buttonSuperview];
 
-    ContactInformation *selectedContactInformation = self.availableContactInformation[index];
+    ContactInformation *selectedContactInformation = contactDetailsArrayToUse[index];
     
     switch (selectedContactInformation.contactType)
     {
@@ -509,6 +564,17 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         }
         break;
             
+        case ContactInformationTypeAddress:
+        {
+            NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];;
+            
+            NSString *query = [NSString stringWithFormat:@"%@?%@=%@", kMapsURLScheme, kMapsURLSchemeQueryParameter, address];
+            NSURL *mapsQueryURL = [NSURL URLWithString:query];
+            
+            [[UIApplication sharedApplication] openURL:mapsQueryURL];
+        }
+        break;
+            
         default:
             break;
     }
@@ -530,16 +596,6 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
     
     return canMakeCalls;
-}
-
-- (void)didTapCompanyAddress:(UIGestureRecognizer *)gesture
-{
-    NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];;
-    
-    NSString *query = [NSString stringWithFormat:@"%@?%@=%@", kMapsURLScheme, kMapsURLSchemeQueryParameter, address];
-    NSURL *mapsQueryURL = [NSURL URLWithString:query];
-    
-    [[UIApplication sharedApplication] openURL:mapsQueryURL];
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate Methods
