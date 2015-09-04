@@ -29,6 +29,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 @interface AppConfigurationManager ()
 @property (nonatomic, strong) AlfrescoConfigService *currentConfigService;
 @property (nonatomic, strong) AlfrescoConfigService *embeddedConfigService;
+@property (nonatomic, strong) NSString *currentConfigAccountIdentifier;
 @end
 
 @implementation AppConfigurationManager
@@ -181,7 +182,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 {
     AlfrescoConfigService *returnService = nil;
     
-    if (account == [AccountManager sharedManager].selectedAccount)
+    if ([self.currentConfigAccountIdentifier isEqualToString:account.accountIdentifier])
     {
         returnService = [self configurationServiceForCurrentAccount];
     }
@@ -249,6 +250,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
                 void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *selectedProfile) {
                     self.currentConfigService = configService;
                     self.selectedProfile = selectedProfile;
+                    self.currentConfigAccountIdentifier = account.accountIdentifier;
                     account.selectedProfileIdentifier = selectedProfile.identifier;
                     account.selectedProfileName = selectedProfile.label;
                     
