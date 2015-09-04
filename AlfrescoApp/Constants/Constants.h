@@ -313,4 +313,5 @@ extern NSString * const kMapsURLSchemeQueryParameter;
 extern NSString * const kSkypeURLScheme;
 extern NSString * const kSkypeURLCommunicationTypeCall;
 extern NSString * const kSkypeURLCommunicationTypeChat;
-extern NSString * const kSkypeAppStoreURL;
+extern NSString * const kSkypeAppStoreiPhoneURL;
+extern NSString * const KSkypeAppStoreiPadURL;

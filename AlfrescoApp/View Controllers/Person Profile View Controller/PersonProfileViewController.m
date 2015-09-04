@@ -477,7 +477,10 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             else
             {
                 UIAlertAction *goToAppStoreAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.download", @"Download Skype") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kSkypeAppStoreURL]];
+                    
+                    NSString *skypeURLString = (IS_IPAD) ? KSkypeAppStoreiPadURL : kSkypeAppStoreiPhoneURL;
+                    
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeURLString]];
                 }];
                 
                 UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil];
