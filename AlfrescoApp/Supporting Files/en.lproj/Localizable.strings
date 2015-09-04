@@ -793,6 +793,9 @@
 "person.profile.view.controller.contact.information.type.instant.message.title" = "Instant Message";
 "person.profile.view.controller.contact.information.type.telephone.title" = "Telephone";
 "person.profile.view.controller.contact.information.type.mobile.title" = "Mobile";
+"person.profile.view.controller.contact.information.type.name.title" = "Name";
+"person.profile.view.controller.contact.information.type.address.title" = "Address";
+"person.profile.view.controller.contact.information.type.fax.title" = "Fax";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
