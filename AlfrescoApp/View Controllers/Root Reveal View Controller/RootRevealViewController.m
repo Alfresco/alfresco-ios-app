@@ -145,6 +145,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
             self.isExpanded = YES;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoURLHandlingEndedNotification object:nil];
             self.detailViewController.view.userInteractionEnabled = NO;
             if ([self.delegate respondsToSelector:@selector(controllerDidExpandToDisplayMasterViewController:)])
             {
