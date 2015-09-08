@@ -20,4 +20,6 @@
 
 @interface MainMenuConfigurationViewController : MainMenuViewController
 
+@property (nonatomic) BOOL autoselectDefaultMenuOption;
+
 @end

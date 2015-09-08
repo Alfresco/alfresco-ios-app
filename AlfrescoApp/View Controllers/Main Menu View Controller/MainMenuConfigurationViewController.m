@@ -53,6 +53,8 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationDidChange:) name:kAlfrescoConfigurationFileDidUpdateNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:kAlfrescoConfigurationShouldUpdateMainMenuNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(URLHandlingDidEnd:) name:kAlfrescoEnableMainMenuAutoItemSelection object:nil];
+        self.autoselectDefaultMenuOption = YES;
         
         [self loadGroupType:MainMenuGroupTypeHeader completionBlock:nil];
         [self loadGroupType:MainMenuGroupTypeFooter completionBlock:nil];
@@ -68,10 +70,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     
     NSString *accountName = account.accountDescription;
     [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withDescription:accountName];
-    [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
-        // select sites
-        [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
-    }];
+    [self updateMenu:nil];
     
     [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:self.session.personIdentifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
         if (image)
@@ -122,9 +121,17 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 - (void)updateMenu:(NSNotification *)notification
 {
     [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
-        // select sites
-        [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
+        if(self.autoselectDefaultMenuOption)
+        {
+            // select sites
+            [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
+        }
     }];
+}
+
+- (void)URLHandlingDidEnd:(NSNotification *)notification
+{
+    self.autoselectDefaultMenuOption = YES;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

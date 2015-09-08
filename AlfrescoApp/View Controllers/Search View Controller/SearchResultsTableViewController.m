@@ -26,6 +26,8 @@
 #import "PersonCell.h"
 #import "AvatarManager.h"
 #import "PersonProfileViewController.h"
+#import "UniversalDevice.h"
+#import "RootRevealViewController.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -58,6 +60,7 @@ static CGFloat const kCellHeight = 73.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     switch (self.dataType)
     {
@@ -98,7 +101,16 @@ static CGFloat const kCellHeight = 73.0f;
     [super viewDidAppear:animated];
     if(self.shouldAutoPushFirstResult)
     {
+        if (!IS_IPAD)
+        {
+            UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
+            if (self.navigationController.viewControllers.firstObject == self)
+            {
+                self.navigationItem.leftBarButtonItem = hamburgerButtom;
+            }
+        }
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        self.shouldAutoPushFirstResult = NO;
     }
 }
 
@@ -377,6 +389,12 @@ static CGFloat const kCellHeight = 73.0f;
 - (void)setPreviousSeparatorStyle:(UITableViewCellSeparatorStyle)value
 {
     self.alfPreviousSeparatorStyle = [NSNumber numberWithInteger:value];
+}
+
+#pragma mark - Private methods
+- (void)expandRootRevealController
+{
+    [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
 @end
