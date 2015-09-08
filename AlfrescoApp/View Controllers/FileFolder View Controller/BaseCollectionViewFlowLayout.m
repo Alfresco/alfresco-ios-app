@@ -26,6 +26,7 @@ static CGFloat const kThumbnailSideSpace = 10.0f;
 static CGFloat const kEditImageTopSpaceInListLayout = 17.0f;
 static CGFloat const kEditImageTopSpaceInGridLayout = 0.0f;
 static CGFloat const kCollectionViewHeaderHight = 40.0f;
+static CGFloat const kFolderNameTopSpace = 20.0f;
 
 @interface BaseCollectionViewFlowLayout ()
 
@@ -220,7 +221,7 @@ static CGFloat const kCollectionViewHeaderHight = 40.0f;
     attributes.shouldShowEditBelowContent = (self.numberOfColumns == 1);
     attributes.shouldShowSmallThumbnailImage = self.shouldShowSmallThumbnail;
     attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? kThumbnailWidthInListLayout + 2 * kThumbnailSideSpace : kThumbnailSideSpace;
-    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? kThumbnailSideSpace : self.thumbnailWidth + 2 * kThumbnailSideSpace;
+    attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? ([self.dataSourceInfoDelegate isNodeAFolderAtIndex:indexPath])? kFolderNameTopSpace : kThumbnailSideSpace : self.thumbnailWidth + 2 * kThumbnailSideSpace;
     // On list layout - just one column - font size is 17
     // On grid layout - 2+ columns - font and font size the same as the one used in UISegmentedControl
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];

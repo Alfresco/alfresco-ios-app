@@ -472,6 +472,12 @@
     return 0;
 }
 
+- (BOOL)isNodeAFolderAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoLogDebug(@"isNodeAFolderAtIndex: is not implemented in the subclass of %@", [self class]);
+    return NO;
+}
+
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
 - (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {
