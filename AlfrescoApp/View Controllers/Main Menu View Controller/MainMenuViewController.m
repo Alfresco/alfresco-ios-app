@@ -435,7 +435,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 {
     MainMenuSection *selectedSection = self.tableViewData[indexPath.section];
     MainMenuItem *selectedItem = selectedSection.visibleSectionItems[indexPath.row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoURLHandlingEndedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoEnableMainMenuAutoItemSelection object:nil];
     
     [self.delegate mainMenuViewController:self didSelectItem:selectedItem inSectionItem:selectedSection];
 }
