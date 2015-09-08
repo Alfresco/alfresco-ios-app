@@ -23,6 +23,7 @@
 - (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session;
 - (void) pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions;
 - (void)pushFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
+- (void)pushFolderPreviewForAlfrescoFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
 - (void)pushUser:(AlfrescoPerson *)person;
 
 @end

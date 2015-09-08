@@ -379,6 +379,15 @@ static CGFloat const kHeaderHeight = 40.0f;
     [self.navigationController pushViewController:browserViewController animated:YES];
 }
 
+- (void)pushFolderPreviewForAlfrescoFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions
+{
+    [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:node
+                                                                 permissions:permissions
+                                                                     session:self.session
+                                                        navigationController:self.navigationController
+                                                                    animated:YES];
+}
+
 - (void)pushUser:(AlfrescoPerson *)person
 {
     PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:person.identifier session:self.session];
