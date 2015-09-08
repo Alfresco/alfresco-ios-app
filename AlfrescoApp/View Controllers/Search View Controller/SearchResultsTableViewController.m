@@ -320,6 +320,33 @@ static CGFloat const kCellHeight = 73.0f;
     }
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *selectedNode = [self.results objectAtIndex:indexPath.row];
+    
+    if (selectedNode.isFolder)
+    {
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        
+        [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            if (permissions)
+            {
+                if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                {
+                    SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                    [vc pushFolderPreviewForAlfrescoFolder:(AlfrescoFolder *)selectedNode folderPermissions:permissions];
+                }
+            }
+            else
+            {
+                NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+                displayErrorMessage(permissionRetrievalErrorMessage);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+}
+
 #pragma mark - Custom setters/getters
 - (void)setResults:(NSMutableArray *)results
 {
