@@ -2040,6 +2040,27 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return index;
 }
 
+- (BOOL)isNodeAFolderAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *selectedNode = nil;
+    if (self.isOnSearchResults)
+    {
+        if(indexPath.item < self.searchResults.count)
+        {
+            selectedNode = [self.searchResults objectAtIndex:indexPath.row];
+        }
+    }
+    else
+    {
+        if(indexPath.item < self.collectionViewData.count)
+        {
+            selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+        }
+    }
+    
+    return [selectedNode isKindOfClass:[AlfrescoFolder class]];
+}
+
 #pragma mark - UIAdaptivePresentationControllerDelegate methods
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
 {

@@ -22,6 +22,7 @@
 
 - (BOOL) isItemSelected:(NSIndexPath *) indexPath;
 - (NSInteger) indexOfNode:(AlfrescoNode *)node;
+- (BOOL) isNodeAFolderAtIndex:(NSIndexPath *)indexPath;
 
 @end
 

@@ -730,6 +730,17 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     return index;
 }
 
+- (BOOL)isNodeAFolderAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *selectedNode = nil;
+    if(indexPath.item < self.collectionViewData.count)
+    {
+        selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+    }
+    
+    return [selectedNode isKindOfClass:[AlfrescoFolder class]];
+}
+
 #pragma mark - Private methods
 - (void) setupBarButtonItems
 {
