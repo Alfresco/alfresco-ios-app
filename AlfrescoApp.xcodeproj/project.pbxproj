@@ -583,7 +583,6 @@
 		73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95ADA17A68DF20099FB84 /* PlaceholderViewController.m */; };
 		73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AF117A68DF20099FB84 /* TagPickerViewController.m */; };
 		73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B95AF317A68DF20099FB84 /* UploadFormViewController.m */; };
-		73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B0717A68E770099FB84 /* UserGuide.pdf */; };
 		73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1817A6AE010099FB84 /* InfoPlist.strings */; };
 		73B95B1C17A6AE7E0099FB84 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73B95B1E17A6AE7E0099FB84 /* Localizable.strings */; };
 		73BA7CBE191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73BA7CBC191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld */; };
@@ -971,19 +970,15 @@
 		2739574D1900B12B00169BEB /* sync-button-stop-all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all.png"; sourceTree = "<group>"; };
 		2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-button-stop-all@2x.png"; sourceTree = "<group>"; };
 		273EEC2F191A7E3B00E07FF3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Activities.strings; sourceTree = "<group>"; };
-		273EEC30191A7E3B00E07FF3 /* it */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = it; path = it.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		273EEC31191A7E3B00E07FF3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		273EEC32191A7E3B00E07FF3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		273EEC33191A7EA800E07FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Activities.strings; sourceTree = "<group>"; };
-		273EEC34191A7EA800E07FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = de; path = de.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		273EEC35191A7EA800E07FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		273EEC36191A7EA800E07FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		273EEC37191A7EB700E07FF3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Activities.strings; sourceTree = "<group>"; };
-		273EEC38191A7EB700E07FF3 /* es */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = es; path = es.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		273EEC39191A7EB700E07FF3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		273EEC3A191A7EB700E07FF3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		273EEC3B191A7EF200E07FF3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Activities.strings; sourceTree = "<group>"; };
-		273EEC3C191A7EF200E07FF3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = ja; path = ja.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		273EEC3D191A7EF200E07FF3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		273EEC3E191A7EF200E07FF3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2744021F18AA83C400DF23DD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -1012,7 +1007,6 @@
 		27C2EC00190A5A71003B09B9 /* ActivityWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityWrapper.h; sourceTree = "<group>"; };
 		27C2EC01190A5A71003B09B9 /* ActivityWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActivityWrapper.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		27D4661F1961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Activities.strings"; sourceTree = "<group>"; };
-		27D466201961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "zh-Hans"; path = "zh-Hans.lproj/UserGuide.pdf"; sourceTree = "<group>"; };
 		27D466211961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		27D466221961772500E9AF10 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		27DA1B631915362300885F0F /* BaseInboundURLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInboundURLHandler.h; sourceTree = "<group>"; };
@@ -1650,8 +1644,6 @@
 		73B95AF117A68DF20099FB84 /* TagPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagPickerViewController.m; sourceTree = "<group>"; };
 		73B95AF217A68DF20099FB84 /* UploadFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFormViewController.h; sourceTree = "<group>"; };
 		73B95AF317A68DF20099FB84 /* UploadFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = UploadFormViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		73B95B0817A68E770099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = en; path = en.lproj/UserGuide.pdf; sourceTree = "<group>"; };
-		73B95B0917A68E770099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = fr; path = fr.lproj/UserGuide.pdf; sourceTree = "<group>"; };
 		73B95B1917A6AE010099FB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1B17A6AE4F0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73B95B1D17A6AE7E0099FB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2615,7 +2607,6 @@
 				08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */,
 				738BE9521A962AA7006264E5 /* App Property Lists */,
 				73881F721889800C0052C75F /* Help Error */,
-				73B95B0617A68E770099FB84 /* Help Guides */,
 				73B959F117A68B7E0099FB84 /* Images */,
 				73B95B1817A6AE010099FB84 /* InfoPlist.strings */,
 				73B95B1E17A6AE7E0099FB84 /* Localizable.strings */,
@@ -3803,14 +3794,6 @@
 			path = "Upload View Controller";
 			sourceTree = "<group>";
 		};
-		73B95B0617A68E770099FB84 /* Help Guides */ = {
-			isa = PBXGroup;
-			children = (
-				73B95B0717A68E770099FB84 /* UserGuide.pdf */,
-			);
-			path = "Help Guides";
-			sourceTree = "<group>";
-		};
 		73C554631B8CBD2400C45F56 /* Contact Detail View */ = {
 			isa = PBXGroup;
 			children = (
@@ -4463,7 +4446,6 @@
 				2BFB08191B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib in Resources */,
 				2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
-				73B95B0A17A68E770099FB84 /* UserGuide.pdf in Resources */,
 				738BE95A1A962AA7006264E5 /* UserPreferences.plist in Resources */,
 				273957501900B12B00169BEB /* sync-button-stop-all@2x.png in Resources */,
 				732DBFAA18E1BDB600F7A0BF /* small_folder.png in Resources */,
@@ -4943,20 +4925,6 @@
 				27E0FE4D1B0A00A600CD6C5D /* zh-Hans */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		73B95B0717A68E770099FB84 /* UserGuide.pdf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				73B95B0817A68E770099FB84 /* en */,
-				73B95B0917A68E770099FB84 /* fr */,
-				273EEC30191A7E3B00E07FF3 /* it */,
-				273EEC34191A7EA800E07FF3 /* de */,
-				273EEC38191A7EB700E07FF3 /* es */,
-				273EEC3C191A7EF200E07FF3 /* ja */,
-				27D466201961772500E9AF10 /* zh-Hans */,
-			);
-			name = UserGuide.pdf;
 			sourceTree = "<group>";
 		};
 		73B95B1817A6AE010099FB84 /* InfoPlist.strings */ = {
