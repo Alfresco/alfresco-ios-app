@@ -45,7 +45,7 @@
     if (nil != self)
     {
         self.json = json;
-        self.bundle = bundle;
+        self.bundle = bundle ?: [NSBundle mainBundle];
         self.evaluators = evaluators;
     }
     

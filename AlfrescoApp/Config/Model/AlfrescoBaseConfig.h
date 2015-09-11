@@ -22,15 +22,9 @@
 
 @interface AlfrescoBaseConfig : NSObject <NSCoding>
 
-
 @property (nonatomic, strong, readonly) NSString *identifier;
-
-
 @property (nonatomic, strong, readonly) NSString *label;
-
-
 @property (nonatomic, strong, readonly) NSString *summary;
-
 
 - (id)initWithDictionary:(NSDictionary *)properties;
 

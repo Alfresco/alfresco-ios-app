@@ -28,7 +28,7 @@
 static NSString * const kSitesViewIdentifier = @"view-sites-default";
 static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
-// Extend the MainMenyViewController so we have access to private properties and methods
+// Extend the MainMenuViewController so we have access to private properties and methods
 @interface MainMenuViewController ()
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSArray *tableViewData;

@@ -746,6 +746,7 @@
  */
 // Profiles
 "profile.default.title" = "Default";
+"profile.default.summary" = "Alfresco Mobile Defaults";
 // Views
 "view-activities-default" = "Activities";
 "view-repository-default" = "Repository";
