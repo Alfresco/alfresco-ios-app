@@ -143,8 +143,8 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
             }
             else
             {
-                XCTAssertTrue([configInfo.schemaVersion isEqualToString:@"0.1"],
-                              @"Expected schema version to be 0.1 but it was %@", configInfo.schemaVersion);
+                XCTAssertTrue([configInfo.schemaVersion isEqualToString:@"0.2"],
+                              @"Expected schema version to be 0.2 but it was %@", configInfo.schemaVersion);
                 
                 self.lastTestSuccessful = YES;
                 self.callbackCompleted = YES;
@@ -178,8 +178,8 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
                 }
                 else
                 {
-                    XCTAssertTrue([configInfo.schemaVersion isEqualToString:@"0.1"],
-                                  @"Expected schema version to be 0.1 but it was %@", configInfo.schemaVersion);
+                    XCTAssertTrue([configInfo.schemaVersion isEqualToString:@"0.2"],
+                                  @"Expected schema version to be 0.2 but it was %@", configInfo.schemaVersion);
                     
                     self.lastTestSuccessful = YES;
                     self.callbackCompleted = YES;
