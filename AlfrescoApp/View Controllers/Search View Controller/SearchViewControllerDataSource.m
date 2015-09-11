@@ -23,9 +23,10 @@
 - (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType
 {
     self = [super init];
-    if(self)
+    if (self)
     {
-        switch (dataSourceType) {
+        switch (dataSourceType)
+        {
             case SearchViewControllerDataSourceTypeLandingPage:
             {
                 self.dataSourceArrays = [NSMutableArray new];
@@ -33,7 +34,12 @@
                 self.numberOfSections = 1;
                 self.showsSearchBar = NO;
                 
-                NSMutableArray *sectionDataSource = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"small_document", kCellImageKey, nil], [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.folders", @"Folders"), kCellTextKey, @"small_folder", kCellImageKey, nil], [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.sites", @"Sites"), kCellTextKey, @"mainmenu-sites", kCellImageKey, nil], [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.people", @"People"), kCellTextKey, @"mainmenu-user", kCellImageKey, nil], nil];
+                NSMutableArray *sectionDataSource = [[NSMutableArray alloc] initWithObjects:
+                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"mainmenu-document", kCellImageKey, nil],
+                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.folders", @"Folders"), kCellTextKey, @"mainmenu-folder", kCellImageKey, nil],
+                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.sites", @"Sites"), kCellTextKey, @"mainmenu-sites", kCellImageKey, nil],
+                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.people", @"People"), kCellTextKey, @"mainmenu-user", kCellImageKey, nil],
+                                                     nil];
                 [self.dataSourceArrays addObject:sectionDataSource];
                 
                 [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.searchfor", @"Search for")];
@@ -67,6 +73,7 @@
 }
 
 #pragma mark - Private methods
+
 - (void) setupDataSourceForSearchType:(SearchViewControllerDataSourceType)searchType
 {
     self.dataSourceArrays = [NSMutableArray new];
@@ -76,7 +83,7 @@
     [self.dataSourceArrays addObject:[NSMutableArray new]];
     
     NSArray *previousSearchesArray = [self retriveSearchStringsArrayForSearchType:searchType];
-    if(previousSearchesArray.count > 0)
+    if (previousSearchesArray.count > 0)
     {
         [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.previoussearches", @"Previous searches")];
         [self.dataSourceArrays addObject:previousSearchesArray];
@@ -123,6 +130,7 @@
 }
 
 #pragma mark - Public methods
+
 - (void)saveSearchString:(NSString *)stringToSave forSearchType:(SearchViewControllerDataSourceType)searchType
 {
     NSMutableArray *savedStringsForCurrentDataSourceType = [[[NSUserDefaults standardUserDefaults] objectForKey:[self userDefaultsKeyForSearchType:searchType]] mutableCopy];
@@ -146,7 +154,7 @@
 - (NSArray *)retriveSearchStringsArrayForSearchType:(SearchViewControllerDataSourceType)searchType
 {
     NSArray *previousSearches = [[NSUserDefaults standardUserDefaults] objectForKey:[self userDefaultsKeyForSearchType:searchType]];
-    if(!previousSearches)
+    if (!previousSearches)
     {
         previousSearches = [NSArray new];
     }

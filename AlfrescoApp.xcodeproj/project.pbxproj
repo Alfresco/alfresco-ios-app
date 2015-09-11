@@ -156,6 +156,8 @@
 		27DFEBFE1937644D006D85BC /* actionsheet-unlike@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 27DFEBEF1937644D006D85BC /* actionsheet-unlike@2x~ipad.png */; };
 		27DFEBFF1937644D006D85BC /* actionsheet-upload@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 27DFEBF01937644D006D85BC /* actionsheet-upload@2x~ipad.png */; };
 		27E0FE411B0A009F00CD6C5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27E0FE431B0A009F00CD6C5D /* Localizable.strings */; };
+		27E111271BA2F47C00F230EE /* mainmenu-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E111251BA2F47C00F230EE /* mainmenu-folder.png */; };
+		27E111281BA2F47C00F230EE /* mainmenu-folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E111261BA2F47C00F230EE /* mainmenu-folder@2x.png */; };
 		27E17D4D1898198F0010FA99 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E17D491898198F0010FA99 /* HockeySDK.framework */; };
 		27E17D4F1898198F0010FA99 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */; };
 		27E84E7A18AD53510024B658 /* mainmenu-activities.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E6018AD53510024B658 /* mainmenu-activities.png */; };
@@ -182,8 +184,6 @@
 		27E84E8F18AD53510024B658 /* mainmenu-tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E84E7518AD53510024B658 /* mainmenu-tasks@2x.png */; };
 		2B09B0461B86121200448A52 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09B0441B86121200448A52 /* SearchViewController.m */; };
 		2B09B0471B86121200448A52 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B09B0451B86121200448A52 /* SearchViewController.xib */; };
-		2B09B04B1B86184100448A52 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09B0491B86184100448A52 /* SearchTableViewCell.m */; };
-		2B09B04C1B86184100448A52 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B09B04A1B86184100448A52 /* SearchTableViewCell.xib */; };
 		2B114E601B1F39D4005A05AA /* cell-button-checked-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */; };
 		2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */; };
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
@@ -1033,6 +1033,8 @@
 		27E0FE4B1B0A00A400CD6C5D /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		27E0FE4C1B0A00A500CD6C5D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		27E0FE4D1B0A00A600CD6C5D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27E111251BA2F47C00F230EE /* mainmenu-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-folder.png"; sourceTree = "<group>"; };
+		27E111261BA2F47C00F230EE /* mainmenu-folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mainmenu-folder@2x.png"; sourceTree = "<group>"; };
 		27E17D491898198F0010FA99 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		27E17D4B1898198F0010FA99 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		27E17D4C1898198F0010FA99 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
@@ -1061,9 +1063,6 @@
 		2B09B0431B86121200448A52 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		2B09B0441B86121200448A52 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		2B09B0451B86121200448A52 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
-		2B09B0481B86184100448A52 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
-		2B09B0491B86184100448A52 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
-		2B09B04A1B86184100448A52 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled.png"; sourceTree = "<group>"; };
 		2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled@2x.png"; sourceTree = "<group>"; };
 		2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked.png"; sourceTree = "<group>"; };
@@ -2146,9 +2145,6 @@
 				2B09B0431B86121200448A52 /* SearchViewController.h */,
 				2B09B0441B86121200448A52 /* SearchViewController.m */,
 				2B09B0451B86121200448A52 /* SearchViewController.xib */,
-				2B09B0481B86184100448A52 /* SearchTableViewCell.h */,
-				2B09B0491B86184100448A52 /* SearchTableViewCell.m */,
-				2B09B04A1B86184100448A52 /* SearchTableViewCell.xib */,
 				2BA24A671B8C5D470075CA99 /* SearchViewControllerDataSource.h */,
 				2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */,
 				2B5592081B90AB1C00D85C7B /* SearchResultsTableViewController.h */,
@@ -3265,6 +3261,8 @@
 				735DDC1C1B30268D0091D7B4 /* mainmenu-document@2x.png */,
 				27E84E6218AD53510024B658 /* mainmenu-favourites.png */,
 				27E84E6318AD53510024B658 /* mainmenu-favourites@2x.png */,
+				27E111251BA2F47C00F230EE /* mainmenu-folder.png */,
+				27E111261BA2F47C00F230EE /* mainmenu-folder@2x.png */,
 				272962711B557BF90041C32D /* mainmenu-gallery.png */,
 				272962721B557BF90041C32D /* mainmenu-gallery@2x.png */,
 				272962731B557BF90041C32D /* mainmenu-grid.png */,
@@ -3611,15 +3609,15 @@
 		73B959F117A68B7E0099FB84 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				2BC7CA791B219037009BB2A9 /* Collection View Cells */,
-				2B114E5B1B1F39C7005A05AA /* Edit Mode Collection View */,
-				2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */,
 				73B959F217A68B7E0099FB84 /* About */,
 				0808B9DC183BB39C000A8984 /* Accounts */,
 				73881F96188FF4CB0052C75F /* Action Sheet */,
 				73B959F717A68B7E0099FB84 /* Activities */,
 				73B959FA17A68B7E0099FB84 /* Buttons */,
+				2BC7CA791B219037009BB2A9 /* Collection View Cells */,
 				7342939A1899218300BDFD35 /* Comments */,
+				2BFE128C1AC2E721000EB19D /* Configuration Diagnostic */,
+				2B114E5B1B1F39C7005A05AA /* Edit Mode Collection View */,
 				73B959FD17A68B7E0099FB84 /* Icons */,
 				73B95A2417A68B7E0099FB84 /* Logo */,
 				73A26A6F18364328006C1D81 /* Main Menu Icons */,
@@ -4138,6 +4136,7 @@
 				732DBF9218E1BC6B00F7A0BF /* small_excel.png in Resources */,
 				7390619B189676F600B1920C /* ButtonBarArrowDown.png in Resources */,
 				73B95A6217A68B7E0099FB84 /* AboutLogo@2x.png in Resources */,
+				27E111281BA2F47C00F230EE /* mainmenu-folder@2x.png in Resources */,
 				738BE95C1A962AFB006264E5 /* HelpURLKeys.plist in Resources */,
 				2715E03719300C520049FA32 /* Images.xcassets in Resources */,
 				73B95A6317A68B7E0099FB84 /* AboutLogo@2x~ipad.png in Resources */,
@@ -4195,6 +4194,7 @@
 				738665181906B3ED0021D1BD /* ActivityTableViewCell.xib in Resources */,
 				0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */,
 				73FF557E18ACE2370009CA56 /* large_excel@2x.png in Resources */,
+				27E111271BA2F47C00F230EE /* mainmenu-folder.png in Resources */,
 				736C4C011B8F1920008B7663 /* contact-details-phone.png in Resources */,
 				0876A04418D99FF60035370A /* NodePickerFavoritesViewController.xib in Resources */,
 				73881FE71890086F0052C75F /* actionsheet-print.png in Resources */,
@@ -4300,7 +4300,6 @@
 				732DBFAB18E1BDB600F7A0BF /* small_folder@2x.png in Resources */,
 				73FF557F18ACE2370009CA56 /* large_image.png in Resources */,
 				735DDC251B30268D0091D7B4 /* mainmenu-document.png in Resources */,
-				2B09B04C1B86184100448A52 /* SearchTableViewCell.xib in Resources */,
 				2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */,
 				7302475419544AD50034D861 /* playButton.png in Resources */,
 				271DC770189C2D250059D1B2 /* status-sync-loading-highlighted.png in Resources */,
@@ -4750,7 +4749,6 @@
 				7390B38C1B03793400E7191F /* AlfrescoSDKInternalConstants.m in Sources */,
 				7390B3771B03681E00E7191F /* AlfrescoClientBasedConfigService.m in Sources */,
 				7333D2F11B3C4F4500644913 /* MainMenuHeaderView.m in Sources */,
-				2B09B04B1B86184100448A52 /* SearchTableViewCell.m in Sources */,
 				7390B35D1B03681E00E7191F /* AlfrescoCreationConfigHelper.m in Sources */,
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
