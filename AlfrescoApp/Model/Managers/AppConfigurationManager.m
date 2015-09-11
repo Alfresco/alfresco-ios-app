@@ -212,6 +212,24 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
     return [[AlfrescoFileManager sharedManager] fileExistsAtPath:accountConfigurationFolderPath];
 }
 
+- (void)removeConfigurationFileForAccount:(UserAccount *)account
+{
+    NSString *accountConfigurationFolderPath = [self accountSpecificConfigurationFolderPath:account];
+    NSString *accountConfigurationPath = [NSString stringWithFormat:@"%@/%@", accountConfigurationFolderPath, kAlfrescoEmbeddedConfigurationFileName];
+    NSError *error = nil;
+    [[AlfrescoFileManager sharedManager] removeItemAtPath:accountConfigurationPath error:&error];
+    if([account.accountIdentifier isEqualToString:self.currentConfigAccountIdentifier])
+    {
+        [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
+            NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
+                                         kAlfrescoConfigServiceParameterFileName: configurationFilePath.lastPathComponent};
+            
+            AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+            self.currentConfigService = configService;
+        }];
+    }
+}
+
 #pragma mark - Notification Method
 
 - (void)sessionReceived:(NSNotification *)notification

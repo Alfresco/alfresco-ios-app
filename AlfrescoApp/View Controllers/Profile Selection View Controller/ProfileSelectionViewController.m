@@ -69,10 +69,17 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
 - (void)loadData
 {
+    [self.configService clear];
     [self.configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError) {
         if (profilesError)
         {
-            // TODO
+            [[AppConfigurationManager sharedManager] removeConfigurationFileForAccount:self.account];
+            self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:self.account];
+            [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                self.tableViewData = [NSArray arrayWithObject:config];
+                [self.tableView reloadData];
+                [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            }];
         }
         else
         {

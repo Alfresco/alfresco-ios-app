@@ -53,6 +53,11 @@
     [self doesNotRecognizeSelector:_cmd];
 }
 
+- (void)clearLocalStoredConfigFile
+{
+    [self doesNotRecognizeSelector:_cmd];
+}
+
 - (AlfrescoRequest *)retrieveConfigInfoWithCompletionBlock:(AlfrescoConfigInfoCompletionBlock)completionBlock
 {
     [self doesNotRecognizeSelector:_cmd];
