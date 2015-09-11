@@ -42,7 +42,6 @@
     for (NSString *profileId in profileIds)
     {
         NSDictionary *profileJSON = profilesJSON[profileId];
-        
         NSMutableDictionary *profileProperties = [self configPropertiesFromJSON:profileJSON];
         
         // add the id of the profile

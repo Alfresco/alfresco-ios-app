@@ -20,14 +20,14 @@
 			<key>File</key>
 			<string>Flurry</string>
 		</dict>
-        <dict>
-            <key>Type</key>
-            <string>PSChildPaneSpecifier</string>
-            <key>Title</key>
-            <string>IconsMind.com</string>
-            <key>File</key>
-            <string>IconsMind</string>
-        </dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>IconsMind.com</string>
+			<key>File</key>
+			<string>IconsMind</string>
+		</dict>
 		<dict>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>

@@ -67,6 +67,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _collectionView.delegate = nil;
 }
 
 - (void)viewDidLoad {

@@ -379,8 +379,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.collectionView.delegate = nil;
-    self.imagePickerController.delegate = nil;
+    _imagePickerController.delegate = nil;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
