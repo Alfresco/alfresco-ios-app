@@ -22,6 +22,6 @@
 
 @interface ProfileSelectionViewController : UIViewController
 
-- (instancetype)initWithAccount:(UserAccount *)account;
+- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session;
 
 @end

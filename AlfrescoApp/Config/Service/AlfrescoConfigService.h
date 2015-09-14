@@ -43,6 +43,7 @@
 @interface AlfrescoConfigService : NSObject
 
 @property (nonatomic, strong, readonly) AlfrescoConfigScope *defaultConfigScope;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 /**---------------------------------------------------------------------------------------
  * @name Initialisation methods

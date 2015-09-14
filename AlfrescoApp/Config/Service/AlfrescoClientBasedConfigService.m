@@ -35,7 +35,7 @@
 @interface AlfrescoClientBasedConfigService ()
 @property (nonatomic, strong, readwrite) AlfrescoConfigScope *defaultConfigScope;
 
-@property (nonatomic, strong) id<AlfrescoSession> session;
+//@property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) NSDictionary *parameters;
 @property (nonatomic, assign) BOOL isCacheBuilt;
 @property (nonatomic, assign) BOOL isCacheBuilding;
@@ -106,6 +106,7 @@
 - (void)clear
 {
     self.isCacheBuilt = NO;
+    self.isCacheBuilding = NO;
 }
 
 - (void)queueCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
@@ -140,6 +141,7 @@
         self.isCacheBuilding = YES;
         
         void (^runAllCompletionBlocks)(BOOL success, NSError *error) = ^(BOOL success, NSError *error) {
+            self.isCacheBuilding = NO;
             completionBlock(success, error);
             [self runAndDequeueAllCompletionBlocksWithSuccess:success error:error];
         };

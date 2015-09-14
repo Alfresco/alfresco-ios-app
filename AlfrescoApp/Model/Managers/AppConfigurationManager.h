@@ -49,4 +49,8 @@
 - (AlfrescoConfigService *)configurationServiceForEmbeddedConfiguration;
 - (BOOL)serverConfigurationExistsForAccount:(UserAccount *)account;
 
+- (void)removeConfigurationFileForAccount:(UserAccount *)account;
+
+- (void)setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:(void (^)(NSString *configurationFilePath))completionBlock;
+
 @end

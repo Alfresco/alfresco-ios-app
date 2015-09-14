@@ -82,6 +82,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 - (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
     AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
+    self.configService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
 
     void (^buildItemsForProfile)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *profile) {
         [self.configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {

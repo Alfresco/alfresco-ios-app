@@ -293,7 +293,7 @@ static NSInteger const kTagProfileCell = 3;
     }
     else if (cell.tag == kTagProfileCell)
     {
-        ProfileSelectionViewController *profileSelectionViewController = [[ProfileSelectionViewController alloc] initWithAccount:self.account];
+        ProfileSelectionViewController *profileSelectionViewController = [[ProfileSelectionViewController alloc] initWithAccount:self.account session:self.session];
         [self.navigationController pushViewController:profileSelectionViewController animated:YES];
     }
 }
