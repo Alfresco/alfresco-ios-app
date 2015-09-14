@@ -30,16 +30,18 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 @property (nonatomic, strong) AlfrescoProfileConfig *currentlySelectedProfile;
 @property (nonatomic, strong) AlfrescoConfigService *configService;
 @property (nonatomic, strong) UserAccount *account;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 @end
 
 @implementation ProfileSelectionViewController
 
-- (instancetype)initWithAccount:(UserAccount *)account
+- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
     {
         self.account = account;
+        self.session = session;
         self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         self.originallySelectedProfileIdentifier = account.selectedProfileIdentifier;
     }
@@ -70,6 +72,10 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 - (void)loadData
 {
     [self.configService clear];
+    if ((self.configService == [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount]) && (!self.configService.session))
+    {
+        self.configService.session = self.session;
+    }
     [self.configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError) {
         if (profilesError)
         {
@@ -85,6 +91,30 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
         {
             self.tableViewData = profilesArray;
             [self.tableView reloadData];
+            BOOL shouldAutoSelectProfile = YES;
+            for (int i = 0; i < self.tableViewData.count; i++)
+            {
+                AlfrescoProfileConfig *profile = self.tableViewData[i];
+                if([self.originallySelectedProfileIdentifier isEqualToString:profile.identifier])
+                {
+                    shouldAutoSelectProfile = NO;
+                }
+            }
+            
+            if(shouldAutoSelectProfile)
+            {
+                [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                    for (int i = 0; i < self.tableViewData.count; i++)
+                    {
+                        AlfrescoProfileConfig *profile = self.tableViewData[i];
+                        if([config.identifier isEqualToString:profile.identifier])
+                        {
+                            [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                        }
+                    }
+                    
+                }];
+            }
         }
     }];
 }
