@@ -409,13 +409,8 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         
         associatedObject = sitesListViewController;
     }
-    else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeNodeDetails])
-    {
-        // TODO: Currently place an empty view controller
-        associatedObject = [[UIViewController alloc] init];
-    }
     
-    // If it's nil, use an empty controller in order to stop a runtime error
+    // If the view is supported, wrap it with a NavigationViewController
     if (associatedObject)
     {
          navigationController = [[NavigationViewController alloc] initWithRootViewController:associatedObject];

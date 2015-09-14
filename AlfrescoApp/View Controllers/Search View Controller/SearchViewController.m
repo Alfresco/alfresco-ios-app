@@ -17,7 +17,6 @@
  ******************************************************************************/
 
 #import "SearchViewController.h"
-#import "SearchTableViewCell.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
 #import "SearchViewControllerDataSource.h"
@@ -26,6 +25,8 @@
 #import "PersonProfileViewController.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
+static CGFloat const kCellHeightSearchScope = 64.0f;
+static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 @interface SearchViewController () < UISearchResultsUpdating, UISearchBarDelegate >
 
@@ -103,7 +104,7 @@ static CGFloat const kHeaderHeight = 40.0f;
         }
     }
     
-    if(self.dataSource.showsSearchBar)
+    if (self.dataSource.showsSearchBar)
     {
         SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:NO];
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultsController];
@@ -114,9 +115,6 @@ static CGFloat const kHeaderHeight = 40.0f;
         self.tableView.tableHeaderView = self.searchController.searchBar;
         self.definesPresentationContext = YES;
     }
-    
-    UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([SearchTableViewCell class]) bundle:nil];
-    [self.tableView registerNib:cellNib forCellReuseIdentifier:NSStringFromClass([SearchTableViewCell class])];
     
     [self.tableView reloadData];
 }
@@ -138,42 +136,47 @@ static CGFloat const kHeaderHeight = 40.0f;
     return array.count;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setSeparatorInset:UIEdgeInsetsZero];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([self class])];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
     
     switch (self.dataSourceType)
     {
         case SearchViewControllerDataSourceTypeLandingPage:
         {
-            SearchTableViewCell *specificCell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SearchTableViewCell class]) forIndexPath:indexPath];
-            NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSDictionary *cellDataSource = array[indexPath.row];
-            specificCell.searchItemText.text = [cellDataSource objectForKey:kCellTextKey];
-            if([cellDataSource objectForKey:kCellImageKey])
+            cell.textLabel.text = [cellDataSource objectForKey:kCellTextKey];
+            if ([cellDataSource objectForKey:kCellImageKey])
             {
-                [specificCell.searchItemImage setImage:[UIImage imageNamed:[cellDataSource objectForKey:kCellImageKey]]];
-                specificCell.searchItemImageWidthConstraint.constant = kSearchItemImageWidthConstraint;
+                [cell.imageView setImage:[UIImage imageNamed:[cellDataSource objectForKey:kCellImageKey]]];
             }
-            else
-            {
-                specificCell.searchItemImageWidthConstraint.constant = 0.0f;
-            }
-            cell = specificCell;
-            
             break;
         }
         default:
         {
-            if(indexPath.section > 0)
+            if (indexPath.section > 0)
             {
-                cell = [self configureCellForIndexPath:indexPath];
+                NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
+                cell.textLabel.text = array[indexPath.row];
             }
             break;
         }
     }
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (self.dataSourceType == SearchViewControllerDataSourceTypeLandingPage) ? kCellHeightSearchScope : kCellHeightPreviousSearches;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -238,15 +241,6 @@ static CGFloat const kHeaderHeight = 40.0f;
 - (void)expandRootRevealController
 {
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
-}
-
-- (SearchTableViewCell *) configureCellForIndexPath:(NSIndexPath *)indexPath
-{
-    SearchTableViewCell *specificCell = [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SearchTableViewCell class]) forIndexPath:indexPath];
-    NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
-    specificCell.searchItemText.text = array[indexPath.row];
-    specificCell.searchItemImageWidthConstraint.constant = 0.0f;
-    return specificCell;
 }
 
 - (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType

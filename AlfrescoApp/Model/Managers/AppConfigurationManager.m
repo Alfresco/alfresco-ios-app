@@ -66,7 +66,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
             [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
                 if (defaultProfileError)
                 {
-                    AlfrescoLogError(@"Error retieving the default profile. Error: %@", defaultProfileError.localizedDescription);
+                    AlfrescoLogWarning(@"Could not retrieve the default profile: %@", defaultProfileError.localizedDescription);
                 }
                 else
                 {
@@ -239,7 +239,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
     [self.embeddedConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         if (defaultProfileError)
         {
-            AlfrescoLogError(@"Error retieving the default profile. Error: %@", defaultProfileError.localizedDescription);
+            AlfrescoLogError(@"Error retrieving the default profile. Error: %@", defaultProfileError.localizedDescription);
         }
         else
         {
@@ -277,26 +277,42 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
                 };
                 
                 NSString *selectedProfileIdentifier = account.selectedProfileIdentifier;
-                [configService retrieveProfileWithIdentifier:selectedProfileIdentifier completionBlock:^(AlfrescoProfileConfig *identifierProfile, NSError *identifierError) {
-                    if (identifierError || identifierProfile == nil)
-                    {
-                        AlfrescoLogInfo(@"Error retieving the profile with identifier: %@ from server config. Error: %@", selectedProfileIdentifier, identifierError.localizedDescription);
-                        [configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultServerProfile, NSError *defaultServerProfileError) {
-                            if (defaultServerProfileError)
-                            {
-                                AlfrescoLogError(@"Error retieving the default profile from server config. Error: %@", defaultServerProfileError.localizedDescription);
-                            }
-                            else
-                            {
-                                profileSuccessfullySelectedBlock(defaultServerProfile);
-                            }
-                        }];
-                    }
-                    else
-                    {
-                        profileSuccessfullySelectedBlock(identifierProfile);
-                    }
-                }];
+                if (selectedProfileIdentifier)
+                {
+                    [configService retrieveProfileWithIdentifier:selectedProfileIdentifier completionBlock:^(AlfrescoProfileConfig *identifierProfile, NSError *identifierError) {
+                        if (identifierError || identifierProfile == nil)
+                        {
+                            AlfrescoLogWarning(@"Could not retrieve the profile with identifier: %@ from server: %@", selectedProfileIdentifier, identifierError.localizedDescription);
+                            [configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultServerProfile, NSError *defaultServerProfileError) {
+                                if (defaultServerProfileError)
+                                {
+                                    AlfrescoLogWarning(@"Could not retrieve the default profile from server: %@", defaultServerProfileError.localizedDescription);
+                                }
+                                else
+                                {
+                                    profileSuccessfullySelectedBlock(defaultServerProfile);
+                                }
+                            }];
+                        }
+                        else
+                        {
+                            profileSuccessfullySelectedBlock(identifierProfile);
+                        }
+                    }];
+                }
+                else
+                {
+                    [configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultServerProfile, NSError *defaultServerProfileError) {
+                        if (defaultServerProfileError)
+                        {
+                            AlfrescoLogWarning(@"Could not retrieve the default profile from server config: %@", defaultServerProfileError.localizedDescription);
+                        }
+                        else
+                        {
+                            profileSuccessfullySelectedBlock(defaultServerProfile);
+                        }
+                    }];
+                }
             }
         }
     }];
