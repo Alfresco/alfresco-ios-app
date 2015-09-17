@@ -201,13 +201,13 @@
     [self reloadCollectionView];
 }
 
-- (void)willPresentSearchController:(UISearchController *)searchController
+- (void)didPresentSearchController:(UISearchController *)searchController
 {
     self.collectionViewTopConstraint.constant = 20;
     [self.view layoutIfNeeded];
 }
 
-- (void)willDismissSearchController:(UISearchController *)searchController
+- (void)didDismissSearchController:(UISearchController *)searchController
 {
     self.collectionViewTopConstraint.constant = 0;
     [self.view layoutIfNeeded];
