@@ -33,7 +33,6 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 @property (nonatomic, strong) SearchViewControllerDataSource *dataSource;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic) CGRect searchBarOriginalFrame;
 // Searvices
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
@@ -112,6 +111,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         self.searchController.searchBar.delegate = self;
         self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.searchController.searchBar sizeToFit];
+        self.searchController.hidesNavigationBarDuringPresentation = NO;
         self.tableView.tableHeaderView = self.searchController.searchBar;
         self.definesPresentationContext = YES;
     }
