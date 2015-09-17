@@ -165,7 +165,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         break;
             
         default:
-        break;
+            break;
     }
     
     return returnArray;
@@ -252,21 +252,25 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    NSMutableArray *removalArray = [self arrayForSection:sourceIndexPath.section];;
+    NSMutableArray *removalArray = [self arrayForSection:sourceIndexPath.section];
     NSMutableArray *insertArray = [self arrayForSection:destinationIndexPath.section];
     
     MainMenuItem *movingItem = removalArray[sourceIndexPath.row];
-    [removalArray removeObjectAtIndex:sourceIndexPath.row];
-    [insertArray insertObject:movingItem atIndex:destinationIndexPath.row];
     
-    // set the flag on the object
-    if (destinationIndexPath.section == MainMenuReorderSectionsHidden)
+    if (movingItem)
     {
-        movingItem.hidden = YES;
-    }
-    else if (destinationIndexPath.section == MainMenuReorderSectionsVisible)
-    {
-        movingItem.hidden = NO;
+        [removalArray removeObjectAtIndex:sourceIndexPath.row];
+        [insertArray insertObject:movingItem atIndex:destinationIndexPath.row];
+        
+        // set the flag on the object
+        if (destinationIndexPath.section == MainMenuReorderSectionsHidden)
+        {
+            movingItem.hidden = YES;
+        }
+        else if (destinationIndexPath.section == MainMenuReorderSectionsVisible)
+        {
+            movingItem.hidden = NO;
+        }
     }
     
     AlfrescoLogDebug(@"\n\nVisible Array: %@\n\n\n\nHidden Array: %@", self.visibleItems, self.hiddenItems);
