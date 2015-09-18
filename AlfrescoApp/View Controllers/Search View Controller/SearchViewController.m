@@ -23,6 +23,7 @@
 #import "SearchResultsTableViewController.h"
 #import "FileFolderCollectionViewController.h"
 #import "PersonProfileViewController.h"
+#import "AccountManager.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
@@ -58,7 +59,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 {
     [super viewDidLoad];
     
-    self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType];
+    self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
     self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
     self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
     

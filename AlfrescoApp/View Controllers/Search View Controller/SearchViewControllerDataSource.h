@@ -28,7 +28,7 @@ static NSString * const kCellImageKey = @"CellImage";
 @property (nonatomic, strong) NSMutableArray *dataSourceArrays;
 @property (nonatomic, strong) NSMutableArray *sectionHeaderStringsArray;
 
-- (instancetype) initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType;
+- (instancetype) initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType account:(UserAccount *)account;
 
 - (void)saveSearchString:(NSString *)stringToSave forSearchType:(SearchViewControllerDataSourceType)searchType;
 - (NSArray *)retriveSearchStringsArrayForSearchType:(SearchViewControllerDataSourceType)searchType;

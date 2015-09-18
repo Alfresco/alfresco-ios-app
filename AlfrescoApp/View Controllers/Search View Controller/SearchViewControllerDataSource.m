@@ -17,14 +17,22 @@
  ******************************************************************************/
 
 #import "SearchViewControllerDataSource.h"
+#import "UserAccount.h"
+
+@interface SearchViewControllerDataSource ()
+
+@property (nonatomic, strong) UserAccount *account;
+
+@end
 
 @implementation SearchViewControllerDataSource
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType
+- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType account:(UserAccount *)account
 {
     self = [super init];
     if (self)
     {
+        self.account = account;
         switch (dataSourceType)
         {
             case SearchViewControllerDataSourceTypeLandingPage:
@@ -133,7 +141,7 @@
 
 - (void)saveSearchString:(NSString *)stringToSave forSearchType:(SearchViewControllerDataSourceType)searchType
 {
-    NSMutableArray *savedStringsForCurrentDataSourceType = [[[NSUserDefaults standardUserDefaults] objectForKey:[self userDefaultsKeyForSearchType:searchType]] mutableCopy];
+    NSMutableArray *savedStringsForCurrentDataSourceType = [[self retriveSearchStringsArrayForSearchType:searchType] mutableCopy];
     if((!savedStringsForCurrentDataSourceType) || (savedStringsForCurrentDataSourceType.count == 0))
     {
         savedStringsForCurrentDataSourceType = [NSMutableArray new];
@@ -145,7 +153,30 @@
         [savedStringsForCurrentDataSourceType insertObject:stringToSave atIndex:0];
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:savedStringsForCurrentDataSourceType forKey:[self userDefaultsKeyForSearchType:searchType]];
+    if(savedStringsForCurrentDataSourceType.count > 10)
+    {
+        [savedStringsForCurrentDataSourceType removeLastObject];
+    }
+    
+    NSString *userSearchSpecificIdentifier = nil;
+    if(self.account.accountType == UserAccountTypeOnPremise)
+    {
+        userSearchSpecificIdentifier = self.account.accountIdentifier;
+    }
+    else
+    {
+        userSearchSpecificIdentifier = self.account.selectedNetworkId;
+    }
+    
+    NSMutableDictionary *previousSearchesDict = [[[NSUserDefaults standardUserDefaults] objectForKey:userSearchSpecificIdentifier] mutableCopy];
+    if(!previousSearchesDict)
+    {
+        previousSearchesDict = [NSMutableDictionary new];
+    }
+    [previousSearchesDict setObject:savedStringsForCurrentDataSourceType forKey:[self userDefaultsKeyForSearchType:searchType]];
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:previousSearchesDict forKey:userSearchSpecificIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self setupDataSourceForSearchType:searchType];
@@ -153,13 +184,28 @@
 
 - (NSArray *)retriveSearchStringsArrayForSearchType:(SearchViewControllerDataSourceType)searchType
 {
-    NSArray *previousSearches = [[NSUserDefaults standardUserDefaults] objectForKey:[self userDefaultsKeyForSearchType:searchType]];
-    if (!previousSearches)
+    NSString *userSearchSpecificIdentifier = nil;
+    NSArray *previousSearchStringsArray = [NSArray new];
+    if(self.account.accountType == UserAccountTypeOnPremise)
     {
-        previousSearches = [NSArray new];
+        userSearchSpecificIdentifier = self.account.accountIdentifier;
+    }
+    else
+    {
+        userSearchSpecificIdentifier = self.account.selectedNetworkId;
     }
     
-    return previousSearches;
+    NSDictionary *previousSearchesDict = [[NSUserDefaults standardUserDefaults] objectForKey:userSearchSpecificIdentifier];
+    if(previousSearchesDict)
+    {
+        NSArray *searchStringsArray = [previousSearchesDict objectForKey:[self userDefaultsKeyForSearchType:searchType]];
+        if(searchStringsArray)
+        {
+            previousSearchStringsArray = searchStringsArray;
+        }
+    }
+    
+    return previousSearchStringsArray;
 }
 
 @end
