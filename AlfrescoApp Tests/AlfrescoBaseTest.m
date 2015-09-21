@@ -149,7 +149,7 @@ static NSString * const kAlfrescoTestServersPlist = @"test-servers.plist";
             {
                 self.testAlfrescoDocument = nil;
                 self.lastTestSuccessful = NO;
-                self.lastTestFailureMessage = [NSString stringWithFormat:@"Could not delete test document. Error message %@ and code %d",[error localizedDescription], [error code]];
+                self.lastTestFailureMessage = [NSString stringWithFormat:@"Could not delete test document. Error message %@ and code %@", error.localizedDescription, @(error.code)];
                 self.callbackCompleted = YES;
             }
             else
@@ -248,7 +248,7 @@ static NSString * const kAlfrescoTestServersPlist = @"test-servers.plist";
             {
                 self.testAlfrescoDocument = nil;
                 self.lastTestSuccessful = NO;
-                self.lastTestFailureMessage = [NSString stringWithFormat:@"Could not delete test document. Error message %@ and code %d",[error localizedDescription], [error code]];
+                self.lastTestFailureMessage = [NSString stringWithFormat:@"Could not delete test document. Error message %@ and code %@", error.localizedDescription, @(error.code)];
                 self.callbackCompleted = YES;
             }
             else
