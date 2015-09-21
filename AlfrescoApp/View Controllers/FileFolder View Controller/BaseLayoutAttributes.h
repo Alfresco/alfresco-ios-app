@@ -38,5 +38,6 @@
 
 @property (nonatomic) BOOL shouldShowEditBelowContent;
 @property (nonatomic) CGFloat editImageTopSpace;
+@property (nonatomic) NSTextAlignment filenameAligment;
 
 @end
