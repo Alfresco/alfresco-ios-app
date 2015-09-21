@@ -42,6 +42,7 @@
         newAttributes.nodeNameFont = self.nodeNameFont;
         newAttributes.shouldShowEditBelowContent = self.shouldShowEditBelowContent;
         newAttributes.editImageTopSpace = self.editImageTopSpace;
+        newAttributes.filenameAligment = self.filenameAligment;
     }
     
     return newAttributes;
@@ -66,7 +67,8 @@
            && (self.shouldShowStatusViewOverImage == otherAttributes.shouldShowStatusViewOverImage)
            && (self.nodeNameFont == otherAttributes.nodeNameFont)
            && (self.shouldShowEditBelowContent == otherAttributes.shouldShowEditBelowContent)
-           && (self.editImageTopSpace == otherAttributes.editImageTopSpace))
+           && (self.editImageTopSpace == otherAttributes.editImageTopSpace)
+           && (self.filenameAligment == otherAttributes.filenameAligment))
         {
             return [super isEqual:object];
         }

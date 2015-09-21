@@ -576,6 +576,10 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     
     self.separatorHeightConstraint.constant = layoutAttributes.shouldShowSeparatorView ? 1/[[UIScreen mainScreen] scale] : 0.0f;
+    self.content.layer.borderWidth = layoutAttributes.shouldShowSeparatorView ? 0.0f : 1/[[UIScreen mainScreen] scale];
+    self.content.layer.borderColor = [[UIColor borderGreyColor] CGColor];
+    
+    self.filename.textAlignment = layoutAttributes.filenameAligment;
     
     self.details.hidden = !layoutAttributes.shouldShowNodeDetails;
     self.filename.font = layoutAttributes.nodeNameFont;

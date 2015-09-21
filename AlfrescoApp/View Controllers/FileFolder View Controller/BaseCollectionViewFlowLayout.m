@@ -227,6 +227,7 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
     attributes.editImageTopSpace = (self.numberOfColumns == 1) ? kEditImageTopSpaceInListLayout : kEditImageTopSpaceInGridLayout;
     attributes.shouldShowStatusViewOverImage = (self.numberOfColumns != 1);
+    attributes.filenameAligment = (self.numberOfColumns == 1) ? NSTextAlignmentLeft : NSTextAlignmentCenter;
 }
 
 - (void) recomputeSelectedIndexPathForSwipeToDelete
