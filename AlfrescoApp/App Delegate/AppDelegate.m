@@ -19,17 +19,13 @@
 #import "AppDelegate.h"
 #import "PlaceholderViewController.h"
 #import "LoginManager.h"
-#import "LocationManager.h"
-#import "UserAccount.h"
 #import "AccountManager.h"
 #import "RootRevealViewController.h"
-#import "DetailSplitViewController.h"
 #import "SwitchViewController.h"
 #import "AccountsViewController.h"
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
-
 #import "AnalyticsManager.h"
 #import "CoreDataCacheHelper.h"
 #import "FileHandlerManager.h"
@@ -39,17 +35,7 @@
 #import "MDMLaunchViewController.h"
 #import "NSDictionary+Extension.h"
 #import "UniversalDevice.h"
-
-#import "AlfrescoConfigConstants.h"
-#import "AlfrescoConfigService.h"
-#import "ActivitiesViewController.h"
-#import "FileFolderListViewController.h"
-#import "SitesListViewController.h"
-#import "DownloadsViewController.h"
-#import "SyncViewController.h"
-#import "TaskViewController.h"
 #import "MainMenuLocalConfigurationBuilder.h"
-#import "AppConfigurationManager.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -182,12 +168,14 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                             displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
                         }
                     }
-                    if([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
+                    
+                    if ([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
                     {
                         NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
                         [[FileHandlerManager sharedManager] handleURL:url sourceApplication:nil annotation:nil session:alfrescoSession];
                         self.mainMenuViewController.autoselectDefaultMenuOption = NO;
                     }
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }];
             });
@@ -214,10 +202,10 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 }
 
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     // default is to support all orientations
-    NSUInteger supportedOrientations = UIInterfaceOrientationMaskAll;
+    UIInterfaceOrientationMask supportedOrientations = UIInterfaceOrientationMaskAll;
     
     if (!IS_IPAD)
     {
