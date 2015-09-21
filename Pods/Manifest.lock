@@ -1,5 +1,5 @@
 PODS:
-  - MBProgressHUD (0.9)
+  - MBProgressHUD (0.9.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -11,7 +11,7 @@ DEPENDENCIES:
   - NJKWebViewProgress (~> 0.2)
 
 SPEC CHECKSUMS:
-  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
-  NJKWebViewProgress: 721b57080c840c76f70ff6c2dda4f836ee1b27c1
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.38.2
