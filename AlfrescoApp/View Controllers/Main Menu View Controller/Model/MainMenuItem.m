@@ -39,6 +39,7 @@
         self.itemTitle = title;
         self.itemDescription = description;
         self.displayType = displayType;
+        self.imageMask = MainMenuImageMaskNone;
         self.associatedObject = associatedObject;
         self.hidden = NO;
     }

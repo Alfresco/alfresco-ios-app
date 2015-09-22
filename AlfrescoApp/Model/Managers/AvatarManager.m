@@ -82,19 +82,13 @@
 
 - (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock
 {
-    if (!self.session)
+    if (![self.session isEqual:session])
     {
         self.session = session;
         self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
     }
     
-    UIImage *retrievedImage = [self avatarForIdentifier:identifier];
-    
-    if (retrievedImage)
-    {
-        completionBlock(retrievedImage, nil);
-    }
-    else if (identifier)
+    if (identifier)
     {
         if (![[self.requestedUsernamesAndCompletionBlocks allKeys] containsObject:identifier])
         {

@@ -25,6 +25,13 @@ typedef NS_ENUM (NSUInteger, MainMenuDisplayType)
     MainMenuDisplayTypeModal
 };
 
+typedef NS_ENUM (NSUInteger, MainMenuImageMask)
+{
+    MainMenuImageMaskNone,
+    MainMenuImageMaskRounded
+};
+
+
 @interface MainMenuItem : NSObject
 
 @property (nonatomic, strong) NSString *itemIdentifier;
@@ -33,6 +40,7 @@ typedef NS_ENUM (NSUInteger, MainMenuDisplayType)
 @property (nonatomic, strong) NSString *itemDescription;
 @property (nonatomic, assign) BOOL hidden; // defaults to NO
 @property (nonatomic, assign) MainMenuDisplayType displayType;
+@property (nonatomic, assign) MainMenuImageMask imageMask;
 @property (nonatomic, strong) id associatedObject;
 
 + (instancetype)itemWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject;

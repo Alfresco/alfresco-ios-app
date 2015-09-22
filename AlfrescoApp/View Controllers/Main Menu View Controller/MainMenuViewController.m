@@ -339,6 +339,18 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     }
 }
 
+- (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withAvatarImage:(UIImage *)avatarImage
+{
+    MainMenuItem *foundItem = [self itemForIdentifier:identifier];
+    foundItem.itemImage = avatarImage;
+    foundItem.imageMask = MainMenuImageMaskRounded;
+    NSIndexPath *itemIndexPath = [self indexPathForItemWithIdentifier:identifier];
+    if (itemIndexPath)
+    {
+        [self.tableView reloadRowsAtIndexPaths:@[itemIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withText:(NSString *)updateText
 {
     MainMenuItem *foundItem = [self itemForIdentifier:identifier];
@@ -383,15 +395,14 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMainMenuCellIdentifier];
-    
     MainMenuSection *sectionItem = self.tableViewData[indexPath.section];
     MainMenuItem *item = sectionItem.visibleSectionItems[indexPath.row];
     
     // Setup the cell
     cell.backgroundColor = [UIColor clearColor];
-    if (self.selectionColour)
+    if (self.selectionColor)
     {
-        cell.selectedBackgroundView.backgroundColor = self.selectionColour;
+        cell.selectedBackgroundView.backgroundColor = self.selectionColor;
     }
     
     // Configure the cell
@@ -400,6 +411,15 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     cell.itemTextLabel.textColor = [UIColor whiteColor];
     cell.itemDescriptionLabel.text = item.itemDescription.uppercaseString;
     cell.itemDescriptionLabel.textColor = [UIColor whiteColor];
+    
+    if (item.imageMask == MainMenuImageMaskRounded)
+    {
+        cell.itemImageView.layer.cornerRadius = cell.itemImageView.frame.size.width / 2;
+    }
+    else
+    {
+        cell.itemImageView.layer.cornerRadius = 0;
+    }
     
     return cell;
 }

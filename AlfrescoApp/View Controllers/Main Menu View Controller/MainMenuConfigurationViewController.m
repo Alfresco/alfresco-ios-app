@@ -73,10 +73,12 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     [self updateMenu:nil];
     
     [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:self.session.personIdentifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
-        if (image)
+        if (!image)
         {
-            [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withImage:image];
+            image = [[UIImage imageNamed:@"mainmenu-alfresco.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
+
+        [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withAvatarImage:image];
     }];
 }
 

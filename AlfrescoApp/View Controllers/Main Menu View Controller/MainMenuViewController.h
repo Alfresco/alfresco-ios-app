@@ -46,7 +46,7 @@ typedef NS_ENUM(NSUInteger, MainMenuGroupType)
 
 // View
 @property (nonatomic, strong) UIColor *backgroundColour;
-@property (nonatomic, strong) UIColor *selectionColour;
+@property (nonatomic, strong) UIColor *selectionColor;
 
 - (instancetype)initWithTitle:(NSString *)title menuBuilder:(MainMenuBuilder *)builder delegate:(id<MainMenuViewControllerDelegate>)delegate;
 
@@ -57,13 +57,14 @@ typedef NS_ENUM(NSUInteger, MainMenuGroupType)
 - (void)sectionsForGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(NSArray *sections))completionBlock;
 
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withImage:(UIImage *)updateImage;
+- (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withAvatarImage:(UIImage *)avatarImage;
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withText:(NSString *)updateText;
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withDescription:(NSString *)updateDescription;
 - (void)clearGroupType:(MainMenuGroupType)groupType;
 
 - (void)visibilityForSectionHeadersHidden:(BOOL)hidden animated:(BOOL)animated;
 
-- (void) cleanSelection;
+- (void)cleanSelection;
 
 @end
 
