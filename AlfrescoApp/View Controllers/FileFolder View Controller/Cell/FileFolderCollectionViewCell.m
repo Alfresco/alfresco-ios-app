@@ -409,7 +409,10 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         [self updateNodeDetails:nodeStatus];
     }
     
-    [self updateStatusImageForSyncState:nodeStatus];
+    if(self.isSyncNode)
+    {
+        [self updateStatusImageForSyncState:nodeStatus];
+    }
     
     if (nodeStatus.status == SyncStatusLoading && nodeStatus.bytesTransfered > 0 && nodeStatus.bytesTransfered < nodeStatus.totalBytesToTransfer)
     {
