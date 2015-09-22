@@ -30,6 +30,8 @@ static CGFloat const kUpdateStatusContainerWidth = 36.0f;
 static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
+static CGFloat const kStatusViewVerticalDisplacementOverImage = -40.0f;
+static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
 @interface FileFolderCollectionViewCell ()
 
@@ -63,6 +65,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameTopSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewLeadingContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewTopConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *editViewLeadingContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *editViewWidthContraint;
@@ -599,10 +602,12 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     if(layoutAttributes.shouldShowStatusViewOverImage)
     {
         self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
+        self.statusViewTopConstraint.constant = kStatusViewVerticalDisplacementOverImage;
     }
     else
     {
         self.statusViewLeadingContraint.constant = kUpdateStatusLeadingSpace;
+        self.statusViewTopConstraint.constant = kStatusViewVerticalDisplacementSideImage;
     }
     self.statusViewIsAboveImage = layoutAttributes.shouldShowStatusViewOverImage;
     

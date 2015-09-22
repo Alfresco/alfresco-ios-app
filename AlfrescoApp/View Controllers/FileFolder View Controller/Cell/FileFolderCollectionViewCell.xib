@@ -114,7 +114,6 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="JTx-r6-rwq" secondAttribute="trailing" id="0Iy-eR-7ub"/>
                                     <constraint firstAttribute="bottom" secondItem="uuu-U3-Dk6" secondAttribute="bottom" id="3r7-dp-g2S"/>
@@ -199,6 +198,7 @@
                 <outlet property="separatorHeightConstraint" destination="Cf4-cA-fPx" id="iHX-NR-AMo"/>
                 <outlet property="separatorView" destination="b3m-4c-ZLJ" id="qWv-BN-Fa5"/>
                 <outlet property="statusViewLeadingContraint" destination="dV5-9c-MFa" id="djE-rA-ZDi"/>
+                <outlet property="statusViewTopConstraint" destination="6ru-NI-lZ5" id="8rn-LA-2Pm"/>
                 <outlet property="syncIconRightSpaceConstraint" destination="gFr-4Z-JSi" id="dhW-3U-LoA"/>
                 <outlet property="syncIconWidthConstraint" destination="Hha-Hj-m2t" id="leb-Wd-QOC"/>
                 <outlet property="syncStatusImageView" destination="JTx-r6-rwq" id="kMU-UD-CZY"/>
