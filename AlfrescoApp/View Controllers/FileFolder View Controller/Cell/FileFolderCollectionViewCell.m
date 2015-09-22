@@ -59,7 +59,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingAccessoryViewConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *accessoryViewButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailWidthContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailTrailingContentViewConstant;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameTopSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewLeadingContraint;
@@ -564,7 +564,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     
     self.nodeNameLeadingConstraint.constant = layoutAttributes.nodeNameHorizontalDisplacement;
     self.nodeNameTopSpaceConstraint.constant = layoutAttributes.nodeNameVerticalDisplacement;
-    self.thumbnailWidthContraint.constant = layoutAttributes.thumbnailWidth;
+    self.thumbnailTrailingContentViewConstant.constant = layoutAttributes.thumbnailContentTrailingSpace;
     
     if([self.node isKindOfClass:[AlfrescoFolder class]])
     {
@@ -632,6 +632,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         [self showEditMode:layoutAttributes.isEditing selected:layoutAttributes.isSelectedInEditMode animated:layoutAttributes.animated];
     }
+    
+    [self.image updateContentMode];
 }
 
 #pragma mark - Private Methods

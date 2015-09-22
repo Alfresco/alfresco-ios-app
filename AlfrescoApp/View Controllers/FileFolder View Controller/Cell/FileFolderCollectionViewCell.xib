@@ -59,10 +59,8 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Fri-0V-cC7" customClass="ThumbnailImageView">
                                 <rect key="frame" x="10" y="10" width="40" height="40"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Fri-0V-cC7" secondAttribute="height" multiplier="1:1" id="cUx-1I-2rM"/>
-                                    <constraint firstAttribute="width" constant="40" id="krw-5n-3Ef"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3m-4c-ZLJ" userLabel="separatorView">
@@ -106,13 +104,13 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTx-r6-rwq" userLabel="syncIcon">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="14"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" id="Hha-Hj-m2t"/>
+                                            <constraint firstAttribute="width" priority="900" id="Hha-Hj-m2t"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uuu-U3-Dk6" userLabel="favoriteIcon">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="14"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" id="iEM-dI-bCH"/>
+                                            <constraint firstAttribute="width" priority="900" id="iEM-dI-bCH"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
@@ -123,7 +121,7 @@
                                     <constraint firstItem="JTx-r6-rwq" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="6vX-wk-fOf"/>
                                     <constraint firstItem="uuu-U3-Dk6" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="AxP-Jk-g7F"/>
                                     <constraint firstAttribute="height" constant="14" id="EpL-gH-A8U"/>
-                                    <constraint firstItem="JTx-r6-rwq" firstAttribute="leading" secondItem="uuu-U3-Dk6" secondAttribute="trailing" id="F8R-y8-HSk"/>
+                                    <constraint firstItem="JTx-r6-rwq" firstAttribute="leading" secondItem="uuu-U3-Dk6" secondAttribute="trailing" priority="900" id="F8R-y8-HSk"/>
                                     <constraint firstAttribute="bottom" secondItem="JTx-r6-rwq" secondAttribute="bottom" id="TN8-Cr-6LF"/>
                                     <constraint firstAttribute="width" id="Vp6-AT-jyB"/>
                                     <constraint firstItem="uuu-U3-Dk6" firstAttribute="leading" secondItem="eVT-ia-KrZ" secondAttribute="leading" id="kCf-Ib-Y99"/>
@@ -154,6 +152,7 @@
                             <constraint firstItem="Fri-0V-cC7" firstAttribute="leading" secondItem="PT6-4L-bxq" secondAttribute="leading" constant="10" id="e93-D7-HXq"/>
                             <constraint firstItem="HZJ-Vm-w0c" firstAttribute="leading" secondItem="PT6-4L-bxq" secondAttribute="leading" id="epx-cq-Yjx"/>
                             <constraint firstItem="mfr-0A-5Iy" firstAttribute="leading" secondItem="eVT-ia-KrZ" secondAttribute="trailing" id="gFr-4Z-JSi"/>
+                            <constraint firstAttribute="trailing" secondItem="Fri-0V-cC7" secondAttribute="trailing" priority="900" constant="270" id="l1E-oH-S1i"/>
                             <constraint firstItem="b3m-4c-ZLJ" firstAttribute="leading" secondItem="PT6-4L-bxq" secondAttribute="leading" constant="15" id="pKI-An-3Bt"/>
                             <constraint firstItem="zJn-Ip-EZT" firstAttribute="leading" secondItem="mfr-0A-5Iy" secondAttribute="trailing" constant="8" id="wvg-ue-y9q"/>
                         </constraints>
@@ -203,7 +202,7 @@
                 <outlet property="syncIconRightSpaceConstraint" destination="gFr-4Z-JSi" id="dhW-3U-LoA"/>
                 <outlet property="syncIconWidthConstraint" destination="Hha-Hj-m2t" id="leb-Wd-QOC"/>
                 <outlet property="syncStatusImageView" destination="JTx-r6-rwq" id="kMU-UD-CZY"/>
-                <outlet property="thumbnailWidthContraint" destination="krw-5n-3Ef" id="dSJ-AK-QSG"/>
+                <outlet property="thumbnailTrailingContentViewConstant" destination="l1E-oH-S1i" id="cPG-7E-GBh"/>
                 <outlet property="trailingAccessoryViewConstraint" destination="FbA-11-D9X" id="u0Y-Vw-oeI"/>
                 <outlet property="trainlingContentViewContraint" destination="hvA-Gi-qY9" id="M7n-nS-3EN"/>
                 <outlet property="updateStatusViewContainerWidthConstraint" destination="Vp6-AT-jyB" id="eJg-Is-llO"/>

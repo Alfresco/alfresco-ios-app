@@ -31,7 +31,7 @@
         newAttributes.editing = self.isEditing;
         newAttributes.animated = self.animated;
         newAttributes.isSelectedInEditMode = self.isSelectedInEditMode;
-        newAttributes.thumbnailWidth = self.thumbnailWidth;
+        newAttributes.thumbnailContentTrailingSpace = self.thumbnailContentTrailingSpace;
         newAttributes.shouldShowSmallThumbnailImage = self.shouldShowSmallThumbnailImage;
         newAttributes.shouldShowSeparatorView = self.shouldShowSeparatorView;
         newAttributes.shouldShowAccessoryView = self.shouldShowAccessoryView;
@@ -57,7 +57,7 @@
            && (self.isEditing == otherAttributes.isEditing)
            && (self.animated == otherAttributes.animated)
            && (self.isSelectedInEditMode == otherAttributes.isSelectedInEditMode)
-           && (self.thumbnailWidth == otherAttributes.thumbnailWidth)
+           && (self.thumbnailContentTrailingSpace == otherAttributes.thumbnailContentTrailingSpace)
            && (self.shouldShowSmallThumbnailImage == otherAttributes.shouldShowSmallThumbnailImage)
            && (self.shouldShowSeparatorView == otherAttributes.shouldShowSeparatorView)
            && (self.shouldShowAccessoryView == otherAttributes.shouldShowAccessoryView)

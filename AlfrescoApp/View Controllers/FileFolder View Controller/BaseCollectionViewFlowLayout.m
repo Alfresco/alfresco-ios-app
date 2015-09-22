@@ -214,7 +214,7 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
     attributes.animated = NO;
     attributes.editing = self.isEditing;
     attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:indexPath];
-    attributes.thumbnailWidth = self.thumbnailWidth;
+    attributes.thumbnailContentTrailingSpace = (self.numberOfColumns == 1) ? self.itemSize.width - kThumbnailWidthInListLayout - kThumbnailSideSpace : kThumbnailSideSpace;
     attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
     attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);
     attributes.shouldShowNodeDetails = (self.numberOfColumns == 1);
