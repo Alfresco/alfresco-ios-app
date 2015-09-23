@@ -30,6 +30,8 @@ static CGFloat const kUpdateStatusContainerWidth = 36.0f;
 static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
+static CGFloat const kStatusViewVerticalDisplacementOverImage = -40.0f;
+static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
 @interface FileFolderCollectionViewCell ()
 
@@ -59,10 +61,11 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingAccessoryViewConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *accessoryViewButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailWidthContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailTrailingContentViewConstant;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nodeNameTopSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewLeadingContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusViewTopConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *editViewLeadingContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *editViewWidthContraint;
@@ -409,7 +412,10 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         [self updateNodeDetails:nodeStatus];
     }
     
-    [self updateStatusImageForSyncState:nodeStatus];
+    if(self.isSyncNode)
+    {
+        [self updateStatusImageForSyncState:nodeStatus];
+    }
     
     if (nodeStatus.status == SyncStatusLoading && nodeStatus.bytesTransfered > 0 && nodeStatus.bytesTransfered < nodeStatus.totalBytesToTransfer)
     {
@@ -561,7 +567,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     
     self.nodeNameLeadingConstraint.constant = layoutAttributes.nodeNameHorizontalDisplacement;
     self.nodeNameTopSpaceConstraint.constant = layoutAttributes.nodeNameVerticalDisplacement;
-    self.thumbnailWidthContraint.constant = layoutAttributes.thumbnailWidth;
+    self.thumbnailTrailingContentViewConstant.constant = layoutAttributes.thumbnailContentTrailingSpace;
     
     if([self.node isKindOfClass:[AlfrescoFolder class]])
     {
@@ -596,10 +602,12 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     if(layoutAttributes.shouldShowStatusViewOverImage)
     {
         self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
+        self.statusViewTopConstraint.constant = kStatusViewVerticalDisplacementOverImage;
     }
     else
     {
         self.statusViewLeadingContraint.constant = kUpdateStatusLeadingSpace;
+        self.statusViewTopConstraint.constant = kStatusViewVerticalDisplacementSideImage;
     }
     self.statusViewIsAboveImage = layoutAttributes.shouldShowStatusViewOverImage;
     
@@ -629,6 +637,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         [self showEditMode:layoutAttributes.isEditing selected:layoutAttributes.isSelectedInEditMode animated:layoutAttributes.animated];
     }
+    
+    [self.image updateContentMode];
 }
 
 #pragma mark - Private Methods

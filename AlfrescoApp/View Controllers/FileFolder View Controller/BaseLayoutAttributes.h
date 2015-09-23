@@ -25,7 +25,7 @@
 @property (nonatomic) BOOL animated;
 @property (nonatomic) BOOL isSelectedInEditMode;
 
-@property (nonatomic) CGFloat thumbnailWidth;
+@property (nonatomic) CGFloat thumbnailContentTrailingSpace;
 @property (nonatomic) BOOL shouldShowSmallThumbnailImage;
 @property (nonatomic) BOOL shouldShowSeparatorView;
 @property (nonatomic) BOOL shouldShowAccessoryView;
