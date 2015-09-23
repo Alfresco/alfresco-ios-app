@@ -28,6 +28,7 @@ extern const CGFloat SitesCellExpandedHeight;
 - (void)siteCell:(SitesCell *)siteCell didPressExpandButton:(UIButton *)expandButton;
 - (void)siteCell:(SitesCell *)siteCell didPressFavoriteButton:(UIButton *)favoriteButton;
 - (void)siteCell:(SitesCell *)siteCell didPressJoinButton:(UIButton *)joinButton;
+- (void)siteCell:(SitesCell *)siteCell didPressMembersButton:(UIButton *)membersButton;
 
 @end
 
@@ -52,5 +53,6 @@ extern const CGFloat SitesCellExpandedHeight;
 - (IBAction)expandButtonPressed:(id)sender;
 - (IBAction)favoriteButtonPressed:(id)sender;
 - (IBAction)joinButtonPressed:(id)sender;
+- (IBAction)membersButtonPressed:(id)sender;
 
 @end

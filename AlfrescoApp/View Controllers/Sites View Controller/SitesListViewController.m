@@ -28,6 +28,7 @@
 #import "AccountManager.h"
 #import "FilePreviewViewController.h"
 #import "PreferenceManager.h"
+#import "SiteMembersViewController.h"
 
 CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
@@ -943,6 +944,15 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
             }
         }];
     }
+}
+
+- (void)siteCell:(SitesCell *)siteCell didPressMembersButton:(UIButton *)membersButton
+{
+    NSIndexPath *selectedSiteIndexPath = [self.tableView indexPathForCell:siteCell];
+    AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:selectedSiteIndexPath.row];
+    
+    SiteMembersViewController *membersVC = [[SiteMembersViewController alloc] initWithSiteShortName:selectedSite.shortName session:self.session displayName:selectedSite.title];
+    [self.navigationController pushViewController:membersVC animated:YES];
 }
 
 @end

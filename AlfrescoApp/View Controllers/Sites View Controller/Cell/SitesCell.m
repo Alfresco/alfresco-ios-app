@@ -115,4 +115,12 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     }
 }
 
+- (IBAction)membersButtonPressed:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(siteCell:didPressMembersButton:)])
+    {
+        [self.delegate siteCell:self didPressMembersButton:(UIButton *)sender];
+    }
+}
+
 @end
