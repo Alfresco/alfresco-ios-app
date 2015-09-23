@@ -178,6 +178,7 @@
 "sites.siteCell.cancel.request" = "Cancel Request"; // string length should not be extended
 "sites.siteCell.request.to.join" = "Request to Join"; // string length should not be extended
 "sites.siteCell.join" = "Join"; // string length should not be extended
+"sites.siteCell.members" = "Members"; // string length should not be extended
 
 /**
  * Accounts View Controller

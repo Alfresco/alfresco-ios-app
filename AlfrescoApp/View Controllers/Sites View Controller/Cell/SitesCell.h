@@ -42,6 +42,8 @@ extern const CGFloat SitesCellExpandedHeight;
 @property (nonatomic, weak) IBOutlet UIView *siteOptionsContainerView;
 @property (nonatomic, weak) IBOutlet UILabel *favoriteLabel;
 @property (nonatomic, weak) IBOutlet UILabel *joinLabel;
+@property (weak, nonatomic) IBOutlet UIButton *membersButton;
+@property (weak, nonatomic) IBOutlet UILabel *membersLabel;
 
 // Public Functions
 - (void)updateCellStateWithSite:(AlfrescoSite *)site;
