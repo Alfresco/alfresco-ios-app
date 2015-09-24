@@ -112,9 +112,10 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         self.searchController.searchBar.delegate = self;
         self.searchController.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.searchController.searchBar sizeToFit];
-        self.searchController.hidesNavigationBarDuringPresentation = NO;
         self.tableView.tableHeaderView = self.searchController.searchBar;
         self.definesPresentationContext = YES;
+
+        self.navigationController.navigationBar.translucent = YES;
     }
     
     [self.tableView reloadData];
