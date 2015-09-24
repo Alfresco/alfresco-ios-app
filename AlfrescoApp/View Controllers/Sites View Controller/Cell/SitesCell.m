@@ -82,7 +82,7 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     [self.joinButton setImage:joinButtonImage forState:UIControlStateNormal];
     self.joinLabel.text = joinLabelText;
     
-    membersButtonImage = [UIImage imageNamed:@"site-action-join.png"];
+    membersButtonImage = [UIImage imageNamed:@"site-action-members.png"];
     membersLabelText = NSLocalizedString(@"sites.siteCell.members", @"Members");
     
     [self.membersButton setImage:membersButtonImage forState:UIControlStateNormal];
