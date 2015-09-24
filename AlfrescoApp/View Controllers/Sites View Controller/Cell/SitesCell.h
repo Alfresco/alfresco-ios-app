@@ -28,6 +28,7 @@ extern const CGFloat SitesCellExpandedHeight;
 - (void)siteCell:(SitesCell *)siteCell didPressExpandButton:(UIButton *)expandButton;
 - (void)siteCell:(SitesCell *)siteCell didPressFavoriteButton:(UIButton *)favoriteButton;
 - (void)siteCell:(SitesCell *)siteCell didPressJoinButton:(UIButton *)joinButton;
+- (void)siteCell:(SitesCell *)siteCell didPressMembersButton:(UIButton *)membersButton;
 
 @end
 
@@ -42,6 +43,8 @@ extern const CGFloat SitesCellExpandedHeight;
 @property (nonatomic, weak) IBOutlet UIView *siteOptionsContainerView;
 @property (nonatomic, weak) IBOutlet UILabel *favoriteLabel;
 @property (nonatomic, weak) IBOutlet UILabel *joinLabel;
+@property (weak, nonatomic) IBOutlet UIButton *membersButton;
+@property (weak, nonatomic) IBOutlet UILabel *membersLabel;
 
 // Public Functions
 - (void)updateCellStateWithSite:(AlfrescoSite *)site;
@@ -50,5 +53,6 @@ extern const CGFloat SitesCellExpandedHeight;
 - (IBAction)expandButtonPressed:(id)sender;
 - (IBAction)favoriteButtonPressed:(id)sender;
 - (IBAction)joinButtonPressed:(id)sender;
+- (IBAction)membersButtonPressed:(id)sender;
 
 @end

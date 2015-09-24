@@ -33,6 +33,7 @@
 #import "FileFolderCollectionViewController.h"
 #import "SearchViewController.h"
 #import "PersonProfileViewController.h"
+#import "SiteMembersViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -323,8 +324,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypePeople])
     {
-        // TODO: Currently place an empty view controller
-        associatedObject = [[UIViewController alloc] init];
+        // Site membership
+        NSString *siteShortName = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey];
+        SiteMembersViewController *membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName session:self.session displayName:nil];
+        
+        associatedObject = membersViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeGallery])
     {

@@ -189,6 +189,8 @@
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
 		2B114E631B1F39D4005A05AA /* cell-button-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */; };
 		2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */; };
+		2B1A050A1BB2D27C00EE4AAE /* SiteMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A05091BB2D27C00EE4AAE /* SiteMembersViewController.m */; settings = {ASSET_TAGS = (); }; };
+		2B1A050C1BB2E4CE00EE4AAE /* SiteMembersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		2B2609911B4AD2C100F2F26B /* dots-A.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098D1B4AD2C100F2F26B /* dots-A.png */; };
 		2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */; };
 		2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
@@ -1069,6 +1071,9 @@
 		2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked@2x.png"; sourceTree = "<group>"; };
 		2B1751DB1B3807AF00E440DD /* LoadingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingCollectionViewCell.h; sourceTree = "<group>"; };
 		2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingCollectionViewCell.m; sourceTree = "<group>"; };
+		2B1A05081BB2D27C00EE4AAE /* SiteMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteMembersViewController.h; sourceTree = "<group>"; };
+		2B1A05091BB2D27C00EE4AAE /* SiteMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteMembersViewController.m; sourceTree = "<group>"; };
+		2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteMembersViewController.xib; sourceTree = "<group>"; };
 		2B26098D1B4AD2C100F2F26B /* dots-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A.png"; sourceTree = "<group>"; };
 		2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A@2x.png"; sourceTree = "<group>"; };
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
@@ -2165,6 +2170,16 @@
 				2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */,
 			);
 			path = "Edit Mode Collection View";
+			sourceTree = "<group>";
+		};
+		2B1A05031BB2D24F00EE4AAE /* Site Members View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2B1A05081BB2D27C00EE4AAE /* SiteMembersViewController.h */,
+				2B1A05091BB2D27C00EE4AAE /* SiteMembersViewController.m */,
+				2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */,
+			);
+			path = "Site Members View Controller";
 			sourceTree = "<group>";
 		};
 		2B93CBC41ABACC34003BAD2E /* Connection Diagnostic View Controller */ = {
@@ -3551,6 +3566,7 @@
 				7384BDEE17F2F86B00C6A54F /* Settings View Controller */,
 				2B09B03E1B85F96500448A52 /* Search View Controller */,
 				738664A31906AD8E0021D1BD /* Sites View Controller */,
+				2B1A05031BB2D24F00EE4AAE /* Site Members View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
 				0833244D17F981EC00EE6AA8 /* Sync View Controller */,
 				73F628B4185779050050F437 /* Text File View Controller */,
@@ -4443,6 +4459,7 @@
 				0876A05818D9A0A80035370A /* ProgressView.xib in Resources */,
 				2764ABCD18CDC839003FFBF9 /* actionsheet-upload.png in Resources */,
 				2BFB08191B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib in Resources */,
+				2B1A050C1BB2E4CE00EE4AAE /* SiteMembersViewController.xib in Resources */,
 				2764ABD518CE09EE003FFBF9 /* actionsheet-edit.png in Resources */,
 				734BFE561899606A00692AB4 /* hamburger.png in Resources */,
 				738BE95A1A962AA7006264E5 /* UserPreferences.plist in Resources */,
@@ -4769,6 +4786,7 @@
 				2BB2657D1B78938F00EE7EB0 /* AlfrescoURLHandler.m in Sources */,
 				738664F01906B2420021D1BD /* PersonCell.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
+				2B1A050A1BB2D27C00EE4AAE /* SiteMembersViewController.m in Sources */,
 				738664AA1906AE2E0021D1BD /* ThumbnailImageView.m in Sources */,
 				7335AA71181FBA500091CA95 /* PagedScrollView.m in Sources */,
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,

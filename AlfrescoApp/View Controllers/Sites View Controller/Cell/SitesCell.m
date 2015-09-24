@@ -41,6 +41,8 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     NSString *favoriteLabelText = nil;
     UIImage *joinButtonImage = nil;
     NSString *joinLabelText = nil;
+    UIImage *membersButtonImage = nil;
+    NSString *membersLabelText = nil;
     
     if (site.isFavorite)
     {
@@ -79,6 +81,12 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     
     [self.joinButton setImage:joinButtonImage forState:UIControlStateNormal];
     self.joinLabel.text = joinLabelText;
+    
+    membersButtonImage = [UIImage imageNamed:@"site-action-join.png"];
+    membersLabelText = NSLocalizedString(@"sites.siteCell.members", @"Members");
+    
+    [self.membersButton setImage:membersButtonImage forState:UIControlStateNormal];
+    self.membersLabel.text = membersLabelText;
 }
 
 #pragma mark - IBActions Functions
@@ -104,6 +112,14 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     if ([self.delegate respondsToSelector:@selector(siteCell:didPressJoinButton:)])
     {
         [self.delegate siteCell:self didPressJoinButton:(UIButton *)sender];
+    }
+}
+
+- (IBAction)membersButtonPressed:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(siteCell:didPressMembersButton:)])
+    {
+        [self.delegate siteCell:self didPressMembersButton:(UIButton *)sender];
     }
 }
 

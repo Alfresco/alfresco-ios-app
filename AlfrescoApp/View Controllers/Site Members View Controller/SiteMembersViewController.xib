@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiteMembersViewController">
+            <connections>
+                <outlet property="tableView" destination="S6D-vj-2FV" id="AxZ-Nr-anH"/>
+                <outlet property="view" destination="iN0-l3-epB" id="i5r-Ij-sn3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S6D-vj-2FV" customClass="ALFTableView">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="S6D-vj-2FV" secondAttribute="trailing" id="MDj-lH-nYW"/>
+                <constraint firstItem="S6D-vj-2FV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="PUo-Sp-ZxO"/>
+                <constraint firstItem="S6D-vj-2FV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="goM-ky-55O"/>
+                <constraint firstAttribute="bottom" secondItem="S6D-vj-2FV" secondAttribute="bottom" id="o1q-S8-lFI"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

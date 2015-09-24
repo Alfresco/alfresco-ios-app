@@ -111,6 +111,7 @@
 "error.sites.retrieval.failed" = "Couldn’t retrieve sites.\n\n%@.";
 "error.sites.folder.failed" = "Couldn’t retrieve sites folder.\n\n%@.";
 "error.sites.search.failed" = "Couldn’t search across sites.\n\n%@.";
+"error.sites.site.notfound" = "Site wasn't found";
 "error.upload.failed" = "The file couldn’t be uploaded right now.\n\n%@.";
 "error.upload.addtags.failed" = "The tags couldn’t be added to the file.\n\n%@.";
 "error.tags.retrieve.failed" = "The tags couldn’t be retrieved right now.\n\n%@.";
@@ -178,6 +179,7 @@
 "sites.siteCell.cancel.request" = "Cancel Request"; // string length should not be extended
 "sites.siteCell.request.to.join" = "Request to Join"; // string length should not be extended
 "sites.siteCell.join" = "Join"; // string length should not be extended
+"sites.siteCell.members" = "Members"; // string length should not be extended
 
 /**
  * Accounts View Controller
