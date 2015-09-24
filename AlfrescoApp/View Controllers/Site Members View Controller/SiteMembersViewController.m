@@ -24,7 +24,7 @@
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 
-static CGFloat const kCellHeight = 73.0f;
+static CGFloat const kEstimatedCellHeight = 60.0f;
 
 @interface SiteMembersViewController ()
 
@@ -41,7 +41,7 @@ static CGFloat const kCellHeight = 73.0f;
 {
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     
-    if(self)
+    if (self)
     {
         self.siteShortName = siteShortName;
         self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
@@ -56,7 +56,7 @@ static CGFloat const kCellHeight = 73.0f;
 {
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     
-    if(self)
+    if (self)
     {
         self.siteShortName = site.shortName;
         self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
@@ -72,6 +72,9 @@ static CGFloat const kCellHeight = 73.0f;
     [super viewDidLoad];
     
     self.tableView.emptyMessage = NSLocalizedString(@"No Users", @"No Users");
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = kEstimatedCellHeight;
+    
     self.title = self.displayName;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass([PersonCell class])];
@@ -79,31 +82,34 @@ static CGFloat const kCellHeight = 73.0f;
     [self loadData];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - UITableViewDataSource and UITableViewDelegate methods
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoPerson *person = [self.tableViewData objectAtIndex:indexPath.row];
     PersonCell *cell = (PersonCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([PersonCell class]) forIndexPath:indexPath];
-    
     AvatarManager *avatarManager = [AvatarManager sharedManager];
+    UIImage *avatar = [avatarManager avatarForIdentifier:person.identifier];
+
+    if (avatar)
+    {
+        cell.avatarImageView.image = avatar;
+    }
+    else
+    {
+        UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
+        cell.avatarImageView.image = placeholderImage;
+
+        [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+            if (avatarImage)
+            {
+                [cell.avatarImageView setImage:avatarImage withFade:YES];
+            }
+        }];
+    }
     
-    [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
-        if(image)
-        {
-            cell.avatarImageView.image = image;
-        }
-        else
-        {
-            UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-            cell.avatarImageView.image = placeholderImage;
-        }
-    }];
     cell.nameLabel.text = person.fullName;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
@@ -111,11 +117,6 @@ static CGFloat const kCellHeight = 73.0f;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.tableViewData.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kCellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -156,7 +157,7 @@ static CGFloat const kCellHeight = 73.0f;
     void (^retrieveSiteMembers)(AlfrescoSite *site, AlfrescoListingContext *listingContext) = ^(AlfrescoSite *site, AlfrescoListingContext *listingContext)
     {
         [self.siteService retrieveAllMembersOfSite:site listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            if(error)
+            if (error)
             {
                 [Notifier notifyWithAlfrescoError:error];
             }
@@ -168,9 +169,9 @@ static CGFloat const kCellHeight = 73.0f;
         }];
     };
     
-    if(self.site)
+    if (self.site)
     {
-        if(!self.displayName)
+        if (!self.displayName)
         {
             self.displayName = self.site.title;
             self.title = self.displayName;
@@ -181,7 +182,7 @@ static CGFloat const kCellHeight = 73.0f;
     {
         [self showHUD];
         [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
-            if(error)
+            if (error)
             {
                 if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
                 {
@@ -197,7 +198,7 @@ static CGFloat const kCellHeight = 73.0f;
             else
             {
                 self.site = site;
-                if(!self.displayName)
+                if (!self.displayName)
                 {
                     self.displayName = self.site.title;
                     self.title = self.displayName;
