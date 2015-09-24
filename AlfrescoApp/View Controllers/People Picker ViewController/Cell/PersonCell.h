@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -15,10 +15,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
+
+#import "ThumbnailImageView.h"
+
 @interface PersonCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UIImageView *avatarImageView;
+@property (nonatomic, weak) IBOutlet ThumbnailImageView *avatarImageView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
 @end

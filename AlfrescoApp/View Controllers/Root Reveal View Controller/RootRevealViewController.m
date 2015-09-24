@@ -20,7 +20,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 static CGFloat kDeviceSpecificRevealWidth;
-static const CGFloat kPadRevealWidth = 50.0f;
+static const CGFloat kPadRevealWidth = 48.0f;
 static const CGFloat kPhoneRevealWidth = 0.0f;
 static const CGFloat kMasterViewWidth = 250.0f;
 static const CGFloat kAnimationSpeed = 0.2f;

@@ -18,8 +18,6 @@
 
 #import "MainMenuTableViewCell.h"
 
-static NSUInteger kCornerRadius = 6.0f;
-
 @implementation MainMenuTableViewCell
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -32,12 +30,6 @@ static NSUInteger kCornerRadius = 6.0f;
         self.selectedBackgroundView = bgColourView;
     }
     return self;
-}
-
-- (void)awakeFromNib
-{
-    self.itemImageView.layer.cornerRadius = kCornerRadius;
-    self.itemImageView.clipsToBounds = YES;
 }
 
 @end

@@ -267,7 +267,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     MainMenuLocalConfigurationBuilder *menuBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:[AccountManager sharedManager].selectedAccount session:self.session];
     MainMenuConfigurationViewController *mainMenuController = [[MainMenuConfigurationViewController alloc] initWithTitle:nil menuBuilder:menuBuilder delegate:switchController];
     mainMenuController.backgroundColour = [UIColor mainMenuBackgroundColor];
-    mainMenuController.selectionColour = [UIColor appTintColor];
+    mainMenuController.selectionColor = [UIColor appTintColor];
     
     self.mainMenuViewController = mainMenuController;
     

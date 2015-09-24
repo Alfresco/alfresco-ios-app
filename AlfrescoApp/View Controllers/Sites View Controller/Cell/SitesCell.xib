@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3" id="szh-TA-AAq">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="4">
@@ -89,7 +89,7 @@
                         <constraint firstAttribute="width" constant="35" id="yU1-CE-9WR"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                    <state key="normal" image="site-action-join.png">
+                    <state key="normal" image="site-action-members.png">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -163,5 +163,6 @@
         <image name="ButtonBarArrowDown.png" width="15" height="15"/>
         <image name="site-action-favorite.png" width="35" height="35"/>
         <image name="site-action-join.png" width="35" height="35"/>
+        <image name="site-action-members.png" width="35" height="35"/>
     </resources>
 </document>

@@ -132,6 +132,8 @@
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit@2x.png */; };
 		277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F16CB1938C0B000884ED6 /* ALFPreviewController.m */; };
 		277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277FC4B1194F094200B311E1 /* PrintingWebView.m */; };
+		279961091BB4630900421C33 /* site-action-members.png in Resources */ = {isa = PBXBuildFile; fileRef = 279961071BB4630900421C33 /* site-action-members.png */; settings = {ASSET_TAGS = (); }; };
+		2799610A1BB4630900421C33 /* site-action-members@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 279961081BB4630900421C33 /* site-action-members@2x.png */; settings = {ASSET_TAGS = (); }; };
 		27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A1BFD019460318004DF61D /* ThumbnailOperation.m */; };
 		27A2DC3D1920DC54002C6793 /* preview-download-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3B1920DC54002C6793 /* preview-download-stop.png */; };
 		27A2DC3E1920DC54002C6793 /* preview-download-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A2DC3C1920DC54002C6793 /* preview-download-stop@2x.png */; };
@@ -996,6 +998,8 @@
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
 		277FC4B0194F094200B311E1 /* PrintingWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintingWebView.h; sourceTree = "<group>"; };
 		277FC4B1194F094200B311E1 /* PrintingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintingWebView.m; sourceTree = "<group>"; };
+		279961071BB4630900421C33 /* site-action-members.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members.png"; sourceTree = "<group>"; };
+		279961081BB4630900421C33 /* site-action-members@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members@2x.png"; sourceTree = "<group>"; };
 		27A1BFCF19460318004DF61D /* ThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailOperation.h; sourceTree = "<group>"; };
 		27A1BFD019460318004DF61D /* ThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailOperation.m; sourceTree = "<group>"; };
 		27A2DC3B1920DC54002C6793 /* preview-download-stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview-download-stop.png"; sourceTree = "<group>"; };
@@ -3734,6 +3738,8 @@
 				73B95A5317A68B7E0099FB84 /* site-action-join@2x.png */,
 				73B95A5417A68B7E0099FB84 /* site-action-leave.png */,
 				73B95A5517A68B7E0099FB84 /* site-action-leave@2x.png */,
+				279961071BB4630900421C33 /* site-action-members.png */,
+				279961081BB4630900421C33 /* site-action-members@2x.png */,
 				73B95A5617A68B7E0099FB84 /* site-action-requesttojoin.png */,
 				73B95A5717A68B7E0099FB84 /* site-action-requesttojoin@2x.png */,
 				73B95A5817A68B7E0099FB84 /* site-action-unfavorite.png */,
@@ -4299,6 +4305,7 @@
 				733638BB1913BA1600472A57 /* system_notice_tick.png in Resources */,
 				73FF558218ACE2370009CA56 /* large_notes@2x.png in Resources */,
 				73881FD9188FF6B00052C75F /* actionsheet-like.png in Resources */,
+				2799610A1BB4630900421C33 /* site-action-members@2x.png in Resources */,
 				73BE420718F4021300DB8912 /* task_priority_low@2x.png in Resources */,
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
 				738664E31906B2260021D1BD /* LabelCell.xib in Resources */,
@@ -4421,6 +4428,7 @@
 				738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */,
 				73881FDA188FF6B00052C75F /* actionsheet-like@2x.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
+				279961091BB4630900421C33 /* site-action-members.png in Resources */,
 				732DBF9018E1BC6B00F7A0BF /* small_document.png in Resources */,
 				73B95ABB17A68B7E0099FB84 /* site-action-unfavorite.png in Resources */,
 				271DC768189C2D250059D1B2 /* status-restricted-highlighted.png in Resources */,
