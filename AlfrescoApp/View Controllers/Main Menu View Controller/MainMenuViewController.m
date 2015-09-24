@@ -73,10 +73,11 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.bounces = NO;
+    tableView.alwaysBounceVertical = NO;
     tableView.showsVerticalScrollIndicator = NO;
     tableView.showsHorizontalScrollIndicator = NO;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    tableView.rowHeight = UITableViewAutomaticDimension;
     [view addSubview:tableView];
     self.tableView = tableView;
     
@@ -424,13 +425,10 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     MainMenuTableViewCell *cell = (MainMenuTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    
-    return height;
+    return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 }
 
 #pragma mark - UITableViewDelegate Methods
@@ -482,13 +480,10 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
 {
     MainMenuHeaderView *header = (MainMenuHeaderView *)[self tableView:tableView viewForHeaderInSection:section];
-    
-    CGFloat height = [header.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
-    
-    return height;
+    return [header.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize].height;
 }
 
 #pragma mark - MainMenuGroupDelegate Methods
