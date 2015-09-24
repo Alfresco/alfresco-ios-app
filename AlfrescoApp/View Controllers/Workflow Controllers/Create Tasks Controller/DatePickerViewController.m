@@ -52,7 +52,6 @@
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.title = NSLocalizedString(@"date.picker.title", @"Calendar");
-    self.datePicker.minimumDate = [NSDate date];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"date.picker.today", @"Today")
                                                                              style:UIBarButtonItemStylePlain
