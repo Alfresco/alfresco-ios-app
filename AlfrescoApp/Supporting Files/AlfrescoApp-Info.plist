@@ -75,6 +75,7 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>skype</string>
+		<string>tel</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
