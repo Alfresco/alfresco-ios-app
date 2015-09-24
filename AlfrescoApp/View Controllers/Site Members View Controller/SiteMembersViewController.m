@@ -71,6 +71,7 @@ static CGFloat const kCellHeight = 73.0f;
 {
     [super viewDidLoad];
     
+    self.tableView.emptyMessage = NSLocalizedString(@"No Users", @"No Users");
     self.title = self.displayName;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass([PersonCell class])];
@@ -169,6 +170,11 @@ static CGFloat const kCellHeight = 73.0f;
     
     if(self.site)
     {
+        if(!self.displayName)
+        {
+            self.displayName = self.site.title;
+            self.title = self.displayName;
+        }
         retrieveSiteMembers(self.site, self.defaultListingContext);
     }
     else
@@ -191,6 +197,11 @@ static CGFloat const kCellHeight = 73.0f;
             else
             {
                 self.site = site;
+                if(!self.displayName)
+                {
+                    self.displayName = self.site.title;
+                    self.title = self.displayName;
+                }
                 retrieveSiteMembers(site, self.defaultListingContext);
             }
         }];
