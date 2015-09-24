@@ -20,4 +20,11 @@
 
 @implementation PersonCell
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2;
+    self.avatarImageView.clipsToBounds = YES;
+}
+
 @end
