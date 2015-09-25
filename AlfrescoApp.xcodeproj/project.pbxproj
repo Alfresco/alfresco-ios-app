@@ -223,6 +223,8 @@
 		2BFE12961AC2E734000EB19D /* circle_cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12921AC2E734000EB19D /* circle_cross@2x.png */; };
 		2BFE12971AC2E734000EB19D /* circle_tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12931AC2E734000EB19D /* circle_tick.png */; };
 		2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12941AC2E734000EB19D /* circle_tick@2x.png */; };
+		2BFECF581BB57D660007ABA2 /* SitesTableListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFECF571BB57D660007ABA2 /* SitesTableListViewController.m */; settings = {ASSET_TAGS = (); }; };
+		2BFECF5F1BB587310007ABA2 /* SitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFECF5E1BB587310007ABA2 /* SitesViewController.m */; settings = {ASSET_TAGS = (); }; };
 		65E3284E24B215E500C5C83C /* libPods-AlfrescoDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB8B1BCCC8F9161DE364C96 /* libPods-AlfrescoDocumentPicker.a */; };
 		7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */; };
 		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
@@ -1119,6 +1121,10 @@
 		2BFE12921AC2E734000EB19D /* circle_cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle_cross@2x.png"; sourceTree = "<group>"; };
 		2BFE12931AC2E734000EB19D /* circle_tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_tick.png; sourceTree = "<group>"; };
 		2BFE12941AC2E734000EB19D /* circle_tick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle_tick@2x.png"; sourceTree = "<group>"; };
+		2BFECF561BB57D660007ABA2 /* SitesTableListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesTableListViewController.h; sourceTree = "<group>"; };
+		2BFECF571BB57D660007ABA2 /* SitesTableListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesTableListViewController.m; sourceTree = "<group>"; };
+		2BFECF5D1BB587310007ABA2 /* SitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesViewController.h; sourceTree = "<group>"; };
+		2BFECF5E1BB587310007ABA2 /* SitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesViewController.m; sourceTree = "<group>"; };
 		2DDAD7488C5D07BE47218131 /* Pods-AlfrescoDocumentPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.release.xcconfig"; sourceTree = "<group>"; };
 		386644BAD9E13F10A635FE60 /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; sourceTree = "<group>"; };
 		5E94C5EF6AA4498598C65FBE /* Pods-AlfrescoDocumentPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2831,6 +2837,10 @@
 				738664BB1906B14C0021D1BD /* Cell */,
 				738664A41906AD8E0021D1BD /* SitesListViewController.h */,
 				738664A51906AD8E0021D1BD /* SitesListViewController.m */,
+				2BFECF561BB57D660007ABA2 /* SitesTableListViewController.h */,
+				2BFECF571BB57D660007ABA2 /* SitesTableListViewController.m */,
+				2BFECF5D1BB587310007ABA2 /* SitesViewController.h */,
+				2BFECF5E1BB587310007ABA2 /* SitesViewController.m */,
 			);
 			path = "Sites View Controller";
 			sourceTree = "<group>";
@@ -4604,6 +4614,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */,
+				2BFECF581BB57D660007ABA2 /* SitesTableListViewController.m in Sources */,
 				731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */,
 				731901A21844B490002C82C1 /* ContainerViewController.m in Sources */,
 				73B959EE17A686590099FB84 /* main.m in Sources */,
@@ -4625,6 +4636,7 @@
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
 				7390B3651B03681E00E7191F /* AlfrescoConfigEvaluator.m in Sources */,
 				7390B3661B03681E00E7191F /* AlfrescoConfigInfo.m in Sources */,
+				2BFECF5F1BB587310007ABA2 /* SitesViewController.m in Sources */,
 				73B9584217A6750F0099FB84 /* ConnectivityManager.m in Sources */,
 				738664A11906AD840021D1BD /* FileFolderListViewController.m in Sources */,
 				7390B3761B03681E00E7191F /* AlfrescoWorkflowConfig.m in Sources */,
