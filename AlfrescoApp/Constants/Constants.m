@@ -278,6 +278,7 @@ NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey = @"full
 NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey = @"searchFolderOnly";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey = @"statement";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterUsernameKey = @"userName";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey = @"folderTypeId";
 // View Parameter Values
 NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue = @"my";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue = @"favorites";
@@ -285,6 +286,8 @@ NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue = @"al
 NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchPerson = @"person";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchDocument = @"document";
 NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchFolder = @"folder";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeMyFiles = @"userhome";
+NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeShared = @"shared";
 
 // App Configuration
 //// Notifictaions

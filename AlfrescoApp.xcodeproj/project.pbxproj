@@ -132,6 +132,8 @@
 		2764ABD618CE09EE003FFBF9 /* actionsheet-edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764ABD418CE09EE003FFBF9 /* actionsheet-edit@2x.png */; };
 		277F16CC1938C0B000884ED6 /* ALFPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F16CB1938C0B000884ED6 /* ALFPreviewController.m */; };
 		277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277FC4B1194F094200B311E1 /* PrintingWebView.m */; };
+		278658A31BB60280003B77AA /* CustomFolderService.m in Sources */ = {isa = PBXBuildFile; fileRef = 278658A21BB60280003B77AA /* CustomFolderService.m */; settings = {ASSET_TAGS = (); }; };
+		278658A41BB60280003B77AA /* CustomFolderService.m in Sources */ = {isa = PBXBuildFile; fileRef = 278658A21BB60280003B77AA /* CustomFolderService.m */; settings = {ASSET_TAGS = (); }; };
 		279961091BB4630900421C33 /* site-action-members.png in Resources */ = {isa = PBXBuildFile; fileRef = 279961071BB4630900421C33 /* site-action-members.png */; settings = {ASSET_TAGS = (); }; };
 		2799610A1BB4630900421C33 /* site-action-members@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 279961081BB4630900421C33 /* site-action-members@2x.png */; settings = {ASSET_TAGS = (); }; };
 		27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A1BFD019460318004DF61D /* ThumbnailOperation.m */; };
@@ -605,7 +607,6 @@
 		73BE420918F4021300DB8912 /* task_priority_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73BE420318F4021300DB8912 /* task_priority_medium@2x.png */; };
 		73C5545E1B8CBD1E00C45F56 /* ContactDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C5545D1B8CBD1E00C45F56 /* ContactDetailView.m */; };
 		73C554651B8CBD3C00C45F56 /* ContactDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73C554641B8CBD3C00C45F56 /* ContactDetailView.xib */; };
-		73CD5B081A7275B7000A5523 /* CustomFolderService.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B071A7275B7000A5523 /* CustomFolderService.m */; };
 		73CD5B0B1A727D88000A5523 /* AppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0A1A727D88000A5523 /* AppConfiguration.m */; };
 		73CD5B0E1A729526000A5523 /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0D1A729526000A5523 /* SharedConstants.m */; };
 		73CD5B0F1A729543000A5523 /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CD5B0D1A729526000A5523 /* SharedConstants.m */; };
@@ -998,6 +999,8 @@
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
 		277FC4B0194F094200B311E1 /* PrintingWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintingWebView.h; sourceTree = "<group>"; };
 		277FC4B1194F094200B311E1 /* PrintingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintingWebView.m; sourceTree = "<group>"; };
+		278658A11BB60280003B77AA /* CustomFolderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CustomFolderService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		278658A21BB60280003B77AA /* CustomFolderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CustomFolderService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		279961071BB4630900421C33 /* site-action-members.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members.png"; sourceTree = "<group>"; };
 		279961081BB4630900421C33 /* site-action-members@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members@2x.png"; sourceTree = "<group>"; };
 		27A1BFCF19460318004DF61D /* ThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailOperation.h; sourceTree = "<group>"; };
@@ -1107,7 +1110,7 @@
 		2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderCollectionViewController.h; sourceTree = "<group>"; };
 		2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderCollectionViewController.m; sourceTree = "<group>"; };
 		2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderCollectionViewController.h; sourceTree = "<group>"; };
-		2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderCollectionViewController.m; sourceTree = "<group>"; };
+		2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FileFolderCollectionViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLayoutAttributes.h; sourceTree = "<group>"; };
@@ -1219,7 +1222,7 @@
 		734CC3EF1A700808005D148E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		734CC3F01A700808005D148E /* AlfrescoDocumentPicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoDocumentPicker.entitlements; sourceTree = "<group>"; };
 		734CC3F11A700808005D148E /* DocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentPickerViewController.h; sourceTree = "<group>"; };
-		734CC3F21A700808005D148E /* DocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentPickerViewController.m; sourceTree = "<group>"; };
+		734CC3F21A700808005D148E /* DocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DocumentPickerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		734CC3FA1A700808005D148E /* AlfrescoDocumentPickerFileProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AlfrescoDocumentPickerFileProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		734CC3FD1A700809005D148E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		734CC3FE1A700809005D148E /* AlfrescoDocumentPickerFileProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoDocumentPickerFileProvider.entitlements; sourceTree = "<group>"; };
@@ -1675,8 +1678,6 @@
 		73C5545C1B8CBD1E00C45F56 /* ContactDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactDetailView.h; path = "Contact Detail View/ContactDetailView.h"; sourceTree = "<group>"; };
 		73C5545D1B8CBD1E00C45F56 /* ContactDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactDetailView.m; path = "Contact Detail View/ContactDetailView.m"; sourceTree = "<group>"; };
 		73C554641B8CBD3C00C45F56 /* ContactDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactDetailView.xib; path = "Contact Detail View/ContactDetailView.xib"; sourceTree = "<group>"; };
-		73CD5B061A7275B7000A5523 /* CustomFolderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFolderService.h; sourceTree = "<group>"; };
-		73CD5B071A7275B7000A5523 /* CustomFolderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFolderService.m; sourceTree = "<group>"; };
 		73CD5B091A727D88000A5523 /* AppConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppConfiguration.h; path = Model/AppConfiguration.h; sourceTree = "<group>"; };
 		73CD5B0A1A727D88000A5523 /* AppConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppConfiguration.m; path = Model/AppConfiguration.m; sourceTree = "<group>"; };
 		73CD5B0C1A729526000A5523 /* SharedConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedConstants.h; sourceTree = "<group>"; };
@@ -2130,6 +2131,15 @@
 			path = "Printing WebView";
 			sourceTree = "<group>";
 		};
+		278658A01BB60280003B77AA /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				278658A11BB60280003B77AA /* CustomFolderService.h */,
+				278658A21BB60280003B77AA /* CustomFolderService.m */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		27E17D481898198F0010FA99 /* HockeySDK.embeddedframework */ = {
 			isa = PBXGroup;
 			children = (
@@ -2393,7 +2403,6 @@
 			isa = PBXGroup;
 			children = (
 				73F14C191A8CDDC40042D91E /* Categories */,
-				73CD5B011A727594000A5523 /* Services */,
 				738B41091A714879008F8784 /* Model */,
 				734B87611A9F79EA0093E702 /* Utilities */,
 				734CC3F11A700808005D148E /* DocumentPickerViewController.h */,
@@ -3374,6 +3383,7 @@
 				731901B318477E4E002C82C1 /* Legacy */,
 				73B957D017A6750E0099FB84 /* Managers */,
 				738664AB1906AF6A0021D1BD /* Operations */,
+				278658A01BB60280003B77AA /* Services */,
 				73B957DB17A6750E0099FB84 /* URLHandlers */,
 				080828A4184DEDCB000524A3 /* AccountCertificate.h */,
 				080828A5184DEDCB000524A3 /* AccountCertificate.m */,
@@ -3822,15 +3832,6 @@
 				73C554641B8CBD3C00C45F56 /* ContactDetailView.xib */,
 			);
 			name = "Contact Detail View";
-			sourceTree = "<group>";
-		};
-		73CD5B011A727594000A5523 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				73CD5B061A7275B7000A5523 /* CustomFolderService.h */,
-				73CD5B071A7275B7000A5523 /* CustomFolderService.m */,
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		73CF6CDB1B1C908200D79CA0 /* Main Menu Reorder View Controller */ = {
@@ -4573,8 +4574,8 @@
 				73697B911A979879009F10BA /* FileMetadata.m in Sources */,
 				734CC3F31A700808005D148E /* DocumentPickerViewController.m in Sources */,
 				735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */,
+				278658A41BB60280003B77AA /* CustomFolderService.m in Sources */,
 				73697B951A979895009F10BA /* PersistentQueueStore.m in Sources */,
-				73CD5B081A7275B7000A5523 /* CustomFolderService.m in Sources */,
 				738B41081A714872008F8784 /* UserAccountWrapper.m in Sources */,
 				734B87641A9F7A0F0093E702 /* Utilities.m in Sources */,
 				73B2679D1ADD581400310592 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
@@ -4833,6 +4834,7 @@
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				2BA7FA011B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m in Sources */,
 				731A8F46192F56470099BE7B /* NewVersionLabelCell.m in Sources */,
+				278658A31BB60280003B77AA /* CustomFolderService.m in Sources */,
 				731901BB18477E4E002C82C1 /* AccountStatus.m in Sources */,
 				73B350B71851E8BF0037E3E3 /* NSData+Base64.m in Sources */,
 				27DA1B651915362300885F0F /* BaseInboundURLHandler.m in Sources */,

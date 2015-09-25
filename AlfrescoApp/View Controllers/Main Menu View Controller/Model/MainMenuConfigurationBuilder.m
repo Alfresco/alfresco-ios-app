@@ -283,6 +283,22 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             NSString *folderPath = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterPathKey];
             fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolderPath:folderPath folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
         }
+        else if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey])
+        {
+            NSString *folderTypeId = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey];
+            NSString *displayName = viewConfig.label;
+            
+            if ([folderTypeId isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFolderTypeMyFiles])
+            {
+                displayName = displayName ?: NSLocalizedString(@"myFiles.title", @"My Files");
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:displayName session:self.session];
+            }
+            else if ([folderTypeId isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFolderTypeShared])
+            {
+                displayName = displayName ?: NSLocalizedString(@"sharedFiles.title", @"Shared Files");
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName session:self.session];
+            }
+        }
         else
         {
             fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
