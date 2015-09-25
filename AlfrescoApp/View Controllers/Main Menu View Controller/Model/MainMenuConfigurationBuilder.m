@@ -286,14 +286,17 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         else if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey])
         {
             NSString *folderTypeId = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey];
+            NSString *displayName = viewConfig.label;
             
             if ([folderTypeId isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFolderTypeMyFiles])
             {
-                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:viewConfig.label session:self.session];
+                displayName = displayName ?: NSLocalizedString(@"myFiles.title", @"My Files");
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:displayName session:self.session];
             }
             else if ([folderTypeId isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFolderTypeShared])
             {
-                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:viewConfig.label session:self.session];
+                displayName = displayName ?: NSLocalizedString(@"sharedFiles.title", @"Shared Files");
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName session:self.session];
             }
         }
         else

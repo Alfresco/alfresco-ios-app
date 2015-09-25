@@ -210,8 +210,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     [spinner show:YES];
     // Get shared and my file folders
     CustomFolderService *folderService = [[CustomFolderService alloc] initWithSession:session];
-    [folderService retreiveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *myFilesFolder, NSError *error) {
-        [folderService retreiveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *sharedFilesFolder, NSError *error) {
+    [folderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *myFilesFolder, NSError *error) {
+        [folderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *sharedFilesFolder, NSError *error) {
             [spinner hide:YES];
             NSArray *scopeItems = [self scopeItemsForAccount:account myFilesFolder:myFilesFolder sharedFilesFolder:sharedFilesFolder];
             createAndPushScopeViewController(scopeItems, self);

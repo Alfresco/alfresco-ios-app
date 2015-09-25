@@ -912,11 +912,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 switch (self.customFolderType)
                 {
                     case CustomFolderServiceFolderTypeMyFiles:
-                        [customFolderService retreiveMyFilesFolderWithCompletionBlock:completionBlock];
+                        [customFolderService retrieveMyFilesFolderWithCompletionBlock:completionBlock];
                         break;
                     
                     case CustomFolderServiceFolderTypeSharedFiles:
-                        [customFolderService retreiveSharedFilesFolderWithCompletionBlock:completionBlock];
+                        [customFolderService retrieveSharedFilesFolderWithCompletionBlock:completionBlock];
                         break;
                         
                     default:

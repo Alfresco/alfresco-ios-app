@@ -22,7 +22,7 @@
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
 
-- (AlfrescoRequest *)retreiveSharedFilesFolderWithCompletionBlock:(void (^)(AlfrescoFolder *sharedFilesFolder, NSError *error))completionBlock;
-- (AlfrescoRequest *)retreiveMyFilesFolderWithCompletionBlock:(void (^)(AlfrescoFolder *myFilesFolder, NSError *error))completionBlock;
+- (AlfrescoRequest *)retrieveSharedFilesFolderWithCompletionBlock:(void (^)(AlfrescoFolder *sharedFilesFolder, NSError *error))completionBlock;
+- (AlfrescoRequest *)retrieveMyFilesFolderWithCompletionBlock:(void (^)(AlfrescoFolder *myFilesFolder, NSError *error))completionBlock;
 
 @end

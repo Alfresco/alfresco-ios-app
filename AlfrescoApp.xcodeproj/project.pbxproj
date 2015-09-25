@@ -999,8 +999,8 @@
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
 		277FC4B0194F094200B311E1 /* PrintingWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintingWebView.h; sourceTree = "<group>"; };
 		277FC4B1194F094200B311E1 /* PrintingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintingWebView.m; sourceTree = "<group>"; };
-		278658A11BB60280003B77AA /* CustomFolderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFolderService.h; sourceTree = "<group>"; };
-		278658A21BB60280003B77AA /* CustomFolderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFolderService.m; sourceTree = "<group>"; };
+		278658A11BB60280003B77AA /* CustomFolderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CustomFolderService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		278658A21BB60280003B77AA /* CustomFolderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CustomFolderService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		279961071BB4630900421C33 /* site-action-members.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members.png"; sourceTree = "<group>"; };
 		279961081BB4630900421C33 /* site-action-members@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members@2x.png"; sourceTree = "<group>"; };
 		27A1BFCF19460318004DF61D /* ThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailOperation.h; sourceTree = "<group>"; };
@@ -1110,7 +1110,7 @@
 		2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderCollectionViewController.h; sourceTree = "<group>"; };
 		2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderCollectionViewController.m; sourceTree = "<group>"; };
 		2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFolderCollectionViewController.h; sourceTree = "<group>"; };
-		2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileFolderCollectionViewController.m; sourceTree = "<group>"; };
+		2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FileFolderCollectionViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLayoutAttributes.h; sourceTree = "<group>"; };
@@ -1222,7 +1222,7 @@
 		734CC3EF1A700808005D148E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		734CC3F01A700808005D148E /* AlfrescoDocumentPicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoDocumentPicker.entitlements; sourceTree = "<group>"; };
 		734CC3F11A700808005D148E /* DocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentPickerViewController.h; sourceTree = "<group>"; };
-		734CC3F21A700808005D148E /* DocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentPickerViewController.m; sourceTree = "<group>"; };
+		734CC3F21A700808005D148E /* DocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DocumentPickerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		734CC3FA1A700808005D148E /* AlfrescoDocumentPickerFileProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AlfrescoDocumentPickerFileProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		734CC3FD1A700809005D148E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		734CC3FE1A700809005D148E /* AlfrescoDocumentPickerFileProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = AlfrescoDocumentPickerFileProvider.entitlements; sourceTree = "<group>"; };
