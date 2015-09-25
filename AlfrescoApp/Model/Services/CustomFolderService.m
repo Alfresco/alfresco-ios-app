@@ -38,7 +38,7 @@
     return self;
 }
 
-- (AlfrescoRequest *)retrieveSharedFilesFolderWithCompletionBlock:(void (^)(AlfrescoFolder *sharedFilesFolder, NSError *error))completionBlock
+- (AlfrescoRequest *)retrieveSharedFilesFolderWithCompletionBlock:(AlfrescoFolderCompletionBlock)completionBlock
 {
     AlfrescoRequest *request = nil;
     
@@ -58,7 +58,7 @@
     return request;
 }
 
-- (AlfrescoRequest *)retrieveMyFilesFolderWithCompletionBlock:(void (^)(AlfrescoFolder *myFilesFolder, NSError *error))completionBlock
+- (AlfrescoRequest *)retrieveMyFilesFolderWithCompletionBlock:(AlfrescoFolderCompletionBlock)completionBlock
 {
     AlfrescoRequest *request = nil;
     
