@@ -283,6 +283,19 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             NSString *folderPath = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterPathKey];
             fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolderPath:folderPath folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
         }
+        else if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey])
+        {
+            NSString *folderTypeId = viewConfig.parameters[kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey];
+            
+            if ([folderTypeId isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFolderTypeMyFiles])
+            {
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:viewConfig.label session:self.session];
+            }
+            else if ([folderTypeId isEqualToString:kAlfrescoMainMenuConfigurationViewParameterFolderTypeShared])
+            {
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:viewConfig.label session:self.session];
+            }
+        }
         else
         {
             fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];

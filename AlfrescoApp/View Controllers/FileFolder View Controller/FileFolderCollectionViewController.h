@@ -32,7 +32,7 @@
  
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
  @param displayName - the name that will be visible to the user when at the root of the navigation stack.
- @param session - the user' session
+ @param session - an active session
  */
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder session:(id<AlfrescoSession>)session;
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
@@ -44,7 +44,7 @@
  @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
  @param permissions - the permissions of the folder
  @param displayName - the name that will be visible to the user when at the root of the navigation stack.
- @param session - the user' session
+ @param session - an active session
  */
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session;
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
@@ -55,7 +55,7 @@
  @param siteShortName - the site short name to which the document library folder should be shown. Providing nil will result in Company Home being displayed.
  @param permissions - the permissions of the site
  @param displayName - the name that will be visible to the user when at the root of the navigation stack.
- @param session - the users session
+ @param session - an active session
  */
 - (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
@@ -65,7 +65,7 @@
  @param folderPath - the folder path for which the contents should be shown. Providing nil will result in Company Home being displayed.
  @param permissions - the folder's permissions
  @param displayName - the name that will be visible to the user when at the root of the navigation stack.
- @param session - the users session
+ @param session - an active session
  */
 - (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
@@ -74,8 +74,8 @@
  
  @param nodeRef - the folder's node ref for which the contents should be shown. Providing nil will result in Company Home being displayed.
  @param permissions - the folder's permissions
- @param displayName - the name that will be visible to the user when at the root of the navigation stack.
- @param session - the users session
+ @param folderDisplayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param session - an active session
  */
 - (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
@@ -83,25 +83,34 @@
  Use the document path initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
  
  @param documentPath - the path of the document to be shown. Providing nil will result in a Company Home being displayed.
- @param sessuon - the users session
+ @param session - an active session
  */
-- (instancetype) initWithDocumentPath:(NSString *)documentPath session:(id<AlfrescoSession>)session;
+- (instancetype)initWithDocumentPath:(NSString *)documentPath session:(id<AlfrescoSession>)session;
 
 /**
  Use the document node ref initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
  
  @param nodeRef - the node ref of the document to be shown. Providing nil will result in a Company Home being displayed.
- @param sessuon - the users session
+ @param session - an active session
  */
-- (instancetype) initWithDocumentNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session;
+- (instancetype)initWithDocumentNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session;
 
 /**
- Use the document node ref initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
+ Use the previous search string initialiser to initiate the specified search
  
  @param string - previous search string
- @param sessuon - the users session
+ @param session - an active session
  */
-- (instancetype) initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage;
+- (instancetype)initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage;
+
+/**
+ Use the folder type id initialiser when needing to display folders such as "My Files" or "Shared Files"
+ 
+ @param (CustomFolderServiceFolderType)folderType - the custom folder type to display
+ @param folderDisplayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param session - an active session
+ */
+- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
  Convenience method used to help initialise the internal state of the controller once initialised.

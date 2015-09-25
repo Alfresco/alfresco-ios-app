@@ -41,6 +41,12 @@ typedef NS_ENUM(NSInteger, SearchViewControllerDataSourceType)
     SearchViewControllerDataSourceTypeSearchUsers
 };
 
+typedef NS_ENUM(NSInteger, CustomFolderServiceFolderType)
+{
+    CustomFolderServiceFolderTypeMyFiles,
+    CustomFolderServiceFolderTypeSharedFiles
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
 
@@ -302,6 +308,7 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterUsernameKey;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey;
 // View Parameter Values
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue;
@@ -309,6 +316,8 @@ extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchPerson;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchDocument;
 extern NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchFolder;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeMyFiles;
+extern NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeShared;
 
 // App Configuration
 //// Notifictaions

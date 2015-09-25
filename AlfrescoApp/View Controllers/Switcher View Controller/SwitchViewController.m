@@ -93,9 +93,10 @@
 
 - (void)mainMenuViewController:(MainMenuViewController *)controller didSelectItem:(MainMenuItem *)menuItem inSectionItem:(MainMenuSection *)sectionItem
 {
-    // Need to set a dismiss block to ensure the ment controller reselects the previous item that was selected
+    // Need to set a dismiss block to ensure the menu controller reselects the previous item that was selected
     id conformanceObject = nil;
-    // If the associated object is a navigation controller, check the root view controller for conformance, else, check the object itself
+    
+    // If the associated object is a navigation controller, check the root view controller for conformance, else check the object itself
     if ([menuItem.associatedObject isKindOfClass:[NavigationViewController class]])
     {
         conformanceObject = ((NavigationViewController *)menuItem.associatedObject).rootViewController;
