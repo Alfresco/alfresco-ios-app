@@ -106,7 +106,27 @@ static const CGFloat kAnimationSpeed = 0.2f;
     [self addShadowToView:self.detailViewContainer];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    // The device has already rotated, that's why this method is being called.
+    UIInterfaceOrientation toOrientation   = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+    
+    // Fixes orientation mismatch (between UIDeviceOrientation and UIInterfaceOrientation)
+    if (toOrientation == UIInterfaceOrientationLandscapeRight)
+    {
+        toOrientation = UIInterfaceOrientationLandscapeLeft;
+    }
+    else if (toOrientation == UIInterfaceOrientationLandscapeLeft)
+    {
+        toOrientation = UIInterfaceOrientationLandscapeRight;
+    }
+    
+    [self legacy_willRotateToInterfaceOrientation:toOrientation duration:0.0];
+}
+
+- (void)legacy_willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && self.isExpanded)
     {
