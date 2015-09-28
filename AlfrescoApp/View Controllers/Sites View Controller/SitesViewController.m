@@ -19,25 +19,24 @@
 #import "SitesViewController.h"
 #import "SitesTableListViewController.h"
 
-CGFloat kSegmentHorizontalPadding = 10.0f;
-CGFloat kSegmentVerticalPadding = 10.0f;
-CGFloat kSegmentControllerHeight = 40.0f;
-
-typedef NS_ENUM(NSInteger, SiteListTypeSelection)
-{
-    SiteListTypeSelectionFavouriteSites = 0,
-    SiteListTypeSelectionMySites,
-    SiteListTypeSelectionAllSites
-};
+CGFloat kSegmentHorizontalPaddingDuplicate = 10.0f;
+CGFloat kSegmentVerticalPaddingDuplicate = 10.0f;
+CGFloat kSegmentControllerHeightDuplicate = 40.0f;
 
 @interface SitesViewController ()
 
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
-@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UIView *favoritesContainerView;
+@property (nonatomic, strong) UIView *mySitesContainerView;
+@property (nonatomic, strong) UIView *siteFinderContainerView;
 @property (nonatomic, assign) SitesListViewFilter sitesFilter;
 @property (nonatomic, assign) SiteListTypeSelection selectedListType;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
+
+@property (nonatomic, strong) SitesTableListViewController *favoritesVC;
+@property (nonatomic, strong) SitesTableListViewController *mySitesVC;
+@property (nonatomic, strong) SitesTableListViewController *siteFinderVC;
 
 @end
 
@@ -78,10 +77,10 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
                                                                               NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites"),
                                                                               NSLocalizedString(@"sites.segmentControl.mysites", @"My Sites"),
                                                                               NSLocalizedString(@"sites.segmentControl.allsites", @"All Sites")]];
-    segment.frame = CGRectMake((view.frame.origin.x + (kSegmentHorizontalPadding / 2)),
-                               (view.frame.origin.y + kSegmentVerticalPadding),
-                               view.frame.size.width - kSegmentVerticalPadding,
-                               kSegmentControllerHeight - kSegmentVerticalPadding);
+    segment.frame = CGRectMake((view.frame.origin.x + (kSegmentHorizontalPaddingDuplicate / 2)),
+                               (view.frame.origin.y + kSegmentVerticalPaddingDuplicate),
+                               view.frame.size.width - kSegmentVerticalPaddingDuplicate,
+                               kSegmentControllerHeightDuplicate - kSegmentVerticalPaddingDuplicate);
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     segment.selectedSegmentIndex = [self selectionTypeForFilter:self.sitesFilter];
@@ -91,8 +90,8 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     
     // create and configure the table view
     BOOL shouldHideSegmentControl = (self.sitesFilter != SitesListViewFilterNoFilter);
-    CGFloat containerOrigin = view.frame.origin.y + kSegmentControllerHeight;
-    CGFloat containerHeight = view.frame.size.height - kSegmentControllerHeight;
+    CGFloat containerOrigin = view.frame.origin.y + kSegmentControllerHeightDuplicate;
+    CGFloat containerHeight = view.frame.size.height - kSegmentControllerHeightDuplicate;
     
     if (shouldHideSegmentControl)
     {
@@ -100,9 +99,25 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
         containerHeight = view.frame.size.height;
     }
     
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(view.frame.origin.x, containerOrigin, view.frame.size.width, containerHeight)];
-    self.containerView = containerView;
-    [view addSubview:self.containerView];
+    CGRect containerViewFrame = CGRectMake(view.frame.origin.x, containerOrigin, view.frame.size.width, containerHeight);
+    
+    self.favoritesContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
+    [view addSubview:self.favoritesContainerView];
+    
+    self.mySitesContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
+    [view addSubview:self.mySitesContainerView];
+    
+    self.siteFinderContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
+    [view addSubview:self.siteFinderContainerView];
+    
+    self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self];
+    [self.favoritesContainerView addSubview:self.favoritesVC.view];
+    
+    self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self];
+    [self.mySitesContainerView addSubview:self.mySitesVC.view];
+    
+    self.siteFinderVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
+    [self.siteFinderContainerView addSubview:self.siteFinderVC.view];
     
     view.autoresizesSubviews = YES;
     self.view = view;
@@ -114,6 +129,7 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     
     if (self.session)
     {
+        
         //load data
 //        [self showHUD];
 //        [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error)
@@ -121,6 +137,8 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 //             [self hideHUD];
 //             [self reloadTableViewWithPagingResult:pagingResult error:error];
 //         }];
+        
+        [self loadSitesForSelectedSegment:self.segmentedControl];
     }
 }
 
@@ -157,6 +175,47 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
     }
     
     return returnSelectionType;
+}
+
+- (void)loadSitesForSelectedSegment:(id)sender
+{
+    self.selectedListType = (SiteListTypeSelection)self.segmentedControl.selectedSegmentIndex;
+    
+    switch (self.segmentedControl.selectedSegmentIndex)
+    {
+        case 0:
+        {
+            self.favoritesContainerView.hidden = NO;
+            self.mySitesContainerView.hidden = YES;
+            self.siteFinderContainerView.hidden = YES;
+            break;
+        }
+        case 1:
+        {
+            self.favoritesContainerView.hidden = YES;
+            self.mySitesContainerView.hidden = NO;
+            self.siteFinderContainerView.hidden = YES;
+            break;
+        }
+        case 2:
+        {
+            self.favoritesContainerView.hidden = YES;
+            self.mySitesContainerView.hidden = YES;
+            self.siteFinderContainerView.hidden = NO;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    
+//    [self showHUD];
+//    [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//        [self hideHUD];
+//        [self reloadTableViewWithPagingResult:pagingResult error:error];
+//        [self hidePullToRefreshView];
+//    }];
 }
 
 @end

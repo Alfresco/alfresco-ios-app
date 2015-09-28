@@ -20,4 +20,6 @@
 
 @interface SitesTableListViewController : ParentListViewController
 
+- (instancetype)initWithType:(SiteListTypeSelection)sitesType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController;
+
 @end

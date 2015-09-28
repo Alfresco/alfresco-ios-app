@@ -22,37 +22,67 @@
 // Managers
 #import "LoginManager.h"
 #import "AccountManager.h"
+#import "ConnectivityManager.h"
 // View Controllers
 #import "SiteMembersViewController.h"
 #import "FileFolderCollectionViewController.h"
 
-static CGFloat const kExpandButtonRotationSpeed = 0.2f;
-static CGFloat kSearchCellHeight = 60.0f;
+static CGFloat const kExpandButtonRotationSpeedDuplicate = 0.2f;
 
 @interface SitesTableListViewController () < UITableViewDelegate, UITableViewDataSource, SiteCellDelegate >
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) NSIndexPath *expandedCellIndexPath;
+@property (nonatomic) SiteListTypeSelection listType;
+@property (nonatomic, weak) UIViewController *pushHandler;
 
 @end
 
 @implementation SitesTableListViewController
 
+- (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController
+{
+    self = [super initWithSession:session];
+    
+    if(self)
+    {
+        self.listType = listType;
+        self.pushHandler = viewController;
+        [self createAlfrescoServicesWithSession:session];
+    }
+    
+    return self;
+}
+
 - (void)loadView
 {
-    ALFTableView *tableView = [[ALFTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    ALFTableView *tableView = [[ALFTableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     tableView.emptyMessage = NSLocalizedString(@"sites.empty", @"No Sites");
     self.tableView = tableView;
+    
+    [view addSubview:self.tableView];
+    
+    self.view = view;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self showHUD];
+    [self loadSitesForSiteType:self.listType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error)
+     {
+         [self hideHUD];
+         [self reloadTableViewWithPagingResult:pagingResult error:error];
+     }];
+
 }
 
 #pragma mark - Table view data source and delegate methods
@@ -100,10 +130,10 @@ static CGFloat kSearchCellHeight = 60.0f;
             [spinner startAnimating];
             self.tableView.tableFooterView = spinner;
             
-//            [self loadSitesForSiteType:self.segmentedControl.selectedSegmentIndex listingContext:moreListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-//                [self addMoreToTableViewWithPagingResult:pagingResult error:error];
-//                self.tableView.tableFooterView = nil;
-//            }];
+            [self loadSitesForSiteType:self.listType listingContext:moreListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                [self addMoreToTableViewWithPagingResult:pagingResult error:error];
+                self.tableView.tableFooterView = nil;
+            }];
         }
     }
 }
@@ -129,7 +159,7 @@ static CGFloat kSearchCellHeight = 60.0f;
                 {
                     FileFolderCollectionViewController *browserListViewController = [[FileFolderCollectionViewController alloc] initWithFolder:folder folderPermissions:permissions folderDisplayName:selectedSite.title session:self.session];
                     
-                    [self.navigationController pushViewController:browserListViewController animated:YES];
+                    [self.pushHandler.navigationController pushViewController:browserListViewController animated:YES];
                 }
                 else
                 {
@@ -166,7 +196,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         if (siteCell)
         {
             [indexPaths addObject:_expandedCellIndexPath];
-            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
+            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeedDuplicate angle:0.0f];
         }
     }
     
@@ -179,7 +209,7 @@ static CGFloat kSearchCellHeight = 60.0f;
         if (siteCell)
         {
             [indexPaths addObject:expandedCellIndexPath];
-            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:M_PI];
+            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeedDuplicate angle:M_PI];
         }
     }
     
@@ -218,6 +248,301 @@ static CGFloat kSearchCellHeight = 60.0f;
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         view.transform = CGAffineTransformMakeRotation(angle);
     } completion:nil];
+}
+
+- (void)loadSitesForSiteType:(SiteListTypeSelection)siteType
+              listingContext:(AlfrescoListingContext *)listingContext
+         withCompletionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
+{
+    if ([[ConnectivityManager sharedManager] hasInternetConnection] && self.session)
+    {
+        switch (siteType)
+        {
+            case SiteListTypeSelectionMySites:
+            {
+                [self.siteService retrieveSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    if (error)
+                    {
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.retrieval.failed", @"Sites Retrieval Failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    completionBlock(pagingResult, error);
+                }];
+            }
+                break;
+                
+            case SiteListTypeSelectionFavouriteSites:
+            {
+                [self.siteService retrieveFavoriteSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    if (error)
+                    {
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.retrieval.failed", @"Sites Retrieval Failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    completionBlock(pagingResult, error);
+                }];
+            }
+                break;
+                
+            case SiteListTypeSelectionAllSites:
+            {
+                [self.siteService retrieveAllSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    if (error)
+                    {
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.retrieval.failed", @"Sites Retrieval Failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    completionBlock(pagingResult, error);
+                }];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    else
+    {
+        if (completionBlock != NULL)
+        {
+            completionBlock(nil, nil);
+        }
+    }
+}
+
+- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
+{
+    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+}
+
+- (void)removeSites:(NSArray *)sitesArray withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    NSMutableArray *removalIndexPaths = [NSMutableArray arrayWithCapacity:sitesArray.count];
+    
+    for (AlfrescoSite *site in sitesArray)
+    {
+        NSInteger index = [self.tableViewData indexOfObject:site];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        [removalIndexPaths addObject:indexPath];
+        // remove the site from the data array
+        [self.tableViewData removeObject:site];
+    }
+    
+    [self.tableView deleteRowsAtIndexPaths:removalIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+}
+
+- (void)addSites:(NSArray *)sitesArray withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    NSComparator comparator = ^(AlfrescoSite *obj1, AlfrescoSite *obj2)
+    {
+        return (NSComparisonResult)[obj1.title caseInsensitiveCompare:obj2.title];
+    };
+    
+    NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:sitesArray.count];
+    for (AlfrescoSite *site in sitesArray)
+    {
+        // add to the tableView data source at the correct index
+        NSUInteger newIndex = [self.tableViewData indexOfObject:site inSortedRange:NSMakeRange(0, self.tableViewData.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+        [self.tableViewData insertObject:site atIndex:newIndex];
+        // create index paths to animate into the table view
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
+        [newNodeIndexPaths addObject:indexPath];
+    }
+    
+    [self.tableView insertRowsAtIndexPaths:newNodeIndexPaths withRowAnimation:rowAnimation];
+}
+
+#pragma mark - SiteCellDelegate Functions
+
+- (void)siteCell:(SitesCell *)siteCell didPressExpandButton:(UIButton *)expandButton
+{
+    NSIndexPath *selectedSiteIndexPath = [self.tableView indexPathForCell:siteCell];
+    
+    // if it's been tapped again, we want to collapse the cell
+    if ([selectedSiteIndexPath isEqual:self.expandedCellIndexPath])
+    {
+        self.expandedCellIndexPath = nil;
+    }
+    else
+    {
+        self.expandedCellIndexPath = selectedSiteIndexPath;
+    }
+}
+
+- (void)siteCell:(SitesCell *)siteCell didPressFavoriteButton:(UIButton *)favoriteButton
+{
+    NSIndexPath *selectedSiteIndexPath = [self.tableView indexPathForCell:siteCell];
+    AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:selectedSiteIndexPath.row];
+    
+    favoriteButton.enabled = NO;
+    
+    __weak SitesTableListViewController *weakSelf = self;
+    SiteListTypeSelection siteListShowingAtSelection = self.listType;
+    
+    if (selectedSite.isFavorite)
+    {
+        [self.siteService removeFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+            favoriteButton.enabled = YES;
+            
+            if (site)
+            {
+                // if the favourites are displayed, remove from the table view, otherwise replace the site with the updated one
+                if (weakSelf.listType == SiteListTypeSelectionFavouriteSites)
+                {
+                    weakSelf.expandedCellIndexPath = nil;
+                    [weakSelf removeSites:@[selectedSite] withRowAnimation:UITableViewRowAnimationTop];
+                }
+                else if (siteListShowingAtSelection == weakSelf.listType)
+                {
+                    [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
+                    [siteCell updateCellStateWithSite:site];
+                }
+                
+                displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"sites.site.unfavorited.banner", @"Site Unfavorited Message"), site.title]);
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.unable.to.unfavorite", @"Unable To Unfavorite"), selectedSite.title]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+    else
+    {
+        [self.siteService addFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+            favoriteButton.enabled = YES;
+            if (site)
+            {
+                // if the favourites are displayed, add the cell to the table view, otherwise replace the site with the updated one
+                if (weakSelf.listType == SiteListTypeSelectionFavouriteSites)
+                {
+                    weakSelf.expandedCellIndexPath = nil;
+                    [weakSelf addSites:@[site] withRowAnimation:UITableViewRowAnimationFade];
+                }
+                else if (siteListShowingAtSelection == weakSelf.listType)
+                {
+                    [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
+                    [siteCell updateCellStateWithSite:site];
+                }
+                
+                displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"sites.site.favorited.banner", @"Site Favorited Message"), site.title]);
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.unable.to.favorite", @"Unable To Favorite"), selectedSite.title]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+}
+
+- (void)siteCell:(SitesCell *)siteCell didPressJoinButton:(UIButton *)joinButton
+{
+    NSIndexPath *selectedSiteIndexPath = [self.tableView indexPathForCell:siteCell];
+    AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:selectedSiteIndexPath.row];
+    
+    joinButton.enabled = NO;
+    
+    __weak SitesTableListViewController *weakSelf = self;
+    SiteListTypeSelection siteListShowingAtSelection = self.listType;
+    
+    if (!selectedSite.isMember && !selectedSite.isPendingMember)
+    {
+        [self.siteService joinSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+            joinButton.enabled = YES;
+            
+            if (site)
+            {
+                // if my sites are displayed, add the cell to the table view, otherwise replace the site with the updated one
+                if (weakSelf.listType == SiteListTypeSelectionMySites)
+                {
+                    weakSelf.expandedCellIndexPath = nil;
+                    [weakSelf addSites:@[site] withRowAnimation:UITableViewRowAnimationFade];
+                }
+                else if (siteListShowingAtSelection == weakSelf.listType)
+                {
+                    [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
+                    [siteCell updateCellStateWithSite:site];
+                }
+                
+                if (site.isMember)
+                {
+                    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"sites.site.joined.banner", @"Joined Site Message"), site.title]);
+                }
+                else if (site.isPendingMember)
+                {
+                    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"sites.site.requested.to.join.banner", @"Request To Join Message"), site.title]);
+                }
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.unable.to.join", @"Unable To Join"), selectedSite.title]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+    else if (selectedSite.isPendingMember)
+    {
+        // cancel the request
+        [self.siteService cancelPendingJoinRequestForSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+            joinButton.enabled = YES;
+            
+            if (site)
+            {
+                // replace the site with the updated one, if the all sites are displayed
+                if (weakSelf.listType == SiteListTypeSelectionAllSites)
+                {
+                    [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
+                    [siteCell updateCellStateWithSite:site];
+                }
+                
+                displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"sites.site.request.cancelled.banner", @"Request To Cancel Request Message"), site.title]);
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.unable.to.cancel.request", @"Unable To Cancel Request"), selectedSite.title]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+    else
+    {
+        [self.siteService leaveSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+            joinButton.enabled = YES;
+            
+            if (site)
+            {
+                // if my sites are displayed, add the cell to the table view, otherwise replace the site with the updated one
+                if (weakSelf.listType == SiteListTypeSelectionMySites)
+                {
+                    weakSelf.expandedCellIndexPath = nil;
+                    [weakSelf removeSites:@[selectedSite] withRowAnimation:UITableViewRowAnimationTop];
+                }
+                else if (siteListShowingAtSelection == weakSelf.listType)
+                {
+                    [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
+                    [siteCell updateCellStateWithSite:site];
+                }
+                
+                displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"sites.site.left.banner", @"Left Site Message"), site.title]);
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.unable.to.leave", @"Unable to Leave"), selectedSite.title]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    }
+}
+
+- (void)siteCell:(SitesCell *)siteCell didPressMembersButton:(UIButton *)membersButton
+{
+    NSIndexPath *selectedSiteIndexPath = [self.tableView indexPathForCell:siteCell];
+    AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:selectedSiteIndexPath.row];
+    
+    SiteMembersViewController *membersVC = [[SiteMembersViewController alloc] initWithSiteShortName:selectedSite.shortName session:self.session displayName:selectedSite.title];
+    [self.pushHandler.navigationController pushViewController:membersVC animated:YES];
 }
 
 @end

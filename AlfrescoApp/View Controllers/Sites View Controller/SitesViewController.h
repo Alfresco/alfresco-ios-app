@@ -18,15 +18,11 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSUInteger, SitesListViewFilter)
-{
-    SitesListViewFilterNoFilter,
-    SitesListViewFilterFavouriteSites,
-    SitesListViewFilterMySites,
-    SitesListViewFilterAllSites
-};
+
 
 @interface SitesViewController : UIViewController
+
+- (instancetype)initWithSession:(id<AlfrescoSession>)session;
 
 - (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session;
 
