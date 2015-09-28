@@ -20,7 +20,7 @@
 #import "BaseLayoutAttributes.h"
 #import "FileFolderCollectionViewCell.h"
 
-static CGFloat const kItemSpacing = 10.0f;
+static CGFloat const kItemSpacing = 0.0f;
 static CGFloat const kThumbnailWidthInListLayout = 40.0f;
 static CGFloat const kThumbnailSideSpace = 10.0f;
 static CGFloat const kEditImageTopSpaceInListLayout = 17.0f;
