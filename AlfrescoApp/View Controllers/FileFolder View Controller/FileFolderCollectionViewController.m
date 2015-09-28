@@ -882,6 +882,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     if (error)
                     {
                         [Notifier notifyWithAlfrescoError:error];
+                        [self hidePullToRefreshView];
+                    }
+                    else if (folder == nil)
+                    {
+                        displayErrorMessage(NSLocalizedString(@"error.alfresco.folder.notfound", @"Folder not found"));
+                        [self hidePullToRefreshView];
                     }
                     else
                     {

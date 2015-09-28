@@ -126,6 +126,7 @@
 "error.version.history.unable.to.retrieve" = "Version history couldn’t be retrieved right now.\n\n%@";
 "error.version.history.no.latest.version" = "The latest version of the file couldn’t be found.";
 "error.alfresco.node.notfound" = "File not found";
+"error.alfresco.folder.notfound" = "Folder not found";
 "error.print.failed.message" = "Printing this file is not supported";
 // Internet connection error
 "error.no.internet.access.title" = "A connection couldn't be made";
