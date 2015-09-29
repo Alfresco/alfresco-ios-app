@@ -144,15 +144,6 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
     
     if (self.session)
     {
-        
-        //load data
-//        [self showHUD];
-//        [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error)
-//         {
-//             [self hideHUD];
-//             [self reloadTableViewWithPagingResult:pagingResult error:error];
-//         }];
-        
         [self loadSitesForSelectedSegment:self.segmentedControl];
     }
     self.definesPresentationContext = YES;
@@ -237,13 +228,6 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
             break;
         }
     }
-    
-//    [self showHUD];
-//    [self loadSitesForSiteType:self.selectedListType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-//        [self hideHUD];
-//        [self reloadTableViewWithPagingResult:pagingResult error:error];
-//        [self hidePullToRefreshView];
-//    }];
 }
 
 - (void)expandRootRevealController

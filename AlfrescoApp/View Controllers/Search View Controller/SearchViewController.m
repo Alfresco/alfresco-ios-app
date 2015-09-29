@@ -134,13 +134,13 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
         self.navigationController.navigationBar.translucent = YES;
     }
-    
-    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
     self.definesPresentationContext = YES;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
