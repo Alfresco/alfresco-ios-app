@@ -71,16 +71,24 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
 {
     NSIndexPath *previousIndex = _selectedIndexPathForSwipeToDelete;
     _selectedIndexPathForSwipeToDelete = selectedIndexPathForSwipeToDelete;
-    //hide the delete button from the previous selected index path
-    UICollectionViewCell *previousCell = [self.collectionView cellForItemAtIndexPath:previousIndex];
-    BaseLayoutAttributes *previousAttributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:previousIndex];
-    previousAttributes.animated = YES;
-    [previousCell applyLayoutAttributes:previousAttributes];
-    //show the new delete button
-    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
-    BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
-    attributes.animated = YES;
-    [cell applyLayoutAttributes:attributes];
+    
+    if (previousIndex)
+    {
+        //hide the delete button from the previous selected index path
+        UICollectionViewCell *previousCell = [self.collectionView cellForItemAtIndexPath:previousIndex];
+        BaseLayoutAttributes *previousAttributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:previousIndex];
+        previousAttributes.animated = YES;
+        [previousCell applyLayoutAttributes:previousAttributes];
+    }
+    
+    if (selectedIndexPathForSwipeToDelete)
+    {
+        //show the new delete button
+        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
+        BaseLayoutAttributes *attributes = (BaseLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:_selectedIndexPathForSwipeToDelete];
+        attributes.animated = YES;
+        [cell applyLayoutAttributes:attributes];
+    }
 }
 
 - (void)selectedIndexPathForSwipeWasDeleted
