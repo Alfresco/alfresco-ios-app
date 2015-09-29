@@ -18,8 +18,6 @@
 
 #import <UIKit/UIKit.h>
 
-
-
 @interface SitesViewController : UIViewController
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;

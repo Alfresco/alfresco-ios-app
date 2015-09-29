@@ -18,6 +18,8 @@
 
 #import "SitesViewController.h"
 #import "SitesTableListViewController.h"
+#import "AccountManager.h"
+#import "SearchViewController.h"
 
 CGFloat kSegmentHorizontalPaddingDuplicate = 10.0f;
 CGFloat kSegmentVerticalPaddingDuplicate = 10.0f;
@@ -36,7 +38,8 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
 
 @property (nonatomic, strong) SitesTableListViewController *favoritesVC;
 @property (nonatomic, strong) SitesTableListViewController *mySitesVC;
-@property (nonatomic, strong) SitesTableListViewController *siteFinderVC;
+@property (nonatomic, strong) SitesTableListViewController *allSitesVC;
+@property (nonatomic, strong) SearchViewController *searchVC;
 
 @end
 
@@ -116,8 +119,16 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
     self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self];
     [self.mySitesContainerView addSubview:self.mySitesVC.view];
     
-    self.siteFinderVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
-    [self.siteFinderContainerView addSubview:self.siteFinderVC.view];
+    if([AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeCloud)
+    {
+        self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
+        [self.siteFinderContainerView addSubview:self.allSitesVC.view];
+    }
+    else
+    {
+        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
+        [self.siteFinderContainerView addSubview:self.searchVC.view];
+    }
     
     view.autoresizesSubviews = YES;
     self.view = view;
