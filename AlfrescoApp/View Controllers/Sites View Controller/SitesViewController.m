@@ -20,6 +20,8 @@
 #import "SitesTableListViewController.h"
 #import "AccountManager.h"
 #import "SearchViewController.h"
+#import "UniversalDevice.h"
+#import "RootRevealViewController.h"
 
 CGFloat kSegmentHorizontalPaddingDuplicate = 10.0f;
 CGFloat kSegmentVerticalPaddingDuplicate = 10.0f;
@@ -127,6 +129,8 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
     else
     {
         self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
+        self.searchVC.sitesPushHandler = self;
+        self.searchVC.view.frame = self.siteFinderContainerView.bounds;
         [self.siteFinderContainerView addSubview:self.searchVC.view];
     }
     
@@ -150,6 +154,16 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
 //         }];
         
         [self loadSitesForSelectedSegment:self.segmentedControl];
+    }
+    self.definesPresentationContext = YES;
+    
+    if (!IS_IPAD && !self.presentingViewController)
+    {
+        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
+        if (self.navigationController.viewControllers.firstObject == self)
+        {
+            self.navigationItem.leftBarButtonItem = hamburgerButtom;
+        }
     }
 }
 
@@ -199,6 +213,7 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
             self.favoritesContainerView.hidden = NO;
             self.mySitesContainerView.hidden = YES;
             self.siteFinderContainerView.hidden = YES;
+            [self.view bringSubviewToFront:self.favoritesContainerView];
             break;
         }
         case 1:
@@ -206,6 +221,7 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
             self.favoritesContainerView.hidden = YES;
             self.mySitesContainerView.hidden = NO;
             self.siteFinderContainerView.hidden = YES;
+            [self.view bringSubviewToFront:self.mySitesContainerView];
             break;
         }
         case 2:
@@ -213,6 +229,7 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
             self.favoritesContainerView.hidden = YES;
             self.mySitesContainerView.hidden = YES;
             self.siteFinderContainerView.hidden = NO;
+            [self.view bringSubviewToFront:self.siteFinderContainerView];
             break;
         }
         default:
@@ -227,6 +244,11 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
 //        [self reloadTableViewWithPagingResult:pagingResult error:error];
 //        [self hidePullToRefreshView];
 //    }];
+}
+
+- (void)expandRootRevealController
+{
+    [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
 @end

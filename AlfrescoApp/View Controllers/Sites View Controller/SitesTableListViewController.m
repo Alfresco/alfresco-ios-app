@@ -76,13 +76,15 @@ static CGFloat const kExpandButtonRotationSpeedDuplicate = 0.2f;
 {
     [super viewDidLoad];
     
-    [self showHUD];
-    [self loadSitesForSiteType:self.listType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error)
-     {
-         [self hideHUD];
-         [self reloadTableViewWithPagingResult:pagingResult error:error];
-     }];
-
+    if(self.listType != SiteListTypeSelectionSearch)
+    {
+        [self showHUD];
+        [self loadSitesForSiteType:self.listType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error)
+         {
+             [self hideHUD];
+             [self reloadTableViewWithPagingResult:pagingResult error:error];
+         }];
+    }
 }
 
 #pragma mark - Table view data source and delegate methods
@@ -543,6 +545,13 @@ static CGFloat const kExpandButtonRotationSpeedDuplicate = 0.2f;
     
     SiteMembersViewController *membersVC = [[SiteMembersViewController alloc] initWithSiteShortName:selectedSite.shortName session:self.session displayName:selectedSite.title];
     [self.pushHandler.navigationController pushViewController:membersVC animated:YES];
+}
+
+#pragma mark - Public methods
+- (void)reloadTableViewWithSearchResults:(NSMutableArray *)searchResults
+{
+    self.tableViewData = searchResults;
+    [self.tableView reloadData];
 }
 
 @end

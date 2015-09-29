@@ -45,7 +45,8 @@ typedef NS_ENUM(NSInteger, SiteListTypeSelection)
 {
     SiteListTypeSelectionFavouriteSites = 0,
     SiteListTypeSelectionMySites,
-    SiteListTypeSelectionAllSites
+    SiteListTypeSelectionAllSites,
+    SiteListTypeSelectionSearch
 };
 
 typedef NS_ENUM(NSUInteger, SitesListViewFilter)
