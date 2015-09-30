@@ -21,6 +21,7 @@
 @interface SearchViewController : UITableViewController
 
 @property (nonatomic, weak) UIViewController *sitesPushHandler;
+@property (nonatomic) BOOL shouldHideNavigationBarOnSearchControllerPresentation;
 
 - (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session;
 - (void) pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions;

@@ -53,6 +53,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         self.dataSourceType = dataSourceType;
         self.session = session;
         self.sitesPushHandler = self;
+        self.shouldHideNavigationBarOnSearchControllerPresentation = YES;
     }
     
     return self;
@@ -133,13 +134,14 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         self.definesPresentationContext = YES;
 
         self.navigationController.navigationBar.translucent = YES;
+        
+        self.searchController.hidesNavigationBarDuringPresentation = self.shouldHideNavigationBarOnSearchControllerPresentation;
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
-    self.definesPresentationContext = YES;
     [self.tableView reloadData];
 }
 

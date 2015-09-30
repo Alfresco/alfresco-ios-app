@@ -115,25 +115,6 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
     self.siteFinderContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
     [view addSubview:self.siteFinderContainerView];
     
-    self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self];
-    [self.favoritesContainerView addSubview:self.favoritesVC.view];
-    
-    self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self];
-    [self.mySitesContainerView addSubview:self.mySitesVC.view];
-    
-    if([AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeCloud)
-    {
-        self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
-        [self.siteFinderContainerView addSubview:self.allSitesVC.view];
-    }
-    else
-    {
-        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
-        self.searchVC.sitesPushHandler = self;
-        self.searchVC.view.frame = self.siteFinderContainerView.bounds;
-        [self.siteFinderContainerView addSubview:self.searchVC.view];
-    }
-    
     view.autoresizesSubviews = YES;
     self.view = view;
 }
@@ -142,11 +123,38 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
 {
     [super viewDidLoad];
     
+    self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self];
+    [self.favoritesContainerView addSubview:self.favoritesVC.view];
+    [self addChildViewController:self.favoritesVC];
+    [self.favoritesVC didMoveToParentViewController:self];
+    
+    self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self];
+    [self.mySitesContainerView addSubview:self.mySitesVC.view];
+    [self addChildViewController:self.mySitesVC];
+    [self.mySitesVC didMoveToParentViewController:self];
+    
+    if([AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeCloud)
+    {
+        self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
+        [self.siteFinderContainerView addSubview:self.allSitesVC.view];
+        [self addChildViewController:self.allSitesVC];
+        [self.allSitesVC didMoveToParentViewController:self];
+    }
+    else
+    {
+        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
+        self.searchVC.sitesPushHandler = self;
+        self.searchVC.shouldHideNavigationBarOnSearchControllerPresentation = NO;
+        self.searchVC.view.frame = self.siteFinderContainerView.bounds;
+        [self.siteFinderContainerView addSubview:self.searchVC.view];
+        [self addChildViewController:self.searchVC];
+        [self.searchVC didMoveToParentViewController:self];
+    }
+    
     if (self.session)
     {
         [self loadSitesForSelectedSegment:self.segmentedControl];
     }
-    self.definesPresentationContext = YES;
     
     if (!IS_IPAD && !self.presentingViewController)
     {
