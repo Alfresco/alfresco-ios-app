@@ -47,6 +47,22 @@ typedef NS_ENUM(NSInteger, CustomFolderServiceFolderType)
     CustomFolderServiceFolderTypeSharedFiles
 };
 
+typedef NS_ENUM(NSInteger, SiteListTypeSelection)
+{
+    SiteListTypeSelectionFavouriteSites = 0,
+    SiteListTypeSelectionMySites,
+    SiteListTypeSelectionAllSites,
+    SiteListTypeSelectionSearch
+};
+
+typedef NS_ENUM(NSUInteger, SitesListViewFilter)
+{
+    SitesListViewFilterNoFilter,
+    SitesListViewFilterFavouriteSites,
+    SitesListViewFilterMySites,
+    SitesListViewFilterAllSites
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
 

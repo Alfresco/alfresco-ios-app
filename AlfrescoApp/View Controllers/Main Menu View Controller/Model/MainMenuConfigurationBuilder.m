@@ -34,6 +34,7 @@
 #import "SearchViewController.h"
 #import "PersonProfileViewController.h"
 #import "SiteMembersViewController.h"
+#import "SitesViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -309,7 +310,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSiteBrowser])
     {
         // Sites
-        SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
+        SitesViewController *sitesListViewController = [[SitesViewController alloc] initWithSession:self.session];
         associatedObject = sitesListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeTasks])
@@ -397,7 +398,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSite])
     {
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
-        SitesListViewController *sitesListViewController = nil;
+        SitesViewController *sitesListViewController = nil;
         
         if ([parameterKeys containsObject:kAlfrescoMainMenuConfigurationViewParameterShowKey])
         {
@@ -420,11 +421,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                 filter = SitesListViewFilterNoFilter;
             }
             
-            sitesListViewController = [[SitesListViewController alloc] initWithSitesListFilter:filter title:viewConfig.label session:self.session];
+            sitesListViewController = [[SitesViewController alloc] initWithSitesListFilter:filter title:viewConfig.label session:self.session];
         }
         else
         {
-            sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
+            sitesListViewController = [[SitesViewController alloc] initWithSession:self.session];
         }
         
         associatedObject = sitesListViewController;
