@@ -34,6 +34,7 @@
 #import "SearchViewController.h"
 #import "PersonProfileViewController.h"
 #import "SiteMembersViewController.h"
+#import "SitesViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -309,7 +310,9 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeSiteBrowser])
     {
         // Sites
-        SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
+//        SitesListViewController *sitesListViewController = [[SitesListViewController alloc] initWithSession:self.session];
+        SitesViewController *sitesListViewController = [[SitesViewController alloc] initWithSession:self.session];
+        
         associatedObject = sitesListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoMainMenuConfigurationViewTypeTasks])

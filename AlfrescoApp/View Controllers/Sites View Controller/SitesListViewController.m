@@ -42,13 +42,6 @@ static NSString * const kSitesPreviousSearchThumbnailMappingsFileName = @"SitesS
 
 static CGFloat kSearchCellHeight = 60.0f;
 
-typedef NS_ENUM(NSInteger, SiteListTypeSelection)
-{
-    SiteListTypeSelectionFavouriteSites = 0,
-    SiteListTypeSelectionMySites,
-    SiteListTypeSelectionAllSites
-};
-
 @interface SitesListViewController () <UISearchControllerDelegate>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;

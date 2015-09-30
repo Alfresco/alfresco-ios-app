@@ -18,14 +18,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UITableViewController
+@interface SitesViewController : UIViewController
 
-@property (nonatomic, weak) UIViewController *sitesPushHandler;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session;
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session;
-- (void) pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions;
-- (void)pushFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
-- (void)pushFolderPreviewForAlfrescoFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
-- (void)pushUser:(AlfrescoPerson *)person;
+- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session;
 
 @end

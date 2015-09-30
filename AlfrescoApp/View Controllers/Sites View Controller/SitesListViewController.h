@@ -19,14 +19,6 @@
 #import "ParentListViewController.h"
 #import "SitesCell.h"
 
-typedef NS_ENUM(NSUInteger, SitesListViewFilter)
-{
-    SitesListViewFilterNoFilter,
-    SitesListViewFilterFavouriteSites,
-    SitesListViewFilterMySites,
-    SitesListViewFilterAllSites
-};
-
 @interface SitesListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate, SiteCellDelegate>
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;

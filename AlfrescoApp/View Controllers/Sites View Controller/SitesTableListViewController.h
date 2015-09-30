@@ -16,16 +16,12 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "ParentListViewController.h"
 
-@interface SearchViewController : UITableViewController
+@interface SitesTableListViewController : ParentListViewController
 
-@property (nonatomic, weak) UIViewController *sitesPushHandler;
+- (instancetype)initWithType:(SiteListTypeSelection)sitesType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController;
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session;
-- (void) pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions;
-- (void)pushFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
-- (void)pushFolderPreviewForAlfrescoFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
-- (void)pushUser:(AlfrescoPerson *)person;
+- (void) reloadTableViewWithSearchResults:(NSMutableArray *)searchResults;
 
 @end
