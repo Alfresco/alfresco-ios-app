@@ -28,6 +28,7 @@
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
+#import "MBProgressHUD.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -37,6 +38,7 @@ static CGFloat const kCellHeight = 73.0f;
 @property (nonatomic, strong) NSString *emptyMessage;
 @property (nonatomic, strong) UILabel *alfEmptyLabel;
 @property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic) BOOL shouldPush;
 
 @end
@@ -348,6 +350,7 @@ static CGFloat const kCellHeight = 73.0f;
 }
 
 #pragma mark - Custom setters/getters
+
 - (void)setResults:(NSMutableArray *)results
 {
     _results = results;
@@ -418,7 +421,37 @@ static CGFloat const kCellHeight = 73.0f;
     self.alfPreviousSeparatorStyle = [NSNumber numberWithInteger:value];
 }
 
+#pragma mark - Public methods
+
+- (void)showHUD
+{
+    [self showHUDWithMode:MBProgressHUDModeIndeterminate];
+}
+
+- (void)showHUDWithMode:(MBProgressHUDMode)mode
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.progressHUD)
+        {
+            self.progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.progressHUD];
+        }
+        self.progressHUD.mode = mode;
+        [self.progressHUD show:YES];
+    });
+}
+
+- (void)hideHUD
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.progressHUD hide:YES];
+        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    });
+}
+
+
 #pragma mark - Private methods
+
 - (void)expandRootRevealController
 {
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];

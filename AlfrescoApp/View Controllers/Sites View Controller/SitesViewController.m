@@ -109,12 +109,15 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     CGRect containerViewFrame = CGRectMake(view.frame.origin.x, containerOrigin, view.frame.size.width, containerHeight);
     
     self.favoritesContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
+    self.favoritesContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [view addSubview:self.favoritesContainerView];
     
     self.mySitesContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
+    self.mySitesContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [view addSubview:self.mySitesContainerView];
     
     self.siteFinderContainerView = [[UIView alloc] initWithFrame:containerViewFrame];
+    self.siteFinderContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [view addSubview:self.siteFinderContainerView];
     
     view.autoresizesSubviews = YES;
@@ -126,6 +129,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     [super viewDidLoad];
     
     self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self];
+    self.favoritesVC.view.frame = self.favoritesContainerView.bounds;
     [self.favoritesContainerView addSubview:self.favoritesVC.view];
     [self addChildViewController:self.favoritesVC];
     [self.favoritesVC didMoveToParentViewController:self];
@@ -140,11 +144,11 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
         self.searchVC.sitesPushHandler = self;
         self.searchVC.shouldHideNavigationBarOnSearchControllerPresentation = NO;
-        
-        // Add spacing between UISegmentControl and search control
+
+        // Add some spacing between UISegmentControl and search control
         CGRect siteFinderRect = CGRectInset(self.siteFinderContainerView.bounds, 0, kSegmentToSearchControlPadding);
         self.searchVC.view.frame = siteFinderRect;
-
+        
         [self.siteFinderContainerView addSubview:self.searchVC.view];
         [self addChildViewController:self.searchVC];
         [self.searchVC didMoveToParentViewController:self];
@@ -173,6 +177,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 }
 
 #pragma mark - Private methods
+
 - (SiteListTypeSelection)selectionTypeForFilter:(SitesListViewFilter)filter
 {
     SiteListTypeSelection returnSelectionType;

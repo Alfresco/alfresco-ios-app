@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
 @interface SearchResultsTableViewController : UITableViewController
 
@@ -26,5 +26,9 @@
 @property (nonatomic) SearchViewControllerDataSourceType dataType;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic) BOOL shouldAutoPushFirstResult;
+
+- (void)showHUD;
+- (void)showHUDWithMode:(MBProgressHUDMode)mode;
+- (void)hideHUD;
 
 @end
