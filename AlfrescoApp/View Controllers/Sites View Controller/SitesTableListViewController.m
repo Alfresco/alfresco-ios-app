@@ -27,8 +27,6 @@
 #import "SiteMembersViewController.h"
 #import "FileFolderCollectionViewController.h"
 
-static CGFloat const kExpandButtonRotationSpeedDuplicate = 0.2f;
-
 @interface SitesTableListViewController () < UITableViewDelegate, UITableViewDataSource, SiteCellDelegate >
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
@@ -198,7 +196,7 @@ static CGFloat const kExpandButtonRotationSpeedDuplicate = 0.2f;
         if (siteCell)
         {
             [indexPaths addObject:_expandedCellIndexPath];
-            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeedDuplicate angle:0.0f];
+            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:0.0f];
         }
     }
     
@@ -211,7 +209,7 @@ static CGFloat const kExpandButtonRotationSpeedDuplicate = 0.2f;
         if (siteCell)
         {
             [indexPaths addObject:expandedCellIndexPath];
-            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeedDuplicate angle:M_PI];
+            [self rotateView:siteCell.expandButton duration:kExpandButtonRotationSpeed angle:M_PI];
         }
     }
     

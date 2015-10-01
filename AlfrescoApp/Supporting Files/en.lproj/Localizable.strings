@@ -166,6 +166,7 @@
 "sites.segmentControl.mysites" = "My Sites"; // string length should not be extended
 "sites.segmentControl.favoritesites" = "Favorite Sites"; // string length should not be extended
 "sites.segmentControl.allsites" = "All Sites"; // string length should not be extended
+"sites.segmentControl.sitefinder" = "Site Finder"; // string length should not be extended
 "sites.site.favorited.banner" = "You have favorited %@";
 "sites.site.unfavorited.banner" = "You have unfavorited %@";
 "sites.site.requested.to.join.banner" = "A request to join %@ has been sent";
