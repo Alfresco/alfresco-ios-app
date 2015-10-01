@@ -23,10 +23,6 @@
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
 
-CGFloat kSegmentHorizontalPaddingDuplicate = 10.0f;
-CGFloat kSegmentVerticalPaddingDuplicate = 10.0f;
-CGFloat kSegmentControllerHeightDuplicate = 40.0f;
-
 @interface SitesViewController ()
 
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -82,10 +78,10 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
                                                                               NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites"),
                                                                               NSLocalizedString(@"sites.segmentControl.mysites", @"My Sites"),
                                                                               NSLocalizedString(@"sites.segmentControl.allsites", @"All Sites")]];
-    segment.frame = CGRectMake((view.frame.origin.x + (kSegmentHorizontalPaddingDuplicate / 2)),
-                               (view.frame.origin.y + kSegmentVerticalPaddingDuplicate),
-                               view.frame.size.width - kSegmentVerticalPaddingDuplicate,
-                               kSegmentControllerHeightDuplicate - kSegmentVerticalPaddingDuplicate);
+    segment.frame = CGRectMake((view.frame.origin.x + (kUISegmentControlHorizontalPadding / 2)),
+                               (view.frame.origin.y + kUISegmentControlVerticalPadding),
+                               view.frame.size.width - kUISegmentControlVerticalPadding,
+                               kUISegmentControllerHeight - kUISegmentControlVerticalPadding);
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     segment.selectedSegmentIndex = [self selectionTypeForFilter:self.sitesFilter];
@@ -95,8 +91,8 @@ CGFloat kSegmentControllerHeightDuplicate = 40.0f;
     
     // create and configure the table view
     BOOL shouldHideSegmentControl = (self.sitesFilter != SitesListViewFilterNoFilter);
-    CGFloat containerOrigin = view.frame.origin.y + kSegmentControllerHeightDuplicate;
-    CGFloat containerHeight = view.frame.size.height - kSegmentControllerHeightDuplicate;
+    CGFloat containerOrigin = view.frame.origin.y + kUISegmentControllerHeight;
+    CGFloat containerHeight = view.frame.size.height - kUISegmentControllerHeight;
     
     if (shouldHideSegmentControl)
     {

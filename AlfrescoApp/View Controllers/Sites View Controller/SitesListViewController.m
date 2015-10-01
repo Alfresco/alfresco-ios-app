@@ -30,10 +30,6 @@
 #import "PreferenceManager.h"
 #import "SiteMembersViewController.h"
 
-CGFloat kSegmentHorizontalPadding = 10.0f;
-CGFloat kSegmentVerticalPadding = 10.0f;
-CGFloat kSegmentControllerHeight = 40.0f;
-
 static CGFloat const kSearchBarSpeed = 0.3f;
 
 static NSString * const kSitesFolderLocation = @"/Sites";
@@ -91,10 +87,10 @@ static CGFloat kSearchCellHeight = 60.0f;
                                    NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites"),
                                    NSLocalizedString(@"sites.segmentControl.mysites", @"My Sites"),
                                    NSLocalizedString(@"sites.segmentControl.allsites", @"All Sites")]];
-    segment.frame = CGRectMake((view.frame.origin.x + (kSegmentHorizontalPadding / 2)),
-                               (view.frame.origin.y + kSegmentVerticalPadding),
-                               view.frame.size.width - kSegmentVerticalPadding,
-                               kSegmentControllerHeight - kSegmentVerticalPadding);
+    segment.frame = CGRectMake((view.frame.origin.x + (kUISegmentControlHorizontalPadding / 2)),
+                               (view.frame.origin.y + kUISegmentControlVerticalPadding),
+                               view.frame.size.width - kUISegmentControlVerticalPadding,
+                               kUISegmentControllerHeight - kUISegmentControlVerticalPadding);
     [segment addTarget:self action:@selector(loadSitesForSelectedSegment:) forControlEvents:UIControlEventValueChanged];
     segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     segment.selectedSegmentIndex = [self selectionTypeForFilter:self.sitesFilter];
@@ -104,8 +100,8 @@ static CGFloat kSearchCellHeight = 60.0f;
     
     // create and configure the table view
     BOOL shouldHideSegmentControl = (self.sitesFilter != SitesListViewFilterNoFilter);
-    CGFloat tableOrigin = view.frame.origin.y + kSegmentControllerHeight;
-    CGFloat tableHeight = view.frame.size.height - kSegmentControllerHeight;
+    CGFloat tableOrigin = view.frame.origin.y + kUISegmentControllerHeight;
+    CGFloat tableHeight = view.frame.size.height - kUISegmentControllerHeight;
     
     if (shouldHideSegmentControl)
     {
@@ -711,10 +707,10 @@ static CGFloat kSearchCellHeight = 60.0f;
     {
         [UIView animateWithDuration:kSearchBarSpeed animations:^{
             CGRect tableViewFrame = self.tableView.frame;
-            tableViewFrame.origin.y -= kSegmentControllerHeight;
+            tableViewFrame.origin.y -= kUISegmentControllerHeight;
             self.tableView.frame = tableViewFrame;
             CGRect test = searchController.searchBar.frame;
-            test.origin.y += kSegmentControllerHeight;
+            test.origin.y += kUISegmentControllerHeight;
             searchController.searchBar.frame = test;
         }];
     }
@@ -726,7 +722,7 @@ static CGFloat kSearchCellHeight = 60.0f;
     {
         [UIView animateWithDuration:kSearchBarSpeed animations:^{
             CGRect tableViewFrame = self.tableView.frame;
-            tableViewFrame.origin.y += kSegmentControllerHeight;
+            tableViewFrame.origin.y += kUISegmentControllerHeight;
             self.tableView.frame = tableViewFrame;
         }];
     }

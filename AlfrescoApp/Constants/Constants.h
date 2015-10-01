@@ -99,6 +99,11 @@ extern CGFloat const kRevealControllerMasterViewWidth;
 // Expand control animation speed (e.g. Site Cell)
 extern CGFloat const kExpandButtonRotationSpeed;
 
+// UISegmentControl metrics
+extern CGFloat kUISegmentControlHorizontalPadding;
+extern CGFloat kUISegmentControlVerticalPadding;
+extern CGFloat kUISegmentControllerHeight;
+
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
 extern NSString * const kSearchTypeFiles;

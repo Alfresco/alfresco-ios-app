@@ -47,6 +47,11 @@ CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 // Expand control animation speed (e.g. Site Cell)
 CGFloat const kExpandButtonRotationSpeed = 0.2f;
 
+// UISegmentControl metrics
+CGFloat kUISegmentControlHorizontalPadding = 10.0f;
+CGFloat kUISegmentControlVerticalPadding = 10.0f;
+CGFloat kUISegmentControllerHeight = 40.0f;
+
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 NSString * const kSearchTypeFiles = @"ALFSearchTypeFiles";
