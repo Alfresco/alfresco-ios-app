@@ -44,6 +44,9 @@ CGFloat const kEmptyListLabelFontSize = 24.0f;
 // App RevealController
 CGFloat const kRevealControllerMasterViewWidth = 300.0f;
 
+// Expand control animation speed (e.g. Site Cell)
+CGFloat const kExpandButtonRotationSpeed = 0.2f;
+
 // NSUserDefaults Keys
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 NSString * const kSearchTypeFiles = @"ALFSearchTypeFiles";

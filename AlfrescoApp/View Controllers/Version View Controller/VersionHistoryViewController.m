@@ -22,8 +22,6 @@
 #import "DownloadManager.h"
 #import "Constants.h"
 
-static CGFloat const kExpandButtonRotationSpeed = 0.2f;
-
 @interface VersionHistoryViewController ()
 
 @property (nonatomic, strong) AlfrescoDocument *document;

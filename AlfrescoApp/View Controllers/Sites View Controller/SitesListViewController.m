@@ -34,7 +34,6 @@ CGFloat kSegmentHorizontalPadding = 10.0f;
 CGFloat kSegmentVerticalPadding = 10.0f;
 CGFloat kSegmentControllerHeight = 40.0f;
 
-static CGFloat const kExpandButtonRotationSpeed = 0.2f;
 static CGFloat const kSearchBarSpeed = 0.3f;
 
 static NSString * const kSitesFolderLocation = @"/Sites";

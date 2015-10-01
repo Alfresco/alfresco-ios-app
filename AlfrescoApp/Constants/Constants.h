@@ -96,6 +96,9 @@ extern NSString * const kHTTPMethodGET;
 // App RevealController
 extern CGFloat const kRevealControllerMasterViewWidth;
 
+// Expand control animation speed (e.g. Site Cell)
+extern CGFloat const kExpandButtonRotationSpeed;
+
 // NSUserDefault Keys
 extern NSString * const kIsAppFirstLaunch;
 extern NSString * const kSearchTypeFiles;
