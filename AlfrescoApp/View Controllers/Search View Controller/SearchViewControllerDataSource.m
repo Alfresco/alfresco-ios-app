@@ -82,7 +82,7 @@
 
 #pragma mark - Private methods
 
-- (void) setupDataSourceForSearchType:(SearchViewControllerDataSourceType)searchType
+- (void)setupDataSourceForSearchType:(SearchViewControllerDataSourceType)searchType
 {
     self.dataSourceArrays = [NSMutableArray new];
     self.sectionHeaderStringsArray = [NSMutableArray new];

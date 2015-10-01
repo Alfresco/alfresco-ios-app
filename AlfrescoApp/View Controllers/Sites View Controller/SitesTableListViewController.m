@@ -43,7 +43,7 @@
 {
     self = [super initWithSession:session];
     
-    if(self)
+    if (self)
     {
         self.listType = listType;
         self.pushHandler = viewController;
@@ -53,35 +53,31 @@
     return self;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [UIColor whiteColor];
+    [super viewDidLoad];
     
-    ALFTableView *tableView = [[ALFTableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStylePlain];
+    ALFTableView *tableView = [[ALFTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     tableView.emptyMessage = NSLocalizedString(@"sites.empty", @"No Sites");
     self.tableView = tableView;
-    
-    [view addSubview:self.tableView];
-    
-    self.view = view;
-}
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    if(self.listType != SiteListTypeSelectionSearch)
+    if (self.listType != SiteListTypeSelectionSearch)
+    {
+        [self enablePullToRefresh];
+    }
+
+    [self.view addSubview:self.tableView];
+
+    if (self.listType != SiteListTypeSelectionSearch)
     {
         [self showHUD];
-        [self loadSitesForSiteType:self.listType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error)
-         {
-             [self hideHUD];
-             [self reloadTableViewWithPagingResult:pagingResult error:error];
-         }];
+        [self loadSitesForSiteType:self.listType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            [self reloadTableViewWithPagingResult:pagingResult error:error];
+        }];
     }
 }
 
@@ -227,7 +223,7 @@
     [self.siteService clear];
     if (self.session)
     {
-//        [self loadSitesForSelectedSegment:nil];
+        [self loadSitesForSelectedSegment:nil];
     }
     else
     {
@@ -236,18 +232,31 @@
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
-//                [self loadSitesForSelectedSegment:nil];
+                [self loadSitesForSelectedSegment:nil];
             }
         }];
     }
 }
 
 #pragma mark - Private methods
+
 - (void)rotateView:(UIView *)view duration:(CGFloat)duration angle:(CGFloat)angle
 {
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         view.transform = CGAffineTransformMakeRotation(angle);
     } completion:nil];
+}
+
+- (void)loadSitesForSelectedSegment:(id)sender
+{
+    self.expandedCellIndexPath = nil;
+    
+    [self showHUD];
+    [self loadSitesForSiteType:self.listType listingContext:self.defaultListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self hideHUD];
+        [self reloadTableViewWithPagingResult:pagingResult error:error];
+        [self hidePullToRefreshView];
+    }];
 }
 
 - (void)loadSitesForSiteType:(SiteListTypeSelection)siteType

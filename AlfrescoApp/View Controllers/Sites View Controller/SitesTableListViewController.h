@@ -22,6 +22,6 @@
 
 - (instancetype)initWithType:(SiteListTypeSelection)sitesType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController;
 
-- (void) reloadTableViewWithSearchResults:(NSMutableArray *)searchResults;
+- (void)reloadTableViewWithSearchResults:(NSMutableArray *)searchResults;
 
 @end

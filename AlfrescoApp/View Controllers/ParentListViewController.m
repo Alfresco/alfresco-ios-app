@@ -303,13 +303,6 @@
         [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
         tableViewController.refreshControl = refreshControl;
         self.refreshControl = refreshControl;
-        
-        // bug with iOS 7's UIRefreshControl - Displacement of the initial title.
-        // Force a begin and end refresh action to resolve the displacement of text.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.refreshControl beginRefreshing];
-            [self.refreshControl endRefreshing];
-        });
     }
 }
 
