@@ -23,6 +23,8 @@
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
 
+static CGFloat const kSegmentToSearchControlPadding = 8.0f;
+
 @interface SitesViewController ()
 
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -33,6 +35,7 @@
 @property (nonatomic, assign) SiteListTypeSelection selectedListType;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
+@property (nonatomic, assign, getter=isActiveAccountOnPremise) BOOL activeAccountOnPremise;
 
 @property (nonatomic, strong) SitesTableListViewController *favoritesVC;
 @property (nonatomic, strong) SitesTableListViewController *mySitesVC;
@@ -50,6 +53,7 @@
     {
         self.session = session;
         self.title = NSLocalizedString(@"sites.title", @"Sites Title");
+        self.activeAccountOnPremise = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise;
     }
     return self;
 }
@@ -74,10 +78,12 @@
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     view.backgroundColor = [UIColor whiteColor];
     
+    NSString *thirdSegmentLabel = self.isActiveAccountOnPremise ? NSLocalizedString(@"sites.segmentControl.sitefinder", @"Site Finder") : NSLocalizedString(@"sites.segmentControl.allsites", @"All Sites");
+    
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[
                                                                               NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites"),
                                                                               NSLocalizedString(@"sites.segmentControl.mysites", @"My Sites"),
-                                                                              NSLocalizedString(@"sites.segmentControl.allsites", @"All Sites")]];
+                                                                              thirdSegmentLabel]];
     segment.frame = CGRectMake((view.frame.origin.x + (kUISegmentControlHorizontalPadding / 2)),
                                (view.frame.origin.y + kUISegmentControlVerticalPadding),
                                view.frame.size.width - kUISegmentControlVerticalPadding,
@@ -89,7 +95,7 @@
     self.segmentedControl = segment;
     [view addSubview:self.segmentedControl];
     
-    // create and configure the table view
+    // Create and configure the table view
     BOOL shouldHideSegmentControl = (self.sitesFilter != SitesListViewFilterNoFilter);
     CGFloat containerOrigin = view.frame.origin.y + kUISegmentControllerHeight;
     CGFloat containerHeight = view.frame.size.height - kUISegmentControllerHeight;
@@ -129,22 +135,26 @@
     [self addChildViewController:self.mySitesVC];
     [self.mySitesVC didMoveToParentViewController:self];
     
-    if([AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeCloud)
+    if (self.isActiveAccountOnPremise)
+    {
+        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
+        self.searchVC.sitesPushHandler = self;
+        self.searchVC.shouldHideNavigationBarOnSearchControllerPresentation = NO;
+        
+        // Add spacing between UISegmentControl and search control
+        CGRect siteFinderRect = CGRectInset(self.siteFinderContainerView.bounds, 0, kSegmentToSearchControlPadding);
+        self.searchVC.view.frame = siteFinderRect;
+
+        [self.siteFinderContainerView addSubview:self.searchVC.view];
+        [self addChildViewController:self.searchVC];
+        [self.searchVC didMoveToParentViewController:self];
+    }
+    else
     {
         self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
         [self.siteFinderContainerView addSubview:self.allSitesVC.view];
         [self addChildViewController:self.allSitesVC];
         [self.allSitesVC didMoveToParentViewController:self];
-    }
-    else
-    {
-        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
-        self.searchVC.sitesPushHandler = self;
-        self.searchVC.shouldHideNavigationBarOnSearchControllerPresentation = NO;
-        self.searchVC.view.frame = self.siteFinderContainerView.bounds;
-        [self.siteFinderContainerView addSubview:self.searchVC.view];
-        [self addChildViewController:self.searchVC];
-        [self.searchVC didMoveToParentViewController:self];
     }
     
     if (self.session)
@@ -170,27 +180,19 @@
     switch (filter)
     {
         case SitesListViewFilterNoFilter:
-        {
             returnSelectionType = self.selectedListType;
-        }
             break;
             
         case SitesListViewFilterFavouriteSites:
-        {
             returnSelectionType = SiteListTypeSelectionFavouriteSites;
-        }
             break;
             
         case SitesListViewFilterMySites:
-        {
             returnSelectionType = SiteListTypeSelectionMySites;
-        }
             break;
             
         case SitesListViewFilterAllSites:
-        {
             returnSelectionType = SiteListTypeSelectionAllSites;
-        }
             break;
     }
     
