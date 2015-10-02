@@ -219,6 +219,11 @@ CGFloat hiddenYOrigin;
 
 - (void)dismissNoticeAnimated:(BOOL)animated
 {
+    if (self.animator.running)
+    {
+        [self.animator removeAllBehaviors];
+    }
+    
     if (animated)
     {
         [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
