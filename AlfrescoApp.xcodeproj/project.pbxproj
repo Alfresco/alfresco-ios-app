@@ -2799,19 +2799,19 @@
 			isa = PBXGroup;
 			children = (
 				738664B51906B13D0021D1BD /* Cell */,
+				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
+				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
+				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
+				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
 				7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */,
 				7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */,
+				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
+				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
+				2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */,
+				2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */,
 				7386649D1906AD840021D1BD /* FileFolderListViewController.h */,
 				7386649E1906AD840021D1BD /* FileFolderListViewController.m */,
 				7386649F1906AD840021D1BD /* FileFolderListViewController.xib */,
-				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
-				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
-				2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */,
-				2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */,
-				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
-				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
-				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
-				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2869,11 +2869,11 @@
 				2BFB08151B14BE9F00ED8DFF /* FileFolderCollectionViewCell.h */,
 				2BFB08161B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m */,
 				2BFB08171B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib */,
-				2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */,
-				2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */,
 				2B1751DB1B3807AF00E440DD /* LoadingCollectionViewCell.h */,
 				2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */,
 				2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */,
+				2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */,
+				2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */,
 				2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */,
 			);
 			path = Cell;

@@ -82,7 +82,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSString *)serverURLStringFromAccount:(UserAccount *)account;
 + (void)zoomAppLevelOutWithCompletionBlock:(void (^)(void))completionBlock;
 + (void)resetAppZoomLevelWithCompletionBlock:(void (^)(void))completionBlock;
-+ (void)colorButtonsForActionSheet:(UIActionSheet *)actionSheet tintColor:(UIColor *)tintColor;
 + (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority;
 + (NSString *)displayNameForProcessDefinition:(NSString *)task;
 + (UIImage *)cropImageIntoSquare:(UIImage *)originalImage;

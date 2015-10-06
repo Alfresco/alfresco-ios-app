@@ -76,7 +76,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     self.title = NSLocalizedString(@"tasks.title", @"Tasks Title");
     self.tableView.emptyMessage = NSLocalizedString(@"tasks.empty", @"No Tasks");
     
-    UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tasks.view.button", @"View") style:UIBarButtonItemStylePlain target:self action:@selector(displayActionSheet:event:)];
+    UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"tasks.view.button", @"View") style:UIBarButtonItemStylePlain target:self action:@selector(displayTaskFilter:event:)];
     self.filterButton = filterButton;
     
     UIBarButtonItem *addTaskButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createTask:)];
@@ -307,27 +307,31 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     [self.workflowService retrieveTasksWithListingContext:(listingContext ?: self.defaultListingContext) completionBlock:completionBlock];
 }
 
-- (void)displayActionSheet:(id)sender event:(UIEvent *)event
+- (void)displayTaskFilter:(id)sender event:(UIEvent *)event
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")];
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")];
-    [actionSheet setCancelButtonIndex:[actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")]];
-    
-    if (IS_IPAD)
-    {
-        [actionSheet showFromBarButtonItem:sender animated:YES];
-    }
-    else
-    {
-        [actionSheet showInView:self.view];
-    }
-    
-    // UIActionSheet button titles don't pick up the global tint color by default
-    [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
-    self.filterButton.enabled = NO;
+    // "My Tasks" filter
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self reloadTableViewWithPagingResult:pagingResult error:error];
+        }];
+    }]];
+
+    // "Tasks I Started" filter
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self loadTasksForTaskFilter:TaskFilterProcess listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self reloadTableViewWithPagingResult:pagingResult error:error];
+        }];
+    }]];
+    
+    // Cancel
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+
+    alertController.modalPresentationStyle = UIModalPresentationPopover;
+    UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
+    popoverPresenter.barButtonItem = sender;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Overridden Functions
@@ -520,36 +524,6 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
                 }];
             }
         }];
-    }
-}
-
-#pragma mark - UIActionSheetDelegate Functions
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    self.filterButton.enabled = YES;
-    
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title")])
-    {
-        [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self reloadTableViewWithPagingResult:pagingResult error:error];
-        }];
-    }
-    else if ([buttonTitle isEqualToString:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title")])
-    {
-        [self loadTasksForTaskFilter:TaskFilterProcess listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self reloadTableViewWithPagingResult:pagingResult error:error];
-        }];
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.cancelButtonIndex)
-    {
-        self.filterButton.enabled = YES;
     }
 }
 
