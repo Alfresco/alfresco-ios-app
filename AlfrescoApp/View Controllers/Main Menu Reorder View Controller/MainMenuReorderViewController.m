@@ -213,7 +213,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
             
         case MainMenuReorderSectionsHidden:
         {
-            headerText = NSLocalizedString(@"main.menu.reorder.header.hidden.title", @"Hidden title");;
+            headerText = NSLocalizedString(@"main.menu.reorder.header.hidden.title", @"Hidden title");
         }
         break;
     }

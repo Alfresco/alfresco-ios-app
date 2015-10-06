@@ -208,7 +208,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 - (BOOL)serverConfigurationExistsForAccount:(UserAccount *)account
 {
-    NSString *accountConfigurationFolderPath = [[self accountSpecificConfigurationFolderPath:account] stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];;
+    NSString *accountConfigurationFolderPath = [[self accountSpecificConfigurationFolderPath:account] stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];
     return [[AlfrescoFileManager sharedManager] fileExistsAtPath:accountConfigurationFolderPath];
 }
 

@@ -370,7 +370,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     if (pagingResult)
     {
         TaskGroupItem *currentGroupedItem = [self taskGroupItemForType:self.displayedTaskFilter];
-        [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];;
+        [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];
         currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
         self.tableViewData = [currentGroupedItem.tasksAfterFiltering mutableCopy];
         [self.tableView reloadData];

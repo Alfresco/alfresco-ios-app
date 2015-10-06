@@ -566,7 +566,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             
         case ContactInformationTypeAddress:
         {
-            NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];;
+            NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
             
             NSString *query = [NSString stringWithFormat:@"%@?%@=%@", kMapsURLScheme, kMapsURLSchemeQueryParameter, address];
             NSURL *mapsQueryURL = [NSURL URLWithString:query];

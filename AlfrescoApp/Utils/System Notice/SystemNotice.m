@@ -120,7 +120,7 @@ CGFloat hiddenYOrigin;
     CGRect rotatedView = CGRectApplyAffineTransform(self.viewToDisplayOn.frame, self.viewToDisplayOn.transform);
     CGFloat viewWidth = rotatedView.size.width;
     
-    // Status Bar Height - [[UIApplication sharedApplication] statusBarFrame].size.height yields 1024 occasionally on iOS 7
+    // Status Bar Height - [[UIApplication sharedApplication] statusBarFrame].size.height yields 1024 occasionally
     CGFloat statusBarHeight = 20.0f;
     
     // Padding
