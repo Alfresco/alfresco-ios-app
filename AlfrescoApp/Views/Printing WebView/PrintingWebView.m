@@ -17,7 +17,6 @@
  ******************************************************************************/
 
 #import "PrintingWebView.h"
-#import "MBProgressHUD.h"
 
 @interface PrintingWebView () <UIWebViewDelegate>
 @property (nonatomic, strong) UIView *owningView;

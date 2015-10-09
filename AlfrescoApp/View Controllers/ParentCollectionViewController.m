@@ -323,13 +323,6 @@
         [refreshControl addTarget:self action:@selector(refreshCollectionView:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refreshControl;
         [self.collectionView addSubview:refreshControl];
-        
-        // bug with iOS 7's UIRefreshControl - Displacement of the initial title.
-        // Force a begin and end refresh action to resolve the displacement of text.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.refreshControl beginRefreshing];
-            [self.refreshControl endRefreshing];
-        });
     }
 }
 

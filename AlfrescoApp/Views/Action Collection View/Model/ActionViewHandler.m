@@ -532,32 +532,29 @@
 - (void)pressedRenameActionItem:(ActionCollectionItem *)actionItem atPath:(NSString *)path
 {
     __block NSString *passedPath = path;
-    UIAlertView *renameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.rename.alert.title", @"Rename")
-                                                          message:NSLocalizedString(@"action.rename.alert.message", @"Rename document to, message")
-                                                         delegate:self
-                                                cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    renameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [renameAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
+    
+    UIAlertController *renameAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.rename.alert.message", @"Rename document to, message") message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [renameAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) { }];
+    [renameAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }]];
+    [renameAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.rename.alert.title", @"Rename") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *newName = renameAlert.textFields[0].text;
+        
+        if (newName && newName.length > 0)
         {
-            NSString *newName = [[renameAlert textFieldAtIndex:0] text];
+            newName = [newName stringByAppendingPathExtension:path.pathExtension];
+            NSString *newPath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:newName];
             
-            if (newName)
-            {
-                newName = [newName stringByAppendingPathExtension:path.pathExtension];
-                NSString *newPath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:newName];
-                
-                [[DownloadManager sharedManager] renameLocalDocument:path.lastPathComponent toName:newName];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoLocalDocumentRenamedNotification object:path userInfo:@{kAlfrescoLocalDocumentNewName : newPath}];
-                
-                NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.rename.success.message", @"Rename Success Message"), path.lastPathComponent, newName];
-                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.rename.success.title", @"Rename Success Title"));
-                self.controller.title = newName;
-                passedPath = newPath;
-            }
+            [[DownloadManager sharedManager] renameLocalDocument:path.lastPathComponent toName:newName];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoLocalDocumentRenamedNotification object:path userInfo:@{kAlfrescoLocalDocumentNewName : newPath}];
+            
+            NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.rename.success.message", @"Rename Success Message"), path.lastPathComponent, newName];
+            displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.rename.success.title", @"Rename Success Title"));
+            self.controller.title = newName;
+            passedPath = newPath;
         }
-    }];
+    }]];
+    
+    [self.controller presentViewController:renameAlert animated:YES completion:nil];
 }
 
 - (void)pressedUploadActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView

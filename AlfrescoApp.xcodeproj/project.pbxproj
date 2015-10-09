@@ -879,7 +879,7 @@
 		0876A05A18D9A9E30035370A /* PeoplePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeoplePicker.h; sourceTree = "<group>"; };
 		0876A05B18D9A9E30035370A /* PeoplePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeoplePicker.m; sourceTree = "<group>"; };
 		0876A05C18D9A9E30035370A /* PeoplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeoplePickerViewController.h; sourceTree = "<group>"; };
-		0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeoplePickerViewController.m; sourceTree = "<group>"; };
+		0876A05D18D9A9E30035370A /* PeoplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PeoplePickerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0876A05E18D9A9E30035370A /* PeoplePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeoplePickerViewController.xib; sourceTree = "<group>"; };
 		088228621843722B006E58A4 /* RequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestHandler.h; sourceTree = "<group>"; };
 		088228631843722B006E58A4 /* RequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestHandler.m; sourceTree = "<group>"; };
@@ -916,7 +916,7 @@
 		08E1EA3618DB06D100F9052F /* TaskTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskTypeViewController.m; sourceTree = "<group>"; };
 		08E1EA3818DB073A00F9052F /* TaskTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskTypeViewController.xib; sourceTree = "<group>"; };
 		08E1EA3B18DB2E1200F9052F /* CreateTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTaskViewController.h; sourceTree = "<group>"; };
-		08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTaskViewController.m; sourceTree = "<group>"; };
+		08E1EA3C18DB2E1200F9052F /* CreateTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CreateTaskViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateTaskViewController.xib; sourceTree = "<group>"; };
 		08E89C9217E7488C006936DF /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		08E89C9317E7488C006936DF /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
@@ -988,7 +988,7 @@
 		273EEC3E191A7EF200E07FF3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2744021F18AA83C400DF23DD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		274863A11951E1A2006A91C5 /* ClientCertificateDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCertificateDownloadViewController.h; sourceTree = "<group>"; };
-		274863A21951E1A2006A91C5 /* ClientCertificateDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientCertificateDownloadViewController.m; sourceTree = "<group>"; };
+		274863A21951E1A2006A91C5 /* ClientCertificateDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ClientCertificateDownloadViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AlfrescoApp-Info.plist"; sourceTree = "<group>"; };
 		2764ABCB18CDC839003FFBF9 /* actionsheet-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload.png"; sourceTree = "<group>"; };
 		2764ABCC18CDC839003FFBF9 /* actionsheet-upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-upload@2x.png"; sourceTree = "<group>"; };
@@ -998,7 +998,7 @@
 		277F16CA1938C0B000884ED6 /* ALFPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFPreviewController.h; sourceTree = "<group>"; };
 		277F16CB1938C0B000884ED6 /* ALFPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFPreviewController.m; sourceTree = "<group>"; };
 		277FC4B0194F094200B311E1 /* PrintingWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintingWebView.h; sourceTree = "<group>"; };
-		277FC4B1194F094200B311E1 /* PrintingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintingWebView.m; sourceTree = "<group>"; };
+		277FC4B1194F094200B311E1 /* PrintingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PrintingWebView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		278658A11BB60280003B77AA /* CustomFolderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CustomFolderService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		278658A21BB60280003B77AA /* CustomFolderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CustomFolderService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		279961071BB4630900421C33 /* site-action-members.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "site-action-members.png"; sourceTree = "<group>"; };
@@ -1083,8 +1083,8 @@
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
 		2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCollectionSectionHeader.xib; sourceTree = "<group>"; };
-		2B5592081B90AB1C00D85C7B /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewController.h; sourceTree = "<group>"; };
-		2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewController.m; sourceTree = "<group>"; };
+		2B5592081B90AB1C00D85C7B /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SearchResultsTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SearchResultsTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
 		2B7169F51B567CC1009A4487 /* large_folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_folder.png; sourceTree = "<group>"; };
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
@@ -1102,7 +1102,7 @@
 		2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewProtocols.h; sourceTree = "<group>"; };
 		2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCollectionSectionHeader.h; sourceTree = "<group>"; };
 		2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCollectionSectionHeader.m; sourceTree = "<group>"; };
-		2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentCollectionViewController.h; sourceTree = "<group>"; };
+		2BFB07FB1B149FFD00ED8DFF /* ParentCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ParentCollectionViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2BFB07FC1B149FFD00ED8DFF /* ParentCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentCollectionViewController.m; sourceTree = "<group>"; };
 		2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFileFolderCollectionViewController.h; sourceTree = "<group>"; };
 		2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseFileFolderCollectionViewController.m; sourceTree = "<group>"; };
@@ -1407,7 +1407,7 @@
 		738665141906B3ED0021D1BD /* AttributedLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributedLabelCell.m; sourceTree = "<group>"; };
 		738665151906B3ED0021D1BD /* AttributedLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributedLabelCell.xib; sourceTree = "<group>"; };
 		738665201907B9BE0021D1BD /* FileLocationSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLocationSelectionViewController.h; sourceTree = "<group>"; };
-		738665211907B9BE0021D1BD /* FileLocationSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLocationSelectionViewController.m; sourceTree = "<group>"; };
+		738665211907B9BE0021D1BD /* FileLocationSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FileLocationSelectionViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		738665221907B9BE0021D1BD /* FileLocationSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileLocationSelectionViewController.xib; sourceTree = "<group>"; };
 		73881F51188831410052C75F /* UIView+DrawingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DrawingUtils.h"; sourceTree = "<group>"; };
 		73881F52188831410052C75F /* UIView+DrawingUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DrawingUtils.m"; sourceTree = "<group>"; };
@@ -1552,8 +1552,8 @@
 		739E107F18F6F10700495616 /* FileHandlerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHandlerManager.m; sourceTree = "<group>"; };
 		739E108118FC19B100495616 /* DownloadsDocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadsDocumentPreviewViewController.h; path = "Document Preview View Controller/DownloadsDocumentPreviewViewController.h"; sourceTree = "<group>"; };
 		739E108218FC19B100495616 /* DownloadsDocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadsDocumentPreviewViewController.m; path = "Document Preview View Controller/DownloadsDocumentPreviewViewController.m"; sourceTree = "<group>"; };
-		739E108418FC219E00495616 /* BaseDocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseDocumentPreviewViewController.h; path = "Document Preview View Controller/BaseDocumentPreviewViewController.h"; sourceTree = "<group>"; };
-		739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseDocumentPreviewViewController.m; path = "Document Preview View Controller/BaseDocumentPreviewViewController.m"; sourceTree = "<group>"; };
+		739E108418FC219E00495616 /* BaseDocumentPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BaseDocumentPreviewViewController.h; path = "Document Preview View Controller/BaseDocumentPreviewViewController.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		739E108518FC219E00495616 /* BaseDocumentPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = BaseDocumentPreviewViewController.m; path = "Document Preview View Controller/BaseDocumentPreviewViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73A04F2F187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "BaseDocumentPreviewViewController~ipad.xib"; path = "Document Preview View Controller/BaseDocumentPreviewViewController~ipad.xib"; sourceTree = "<group>"; };
 		73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+AutoLayout.h"; sourceTree = "<group>"; };
 		73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+AutoLayout.m"; sourceTree = "<group>"; };
@@ -1591,7 +1591,7 @@
 		73B957D517A6750E0099FB84 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		73B957D617A6750E0099FB84 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		73B957D717A6750E0099FB84 /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
-		73B957D817A6750E0099FB84 /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
+		73B957D817A6750E0099FB84 /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LoginManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B957D917A6750E0099FB84 /* ThumbnailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailManager.h; sourceTree = "<group>"; };
 		73B957DA17A6750E0099FB84 /* ThumbnailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailManager.m; sourceTree = "<group>"; };
 		73B957DC17A6750E0099FB84 /* FileURLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileURLHandler.h; sourceTree = "<group>"; };
@@ -1616,7 +1616,7 @@
 		73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeManager.m; sourceTree = "<group>"; };
 		73B9582617A6750E0099FB84 /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
 		73B9582717A6750E0099FB84 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
-		73B9582817A6750E0099FB84 /* ParentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentListViewController.h; sourceTree = "<group>"; };
+		73B9582817A6750E0099FB84 /* ParentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ParentListViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		73B9582917A6750E0099FB84 /* ParentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ParentListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9583E17A6750F0099FB84 /* MultiSelectActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectActionItem.h; sourceTree = "<group>"; };
 		73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectActionItem.m; sourceTree = "<group>"; };
@@ -1647,7 +1647,7 @@
 		73B95AC917A68DF20099FB84 /* DownloadsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadsViewController.h; sourceTree = "<group>"; };
 		73B95ACA17A68DF20099FB84 /* DownloadsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadsViewController.m; sourceTree = "<group>"; };
 		73B95AD017A68DF20099FB84 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		73B95AD117A68DF20099FB84 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		73B95AD117A68DF20099FB84 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LoginViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B95AD317A68DF20099FB84 /* MetaDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaDataViewController.h; sourceTree = "<group>"; };
 		73B95AD417A68DF20099FB84 /* MetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MetaDataViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B95AD917A68DF20099FB84 /* PlaceholderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderViewController.h; sourceTree = "<group>"; };
@@ -1684,7 +1684,7 @@
 		73CD5B0C1A729526000A5523 /* SharedConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedConstants.h; sourceTree = "<group>"; };
 		73CD5B0D1A729526000A5523 /* SharedConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedConstants.m; sourceTree = "<group>"; };
 		73CF6CE01B1C90A600D79CA0 /* MainMenuReorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuReorderViewController.h; sourceTree = "<group>"; };
-		73CF6CE11B1C90A600D79CA0 /* MainMenuReorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuReorderViewController.m; sourceTree = "<group>"; };
+		73CF6CE11B1C90A600D79CA0 /* MainMenuReorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainMenuReorderViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73CF6CE61B21BCC900D79CA0 /* MainMenuVisibilityScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuVisibilityScope.h; sourceTree = "<group>"; };
 		73CF6CE71B21BCC900D79CA0 /* MainMenuVisibilityScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuVisibilityScope.m; sourceTree = "<group>"; };
 		73D6492218AD855D00333266 /* actionsheet-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-folder.png"; sourceTree = "<group>"; };
@@ -2799,19 +2799,19 @@
 			isa = PBXGroup;
 			children = (
 				738664B51906B13D0021D1BD /* Cell */,
+				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
+				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
+				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
+				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
 				7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */,
 				7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */,
+				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
+				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
+				2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */,
+				2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */,
 				7386649D1906AD840021D1BD /* FileFolderListViewController.h */,
 				7386649E1906AD840021D1BD /* FileFolderListViewController.m */,
 				7386649F1906AD840021D1BD /* FileFolderListViewController.xib */,
-				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
-				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
-				2BFB08051B14A1F400ED8DFF /* FileFolderCollectionViewController.h */,
-				2BFB08061B14A1F400ED8DFF /* FileFolderCollectionViewController.m */,
-				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
-				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
-				2BFB080D1B14B7BB00ED8DFF /* BaseLayoutAttributes.h */,
-				2BFB080E1B14B7BB00ED8DFF /* BaseLayoutAttributes.m */,
 			);
 			path = "FileFolder View Controller";
 			sourceTree = "<group>";
@@ -2869,11 +2869,11 @@
 				2BFB08151B14BE9F00ED8DFF /* FileFolderCollectionViewCell.h */,
 				2BFB08161B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m */,
 				2BFB08171B14BE9F00ED8DFF /* FileFolderCollectionViewCell.xib */,
-				2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */,
-				2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */,
 				2B1751DB1B3807AF00E440DD /* LoadingCollectionViewCell.h */,
 				2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */,
 				2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */,
+				2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */,
+				2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */,
 				2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */,
 			);
 			path = Cell;
@@ -5048,7 +5048,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -5077,7 +5077,6 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
@@ -5138,7 +5137,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -5167,7 +5165,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -5196,7 +5193,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -5226,7 +5222,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
@@ -5256,7 +5251,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -5286,7 +5280,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -5328,7 +5321,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5360,7 +5353,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -5389,7 +5382,6 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
@@ -5421,7 +5413,6 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",

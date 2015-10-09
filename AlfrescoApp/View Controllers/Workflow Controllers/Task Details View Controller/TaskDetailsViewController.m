@@ -18,7 +18,6 @@
  
 #import "TaskDetailsViewController.h"
 #import "TaskHeaderView.h"
-#import "MBProgressHUD.h"
 #import "PagedScrollView.h"
 #import "ThumbnailManager.h"
 #import "AlfrescoNodeCell.h"

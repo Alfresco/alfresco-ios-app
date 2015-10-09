@@ -20,7 +20,6 @@
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
 #import "MainMenuLocalConfigurationBuilder.h"
-#import "MBProgressHUD.h"
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
@@ -94,8 +93,10 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [self loadData];
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
+    
     // If the order or visibility has changed
     if (![self.oldData isEqualToArray:self.visibleItems])
     {
@@ -213,7 +214,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
             
         case MainMenuReorderSectionsHidden:
         {
-            headerText = NSLocalizedString(@"main.menu.reorder.header.hidden.title", @"Hidden title");;
+            headerText = NSLocalizedString(@"main.menu.reorder.header.hidden.title", @"Hidden title");
         }
         break;
     }

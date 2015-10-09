@@ -21,7 +21,6 @@
 #import "PagedScrollView.h"
 #import "ActionCollectionView.h"
 #import "ActionViewHandler.h"
-#import "MBProgressHUD.h"
 #import "ItemInDetailViewProtocol.h"
 #import "NodeUpdatableProtocol.h"
 

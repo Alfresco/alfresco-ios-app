@@ -94,18 +94,10 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     self.tableView.emptyMessage = NSLocalizedString(@"downloads.empty", @"No Local Files");
     [self refreshData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(documentDownloaded:)
-                                                 name:kAlfrescoDocumentDownloadedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deleteDocument:)
-                                                 name:kAlfrescoDeleteLocalDocumentNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(renamedDocument:)
-                                                 name:kAlfrescoLocalDocumentRenamedNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentDownloaded:) name:kAlfrescoDocumentDownloadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteDocument:) name:kAlfrescoDeleteLocalDocumentNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renamedDocument:) name:kAlfrescoLocalDocumentRenamedNotification object:nil];
+
     if (self.isDownloadPickerEnabled && !IS_IPAD)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(performCancel:)];
@@ -326,12 +318,19 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 {
     NSString *titleKey = (self.multiSelectToolbar.selectedItems.count == 1) ? @"multiselect.delete.confirmation.message.one-download" : @"multiselect.delete.confirmation.message.n-downloads";
     NSString *title = [NSString stringWithFormat:NSLocalizedString(titleKey, @"Are you sure you want to delete x items"), self.multiSelectToolbar.selectedItems.count];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete")
-                                                    otherButtonTitles:nil];
-    [actionSheet showFromToolbar:self.multiSelectToolbar];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [self deleteMultiSelectedNodes];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }]];
+    
+    alertController.modalPresentationStyle = UIModalPresentationPopover;
+    
+    UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
+    popoverPresenter.sourceView = self.multiSelectToolbar;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)deleteMultiSelectedNodes
@@ -539,19 +538,6 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     if ([actionId isEqualToString:kMultiSelectDelete])
     {
         [self confirmDeletingMultipleNodes];
-    }
-}
-
-#pragma mark - UIActionSheetDelegate Functions
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *selectedButtonText = [actionSheet buttonTitleAtIndex:buttonIndex];
-    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    
-    if ([selectedButtonText isEqualToString:NSLocalizedString(@"multiselect.button.delete", @"MultiSelect Delete confirmation")])
-    {
-        [self deleteMultiSelectedNodes];
     }
 }
 

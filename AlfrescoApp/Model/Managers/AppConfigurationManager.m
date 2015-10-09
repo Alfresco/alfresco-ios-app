@@ -59,9 +59,8 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
             NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
                                          kAlfrescoConfigServiceParameterFileName: configurationFilePath.lastPathComponent};
             
-            AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
-            self.currentConfigService = configService;
-            self.embeddedConfigService = configService;
+            self.currentConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+            self.embeddedConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
             
             [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
                 if (defaultProfileError)
@@ -208,7 +207,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 - (BOOL)serverConfigurationExistsForAccount:(UserAccount *)account
 {
-    NSString *accountConfigurationFolderPath = [[self accountSpecificConfigurationFolderPath:account] stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];;
+    NSString *accountConfigurationFolderPath = [[self accountSpecificConfigurationFolderPath:account] stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];
     return [[AlfrescoFileManager sharedManager] fileExistsAtPath:accountConfigurationFolderPath];
 }
 
@@ -218,7 +217,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
     NSString *accountConfigurationPath = [NSString stringWithFormat:@"%@/%@", accountConfigurationFolderPath, kAlfrescoEmbeddedConfigurationFileName];
     NSError *error = nil;
     [[AlfrescoFileManager sharedManager] removeItemAtPath:accountConfigurationPath error:&error];
-    if([account.accountIdentifier isEqualToString:self.currentConfigAccountIdentifier])
+    if ([account.accountIdentifier isEqualToString:self.currentConfigAccountIdentifier])
     {
         [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
             NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
@@ -236,7 +235,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 {
     id<AlfrescoSession> session = notification.object;
 
-    [self.embeddedConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
+    [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         if (defaultProfileError)
         {
             AlfrescoLogError(@"Error retrieving the default profile. Error: %@", defaultProfileError.localizedDescription);
@@ -376,8 +375,8 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
     if (![fileManager fileExistsAtPath:completeDestinationPath])
     {
         NSString *fileLocationInBundle = [[NSBundle mainBundle] pathForResource:kAlfrescoEmbeddedConfigurationFileName.stringByDeletingPathExtension ofType:kAlfrescoEmbeddedConfigurationFileName.pathExtension];
-        
         NSError *copyError = nil;
+
         [fileManager copyItemAtPath:fileLocationInBundle toPath:completeDestinationPath error:&copyError];
         
         if (copyError)

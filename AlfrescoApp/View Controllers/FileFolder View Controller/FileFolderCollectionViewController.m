@@ -45,19 +45,17 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
     FileFolderCollectionViewControllerTypeCustomFolderType
 };
 
-static CGFloat const kCellHeight = 73.0f;
+static CGFloat const kCellHeight = 64.0f;
 
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, UIPopoverPresentationControllerDelegate>
+@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, UIPopoverPresentationControllerDelegate>
 
 // Views
 @property (nonatomic, weak) UISearchBar *searchBar;
-@property (nonatomic, strong) UIActionSheet *actionSheet;
-@property (nonatomic, assign) UIBarButtonItem *actionSheetSender;
-@property (nonatomic, strong) UIBarButtonItem *actionSheetBarButton;
+@property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 // Data Model
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
@@ -316,11 +314,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [super viewWillDisappear:animated];
     
-    if (self.actionSheet.visible)
-    {
-        [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
-    }
-    
     if (self.isEditing)
     {
         self.editing = NO;
@@ -362,7 +355,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (editing)
     {
-        [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
         [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
         [self disablePullToRefresh];
         [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
@@ -378,7 +370,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         properLayout.editing = editing;
-        if(!editing)
+        if (!editing)
         {
             self.swipeToDeleteGestureRecognizer.enabled = properLayout.shouldSwipeToDelete;
         }
@@ -403,8 +395,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         self.popover.contentViewController.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
     }
-    
-    [self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
 }
 
 #pragma mark - Custom getters and setters
@@ -520,60 +510,192 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [rightBarButtonItems addObject:self.editBarButtonItem];
     
-    if (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit)
+    if (!self.isEditing && (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit))
     {
-        if (!self.isEditing)
-        {
-            if (!self.actionSheetBarButton)
-            {
-                UIBarButtonItem *displayActionSheetButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                                          target:self
-                                                                                                          action:@selector(displayActionSheet:event:)];
-                self.actionSheetBarButton = displayActionSheetButton;
-            }
-            
-            [rightBarButtonItems addObject:self.actionSheetBarButton];
-        }
+        [rightBarButtonItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                     target:self
+                                                                                     action:@selector(displayActionSheet:event:)]];
     }
     [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     if (self.folderPermissions.canAddChildren)
     {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File")];
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder")];
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.upload", @"Upload")];
-        
+        [alertController addAction:[self alertActionCreateFile]];
+        [alertController addAction:[self alertActionAddFolder]];
+        [alertController addAction:[self alertActionUpload]];
+
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
-            [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video")];
+            [alertController addAction:[self alertActionTakePhotoOrVideo]];
         }
         
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio")];
+        [alertController addAction:[self alertActionRecordAudio]];
     }
     
-    [actionSheet setCancelButtonIndex:[actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")]];
+    [alertController addAction:[self alertActionCancel]];
     
-    if (IS_IPAD)
-    {
-        actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-        [actionSheet showFromBarButtonItem:sender animated:YES];
-    }
-    else
-    {
-        [actionSheet showInView:self.view];
-    }
+    alertController.modalPresentationStyle = UIModalPresentationPopover;
     
-    // UIActionSheet button titles don't pick up the global tint color by default
-    [Utility colorButtonsForActionSheet:actionSheet tintColor:[UIColor appTintColor]];
+    UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
+    popoverPresenter.barButtonItem = sender;
+    [self presentViewController:alertController animated:YES completion:nil];
     
-    self.actionSheet = actionSheet;
-    self.actionSheetSender = sender;
-    
+    self.alertControllerSender = sender;
+}
+
+#pragma mark - UIAlertController UIAlertAction definitions
+
+- (UIAlertAction *)alertActionCancel
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        if ([[LocationManager sharedManager] isTrackingLocation])
+        {
+            [[LocationManager sharedManager] stopLocationUpdates];
+        }
+    }];
+}
+
+- (UIAlertAction *)alertActionCreateFile
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:self.displayFolder session:self.session delegate:self];
+        NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
+        [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
+    }];
+}
+
+- (UIAlertAction *)alertActionAddFolder
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Display the create folder UIAlertController
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
+                                                                                 message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) { }];
+        
+        [alertController addAction:[self alertActionCancel]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSString *desiredFolderName = [alertController.textFields[0].text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            if ([Utility isValidFolderName:desiredFolderName])
+            {
+                [self.documentService createFolderWithName:desiredFolderName inParentFolder:self.displayFolder properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
+                    if (folder)
+                    {
+                        [self retrievePermissionsForNode:folder];
+                        [self addAlfrescoNodes:@[folder] completion:nil];
+                        [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                    }
+                    else
+                    {
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.createfolder", @"Creation failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                }];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.invalidname", @"Creation failed")]);
+            }
+        }]];
+
+        alertController.modalPresentationStyle = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
+        popoverPresenter.barButtonItem = self.alertControllerSender;
+        [self presentViewController:alertController animated:YES completion:nil];
+    }];
+}
+
+- (UIAlertAction *)alertActionUpload
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload", @"Upload") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Upload type UIAlertController
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[self alertActionUploadExistingPhotos]];
+        [alertController addAction:[self alertActionUploadDocument]];
+        [alertController addAction:[self alertActionCancel]];
+        
+        alertController.modalPresentationStyle = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
+        popoverPresenter.barButtonItem = self.alertControllerSender;
+        [self presentViewController:alertController animated:YES completion:nil];
+    }];
+}
+
+- (UIAlertAction *)alertActionUploadExistingPhotos
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
+        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
+    }];
+}
+
+- (UIAlertAction *)alertActionUploadExistingPhotosOrVideos
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
+        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
+    }];
+}
+
+- (UIAlertAction *)alertActionUploadDocument
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
+        downloadPicker.isDownloadPickerEnabled = YES;
+        downloadPicker.downloadPickerDelegate = self;
+        downloadPicker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
+        
+        [self presentViewInPopoverOrModal:downloadPickerNavigationController animated:YES];
+    }];
+}
+
+- (UIAlertAction *)alertActionTakePhoto
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Start location services
+        [[LocationManager sharedManager] startLocationUpdates];
+        
+        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
+        self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+    }];
+}
+
+- (UIAlertAction *)alertActionTakePhotoOrVideo
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // Start location services
+        [[LocationManager sharedManager] startLocationUpdates];
+        
+        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
+        self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+    }];
+}
+
+- (UIAlertAction *)alertActionRecordAudio
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:self.displayFolder delegate:self];
+        NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
+        [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
+    }];
 }
 
 - (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated
@@ -584,10 +706,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         popoverController.delegate = self;
         self.popover = popoverController;
         self.popover.contentViewController = controller;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.popover presentPopoverFromBarButtonItem:self.actionSheetSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
-        });
+        [self.popover presentPopoverFromBarButtonItem:self.alertControllerSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
     }
     else
     {
@@ -1058,12 +1177,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     NSString *titleKey = (self.multiSelectToolbar.selectedItems.count == 1) ? @"multiselect.delete.confirmation.message.one-item" : @"multiselect.delete.confirmation.message.n-items";
     NSString *title = [NSString stringWithFormat:NSLocalizedString(titleKey, @"Are you sure you want to delete x items"), self.multiSelectToolbar.selectedItems.count];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete")
-                                                    otherButtonTitles:nil];
-    [actionSheet showFromToolbar:self.multiSelectToolbar];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [self deleteMultiSelectedNodes];
+    }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
+
+    alertController.modalPresentationStyle = UIModalPresentationPopover;
+    
+    UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
+    popoverPresenter.barButtonItem = self.alertControllerSender;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)deleteMultiSelectedNodes
@@ -1407,155 +1534,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     
     return reusableview;
-}
-
-#pragma mark - UIActionSheetDelegate Functions
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *selectedButtonText = [actionSheet buttonTitleAtIndex:buttonIndex];
-    
-    if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File")])
-    {
-        TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:self.displayFolder session:self.session delegate:self];
-        NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
-        });
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder")])
-    {
-        // display the create folder UI
-        UIAlertView *createFolderAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
-                                                                    message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                          otherButtonTitles:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder"), nil];
-        createFolderAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [createFolderAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (!isCancelButton)
-            {
-                NSString *desiredFolderName = [[createFolderAlert textFieldAtIndex:0] text];
-                desiredFolderName = [desiredFolderName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                if ([Utility isValidFolderName:desiredFolderName])
-                {
-                    [self.documentService createFolderWithName:desiredFolderName inParentFolder:self.displayFolder properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
-                        if (folder)
-                        {
-                            [self retrievePermissionsForNode:folder];
-                            [self addAlfrescoNodes:@[folder] completion:nil];
-                            [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                        }
-                        else
-                        {
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.createfolder", @"Creation failed"), [ErrorDescriptions descriptionForError:error]]);
-                            [Notifier notifyWithAlfrescoError:error];
-                        }
-                    }];
-                }
-                else
-                {
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.invalidname", @"Creation failed")]);
-                }
-            }
-        }];
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload", @"Upload")])
-    {
-        UIActionSheet *uploadActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        
-        [uploadActionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library")];
-        [uploadActionSheet addButtonWithTitle:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document")];
-        [uploadActionSheet setCancelButtonIndex:[uploadActionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")]];
-        
-        if (IS_IPAD)
-        {
-            uploadActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [uploadActionSheet showFromBarButtonItem:self.actionSheetSender animated:YES];
-            });
-        }
-        else
-        {
-            [uploadActionSheet showInView:self.view];
-        }
-        
-        // UIActionSheet button titles don't pick up the global tint color by default
-        [Utility colorButtonsForActionSheet:uploadActionSheet tintColor:[UIColor appTintColor]];
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo from Library")] ||
-             [selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library")])
-    {
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
-        if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library")])
-        {
-            self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
-        }
-        else
-        {
-            self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-        }
-        
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document")])
-    {
-        DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
-        downloadPicker.isDownloadPickerEnabled = YES;
-        downloadPicker.downloadPickerDelegate = self;
-        downloadPicker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
-        
-        [self presentViewInPopoverOrModal:downloadPickerNavigationController animated:YES];
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video")] ||
-             [selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo")])
-    {
-        // start location services
-        [[LocationManager sharedManager] startLocationUpdates];
-        
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video")])
-        {
-            self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
-        }
-        else
-        {
-            self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
-        });
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"multiselect.button.delete", @"Multi Select Delete Confirmation")])
-    {
-        [self deleteMultiSelectedNodes];
-    }
-    else if ([selectedButtonText isEqualToString:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio")])
-    {
-        UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:self.displayFolder delegate:self];
-        NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
-        });
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.cancelButtonIndex)
-    {
-        if ([[LocationManager sharedManager] isTrackingLocation])
-        {
-            [[LocationManager sharedManager] stopLocationUpdates];
-        }
-    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate Functions

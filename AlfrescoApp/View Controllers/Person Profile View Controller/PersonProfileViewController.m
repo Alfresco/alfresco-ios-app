@@ -21,7 +21,6 @@
 #import "AvatarManager.h"
 #import "RootRevealViewController.h"
 #import "UniversalDevice.h"
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "ContactDetailView.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
@@ -566,7 +565,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             
         case ContactInformationTypeAddress:
         {
-            NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];;
+            NSString *address = [self.person.company.fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
             
             NSString *query = [NSString stringWithFormat:@"%@?%@=%@", kMapsURLScheme, kMapsURLSchemeQueryParameter, address];
             NSURL *mapsQueryURL = [NSURL URLWithString:query];

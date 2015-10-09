@@ -18,7 +18,6 @@
 
 #import "ClientCertificateDownloadViewController.h"
 #import "TextFieldCell.h"
-#import "MBProgressHUD.h"
 
 @interface ClientCertificateDownloadViewController() <UITableViewDataSource, UITextFieldDelegate, NSURLSessionDownloadDelegate>
 @property (nonatomic, strong) UITableView *tableView;

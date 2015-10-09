@@ -29,7 +29,6 @@
 #import "FavouriteManager.h"
 #import "FilePreviewViewController.h"
 #import "MapViewController.h"
-#import "MBProgressHUD.h"
 #import "MetaDataViewController.h"
 #import "PagedScrollView.h"
 #import "SyncManager.h"

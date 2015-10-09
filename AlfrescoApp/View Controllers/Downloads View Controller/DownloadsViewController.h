@@ -28,7 +28,7 @@
 - (void)downloadPickerDidCancel;
 @end
 
-@interface DownloadsViewController : ParentListViewController <MultiSelectActionsDelegate, UIActionSheetDelegate>
+@interface DownloadsViewController : ParentListViewController <MultiSelectActionsDelegate>
 
 @property (nonatomic) BOOL isDownloadPickerEnabled;
 @property (nonatomic, weak) id<DownloadsPickerDelegate> downloadPickerDelegate;

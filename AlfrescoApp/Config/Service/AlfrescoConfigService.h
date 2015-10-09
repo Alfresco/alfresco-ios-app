@@ -20,7 +20,6 @@
 
 #import <Foundation/Foundation.h>
 #import "AlfrescoConfigConstants.h"
-//#import "AlfrescoSession.h"
 #import <AlfrescoSDK-iOS/AlfrescoSDK.h>
 #import "AlfrescoActionConfig.h"
 #import "AlfrescoActionGroupConfig.h"

@@ -23,7 +23,6 @@
 #import "TaskPriorityCell.h"
 #import "TaskApproversCell.h"
 #import "ErrorDescriptions.h"
-#import "MBProgressHud.h"
 
 static CGFloat const kNavigationBarHeight = 44.0f;
 static CGFloat const kMinimumPrioritySegmentWidth = 64.0f;

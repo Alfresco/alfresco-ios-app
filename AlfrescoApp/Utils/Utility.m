@@ -630,12 +630,6 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     url.port = [formatter numberFromString:account.serverPort];
     url.path = account.serviceDocument;
 
-    // iOS 7 support
-    if (![url respondsToSelector:@selector(string)])
-    {
-        return [[url URL] absoluteString];
-    }
-    
     return [url string];
 }
 
@@ -667,19 +661,6 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     }];
 }
     
-+ (void)colorButtonsForActionSheet:(UIActionSheet *)actionSheet tintColor:(UIColor *)tintColor
-{
-    NSArray *actionSheetButtons = actionSheet.subviews;
-    for (UIView *view in actionSheetButtons)
-    {
-        if ([view isKindOfClass:[UIButton class]])
-        {
-            UIButton *button = (UIButton *)view;
-            [button setTitleColor:tintColor forState:UIControlStateNormal];
-        }
-    }
-}
-
 + (TaskPriority *)taskPriorityForPriority:(NSNumber *)priority
 {
     TaskPriority *taskPriority = nil;

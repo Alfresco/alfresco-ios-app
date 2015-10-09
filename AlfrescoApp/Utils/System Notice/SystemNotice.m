@@ -120,7 +120,7 @@ CGFloat hiddenYOrigin;
     CGRect rotatedView = CGRectApplyAffineTransform(self.viewToDisplayOn.frame, self.viewToDisplayOn.transform);
     CGFloat viewWidth = rotatedView.size.width;
     
-    // Status Bar Height - [[UIApplication sharedApplication] statusBarFrame].size.height yields 1024 occasionally on iOS 7
+    // Status Bar Height - [[UIApplication sharedApplication] statusBarFrame].size.height yields 1024 occasionally
     CGFloat statusBarHeight = 20.0f;
     
     // Padding
@@ -219,6 +219,11 @@ CGFloat hiddenYOrigin;
 
 - (void)dismissNoticeAnimated:(BOOL)animated
 {
+    if (self.animator.running)
+    {
+        [self.animator removeAllBehaviors];
+    }
+    
     if (animated)
     {
         [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{

@@ -28,7 +28,6 @@
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
-#import "MBProgressHUD.h"
 
 static CGFloat const kCellHeight = 73.0f;
 

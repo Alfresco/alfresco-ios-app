@@ -17,7 +17,6 @@
  ******************************************************************************/
  
 #import "BaseDocumentPreviewViewController.h"
-#import "MBProgressHUD.h"
 #import "DocumentPreviewViewController.h"
 #import "DownloadsDocumentPreviewViewController.h"
 
@@ -41,8 +40,15 @@
         self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
         self.pagingControllers = [NSMutableArray array];
         self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:document session:session controller:self];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localDocumentWasRenamed:) name:kAlfrescoLocalDocumentRenamedNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)showHUD
@@ -145,5 +151,13 @@
     self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
     self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:node session:session controller:self];
 }
+
+#pragma mark - NSNotification Handlers
+
+- (void)localDocumentWasRenamed:(NSNotification *)notification
+{
+    self.documentContentFilePath = [notification.userInfo objectForKey:kAlfrescoLocalDocumentNewName];
+}
+
 
 @end
