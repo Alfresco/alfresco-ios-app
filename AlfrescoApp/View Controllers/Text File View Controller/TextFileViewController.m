@@ -21,7 +21,6 @@
 #import "UploadFormViewController.h"
 #import "DownloadManager.h"
 #import "SyncManager.h"
-#import "MBProgressHud.h"
 #import "ConnectivityManager.h"
 
 static NSString * const kTextFileMimeType = @"text/plain";

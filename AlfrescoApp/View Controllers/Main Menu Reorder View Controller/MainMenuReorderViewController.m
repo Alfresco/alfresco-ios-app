@@ -20,7 +20,6 @@
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
 #import "MainMenuLocalConfigurationBuilder.h"
-#import "MBProgressHUD.h"
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {

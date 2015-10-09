@@ -24,7 +24,6 @@ static NSInteger const kSearchResultsIndex = 0;
 #import "PeoplePickerViewController.h"
 #import "AvatarManager.h"
 #import "PersonCell.h"
-#import "MBProgressHud.h"
 
 @interface PeoplePickerViewController ()
 

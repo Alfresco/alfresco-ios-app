@@ -20,7 +20,6 @@
 #import "DownloadManager.h"
 #import "SyncHelper.h"
 #import "SyncManager.h"
-#import "MBProgressHUD.h"
 
 @interface BaseInboundURLHandler () <NSFileManagerDelegate>
 @end

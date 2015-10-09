@@ -16,7 +16,6 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "MBProgressHUD.h"
 
 @interface SearchResultsTableViewController : UITableViewController
 

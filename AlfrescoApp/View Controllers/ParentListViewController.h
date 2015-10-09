@@ -16,7 +16,6 @@
  *  limitations under the License.
  ******************************************************************************/
   
-#import "MBProgressHUD.h"
 #import "ErrorDescriptions.h"
 
 @class AlfrescoFolder;

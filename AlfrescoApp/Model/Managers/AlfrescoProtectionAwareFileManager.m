@@ -19,7 +19,6 @@
 #import "AlfrescoProtectionAwareFileManager.h"
 #import "AccountManager.h"
 #import "PreferenceManager.h"
-#import "MBProgressHUD.h"
 
 static BOOL sFileProtectionEnabled = NO;
 

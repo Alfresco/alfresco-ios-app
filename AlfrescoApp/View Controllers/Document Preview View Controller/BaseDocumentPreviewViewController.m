@@ -17,7 +17,6 @@
  ******************************************************************************/
  
 #import "BaseDocumentPreviewViewController.h"
-#import "MBProgressHUD.h"
 #import "DocumentPreviewViewController.h"
 #import "DownloadsDocumentPreviewViewController.h"
 

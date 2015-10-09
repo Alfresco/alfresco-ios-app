@@ -21,7 +21,6 @@
 #import "AvatarManager.h"
 #import "RootRevealViewController.h"
 #import "UniversalDevice.h"
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "ContactDetailView.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
