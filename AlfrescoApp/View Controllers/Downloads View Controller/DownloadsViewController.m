@@ -94,18 +94,10 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     self.tableView.emptyMessage = NSLocalizedString(@"downloads.empty", @"No Local Files");
     [self refreshData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(documentDownloaded:)
-                                                 name:kAlfrescoDocumentDownloadedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deleteDocument:)
-                                                 name:kAlfrescoDeleteLocalDocumentNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(renamedDocument:)
-                                                 name:kAlfrescoLocalDocumentRenamedNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentDownloaded:) name:kAlfrescoDocumentDownloadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteDocument:) name:kAlfrescoDeleteLocalDocumentNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renamedDocument:) name:kAlfrescoLocalDocumentRenamedNotification object:nil];
+
     if (self.isDownloadPickerEnabled && !IS_IPAD)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(performCancel:)];
