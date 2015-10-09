@@ -20,6 +20,7 @@
 #import "AlfrescoConfigService.h"
 #import "AppConfigurationManager.h"
 #import "UserAccount.h"
+#import "AccountManager.h"
 
 static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
@@ -57,13 +58,20 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [self loadData];
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
+    
+    // Has the profile changed?
     if (![self.originallySelectedProfileIdentifier isEqualToString:self.currentlySelectedProfile.identifier])
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationProfileDidChangeNotification
-                                                            object:self.currentlySelectedProfile
-                                                          userInfo:@{kAlfrescoConfigurationProfileDidChangeForAccountKey : self.account}];
+        // Only show the notification if the change was for the currently selected account
+        if ([[AccountManager sharedManager].selectedAccount.accountIdentifier isEqualToString:self.account.accountIdentifier])
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationProfileDidChangeNotification
+                                                                object:self.currentlySelectedProfile
+                                                              userInfo:@{kAlfrescoConfigurationProfileDidChangeForAccountKey : self.account}];
+        }
     }
 }
 
@@ -71,16 +79,22 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
 - (void)loadData
 {
+    AppConfigurationManager *appConfigManager = [AppConfigurationManager sharedManager];
+    
     [self.configService clear];
-    if ((self.configService == [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount]) && (!self.configService.session))
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    if ((self.configService == [appConfigManager configurationServiceForCurrentAccount]) && (!self.configService.session))
     {
         self.configService.session = self.session;
     }
     [self.configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError) {
-        if (profilesError)
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        if (profilesError || profilesArray == nil)
         {
-            [[AppConfigurationManager sharedManager] removeConfigurationFileForAccount:self.account];
-            self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:self.account];
+            [appConfigManager removeConfigurationFileForAccount:self.account];
+            self.configService = [appConfigManager configurationServiceForAccount:self.account];
             [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                 self.tableViewData = [NSArray arrayWithObject:config];
                 [self.tableView reloadData];
@@ -95,19 +109,19 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
             for (int i = 0; i < self.tableViewData.count; i++)
             {
                 AlfrescoProfileConfig *profile = self.tableViewData[i];
-                if([self.originallySelectedProfileIdentifier isEqualToString:profile.identifier])
+                if ([self.originallySelectedProfileIdentifier isEqualToString:profile.identifier])
                 {
                     shouldAutoSelectProfile = NO;
                 }
             }
             
-            if(shouldAutoSelectProfile)
+            if (shouldAutoSelectProfile)
             {
                 [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                     for (int i = 0; i < self.tableViewData.count; i++)
                     {
                         AlfrescoProfileConfig *profile = self.tableViewData[i];
-                        if([config.identifier isEqualToString:profile.identifier])
+                        if ([config.identifier isEqualToString:profile.identifier])
                         {
                             [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
                         }

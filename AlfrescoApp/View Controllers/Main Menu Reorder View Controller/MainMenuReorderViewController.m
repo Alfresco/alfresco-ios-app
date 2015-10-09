@@ -94,8 +94,10 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [self loadData];
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
+    
     // If the order or visibility has changed
     if (![self.oldData isEqualToArray:self.visibleItems])
     {

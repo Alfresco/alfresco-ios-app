@@ -302,7 +302,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         }
         else
         {
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account accountActivityType:AccountActivityTypeEditAccount configuration:self.configuration session:self.session];
+            // Only offer the AccountInfoViewController the session if it's the currently selected one
+            viewController = [[AccountInfoViewController alloc] initWithAccount:account
+                                                            accountActivityType:AccountActivityTypeEditAccount
+                                                                  configuration:self.configuration
+                                                                        session:account.isSelectedAccount ? self.session : nil];
         }
         
         if (viewController)
