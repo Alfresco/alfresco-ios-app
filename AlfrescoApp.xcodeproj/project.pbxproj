@@ -3987,6 +3987,9 @@
 					7373B4F417A66E9400869949 = {
 						DevelopmentTeam = W8N95J537P;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
