@@ -140,6 +140,11 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     }
 }
 
+- (void)dealloc
+{
+    [_searchController.view removeFromSuperview];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];

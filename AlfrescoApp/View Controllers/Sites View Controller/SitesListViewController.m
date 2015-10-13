@@ -78,6 +78,11 @@ static CGFloat kSearchCellHeight = 60.0f;
     return self;
 }
 
+- (void)dealloc
+{
+    [_searchController.view removeFromSuperview];
+}
+
 - (void)loadView
 {    
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
