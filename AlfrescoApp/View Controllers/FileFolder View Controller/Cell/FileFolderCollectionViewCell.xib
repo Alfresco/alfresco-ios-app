@@ -115,7 +115,6 @@
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="JTx-r6-rwq" secondAttribute="trailing" id="0Iy-eR-7ub"/>
                                     <constraint firstAttribute="bottom" secondItem="uuu-U3-Dk6" secondAttribute="bottom" id="3r7-dp-g2S"/>
                                     <constraint firstItem="JTx-r6-rwq" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="6vX-wk-fOf"/>
                                     <constraint firstItem="uuu-U3-Dk6" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="AxP-Jk-g7F"/>
