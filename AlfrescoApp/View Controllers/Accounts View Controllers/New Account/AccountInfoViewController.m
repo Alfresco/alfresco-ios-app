@@ -32,12 +32,14 @@
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "ProfileSelectionViewController.h"
 #import "AppConfigurationManager.h"
+#import "AccountInfoDetailsViewController.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
 static NSInteger const kTagCertificateCell = 1;
 static NSInteger const kTagReorderCell = 2;
 static NSInteger const kTagProfileCell = 3;
+static NSInteger const kTagAccountDetailsCell = 4;
 
 @interface AccountInfoViewController ()
 @property (nonatomic, assign) AccountActivityType activityType;
@@ -114,23 +116,16 @@ static NSInteger const kTagProfileCell = 3;
         self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
     }
     
-    self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+    self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                     target:self
                                                                     action:@selector(saveButtonClicked:)];
     [self.navigationItem setRightBarButtonItem:self.saveButton];
-    self.saveButton.enabled = NO;
-    
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                            target:self
-                                                                            action:@selector(cancel:)];
-    self.navigationItem.leftBarButtonItem = cancel;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     self.certificateLabel.text = self.formBackupAccount.accountCertificate.summary;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -176,63 +171,70 @@ static NSInteger const kTagProfileCell = 3;
 
 - (void)saveButtonClicked:(id)sender
 {
-    if (self.account.accountType == UserAccountTypeOnPremise)
+    if([self validateAccountFieldsValuesForServer])
     {
-        [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
-            if (successful)
-            {
-                AccountManager *accountManager = [AccountManager sharedManager];
-                
-                if (accountManager.totalNumberOfAddedAccounts == 0)
+        if (self.account.accountType == UserAccountTypeOnPremise)
+        {
+            [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+                if (successful)
                 {
-                    [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
-                }
-                else if (accountManager.selectedAccount == self.account)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-                }
-                
-                if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
-                {
-                    [self.delegate accountInfoViewController:self willDismissAfterAddingAccount:self.account];
-                }
-
-                [self dismissViewControllerAnimated:YES completion:^{
-                    if (self.activityType == AccountActivityTypeNewAccount)
+                    AccountManager *accountManager = [AccountManager sharedManager];
+                    
+                    if (accountManager.totalNumberOfAddedAccounts == 0)
                     {
-                        [accountManager addAccount:self.account];
+                        [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
                     }
-                    else
+                    else if (accountManager.selectedAccount == self.account)
                     {
-                        [accountManager saveAccountsToKeychain];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                     }
                     
-                    if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
+                    if ([self.delegate respondsToSelector:@selector(accountInfoViewController:willDismissAfterAddingAccount:)])
                     {
-                        [self.delegate accountInfoViewController:self didDismissAfterAddingAccount:self.account];
+                        [self.delegate accountInfoViewController:self willDismissAfterAddingAccount:self.account];
                     }
-                }];
+                    
+                    [self dismissViewControllerAnimated:YES completion:^{
+                        if (self.activityType == AccountActivityTypeNewAccount)
+                        {
+                            [accountManager addAccount:self.account];
+                        }
+                        else
+                        {
+                            [accountManager saveAccountsToKeychain];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                        }
+                        
+                        if ([self.delegate respondsToSelector:@selector(accountInfoViewController:didDismissAfterAddingAccount:)])
+                        {
+                            [self.delegate accountInfoViewController:self didDismissAfterAddingAccount:self.account];
+                        }
+                    }];
+                }
+            }];
+        }
+        else
+        {
+            [self updateFormBackupAccount];
+            
+            self.account.accountDescription = self.formBackupAccount.accountDescription;
+            self.account.isSyncOn = self.formBackupAccount.isSyncOn;
+            // If Sync is now enabled, suppress the prompt in the Favorites view
+            if (self.account.isSyncOn)
+            {
+                self.account.didAskToSync = YES;
             }
-        }];
+            
+            [[AccountManager sharedManager] saveAccountsToKeychain];
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+            }];
+        }
     }
     else
     {
-        [self updateFormBackupAccount];
-        
-        self.account.accountDescription = self.formBackupAccount.accountDescription;
-        self.account.isSyncOn = self.formBackupAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
-
-        [[AccountManager sharedManager] saveAccountsToKeychain];
-
-        [self dismissViewControllerAnimated:YES completion:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
-        }];
+        [self cancel:sender];
     }
 }
 
@@ -296,6 +298,11 @@ static NSInteger const kTagProfileCell = 3;
         ProfileSelectionViewController *profileSelectionViewController = [[ProfileSelectionViewController alloc] initWithAccount:self.account session:self.session];
         [self.navigationController pushViewController:profileSelectionViewController animated:YES];
     }
+    else if (cell.tag == kTagAccountDetailsCell)
+    {
+        AccountInfoDetailsViewController *accountInfoDetailsViewController = [[AccountInfoDetailsViewController alloc] initWithAccount:self.account session:self.session];
+        [self.navigationController pushViewController:accountInfoDetailsViewController animated:YES];
+    }
 }
 
 - (void)constructTableCellsForAlfrescoServer
@@ -319,115 +326,94 @@ static NSInteger const kTagProfileCell = 3;
     
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
-        TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-        usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-        usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        usernameCell.valueTextField.delegate = self;
-        self.usernameTextField = usernameCell.valueTextField;
-        self.usernameTextField.text = self.formBackupAccount.username;
-        
-        TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-        passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Required");
-        passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        passwordCell.valueTextField.secureTextEntry = YES;
-        passwordCell.valueTextField.delegate = self;
-        self.passwordTextField = passwordCell.valueTextField;
-        self.passwordTextField.text = self.formBackupAccount.password;
-        
-        TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        serverAddressCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-        serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-        serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        serverAddressCell.valueTextField.delegate = self;
-        serverAddressCell.valueTextField.keyboardType = UIKeyboardTypeURL;
-        self.serverAddressTextField = serverAddressCell.valueTextField;
-        self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
-        
-        SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
-        protocolCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-        self.protocolSwitch = protocolCell.valueSwitch;
-        [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
-        BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
-        if (self.activityType == AccountActivityTypeNewAccount)
-        {
-            isHTTPSOn = YES;
-        }
-        [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-        
-        TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        portCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-        portCell.valueTextField.text = kAlfrescoDefaultHTTPPortString;
-        portCell.valueTextField.returnKeyType = UIReturnKeyNext;
-        portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
-        portCell.valueTextField.delegate = self;
-        self.portTextField = portCell.valueTextField;
-        self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kAlfrescoDefaultHTTPPortString;
-        if (self.activityType == AccountActivityTypeNewAccount)
-        {
-            self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
-        }
-        
-        TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-        serviceDocumentCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-        serviceDocumentCell.valueTextField.text = kServiceDocument;
-        serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
-        serviceDocumentCell.valueTextField.delegate = self;
-        self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
-        self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
-        
-        LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        certificateCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        certificateCell.tag = kTagCertificateCell;
-        certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
-        certificateCell.valueLabel.text = self.account.accountCertificate.summary;
-        self.certificateLabel = certificateCell.valueLabel;
-        
-        LabelCell *configurationCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        configurationCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        configurationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        configurationCell.tag = kTagReorderCell;
-        configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
-        configurationCell.valueLabel.text = @"";
-        if (!self.canReorderMainMenuItems)
-        {
-            configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
-            configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
-        }
-        
-        LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-        profileCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        profileCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        profileCell.tag = kTagProfileCell;
-        profileCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.profile", @"Profile");
-        profileCell.valueLabel.text = self.account.selectedProfileName;
-        profileCell.valueLabel.textColor = [UIColor lightGrayColor];
-        self.profileLabel = profileCell.valueLabel;
-        
-         /**
-          * Selectively disable some controls if required
-          */
-        for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.descriptionTextField,
-                                     self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
-        {
-            control.enabled = self.canEditAccounts;
-            control.alpha = self.canEditAccounts ? 1.0f : 0.2f;
-        }
-        
         /**
          * Note: Additional account-specific settings should be in their own group with an empty header string.
          * This will allow a description footer to be added under each setting if required.
          */
         if (self.activityType == AccountActivityTypeNewAccount)
         {
+            TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
+            usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+            usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            usernameCell.valueTextField.delegate = self;
+            self.usernameTextField = usernameCell.valueTextField;
+            self.usernameTextField.text = self.formBackupAccount.username;
+            
+            TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
+            passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Required");
+            passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            passwordCell.valueTextField.secureTextEntry = YES;
+            passwordCell.valueTextField.delegate = self;
+            self.passwordTextField = passwordCell.valueTextField;
+            self.passwordTextField.text = self.formBackupAccount.password;
+            
+            TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            serverAddressCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
+            serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+            serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            serverAddressCell.valueTextField.delegate = self;
+            serverAddressCell.valueTextField.keyboardType = UIKeyboardTypeURL;
+            self.serverAddressTextField = serverAddressCell.valueTextField;
+            self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
+            
+            SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
+            protocolCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
+            self.protocolSwitch = protocolCell.valueSwitch;
+            [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
+            BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
+            if (self.activityType == AccountActivityTypeNewAccount)
+            {
+                isHTTPSOn = YES;
+            }
+            [self.protocolSwitch setOn:isHTTPSOn animated:YES];
+            
+            TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            portCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
+            portCell.valueTextField.text = kAlfrescoDefaultHTTPPortString;
+            portCell.valueTextField.returnKeyType = UIReturnKeyNext;
+            portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
+            portCell.valueTextField.delegate = self;
+            self.portTextField = portCell.valueTextField;
+            self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kAlfrescoDefaultHTTPPortString;
+            if (self.activityType == AccountActivityTypeNewAccount)
+            {
+                self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
+            }
+            
+            TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+            serviceDocumentCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
+            serviceDocumentCell.valueTextField.text = kServiceDocument;
+            serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
+            serviceDocumentCell.valueTextField.delegate = self;
+            self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
+            self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
+            
+            LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            certificateCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            certificateCell.tag = kTagCertificateCell;
+            certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
+            certificateCell.valueLabel.text = self.account.accountCertificate.summary;
+            self.certificateLabel = certificateCell.valueLabel;
+            
+            /**
+             * Selectively disable some controls if required
+             */
+            for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.descriptionTextField,
+                                         self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
+            {
+                control.enabled = self.canEditAccounts;
+                control.alpha = self.canEditAccounts ? 1.0f : 0.2f;
+            }
+            
             self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
                                                                    @[portCell, serviceDocumentCell, certificateCell]]];
             self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
@@ -435,13 +421,43 @@ static NSInteger const kTagProfileCell = 3;
         }
         else
         {
+            LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            profileCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            profileCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            profileCell.tag = kTagProfileCell;
+            profileCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.profile", @"Profile");
+            profileCell.valueLabel.text = self.account.selectedProfileName;
+            profileCell.valueLabel.textColor = [UIColor lightGrayColor];
+            self.profileLabel = profileCell.valueLabel;
+            
+            LabelCell *configurationCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            configurationCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            configurationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            configurationCell.tag = kTagReorderCell;
+            configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
+            configurationCell.valueLabel.text = @"";
+            if (!self.canReorderMainMenuItems)
+            {
+                configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
+                configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
+            }
+            
+            LabelCell *accountDetailsCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+            accountDetailsCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            accountDetailsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            accountDetailsCell.tag = kTagAccountDetailsCell;
+            accountDetailsCell.titleLabel.text = self.account.accountDescription;
+            accountDetailsCell.valueLabel.text = self.formBackupAccount.username;
+            accountDetailsCell.valueLabel.textColor = [UIColor lightGrayColor];
+            
             self.tableViewData = [NSMutableArray arrayWithArray:@[ @[profileCell],
                                                                    @[configurationCell],
                                                                    @[syncPreferenceCell],
-                                                                   @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                                                                   @[portCell, serviceDocumentCell, certificateCell]]];
-            self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication", @"accountdetails.header.advanced"];
-            self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @"",  @""];
+                                                                   @[accountDetailsCell]
+                                                                   /*@[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                                   @[portCell, serviceDocumentCell, certificateCell]*/]];
+            self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"/*, @"accountdetails.header.advanced"*/];
+            self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @""/*,  @""*/];
         }
     }
     else
