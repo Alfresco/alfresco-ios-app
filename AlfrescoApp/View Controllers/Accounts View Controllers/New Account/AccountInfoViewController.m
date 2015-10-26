@@ -300,7 +300,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
     }
     else if (cell.tag == kTagAccountDetailsCell)
     {
-        AccountInfoDetailsViewController *accountInfoDetailsViewController = [[AccountInfoDetailsViewController alloc] initWithAccount:self.account session:self.session];
+        AccountInfoDetailsViewController *accountInfoDetailsViewController = [[AccountInfoDetailsViewController alloc] initWithAccount:self.account configuration:self.configuration session:self.session];
         [self.navigationController pushViewController:accountInfoDetailsViewController animated:YES];
     }
 }

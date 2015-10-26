@@ -23,6 +23,7 @@
 #import "CenterLabelCell.h"
 #import "UserAccount.h"
 #import "ClientCertificateViewController.h"
+#import "UniversalDevice.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 static NSInteger const kTagCertificateCell = 1;
@@ -45,18 +46,24 @@ static NSInteger const kTagCertificateCell = 1;
 @property (nonatomic, assign) BOOL canEditAccounts;
 
 @property (nonatomic, strong) UITextField *activeTextField;
+@property (nonatomic, assign) CGRect tableViewVisibleRect;
+@property (nonatomic, strong) NSDictionary *configuration;
 
 @end
 
 @implementation AccountInfoDetailsViewController
 
-- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session
+- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
     {
         self.account = account;
         self.session = session;
+        self.formBackupAccount = [self.account copy];
+        
+        NSNumber *canEditAccounts = configuration[kAppConfigurationCanEditAccountsKey];
+        self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
     }
     return self;
 }
@@ -145,12 +152,16 @@ static NSInteger const kTagCertificateCell = 1;
     /**
      * Selectively disable some controls if required
      */
-    for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.descriptionTextField,
-                                 self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
+    for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
     {
         control.enabled = self.canEditAccounts;
         control.alpha = self.canEditAccounts ? 1.0f : 0.2f;
     }
+    
+    self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, protocolCell],
+                                                            @[portCell, serviceDocumentCell, certificateCell]]];
+    self.tableGroupHeaders = @[@"",@"accountdetails.header.advanced"];
+    self.tableGroupFooters = @[@"",@""];
 }
 
 #pragma mark - TableView Datasource
@@ -188,6 +199,231 @@ static NSInteger const kTagCertificateCell = 1;
         ClientCertificateViewController *clientCertificate = [[ClientCertificateViewController alloc] initWithAccount:self.formBackupAccount];
         [self.navigationController pushViewController:clientCertificate animated:YES];
     }
+}
+
+#pragma mark - UITextFieldDelegate Functions
+
+- (void)protocolChanged:(id)sender
+{
+    NSString *portNumber = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ([portNumber isEqualToString:@""] || [portNumber isEqualToString:kAlfrescoDefaultHTTPPortString] || [portNumber isEqualToString:kAlfrescoDefaultHTTPSPortString])
+    {
+        if (self.protocolSwitch.isOn && self.portTextField.text)
+        {
+            self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
+        }
+        else
+        {
+            self.portTextField.text = kAlfrescoDefaultHTTPPortString;
+        }
+    }
+    
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+- (void)syncPreferenceChanged:(id)sender
+{
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return self.canEditAccounts || textField == self.passwordTextField;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    self.activeTextField = textField;
+    
+    [self showActiveTextField];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    self.activeTextField = nil;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+    
+    if (textField == self.usernameTextField)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if (textField == self.passwordTextField)
+    {
+        [self.serverAddressTextField becomeFirstResponder];
+    }
+    else if (textField == self.serverAddressTextField)
+    {
+        [self.descriptionTextField becomeFirstResponder];
+    }
+    else if (textField == self.descriptionTextField)
+    {
+        [self.portTextField becomeFirstResponder];
+    }
+    else if (textField == self.portTextField)
+    {
+        [self.serviceDocumentTextField becomeFirstResponder];
+    }
+    else if (textField == self.serviceDocumentTextField)
+    {
+        [self.serviceDocumentTextField resignFirstResponder];
+    }
+    return YES;
+}
+
+- (void)textFieldDidChange:(NSNotification *)notification
+{
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+#pragma mark - UIKeyboard Notifications
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary *info = [aNotification userInfo];
+    CGRect keyBoardFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    CGFloat height = [self.view convertRect:keyBoardFrame fromView:self.view.window].size.height;
+    
+    if (IS_IPAD)
+    {
+        height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
+    }
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height -= keyBoardFrame.size.height;
+    self.tableViewVisibleRect = tableViewFrame;
+    [self showActiveTextField];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+- (CGFloat)calculateBottomInsetForTextViewUsingKeyboardFrame:(CGRect)keyboardFrame
+{
+    CGRect keyboardRectForView = [self.view convertRect:keyboardFrame fromView:self.view.window];
+    CGSize kbSize = keyboardRectForView.size;
+    UIView *mainAppView = [[UniversalDevice revealViewController] view];
+    CGRect viewFrame = self.view.frame;
+    CGRect viewFrameRelativeToMainController = [self.view convertRect:viewFrame toView:mainAppView];
+    
+    return (viewFrameRelativeToMainController.origin.y + viewFrame.size.height) - (mainAppView.frame.size.height - kbSize.height);
+}
+
+- (void)showActiveTextField
+{
+    UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
+    
+    BOOL foundTableViewCell = NO;
+    while (cell && !foundTableViewCell)
+    {
+        if (![cell isKindOfClass:[UITableViewCell class]])
+        {
+            cell = (UITableViewCell *)cell.superview;
+        }
+        else
+        {
+            foundTableViewCell = YES;
+        }
+    }
+    
+    if (!CGRectContainsPoint(self.tableViewVisibleRect, cell.frame.origin) )
+    {
+        [self.tableView scrollRectToVisible:cell.frame animated:YES];
+    }
+}
+
+/**
+ validateAccountFieldsValues
+ checks the validity of hostname, port and username in terms of characters entered.
+ */
+- (BOOL)validateAccountFieldsValuesForServer
+{
+    BOOL didChangeAndIsValid = YES;
+    BOOL hasAccountPropertiesChanged = NO;//(self.activityType == AccountActivityTypeLoginFailed);
+    
+    if (self.account.accountType == UserAccountTypeOnPremise)
+    {
+        // User input validations
+        NSString *hostname = self.serverAddressTextField.text;
+        NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *password = self.passwordTextField.text;
+        NSString *serviceDoc = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
+        
+        BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
+        BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
+        BOOL usernameError = [username isEqualToString:@""];
+        BOOL passwordError = [password isEqualToString:@""] || password == nil;
+        BOOL serviceDocError = [serviceDoc isEqualToString:@""];
+        
+        didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !passwordError && !serviceDocError;
+        
+        if (didChangeAndIsValid)
+        {
+            if (![self.formBackupAccount.username isEqualToString:self.usernameTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.password isEqualToString:self.passwordTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.serverAddress isEqualToString:self.serverAddressTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.serverPort isEqualToString:self.portTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            if (![self.formBackupAccount.serviceDocument isEqualToString:self.serviceDocumentTextField.text])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
+            NSString *protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+            if (![self.formBackupAccount.protocol isEqualToString:protocol])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
+            NSString *certificateSummary = self.formBackupAccount.accountCertificate.summary ? self.formBackupAccount.accountCertificate.summary : @"";
+            NSString *certificateLabelText = self.certificateLabel.text ? self.certificateLabel.text : @"";
+            if (![certificateSummary isEqualToString:certificateLabelText])
+            {
+                hasAccountPropertiesChanged = YES;
+            }
+            
+            didChangeAndIsValid = hasAccountPropertiesChanged;
+        }
+    }
+    else
+    {
+        if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
+        {
+            hasAccountPropertiesChanged = YES;
+        }
+        didChangeAndIsValid = hasAccountPropertiesChanged;
+    }
+    return didChangeAndIsValid;
 }
 
 @end

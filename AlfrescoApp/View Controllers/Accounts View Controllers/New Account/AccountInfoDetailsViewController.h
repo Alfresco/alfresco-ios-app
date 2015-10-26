@@ -20,6 +20,6 @@
 
 @interface AccountInfoDetailsViewController : ParentListViewController <UITextFieldDelegate>
 
-- (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session;
+- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session;
 
 @end
