@@ -19,12 +19,6 @@
 #import <Foundation/Foundation.h>
 #import "SharedConstants.h"
 
-typedef NS_ENUM(NSUInteger, TaskFilter)
-{
-    TaskFilterTask = 0,
-    TaskFilterProcess
-};
-
 typedef NS_ENUM(NSInteger, InAppDocumentLocation)
 {
     InAppDocumentLocationFilesAndFolders = 0,
