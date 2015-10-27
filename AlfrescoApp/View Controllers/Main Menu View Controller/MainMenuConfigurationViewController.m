@@ -51,8 +51,8 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListEmpty:) name:kAlfrescoAccountsListEmptyNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountUpdated:) name:kAlfrescoAccountUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationDidChange:) name:kAlfrescoConfigurationFileDidUpdateNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:kAlfrescoConfigurationShouldUpdateMainMenuNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationDidChange:) name:kAlfrescoConfigFileDidUpdateNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:kAlfrescoConfigShouldUpdateMainMenuNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(URLHandlingDidEnd:) name:kAlfrescoEnableMainMenuAutoItemSelection object:nil];
         self.autoselectDefaultMenuOption = YES;
         

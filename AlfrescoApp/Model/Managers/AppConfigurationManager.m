@@ -53,7 +53,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationFileUpdatedFromServer:) name:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigurationProfileDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         
         [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
             NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
@@ -249,7 +249,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
             
             // Update the Main Menu Controller
             MainMenuLocalConfigurationBuilder *localBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:account session:session];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationFileDidUpdateNotification object:localBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @YES}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:localBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @YES}];
             
             if (![session isKindOfClass:[AlfrescoCloudSession class]])
             {
@@ -272,7 +272,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
                     account.selectedProfileName = selectedProfile.label;
                     
                     MainMenuRemoteConfigurationBuilder *remoteBuilder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:account session:session];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationFileDidUpdateNotification object:remoteBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @NO}];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:remoteBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @NO}];
                 };
                 
                 NSString *selectedProfileIdentifier = account.selectedProfileIdentifier;
@@ -324,7 +324,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 - (void)noMoreAccounts:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationFileDidUpdateNotification object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:nil userInfo:nil];
 }
 
 - (void)configurationFileUpdatedFromServer:(NSNotificationCenter *)notification
@@ -336,11 +336,11 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 - (void)selectedProfileDidChange:(NSNotification *)notification
 {
-    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigurationProfileDidChangeForAccountKey];
+    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigProfileDidChangeForAccountKey];
     if ([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
     {
         self.selectedProfile = notification.object;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationShouldUpdateMainMenuNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigShouldUpdateMainMenuNotification object:nil];
     }
 }
 
