@@ -222,8 +222,6 @@ extern NSString * const kFavouritesDidRemoveNodeNotification;
 // Cache
 extern NSInteger const kNumberOfDaysToKeepCachedData;
 
-extern NSString * const kAlfrescoOnPremiseServerURLTemplate;
-
 // Cloud Configuration
 extern NSString * const kCloudConfigFile;
 extern NSString * const kCloudConfigParamURL;

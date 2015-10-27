@@ -176,8 +176,6 @@ NSString * const kFavouritesDidRemoveNodeNotification = @"FavouritesDidRemoveNod
 // Cache
 NSInteger const kNumberOfDaysToKeepCachedData = 7;
 
-NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";
-
 // Cloud Configuration
 NSString * const kCloudConfigFile = @"cloud-config.plist";
 NSString * const kCloudConfigParamURL = @"oauth_url";
