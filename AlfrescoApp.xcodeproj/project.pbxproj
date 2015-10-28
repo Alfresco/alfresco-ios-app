@@ -208,6 +208,8 @@
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
 		2BA24A691B8C5D470075CA99 /* SearchViewControllerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */; };
 		2BA7FA011B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */; };
+		2BB1BA121BDFDDB0005AEE12 /* NewAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB1BA101BDFDDB0005AEE12 /* NewAccountViewController.m */; };
+		2BB1BA131BDFDDB0005AEE12 /* NewAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BB1BA111BDFDDB0005AEE12 /* NewAccountViewController.xib */; };
 		2BB2657D1B78938F00EE7EB0 /* AlfrescoURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB2657C1B78938F00EE7EB0 /* AlfrescoURLHandler.m */; };
 		2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */; };
 		2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */; };
@@ -1097,6 +1099,9 @@
 		2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewControllerDataSource.m; sourceTree = "<group>"; };
 		2BA7F9FF1B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFSwipeToDeleteGestureRecognizer.h; sourceTree = "<group>"; };
 		2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFSwipeToDeleteGestureRecognizer.m; sourceTree = "<group>"; };
+		2BB1BA0F1BDFDDB0005AEE12 /* NewAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewAccountViewController.h; path = "New Account/NewAccountViewController.h"; sourceTree = "<group>"; };
+		2BB1BA101BDFDDB0005AEE12 /* NewAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewAccountViewController.m; path = "New Account/NewAccountViewController.m"; sourceTree = "<group>"; };
+		2BB1BA111BDFDDB0005AEE12 /* NewAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewAccountViewController.xib; path = "New Account/NewAccountViewController.xib"; sourceTree = "<group>"; };
 		2BB2657B1B78938F00EE7EB0 /* AlfrescoURLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoURLHandler.h; sourceTree = "<group>"; };
 		2BB2657C1B78938F00EE7EB0 /* AlfrescoURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoURLHandler.m; sourceTree = "<group>"; };
 		2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info.png"; sourceTree = "<group>"; };
@@ -1797,6 +1802,9 @@
 				2BC9AE6B1BDA7738003523C8 /* AccountInfoDetailsViewController.h */,
 				2BC9AE6C1BDA7738003523C8 /* AccountInfoDetailsViewController.m */,
 				2BC9AE6D1BDA7738003523C8 /* AccountInfoDetailsViewController.xib */,
+				2BB1BA0F1BDFDDB0005AEE12 /* NewAccountViewController.h */,
+				2BB1BA101BDFDDB0005AEE12 /* NewAccountViewController.m */,
+				2BB1BA111BDFDDB0005AEE12 /* NewAccountViewController.xib */,
 			);
 			name = "New Account";
 			sourceTree = "<group>";
@@ -4469,6 +4477,7 @@
 				732DBFAA18E1BDB600F7A0BF /* small_folder.png in Resources */,
 				27C2EBF51907044A003B09B9 /* Activities.strings in Resources */,
 				2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */,
+				2BB1BA131BDFDDB0005AEE12 /* NewAccountViewController.xib in Resources */,
 				271DC778189C2D250059D1B2 /* status-sync-waiting-highlighted.png in Resources */,
 				73881FCF188FF6B00052C75F /* actionsheet-delete@2x.png in Resources */,
 				271DC76B189C2D250059D1B2 /* status-restricted@2x.png in Resources */,
@@ -4628,6 +4637,7 @@
 				7390B35E1B03681E00E7191F /* AlfrescoFeatureConfigHelper.m in Sources */,
 				73B579901B15EC4E009D30B6 /* MainMenuSection.m in Sources */,
 				738664A61906AD8E0021D1BD /* SitesListViewController.m in Sources */,
+				2BB1BA121BDFDDB0005AEE12 /* NewAccountViewController.m in Sources */,
 				7390B35F1B03681E00E7191F /* AlfrescoFormConfigHelper.m in Sources */,
 				08E1EA2D18DB057900F9052F /* TaskViewController.m in Sources */,
 				73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */,
@@ -5076,6 +5086,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5381,6 +5392,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5412,6 +5424,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",

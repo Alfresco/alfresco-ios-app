@@ -18,8 +18,16 @@
 
 #import "ParentListViewController.h"
 
+@protocol AccountInfoDetailsDelegate <NSObject>
+
+- (void)accountInfoChanged:(UserAccount *)newAccount;
+
+@end
+
 @interface AccountInfoDetailsViewController : ParentListViewController <UITextFieldDelegate>
 
-- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session;
+@property (nonatomic, weak) id<AccountInfoDetailsDelegate> delegate;
+
+- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session delegate:(id<AccountInfoDetailsDelegate>)delegate;
 
 @end

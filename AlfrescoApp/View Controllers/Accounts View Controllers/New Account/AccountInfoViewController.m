@@ -41,7 +41,7 @@ static NSInteger const kTagReorderCell = 2;
 static NSInteger const kTagProfileCell = 3;
 static NSInteger const kTagAccountDetailsCell = 4;
 
-@interface AccountInfoViewController ()
+@interface AccountInfoViewController () <AccountInfoDetailsDelegate>
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroupHeaders;
 @property (nonatomic, strong) NSArray *tableGroupFooters;
@@ -63,6 +63,15 @@ static NSInteger const kTagAccountDetailsCell = 4;
 @property (nonatomic, strong) NSDictionary *configuration;
 @property (nonatomic, assign) BOOL canEditAccounts;
 @property (nonatomic, assign) BOOL canReorderMainMenuItems;
+
+@property (nonatomic, strong) NSString *usernameString;
+@property (nonatomic, strong) NSString *passwordString;
+@property (nonatomic, strong) NSString *serverAddressString;
+@property (nonatomic, strong) NSString *descriptionString;
+@property (nonatomic, strong) NSString *portString;
+@property (nonatomic, strong) NSString *serviceDocumentString;
+@property (nonatomic, strong) NSString *protocolString;
+
 @end
 
 @implementation AccountInfoViewController
@@ -300,7 +309,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
     }
     else if (cell.tag == kTagAccountDetailsCell)
     {
-        AccountInfoDetailsViewController *accountInfoDetailsViewController = [[AccountInfoDetailsViewController alloc] initWithAccount:self.account configuration:self.configuration session:self.session];
+        AccountInfoDetailsViewController *accountInfoDetailsViewController = [[AccountInfoDetailsViewController alloc] initWithAccount:self.formBackupAccount configuration:self.configuration session:self.session delegate:self];
         [self.navigationController pushViewController:accountInfoDetailsViewController animated:YES];
     }
 }
@@ -330,135 +339,43 @@ static NSInteger const kTagAccountDetailsCell = 4;
          * Note: Additional account-specific settings should be in their own group with an empty header string.
          * This will allow a description footer to be added under each setting if required.
          */
-        if (self.activityType == AccountActivityTypeNewAccount)
+        LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        profileCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        profileCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        profileCell.tag = kTagProfileCell;
+        profileCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.profile", @"Profile");
+        profileCell.valueLabel.text = self.account.selectedProfileName;
+        profileCell.valueLabel.textColor = [UIColor lightGrayColor];
+        self.profileLabel = profileCell.valueLabel;
+        
+        LabelCell *configurationCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        configurationCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        configurationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        configurationCell.tag = kTagReorderCell;
+        configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
+        configurationCell.valueLabel.text = @"";
+        if (!self.canReorderMainMenuItems)
         {
-            TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
-            usernameCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-            usernameCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            usernameCell.valueTextField.delegate = self;
-            self.usernameTextField = usernameCell.valueTextField;
-            self.usernameTextField.text = self.formBackupAccount.username;
-            
-            TextFieldCell *passwordCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            passwordCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            passwordCell.titleLabel.text = NSLocalizedString(@"login.password.cell.label", @"Password Cell Text");
-            passwordCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"Required");
-            passwordCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            passwordCell.valueTextField.secureTextEntry = YES;
-            passwordCell.valueTextField.delegate = self;
-            self.passwordTextField = passwordCell.valueTextField;
-            self.passwordTextField.text = self.formBackupAccount.password;
-            
-            TextFieldCell *serverAddressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            serverAddressCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            serverAddressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.hostname", @"Server Address");
-            serverAddressCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
-            serverAddressCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            serverAddressCell.valueTextField.delegate = self;
-            serverAddressCell.valueTextField.keyboardType = UIKeyboardTypeURL;
-            self.serverAddressTextField = serverAddressCell.valueTextField;
-            self.serverAddressTextField.text = self.formBackupAccount.serverAddress;
-            
-            SwitchCell *protocolCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
-            protocolCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            protocolCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.protocol", @"HTTPS protocol");
-            self.protocolSwitch = protocolCell.valueSwitch;
-            [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
-            BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
-            if (self.activityType == AccountActivityTypeNewAccount)
-            {
-                isHTTPSOn = YES;
-            }
-            [self.protocolSwitch setOn:isHTTPSOn animated:YES];
-            
-            TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            portCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            portCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.port", @"Port Cell Text");
-            portCell.valueTextField.text = kAlfrescoDefaultHTTPPortString;
-            portCell.valueTextField.returnKeyType = UIReturnKeyNext;
-            portCell.valueTextField.keyboardType = UIKeyboardTypeNumberPad;
-            portCell.valueTextField.delegate = self;
-            self.portTextField = portCell.valueTextField;
-            self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kAlfrescoDefaultHTTPPortString;
-            if (self.activityType == AccountActivityTypeNewAccount)
-            {
-                self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
-            }
-            
-            TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
-            serviceDocumentCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            serviceDocumentCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.servicedocument", @"Service Document");
-            serviceDocumentCell.valueTextField.text = kServiceDocument;
-            serviceDocumentCell.valueTextField.returnKeyType = UIReturnKeyDone;
-            serviceDocumentCell.valueTextField.delegate = self;
-            self.serviceDocumentTextField = serviceDocumentCell.valueTextField;
-            self.serviceDocumentTextField.text = self.formBackupAccount.serviceDocument ? self.formBackupAccount.serviceDocument : kServiceDocument;
-            
-            LabelCell *certificateCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            certificateCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            certificateCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            certificateCell.tag = kTagCertificateCell;
-            certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
-            certificateCell.valueLabel.text = self.account.accountCertificate.summary;
-            self.certificateLabel = certificateCell.valueLabel;
-            
-            /**
-             * Selectively disable some controls if required
-             */
-            for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.descriptionTextField,
-                                         self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
-            {
-                control.enabled = self.canEditAccounts;
-                control.alpha = self.canEditAccounts ? 1.0f : 0.2f;
-            }
-            
-            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                                                                   @[portCell, serviceDocumentCell, certificateCell]]];
-            self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
-            self.tableGroupFooters = @[@"", @""];
+            configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
+            configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
         }
-        else
-        {
-            LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            profileCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            profileCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            profileCell.tag = kTagProfileCell;
-            profileCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.profile", @"Profile");
-            profileCell.valueLabel.text = self.account.selectedProfileName;
-            profileCell.valueLabel.textColor = [UIColor lightGrayColor];
-            self.profileLabel = profileCell.valueLabel;
-            
-            LabelCell *configurationCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            configurationCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            configurationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            configurationCell.tag = kTagReorderCell;
-            configurationCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.configuration", @"Configuration");
-            configurationCell.valueLabel.text = @"";
-            if (!self.canReorderMainMenuItems)
-            {
-                configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
-                configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
-            }
-            
-            LabelCell *accountDetailsCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
-            accountDetailsCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            accountDetailsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            accountDetailsCell.tag = kTagAccountDetailsCell;
-            accountDetailsCell.titleLabel.text = self.account.accountDescription;
-            accountDetailsCell.valueLabel.text = self.formBackupAccount.username;
-            accountDetailsCell.valueLabel.textColor = [UIColor lightGrayColor];
-            
-            self.tableViewData = [NSMutableArray arrayWithArray:@[ @[profileCell],
-                                                                   @[configurationCell],
-                                                                   @[syncPreferenceCell],
-                                                                   @[accountDetailsCell]
-                                                                   /*@[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                                                                   @[portCell, serviceDocumentCell, certificateCell]*/]];
-            self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"/*, @"accountdetails.header.advanced"*/];
-            self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @""/*,  @""*/];
-        }
+        
+        LabelCell *accountDetailsCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
+        accountDetailsCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        accountDetailsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        accountDetailsCell.tag = kTagAccountDetailsCell;
+        accountDetailsCell.titleLabel.text = self.account.accountDescription;
+        accountDetailsCell.valueLabel.text = self.formBackupAccount.username;
+        accountDetailsCell.valueLabel.textColor = [UIColor lightGrayColor];
+        
+        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[profileCell],
+                                                               @[configurationCell],
+                                                               @[syncPreferenceCell],
+                                                               @[accountDetailsCell]
+                                                               /*@[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
+                                                                @[portCell, serviceDocumentCell, certificateCell]*/]];
+        self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"/*, @"accountdetails.header.advanced"*/];
+        self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @""/*,  @""*/];
     }
     else
     {
@@ -472,6 +389,70 @@ static NSInteger const kTagAccountDetailsCell = 4;
     }
 }
 
+#pragma mark - UIKeyboard Notifications
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary *info = [aNotification userInfo];
+    CGRect keyBoardFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    CGFloat height = [self.view convertRect:keyBoardFrame fromView:self.view.window].size.height;
+    
+    if (IS_IPAD)
+    {
+        height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
+    }
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height -= keyBoardFrame.size.height;
+    self.tableViewVisibleRect = tableViewFrame;
+    [self showActiveTextField];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+- (CGFloat)calculateBottomInsetForTextViewUsingKeyboardFrame:(CGRect)keyboardFrame
+{
+    CGRect keyboardRectForView = [self.view convertRect:keyboardFrame fromView:self.view.window];
+    CGSize kbSize = keyboardRectForView.size;
+    UIView *mainAppView = [[UniversalDevice revealViewController] view];
+    CGRect viewFrame = self.view.frame;
+    CGRect viewFrameRelativeToMainController = [self.view convertRect:viewFrame toView:mainAppView];
+    
+    return (viewFrameRelativeToMainController.origin.y + viewFrame.size.height) - (mainAppView.frame.size.height - kbSize.height);
+}
+
+- (void)showActiveTextField
+{
+    UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
+    
+    BOOL foundTableViewCell = NO;
+    while (cell && !foundTableViewCell)
+    {
+        if (![cell isKindOfClass:[UITableViewCell class]])
+        {
+            cell = (UITableViewCell *)cell.superview;
+        }
+        else
+        {
+            foundTableViewCell = YES;
+        }
+    }
+    
+    if (!CGRectContainsPoint(self.tableViewVisibleRect, cell.frame.origin) )
+    {
+        [self.tableView scrollRectToVisible:cell.frame animated:YES];
+    }
+}
+
 #pragma mark - private Methods
 
 - (void)updateFormBackupAccount
@@ -479,13 +460,13 @@ static NSInteger const kTagAccountDetailsCell = 4;
     NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
     
-    self.formBackupAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.username = [self.usernameString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.password = [self.passwordString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
-    self.formBackupAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
-    self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.serverAddress = [self.serverAddressString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.serverPort = [self.portString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.protocol = self.protocolString;
+    self.formBackupAccount.serviceDocument = [self.serviceDocumentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.isSyncOn = self.syncPreferenceSwitch.isOn;
 }
 
@@ -501,11 +482,11 @@ static NSInteger const kTagAccountDetailsCell = 4;
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
         // User input validations
-        NSString *hostname = self.serverAddressTextField.text;
-        NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSString *password = self.passwordTextField.text;
-        NSString *serviceDoc = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *hostname = self.serverAddressString;
+        NSString *port = [self.portString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *username = [self.usernameString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *password = self.passwordString;
+        NSString *serviceDoc = [self.serviceDocumentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
         
@@ -519,32 +500,32 @@ static NSInteger const kTagAccountDetailsCell = 4;
         
         if (self.activityType == AccountActivityTypeEditAccount && didChangeAndIsValid)
         {
-            if (![self.formBackupAccount.username isEqualToString:self.usernameTextField.text])
+            if (![self.formBackupAccount.username isEqualToString:self.usernameString])
             {
                 hasAccountPropertiesChanged = YES;
             }
-            if (![self.formBackupAccount.password isEqualToString:self.passwordTextField.text])
+            if (![self.formBackupAccount.password isEqualToString:self.passwordString])
             {
                 hasAccountPropertiesChanged = YES;
             }
-            if (![self.formBackupAccount.serverAddress isEqualToString:self.serverAddressTextField.text])
+            if (![self.formBackupAccount.serverAddress isEqualToString:self.serverAddressString])
             {
                 hasAccountPropertiesChanged = YES;
             }
-            if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
+            if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionString])
             {
                 hasAccountPropertiesChanged = YES;
             }
-            if (![self.formBackupAccount.serverPort isEqualToString:self.portTextField.text])
+            if (![self.formBackupAccount.serverPort isEqualToString:self.portString])
             {
                 hasAccountPropertiesChanged = YES;
             }
-            if (![self.formBackupAccount.serviceDocument isEqualToString:self.serviceDocumentTextField.text])
+            if (![self.formBackupAccount.serviceDocument isEqualToString:self.serviceDocumentString])
             {
                 hasAccountPropertiesChanged = YES;
             }
             
-            NSString *protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+            NSString *protocol = self.protocolString;
             if (![self.formBackupAccount.protocol isEqualToString:protocol])
             {
                 hasAccountPropertiesChanged = YES;
@@ -630,26 +611,62 @@ static NSInteger const kTagAccountDetailsCell = 4;
     }];
 }
 
-#pragma mark - UITextFieldDelegate Functions
+#pragma mark - Notifictaions
 
-- (void)protocolChanged:(id)sender
+-(void)profileDidChange:(NSNotification *)notifictaion
 {
-    NSString *portNumber = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    AlfrescoProfileConfig *selectedProfile = notifictaion.object;
+    self.profileLabel.text = selectedProfile.label;
     
-    if ([portNumber isEqualToString:@""] || [portNumber isEqualToString:kAlfrescoDefaultHTTPPortString] || [portNumber isEqualToString:kAlfrescoDefaultHTTPSPortString])
-    {
-        if (self.protocolSwitch.isOn && self.portTextField.text)
-        {
-            self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
-        }
-        else
-        {
-            self.portTextField.text = kAlfrescoDefaultHTTPPortString;
-        }
-    }
-    
-    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+    NSString *title = NSLocalizedString(@"main.menu.profile.selection.banner.title", @"Profile Changed Title");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"main.menu.profile.selection.banner.message", @"Profile Changed"), selectedProfile.label];
+    displayInformationMessageWithTitle(message, title);
 }
+
+#pragma mark - Retry method for login with diagnostic
+
+- (void)retryLoginForConnectionDiagnostic
+{
+    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
+    {
+        self.account.username = temporaryAccount.username;
+        self.account.password = temporaryAccount.password;
+        self.account.accountDescription = temporaryAccount.accountDescription;
+        self.account.serverAddress = temporaryAccount.serverAddress;
+        self.account.serverPort = temporaryAccount.serverPort;
+        self.account.protocol = temporaryAccount.protocol;
+        self.account.serviceDocument = temporaryAccount.serviceDocument;
+        self.account.accountCertificate = temporaryAccount.accountCertificate;
+        self.account.isSyncOn = temporaryAccount.isSyncOn;
+        // If Sync is now enabled, suppress the prompt in the Favorites view
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
+        }
+        self.account.paidAccount = temporaryAccount.isPaidAccount;
+    };
+    
+    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        if (successful)
+        {
+            updateAccountInfo(self.formBackupAccount);
+        }
+    }];
+}
+
+#pragma mark - Account Info Details Delegate methods
+- (void)accountInfoChanged:(UserAccount *)newAccount
+{
+    self.usernameString = newAccount.username;
+    self.passwordString = newAccount.password;
+    self.serverAddressString = newAccount.serverAddress;
+    self.descriptionString = newAccount.accountDescription;
+    self.portString = newAccount.serverPort;
+    self.serviceDocumentString = newAccount.serviceDocument;
+    self.protocolString = newAccount.protocol;
+}
+
+#pragma mark - UITextFieldDelegate Functions
 
 - (void)syncPreferenceChanged:(id)sender
 {
@@ -707,113 +724,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 - (void)textFieldDidChange:(NSNotification *)notification
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
-}
-
-#pragma mark - Notifictaions
-
--(void)profileDidChange:(NSNotification *)notifictaion
-{
-    AlfrescoProfileConfig *selectedProfile = notifictaion.object;
-    self.profileLabel.text = selectedProfile.label;
-    
-    NSString *title = NSLocalizedString(@"main.menu.profile.selection.banner.title", @"Profile Changed Title");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"main.menu.profile.selection.banner.message", @"Profile Changed"), selectedProfile.label];
-    displayInformationMessageWithTitle(message, title);
-}
-
-#pragma mark - UIKeyboard Notifications
-
-- (void)keyboardWasShown:(NSNotification*)aNotification
-{
-    NSDictionary *info = [aNotification userInfo];
-    CGRect keyBoardFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGFloat height = [self.view convertRect:keyBoardFrame fromView:self.view.window].size.height;
-    
-    if (IS_IPAD)
-    {
-        height = [self calculateBottomInsetForTextViewUsingKeyboardFrame:keyBoardFrame];
-    }
-    
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, height, 0.0);
-    self.tableView.contentInset = contentInsets;
-    self.tableView.scrollIndicatorInsets = contentInsets;
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height -= keyBoardFrame.size.height;
-    self.tableViewVisibleRect = tableViewFrame;
-    [self showActiveTextField];
-}
-
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.tableView.contentInset = contentInsets;
-    self.tableView.scrollIndicatorInsets = contentInsets;
-}
-
-- (CGFloat)calculateBottomInsetForTextViewUsingKeyboardFrame:(CGRect)keyboardFrame
-{
-    CGRect keyboardRectForView = [self.view convertRect:keyboardFrame fromView:self.view.window];
-    CGSize kbSize = keyboardRectForView.size;
-    UIView *mainAppView = [[UniversalDevice revealViewController] view];
-    CGRect viewFrame = self.view.frame;
-    CGRect viewFrameRelativeToMainController = [self.view convertRect:viewFrame toView:mainAppView];
-    
-    return (viewFrameRelativeToMainController.origin.y + viewFrame.size.height) - (mainAppView.frame.size.height - kbSize.height);
-}
-
-- (void)showActiveTextField
-{
-    UITableViewCell *cell = (UITableViewCell*)[self.activeTextField superview];
-    
-    BOOL foundTableViewCell = NO;
-    while (cell && !foundTableViewCell)
-    {
-        if (![cell isKindOfClass:[UITableViewCell class]])
-        {
-            cell = (UITableViewCell *)cell.superview;
-        }
-        else
-        {
-            foundTableViewCell = YES;
-        }
-    }
-    
-    if (!CGRectContainsPoint(self.tableViewVisibleRect, cell.frame.origin) )
-    {
-        [self.tableView scrollRectToVisible:cell.frame animated:YES];
-    }
-}
-
-#pragma mark - Retry method for login with diagnostic
-
-- (void)retryLoginForConnectionDiagnostic
-{
-    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
-    {
-        self.account.username = temporaryAccount.username;
-        self.account.password = temporaryAccount.password;
-        self.account.accountDescription = temporaryAccount.accountDescription;
-        self.account.serverAddress = temporaryAccount.serverAddress;
-        self.account.serverPort = temporaryAccount.serverPort;
-        self.account.protocol = temporaryAccount.protocol;
-        self.account.serviceDocument = temporaryAccount.serviceDocument;
-        self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
-        self.account.paidAccount = temporaryAccount.isPaidAccount;
-    };
-    
-    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-        if (successful)
-        {
-            updateAccountInfo(self.formBackupAccount);
-        }
-    }];
 }
 
 @end

@@ -53,7 +53,7 @@ static NSInteger const kTagCertificateCell = 1;
 
 @implementation AccountInfoDetailsViewController
 
-- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session
+- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session delegate:(id<AccountInfoDetailsDelegate>)delegate
 {
     self = [super init];
     if (self)
@@ -61,6 +61,7 @@ static NSInteger const kTagCertificateCell = 1;
         self.account = account;
         self.session = session;
         self.formBackupAccount = [self.account copy];
+        self.delegate = delegate;
         
         NSNumber *canEditAccounts = configuration[kAppConfigurationCanEditAccountsKey];
         self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
@@ -73,6 +74,21 @@ static NSInteger const kTagCertificateCell = 1;
     [super viewDidLoad];
     
     [self constructTableCellsForAlfrescoServer];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.formBackupAccount.username = self.usernameTextField.text;
+    self.formBackupAccount.password = self.passwordTextField.text;
+    self.formBackupAccount.serverAddress = self.serverAddressTextField.text;
+    self.formBackupAccount.accountDescription = self.descriptionTextField.text;
+    self.formBackupAccount.serverPort = self.portTextField.text;
+    self.formBackupAccount.serviceDocument = self.serviceDocumentTextField.text;
+    self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+    
+    [self.delegate accountInfoChanged:self.formBackupAccount];
 }
 
 - (void)constructTableCellsForAlfrescoServer
@@ -112,10 +128,6 @@ static NSInteger const kTagCertificateCell = 1;
     self.protocolSwitch = protocolCell.valueSwitch;
     [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
     BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
-//    if (self.activityType == AccountActivityTypeNewAccount)
-//    {
-//        isHTTPSOn = YES;
-//    }
     [self.protocolSwitch setOn:isHTTPSOn animated:YES];
     
     TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
@@ -127,10 +139,6 @@ static NSInteger const kTagCertificateCell = 1;
     portCell.valueTextField.delegate = self;
     self.portTextField = portCell.valueTextField;
     self.portTextField.text = self.formBackupAccount.serverPort ? self.formBackupAccount.serverPort : kAlfrescoDefaultHTTPPortString;
-//    if (self.activityType == AccountActivityTypeNewAccount)
-//    {
-//        self.portTextField.text = kAlfrescoDefaultHTTPSPortString;
-//    }
     
     TextFieldCell *serviceDocumentCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
     serviceDocumentCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -219,11 +227,6 @@ static NSInteger const kTagCertificateCell = 1;
         }
     }
     
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
-}
-
-- (void)syncPreferenceChanged:(id)sender
-{
 //    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
