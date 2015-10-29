@@ -45,15 +45,8 @@ static NSInteger const kTagAccountDetailsCell = 4;
 @property (nonatomic, assign) AccountActivityType activityType;
 @property (nonatomic, strong) NSArray *tableGroupHeaders;
 @property (nonatomic, strong) NSArray *tableGroupFooters;
-@property (nonatomic, weak) UITextField *usernameTextField;
-@property (nonatomic, weak) UITextField *passwordTextField;
-@property (nonatomic, weak) UITextField *serverAddressTextField;
 @property (nonatomic, weak) UITextField *descriptionTextField;
-@property (nonatomic, weak) UITextField *portTextField;
-@property (nonatomic, weak) UITextField *serviceDocumentTextField;
-@property (nonatomic, weak) UILabel *certificateLabel;
 @property (nonatomic, weak) UILabel *profileLabel;
-@property (nonatomic, weak) UISwitch *protocolSwitch;
 @property (nonatomic, weak) UISwitch *syncPreferenceSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
@@ -144,12 +137,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 {
     [super viewWillAppear:animated];
     
-    self.certificateLabel.text = self.formBackupAccount.accountCertificate.summary;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidChange:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification object:nil];
@@ -162,21 +149,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
                                              selector:@selector(profileDidChange:)
                                                  name:kAlfrescoConfigurationProfileDidChangeNotification
                                                object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (self.activityType == AccountActivityTypeNewAccount)
-    {
-        // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
-        double delayInSeconds = 0.1;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.usernameTextField becomeFirstResponder];
-        });
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -339,7 +311,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
     syncPreferenceCell.selectionStyle = UITableViewCellSelectionStyleNone;
     syncPreferenceCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.syncPreference", @"Sync Favorite Content");
     self.syncPreferenceSwitch = syncPreferenceCell.valueSwitch;
-    [self.syncPreferenceSwitch addTarget:self action:@selector(syncPreferenceChanged:) forControlEvents:UIControlEventValueChanged];
     [self.syncPreferenceSwitch setOn:self.formBackupAccount.isSyncOn animated:YES];
     
     if (self.account.accountType == UserAccountTypeOnPremise)
@@ -541,7 +512,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
             }
             
             NSString *certificateSummary = self.formBackupAccount.accountCertificate.summary ? self.formBackupAccount.accountCertificate.summary : @"";
-            NSString *certificateLabelText = self.certificateLabel.text ? self.certificateLabel.text : @"";
+            NSString *certificateLabelText = self.certificateString? self.certificateString : @"";
             if (![certificateSummary isEqualToString:certificateLabelText])
             {
                 hasAccountPropertiesChanged = YES;
@@ -681,14 +652,9 @@ static NSInteger const kTagAccountDetailsCell = 4;
 
 #pragma mark - UITextFieldDelegate Functions
 
-- (void)syncPreferenceChanged:(id)sender
-{
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
-}
-
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    return self.canEditAccounts || textField == self.passwordTextField;
+    return self.canEditAccounts;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -701,42 +667,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     self.activeTextField = nil;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
-    
-    if (textField == self.usernameTextField)
-    {
-        [self.passwordTextField becomeFirstResponder];
-    }
-    else if (textField == self.passwordTextField)
-    {
-        [self.serverAddressTextField becomeFirstResponder];
-    }
-    else if (textField == self.serverAddressTextField)
-    {
-        [self.descriptionTextField becomeFirstResponder];
-    }
-    else if (textField == self.descriptionTextField)
-    {
-        [self.portTextField becomeFirstResponder];
-    }
-    else if (textField == self.portTextField)
-    {
-        [self.serviceDocumentTextField becomeFirstResponder];
-    }
-    else if (textField == self.serviceDocumentTextField)
-    {
-        [self.serviceDocumentTextField resignFirstResponder];
-    }
-    return YES;
-}
-
-- (void)textFieldDidChange:(NSNotification *)notification
-{
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 @end
