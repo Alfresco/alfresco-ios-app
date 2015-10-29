@@ -71,6 +71,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 @property (nonatomic, strong) NSString *portString;
 @property (nonatomic, strong) NSString *serviceDocumentString;
 @property (nonatomic, strong) NSString *protocolString;
+@property (nonatomic, strong) NSString *certificateString;
 
 @end
 
@@ -129,6 +130,14 @@ static NSInteger const kTagAccountDetailsCell = 4;
                                                                     target:self
                                                                     action:@selector(saveButtonClicked:)];
     [self.navigationItem setRightBarButtonItem:self.saveButton];
+    
+    self.usernameString = self.account.username;
+    self.passwordString = self.account.password;
+    self.serverAddressString = self.account.serverAddress;
+    self.descriptionString = self.account.accountDescription;
+    self.portString = self.account.serverPort;
+    self.serviceDocumentString = self.account.serviceDocument;
+    self.protocolString = self.account.protocol;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -660,17 +669,21 @@ static NSInteger const kTagAccountDetailsCell = 4;
     self.usernameString = newAccount.username;
     self.passwordString = newAccount.password;
     self.serverAddressString = newAccount.serverAddress;
-    self.descriptionString = newAccount.accountDescription;
     self.portString = newAccount.serverPort;
     self.serviceDocumentString = newAccount.serviceDocument;
     self.protocolString = newAccount.protocol;
+    
+    NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+    self.descriptionString = (!newAccount.accountDescription || [newAccount.accountDescription isEqualToString:@""]) ? defaultDescription : newAccount.accountDescription;
+    
+    self.certificateString = newAccount.accountCertificate.summary ? newAccount.accountCertificate.summary : @"";
 }
 
 #pragma mark - UITextFieldDelegate Functions
 
 - (void)syncPreferenceChanged:(id)sender
 {
-    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -692,7 +705,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     
     if (textField == self.usernameTextField)
     {
@@ -723,7 +736,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 @end
