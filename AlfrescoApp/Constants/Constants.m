@@ -176,8 +176,6 @@ NSString * const kFavouritesDidRemoveNodeNotification = @"FavouritesDidRemoveNod
 // Cache
 NSInteger const kNumberOfDaysToKeepCachedData = 7;
 
-NSString * const kAlfrescoOnPremiseServerURLTemplate = @"%@://%@:%@/alfresco";
-
 // Cloud Configuration
 NSString * const kCloudConfigFile = @"cloud-config.plist";
 NSString * const kCloudConfigParamURL = @"oauth_url";
@@ -246,11 +244,11 @@ NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification = @"Alfresco
 ///
 NSString * const kAlfrescoEmbeddedConfigurationFileName = @"configuration.json";
 /// Notifications
-NSString * const kAlfrescoConfigurationFileDidUpdateNotification = @"AlfrescoConfigurationFileDidUpdateNotification";
-NSString * const kAlfrescoConfigurationShouldUpdateMainMenuNotification = @"AlfrescoConfigurationShouldUpdateMainMenuNotification";
-NSString * const kAlfrescoConfigurationProfileDidChangeNotification = @"AlfrescoConfigurationProfileDidChangeNotification";
+NSString * const kAlfrescoConfigFileDidUpdateNotification = @"AlfrescoConfigurationFileDidUpdateNotification";
+NSString * const kAlfrescoConfigShouldUpdateMainMenuNotification = @"AlfrescoConfigurationShouldUpdateMainMenuNotification";
+NSString * const kAlfrescoConfigProfileDidChangeNotification = @"AlfrescoConfigurationProfileDidChangeNotification";
 /// Keys
-NSString * const kAlfrescoConfigurationProfileDidChangeForAccountKey = @"AlfrescoConfigurationProfileDidChangeForAccountKey";
+NSString * const kAlfrescoConfigProfileDidChangeForAccountKey = @"AlfrescoConfigurationProfileDidChangeForAccountKey";
 /// Menu Item Identifiers
 NSString * const kAlfrescoMainMenuItemAccountsIdentifier = @"org.alfresco.com.mobile.main.menu.accounts.identifier";
 NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier = @"org.alfresco.com.mobile.main.menu.company.home.identifier";
@@ -259,43 +257,63 @@ NSString * const kAlfrescoMainMenuItemSyncIdentifier = @"org.alfresco.com.mobile
 NSString * const kAlfrescoMainMenuItemSettingsIdentifier = @"org.alfresco.com.mobile.main.menu.settings.identifier";
 NSString * const kAlfrescoMainMenuItemHelpIdentifier = @"org.alfresco.com.mobile.main.menu.help.identifier";
 // View Types
-NSString * const kAlfrescoMainMenuConfigurationViewTypeActivities = @"org.alfresco.client.view.activities";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeRepository = @"org.alfresco.client.view.repository";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeSiteBrowser = @"org.alfresco.client.view.site-browser";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeTasks = @"org.alfresco.client.view.tasks";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeFavourites = @"org.alfresco.client.view.favorites";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeSync = @"org.alfresco.client.view.sync";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeLocal = @"org.alfresco.client.view.local";
-NSString * const kAlfrescoMainMenuConfigurationViewTypePersonProfile = @"org.alfresco.client.view.person-profile";
-NSString * const kAlfrescoMainMenuConfigurationViewTypePeople = @"org.alfresco.client.view.people";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeGallery = @"org.alfresco.client.view.preview-carousel";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeDocumentDetails = @"org.alfresco.client.view.document-details";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeSite = @"org.alfresco.client.view.sites";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeSearchRepository = @"org.alfresco.client.view.repository-search";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeSearch = @"org.alfresco.client.view.search";
-NSString * const kAlfrescoMainMenuConfigurationViewTypeSearchAdvanced = @"org.alfresco.client.view.search-advanced";
+NSString * const kAlfrescoConfigViewTypeActivities = @"org.alfresco.client.view.activities";
+NSString * const kAlfrescoConfigViewTypeRepository = @"org.alfresco.client.view.repository";
+NSString * const kAlfrescoConfigViewTypeSiteBrowser = @"org.alfresco.client.view.site-browser";
+NSString * const kAlfrescoConfigViewTypeTasks = @"org.alfresco.client.view.tasks";
+NSString * const kAlfrescoConfigViewTypeFavourites = @"org.alfresco.client.view.favorites";
+NSString * const kAlfrescoConfigViewTypeSync = @"org.alfresco.client.view.sync";
+NSString * const kAlfrescoConfigViewTypeLocal = @"org.alfresco.client.view.local";
+NSString * const kAlfrescoConfigViewTypePersonProfile = @"org.alfresco.client.view.person-profile";
+NSString * const kAlfrescoConfigViewTypePeople = @"org.alfresco.client.view.people";
+NSString * const kAlfrescoConfigViewTypeGallery = @"org.alfresco.client.view.preview-carousel";
+NSString * const kAlfrescoConfigViewTypeDocumentDetails = @"org.alfresco.client.view.document-details";
+NSString * const kAlfrescoConfigViewTypeSite = @"org.alfresco.client.view.sites";
+NSString * const kAlfrescoConfigViewTypeSearchRepository = @"org.alfresco.client.view.repository-search";
+NSString * const kAlfrescoConfigViewTypeSearch = @"org.alfresco.client.view.search";
+NSString * const kAlfrescoConfigViewTypeSearchAdvanced = @"org.alfresco.client.view.search-advanced";
 // View Parameter Keys
-NSString * const kAlfrescoMainMenuConfigurationViewParameterSiteShortNameKey = @"siteShortName";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterPathKey = @"path";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterNodeRefKey = @"nodeRef";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterShowKey = @"show";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterTypeKey = @"type";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterKeywordsKey = @"keywords";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterIsExactKey = @"isExact";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterFullTextKey = @"fullText";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterSearchFolderOnlyKey = @"searchFolderOnly";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterStatementKey = @"statement";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterUsernameKey = @"userName";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeKey = @"folderTypeId";
+NSString * const kAlfrescoConfigViewParameterSiteShortNameKey = @"siteShortName";
+NSString * const kAlfrescoConfigViewParameterPathKey = @"path";
+NSString * const kAlfrescoConfigViewParameterNodeRefKey = @"nodeRef";
+NSString * const kAlfrescoConfigViewParameterShowKey = @"show";
+NSString * const kAlfrescoConfigViewParameterTypeKey = @"type";
+NSString * const kAlfrescoConfigViewParameterKeywordsKey = @"keywords";
+NSString * const kAlfrescoConfigViewParameterIsExactKey = @"isExact";
+NSString * const kAlfrescoConfigViewParameterFullTextKey = @"fullText";
+NSString * const kAlfrescoConfigViewParameterSearchFolderOnlyKey = @"searchFolderOnly";
+NSString * const kAlfrescoConfigViewParameterStatementKey = @"statement";
+NSString * const kAlfrescoConfigViewParameterUsernameKey = @"userName";
+NSString * const kAlfrescoConfigViewParameterFolderTypeKey = @"folderTypeId";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersKey = @"filters";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusKey = @"status";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersDueKey = @"due";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityKey = @"priority";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeKey = @"assignee";
 // View Parameter Values
-NSString * const kAlfrescoMainMenuConfigurationViewParameterMySitesValue = @"my";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterFavouriteSitesValue = @"favorites";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterAllSitesValue = @"all";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchPerson = @"person";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchDocument = @"document";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterAdvancedSearchFolder = @"folder";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeMyFiles = @"userhome";
-NSString * const kAlfrescoMainMenuConfigurationViewParameterFolderTypeShared = @"shared";
+NSString * const kAlfrescoConfigViewParameterMySitesValue = @"my";
+NSString * const kAlfrescoConfigViewParameterFavouriteSitesValue = @"favorites";
+NSString * const kAlfrescoConfigViewParameterAllSitesValue = @"all";
+NSString * const kAlfrescoConfigViewParameterAdvancedSearchPerson = @"person";
+NSString * const kAlfrescoConfigViewParameterAdvancedSearchDocument = @"document";
+NSString * const kAlfrescoConfigViewParameterAdvancedSearchFolder = @"folder";
+NSString * const kAlfrescoConfigViewParameterFolderTypeMyFiles = @"userhome";
+NSString * const kAlfrescoConfigViewParameterFolderTypeShared = @"shared";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusAny = @"any";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusActive = @"active";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusComplete = @"complete";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersDueToday = @"today";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersDueTomorrow = @"tomorrow";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersDueWeek = @"week";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersDueOverdue = @"overdue";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersDueNone = @"none";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityLow = @"low";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityMedium = @"medium";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityHigh = @"high";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeMe = @"me";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeUnassigned = @"unassigned";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll = @"all";
+NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone = @"none";
 
 // App Configuration
 //// Notifictaions

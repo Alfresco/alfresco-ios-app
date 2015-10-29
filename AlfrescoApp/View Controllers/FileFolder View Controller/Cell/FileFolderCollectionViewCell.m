@@ -23,10 +23,10 @@
 static NSString * const kAlfrescoNodeCellIdentifier = @"CollectionViewCellIdentifier";
 
 static CGFloat const kFavoriteIconWidth = 14.0f;
-static CGFloat const kFavoriteIconRightSpace = 8.0f;
+static CGFloat const kFavoriteIconRightSpace = 4.0f;
 static CGFloat const kSyncIconWidth = 14.0f;
 static CGFloat const kUpdateStatusLeadingSpace = 8.0f;
-static CGFloat const kUpdateStatusContainerWidth = 36.0f;
+static CGFloat const kUpdateStatusContainerWidth = 40.0f;
 static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
@@ -184,14 +184,14 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
             updateContainerWidth = updateContainerWidth - kSyncIconWidth - kFavoriteIconRightSpace;
         }
         
-        if(updateContainerWidth < 0.0f)
+        if (updateContainerWidth < 0.0f)
         {
             updateContainerWidth = 0.0f;
         }
         
         self.updateStatusViewContainerWidthConstraint.constant = updateContainerWidth;
         
-        if(self.statusViewIsAboveImage)
+        if (self.statusViewIsAboveImage)
         {
             self.statusViewLeadingContraint.constant = - self.updateStatusViewContainerWidthConstraint.constant;
         }

@@ -46,8 +46,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 // Data Models
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
+@property (nonatomic, assign, getter=isDisplayingTask) BOOL displayingTask;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskFilter taskFilter;
 @property (nonatomic, strong) NSMutableArray *tasks;
 @property (nonatomic, strong) NSMutableArray *attachments;
 
@@ -59,31 +59,32 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskFilter:TaskFilterTask session:session];
+    self = [self initWithSession:session];
     if (self)
     {
         self.task = task;
+        self.displayingTask = YES;
     }
     return self;
 }
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskFilter:TaskFilterProcess session:session];
+    self = [self initWithSession:session];
     if (self)
     {
         self.process = process;
+        self.displayingTask = NO;
     }
     return self;
 }
 
-- (instancetype)initWithTaskFilter:(TaskFilter)taskFilter session:(id<AlfrescoSession>)session
+- (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.session = session;
-        self.taskFilter = taskFilter;
         self.attachments = [NSMutableArray array];
         self.tasks = [NSMutableArray array];
         [self createServicesWithSession:session];
@@ -175,11 +176,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)loadAttachmentsWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskFilter == TaskFilterTask)
+    if (self.isDisplayingTask)
     {
         [self.workflowService retrieveAttachmentsForTask:self.task completionBlock:completionBlock];
     }
-    else if (self.taskFilter == TaskFilterProcess)
+    else
     {
         [self.workflowService retrieveAttachmentsForProcess:self.process completionBlock:completionBlock];
     }
@@ -187,7 +188,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)loadTasksWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
-    if (self.taskFilter == TaskFilterProcess)
+    if (!self.isDisplayingTask)
     {
         [self.workflowService retrieveTasksForProcess:self.process completionBlock:completionBlock];
     }
@@ -197,7 +198,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (self.taskFilter == TaskFilterTask && section == TableSectionTasks)
+    if (self.isDisplayingTask && section == TableSectionTasks)
     {
         return 0;
     }
@@ -244,14 +245,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     switch (section)
     {
         case TableSectionTasks:
-            if (self.taskFilter == TaskFilterTask)
-            {
-                numberOfRows = 0;
-            }
-            else
-            {
-                numberOfRows = MAX(1, self.tasks.count);
-            }
+            numberOfRows = self.isDisplayingTask ? 0 : MAX(1, self.tasks.count);
             break;
             
         case TableSectionAttachments:
@@ -274,15 +268,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         case TableSectionDetails:
         {
             AttributedLabelCell *detailCell = [tableView dequeueReusableCellWithIdentifier:[AttributedLabelCell cellIdentifier]];
-            if (self.taskFilter == TaskFilterTask)
-            {
-                detailCell.attributedLabel.text = self.task.summary;
-            }
-            else
-            {
-                detailCell.attributedLabel.text = self.process.summary;
-            }
-
+            detailCell.attributedLabel.text = self.isDisplayingTask ? self.task.summary : self.process.summary;
             detailCell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell = detailCell;
         }

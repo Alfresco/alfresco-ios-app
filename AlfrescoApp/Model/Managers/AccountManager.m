@@ -50,7 +50,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     self = [super init];
     if (self)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileChanged:) name:kAlfrescoConfigurationProfileDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileChanged:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         [self loadAccountsFromKeychain];
     }
     return self;
@@ -209,7 +209,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 - (void)profileChanged:(NSNotification *)notification
 {
     AlfrescoProfileConfig *profile = notification.object;
-    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigurationProfileDidChangeForAccountKey];
+    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigProfileDidChangeForAccountKey];
     changedAccount.selectedProfileIdentifier = profile.identifier;
     changedAccount.selectedProfileName = profile.label;
     [self saveAccountsToKeychain];

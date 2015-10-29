@@ -24,6 +24,11 @@
 
 @implementation BaseFileFolderCollectionViewController
 
+- (void)dealloc
+{
+    [_searchController.view removeFromSuperview];
+}
+
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];

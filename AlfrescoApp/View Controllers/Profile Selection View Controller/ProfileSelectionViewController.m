@@ -68,9 +68,9 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
         // Only show the notification if the change was for the currently selected account
         if ([[AccountManager sharedManager].selectedAccount.accountIdentifier isEqualToString:self.account.accountIdentifier])
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigurationProfileDidChangeNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigProfileDidChangeNotification
                                                                 object:self.currentlySelectedProfile
-                                                              userInfo:@{kAlfrescoConfigurationProfileDidChangeForAccountKey : self.account}];
+                                                              userInfo:@{kAlfrescoConfigProfileDidChangeForAccountKey : self.account}];
         }
     }
 }

@@ -47,7 +47,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 @property (nonatomic, strong) NSPredicate *supportedTasksPredicate;
 @property (nonatomic, strong) NSPredicate *adhocProcessTypePredicate;
 @property (nonatomic, strong) NSPredicate *inviteProcessTypePredicate;
-@property (nonatomic, assign) TaskFilter displayedTaskFilter;
+@property (nonatomic, assign, getter=isDisplayingMyTasks) BOOL displayingMyTasks;
 @property (nonatomic, strong) TaskGroupItem *myTasks;
 @property (nonatomic, strong) TaskGroupItem *tasksIStarted;
 @property (nonatomic, weak) UIBarButtonItem *filterButton;
@@ -61,6 +61,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     self = [super initWithNibName:NSStringFromClass(self.class) andSession:session];
     if (self)
     {
+        self.displayingMyTasks = YES;
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:kDateFormat];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskListDidChange:) name:kAlfrescoWorkflowTaskListDidChangeNotification object:nil];
@@ -97,7 +98,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     if (self.session)
     {
         [self showHUD];
-        [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadDataWithListingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self hideHUD];
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
@@ -132,7 +133,9 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         
         if ([self shouldRefresh])
         {
-            [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            self.displayingMyTasks = YES;
+            
+            [self loadDataWithListingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                 [self hideHUD];
                 [self hidePullToRefreshView];
                 [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -161,7 +164,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [weakSelf.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
             
             // currently being displayed, refresh the tableview.
-            if (weakSelf.displayedTaskFilter == TaskFilterTask)
+            if (weakSelf.isDisplayingMyTasks)
             {
                 weakSelf.tableViewData = [weakSelf.myTasks.tasksAfterFiltering mutableCopy];
                 [weakSelf.tableView reloadData];
@@ -178,7 +181,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [weakSelf.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
             
             // currently being displayed, refresh the tableview.
-            if (weakSelf.displayedTaskFilter == TaskFilterProcess)
+            if (!weakSelf.isDisplayingMyTasks)
             {
                 weakSelf.tableViewData = [weakSelf.tasksIStarted.tasksAfterFiltering mutableCopy];
                 [weakSelf.tableView reloadData];
@@ -231,27 +234,14 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     self.tasksIStarted = [[TaskGroupItem alloc] initWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title") filteringPredicate:tasksIStartedPredicate];
 }
 
-- (TaskGroupItem *)taskGroupItemForType:(TaskFilter)taskType
+- (TaskGroupItem *)taskGroupItem
 {
-    TaskGroupItem *returnGroupItem = nil;
-    switch (taskType)
-    {
-        case TaskFilterTask:
-            returnGroupItem = self.myTasks;
-            break;
-
-        case TaskFilterProcess:
-            returnGroupItem = self.tasksIStarted;
-            break;
-    }
-    return returnGroupItem;
+    return self.isDisplayingMyTasks ? self.myTasks : self.tasksIStarted;
 }
 
-- (void)loadTasksForTaskFilter:(TaskFilter)taskFilter listingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
+- (void)loadDataWithListingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
-    TaskGroupItem *groupToSwitchTo = [self taskGroupItemForType:taskFilter];
-    
-    self.displayedTaskFilter = taskFilter;
+    TaskGroupItem *groupToSwitchTo = [self taskGroupItem];
     self.title = groupToSwitchTo.title;
     
     if (groupToSwitchTo.hasDisplayableTasks == NO || forceRefresh || groupToSwitchTo.hasMoreItems)
@@ -262,19 +252,13 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [groupToSwitchTo clearAllTasks];
         }
         
-        switch (taskFilter)
+        if (self.isDisplayingMyTasks)
         {
-            case TaskFilterTask:
-            {
-                [self loadTasksWithListingContext:listingContext completionBlock:completionBlock];
-            }
-            break;
-                
-            case TaskFilterProcess:
-            {
-                [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:completionBlock];
-            }
-            break;
+            [self loadTasksWithListingContext:listingContext completionBlock:completionBlock];
+        }
+        else
+        {
+            [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:completionBlock];
         }
     }
     else
@@ -313,14 +297,16 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 
     // "My Tasks" filter
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self loadTasksForTaskFilter:TaskFilterTask listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        self.displayingMyTasks = YES;
+        [self loadDataWithListingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }]];
 
     // "Tasks I Started" filter
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self loadTasksForTaskFilter:TaskFilterProcess listingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        self.displayingMyTasks = NO;
+        [self loadDataWithListingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }]];
@@ -340,25 +326,19 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 {
     if (pagingResult)
     {
-        switch (self.displayedTaskFilter)
+        if (self.isDisplayingMyTasks)
         {
-            case TaskFilterTask:
-            {
-                [self.myTasks clearAllTasks];
-                [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
-                self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
-                self.tableViewData = [self.myTasks.tasksAfterFiltering mutableCopy];
-            }
-            break;
-                
-            case TaskFilterProcess:
-            {
-                [self.tasksIStarted clearAllTasks];
-                [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
-                self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
-                self.tableViewData = [self.tasksIStarted.tasksAfterFiltering mutableCopy];
-            }
-            break;
+            [self.myTasks clearAllTasks];
+            [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
+            self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
+            self.tableViewData = [self.myTasks.tasksAfterFiltering mutableCopy];
+        }
+        else
+        {
+            [self.tasksIStarted clearAllTasks];
+            [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
+            self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
+            self.tableViewData = [self.tasksIStarted.tasksAfterFiltering mutableCopy];
         }
         
         [self.tableView reloadData];
@@ -369,7 +349,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 {
     if (pagingResult)
     {
-        TaskGroupItem *currentGroupedItem = [self taskGroupItemForType:self.displayedTaskFilter];
+        TaskGroupItem *currentGroupedItem = [self taskGroupItem];
         [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];
         currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
         self.tableViewData = [currentGroupedItem.tasksAfterFiltering mutableCopy];
@@ -388,43 +368,37 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 {
     TasksCell *cell = [tableView dequeueReusableCellWithIdentifier:kTaskCellIdentifier];
 
-    switch (self.displayedTaskFilter)
+    if (self.isDisplayingMyTasks)
     {
-        case TaskFilterTask:
+        AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
+        cell.title = currentTask.summary;
+        cell.dueDate = currentTask.dueAt;
+        cell.priority = currentTask.priority;
+        cell.processType = currentTask.name;
+    }
+    else
+    {
+        AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
+        cell.title = currentProcess.summary;
+        cell.dueDate = currentProcess.dueAt;
+        cell.priority = currentProcess.priority;
+        BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
+        BOOL isInviteProcessType = [self.inviteProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
+        
+        NSString *processType = nil;
+        if (isAdhocProcessType)
         {
-            AlfrescoWorkflowTask *currentTask = [self.tableViewData objectAtIndex:indexPath.row];
-            cell.title = currentTask.summary;
-            cell.dueDate = currentTask.dueAt;
-            cell.priority = currentTask.priority;
-            cell.processType = currentTask.name;
+            processType = NSLocalizedString(@"task.type.workflow.todo", @"Adhoc Process type");
         }
-        break;
-            
-        case TaskFilterProcess:
+        else if (isInviteProcessType)
         {
-            AlfrescoWorkflowProcess *currentProcess = [self.tableViewData objectAtIndex:indexPath.row];
-            cell.title = currentProcess.summary;
-            cell.dueDate = currentProcess.dueAt;
-            cell.priority = currentProcess.priority;
-            BOOL isAdhocProcessType = [self.adhocProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
-            BOOL isInviteProcessType = [self.inviteProcessTypePredicate evaluateWithObject:currentProcess.processDefinitionIdentifier];
-            
-            NSString *processType = nil;
-            if (isAdhocProcessType)
-            {
-                processType = NSLocalizedString(@"task.type.workflow.todo", @"Adhoc Process type");
-            }
-            else if (isInviteProcessType)
-            {
-                processType = NSLocalizedString(@"task.type.workflow.invitation", @"Invitation Process type");
-            }
-            else
-            {
-                processType = NSLocalizedString(@"task.type.workflow.review.and.approve", @"Review & Approve Process type");
-            }
-            cell.processType = processType;
+            processType = NSLocalizedString(@"task.type.workflow.invitation", @"Invitation Process type");
         }
-        break;
+        else
+        {
+            processType = NSLocalizedString(@"task.type.workflow.review.and.approve", @"Review & Approve Process type");
+        }
+        cell.processType = processType;
     }
     
     return cell;
@@ -433,7 +407,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // the last row index of the table data
-    TaskGroupItem *currentTaskGroup = [self taskGroupItemForType:self.displayedTaskFilter];
+    TaskGroupItem *currentTaskGroup = [self taskGroupItem];
     
     NSUInteger lastRowIndex = currentTaskGroup.numberOfTasksAfterFiltering - 1;
     
@@ -448,7 +422,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [spinner startAnimating];
             self.tableView.tableFooterView = spinner;
 
-            [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:moreListingContext forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self loadDataWithListingContext:moreListingContext forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                 [self addMoreToTableViewWithPagingResult:pagingResult error:error];
                 self.tableView.tableFooterView = nil;
             }];
@@ -464,7 +438,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     
     TaskDetailsViewController *taskDetailsViewController = nil;
     
-    if (self.displayedTaskFilter == TaskFilterTask)
+    if (self.isDisplayingMyTasks)
     {
         // Sanity check
         if ([selectedObject isKindOfClass:[AlfrescoWorkflowTask class]])
@@ -476,7 +450,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
     }
-    else if (self.displayedTaskFilter == TaskFilterProcess)
+    else
     {
         // Sanity check
         if ([selectedObject isKindOfClass:[AlfrescoWorkflowProcess class]])
@@ -507,7 +481,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     [self showLoadingTextInRefreshControl:refreshControl];
     if (self.session)
     {
-        [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self loadDataWithListingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
             [self hidePullToRefreshView];
         }];
@@ -519,7 +493,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
-                [self loadTasksForTaskFilter:self.displayedTaskFilter listingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                [self loadDataWithListingContext:nil forceRefresh:YES completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     [self reloadTableViewWithPagingResult:pagingResult error:error];
                 }];
             }

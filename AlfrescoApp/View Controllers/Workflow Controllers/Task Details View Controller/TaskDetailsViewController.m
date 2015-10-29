@@ -48,8 +48,8 @@ static UILayoutPriority const kLowPriority = 250;
 @property (nonatomic, strong) AlfrescoWorkflowProcess *process;
 @property (nonatomic, strong) AlfrescoWorkflowTask *task;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, assign) TaskFilter taskFilter;
 @property (nonatomic, strong) PeoplePicker *peoplePicker;
+@property (nonatomic, assign, getter=isDisplayingTask) BOOL displayingTask;
 // Services
 @property (nonatomic, strong) AlfrescoWorkflowService *workflowService;
 
@@ -72,31 +72,32 @@ static UILayoutPriority const kLowPriority = 250;
 
 - (instancetype)initWithTask:(AlfrescoWorkflowTask *)task session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskFilter:TaskFilterTask session:session];
+    self = [self initWithSession:session];
     if (self)
     {
         self.task = task;
+        self.displayingTask = YES;
     }
     return self;
 }
 
 - (instancetype)initWithProcess:(AlfrescoWorkflowProcess *)process session:(id<AlfrescoSession>)session
 {
-    self = [self initWithTaskFilter:TaskFilterProcess session:session];
+    self = [self initWithSession:session];
     if (self)
     {
         self.process = process;
+        self.displayingTask = NO;
     }
     return self;
 }
 
-- (instancetype)initWithTaskFilter:(TaskFilter)taskFilter session:(id<AlfrescoSession>)session
+- (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
     {
         self.session = session;
-        self.taskFilter = taskFilter;
         [self createServicesWithSession:session];
         [self registerForNotifications];
     }
@@ -113,7 +114,7 @@ static UILayoutPriority const kLowPriority = 250;
     [super viewDidLoad];
     
     // configure the view
-    [self configureForFilter:self.taskFilter];
+    [self configure];
     
     // Add reassign button for tasks, but not tasks that are invitations.
     if (self.task && (![self isAnInvitePendingTask:self.task] && ![self isAnInviteAcceptedOrRejectedTask:self.task]))
@@ -161,14 +162,18 @@ static UILayoutPriority const kLowPriority = 250;
     self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
 }
 
-- (void)configureForFilter:(TaskFilter)filter
+- (void)configure
 {
     [self createTaskHeaderView];
     
     TasksAndAttachmentsViewController *attachmentViewController = nil;
     
-    if (filter == TaskFilterTask)
+    if (self.isDisplayingTask)
     {
+        /**
+         * Task-oriented view
+         */
+        
         [self.workflowService retrieveProcessWithIdentifier:self.task.processIdentifier completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
             if (process && self.taskHeaderView)
             {
@@ -188,8 +193,12 @@ static UILayoutPriority const kLowPriority = 250;
         // set the tableview inset to ensure the content isn't behind the comment view
         attachmentViewController.tableViewInsets = UIEdgeInsetsMake(0, 0, self.textViewContainerHeightConstraint.constant, 0);
     }
-    else /* if (filter == TaskFilterProcess) */ // Suppress static analyser warning
+    else
     {
+        /**
+         * Process-oriented view
+         */
+
         // configure the header view for the process
         [self.taskHeaderView configureViewForProcess:self.process];
         

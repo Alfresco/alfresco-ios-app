@@ -147,7 +147,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(profileDidChange:)
-                                                 name:kAlfrescoConfigurationProfileDidChangeNotification
+                                                 name:kAlfrescoConfigProfileDidChangeNotification
                                                object:nil];
 }
 

@@ -25,6 +25,7 @@
 #import "PersonProfileViewController.h"
 #import "AccountManager.h"
 #import "SitesTableListViewController.h"
+#import "PreferenceManager.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
@@ -138,6 +139,11 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         
         self.searchController.hidesNavigationBarDuringPresentation = self.shouldHideNavigationBarOnSearchControllerPresentation;
     }
+}
+
+- (void)dealloc
+{
+    [_searchController.view removeFromSuperview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -280,17 +286,19 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 - (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType
 {
-    AlfrescoKeywordSearchOptions *searchOptions;
+    BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
+    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent];
+
     switch (searchType)
     {
         case SearchViewControllerDataSourceTypeSearchFiles:
         {
-            searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithTypeName:kAlfrescoModelTypeContent];
+            searchOptions.typeName = kAlfrescoModelTypeContent;
             break;
         }
         case SearchViewControllerDataSourceTypeSearchFolders:
         {
-            searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithTypeName:kAlfrescoModelTypeFolder];
+            searchOptions.typeName = kAlfrescoModelTypeFolder;
             break;
         }
         default:
