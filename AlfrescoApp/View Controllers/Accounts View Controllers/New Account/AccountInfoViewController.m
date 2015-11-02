@@ -437,16 +437,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 
 - (void)updateFormBackupAccount
 {
-    NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-    
-    self.formBackupAccount.username = [self.usernameString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.password = [self.passwordString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
-    self.formBackupAccount.serverAddress = [self.serverAddressString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.serverPort = [self.portString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.protocol = self.protocolString;
-    self.formBackupAccount.serviceDocument = [self.serviceDocumentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.isSyncOn = self.syncPreferenceSwitch.isOn;
 }
 
@@ -461,63 +451,8 @@ static NSInteger const kTagAccountDetailsCell = 4;
     
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
-        // User input validations
-        NSString *hostname = self.serverAddressString;
-        NSString *port = [self.portString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSString *username = [self.usernameString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSString *password = self.passwordString;
-        NSString *serviceDoc = [self.serviceDocumentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        
-        NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
-        
-        BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
-        BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
-        BOOL usernameError = [username isEqualToString:@""];
-        BOOL passwordError = [password isEqualToString:@""] || password == nil;
-        BOOL serviceDocError = [serviceDoc isEqualToString:@""];
-        
-        didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !passwordError && !serviceDocError;
-        
-        if (self.activityType == AccountActivityTypeEditAccount && didChangeAndIsValid)
+        if (self.activityType == AccountActivityTypeEditAccount)
         {
-            if (![self.formBackupAccount.username isEqualToString:self.usernameString])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            if (![self.formBackupAccount.password isEqualToString:self.passwordString])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            if (![self.formBackupAccount.serverAddress isEqualToString:self.serverAddressString])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionString])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            if (![self.formBackupAccount.serverPort isEqualToString:self.portString])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            if (![self.formBackupAccount.serviceDocument isEqualToString:self.serviceDocumentString])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            
-            NSString *protocol = self.protocolString;
-            if (![self.formBackupAccount.protocol isEqualToString:protocol])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            
-            NSString *certificateSummary = self.formBackupAccount.accountCertificate.summary ? self.formBackupAccount.accountCertificate.summary : @"";
-            NSString *certificateLabelText = self.certificateString? self.certificateString : @"";
-            if (![certificateSummary isEqualToString:certificateLabelText])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
-            
             if (!(self.formBackupAccount.isSyncOn == self.syncPreferenceSwitch.isOn))
             {
                 hasAccountPropertiesChanged = YES;
@@ -637,17 +572,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 #pragma mark - Account Info Details Delegate methods
 - (void)accountInfoChanged:(UserAccount *)newAccount
 {
-    self.usernameString = newAccount.username;
-    self.passwordString = newAccount.password;
-    self.serverAddressString = newAccount.serverAddress;
-    self.portString = newAccount.serverPort;
-    self.serviceDocumentString = newAccount.serviceDocument;
-    self.protocolString = newAccount.protocol;
-    
-    NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
-    self.descriptionString = (!newAccount.accountDescription || [newAccount.accountDescription isEqualToString:@""]) ? defaultDescription : newAccount.accountDescription;
-    
-    self.certificateString = newAccount.accountCertificate.summary ? newAccount.accountCertificate.summary : @"";
+    self.formBackupAccount = [newAccount copy];
 }
 
 #pragma mark - UITextFieldDelegate Functions

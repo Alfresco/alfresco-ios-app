@@ -24,6 +24,9 @@
 #import "UserAccount.h"
 #import "ClientCertificateViewController.h"
 #import "UniversalDevice.h"
+#import "AccountManager.h"
+#import "LoginManager.h"
+#import "ConnectionDiagnosticViewController.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 static NSInteger const kTagCertificateCell = 1;
@@ -44,6 +47,7 @@ static NSInteger const kTagCertificateCell = 1;
 @property (nonatomic, weak) UISwitch *protocolSwitch;
 @property (nonatomic, weak) UILabel *certificateLabel;
 @property (nonatomic, assign) BOOL canEditAccounts;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
 
 @property (nonatomic, strong) UITextField *activeTextField;
 @property (nonatomic, assign) CGRect tableViewVisibleRect;
@@ -73,22 +77,25 @@ static NSInteger const kTagCertificateCell = 1;
 {
     [super viewDidLoad];
     
+    self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                    target:self
+                                                                    action:@selector(saveButtonClicked:)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+    
+    self.saveButton.enabled = NO;
+    [self.navigationItem setRightBarButtonItem:self.saveButton];
+    
     [self constructTableCellsForAlfrescoServer];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
-    
-    self.formBackupAccount.username = self.usernameTextField.text;
-    self.formBackupAccount.password = self.passwordTextField.text;
-    self.formBackupAccount.serverAddress = self.serverAddressTextField.text;
-    self.formBackupAccount.accountDescription = self.descriptionTextField.text;
-    self.formBackupAccount.serverPort = self.portTextField.text;
-    self.formBackupAccount.serviceDocument = self.serviceDocumentTextField.text;
-    self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
-    
-    [self.delegate accountInfoChanged:self.formBackupAccount];
+    [super viewWillAppear:animated];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 - (void)constructTableCellsForAlfrescoServer
@@ -227,7 +234,7 @@ static NSInteger const kTagCertificateCell = 1;
         }
     }
     
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -249,7 +256,7 @@ static NSInteger const kTagCertificateCell = 1;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     
     if (textField == self.usernameTextField)
     {
@@ -280,7 +287,7 @@ static NSInteger const kTagCertificateCell = 1;
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-//    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+    self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
 #pragma mark - UIKeyboard Notifications
@@ -347,6 +354,8 @@ static NSInteger const kTagCertificateCell = 1;
     }
 }
 
+#pragma mark - Private methods
+
 /**
  validateAccountFieldsValues
  checks the validity of hostname, port and username in terms of characters entered.
@@ -389,10 +398,6 @@ static NSInteger const kTagCertificateCell = 1;
             {
                 hasAccountPropertiesChanged = YES;
             }
-            if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
-            {
-                hasAccountPropertiesChanged = YES;
-            }
             if (![self.formBackupAccount.serverPort isEqualToString:self.portTextField.text])
             {
                 hasAccountPropertiesChanged = YES;
@@ -427,6 +432,142 @@ static NSInteger const kTagCertificateCell = 1;
         didChangeAndIsValid = hasAccountPropertiesChanged;
     }
     return didChangeAndIsValid;
+}
+
+- (void)saveButtonClicked:(id)sender
+{
+    if (self.account.accountType == UserAccountTypeOnPremise)
+    {
+        [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
+            if (successful)
+            {
+                AccountManager *accountManager = [AccountManager sharedManager];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [accountManager saveAccountsToKeychain];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                }];
+            }
+        }];
+    }
+    else
+    {
+        [self updateFormBackupAccount];
+        self.account.accountDescription = self.formBackupAccount.accountDescription;
+        self.account.isSyncOn = self.formBackupAccount.isSyncOn;
+        // If Sync is now enabled, suppress the prompt in the Favorites view
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
+        }
+        
+        [[AccountManager sharedManager] saveAccountsToKeychain];
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+        }];
+    }
+}
+
+- (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session))completionBlock
+{
+    [self updateFormBackupAccount];
+    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
+    {
+        self.account.username = temporaryAccount.username;
+        self.account.password = temporaryAccount.password;
+        self.account.accountDescription = temporaryAccount.accountDescription;
+        self.account.serverAddress = temporaryAccount.serverAddress;
+        self.account.serverPort = temporaryAccount.serverPort;
+        self.account.protocol = temporaryAccount.protocol;
+        self.account.serviceDocument = temporaryAccount.serviceDocument;
+        self.account.accountCertificate = temporaryAccount.accountCertificate;
+        self.account.isSyncOn = temporaryAccount.isSyncOn;
+        // If Sync is now enabled, suppress the prompt in the Favorites view
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
+        }
+        self.account.paidAccount = temporaryAccount.isPaidAccount;
+        
+        [self.delegate accountInfoChanged:self.account];
+    };
+    
+    [self showHUD];
+    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        [self hideHUD];
+        if (successful)
+        {
+            updateAccountInfo(self.formBackupAccount);
+            completionBlock(successful, alfrescoSession);
+        }
+        else
+        {
+            UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                   message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
+                                                         otherButtonTitles:NSLocalizedString(@"connectiondiagnostic.button.retrywithdiagnostic", @"Retry with diagnostic"), nil];
+            [failureAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                if (!isCancelButton)
+                {
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
+                    ConnectionDiagnosticViewController *viewController = (ConnectionDiagnosticViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
+                    [viewController setupWithParent:self andSelector:@selector(retryLoginForConnectionDiagnostic)];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }
+            }];
+        }
+    }];
+}
+
+- (void)updateFormBackupAccount
+{
+    NSString *accountDescription = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *defaultDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
+    
+    self.formBackupAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
+    self.formBackupAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
+    self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
+#pragma mark - Retry method for login with diagnostic
+
+- (void)retryLoginForConnectionDiagnostic
+{
+    void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
+    {
+        self.account.username = temporaryAccount.username;
+        self.account.password = temporaryAccount.password;
+        self.account.accountDescription = temporaryAccount.accountDescription;
+        self.account.serverAddress = temporaryAccount.serverAddress;
+        self.account.serverPort = temporaryAccount.serverPort;
+        self.account.protocol = temporaryAccount.protocol;
+        self.account.serviceDocument = temporaryAccount.serviceDocument;
+        self.account.accountCertificate = temporaryAccount.accountCertificate;
+        self.account.isSyncOn = temporaryAccount.isSyncOn;
+        // If Sync is now enabled, suppress the prompt in the Favorites view
+        if (self.account.isSyncOn)
+        {
+            self.account.didAskToSync = YES;
+        }
+        self.account.paidAccount = temporaryAccount.isPaidAccount;
+        
+        [self.delegate accountInfoChanged:self.account];
+    };
+    
+    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        if (successful)
+        {
+            updateAccountInfo(self.formBackupAccount);
+        }
+    }];
 }
 
 @end
