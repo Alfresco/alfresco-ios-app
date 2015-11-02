@@ -688,6 +688,8 @@
 "action.delete.success.message.sync" = "Successfully deleted %@, a copy has been saved to Local Files";
 "action.delete.failed.title" = "Failed to delete";
 "action.delete.failed.message" = "%@ couldn’t be deleted.";
+"action.confirmation.back.message" = "Do you want to save changes to this account?";
+"action.confirmation.back.title" = "Unsaved Changes";
 
 /**
  * SaveBack

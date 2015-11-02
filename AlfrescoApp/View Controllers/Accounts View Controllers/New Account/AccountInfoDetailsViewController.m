@@ -89,6 +89,11 @@ static NSInteger const kTagCertificateCell = 1;
     self.saveButton.enabled = NO;
     [self.navigationItem setRightBarButtonItem:self.saveButton];
     
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                            target:self
+                                                                            action:@selector(cancel:)];
+    self.navigationItem.leftBarButtonItem = cancel;
+    
     [self constructTableCellsForAlfrescoServer];
 }
 
@@ -471,6 +476,26 @@ static NSInteger const kTagCertificateCell = 1;
     }
 }
 
+- (void)cancel:(id)sender
+{
+    if([self validateAccountFieldsValuesForServer])
+    {
+        UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.confirmation.back.title", @"Unsaved changes") message:NSLocalizedString(@"action.confirmation.back.message", @"Save changes?") preferredStyle:UIAlertControllerStyleAlert];
+        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.discard", @"Discard") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.save", @"Save") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self saveButtonClicked:sender];
+        }]];
+        
+        [self presentViewController:confirmAlert animated:YES completion:nil];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session))completionBlock
 {
     [self updateFormBackupAccount];
@@ -505,6 +530,7 @@ static NSInteger const kTagCertificateCell = 1;
         }
         else
         {
+            self.formBackupAccount = [self.account copy];
             UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
                                                                    message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
                                                                   delegate:self
