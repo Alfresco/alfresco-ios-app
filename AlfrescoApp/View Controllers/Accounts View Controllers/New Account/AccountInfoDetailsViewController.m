@@ -449,11 +449,9 @@ static NSInteger const kTagCertificateCell = 1;
                 AccountManager *accountManager = [AccountManager sharedManager];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
-                
-                [self dismissViewControllerAnimated:YES completion:^{
-                    [accountManager saveAccountsToKeychain];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
-                }];
+                [accountManager saveAccountsToKeychain];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                [self.navigationController popViewControllerAnimated:YES];
             }
         }];
     }
@@ -470,9 +468,8 @@ static NSInteger const kTagCertificateCell = 1;
         
         [[AccountManager sharedManager] saveAccountsToKeychain];
         
-        [self dismissViewControllerAnimated:YES completion:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
-        }];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -482,7 +479,7 @@ static NSInteger const kTagCertificateCell = 1;
     {
         UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.confirmation.back.title", @"Unsaved changes") message:NSLocalizedString(@"action.confirmation.back.message", @"Save changes?") preferredStyle:UIAlertControllerStyleAlert];
         [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.discard", @"Discard") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popViewControllerAnimated:YES];
         }]];
         [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.save", @"Save") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self saveButtonClicked:sender];
@@ -492,7 +489,7 @@ static NSInteger const kTagCertificateCell = 1;
     }
     else
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -588,6 +585,7 @@ static NSInteger const kTagCertificateCell = 1;
         [self.delegate accountInfoChanged:self.account];
     };
     
+    [self updateFormBackupAccount];
     [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         if (successful)
         {
