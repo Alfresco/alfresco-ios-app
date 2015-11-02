@@ -1189,7 +1189,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     alertController.modalPresentationStyle = UIModalPresentationPopover;
     
     UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-    popoverPresenter.barButtonItem = self.alertControllerSender;
+    popoverPresenter.sourceView = self.multiSelectToolbar;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
