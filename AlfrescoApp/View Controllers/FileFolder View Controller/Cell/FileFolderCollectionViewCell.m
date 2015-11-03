@@ -489,12 +489,14 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
                     buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
                     self.accessoryViewButton.tintColor = [UIColor appTintColor];
+                    self.accessoryViewWidthConstraint.constant = kAccessoryViewInfoWidth;
                     break;
                     
                 case SyncStatusFailed:
                     buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     [self.accessoryViewButton setTitle:@"" forState:UIControlStateNormal];
                     self.accessoryViewButton.tintColor = [UIColor syncFailedColor];
+                    self.accessoryViewWidthConstraint.constant = kAccessoryViewInfoWidth;
                     break;
                     
                 default:
@@ -507,7 +509,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
                 [self.accessoryViewButton setImage:buttonImage forState:UIControlStateNormal];
                 [self.accessoryViewButton setShowsTouchWhenHighlighted:YES];
                 [self.accessoryViewButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-                self.accessoryViewWidthConstraint.constant = buttonImage.size.width;
+                self.accessoryViewWidthConstraint.constant = kAccessoryViewInfoWidth;
             }
         }
         [self layoutIfNeeded];
