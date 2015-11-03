@@ -28,26 +28,26 @@
 #import "UserAccountWrapper.h"
 #import "PersonProfileViewController.h"
 #import "SearchResultsTableViewController.h"
+#import "FilteredTaskViewController.h"
+#import "TaskViewFilter.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
-static NSString * const kHandlerPrefix = @"alfresco://";
-static NSString * const kDocumentPath = @"document";
-static NSString * const kFolderPath = @"folder";
-static NSString * const kSitePath = @"site";
-static NSString * const kUserPath = @"user";
 
-typedef NS_ENUM(NSInteger, AlfrescoURLType)
-{
-    AlfrescoURLTypeNone,
-    AlfrescoURLTypeDocument,
-    AlfrescoURLTypeFolder,
-    AlfrescoURLTypeSite,
-    AlfrescoURLTypeUser
-};
+static NSString * const kHandlerPrefix = @"alfresco://";
+
+static NSString * const kLinkTypeDocument = @"document";
+static NSString * const kLinkTypeFolder = @"folder";
+static NSString * const kLinkTypeSite = @"site";
+static NSString * const kLinkTypeUser = @"user";
+static NSString * const kLinkTypeTasks = @"tasks";
+
+static NSString * const kParamTypeObjectId = @"id";
+static NSString * const kParamTypeFilter = @"filter";
+static NSString * const kParamTypePath = @"path";
+
 
 @interface AlfrescoURLHandler() < AKUserAccountListViewControllerDelegate >
 
-@property (nonatomic, strong) UIViewController *viewControllerToPresent;
 @property (nonatomic, strong) NSURL *urlReceived;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
 
@@ -67,9 +67,9 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
     BOOL handled = NO;
     self.urlReceived = url;
     NSUInteger numberOfAccountsSetup = [[AccountManager sharedManager] totalNumberOfAddedAccounts];
-    if(numberOfAccountsSetup > 0)
+    if (numberOfAccountsSetup > 0)
     {
-        if(numberOfAccountsSetup > 1)
+        if (numberOfAccountsSetup > 1)
         {
             NSError *keychainError = nil;
             NSArray *savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
@@ -77,6 +77,7 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
             if (keychainError)
             {
                 AlfrescoLogError(@"Error accessing shared keychain. Error: %@", keychainError.localizedDescription);
+                return NO;
             }
             
             // Create wrapper accounts
@@ -85,7 +86,7 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
             AKUserAccountListViewController *userAccountViewController = [[AKUserAccountListViewController alloc] initWithAccountList:wrapperAccounts delegate:self];
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userAccountViewController];
             SwitchViewController *switchController = [self presentingViewController];
-            if(switchController)
+            if (switchController)
             {
                 [UniversalDevice displayModalViewController:navigationController onController:switchController withCompletionBlock:nil];
             }
@@ -95,49 +96,22 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
             handled = [self handleURL:url session:session];
         }
     }
-
     
     return handled;
 }
 
 #pragma mark - Private methods
-- (AlfrescoURLType)parseURLForAction:(NSString *)URLString
-{
-    //Removing the scheme from the url string
-    NSString *urlWithoutScheme = [URLString stringByReplacingOccurrencesOfString:kHandlerPrefix withString:@""];
-    
-    AlfrescoURLType urlType = AlfrescoURLTypeNone;
-    
-    if([urlWithoutScheme hasPrefix:kDocumentPath])
-    {
-        urlType = AlfrescoURLTypeDocument;
-    }
-    else if ([urlWithoutScheme hasPrefix:kFolderPath])
-    {
-        urlType = AlfrescoURLTypeFolder;
-    }
-    else if ([urlWithoutScheme hasPrefix:kSitePath])
-    {
-        urlType = AlfrescoURLTypeSite;
-    }
-    else if ([urlWithoutScheme hasPrefix:kUserPath])
-    {
-        urlType = AlfrescoURLTypeUser;
-    }
-    
-    return urlType;
-}
 
 - (void)presentViewControllerFromURL:(UIViewController *)controller
 {
     SwitchViewController *switchController = [self presentingViewController];
-    if(switchController)
+    if (switchController)
     {
         NavigationViewController *navigationController = [[NavigationViewController alloc] initWithRootViewController:controller];
         [switchController displayURLViewController:navigationController];
     }
     
-    if([[UniversalDevice rootMasterViewController] isKindOfClass:[MainMenuViewController class]])
+    if ([[UniversalDevice rootMasterViewController] isKindOfClass:[MainMenuViewController class]])
     {
         MainMenuViewController *mainMenu = (MainMenuViewController *)[UniversalDevice rootMasterViewController];
         [mainMenu cleanSelection];
@@ -147,10 +121,10 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
 - (SwitchViewController *)presentingViewController
 {
     SwitchViewController *switchController = nil;
-    if(IS_IPAD)
+    if (IS_IPAD)
     {
         DetailSplitViewController *splitViewController = (DetailSplitViewController *)[UniversalDevice rootDetailViewController];
-        if([splitViewController.masterViewController isKindOfClass:[SwitchViewController class]])
+        if ([splitViewController.masterViewController isKindOfClass:[SwitchViewController class]])
         {
             switchController = (SwitchViewController *)splitViewController.masterViewController;
         }
@@ -166,78 +140,125 @@ typedef NS_ENUM(NSInteger, AlfrescoURLType)
 - (BOOL)handleURL:(NSURL *)url session:(id<AlfrescoSession>)session
 {
     BOOL handled = NO;
-    AlfrescoURLType actionType = [self parseURLForAction: url.absoluteString];
-    self.viewControllerToPresent = nil;
-    switch (actionType)
+    UIViewController *viewControllerToPresent = nil;
+
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    NSString *linkType = [components.host lowercaseString];
+    // Note: first path component is likely to be "/"
+    NSArray *pathComponents = [components.path pathComponents];
+
+    if (pathComponents.count > 1)
     {
-        case AlfrescoURLTypeNone:
+        // Common params
+        NSString *paramValueId = nil;
+        
+        /**
+         * kParamTypeObjectId
+         */
+        if (pathComponents.count > 2 && [pathComponents[1] isEqualToString:kParamTypeObjectId])
         {
-            handled = YES;
+            paramValueId = pathComponents[2];
         }
-        break;
-            
-        case AlfrescoURLTypeDocument:
+        
+        /**
+         * Document
+         */
+        if ([linkType isEqualToString:kLinkTypeDocument])
         {
-            NSString *initialCommandPath = [NSString stringWithFormat:@"%@%@/", kHandlerPrefix, kDocumentPath];
-            NSString *objectId = [url.absoluteString stringByReplacingOccurrencesOfString:initialCommandPath withString:@""];
-            NSString *documentNodeRef = [NSString stringWithFormat:@"workspace://SpacesStore/%@", objectId];
-            FileFolderCollectionViewController *controller = [[FileFolderCollectionViewController alloc] initWithDocumentNodeRef:documentNodeRef session:session];
-            self.viewControllerToPresent = controller;
-            
-            handled = YES;
+            if (paramValueId.length > 0)
+            {
+                NSString *nodeRef = [NSString stringWithFormat:@"workspace://SpacesStore/%@", paramValueId];
+                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithDocumentNodeRef:nodeRef session:session];
+                handled = YES;
+            }
         }
-        break;
-            
-        case AlfrescoURLTypeFolder:
+
+        /**
+         * Folder
+         */
+        else if ([linkType isEqualToString:kLinkTypeFolder])
         {
-            NSString *initialCommandPath = [NSString stringWithFormat:@"%@%@/", kHandlerPrefix, kFolderPath];
-            NSString *objectId = [url.absoluteString stringByReplacingOccurrencesOfString:initialCommandPath withString:@""];
-            NSString *folderNodeRef = [NSString stringWithFormat:@"workspace://SpacesStore/%@", objectId];
-            FileFolderCollectionViewController *controller = [[FileFolderCollectionViewController alloc] initWithNodeRef:folderNodeRef folderPermissions:nil folderDisplayName:nil session:session];
-            self.viewControllerToPresent = controller;
-            handled = YES;
+            if (paramValueId.length > 0)
+            {
+                NSString *nodeRef = [NSString stringWithFormat:@"workspace://SpacesStore/%@", paramValueId];
+                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:nil session:session];
+                handled = YES;
+            }
         }
-        break;
-            
-        case AlfrescoURLTypeSite:
+
+        /**
+         * Site
+         */
+        else if ([linkType isEqualToString:kLinkTypeSite])
         {
-            NSString *initialCommandPath = [NSString stringWithFormat:@"%@%@/", kHandlerPrefix, kSitePath];
-            NSString *siteShortName = [url.absoluteString stringByReplacingOccurrencesOfString:initialCommandPath withString:@""];
-            FileFolderCollectionViewController *controller = [[FileFolderCollectionViewController alloc] initWithSiteShortname:siteShortName sitePermissions:nil siteDisplayName:nil session:session];
-            self.viewControllerToPresent = controller;
-            handled = YES;
+            if (paramValueId.length > 0)
+            {
+                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithSiteShortname:paramValueId sitePermissions:nil siteDisplayName:nil session:session];
+                handled = YES;
+            }
         }
-        break;
-            
-        case AlfrescoURLTypeUser:
+
+        /**
+         * User
+         */
+        else if ([linkType isEqualToString:kLinkTypeUser])
         {
-            NSString *initialCommandPath = [NSString stringWithFormat:@"%@%@/", kHandlerPrefix, kUserPath];
-            NSString *username = [url.absoluteString stringByReplacingOccurrencesOfString:initialCommandPath withString:@""];
-            self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
-            [self.personService retrievePersonWithIdentifier:username completionBlock:^(AlfrescoPerson *person, NSError *error) {
-                if (error)
+            if (paramValueId.length > 0)
+            {
+                self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
+                [self.personService retrievePersonWithIdentifier:paramValueId completionBlock:^(AlfrescoPerson *person, NSError *error) {
+                    if (error)
+                    {
+                        NSString *errorTitle = NSLocalizedString(@"error.person.profile.no.profile.title", @"Profile Error Title");
+                        NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.person.profile.no.profile.message", @"Profile Error Message"), paramValueId];
+                        displayErrorMessageWithTitle(errorMessage, errorTitle);
+                    }
+                    else
+                    {
+                        SearchResultsTableViewController *controller = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:session pushesSelection:YES];
+                        controller.results = [NSMutableArray arrayWithObject:person];
+                        controller.shouldAutoPushFirstResult = YES;
+                        [self presentViewControllerFromURL:controller];
+                    }
+                }];
+                handled = YES;
+            }
+        }
+
+        /**
+         * Task
+         */
+        else if ([linkType isEqualToString:kLinkTypeTasks])
+        {
+            /**
+             * kParamTypeFilter
+             */
+            if (pathComponents.count > 1 && [pathComponents[1] isEqualToString:kParamTypeFilter] && components.queryItems.count > 0)
+            {
+                NSMutableDictionary *filters = [[NSMutableDictionary alloc] init];
+                
+                // Pull out the filter parameters from the queryString; they must follow the same format as the view configuration
+                for (NSURLQueryItem *queryItem in components.queryItems)
                 {
-                    NSString *errorTitle = NSLocalizedString(@"error.person.profile.no.profile.title", @"Profile Error Title");
-                    NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.person.profile.no.profile.message", @"Profile Error Message"), username];
-                    displayErrorMessageWithTitle(errorMessage, errorTitle);
+                    if (queryItem.name.length > 0 && queryItem.value.length > 0)
+                    {
+                        filters[queryItem.name] = queryItem.value;
+                    }
                 }
-                else
+
+                if (filters.count > 0)
                 {
-                    SearchResultsTableViewController *controller = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:session pushesSelection:YES];
-                    controller.results = [NSMutableArray arrayWithObject:person];
-                    controller.shouldAutoPushFirstResult = YES;
-                    [self presentViewControllerFromURL:controller];
+                    TaskViewFilter *taskFilter = [[TaskViewFilter alloc] initWithDictionary:filters];
+                    viewControllerToPresent = [[FilteredTaskViewController alloc] initWithFilter:taskFilter session:session];
+                    handled = YES;
                 }
-            }];
-            
-            handled = YES;
+            }
         }
-        break;
     }
     
-    if (self.viewControllerToPresent)
+    if (viewControllerToPresent)
     {
-        [self presentViewControllerFromURL:self.viewControllerToPresent];
+        [self presentViewControllerFromURL:viewControllerToPresent];
     }
     
     return handled;
