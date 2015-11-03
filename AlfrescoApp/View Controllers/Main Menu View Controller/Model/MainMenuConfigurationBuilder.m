@@ -333,7 +333,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
     {
         // Sync
-        SyncViewController *syncViewController = [[SyncViewController alloc] initWithSession:self.session];
+        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
         associatedObject = syncViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeLocal])

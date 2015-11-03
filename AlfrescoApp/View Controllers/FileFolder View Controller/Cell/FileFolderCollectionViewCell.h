@@ -20,7 +20,6 @@
 #import "ThumbnailImageView.h"
 #import "CollectionViewProtocols.h"
 
-
 @class SyncNodeStatus;
 
 @interface FileFolderCollectionViewCell : UICollectionViewCell
