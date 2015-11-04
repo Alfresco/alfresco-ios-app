@@ -500,7 +500,7 @@
             if (site)
             {
                 // replace the site with the updated one, if the all sites are displayed
-                if (weakSelf.listType == SiteListTypeSelectionAllSites)
+                if ((weakSelf.listType == SiteListTypeSelectionAllSites) || (weakSelf.listType == SiteListTypeSelectionSearch))
                 {
                     [weakSelf.tableViewData replaceObjectAtIndex:selectedSiteIndexPath.row withObject:site];
                     [siteCell updateCellStateWithSite:site];
