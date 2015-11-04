@@ -36,6 +36,7 @@
 #import "PersonProfileViewController.h"
 #import "SiteMembersViewController.h"
 #import "SitesViewController.h"
+#import "SyncNavigationViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -334,7 +335,8 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Sync
         SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
-        associatedObject = syncViewController;
+        SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
+        associatedObject = syncNavigationController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeLocal])
     {
@@ -443,9 +445,13 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     
     // If the view is supported, wrap it with a NavigationViewController
-    if (associatedObject)
+    if ((associatedObject) && (![associatedObject isKindOfClass:[NavigationViewController class]]))
     {
          navigationController = [[NavigationViewController alloc] initWithRootViewController:associatedObject];
+    }
+    else if ([associatedObject isKindOfClass:[NavigationViewController class]])
+    {
+        navigationController = associatedObject;
     }
     
     return navigationController;
