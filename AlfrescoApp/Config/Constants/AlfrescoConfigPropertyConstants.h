@@ -25,32 +25,6 @@
  k<class-name>Property<property-name>
  */
 
-extern NSString * const kAlfrescoPersonIdentifier;
-extern NSString * const kAlfrescoPersonFirstName;
-extern NSString * const kAlfrescoPersonLastName;
-extern NSString * const kAlfrescoPersonAvatarIdentifier;
-extern NSString * const kAlfrescoPersonJobTitle;
-extern NSString * const kAlfrescoPersonLocation;
-extern NSString * const kAlfrescoPersonSummary;
-extern NSString * const kAlfrescoPersonTelephoneNumber;
-extern NSString * const kAlfrescoPersonMobileNumber;
-extern NSString * const kAlfrescoPersonEmail;
-extern NSString * const kAlfrescoPersonSkypeId;
-extern NSString * const kAlfrescoPersonInstantMessageId;
-extern NSString * const kAlfrescoPersonGoogleId;
-extern NSString * const kAlfrescoPersonStatus;
-extern NSString * const kAlfrescoPersonStatusTime;
-extern NSString * const kAlfrescoPersonCompany;
-
-extern NSString * const kAlfrescoCompanyName;
-extern NSString * const kAlfrescoCompanyAddressLine1;
-extern NSString * const kAlfrescoCompanyAddressLine2;
-extern NSString * const kAlfrescoCompanyAddressLine3;
-extern NSString * const kAlfrescoCompanyPostCode;
-extern NSString * const kAlfrescoCompanyTelephoneNumber;
-extern NSString * const kAlfrescoCompanyFaxNumber;
-extern NSString * const kAlfrescoCompanyEmail;
-
 extern NSString * const kAlfrescoBaseConfigPropertyIdentifier;
 extern NSString * const kAlfrescoBaseConfigPropertyLabel;
 extern NSString * const kAlfrescoBaseConfigPropertySummary;
@@ -90,24 +64,3 @@ extern NSString * const kAlfrescoViewConfigPropertyFormIdentifier;
 
 extern NSString * const kAlfrescoWorkflowConfigPropertyProcessConfig;
 extern NSString * const kAlfrescoWorkflowConfigPropertyTaskConfig;
-
-extern NSString * const kAlfrescoModelDefinitionPropertyName;
-extern NSString * const kAlfrescoModelDefinitionPropertyTitle;
-extern NSString * const kAlfrescoModelDefinitionPropertySummary;
-extern NSString * const kAlfrescoModelDefinitionPropertyParent;
-extern NSString * const kAlfrescoModelDefinitionPropertyPropertyDefinitions;
-
-extern NSString * const kAlfrescoNodeTypeDefinitionPropertyMandatoryAspects;
-
-extern NSString * const kAlfrescoPropertyDefinitionPropertyName;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyTitle;
-extern NSString * const kAlfrescoPropertyDefinitionPropertySummary;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyType;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyIsRequired;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyIsReadOnly;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyIsMultiValued;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyDefaultValue;
-extern NSString * const kAlfrescoPropertyDefinitionPropertyAllowableValues;
-
-
-

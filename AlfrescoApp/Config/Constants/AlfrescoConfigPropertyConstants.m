@@ -20,32 +20,6 @@
 
 #import "AlfrescoConfigPropertyConstants.h"
 
-NSString * const kAlfrescoPersonIdentifier = @"identifier";
-NSString * const kAlfrescoPersonFirstName = @"firstName";
-NSString * const kAlfrescoPersonLastName = @"lastName";
-NSString * const kAlfrescoPersonAvatarIdentifier = @"avatarIdentifier";
-NSString * const kAlfrescoPersonJobTitle = @"jobTitle";
-NSString * const kAlfrescoPersonLocation = @"location";
-NSString * const kAlfrescoPersonSummary = @"summary";
-NSString * const kAlfrescoPersonTelephoneNumber = @"telephoneNumber";
-NSString * const kAlfrescoPersonMobileNumber = @"mobileNumber";
-NSString * const kAlfrescoPersonEmail = @"email";
-NSString * const kAlfrescoPersonSkypeId = @"skypeId";
-NSString * const kAlfrescoPersonInstantMessageId = @"instantMessageId";
-NSString * const kAlfrescoPersonGoogleId = @"googleId";
-NSString * const kAlfrescoPersonStatus = @"status";
-NSString * const kAlfrescoPersonStatusTime = @"statusTime";
-NSString * const kAlfrescoPersonCompany = @"company";
-
-NSString * const kAlfrescoCompanyName = @"name";
-NSString * const kAlfrescoCompanyAddressLine1 = @"addressLine1";
-NSString * const kAlfrescoCompanyAddressLine2 = @"addressLine2";
-NSString * const kAlfrescoCompanyAddressLine3 = @"addressLine3";
-NSString * const kAlfrescoCompanyPostCode = @"postCode";
-NSString * const kAlfrescoCompanyTelephoneNumber = @"telephoneNumber";
-NSString * const kAlfrescoCompanyFaxNumber = @"faxNumber";
-NSString * const kAlfrescoCompanyEmail = @"email";
-
 NSString * const kAlfrescoBaseConfigPropertyIdentifier = @"identifier";
 NSString * const kAlfrescoBaseConfigPropertyLabel = @"label";
 NSString * const kAlfrescoBaseConfigPropertySummary = @"summary";
@@ -83,22 +57,3 @@ NSString * const kAlfrescoViewConfigPropertyFormIdentifier = @"formIdentifier";
 
 NSString * const kAlfrescoWorkflowConfigPropertyProcessConfig = @"processConfig";
 NSString * const kAlfrescoWorkflowConfigPropertyTaskConfig = @"taskConfig";
-
-NSString * const kAlfrescoModelDefinitionPropertyName = @"name";
-NSString * const kAlfrescoModelDefinitionPropertyTitle = @"title";
-NSString * const kAlfrescoModelDefinitionPropertySummary = @"summary";
-NSString * const kAlfrescoModelDefinitionPropertyParent = @"parent";
-NSString * const kAlfrescoModelDefinitionPropertyPropertyDefinitions = @"propertyDefinitions";
-
-NSString * const kAlfrescoNodeTypeDefinitionPropertyMandatoryAspects = @"mandatoryAspects";
-
-NSString * const kAlfrescoPropertyDefinitionPropertyName = @"name";
-NSString * const kAlfrescoPropertyDefinitionPropertyTitle = @"title";
-NSString * const kAlfrescoPropertyDefinitionPropertySummary = @"summary";
-NSString * const kAlfrescoPropertyDefinitionPropertyType = @"type";
-NSString * const kAlfrescoPropertyDefinitionPropertyIsRequired = @"isRequired";
-NSString * const kAlfrescoPropertyDefinitionPropertyIsReadOnly = @"isReadOnly";
-NSString * const kAlfrescoPropertyDefinitionPropertyIsMultiValued = @"isMultiValued";
-NSString * const kAlfrescoPropertyDefinitionPropertyDefaultValue = @"defaultValue";
-NSString * const kAlfrescoPropertyDefinitionPropertyAllowableValues = @"allowableValues";
-

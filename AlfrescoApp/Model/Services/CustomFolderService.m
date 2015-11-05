@@ -21,7 +21,11 @@
 @interface CustomFolderService ()
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
+
+@property (nonatomic, strong) AlfrescoFolder *sharedFilesFolder;
+@property (nonatomic, strong) AlfrescoFolder *myFilesFolder;
 
 @end
 
@@ -32,8 +36,9 @@
     self = [self init];
     if (self)
     {
-        self.session = session;
-        self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
+        _session = session;
+        _documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+        _searchService = [[AlfrescoSearchService alloc] initWithSession:session];
     }
     return self;
 }
@@ -42,19 +47,26 @@
 {
     AlfrescoRequest *request = nil;
     
-    NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
-    request = [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
-        if (error)
-        {
-            completionBlock(nil, error);
-        }
-        else
-        {
-            AlfrescoFolder *sharedFolder = array.firstObject;
-            completionBlock(sharedFolder, error);
-        }
-    }];
-    
+    if (self.sharedFilesFolder)
+    {
+        completionBlock(self.sharedFilesFolder, nil);
+    }
+    else
+    {
+        NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
+        request = [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
+            if (error)
+            {
+                self.sharedFilesFolder = nil;
+                completionBlock(nil, error);
+            }
+            else
+            {
+                self.sharedFilesFolder = array.firstObject;
+                completionBlock(array.firstObject, nil);
+            }
+        }];
+    }
     return request;
 }
 
@@ -62,25 +74,46 @@
 {
     AlfrescoRequest *request = nil;
     
-    // MOBILE-2984: The username needs to be escaped using ISO9075 encoding, as there's nothing built-in to do this and this
-    // is a temporary fix (CMIS 1.1 will expose the nodeRef of the users home folder) we'll manually replace the commonly used
-    // characters manually, namely, "@" and space rather than implementing a complete ISO9075 encoder!
-    NSString *escapedUsername = [self.session.personIdentifier stringByReplacingOccurrencesOfString:@"@" withString:@"_x0040_"];
-    escapedUsername = [escapedUsername stringByReplacingOccurrencesOfString:@" " withString:@"_x0020_"];
-    
-    NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", escapedUsername];
-    
-    request = [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
-        if (error)
+    if (self.myFilesFolder)
+    {
+        completionBlock(self.myFilesFolder, nil);
+    }
+    else
+    {
+        // Alfresco versions 5.0 and newer support retrieving the home folder via cmis:item support
+        AlfrescoRequest *request = [self.documentFolderService retrieveHomeFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+            if (error)
+            {
+                self.myFilesFolder = nil;
+                completionBlock(nil, error);
+            }
+            else
+            {
+                self.myFilesFolder = folder;
+                completionBlock(folder, error);
+            }
+        }];
+        
+        if (!request)
         {
-            completionBlock(nil, error);
+            // Fallback option: attempt to retrieve the home folder using the username
+            NSString *escapedUsername = [[self.session.personIdentifier stringByReplacingOccurrencesOfString:@"@" withString:@"_x0040_"] stringByReplacingOccurrencesOfString:@" " withString:@"_x0020_"];
+            NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", escapedUsername];
+            
+            request = [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
+                if (error)
+                {
+                    self.myFilesFolder = nil;
+                    completionBlock(nil, error);
+                }
+                else
+                {
+                    self.myFilesFolder = array.firstObject;
+                    completionBlock(array.firstObject, error);
+                }
+            }];
         }
-        else
-        {
-            AlfrescoFolder *myFilesFolder = array.firstObject;
-            completionBlock(myFilesFolder, error);
-        }
-    }];
+    }
     
     return request;
 }

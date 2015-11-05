@@ -46,6 +46,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 @property (nonatomic, strong) id<AKUserAccount> account;
 @property (nonatomic, strong) UINavigationController *embeddedNavigationController;
 @property (nonatomic, strong) PersistentQueueStore *queueStore;
+@property (nonatomic, strong) CustomFolderService *customFolderService;
 
 @end
 
@@ -194,6 +195,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 {
     self.account = account;
     self.session = session;
+    self.customFolderService = [[CustomFolderService alloc] initWithSession:session];
     
     void (^createAndPushScopeViewController)(NSArray *, id<AKScopePickingViewControllerDelegate>) = ^(NSArray *scopeItems, id<AKScopePickingViewControllerDelegate>scopeDelegate) {
         AKScopePickingViewController *scopePickingViewController = [[AKScopePickingViewController alloc] initWithScopeItems:scopeItems delegate:scopeDelegate];
@@ -209,9 +211,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     [controller.view addSubview:spinner];
     [spinner show:YES];
     // Get shared and my file folders
-    CustomFolderService *folderService = [[CustomFolderService alloc] initWithSession:session];
-    [folderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *myFilesFolder, NSError *error) {
-        [folderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *sharedFilesFolder, NSError *error) {
+    [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *myFilesFolder, NSError *error) {
+        [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *sharedFilesFolder, NSError *error) {
             [spinner hide:YES];
             NSArray *scopeItems = [self scopeItemsForAccount:account myFilesFolder:myFilesFolder sharedFilesFolder:sharedFilesFolder];
             createAndPushScopeViewController(scopeItems, self);
