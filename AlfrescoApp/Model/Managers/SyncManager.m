@@ -1215,6 +1215,24 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 #pragma mark - Public Utilities
 
+- (void)updateSessionIfNeeded:(id<AlfrescoSession>)session
+{
+    if(!self.alfrescoSession)
+    {
+        self.alfrescoSession = session;
+    }
+    if(!self.documentFolderService)
+    {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.alfrescoSession];
+    }
+    if(!self.selectedAccountIdentifier)
+    {
+        UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+        self.selectedAccountIdentifier = [self accountIdentifierForAccount:selectedAccount];
+    }
+}
+
+
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
 {
     [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:self.selectedAccountIdentifier];
@@ -1485,24 +1503,26 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     if ([propertyChanged isEqualToString:kSyncTotalSize])
     {
         SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:nodeStatus.nodeId inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:privateManagedObjectContext];
-        
         SyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
-        if (parentNodeInfo)
+        if(nodeInfo)
         {
-            AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
-            SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:parentNode]];
-            
-            NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-            parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
-        }
-        else
-        {
-            // if parent folder is nil - update total size for account
-            SyncNodeStatus *accountSyncStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:self.selectedAccountIdentifier inSyncNodesStatus:self.syncNodesStatus];
-            if (nodeStatus != accountSyncStatus)
+            if (parentNodeInfo)
             {
+                AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
+                SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:parentNode]];
+                
                 NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-                accountSyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+                parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+            }
+            else
+            {
+                // if parent folder is nil - update total size for account
+                SyncNodeStatus *accountSyncStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:self.selectedAccountIdentifier inSyncNodesStatus:self.syncNodesStatus];
+                if (nodeStatus != accountSyncStatus)
+                {
+                    NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
+                    accountSyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+                }
             }
         }
     }

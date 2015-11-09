@@ -61,6 +61,8 @@ extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
 - (void)cancelAllSyncOperations;
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
+
+- (void)updateSessionIfNeeded:(id<AlfrescoSession>)session;
 /*
  * Sync Obstacle Methods
  */
