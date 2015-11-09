@@ -85,6 +85,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 // Services
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
+@property (nonatomic, strong) CustomFolderService *customFolderService;
 @end
 
 @implementation FileFolderCollectionViewController
@@ -996,23 +997,23 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                  * Common completion block for each custom folder type response
                  */
                 AlfrescoFolderCompletionBlock completionBlock = ^(AlfrescoFolder *folder, NSError *error) {
-                    [self hideHUD];
-                    
                     if (error)
                     {
                         [Notifier notifyWithAlfrescoError:error];
                         [self hidePullToRefreshView];
+                        [self hideHUD];
                     }
                     else if (folder == nil)
                     {
                         displayErrorMessage(NSLocalizedString(@"error.alfresco.folder.notfound", @"Folder not found"));
                         [self hidePullToRefreshView];
+                        [self hideHUD];
                     }
                     else
                     {
                         self.displayFolder = folder;
                         self.title = self.folderDisplayName;
-                        
+
                         [self retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                             if (!self.folderPermissions)
                             {
@@ -1032,16 +1033,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                 };
                 
-                CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
-
                 switch (self.customFolderType)
                 {
                     case CustomFolderServiceFolderTypeMyFiles:
-                        [customFolderService retrieveMyFilesFolderWithCompletionBlock:completionBlock];
+                        [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:completionBlock];
                         break;
                     
                     case CustomFolderServiceFolderTypeSharedFiles:
-                        [customFolderService retrieveSharedFilesFolderWithCompletionBlock:completionBlock];
+                        [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:completionBlock];
                         break;
                         
                     default:
@@ -1075,6 +1074,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [super createAlfrescoServicesWithSession:session];
     self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+    self.customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
 }
 
 - (void)selectIndexPathForAlfrescoNodeInDetailView
