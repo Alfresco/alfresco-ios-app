@@ -1,7 +1,7 @@
 PODS:
-  - HockeySDK (3.8.2):
-    - HockeySDK/AllFeaturesLib (= 3.8.2)
-  - HockeySDK/AllFeaturesLib (3.8.2)
+  - HockeySDK (3.8.4):
+    - HockeySDK/AllFeaturesLib (= 3.8.4)
+  - HockeySDK/AllFeaturesLib (3.8.4)
   - MBProgressHUD (0.9.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
@@ -15,8 +15,8 @@ DEPENDENCIES:
   - NJKWebViewProgress (~> 0.2)
 
 SPEC CHECKSUMS:
-  HockeySDK: 9f4ac41263acf9d8a4d59491a7f17af16529b935
+  HockeySDK: 464a9eb01c42718515629d8d1d406983e5f855dc
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

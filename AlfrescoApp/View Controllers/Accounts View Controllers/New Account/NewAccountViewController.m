@@ -442,7 +442,6 @@ static NSInteger const kTagProfileCell = 3;
         self.protocolSwitch = protocolCell.valueSwitch;
         [self.protocolSwitch addTarget:self action:@selector(protocolChanged:) forControlEvents:UIControlEventValueChanged];
         BOOL isHTTPSOn = self.formBackupAccount.protocol ? [self.formBackupAccount.protocol isEqualToString:kProtocolHTTPS] : NO;
-        isHTTPSOn = YES;
         [self.protocolSwitch setOn:isHTTPSOn animated:YES];
         
         TextFieldCell *portCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];

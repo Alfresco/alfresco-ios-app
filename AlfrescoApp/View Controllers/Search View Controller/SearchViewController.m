@@ -148,6 +148,8 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
     [self.tableView reloadData];
 }
