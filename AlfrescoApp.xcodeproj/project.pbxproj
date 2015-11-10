@@ -3922,6 +3922,7 @@
 				734CC3EA1A700808005D148E /* Resources */,
 				4A85F07FD6BD54E7AA6F045C /* Copy Pods Resources */,
 				5422E8CCEC988FB609E4FA96 /* Embed Pods Frameworks */,
+				2751BF131BF254D700B7CC42 /* Remove "Frameworks" folder (CocoaPods #4203) */,
 			);
 			buildRules = (
 			);
@@ -4554,6 +4555,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		2751BF131BF254D700B7CC42 /* Remove "Frameworks" folder (CocoaPods #4203) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Remove \"Frameworks\" folder (CocoaPods #4203)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\n   rm -rf Frameworks\nfi";
 		};
 		4A85F07FD6BD54E7AA6F045C /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
