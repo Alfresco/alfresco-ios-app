@@ -37,10 +37,14 @@
     if (self)
     {
         _session = session;
-        _documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-        _searchService = [[AlfrescoSearchService alloc] initWithSession:session];
     }
     return self;
+}
+
+- (void)createAlfrescoServices
+{
+    self.documentFolderService = self.documentFolderService ?: [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+    self.searchService = self.searchService ?: [[AlfrescoSearchService alloc] initWithSession:self.session];
 }
 
 - (AlfrescoRequest *)retrieveSharedFilesFolderWithCompletionBlock:(AlfrescoFolderCompletionBlock)completionBlock
@@ -53,6 +57,8 @@
     }
     else
     {
+        [self createAlfrescoServices];
+
         NSString *searchQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:shared\"')";
         request = [self.searchService searchWithStatement:searchQuery language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
             if (error)
@@ -72,7 +78,7 @@
 
 - (AlfrescoRequest *)retrieveMyFilesFolderWithCompletionBlock:(AlfrescoFolderCompletionBlock)completionBlock
 {
-    AlfrescoRequest *request = nil;
+    __block AlfrescoRequest *request = nil;
     
     if (self.myFilesFolder)
     {
@@ -80,8 +86,10 @@
     }
     else
     {
+        [self createAlfrescoServices];
+
         // Alfresco versions 5.0 and newer support retrieving the home folder via cmis:item support
-        AlfrescoRequest *request = [self.documentFolderService retrieveHomeFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+        request = [self.documentFolderService retrieveHomeFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
             if (error)
             {
                 self.myFilesFolder = nil;
