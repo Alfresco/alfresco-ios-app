@@ -150,23 +150,27 @@
     }
     else
     {
-        [managedContext performBlockAndWait:^{
-            NSError *secondaryMOCError = nil;
-            if ([managedContext save:&secondaryMOCError])
-            {
-                [mainManagedObjectContext performBlockAndWait:^{
-                    NSError *mainMOCError = nil;
-                    if (![mainManagedObjectContext save:&mainMOCError])
-                    {
-                        AlfrescoLogDebug(@"Error with database transaction Main MOC: %@", mainMOCError);
-                    }
-                }];
-            }
-            else
-            {
-                AlfrescoLogDebug(@"Error with database transaction secondary MOC: %@", secondaryMOCError);
-            }
-        }];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [managedContext performBlock:^{
+                NSError *secondaryMOCError = nil;
+                if ([managedContext save:&secondaryMOCError])
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [mainManagedObjectContext performBlock:^{
+                            NSError *mainMOCError = nil;
+                            if (![mainManagedObjectContext save:&mainMOCError])
+                            {
+                                AlfrescoLogDebug(@"Error with database transaction Main MOC: %@", mainMOCError);
+                            }
+                        }];
+                    });
+                }
+                else
+                {
+                    AlfrescoLogDebug(@"Error with database transaction secondary MOC: %@", secondaryMOCError);
+                }
+            }];
+        });
     }
 }
 
