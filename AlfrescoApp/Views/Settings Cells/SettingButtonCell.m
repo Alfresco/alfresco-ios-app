@@ -32,6 +32,7 @@
     [super updateCellForCellInfo:cellInfo value:cellValue delegate:delegate];
     
     NSString *cellTitle = NSLocalizedString([cellInfo objectForKey:kSettingsCellLocalizedTitleKey], @"Cell text");
+    self.cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [self.cellButton setTitle:cellTitle forState:UIControlStateNormal];
 }
 

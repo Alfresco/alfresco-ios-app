@@ -25,6 +25,7 @@
 {
     self.preferenceIdentifier = [cellInfo objectForKey:kSettingsCellPreferenceIdentifier];
     NSString *cellTitle = NSLocalizedString([cellInfo objectForKey:kSettingsCellLocalizedTitleKey], @"Cell text");
+    self.cellTitle.adjustsFontSizeToFitWidth = YES;
     self.cellTitle.text = cellTitle;
     self.delegate = delegate;
 }
