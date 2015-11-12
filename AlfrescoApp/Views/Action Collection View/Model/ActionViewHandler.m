@@ -491,6 +491,7 @@
         if (!isCancelButton)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeleteLocalDocumentNotification object:documentPath];
+            [UniversalDevice clearDetailViewController];
         }
     }];
 }
