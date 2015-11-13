@@ -67,6 +67,20 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
     return CGRectGetWidth(self.collectionView.bounds) - (insets.left + insets.right);
 }
 
+- (CGSize)collectionViewContentSize
+{
+    CGSize contentSizeToReturn = [super collectionViewContentSize];
+    CGSize computedContentSize = [super collectionViewContentSize];
+    UIEdgeInsets insets = self.collectionView.contentInset;
+    
+    if(computedContentSize.height < (self.collectionView.bounds.size.height - insets.top - insets.bottom))
+    {
+        contentSizeToReturn = CGSizeMake(computedContentSize.width, (self.collectionView.bounds.size.height - insets.top - insets.bottom + self.headerReferenceSize.height));
+    }
+    
+    return contentSizeToReturn;
+}
+
 - (void)setSelectedIndexPathForSwipeToDelete:(NSIndexPath *)selectedIndexPathForSwipeToDelete
 {
     NSIndexPath *previousIndex = _selectedIndexPathForSwipeToDelete;

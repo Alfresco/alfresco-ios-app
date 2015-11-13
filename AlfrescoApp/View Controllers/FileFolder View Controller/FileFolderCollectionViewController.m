@@ -254,12 +254,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
     }
     
-    if (!IS_IPAD)
-    {
-        // hide search bar initially
-        self.collectionView.contentOffset = CGPointMake(0., 40.);
-    }
-    
     UINib *nodeCellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
     [self.collectionView registerNib:nodeCellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     UINib *loadingCellNib = [UINib nibWithNibName:NSStringFromClass([LoadingCollectionViewCell class]) bundle:nil];
@@ -324,6 +318,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (!IS_IPAD)
+    {
+        // hide search bar initially
+        self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, self.collectionView.bounds.size.height - self.collectionView.contentInset.bottom - self.collectionView.contentInset.top + 40.0);
+        self.collectionView.contentOffset = CGPointMake(0., 40.);
+    }
+    
     [self deselectAllItems];
 }
 
