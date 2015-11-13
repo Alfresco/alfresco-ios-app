@@ -133,6 +133,11 @@
 - (void)reloadCollectionView
 {
     [self.collectionView reloadData];
+    if (!IS_IPAD)
+    {
+        // hide search bar initially
+        self.collectionView.contentOffset = CGPointMake(0., 40.);
+    }
     [self updateEmptyView];
 }
 
@@ -148,6 +153,11 @@
         self.collectionViewData = data ?: [pagingResult.objects mutableCopy];
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.collectionView reloadData];
+        if (!IS_IPAD)
+        {
+            // hide search bar initially
+            self.collectionView.contentOffset = CGPointMake(0., 40.);
+        }
         [self updateEmptyView];
     }
     else
