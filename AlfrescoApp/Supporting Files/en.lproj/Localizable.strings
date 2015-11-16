@@ -208,13 +208,13 @@
 "accountdetails.fields.syncPreference" = "Sync Files";
 "accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
-"accountdetails.buttons.configuration" = “Edit Main Menu";
+"accountdetails.buttons.configuration" = "Edit Main Menu";
 "accountdetails.header.authentication" = "Account Details";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
 "accountdetails.header.main.menu.config" = "Main Menu";
 "accountdetails.footer.main.menu.config.disabled" = "Your Alfresco Administrator has switched off this feature.";
-"accountdetails.buttons.profile" = “Edit Profile";
+"accountdetails.buttons.profile" = "Edit Profile";
 "accountdetails.header.profile" = "Profile";
 
 "accountdetails.alert.save.title" = "Save Account";
@@ -770,7 +770,7 @@
 /**
  * Main Menu Rorder View Controller
  */
-"main.menu.reorder.title" = “Edit Menu";
+"main.menu.reorder.title" = "Edit Menu";
 "main.menu.reorder.retrieving.profiles" = "Retrieving Profiles ...";
 "main.menu.reorder.header.visible.title" = "Visible";
 "main.menu.reorder.footer.visible.description" = "To hide menu items drag them to Hidden.";
