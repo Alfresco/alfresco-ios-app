@@ -111,7 +111,7 @@
 "error.sites.retrieval.failed" = "Couldn’t retrieve sites.\n\n%@.";
 "error.sites.folder.failed" = "Couldn’t retrieve sites folder.\n\n%@.";
 "error.sites.search.failed" = "Couldn’t search across sites.\n\n%@.";
-"error.sites.site.notfound" = "Site wasn't found";
+"error.sites.site.notfound" = "Site not found";
 "error.upload.failed" = "The file couldn’t be uploaded right now.\n\n%@.";
 "error.upload.addtags.failed" = "The tags couldn’t be added to the file.\n\n%@.";
 "error.tags.retrieve.failed" = "The tags couldn’t be retrieved right now.\n\n%@.";
@@ -149,7 +149,7 @@
 "error.no.email.accounts.message" = "You must have at least one mail account setup on your device to send this file.";
 // Person Profile
 "error.person.profile.no.profile.title" = "Profile Error";
-"error.person.profile.no.profile.message" = "Unable to located user; %@";
+"error.person.profile.no.profile.message" = "Unable to locate user; %@";
 "error.person.profile.email.failed.title" = "Sending Failed";
 "error.person.profile.email.failed.message" = "Unable to send the email. Please try again later.";
 
@@ -208,14 +208,14 @@
 "accountdetails.fields.syncPreference" = "Sync Files";
 "accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
-"accountdetails.buttons.configuration" = "Configure Main Menu";
+"accountdetails.buttons.configuration" = “Edit Main Menu";
 "accountdetails.header.authentication" = "Account Details";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
-"accountdetails.header.main.menu.config" = "Main Menu Configuration";
-"accountdetails.footer.main.menu.config.disabled" = "Your Alfresco Administrator has disabled this feature.";
-"accountdetails.buttons.profile" = "Profile";
-"accountdetails.header.profile" = "Profile Configuration";
+"accountdetails.header.main.menu.config" = "Main Menu";
+"accountdetails.footer.main.menu.config.disabled" = "Your Alfresco Administrator has switched off this feature.";
+"accountdetails.buttons.profile" = “Edit Profile";
+"accountdetails.header.profile" = "Profile";
 
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "The account couldn’t be saved. Check your account settings with your Alfresco administrator.";
@@ -770,10 +770,10 @@
 /**
  * Main Menu Rorder View Controller
  */
-"main.menu.reorder.title" = "Menu Configuration";
+"main.menu.reorder.title" = “Edit Menu";
 "main.menu.reorder.retrieving.profiles" = "Retrieving Profiles ...";
 "main.menu.reorder.header.visible.title" = "Visible";
-"main.menu.reorder.footer.visible.description" = "To hide menu items, drag the item that you no longer need to the hidden section.";
+"main.menu.reorder.footer.visible.description" = "To hide menu items drag them to Hidden.";
 "main.menu.reorder.header.hidden.title" = "Hidden";
 
 /**
