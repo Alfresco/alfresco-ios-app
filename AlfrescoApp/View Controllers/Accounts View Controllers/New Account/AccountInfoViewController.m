@@ -66,6 +66,8 @@ static NSInteger const kTagAccountDetailsCell = 4;
 @property (nonatomic, strong) NSString *protocolString;
 @property (nonatomic, strong) NSString *certificateString;
 
+@property (nonatomic) BOOL hasChangedAccountDetails;
+
 @end
 
 @implementation AccountInfoViewController
@@ -457,6 +459,10 @@ static NSInteger const kTagAccountDetailsCell = 4;
             {
                 hasAccountPropertiesChanged = YES;
             }
+            if(self.hasChangedAccountDetails)
+            {
+                hasAccountPropertiesChanged = YES;
+            }
             
             didChangeAndIsValid = hasAccountPropertiesChanged;
         }
@@ -572,6 +578,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 #pragma mark - Account Info Details Delegate methods
 - (void)accountInfoChanged:(UserAccount *)newAccount
 {
+    self.hasChangedAccountDetails = YES;
     self.formBackupAccount = [newAccount copy];
 }
 
