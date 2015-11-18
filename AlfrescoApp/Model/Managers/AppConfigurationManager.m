@@ -34,14 +34,21 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 
 @implementation AppConfigurationManager
 
+static dispatch_once_t onceToken;
 + (AppConfigurationManager *)sharedManager
 {
-    static dispatch_once_t onceToken;
+    
     static AppConfigurationManager *sharedConfigurationManager = nil;
     dispatch_once(&onceToken, ^{
         sharedConfigurationManager = [[self alloc] init];
     });
     return sharedConfigurationManager;
+}
+
++ (AppConfigurationManager *)resetInstanceAndReturnManager
+{
+    onceToken = 0;
+    return [AppConfigurationManager sharedManager];
 }
 
 - (id)init
@@ -286,6 +293,21 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
                                 if (defaultServerProfileError)
                                 {
                                     AlfrescoLogWarning(@"Could not retrieve the default profile from server: %@", defaultServerProfileError.localizedDescription);
+                                    if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                                    {
+                                        // something happened with the configuration as it is not found; will load the embedded configuration
+                                        AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
+                                        [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                                            if (defaultProfileError)
+                                            {
+                                                AlfrescoLogWarning(@"Could not retrieve the default profile: %@", defaultProfileError.localizedDescription);
+                                            }
+                                            else
+                                            {
+                                                profileSuccessfullySelectedBlock(defaultProfile);
+                                            }
+                                        }];
+                                    }
                                 }
                                 else
                                 {
