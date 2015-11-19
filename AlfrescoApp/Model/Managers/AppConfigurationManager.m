@@ -327,6 +327,21 @@ static dispatch_once_t onceToken;
                         if (defaultServerProfileError)
                         {
                             AlfrescoLogWarning(@"Could not retrieve the default profile from server config: %@", defaultServerProfileError.localizedDescription);
+                            if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                            {
+                                // something happened with the configuration as it is not found; will load the embedded configuration
+                                AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
+                                [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                                    if (defaultProfileError)
+                                    {
+                                        AlfrescoLogWarning(@"Could not retrieve the default profile: %@", defaultProfileError.localizedDescription);
+                                    }
+                                    else
+                                    {
+                                        profileSuccessfullySelectedBlock(defaultProfile);
+                                    }
+                                }];
+                            }
                         }
                         else
                         {
