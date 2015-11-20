@@ -159,6 +159,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)reloadCollectionView
+{
+    [super reloadCollectionView];
+    self.collectionView.contentOffset = CGPointMake(0., 0.);
+}
+
 #pragma mark - Private Methods
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
