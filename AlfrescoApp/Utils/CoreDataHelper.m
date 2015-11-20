@@ -54,7 +54,11 @@
         [fetchRequest setSortDescriptors:sortDescriptors];
     }
     
-	NSArray *records = [managedContext executeFetchRequest:fetchRequest error:nil];
+    __block NSArray *records;
+    [managedContext performBlockAndWait:^{
+        records = [managedContext executeFetchRequest:fetchRequest error:nil];
+    }];
+    
 	return records;
 }
 
@@ -150,11 +154,11 @@
     }
     else
     {
-        [managedContext performBlock:^{
+        [managedContext performBlockAndWait:^{
             NSError *secondaryMOCError = nil;
             if ([managedContext save:&secondaryMOCError])
             {
-                [mainManagedObjectContext performBlock:^{
+                [mainManagedObjectContext performBlockAndWait:^{
                     NSError *mainMOCError = nil;
                     if (![mainManagedObjectContext save:&mainMOCError])
                     {
