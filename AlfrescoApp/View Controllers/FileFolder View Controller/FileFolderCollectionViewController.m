@@ -988,6 +988,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             {
                 [self searchString:self.previousSearchString isFromSearchBar:NO searchOptions:self.previousSearchOptions];
                 [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                [self hidePullToRefreshView];
             }
             break;
 
@@ -1334,12 +1335,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showSearchProgressHUD
 {
-    [self.progressHUD show:YES];
+    [self showHUD];
 }
 
 - (void)hideSearchProgressHUD
 {
-    [self.progressHUD hide:YES];
+    [self hideHUD];
 }
 
 - (void)connectivityStatusChanged:(NSNotification *)notification
