@@ -87,13 +87,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     [super viewDidLoad];
 	
-    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
-    {
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-        [self loadSyncNodesForFolder:self.parentNode];
-        self.didSyncAfterSessionRefresh = YES;
-    }
-    
     if (self.parentNode != nil || ![[ConnectivityManager sharedManager] hasInternetConnection])
     {
         [self disablePullToRefresh];
@@ -140,6 +133,13 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                                  name:kAlfrescoDocumentEditedNotification object:nil];
     
     [self setupBarButtonItems];
+
+    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
+    {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+        [self loadSyncNodesForFolder:self.parentNode];
+        self.didSyncAfterSessionRefresh = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -157,6 +157,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)reloadCollectionView
+{
+    [super reloadCollectionView];
+    self.collectionView.contentOffset = CGPointMake(0., 0.);
 }
 
 #pragma mark - Private Methods
