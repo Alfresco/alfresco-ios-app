@@ -332,7 +332,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 
                 if (!hasFolder(nodes))
                 {
-                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                    });
                 }
                 else
                 {
@@ -345,7 +347,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                                 
                                 if (self.nodeChildrenRequestsCount == 0)
                                 {
-                                    [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                        [self syncNodes:[self allRemoteSyncDocuments] includeExistingSyncNodes:YES];
+                                    });
                                 }
                             }];
                         }
@@ -534,6 +538,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
             
             dispatch_async(dispatch_get_main_queue(), ^{
+                
                 AccountSyncProgress *syncProgress = self.accountsSyncProgress[self.selectedAccountIdentifier];
                 syncProgress.totalSyncSize = 0;
                 syncProgress.syncProgressSize = 0;
@@ -575,17 +580,13 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             [self deleteUnWantedSyncedNodes:nodes inManagedObjectContext:privateManagedObjectContext completionBlock:^(BOOL completed) {
                 [self.syncCoreDataHelper saveContextForManagedObjectContext:privateManagedObjectContext];
-                [privateManagedObjectContext performBlockAndWait:^{
-                    [privateManagedObjectContext reset];
-                    syncInfoandContent();
-                }];
+                [privateManagedObjectContext reset];
+                syncInfoandContent();
             }];
         }
         else
         {
-            [privateManagedObjectContext performBlockAndWait:^{
-                syncInfoandContent();
-            }];
+            syncInfoandContent();
         }
     }
     else
@@ -1483,9 +1484,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
             }
         }
-        [privateManagedObjectContext performBlockAndWait:^{
-            [privateManagedObjectContext reset];
-        }];
+        [privateManagedObjectContext reset];
         privateManagedObjectContext = nil;
     }
 }
@@ -1495,7 +1494,8 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 - (void)statusChanged:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
-    NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper managedObjectContext];
+    NSManagedObjectContext *privateManagedObjectContext = [self.syncCoreDataHelper createChildManagedObjectContext];
+    
     SyncNodeStatus *nodeStatus = notification.object;
     NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
     
@@ -1568,9 +1568,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     
-    [privateManagedObjectContext performBlockAndWait:^{
-        [privateManagedObjectContext reset];
-    }];
+    [privateManagedObjectContext reset];
     privateManagedObjectContext = nil;
 }
 

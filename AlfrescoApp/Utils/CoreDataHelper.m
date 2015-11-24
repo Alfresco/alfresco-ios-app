@@ -54,11 +54,7 @@
         [fetchRequest setSortDescriptors:sortDescriptors];
     }
     
-    __block NSArray *records;
-    [managedContext performBlockAndWait:^{
-        records = [managedContext executeFetchRequest:fetchRequest error:nil];
-    }];
-    
+	NSArray *records = [managedContext executeFetchRequest:fetchRequest error:nil];
 	return records;
 }
 
