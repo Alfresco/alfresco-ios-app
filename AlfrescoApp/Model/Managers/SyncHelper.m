@@ -84,9 +84,7 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
             }
         }
         [self.syncCoreDataHelper saveContextForManagedObjectContext:managedContext];
-        [managedContext performBlockAndWait:^{
-            [managedContext reset];
-        }];
+        [managedContext reset];
     }
 }
 
@@ -151,11 +149,10 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
     for (AlfrescoNode *alfrescoNode in nodes)
     {
         // check if we already have object in managedContext for alfrescoNode
-        NSString *syncIdentifier = [self syncIdentifierForNode:alfrescoNode];
-        SyncNodeInfo *syncNodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:syncIdentifier inAccountWithId:accountId inManagedObjectContext:managedContext];
+        SyncNodeInfo *syncNodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:alfrescoNode] inAccountWithId:accountId inManagedObjectContext:managedContext];
         NSData *archivedNode = [NSKeyedArchiver archivedDataWithRootObject:alfrescoNode];
         NSData *archivedPermissions = nil;
-        AlfrescoPermissions *nodePermissions = [permissions objectForKey:syncIdentifier];
+        AlfrescoPermissions *nodePermissions = [permissions objectForKey:[self syncIdentifierForNode:alfrescoNode]];
         if (nodePermissions)
         {
             archivedPermissions = [NSKeyedArchiver archivedDataWithRootObject:nodePermissions];
@@ -165,7 +162,7 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
         if (!syncNodeInfo)
         {
             syncNodeInfo = [self.syncCoreDataHelper createSyncNodeInfoMangedObjectInManagedObjectContext:managedContext];
-            syncNodeInfo.syncNodeInfoId = syncIdentifier;
+            syncNodeInfo.syncNodeInfoId = [self syncIdentifierForNode:alfrescoNode];
             syncNodeInfo.isFolder = [NSNumber numberWithBool:alfrescoNode.isFolder];
             syncNodeInfo.account = syncAccount;
         }
