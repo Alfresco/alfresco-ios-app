@@ -150,7 +150,16 @@
     }
     else
     {
-        [managedContext performBlockAndWait:^{
+        /**
+         * FIXME: This workaround is to use performBlockAndWait in all cases except when running on the main thread.
+         *
+         * The SEL/IMP/function pattern is used here to avoid duplicating code and to avoid compiler warnings regarding memory leaks.
+         */
+        SEL selPerformBlock = [[NSThread currentThread] isMainThread] ? @selector(performBlock:) : @selector(performBlockAndWait:);
+        IMP implPerformBlock = [managedContext methodForSelector:selPerformBlock];
+        void (*funcPerformBlock)(id, SEL, void(^)()) = (void *)implPerformBlock;
+        
+        funcPerformBlock(managedContext, selPerformBlock, ^{
             NSError *secondaryMOCError = nil;
             if ([managedContext save:&secondaryMOCError])
             {
@@ -166,7 +175,7 @@
             {
                 AlfrescoLogDebug(@"Error with database transaction secondary MOC: %@", secondaryMOCError);
             }
-        }];
+        });
     }
 }
 

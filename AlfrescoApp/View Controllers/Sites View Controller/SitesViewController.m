@@ -161,10 +161,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         [self.allSitesVC didMoveToParentViewController:self];
     }
     
-    if (self.session)
-    {
-        [self loadSitesForSelectedSegment:self.segmentedControl];
-    }
+    [self loadSitesForSelectedSegment:self.segmentedControl];
     
     if (!IS_IPAD && !self.presentingViewController)
     {
