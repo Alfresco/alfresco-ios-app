@@ -41,7 +41,7 @@
 @property (nonatomic, strong) NSDictionary *evaluators;
 @end
 
-@interface AlfrescoRepositoryVersionEvaluator : AlfrescoConfigEvaluator
+@interface AlfrescoRepositoryCapabilitiesEvaluator : AlfrescoConfigEvaluator
 @end
 
 @interface AlfrescoNodeTypeEvaluator : AlfrescoConfigEvaluator

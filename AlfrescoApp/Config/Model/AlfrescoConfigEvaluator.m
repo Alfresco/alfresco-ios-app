@@ -38,9 +38,20 @@
         self.identifier = identifier;
         self.parameters = parameters;
         self.session = session;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     
     return self;
+}
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)evaluate:(AlfrescoConfigScope *)scope
@@ -96,8 +107,7 @@
 
 @end
 
-// TODO: replace this implementation with AlfrescoRepositoryCapabilitiesEvaluator
-@implementation AlfrescoRepositoryVersionEvaluator
+@implementation AlfrescoRepositoryCapabilitiesEvaluator
 
 - (BOOL)evaluate:(AlfrescoConfigScope *)scope
 {
@@ -109,7 +119,7 @@
         NSString *edition = self.parameters[kAlfrescoConfigEvaluatorParameterEdition];
         
         // check edition first
-        if (edition == nil || [edition isEqualToString:repoInfo.edition])
+        if ([edition isEqualToString:repoInfo.edition])
         {
             NSString *operator = self.parameters[kAlfrescoConfigEvaluatorParameterOperator];
             int configVersionTotal = 0;
@@ -164,6 +174,18 @@
                 {
                     result = (repoVersionTotal == configVersionTotal);
                 }
+            }
+        }
+        else if(self.parameters[kAlfrescoConfigEvaluatorParameterSession])
+        {
+            NSString *sessionType = self.parameters[kAlfrescoConfigEvaluatorParameterSession];
+            if(([kAlfrescoConfigSessionTypeCloud isEqualToString:sessionType]) && ([self.session isKindOfClass:[AlfrescoCloudSession class]]))
+            {
+                result = YES;
+            }
+            else if (([kAlfrescoConfigSessionTypeOnPremise isEqualToString:sessionType]) && ([self.session isKindOfClass:[AlfrescoRepositorySession class]]))
+            {
+                result = YES;
             }
         }
         else

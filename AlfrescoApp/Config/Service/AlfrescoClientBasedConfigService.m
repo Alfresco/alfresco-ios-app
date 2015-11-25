@@ -71,6 +71,7 @@
         self.isCacheBuilding = NO;
         self.defaultConfigScope = [[AlfrescoConfigScope alloc] initWithProfile:kAlfrescoConfigProfileDefaultIdentifier];
         self.queuedCompletionBlocks = [NSMutableArray array];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     return self;
 }
@@ -101,7 +102,16 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Private Methods
+- (void)sessionReceived:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
 
 - (void)clear
 {
@@ -393,9 +403,9 @@
         
         if (type != nil)
         {
-            if ([type isEqualToString:kAlfrescoConfigEvaluatorRepositoryVersion])
+            if ([type isEqualToString:kAlfrescoConfigEvaluatorRepositoryCapability])
             {
-                evaluator = [[AlfrescoRepositoryVersionEvaluator alloc] initWithIdentifier:evaluatorId
+                evaluator = [[AlfrescoRepositoryCapabilitiesEvaluator alloc] initWithIdentifier:evaluatorId
                                                                                 parameters:parameters
                                                                                    session:self.session];
             }

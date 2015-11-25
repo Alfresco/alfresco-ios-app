@@ -23,6 +23,7 @@
 
 
 @property (nonatomic, strong) AlfrescoProfileConfig *selectedProfile;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 + (AppConfigurationManager *)sharedManager;
 
