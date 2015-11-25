@@ -167,7 +167,7 @@
                 // create and store a reference config data object
                 AlfrescoConfigData *configData = [AlfrescoConfigData new];
                 configData.reference = reference;
-                configData.evaluator = groupItemJSON[kAlfrescoJSONEvaluator];
+                configData.evaluator = [self evaluatorFor:reference];
                 [potentialItemsArray addObject:configData];
             }
         }
@@ -210,6 +210,18 @@
     viewGroupConfigData.potentialItems = potentialItemsArray;
     
     return viewGroupConfigData;
+}
+
+- (NSString *)evaluatorFor:(NSString *)viewId
+{
+    NSString *evaluator = nil;
+    NSDictionary *viewsDict = self.json[kAlfrescoJSONViews];
+    NSDictionary *viewDict = viewsDict[viewId];
+    if(viewDict)
+    {
+        evaluator = viewDict[kAlfrescoJSONEvaluator];
+    }
+    return evaluator;
 }
 
 #pragma mark - Resolving methods
