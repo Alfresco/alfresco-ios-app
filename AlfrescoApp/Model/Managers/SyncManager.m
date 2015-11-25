@@ -168,7 +168,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             self.isProcessingSyncNodes = YES;
             
             [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
-                
                 if (array)
                 {
                     [self rearrangeNodesAndSync:array];
@@ -662,32 +661,30 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
             // check if there is any problem with removing the node from local sync
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
-                    
-                    totalChecksForObstacles--;
-                    
-                    if (encounteredObstacle == NO)
+            [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
+                
+                totalChecksForObstacles--;
+                
+                if (encounteredObstacle == NO)
+                {
+                    // if no problem with removing the node from local sync then delete the node from local sync nodes
+                    [self.syncHelper deleteNodeFromSync:localNode inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:managedContext];
+                }
+                else
+                {
+                    // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
+                    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
+                    nodeInfo.parentNode = nil;
+                }
+                
+                if (totalChecksForObstacles == 0)
+                {
+                    if (completionBlock != NULL)
                     {
-                        // if no problem with removing the node from local sync then delete the node from local sync nodes
-                        [self.syncHelper deleteNodeFromSync:localNode inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:managedContext];
+                        completionBlock(YES);
                     }
-                    else
-                    {
-                        // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
-                        nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
-                        nodeInfo.parentNode = nil;
-                    }
-                    
-                    if (totalChecksForObstacles == 0)
-                    {
-                        if (completionBlock != NULL)
-                        {
-                            completionBlock(YES);
-                        }
-                    }
-                }];
-            });
+                }
+            }];
         }
     }
     else
