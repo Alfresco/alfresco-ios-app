@@ -297,15 +297,12 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
 {
     NSString *nodeSyncName = [self syncNameForNode:node inAccountWithId:accountId inManagedObjectContext:managedContext];
     NSString *syncNodeContentPath = [[self syncContentDirectoryPathForAccountWithId:accountId] stringByAppendingPathComponent:nodeSyncName];
-    
-    NSError *error = nil;
-    [self.fileManager removeItemAtPath:syncNodeContentPath error:&error];
-    
-    if (!error)
-    {
-        SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:node] inAccountWithId:accountId inManagedObjectContext:managedContext];
-        [self.syncCoreDataHelper deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
-    }
+
+    // No error handling here as we don't want to end up with Sync orphans
+    [self.fileManager removeItemAtPath:syncNodeContentPath error:nil];
+
+    SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:node] inAccountWithId:accountId inManagedObjectContext:managedContext];
+    [self.syncCoreDataHelper deleteRecordForManagedObject:nodeInfo inManagedObjectContext:managedContext];
 }
 
 - (void)deleteNodesFromSync:(NSArray *)array inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
