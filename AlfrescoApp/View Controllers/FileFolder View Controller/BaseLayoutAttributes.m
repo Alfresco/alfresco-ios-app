@@ -38,6 +38,8 @@
         newAttributes.shouldShowNodeDetails = self.shouldShowNodeDetails;
         newAttributes.nodeNameHorizontalDisplacement = self.nodeNameHorizontalDisplacement;
         newAttributes.nodeNameVerticalDisplacement = self.nodeNameVerticalDisplacement;
+        newAttributes.folderNameNoStatusVerticalDisplacement = self.folderNameNoStatusVerticalDisplacement;
+        newAttributes.folderNameWithStatusVerticalDisplacement = self.folderNameWithStatusVerticalDisplacement;
         newAttributes.shouldShowStatusViewOverImage = self.shouldShowStatusViewOverImage;
         newAttributes.nodeNameFont = self.nodeNameFont;
         newAttributes.shouldShowEditBelowContent = self.shouldShowEditBelowContent;
@@ -64,6 +66,8 @@
            && (self.shouldShowNodeDetails == otherAttributes.shouldShowNodeDetails)
            && (self.nodeNameHorizontalDisplacement == otherAttributes.nodeNameHorizontalDisplacement)
            && (self.nodeNameVerticalDisplacement == otherAttributes.nodeNameVerticalDisplacement)
+           && (self.folderNameNoStatusVerticalDisplacement == otherAttributes.folderNameNoStatusVerticalDisplacement)
+           && (self.folderNameWithStatusVerticalDisplacement == otherAttributes.folderNameWithStatusVerticalDisplacement)
            && (self.shouldShowStatusViewOverImage == otherAttributes.shouldShowStatusViewOverImage)
            && (self.nodeNameFont == otherAttributes.nodeNameFont)
            && (self.shouldShowEditBelowContent == otherAttributes.shouldShowEditBelowContent)

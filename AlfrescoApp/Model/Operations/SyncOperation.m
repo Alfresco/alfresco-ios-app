@@ -27,6 +27,7 @@
 @property (nonatomic, strong) AlfrescoDocumentCompletionBlock uploadCompletionBlock;
 @property (nonatomic, strong) AlfrescoProgressBlock progressBlock;
 @property (nonatomic, assign) BOOL isDownload;
+@property (nonatomic, strong) NSThread *operationThread;
 @end
 
 @implementation SyncOperation
@@ -79,6 +80,9 @@
         {
             return;
         }
+        
+        self.operationThread = [NSThread currentThread];
+        
         __block BOOL operationCompleted = NO;
         __weak SyncOperation *weakSelf = self;
         
@@ -121,17 +125,27 @@
             }];
         }
 
-        while (![self isCancelled] && !operationCompleted)
+        while (!self.isCancelled && !operationCompleted)
         {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            if (self.isCancelled)
+            {
+                [self.syncRequest cancel];
+            }
         }
     }
+}
+
+- (void)wakeUpThread
+{
+    // No-op
 }
 
 - (void)cancelOperation
 {
     [self.syncRequest cancel];
     [self cancel];
+    [self performSelector:@selector(wakeUpThread) onThread:self.operationThread withObject:nil waitUntilDone:NO];
 }
 
 - (void)dealloc

@@ -43,6 +43,8 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 @property (nonatomic, assign) BOOL isSelectedInEditMode;
 @property (nonatomic) BOOL shouldShowAccessoryView;
 @property (nonatomic) BOOL statusViewIsAboveImage;
+@property (nonatomic, assign) CGFloat folderNameNoStatusVerticalDisplacement;
+@property (nonatomic, assign) CGFloat folderNameWithStatusVerticalDisplacement;
 
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
@@ -155,6 +157,11 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     self.favoriteStatusImageView.image = nil;
     self.favoriteStatusImageView.highlightedImage = nil;
     
+    if ([self.node isKindOfClass:[AlfrescoFolder class]] && !self.statusViewIsAboveImage)
+    {
+        self.nodeNameTopSpaceConstraint.constant = (isSyncNode || isFavorite) ? self.folderNameWithStatusVerticalDisplacement : self.folderNameNoStatusVerticalDisplacement;
+    }
+
     void (^updateStatusIcons)(void) = ^{
         
         CGFloat updateContainerWidth = kUpdateStatusContainerWidth;
@@ -570,7 +577,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     self.nodeNameLeadingConstraint.constant = layoutAttributes.nodeNameHorizontalDisplacement;
     self.nodeNameTopSpaceConstraint.constant = layoutAttributes.nodeNameVerticalDisplacement;
     self.thumbnailTrailingContentViewConstant.constant = layoutAttributes.thumbnailContentTrailingSpace;
-    
+
     if([self.node isKindOfClass:[AlfrescoFolder class]])
     {
         if(layoutAttributes.shouldShowSmallThumbnailImage)
@@ -582,6 +589,9 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
             [self.image setImage:largeImageForType(@"folder") withFade:NO];
         }
     }
+    
+    self.folderNameNoStatusVerticalDisplacement = layoutAttributes.folderNameNoStatusVerticalDisplacement;
+    self.folderNameWithStatusVerticalDisplacement = layoutAttributes.folderNameWithStatusVerticalDisplacement;
     
     self.separatorHeightConstraint.constant = layoutAttributes.shouldShowSeparatorView ? 1/[[UIScreen mainScreen] scale] : 0.0f;
     self.content.layer.borderWidth = layoutAttributes.shouldShowSeparatorView ? 0.0f : 1/[[UIScreen mainScreen] scale];
