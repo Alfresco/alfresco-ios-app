@@ -198,6 +198,7 @@ static dispatch_once_t onceToken;
         NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: accountConfigurationFolderPath,
                                      kAlfrescoConfigServiceParameterFileName: kAlfrescoEmbeddedConfigurationFileName};
         returnService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+        returnService.session = self.session;
     }
     else
     {
@@ -232,6 +233,7 @@ static dispatch_once_t onceToken;
             
             AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
             self.currentConfigService = configService;
+            self.currentConfigService.session = self.session;
         }];
     }
 }
@@ -241,6 +243,7 @@ static dispatch_once_t onceToken;
 - (void)sessionReceived:(NSNotification *)notification
 {
     id<AlfrescoSession> session = notification.object;
+    self.session = session;
 
     [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         if (defaultProfileError)
@@ -297,6 +300,8 @@ static dispatch_once_t onceToken;
                                     {
                                         // something happened with the configuration as it is not found; will load the embedded configuration
                                         AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
+                                        appConfigM.configurationServiceForCurrentAccount.session = session;
+                                        appConfigM.session = session;
                                         [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                                             if (defaultProfileError)
                                             {
@@ -331,6 +336,8 @@ static dispatch_once_t onceToken;
                             {
                                 // something happened with the configuration as it is not found; will load the embedded configuration
                                 AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
+                                appConfigM.configurationServiceForCurrentAccount.session = session;
+                                appConfigM.session = session;
                                 [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                                     if (defaultProfileError)
                                     {
