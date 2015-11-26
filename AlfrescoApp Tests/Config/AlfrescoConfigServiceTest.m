@@ -1134,7 +1134,7 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
         NSDictionary *parameters = @{kAlfrescoConfigEvaluatorParameterOperator: @">=",
                                      kAlfrescoConfigEvaluatorParameterMajorVersion: @(4)};
         AlfrescoRepositoryCapabilitiesEvaluator *v4RepoVersionEvaluator = [[AlfrescoRepositoryCapabilitiesEvaluator alloc]
-                                                                      initWithIdentifier:kAlfrescoConfigEvaluatorRepositoryVersion
+                                                                      initWithIdentifier:kAlfrescoConfigEvaluatorRepositoryCapability
                                                                       parameters:parameters session:self.currentSession];
         if ([self.currentSession.repositoryInfo.majorVersion intValue] >= 4)
         {
@@ -1149,7 +1149,7 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
                        kAlfrescoConfigEvaluatorParameterMajorVersion: @(3),
                        kAlfrescoConfigEvaluatorParameterMinorVersion: @(4)};
         AlfrescoRepositoryCapabilitiesEvaluator *v34RepoVersionEvaluator = [[AlfrescoRepositoryCapabilitiesEvaluator alloc]
-                                                                       initWithIdentifier:kAlfrescoConfigEvaluatorRepositoryVersion
+                                                                       initWithIdentifier:kAlfrescoConfigEvaluatorRepositoryCapability
                                                                        parameters:parameters session:self.currentSession];
         if ([self.currentSession.repositoryInfo.majorVersion intValue] >= 4)
         {
@@ -1164,7 +1164,7 @@ NSString * const kAlfrescoTestApplicationId = @"com.alfresco.mobile.ios.test";
     NSDictionary *parameters = @{kAlfrescoConfigEvaluatorParameterOperator: @"==",
                                  kAlfrescoConfigEvaluatorParameterEdition: kAlfrescoRepositoryEditionCloud};
     AlfrescoRepositoryCapabilitiesEvaluator *cloudRepoVersionEvaluator = [[AlfrescoRepositoryCapabilitiesEvaluator alloc]
-                                                                     initWithIdentifier:kAlfrescoConfigEvaluatorRepositoryVersion
+                                                                     initWithIdentifier:kAlfrescoConfigEvaluatorRepositoryCapability
                                                                      parameters:parameters session:self.currentSession];
     if (self.isCloud)
     {

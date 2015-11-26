@@ -69,7 +69,7 @@
             self.profilesDictionary[profile.identifier] = profile;
             
             // set as the default profile, if appropriate
-            if (profile.isDefault)
+            if (profile.isDefault && !self.defaultProfile)
             {
                 self.defaultProfile = profile;
             }
