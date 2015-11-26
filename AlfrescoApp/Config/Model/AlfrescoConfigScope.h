@@ -22,26 +22,13 @@
 
 @interface AlfrescoConfigScope : NSObject
 
-
 @property (nonatomic, strong, readonly) NSString *profile;
-
-
 @property (nonatomic, strong, readonly) NSDictionary *context;
 
-
 - (instancetype)initWithProfile:(NSString *)profile;
-
-
 - (instancetype)initWithProfile:(NSString *)profile context:(NSDictionary *)context;
-
-
 - (void)setObject:(id)object forKey:(NSString *)key;
-
-
 - (void)addObjectsFromDictionary:(NSDictionary *)dictionary;
-
-
 - (id)valueForKey:(NSString *)key;
-
 
 @end

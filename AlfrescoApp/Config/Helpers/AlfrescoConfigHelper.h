@@ -42,7 +42,7 @@
 
 @end
 
-// AlfrescoConfigData is an in-memory representation of an idividual item of config.
+// AlfrescoConfigData is an in-memory representation of an individual item of config.
 @interface AlfrescoConfigData : NSObject
 @property (nonatomic, strong) NSDictionary *properties;
 @property (nonatomic, strong) NSString *reference;

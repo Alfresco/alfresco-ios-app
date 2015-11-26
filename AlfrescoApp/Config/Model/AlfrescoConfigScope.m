@@ -22,7 +22,6 @@
 
 @interface AlfrescoConfigScope ()
 @property (nonatomic, strong, readwrite) NSString *profile;
-
 @property (nonatomic, strong) NSMutableDictionary *internalContext;
 @end
 
