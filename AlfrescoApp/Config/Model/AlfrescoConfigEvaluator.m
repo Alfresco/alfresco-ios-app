@@ -176,10 +176,10 @@
                 }
             }
         }
-        else if(self.parameters[kAlfrescoConfigEvaluatorParameterSession])
+        else if (self.parameters[kAlfrescoConfigEvaluatorParameterSession])
         {
             NSString *sessionType = self.parameters[kAlfrescoConfigEvaluatorParameterSession];
-            if(([kAlfrescoConfigSessionTypeCloud isEqualToString:sessionType]) && ([self.session isKindOfClass:[AlfrescoCloudSession class]]))
+            if (([kAlfrescoConfigSessionTypeCloud isEqualToString:sessionType]) && ([self.session isKindOfClass:[AlfrescoCloudSession class]]))
             {
                 result = YES;
             }
@@ -261,3 +261,14 @@
 
 @end
 
+@implementation AlfrescoIsUserEvaluator
+
+- (BOOL)evaluate:(AlfrescoConfigScope *)scope
+{
+    NSArray *evaluatorUsers = self.parameters[kAlfrescoConfigEvaluatorParameterUsers];
+    NSString *currentUser = self.session.personIdentifier;
+    
+    return currentUser && [evaluatorUsers containsObject:currentUser];
+}
+
+@end

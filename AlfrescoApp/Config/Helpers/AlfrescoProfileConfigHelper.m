@@ -43,35 +43,39 @@
     {
         NSDictionary *profileJSON = profilesJSON[profileId];
         NSMutableDictionary *profileProperties = [self configPropertiesFromJSON:profileJSON];
+        NSString *profileEvaluator = profileJSON[kAlfrescoJSONEvaluator];
         
-        // add the id of the profile
-        profileProperties[kAlfrescoBaseConfigPropertyIdentifier] = profileId;
-        
-        // process view id
-        NSString *rootViewId = profileJSON[kAlfrescoJSONRootViewId];
-        if (rootViewId != nil)
+        if (!profileEvaluator || [self processEvaluator:profileEvaluator withScope:nil])
         {
-            profileProperties[kAlfrescoProfileConfigPropertyRootViewId] = rootViewId;
+            // add the id of the profile
+            profileProperties[kAlfrescoBaseConfigPropertyIdentifier] = profileId;
+            
+            // process view id
+            NSString *rootViewId = profileJSON[kAlfrescoJSONRootViewId];
+            if (rootViewId != nil)
+            {
+                profileProperties[kAlfrescoProfileConfigPropertyRootViewId] = rootViewId;
+            }
+            
+            // process default flag
+            id isDefault = profileJSON[kAlfrescoJSONDefault];
+            if (isDefault != nil)
+            {
+                profileProperties[kAlfrescoProfileConfigPropertyIsDefault] = isDefault;
+            }
+            
+            // create and store the profile object
+            AlfrescoProfileConfig *profile = [[AlfrescoProfileConfig alloc] initWithDictionary:profileProperties];
+            self.profilesDictionary[profile.identifier] = profile;
+            
+            // set as the default profile, if appropriate
+            if (profile.isDefault)
+            {
+                self.defaultProfile = profile;
+            }
+            
+            AlfrescoLogDebug(@"Stored config for profile with id: %@", profileId);
         }
-        
-        // process default flag
-        id isDefault = profileJSON[kAlfrescoJSONDefault];
-        if (isDefault != nil)
-        {
-            profileProperties[kAlfrescoProfileConfigPropertyIsDefault] = isDefault;
-        }
-        
-        // create and store the profile object
-        AlfrescoProfileConfig *profile = [[AlfrescoProfileConfig alloc] initWithDictionary:profileProperties];
-        self.profilesDictionary[profile.identifier] = profile;
-        
-        // set as the default profile, if appropriate
-        if (profile.isDefault)
-        {
-            self.defaultProfile = profile;
-        }
-        
-        AlfrescoLogDebug(@"Stored config for profile with id: %@", profileId);
     }
     
     // make sure we have at least one profile
