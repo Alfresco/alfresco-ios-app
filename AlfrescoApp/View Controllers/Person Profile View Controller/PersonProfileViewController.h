@@ -21,5 +21,6 @@
 @interface PersonProfileViewController : UIViewController
 
 - (instancetype)initWithUsername:(NSString *)username session:(id<AlfrescoSession>)session;
+- (instancetype)initWithPerson:(AlfrescoPerson *)person session:(id<AlfrescoSession>)session;
 
 @end

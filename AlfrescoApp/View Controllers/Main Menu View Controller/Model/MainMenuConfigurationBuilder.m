@@ -250,11 +250,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 {
     MainMenuDisplayType returnDisplayType = MainMenuDisplayTypeMaster;
     
-    if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypePersonProfile])
-    {
-        returnDisplayType = MainMenuDisplayTypeDetail;
-    }
-    
     return returnDisplayType;
 }
 
@@ -349,8 +344,8 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         // Person
         NSString *username = viewConfig.parameters[kAlfrescoConfigViewParameterUsernameKey];
         
-        PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:username session:self.session];
-        associatedObject = personProfileViewController;
+        SiteMembersViewController *personViewController = [[SiteMembersViewController alloc] initWithUsername:username session:self.session];
+        associatedObject = personViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypePeople])
     {

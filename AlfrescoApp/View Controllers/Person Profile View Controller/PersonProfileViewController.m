@@ -109,6 +109,20 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     return self;
 }
 
+- (instancetype)initWithPerson:(AlfrescoPerson *)person session:(id<AlfrescoSession>)session
+{
+    self = [self init];
+    if (self)
+    {
+        self.person = person;
+        self.username = person.identifier;
+        self.session = session;
+        [self createServicesWithSession:session];
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -127,6 +141,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     if (self.person)
     {
         [self updateViewWithPerson:self.person];
+        [self showScrollView:YES aminated:YES];
     }
     else
     {
