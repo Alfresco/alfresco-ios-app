@@ -42,7 +42,7 @@
 "document.picker.scope.sites" = "Siti";
 "document.picker.scope.favourites" = "Preferiti";
 "document.picker.scope.shared.files" = "File condivisi";
-"document.picker.scope.my.files" = "File personali";
+"document.picker.scope.my.files" = "I miei file";
 
 /**
  * Existing File Handling

@@ -56,3 +56,5 @@
 @interface AlfrescoFormModeEvaluator : AlfrescoConfigEvaluator
 @end
 
+@interface AlfrescoIsUserEvaluator : AlfrescoConfigEvaluator
+@end

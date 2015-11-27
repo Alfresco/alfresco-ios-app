@@ -76,6 +76,7 @@ extern NSString * const kAlfrescoConfigEvaluatorNodeType;
 extern NSString * const kAlfrescoConfigEvaluatorAspect;
 extern NSString * const kAlfrescoConfigEvaluatorProfile;
 extern NSString * const kAlfrescoConfigEvaluatorFormMode;
+extern NSString * const kAlfrescoConfigEvaluatorIsUser;
 extern NSString * const kAlfrescoConfigEvaluatorParameterProfile;
 extern NSString * const kAlfrescoConfigEvaluatorParameterTypeName;
 extern NSString * const kAlfrescoConfigEvaluatorParameterAspectName;
@@ -86,6 +87,7 @@ extern NSString * const kAlfrescoConfigEvaluatorParameterMajorVersion;
 extern NSString * const kAlfrescoConfigEvaluatorParameterMinorVersion;
 extern NSString * const kAlfrescoConfigEvaluatorParameterMaintenanceVersion;
 extern NSString * const kAlfrescoConfigEvaluatorParameterMode;
+extern NSString * const kAlfrescoConfigEvaluatorParameterUsers;
 extern NSString * const kAlfrescoConfigEvaluatorParameterEvaluatorIds;
 extern NSString * const kAlfrescoConfigEvaluatorParameterMatchAll;
 

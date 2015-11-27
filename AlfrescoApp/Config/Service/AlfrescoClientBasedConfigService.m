@@ -427,6 +427,12 @@
                                                                        parameters:parameters
                                                                           session:self.session];
             }
+            else if ([type isEqualToString:kAlfrescoConfigEvaluatorIsUser])
+            {
+                evaluator = [[AlfrescoIsUserEvaluator alloc] initWithIdentifier:evaluatorId
+                                                                     parameters:parameters
+                                                                        session:self.session];
+            }
             else if ([type isEqualToString:kAlfrescoConfigEvaluatorProfile])
             {
                 evaluator = [[AlfrescoProfileEvaluator alloc] initWithIdentifier:evaluatorId

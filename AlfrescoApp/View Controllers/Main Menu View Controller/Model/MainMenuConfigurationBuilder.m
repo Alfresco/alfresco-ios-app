@@ -343,6 +343,10 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Person
         NSString *username = viewConfig.parameters[kAlfrescoConfigViewParameterUsernameKey];
+        if (!username)
+        {
+            username = self.session.personIdentifier;
+        }
         
         SiteMembersViewController *personViewController = [[SiteMembersViewController alloc] initWithUsername:username session:self.session];
         associatedObject = personViewController;
