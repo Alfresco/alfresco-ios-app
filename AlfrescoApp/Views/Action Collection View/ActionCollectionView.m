@@ -21,11 +21,10 @@
 #import "UICollectionView+AutoLayout.h"
 #import "UIView+DrawingUtils.h"
 
-static CGFloat const kSpacingBetweenSections = 8.0f;
-static CGFloat const kiPadSpacingBetweenCells = 15.0f;
-static CGFloat const kiPhoneSpacingBetweenCells = 10.0f;
-static CGFloat const kiPadCellWidth = 76.0f;
-static CGFloat const kiPhoneCellWidth = 60.0f;
+static CGFloat const kSpacingBetweenSections = 4.0f;
+static CGFloat const kSpacingBetweenCells = 0.0f;
+static CGFloat const kiPadCellWidth = 90.0f;
+static CGFloat const kiPhoneCellWidth = 68.0f;
 static CGFloat const kLineButtonPadding = 10.0f;
 static CGFloat const kLineSeparatorThickness = 1.0f;
 
@@ -123,12 +122,14 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     ActionCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ActionCell" forIndexPath:indexPath];
     ActionCollectionItem *itemSelected = [self.items objectAtIndex:indexPath.row];
     
-    cell.contentView.frame = [cell bounds];
     cell.imageView.image = itemSelected.itemImage;
     cell.imageView.highlightedImage = itemSelected.itemImageHighlightedImage;
     cell.imageView.tintColor = [UIColor documentActionsTintColor];
     cell.titleLabel.text = itemSelected.itemTitle;
     cell.titleLabel.highlightedTextColor = itemSelected.itemTitleHighlightedColor;
+    
+    // Workaround what seems to be a bug in iOS that doesn't scale down the font size when required
+    cell.titleLabel.numberOfLines = ([itemSelected.itemTitle rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location == NSNotFound) ? 1 : 2;
     
     return cell;
 }
@@ -148,14 +149,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize cellSize = CGSizeMake(kiPhoneCellWidth, collectionView.frame.size.height);
-    
-    if (IS_IPAD)
-    {
-        cellSize.width = kiPadCellWidth;
-    }
-    
-    return cellSize;
+    return CGSizeMake(IS_IPAD ? kiPadCellWidth : kiPhoneCellWidth, collectionView.frame.size.height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -165,7 +159,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return IS_IPAD ? kiPadSpacingBetweenCells : kiPhoneSpacingBetweenCells;
+    return kSpacingBetweenCells;
 }
 
 @end

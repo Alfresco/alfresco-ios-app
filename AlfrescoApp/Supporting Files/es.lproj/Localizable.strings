@@ -166,7 +166,7 @@
 "sites.segmentControl.mysites" = "Mis sitios"; // string length should not be extended
 "sites.segmentControl.favoritesites" = "Sitios favoritos"; // string length should not be extended
 "sites.segmentControl.allsites" = "Todos los sitios"; // string length should not be extended
-"sites.segmentControl.sitefinder" = "Buscador de sitios"; // string length should not be extended
+"sites.segmentControl.sitefinder" = "Buscador"; // string length should not be extended
 "sites.site.favorited.banner" = "Ha marcado como favorito %@";
 "sites.site.unfavorited.banner" = "Ha marcado como no favorito %@";
 "sites.site.requested.to.join.banner" = "Se ha enviado una solicitud de unión a %@";

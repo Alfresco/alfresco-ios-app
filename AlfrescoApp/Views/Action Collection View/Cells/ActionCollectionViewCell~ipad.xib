@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActionCell" id="pDe-Zq-hGb" customClass="ActionCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="100" height="101"/>
+            <rect key="frame" x="0.0" y="0.0" width="90" height="101"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="100" height="101"/>
+                <rect key="frame" x="0.0" y="0.0" width="90" height="101"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="igW-eh-u5B">
-                        <rect key="frame" x="12" y="0.0" width="76" height="76"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <rect key="frame" x="7" y="0.0" width="76" height="76"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="76" id="BhE-Cf-7IP"/>
                             <constraint firstAttribute="width" constant="76" id="hAB-c1-EEq"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000001192092896" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="Ys8-jU-Dxg">
-                        <rect key="frame" x="0.0" y="79" width="100" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" minimumScaleFactor="0.5" preferredMaxLayoutWidth="90" translatesAutoresizingMaskIntoConstraints="NO" id="Ys8-jU-Dxg">
+                        <rect key="frame" x="0.0" y="78" width="90" height="21"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <animations/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Ys8-jU-Dxg" secondAttribute="bottom" constant="5" id="4zU-WO-ySq"/>
+                <constraint firstAttribute="bottom" secondItem="Ys8-jU-Dxg" secondAttribute="bottom" constant="2" id="4zU-WO-ySq"/>
                 <constraint firstAttribute="centerX" secondItem="igW-eh-u5B" secondAttribute="centerX" id="AKn-rZ-SsP"/>
                 <constraint firstItem="igW-eh-u5B" firstAttribute="top" secondItem="pDe-Zq-hGb" secondAttribute="top" id="ILy-Qj-A4O"/>
                 <constraint firstItem="Ys8-jU-Dxg" firstAttribute="leading" secondItem="pDe-Zq-hGb" secondAttribute="leading" id="RQk-io-7bz"/>
                 <constraint firstAttribute="trailing" secondItem="Ys8-jU-Dxg" secondAttribute="trailing" id="fqj-Zh-f1d"/>
-                <constraint firstItem="Ys8-jU-Dxg" firstAttribute="top" secondItem="igW-eh-u5B" secondAttribute="bottom" constant="3" id="mLs-Hy-tiy"/>
+                <constraint firstItem="Ys8-jU-Dxg" firstAttribute="top" secondItem="igW-eh-u5B" secondAttribute="bottom" constant="2" id="mLs-Hy-tiy"/>
             </constraints>
-            <size key="customSize" width="101" height="101"/>
             <connections>
                 <outlet property="imageView" destination="igW-eh-u5B" id="0WF-0B-dsU"/>
                 <outlet property="titleLabel" destination="Ys8-jU-Dxg" id="Ke8-3y-fES"/>

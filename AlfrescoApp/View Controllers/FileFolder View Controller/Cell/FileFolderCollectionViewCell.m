@@ -95,6 +95,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 {
     [super awakeFromNib];
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.deleteButton setTitle:NSLocalizedString(@"action.delete", @"Delete") forState:UIControlStateNormal];
 }
 
 - (void)setBounds:(CGRect)bounds
