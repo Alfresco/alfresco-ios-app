@@ -30,8 +30,10 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
 
 @property (nonatomic, strong) NSString *siteShortName;
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
+@property (nonatomic, strong) AlfrescoPersonService *personService;
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, strong) AlfrescoSite *site;
+@property (nonatomic, strong) NSString *username;
 
 @end
 
@@ -67,6 +69,20 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
     return self;
 }
 
+- (instancetype)initWithUsername:(NSString *)username session:(id<AlfrescoSession>)session
+{
+    self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
+    
+    if(self)
+    {
+        self.username = username;
+        self.displayName = username;
+        self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -74,7 +90,7 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
     self.tableView.emptyMessage = NSLocalizedString(@"No Users", @"No Users");
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = kEstimatedCellHeight;
-    
+
     self.title = self.displayName;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([PersonCell class]) bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass([PersonCell class])];
@@ -122,7 +138,7 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoPerson *currentPerson = [self.tableViewData objectAtIndex:indexPath.row];
-    PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
+    PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithPerson:currentPerson session:self.session];
     [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
 }
 
@@ -169,43 +185,64 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
         }];
     };
     
-    if (self.site)
+    if(self.username)
     {
-        if (!self.displayName)
-        {
-            self.displayName = self.site.title;
-            self.title = self.displayName;
-        }
-        retrieveSiteMembers(self.site, self.defaultListingContext);
-    }
-    else
-    {
-        [self showHUD];
-        [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
-            if (error)
+        // if there is a username present we will present the view controller with only one person
+        [self.personService retrievePersonWithIdentifier:self.username completionBlock:^(AlfrescoPerson *person, NSError *error) {
+            if(error)
             {
-                if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                {
-                    // display error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.site.notfound", @"Site Not Found"), [ErrorDescriptions descriptionForError:error]]);
-                }
-                else
-                {
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-                [self hideHUD];
+                NSString *errorTitle = NSLocalizedString(@"error.person.profile.no.profile.title", @"Profile Error Title");
+                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.person.profile.no.profile.message", @"Profile Error Message"), self.username];
+                displayErrorMessageWithTitle(errorMessage, errorTitle);
             }
             else
             {
-                self.site = site;
-                if (!self.displayName)
-                {
-                    self.displayName = self.site.title;
-                    self.title = self.displayName;
-                }
-                retrieveSiteMembers(site, self.defaultListingContext);
+                self.tableViewData = [NSMutableArray arrayWithObject:person];
+                [self.tableView reloadData];
+                [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             }
         }];
+    }
+    else
+    {
+        if (self.site)
+        {
+            if (!self.displayName)
+            {
+                self.displayName = self.site.title;
+                self.title = self.displayName;
+            }
+            retrieveSiteMembers(self.site, self.defaultListingContext);
+        }
+        else
+        {
+            [self showHUD];
+            [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
+                if (error)
+                {
+                    if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                    {
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.site.notfound", @"Site Not Found"), [ErrorDescriptions descriptionForError:error]]);
+                    }
+                    else
+                    {
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    [self hideHUD];
+                }
+                else
+                {
+                    self.site = site;
+                    if (!self.displayName)
+                    {
+                        self.displayName = self.site.title;
+                        self.title = self.displayName;
+                    }
+                    retrieveSiteMembers(site, self.defaultListingContext);
+                }
+            }];
+        }
     }
 }
 
