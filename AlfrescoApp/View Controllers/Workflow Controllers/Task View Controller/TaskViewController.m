@@ -246,19 +246,29 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     
     if (groupToSwitchTo.hasDisplayableTasks == NO || forceRefresh || groupToSwitchTo.hasMoreItems)
     {
+        AlfrescoPagingResultCompletionBlock myCompletionBlock = ^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            if (completionBlock)
+            {
+                completionBlock(pagingResult, error);
+            }
+        };
+        
         if (forceRefresh)
         {
             listingContext = nil;
             [groupToSwitchTo clearAllTasks];
         }
         
+        [self showHUD];
+        
         if (self.isDisplayingMyTasks)
         {
-            [self loadTasksWithListingContext:listingContext completionBlock:completionBlock];
+            [self loadTasksWithListingContext:listingContext completionBlock:myCompletionBlock];
         }
         else
         {
-            [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:completionBlock];
+            [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:myCompletionBlock];
         }
     }
     else
