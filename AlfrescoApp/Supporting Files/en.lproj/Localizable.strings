@@ -4,7 +4,7 @@
  *
  * English (en)
  *
- * Copyright (c) 2014 Alfresco. All rights reserved.
+ * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 /**
@@ -223,7 +223,7 @@
 /* Client Certificate */
 "certificate-manage.import.label" = "Import from Local Files";
 "certificate-manage.download.label" = "Download from Web Server";
-"certificate-import.tableHeader" = "PCKS 12 Passcode";
+"certificate-import.tableHeader" = "PKCS 12 Passcode";
 "certificate-import.fields.passcode" = "Passcode";
 "certificate-import.tableFooter" = "Please enter the passcode for the PKCS 12 file";
 "certificate-import.button.import" = "Import";

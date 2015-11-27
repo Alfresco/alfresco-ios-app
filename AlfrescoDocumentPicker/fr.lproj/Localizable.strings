@@ -53,5 +53,5 @@
 /**
  * Permissions
  */
-"document.picker.scope.permissions.cannot.edit.title" = "Droits d'accès en modification";
-"document.picker.scope.permissions.cannot.edit.message" = "Vous n'avez pas les droits d'accès en modification.\n\nTous les changements effectués seront enregistrés dans les fichiers locaux dans l'application Alfresco.";
+"document.picker.scope.permissions.cannot.edit.title" = "Permissions en modification";
+"document.picker.scope.permissions.cannot.edit.message" = "Vous n'avez pas les permissions en modification.\n\nTous les changements effectués seront enregistrés dans les fichiers locaux dans l'application Alfresco.";

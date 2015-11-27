@@ -20,6 +20,8 @@
 "Close" = "关闭";
 "Next" = "下一步";
 "No Files" = "无文件";
+"No Folders" = "无文件夹";
+"No Users" = "无用户";
 
 /**
  * Relative Dates
@@ -69,7 +71,7 @@
 "sync.title" = "同步内容";
 "sync.empty" = "无同步内容";
 "sync.downloadsize.prompt.title" = "下载大小";
-"sync.downloadsize.prompt.message" = "同步下载大小 %@。 是否继续？";
+"sync.downloadsize.prompt.message" = "同步下载大小 %@。是否继续？";
 "sync.downloadsize.prompt.cancel" = "不同步";
 "sync.downloadsize.prompt.confirm" = "立即同步";
 "sync.enable.title" = "同步文件";
@@ -87,9 +89,9 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同步错误";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "以下文件已在服务器上取消收藏，但有本地更改。 选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "以下文件已在服务器上取消收藏，但有本地更改。选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在服务器上删除，但副本已保存到您的 \"本地文件\"";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。 选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
 "sync-errors.button.sync" = "同步"; // string length should not be extended
 "sync-errors.button.save" = "保存"; // string length should not be extended
 
@@ -109,6 +111,7 @@
 "error.sites.retrieval.failed" = "无法检索站点。\n\n%@。";
 "error.sites.folder.failed" = "无法检索站点文件夹。\n\n%@。";
 "error.sites.search.failed" = "无法跨站点搜索。\n\n%@。";
+"error.sites.site.notfound" = "未找到站点";
 "error.upload.failed" = "目前无法上传文件。\n\n%@。";
 "error.upload.addtags.failed" = "标记无法添加到文件。\n\n%@。";
 "error.tags.retrieve.failed" = "目前无法检索标记。\n\n%@。";
@@ -123,13 +126,14 @@
 "error.version.history.unable.to.retrieve" = "目前无法检索版本历史记录。\n\n%@";
 "error.version.history.no.latest.version" = "未找到最新版本的文件。";
 "error.alfresco.node.notfound" = "未找到文件";
+"error.alfresco.folder.notfound" = "未找到文件夹";
 "error.print.failed.message" = "不支持打印此文件";
 // Internet connection error
 "error.no.internet.access.title" = "无法建立连接";
-"error.no.internet.access.message" = "检查您是否已连接到 Internet 并重试。 您仍可以访问下载的文件，无需连接。";
+"error.no.internet.access.message" = "检查您是否已连接到 Internet 并重试。您仍可以访问下载的文件，无需连接。";
 "error.access.permissions.message" = "检查您是否有进行此操作的访问权限";
 "error.host.unreachable.title" = "连接错误";
-"error.host.unreachable.message" = "您的主机名值似乎是错误的，或者您可能需要激活 VPN 码。 请检查您的帐户设置。";
+"error.host.unreachable.message" = "您的主机名值似乎是错误的，或者您可能需要激活 VPN 码。请检查您的帐户设置。";
 "error.retrieving.metadata" = "无法检索 %@ 的属性。";
 "error.server.message" = "服务器上出现一个错误。";
 // Workflow
@@ -143,6 +147,11 @@
 // Email
 "error.no.email.accounts.title" = "无邮件帐户";
 "error.no.email.accounts.message" = "您必须至少在设备上设置一个邮件帐户才能发送此文件。";
+// Person Profile
+"error.person.profile.no.profile.title" = "配置文件错误";
+"error.person.profile.no.profile.message" = "找不到用户；%@";
+"error.person.profile.email.failed.title" = "发送失败";
+"error.person.profile.email.failed.message" = "无法发送电子邮件。请稍后重试。";
 
 /**
  * Custom error descriptions
@@ -157,6 +166,7 @@
 "sites.segmentControl.mysites" = "我的站点"; // string length should not be extended
 "sites.segmentControl.favoritesites" = "收藏站点"; // string length should not be extended
 "sites.segmentControl.allsites" = "所有站点"; // string length should not be extended
+"sites.segmentControl.sitefinder" = "站点查找工具"; // string length should not be extended
 "sites.site.favorited.banner" = "您已收藏 %@";
 "sites.site.unfavorited.banner" = "您已取消收藏 %@";
 "sites.site.requested.to.join.banner" = "已发出加入 %@ 的请求";
@@ -171,6 +181,7 @@
 "sites.siteCell.cancel.request" = "取消请求"; // string length should not be extended
 "sites.siteCell.request.to.join" = "请求加入"; // string length should not be extended
 "sites.siteCell.join" = "加入"; // string length should not be extended
+"sites.siteCell.members" = "会员"; // string length should not be extended
 
 /**
  * Accounts View Controller
@@ -195,19 +206,24 @@
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "服务文档";
 "accountdetails.fields.syncPreference" = "同步文件";
-"accountdetails.fields.syncPreference.footer" = "选择将收藏的内容与设备同步。 同步超过 20 MB 的内容之前会显示警告";
+"accountdetails.fields.syncPreference.footer" = "选择将收藏的内容与设备同步。同步超过 20 MB 的内容之前会显示警告";
 "accountdetails.buttons.client-certificate" = "客户端证书";
+"accountdetails.buttons.configuration" = "编辑主菜单";
 "accountdetails.header.authentication" = "帐户详细信息";
 "accountdetails.header.advanced" = "高级";
 "accountdetails.header.setting" = "设置";
+"accountdetails.header.main.menu.config" = "主菜单";
+"accountdetails.footer.main.menu.config.disabled" = "您的 Alfresco 管理员已关闭此功能。";
+"accountdetails.buttons.profile" = "编辑配置文件";
+"accountdetails.header.profile" = "配置文件";
 
 "accountdetails.alert.save.title" = "保存帐户";
-"accountdetails.alert.save.validationerror" = "无法保存帐户。 请与您的 Alfresco 管理员核实您的帐户设置。";
+"accountdetails.alert.save.validationerror" = "无法保存帐户。请与您的 Alfresco 管理员核实您的帐户设置。";
 
 /* Client Certificate */
-"certificate-manage.import.label" = "从 \"本地文件\" 导入";
+"certificate-manage.import.label" = "从\"本地文件\"导入";
 "certificate-manage.download.label" = "从 Web 服务器下载";
-"certificate-import.tableHeader" = "PCKS 12 密码";
+"certificate-import.tableHeader" = "PKCS 12 密码";
 "certificate-import.fields.passcode" = "密码";
 "certificate-import.tableFooter" = "请输入 PKCS 12 文件的密码";
 "certificate-import.button.import" = "导入";
@@ -217,9 +233,9 @@
 "certificate-download.title" = "Web 服务器";
 "certificate-download.field.url" = "URL";
 "certificate-details.title" = "客户端证书";
-"certificate-details.issuer" = "颁发者： %@";
+"certificate-details.issuer" = "颁发者：%@";
 "certificate-details.delete.title" = "移除客户端证书";
-"certificate-details.delete.message" = "移除此客户端证书的操作无法撤消。 是否确定要继续？";
+"certificate-details.delete.message" = "移除此客户端证书的操作无法撤消。是否确定要继续？";
 "certificate-details.importSuccess" = "证书已成功导入";
 "certificate-details.buttons.delete" = "移除证书";
 "certificate-details.delete.confirm" = "移除";
@@ -256,6 +272,10 @@
 "browser.alertview.addfolder.create" = "创建";
 
 "browser.actionsheet.record.audio" = "录制音频";
+
+"browser.actioncontroller.select" = "多选";
+"browser.actioncontroller.grid" = "网格视图";
+"browser.actioncontroller.list" = "列表视图";
 
 /**
  * MultiSelect
@@ -301,9 +321,9 @@
  * About View Controller
  */
 "about.title" = "关于";
-"about.content" = "Alfresco 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，连接 Alfresco Cloud 和 Alfresco 内部部署服务器（3.4.8 和更高版本）以随时安全访问您的企业文件。 此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
-"about.version.number" = "版本： %@ (%@)";
-"about.build.date.time" = "创建日期： %s %s";
+"about.content" = "Alfresco 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，连接 Alfresco Cloud 和 Alfresco 内部部署服务器（3.4.8 和更高版本）以随时安全访问您的企业文件。此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
+"about.version.number" = "版本：%@ (%@)";
+"about.build.date.time" = "创建日期：%s %s";
 
 /**
  * Activities View Controller
@@ -399,7 +419,7 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.message" = "已存在一个同名的本地文件。 是否要覆盖已有的本地文件？";
+"download.overwrite.prompt.message" = "已存在一个同名的本地文件。是否要覆盖已有的本地文件？";
 "download.success.message" = "文件已保存";
 "download.success-as.message" = "文件另存为 %@";
 "download.failure.message" = "无法保存文件";
@@ -480,11 +500,11 @@
  */
 "version.history.title" = "版本历史记录";
 "version.history.empty" = "无版本历史记录";
-"version.history.version.cell.text" = "版本： %@";
-"version.history.last.modified.cell.text" = "上次修改日期： %@";
-"version.history.last.modified.by.cell.text" = "上次修改者： %@";
-"version.history.comment.cell.text" = "评论： %@";
-"version.history.current.version.cell.text" = "当前版本： %@";
+"version.history.version.cell.text" = "版本：%@";
+"version.history.last.modified.cell.text" = "上次修改日期：%@";
+"version.history.last.modified.by.cell.text" = "上次修改者：%@";
+"version.history.comment.cell.text" = "评论：%@";
+"version.history.current.version.cell.text" = "当前版本：%@";
 "version.history.download.latest.text" = "下载最新版本";
 
 /**
@@ -501,7 +521,7 @@
 "document.edit.button.discard" = "放弃更改";
 "document.edit.button.save" = "保存";
 "document.edit.failed.title" = "保存文件";
-"document.edit.savefailed.message" = "无法在服务器上保存文件。 是否要将文件保存至您的 \"本地文件\"？";
+"document.edit.savefailed.message" = "无法在服务器上保存文件。是否要将文件保存至您的 \"本地文件\"？";
 "document.edit.dismiss.confirmation.message" = "是否要取消对文件所做的更改？";
 "document.edit.discard" = "放弃";
 "document.edit.continue.editing" = "继续编辑";
@@ -609,7 +629,7 @@
 "settings.sync.on.cellular" = "单元同步";
 "settings.sync.on.cellular.description" = "当您有 Wi-Fi 连接时，关闭以仅同步收藏内容。";
 "settings.send.diagnostics" = "发送诊断数据";
-"settings.send.diagnostics.description" = "为帮助我们改进 Alfresco Mobile，我们会以匿名方式收集技术诊断数据。 如果愿意，请关闭。";
+"settings.send.diagnostics.description" = "为帮助我们改进 Alfresco Mobile，我们会以匿名方式收集技术诊断数据。如果愿意，请关闭。";
 "settings.security.title" = "安全性";
 "settings.security.file.protection" = "文件保护";
 "settings.security.file.protection.description" = "当设备锁定时，加密其上存储的文件。";
@@ -621,8 +641,8 @@
 "settings.reset.entire.app.confirmation.title" = "是否清除帐户、缓存和下载？";
 "settings.reset.entire.app.confirmation.message" = "是否确定要删除所有帐户、缓存的数据和下载？\n\n您无法撤销此操作";
 "settings.reset.confirmation.title" = "数据已清除";
-"settings.reset.confirmation.message" = "请重新启动 Alfresco 以完成。\n\n要重新启动，请按两次设备的 \"主页\" 按钮以显示正在运行的应用程序。 滑动 Alfresco 离开屏幕顶部，以将其清除。 您现在可以重新使用 Alfresco。";
-"settings.reset.description" = "清除帐户会从应用程序中删除所有帐户。 清除帐户、缓存和下载会将应用程序重新设置为全新安装。";
+"settings.reset.confirmation.message" = "请重新启动 Alfresco 以完成。\n\n要重新启动，请按两次设备的 \"主页\" 按钮以显示正在运行的应用程序。滑动 Alfresco 离开屏幕顶部，以将其清除。您现在可以重新使用 Alfresco。";
+"settings.reset.description" = "清除帐户会从应用程序中删除所有帐户。清除帐户、缓存和下载会将应用程序重新设置为全新安装。";
 "settings.full.text.search" = "全文搜索";
 "settings.full.text.search.description" = "搜索时，打开完整内容搜索以搜索文件及其内容。";
 
@@ -636,8 +656,8 @@
 /**
  * Action Sheet Actions
  */
-"action.email" = "电子邮件";
-"action.emailAsLink" = "电子邮件链接";
+"action.email" = "发送电子邮件";
+"action.emailAsLink" = "发送电子邮件链接";
 "action.open.in" = "打开方式...";
 "action.like" = "喜欢";
 "action.unlike" = "不喜欢";
@@ -668,6 +688,8 @@
 "action.delete.success.message.sync" = "成功删除了 %@，一个副本已保存到 \"本地文件\"";
 "action.delete.failed.title" = "无法删除";
 "action.delete.failed.message" = "无法删除 %@。";
+"action.confirmation.back.message" = "是否要保存对此帐户所做更改？";
+"action.confirmation.back.title" = "未保存的更改";
 
 /**
  * SaveBack
@@ -708,7 +730,7 @@
  * File Protection Manager
  */
 "fileprotection.title" = "文件保护";
-"fileprotection.available.message" = "文件保护可用。 是否要启用它？";
+"fileprotection.available.message" = "文件保护可用。是否要启用它？";
 "fileprotection.available.confirm" = "保护";
 "fileprotection.unavailable.message" = "文件保护不再可用";
 "fileprotection.protecting.message" = "正在保护本地文件...";
@@ -723,7 +745,64 @@
 /**
  * MDM
  */
-"mdm.missing.keys.description" = "尚未设置下列密钥：\n%@\n请联系您的管理员。";
+"mdm.missing.keys.description" = "尚未设置下列键：\n%@\n请联系您的管理员。";
+
+/**
+ * Configuration
+ */
+// Profiles
+"profile.default.title" = "默认设置";
+"profile.default.summary" = "Alfresco Mobile 默认设置";
+// Views
+"view-activities-default" = "活动";
+"view-repository-default" = "存储库";
+"view-repository-shared-default" = "共享文件";
+"view-sites-default" = "站点";
+"view-repository-userhome-default" = "我的文件";
+"view-task-default" = "任务";
+"view-favorite-default" = "收藏夹";
+"view-search-default" = "搜索";
+"view-local-default" = "本地文件";
+
+"configuration.manager.configuration.file.updated.title" = "配置已更新";
+"configuration.manager.configuration.file.updated.message" = "配置文件已更新";
+
+/**
+ * Main Menu Rorder View Controller
+ */
+"main.menu.reorder.title" = "编辑菜单";
+"main.menu.reorder.retrieving.profiles" = "正在检索配置文件 ...";
+"main.menu.reorder.header.visible.title" = "可见";
+"main.menu.reorder.footer.visible.description" = "要隐藏菜单项，请将它们拖到 \"隐藏\" 上。";
+"main.menu.reorder.header.hidden.title" = "隐藏";
+
+/**
+ * Profile Selection View Controller
+ */
+"main.menu.profile.selection.title" = "配置文件";
+
+"main.menu.profile.selection.banner.title" = "主菜单已更新";
+"main.menu.profile.selection.banner.message" = "主菜单已更新，可显示 %@ 配置文件。";
+
+/**
+ * Person Profile View Controller
+ */
+"person.profile.view.controller.header.title.about" = "关于";
+"person.profile.view.controller.header.title.contact.information" = "联系人信息";
+"person.profile.view.controller.header.title.company.information" = "公司信息";
+"person.profile.view.controller.contact.information.type.email.title" = "电子邮件";
+"person.profile.view.controller.contact.information.type.skype.title" = "Skype";
+"person.profile.view.controller.contact.information.type.skype.message" = "您希望用什么方法联系 %@？";
+"person.profile.view.controller.contact.information.type.skype.chat" = "聊天";
+"person.profile.view.controller.contact.information.type.skype.call" = "通话";
+"person.profile.view.controller.contact.information.type.skype.install.required.message" = "您需要先下载 Skype 应用程序才能使用 Skype 联系此人";
+"person.profile.view.controller.contact.information.type.skype.download" = "下载 Skype";
+"person.profile.view.controller.contact.information.type.instant.message.title" = "即时消息";
+"person.profile.view.controller.contact.information.type.telephone.title" = "电话";
+"person.profile.view.controller.contact.information.type.mobile.title" = "手机";
+"person.profile.view.controller.contact.information.type.name.title" = "名称";
+"person.profile.view.controller.contact.information.type.address.title" = "地址";
+"person.profile.view.controller.contact.information.type.fax.title" = "传真";
 
 /**
  * THIRD PARTY LIBRARIES LOCALIZATIONS
@@ -739,3 +818,14 @@
 "connectiondiagnostic.event.retrieverootfolder" = "正在检查存储库连接";
 "connectiondiagnostic.button.retrywithdiagnostic" = "重试诊断";
 "connectiondiagnostic.title" = "连接诊断";
+
+/**
+ * Search View Controller
+ */
+"search.files" = "文件";
+"search.folders" = "文件夹";
+"search.sites" = "站点";
+"search.people" = "人员";
+"search.searchfor" = "搜索";
+"search.search" = "搜索";
+"search.previoussearches" = "以前的搜索";
