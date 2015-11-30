@@ -67,7 +67,7 @@ static NSInteger const kSectionNumberAdHoc = 0;
 
 - (void)dealloc
 {
-    self.tableView.delegate = nil;
+    _tableView.delegate = nil;
 }
 
 #pragma mark - TableView Delegate and Datasource Methods

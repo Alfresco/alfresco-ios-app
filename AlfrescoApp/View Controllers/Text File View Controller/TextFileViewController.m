@@ -183,7 +183,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
             AlfrescoLogError(@"Unable to delete document at path: %@", self.temporaryFilePath);
         }
         
-        self.temporaryFilePath = nil;
+        _temporaryFilePath = nil;
     }
 }
 

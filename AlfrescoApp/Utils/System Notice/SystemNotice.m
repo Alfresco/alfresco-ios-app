@@ -82,7 +82,7 @@ CGFloat hiddenYOrigin;
 
 - (void)dealloc
 {
-    self.animator.delegate = nil;
+    _animator.delegate = nil;
 }
 
 - (BOOL)isEqual:(id)object

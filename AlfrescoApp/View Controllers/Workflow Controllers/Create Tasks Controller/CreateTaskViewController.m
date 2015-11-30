@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.tableView.delegate = nil;
+    _tableView.delegate = nil;
 }
 
 #pragma mark - Private Methods
