@@ -113,8 +113,8 @@ static NSInteger const kSearchResultsIndex = 0;
 
 - (void)dealloc
 {
-    self.tableView.delegate = nil;
-    self.searchBar.delegate = nil;
+    _tableView.delegate = nil;
+    _searchBar.delegate = nil;
 }
 
 #pragma mark - Table view data source

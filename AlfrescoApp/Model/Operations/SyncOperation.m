@@ -150,13 +150,13 @@
 
 - (void)dealloc
 {
-    self.documentFolderService = nil;
-    self.document = nil;
-    self.syncRequest = nil;
-    self.stream = nil;
-    self.downloadCompletionBlock = nil;
-    self.uploadCompletionBlock = nil;
-    self.progressBlock = nil;
+    _documentFolderService = nil;
+    _document = nil;
+    _syncRequest = nil;
+    _stream = nil;
+    _downloadCompletionBlock = nil;
+    _uploadCompletionBlock = nil;
+    _progressBlock = nil;
 }
 
 @end

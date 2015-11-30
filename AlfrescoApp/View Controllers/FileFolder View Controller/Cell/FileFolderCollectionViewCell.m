@@ -96,6 +96,8 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     [super awakeFromNib];
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.deleteButton setTitle:NSLocalizedString(@"action.delete", @"Delete") forState:UIControlStateNormal];
+    self.deleteButton.titleLabel.numberOfLines = 1;
+    self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = YES;
 }
 
 - (void)setBounds:(CGRect)bounds

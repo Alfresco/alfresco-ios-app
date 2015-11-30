@@ -68,7 +68,7 @@ static NSString * const kCertificatePasscode = @"kCertificatePasscode";
 
 - (void)dealloc
 {
-    CFRelease(self.identityRef);
+    CFRelease(_identityRef);
 }
 
 #pragma mark - private Methods

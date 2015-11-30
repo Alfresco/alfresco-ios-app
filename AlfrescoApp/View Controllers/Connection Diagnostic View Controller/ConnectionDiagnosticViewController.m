@@ -68,8 +68,8 @@ static const CGFloat kTableCellHeight = 60.f;
 
 - (void)dealloc
 {
-    self.mainTableView.delegate = nil;
-    self.mainTableView.dataSource = nil;
+    _mainTableView.delegate = nil;
+    _mainTableView.dataSource = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
