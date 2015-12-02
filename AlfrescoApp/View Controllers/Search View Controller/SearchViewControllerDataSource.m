@@ -42,12 +42,26 @@
                 self.numberOfSections = 1;
                 self.showsSearchBar = NO;
                 
-                NSMutableArray *sectionDataSource = [[NSMutableArray alloc] initWithObjects:
-                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"mainmenu-document", kCellImageKey, nil],
-                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.folders", @"Folders"), kCellTextKey, @"mainmenu-folder", kCellImageKey, nil],
-                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.sites", @"Sites"), kCellTextKey, @"mainmenu-sites", kCellImageKey, nil],
-                                                     [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.people", @"People"), kCellTextKey, @"mainmenu-user", kCellImageKey, nil],
-                                                     nil];
+                NSMutableArray *sectionDataSource = nil;
+                
+                if(account.accountType == UserAccountTypeOnPremise)
+                {
+                    sectionDataSource = [[NSMutableArray alloc] initWithObjects:
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"mainmenu-document", kCellImageKey, nil],
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.folders", @"Folders"), kCellTextKey, @"mainmenu-folder", kCellImageKey, nil],
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.sites", @"Sites"), kCellTextKey, @"mainmenu-sites", kCellImageKey, nil],
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.people", @"People"), kCellTextKey, @"mainmenu-user", kCellImageKey, nil],
+                                         nil];
+                }
+                else
+                {
+                    sectionDataSource = [[NSMutableArray alloc] initWithObjects:
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"mainmenu-document", kCellImageKey, nil],
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.folders", @"Folders"), kCellTextKey, @"mainmenu-folder", kCellImageKey, nil],
+                                         [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.people", @"People"), kCellTextKey, @"mainmenu-user", kCellImageKey, nil],
+                                         nil];
+                }
+                
                 [self.dataSourceArrays addObject:sectionDataSource];
                 
                 [self.sectionHeaderStringsArray addObject:NSLocalizedString(@"search.searchfor", @"Search for")];

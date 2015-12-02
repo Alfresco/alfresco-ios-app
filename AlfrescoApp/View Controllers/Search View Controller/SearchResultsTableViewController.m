@@ -28,6 +28,7 @@
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
+#import "SearchService.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -39,6 +40,7 @@ static CGFloat const kCellHeight = 73.0f;
 @property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic) BOOL shouldPush;
+@property (nonatomic, strong) SearchService *searchService;
 
 @end
 
@@ -312,6 +314,11 @@ static CGFloat const kCellHeight = 73.0f;
                     SearchViewController *vc = (SearchViewController *)self.presentingViewController;
                     [vc pushUser:currentPerson];
                 }
+                else if(self.navigationController)
+                {
+                    PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
+                    [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
+                }
             }
         }
         default:
@@ -448,6 +455,15 @@ static CGFloat const kCellHeight = 73.0f;
     });
 }
 
+- (void)loadViewWithKeyword:(NSString *)keyword
+{
+    if(!self.searchService)
+    {
+        self.searchService = [[SearchService alloc] initWithSession:self.session];
+    }
+    self.title = keyword;
+    [self.searchService searchUserWithName:keyword showOnController:self];
+}
 
 #pragma mark - Private methods
 

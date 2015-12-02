@@ -16,20 +16,15 @@
  *  limitations under the License.
  ******************************************************************************/
 
+#import <Foundation/Foundation.h>
+#import "SearchResultsTableViewController.h"
+#import "SitesTableListViewController.h"
 
-@interface SearchResultsTableViewController : UITableViewController
+@interface SearchService : NSObject
 
-- (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush;
-
-@property (nonatomic, strong) NSMutableArray *results;
-@property (nonatomic) SearchViewControllerDataSourceType dataType;
-@property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic) BOOL shouldAutoPushFirstResult;
-
-- (void)showHUD;
-- (void)showHUDWithMode:(MBProgressHUDMode)mode;
-- (void)hideHUD;
-
-- (void)loadViewWithKeyword:(NSString *)keyword;
-
+- (instancetype)initWithSession:(id<AlfrescoSession>)session;
+- (void)searchUserWithName:(NSString *)userName showOnController:(SearchResultsTableViewController *)controller;
+- (void)searchSiteWithName:(NSString *)siteName showOnController:(SitesTableListViewController *)controller;
+- (void)searchNodeWithName:(NSString *)nodeName dataSourceType:(SearchViewControllerDataSourceType)dataSourceType showOnController:(SearchResultsTableViewController *)controller;
+- (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType;
 @end

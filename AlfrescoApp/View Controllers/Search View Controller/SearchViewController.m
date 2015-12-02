@@ -27,6 +27,8 @@
 #import "SitesTableListViewController.h"
 #import "PreferenceManager.h"
 
+#import "SearchService.h"
+
 static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
 static CGFloat const kCellHeightPreviousSearches = 44.0f;
@@ -37,11 +39,8 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
 
-// Services
-@property (nonatomic, strong) AlfrescoSearchService *searchService;
-@property (nonatomic, strong) AlfrescoPersonService *personService;
-@property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) SearchService *searchService;
 
 @end
 
@@ -66,9 +65,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     [super viewDidLoad];
     
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
-    self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
-    self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
-    self.siteService = [[AlfrescoSiteService alloc] initWithSession:self.session];
+    self.searchService = [[SearchService alloc] initWithSession:self.session];
     
     NSString *title = nil;
     switch (self.dataSourceType)
@@ -234,6 +231,10 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         case SearchViewControllerDataSourceTypeLandingPage:
         {
             SearchViewControllerDataSourceType selectedType = indexPath.row + 1;
+            if(([AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeCloud) && (selectedType == SearchViewControllerDataSourceTypeSearchSites))
+            {
+                selectedType = SearchViewControllerDataSourceTypeSearchUsers;
+            }
             SearchViewController *resultsController = [[SearchViewController alloc] initWithDataSourceType:selectedType session:self.session];
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
@@ -242,7 +243,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
+            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self.searchService searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
@@ -250,7 +251,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
+            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self.searchService searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
@@ -259,7 +260,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
             SitesTableListViewController *resultsController = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionSearch session:self.session pushHandler:self.sitesPushHandler];
-            [self searchSiteForString:selectedString showOnController:resultsController];
+            [self.searchService searchSiteWithName:selectedString showOnController:resultsController];
             resultsController.title = selectedString;
             [self.sitesPushHandler.navigationController pushViewController:resultsController animated:YES];
             
@@ -270,7 +271,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
             SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:self.dataSourceType session:self.session pushesSelection:YES];
-            [self searchUserForString:selectedString showOnController:resultsController];
+            [self.searchService searchUserWithName:selectedString showOnController:resultsController];
             resultsController.title = selectedString;
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
@@ -286,33 +287,6 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
 }
 
-- (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType
-{
-    BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
-    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent];
-
-    switch (searchType)
-    {
-        case SearchViewControllerDataSourceTypeSearchFiles:
-        {
-            searchOptions.typeName = kAlfrescoModelTypeContent;
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchFolders:
-        {
-            searchOptions.typeName = kAlfrescoModelTypeFolder;
-            break;
-        }
-        default:
-        {
-            searchOptions = nil;
-            break;
-        }
-    }
-    
-    return searchOptions;
-}
-
 - (void)searchFor:(NSString *)searchString
 {
     switch (self.dataSourceType)
@@ -323,42 +297,25 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             if ([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
             {
                 SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
-                [resultsController showHUD];
-
-                [self.searchService searchWithKeywords:searchString options:[self searchOptionsForSearchType:self.dataSourceType] completionBlock:^(NSArray *array, NSError *error) {
-                    [resultsController hideHUD];
-                    
-                    if (array)
-                    {
-                        resultsController.results = [array mutableCopy];
-                    }
-                    else
-                    {
-                        // display error
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                }];
+                [self.searchService searchNodeWithName:searchString dataSourceType:self.dataSourceType showOnController:resultsController];
             }
             break;
         }
-        
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
             if ([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
             {
                 SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
-                [self searchUserForString:searchString showOnController:resultsController];
+                [self.searchService searchUserWithName:searchString showOnController:resultsController];
             }
             break;
         }
-        
         case SearchViewControllerDataSourceTypeSearchSites:
         {
             if ([self.searchController.searchResultsController isKindOfClass:[SitesTableListViewController class]])
             {
                 SitesTableListViewController *resultsController = (SitesTableListViewController *)self.searchController.searchResultsController;
-                [self searchSiteForString:searchString showOnController:resultsController];
+                [self.searchService searchSiteWithName:searchString showOnController:resultsController];
             }
             break;
         }
@@ -368,42 +325,6 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             break;
         }
     }
-}
-
-- (void)searchUserForString:(NSString *)username showOnController:(SearchResultsTableViewController *)controller
-{
-    [controller showHUD];
-    [self.personService searchWithKeywords:username completionBlock:^(NSArray *array, NSError *error) {
-        [controller hideHUD];
-        if (error)
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-        else
-        {
-            controller.results = [array mutableCopy];
-        }
-    }];
-}
-
-- (void)searchSiteForString:(NSString *)searchString showOnController:(SitesTableListViewController *)controller
-{
-    [controller showHUD];
-    [self.siteService searchWithKeywords:searchString completionBlock:^(NSArray *array, NSError *error) {
-        [controller hideHUD];
-        if (error)
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-        else
-        {
-            [controller reloadTableViewWithSearchResults:[array mutableCopy]];
-        }
-    }];
 }
 
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods
