@@ -518,7 +518,7 @@
 "createtextfile.title" = "Créer un fichier texte";
 "createtextfile.dismiss.confirmation.title" = "Annuler ?";
 "createtextfile.dismiss.confirmation.message" = "Etes-vous sûr de vouloir annuler la création de ce fichier texte ?\n\nTout votre travail sera perdu.";
-"document.edit.button.discard" = "Annuler les modifications";
+"document.edit.button.discard" = "Annuler";
 "document.edit.button.save" = "Enregistrer";
 "document.edit.failed.title" = "Enregistrer fichier";
 "document.edit.savefailed.message" = "L'enregistrement du fichier sur le serveur a échoué. Voulez-vous enregistrer le fichier dans vos fichiers locaux ?";
