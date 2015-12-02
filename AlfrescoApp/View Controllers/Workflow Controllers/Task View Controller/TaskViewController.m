@@ -155,8 +155,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     __weak typeof(self) weakSelf = self;
 
     [self showHUD];
-    AlfrescoListingContext *tasksListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:[@(self.myTasks.tasksBeforeFiltering.count) intValue] skipCount:0];
-    [self loadTasksWithListingContext:tasksListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+    [self loadTasksWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [weakSelf hideHUD];
         if (pagingResult)
         {
@@ -172,8 +171,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         }
     }];
     
-    AlfrescoListingContext *workflowListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:[@(self.tasksIStarted.tasksBeforeFiltering.count) intValue] skipCount:0];
-    [self loadWorkflowProcessesWithListingContext:workflowListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+    [self loadWorkflowProcessesWithListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [weakSelf hideHUD];
         if (pagingResult)
         {
@@ -246,19 +244,29 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     
     if (groupToSwitchTo.hasDisplayableTasks == NO || forceRefresh || groupToSwitchTo.hasMoreItems)
     {
+        AlfrescoPagingResultCompletionBlock myCompletionBlock = ^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            [self hideHUD];
+            if (completionBlock)
+            {
+                completionBlock(pagingResult, error);
+            }
+        };
+        
         if (forceRefresh)
         {
             listingContext = nil;
             [groupToSwitchTo clearAllTasks];
         }
         
+        [self showHUD];
+        
         if (self.isDisplayingMyTasks)
         {
-            [self loadTasksWithListingContext:listingContext completionBlock:completionBlock];
+            [self loadTasksWithListingContext:listingContext completionBlock:myCompletionBlock];
         }
         else
         {
-            [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:completionBlock];
+            [self loadWorkflowProcessesWithListingContext:listingContext completionBlock:myCompletionBlock];
         }
     }
     else

@@ -119,7 +119,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removeAudioFileFromDefaultFileSystem];
-    self.audioRecorder.delegate = nil;
+    _audioRecorder.delegate = nil;
 }
 
 - (void)loadView

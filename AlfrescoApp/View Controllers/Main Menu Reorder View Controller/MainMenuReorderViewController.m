@@ -20,6 +20,9 @@
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
 #import "MainMenuLocalConfigurationBuilder.h"
+#import "SyncManager.h"
+
+static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
@@ -191,11 +194,21 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     
     NSArray *dataArray = [self arrayForSection:indexPath.section];
     MainMenuItem *currentItem = dataArray[indexPath.row];
-    
-    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    cell.imageView.image = currentItem.itemImage;
+
     cell.textLabel.text = NSLocalizedString(currentItem.itemIdentifier, @"Main Menu Item Title");
     cell.showsReorderControl = YES;
+    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    cell.imageView.image = currentItem.itemImage;
+    
+
+    // If the current item is the favourites item, check to see if we should display the sync text/image or favourites
+    if ([currentItem.itemIdentifier isEqualToString:kFavouritesViewIdentifier])
+    {
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+        cell.textLabel.text = NSLocalizedString(isSyncOn ? @"sync.title" : @"favourites.title", @"Key") ;
+        NSString *imageName = isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png";
+        cell.imageView.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
     
     return cell;
 }

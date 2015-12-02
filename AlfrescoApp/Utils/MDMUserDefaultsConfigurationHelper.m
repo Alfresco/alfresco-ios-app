@@ -42,7 +42,7 @@
 
 - (void)dealloc
 {
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:self.configurationKey];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:_configurationKey];
 }
 
 #pragma mark - Private Methods
