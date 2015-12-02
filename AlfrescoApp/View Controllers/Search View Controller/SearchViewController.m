@@ -39,8 +39,6 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
 @property (nonatomic, strong) UISearchController *searchController;
 
-// Services
-//@property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) SearchManager *searchManager;
 
@@ -67,7 +65,6 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     [super viewDidLoad];
     
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
-//    self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
     self.searchManager = [[SearchManager alloc] initWithSession:self.session];
     
     NSString *title = nil;
@@ -234,6 +231,10 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         case SearchViewControllerDataSourceTypeLandingPage:
         {
             SearchViewControllerDataSourceType selectedType = indexPath.row + 1;
+            if(([AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeCloud) && (selectedType == SearchViewControllerDataSourceTypeSearchSites))
+            {
+                selectedType = SearchViewControllerDataSourceTypeSearchUsers;
+            }
             SearchViewController *resultsController = [[SearchViewController alloc] initWithDataSourceType:selectedType session:self.session];
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
