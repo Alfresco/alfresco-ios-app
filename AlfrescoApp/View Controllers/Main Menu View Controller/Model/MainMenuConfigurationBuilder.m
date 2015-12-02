@@ -37,6 +37,7 @@
 #import "SiteMembersViewController.h"
 #import "SitesViewController.h"
 #import "SyncNavigationViewController.h"
+#import "SearchResultsTableViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -354,8 +355,19 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypePeople])
     {
         // Site membership
+        UIViewController *membersViewController = nil;
         NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
-        SiteMembersViewController *membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName session:self.session displayName:nil];
+        if(siteShortName)
+        {
+            membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName session:self.session displayName:nil];
+        }
+        else
+        {
+            NSString *keywords = viewConfig.parameters[kAlfrescoConfigViewParameterKeywordsKey];
+            SearchResultsTableViewController *resultsController = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:self.session pushesSelection:NO];
+            [resultsController loadViewWithKeyword:keywords];
+            membersViewController = resultsController;
+        }
         
         associatedObject = membersViewController;
     }
