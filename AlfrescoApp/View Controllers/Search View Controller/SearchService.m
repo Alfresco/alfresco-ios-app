@@ -16,10 +16,10 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "SearchManager.h"
+#import "SearchService.h"
 #import "PreferenceManager.h"
 
-@interface SearchManager()
+@interface SearchService()
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation SearchManager
+@implementation SearchService
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
@@ -44,10 +44,10 @@
     return self;
 }
 
-- (void)searchUserForString:(NSString *)username showOnController:(SearchResultsTableViewController *)controller
+- (void)searchUserWithName:(NSString *)userName showOnController:(SearchResultsTableViewController *)controller
 {
     [controller showHUD];
-    [self.personService searchWithKeywords:username completionBlock:^(NSArray *array, NSError *error) {
+    [self.personService searchWithKeywords:userName completionBlock:^(NSArray *array, NSError *error) {
         [controller hideHUD];
         if (error)
         {
@@ -62,10 +62,10 @@
     }];
 }
 
-- (void)searchSiteForString:(NSString *)searchString showOnController:(SitesTableListViewController *)controller
+- (void)searchSiteWithName:(NSString *)siteName showOnController:(SitesTableListViewController *)controller
 {
     [controller showHUD];
-    [self.siteService searchWithKeywords:searchString completionBlock:^(NSArray *array, NSError *error) {
+    [self.siteService searchWithKeywords:siteName completionBlock:^(NSArray *array, NSError *error) {
         [controller hideHUD];
         if (error)
         {
@@ -80,7 +80,7 @@
     }];
 }
 
-- (void)searchNodeForString:(NSString *)nodeName dataSourceType:(SearchViewControllerDataSourceType)dataSourceType showOnController:(SearchResultsTableViewController *)controller
+- (void)searchNodeWithName:(NSString *)nodeName dataSourceType:(SearchViewControllerDataSourceType)dataSourceType showOnController:(SearchResultsTableViewController *)controller
 {
     [controller showHUD];
     

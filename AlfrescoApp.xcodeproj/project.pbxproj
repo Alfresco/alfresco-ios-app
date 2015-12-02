@@ -207,7 +207,7 @@
 		2B55920C1B90AB1C00D85C7B /* SearchResultsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */; };
 		2B7169F71B567CC1009A4487 /* large_folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F51B567CC1009A4487 /* large_folder.png */; };
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
-		2B9031FA1C0EF78B005C10ED /* SearchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9031F91C0EF78B005C10ED /* SearchManager.m */; };
+		2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9031F91C0EF78B005C10ED /* SearchService.m */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
 		2BA24A691B8C5D470075CA99 /* SearchViewControllerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */; };
@@ -1101,8 +1101,8 @@
 		2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
 		2B7169F51B567CC1009A4487 /* large_folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_folder.png; sourceTree = "<group>"; };
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
-		2B9031F81C0EF78B005C10ED /* SearchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchManager.h; path = "../../View Controllers/Search View Controller/SearchManager.h"; sourceTree = "<group>"; };
-		2B9031F91C0EF78B005C10ED /* SearchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchManager.m; path = "../../View Controllers/Search View Controller/SearchManager.m"; sourceTree = "<group>"; };
+		2B9031F81C0EF78B005C10ED /* SearchService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchService.h; path = "../../View Controllers/Search View Controller/SearchService.h"; sourceTree = "<group>"; };
+		2B9031F91C0EF78B005C10ED /* SearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchService.m; path = "../../View Controllers/Search View Controller/SearchService.m"; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
@@ -3444,8 +3444,8 @@
 				73B957D817A6750E0099FB84 /* LoginManager.m */,
 				7384BE0317F42CA800C6A54F /* PreferenceManager.h */,
 				7384BE0417F42CA800C6A54F /* PreferenceManager.m */,
-				2B9031F81C0EF78B005C10ED /* SearchManager.h */,
-				2B9031F91C0EF78B005C10ED /* SearchManager.m */,
+				2B9031F81C0EF78B005C10ED /* SearchService.h */,
+				2B9031F91C0EF78B005C10ED /* SearchService.m */,
 				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
@@ -4784,7 +4784,7 @@
 				7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */,
-				2B9031FA1C0EF78B005C10ED /* SearchManager.m in Sources */,
+				2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */,
 				736474F51B1879E400715B4F /* MainMenuConfigurationViewController.m in Sources */,
 				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,

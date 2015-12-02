@@ -28,7 +28,7 @@
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
-#import "SearchManager.h"
+#import "SearchService.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -40,7 +40,7 @@ static CGFloat const kCellHeight = 73.0f;
 @property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic) BOOL shouldPush;
-@property (nonatomic, strong) SearchManager *searchManager;
+@property (nonatomic, strong) SearchService *searchService;
 
 @end
 
@@ -457,12 +457,12 @@ static CGFloat const kCellHeight = 73.0f;
 
 - (void)loadViewWithKeyword:(NSString *)keyword
 {
-    if(!self.searchManager)
+    if(!self.searchService)
     {
-        self.searchManager = [[SearchManager alloc] initWithSession:self.session];
+        self.searchService = [[SearchService alloc] initWithSession:self.session];
     }
     self.title = keyword;
-    [self.searchManager searchUserForString:keyword showOnController:self];
+    [self.searchService searchUserWithName:keyword showOnController:self];
 }
 
 #pragma mark - Private methods

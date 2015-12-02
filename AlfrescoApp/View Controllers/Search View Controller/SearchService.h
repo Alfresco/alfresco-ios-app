@@ -20,11 +20,11 @@
 #import "SearchResultsTableViewController.h"
 #import "SitesTableListViewController.h"
 
-@interface SearchManager : NSObject
+@interface SearchService : NSObject
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
-- (void)searchUserForString:(NSString *)username showOnController:(SearchResultsTableViewController *)controller;
-- (void)searchSiteForString:(NSString *)searchString showOnController:(SitesTableListViewController *)controller;
-- (void)searchNodeForString:(NSString *)nodeName dataSourceType:(SearchViewControllerDataSourceType)dataSourceType showOnController:(SearchResultsTableViewController *)controller;
+- (void)searchUserWithName:(NSString *)userName showOnController:(SearchResultsTableViewController *)controller;
+- (void)searchSiteWithName:(NSString *)siteName showOnController:(SitesTableListViewController *)controller;
+- (void)searchNodeWithName:(NSString *)nodeName dataSourceType:(SearchViewControllerDataSourceType)dataSourceType showOnController:(SearchResultsTableViewController *)controller;
 - (AlfrescoKeywordSearchOptions *)searchOptionsForSearchType:(SearchViewControllerDataSourceType)searchType;
 @end
