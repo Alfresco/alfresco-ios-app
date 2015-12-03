@@ -406,8 +406,19 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearchRepository])
     {
-        // TODO: Currently place an empty view controller
-        associatedObject = [[UIViewController alloc] init];
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
+        if([parameterKeys containsObject:kAlfrescoConfigViewParameterKeywordsKey])
+        {
+            AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:[viewConfig.parameters[kAlfrescoConfigViewParameterIsExactKey] boolValue] includeContent:[viewConfig.parameters[kAlfrescoConfigViewParameterFullTextKey] boolValue]];
+            searchOptions.includeDescendants = [viewConfig.parameters[kAlfrescoConfigViewParameterSearchFolderOnlyKey] boolValue];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchString:viewConfig.parameters[kAlfrescoConfigViewParameterKeywordsKey] searchOptions:searchOptions emptyMessage:nil session:self.session];
+        }
+        else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterStatementKey])
+        {
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchStatement:viewConfig.parameters[kAlfrescoConfigViewParameterStatementKey] session:self.session];
+        }
+        associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearch])
     {

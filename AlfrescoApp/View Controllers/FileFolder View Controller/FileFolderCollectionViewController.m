@@ -42,7 +42,8 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
     FileFolderCollectionViewControllerTypeNodeRef,
     FileFolderCollectionViewControllerTypeDocumentPath,
     FileFolderCollectionViewControllerTypeSearchString,
-    FileFolderCollectionViewControllerTypeCustomFolderType
+    FileFolderCollectionViewControllerTypeCustomFolderType,
+    FileFolderCollectionViewControllerTypeCMISSearch
 };
 
 static CGFloat const kCellHeight = 64.0f;
@@ -79,6 +80,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic) BOOL shouldAutoSelectFirstItem;
 @property (nonatomic, strong) NSString *previousSearchString;
 @property (nonatomic, strong) AlfrescoKeywordSearchOptions *previousSearchOptions;
+@property (nonatomic, strong) NSString *CMISSearchStatement;
 // Controllers
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
@@ -191,7 +193,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage
+- (instancetype)initWithSearchString:(NSString *)string searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -225,6 +227,19 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.controllerType = FileFolderCollectionViewControllerTypeCustomFolderType;
         self.customFolderType = folderType;
         [self setupWithFolder:nil folderPermissions:nil folderDisplayName:displayName session:session];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithSearchStatement:(NSString *)statement session:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
+    if(self)
+    {
+        self.controllerType = FileFolderCollectionViewControllerTypeCMISSearch;
+        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
+        self.CMISSearchStatement = statement;
     }
     
     return self;
@@ -1050,6 +1065,25 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         break;
                 }
                 break;
+            }
+            case FileFolderCollectionViewControllerTypeCMISSearch:
+            {
+                [self showSearchProgressHUD];
+                [self.searchService searchWithStatement:self.CMISSearchStatement language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
+                    [self hideSearchProgressHUD];
+                    if(array)
+                    {
+                        self.collectionViewData = [array mutableCopy];
+                        [self reloadCollectionView];
+                    }
+                    else
+                    {
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+
+                    }
+                }];
             }
         }
     }
