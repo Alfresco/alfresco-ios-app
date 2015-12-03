@@ -383,9 +383,9 @@ static NSInteger const kTagCertificateCell = 1;
         
         BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
         BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
-        BOOL usernameError = [username isEqualToString:@""];
-        BOOL passwordError = [password isEqualToString:@""] || password == nil;
-        BOOL serviceDocError = [serviceDoc isEqualToString:@""];
+        BOOL usernameError = username.length == 0;
+        BOOL passwordError = password.length == 0;
+        BOOL serviceDocError = serviceDoc.length == 0;
         
         didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !passwordError && !serviceDocError;
         
@@ -553,7 +553,7 @@ static NSInteger const kTagCertificateCell = 1;
     
     self.formBackupAccount.username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.accountDescription = (!accountDescription || [accountDescription isEqualToString:@""]) ? defaultDescription : accountDescription;
+    self.formBackupAccount.accountDescription = (accountDescription.length == 0) ? defaultDescription : accountDescription;
     self.formBackupAccount.serverAddress = [self.serverAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;

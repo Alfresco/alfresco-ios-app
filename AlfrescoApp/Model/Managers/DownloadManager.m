@@ -544,7 +544,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 {
     NSString *fileExtension = filename.pathExtension;
     NSString *filenameWithoutExtension = filename.stringByDeletingPathExtension;
-    BOOL hasExtension = ![fileExtension isEqualToString:@""];
+    BOOL hasExtension = fileExtension.length > 0;
     NSArray *existingFiles = [self downloadedDocumentNames];
     // We'll bail out after kFileSuffixMaxAttempts attempts
     NSUInteger suffix = 0;

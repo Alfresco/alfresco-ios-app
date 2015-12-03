@@ -241,14 +241,7 @@
 
 - (void)validateAndSetDisplayNameWithName:(NSString *)proposedDisplayName
 {
-    if (proposedDisplayName && ![proposedDisplayName isEqualToString:@""])
-    {
-        self.serverDisplayName = proposedDisplayName;
-    }
-    else
-    {
-        self.serverDisplayName = self.serverAddress;
-    }
+    self.serverDisplayName = (proposedDisplayName.length > 0) ? proposedDisplayName : self.serverAddress;
 }
 
 - (NSString *)serverDisplayString

@@ -422,7 +422,7 @@ NSString *fileNameAppendedWithDate(NSString *name)
     NSString *fileExtension = name.pathExtension;
     NSString *fileName = [NSString stringWithFormat:@"%@_%@", name.stringByDeletingPathExtension, dateString];
     
-    if (fileExtension && ![fileExtension isEqualToString:@""])
+    if (fileExtension.length > 0)
     {
         fileName = [fileName stringByAppendingPathExtension:fileExtension];
     }
@@ -589,7 +589,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
         CFRelease(pathExtension);
     }
     
-    if (!mimeType || [mimeType isEqualToString:@""])
+    if (mimeType.length == 0)
     {
         mimeType = @"application/octet-stream";
     }

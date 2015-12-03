@@ -487,7 +487,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             
             NSDate *lastModifiedDateForLocal = localNode.modifiedAt;
             
-            if (remoteNode.name != nil && ![remoteNode.name isEqualToString:@""])
+            if (remoteNode.name.length > 0)
             {
                 if ([self isNodeModifiedSinceLastDownload:remoteNode inManagedObjectContext:privateManagedObjectContext])
                 {
@@ -1141,7 +1141,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     {
         mimeType = @"application/octet-stream";
         
-        if (nodeExtension != nil && ![nodeExtension isEqualToString:@""])
+        if (nodeExtension.length > 0)
         {
             mimeType = [Utility mimeTypeForFileExtension:nodeExtension];
         }

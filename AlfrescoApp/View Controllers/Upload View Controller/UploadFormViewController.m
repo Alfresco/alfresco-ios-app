@@ -617,7 +617,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
 - (void)uploadDocumentUsingContentFileWithName:(NSString *)name completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
 {
     // if no file extention is given, append the correct file extension
-    if (!name.pathExtension || [name.pathExtension isEqualToString:@""])
+    if (name.pathExtension.length == 0)
     {
         name = [name stringByAppendingPathExtension:[Utility fileExtensionFromMimeType:self.contentFile.mimeType]];
     }
@@ -704,7 +704,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
         // Default mimeType: binary
         NSString *mimeType = @"application/octet-stream";
         
-        if (weakSelf.fileExtension != nil && ![weakSelf.fileExtension isEqualToString:@""])
+        if (weakSelf.fileExtension.length > 0)
         {
             documentNameWithPathExtension = [NSString stringWithFormat:@"%@.%@", name, weakSelf.fileExtension];
             mimeType = [Utility mimeTypeForFileExtension:weakSelf.fileExtension];

@@ -210,7 +210,7 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
             }
             else
             {
-                if (selectedAccount.password != nil && ![selectedAccount.password isEqualToString:@""])
+                if (selectedAccount.password.length == 0)
                 {
                     [progressHUD show:YES];
                     [[LoginManager sharedManager] authenticateOnPremiseAccount:selectedAccount password:selectedAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
