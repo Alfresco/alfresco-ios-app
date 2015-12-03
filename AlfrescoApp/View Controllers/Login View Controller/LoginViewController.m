@@ -131,7 +131,7 @@
     usernameTextField.returnKeyType = UIReturnKeyNext;
     usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     usernameTextField.delegate = self;
-    usernameTextField.enabled = NO;
+    usernameTextField.enabled = (self.username.length == 0);
     self.usernameTextField = usernameTextField;
     [usernameCell.contentView addSubview:usernameTextField];
     

@@ -220,6 +220,9 @@
 "accountdetails.alert.save.title" = "Save Account";
 "accountdetails.alert.save.validationerror" = "The account couldn’t be saved. Check your account settings with your Alfresco administrator.";
 
+"accountdetails.fields.accountSettings" = "Enter your user name and password to access this account";
+"accountdetails.fields.confirmPassword" = "Confirm your password to access this account";
+
 /* Client Certificate */
 "certificate-manage.import.label" = "Import from Local Files";
 "certificate-manage.download.label" = "Download from Web Server";
