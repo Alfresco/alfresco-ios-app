@@ -243,7 +243,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self.searchService searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files")];
+            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithSearchString:selectedString searchOptions:[self.searchService searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Files", @"No Files") session:self.session];
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }
@@ -251,7 +251,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithPreviousSearchString:selectedString session:self.session searchOptions:[self.searchService searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders")];
+            FileFolderCollectionViewController *resultsController = [[FileFolderCollectionViewController alloc] initWithSearchString:selectedString searchOptions:[self.searchService searchOptionsForSearchType:self.dataSourceType] emptyMessage:NSLocalizedString(@"No Folders", @"No Folders") session:self.session];
             [self.navigationController pushViewController:resultsController animated:YES];
             break;
         }

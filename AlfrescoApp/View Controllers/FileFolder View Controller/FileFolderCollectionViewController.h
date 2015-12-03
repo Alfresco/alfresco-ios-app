@@ -101,7 +101,7 @@
  @param string - previous search string
  @param session - an active session
  */
-- (instancetype)initWithPreviousSearchString:(NSString *)string session:(id<AlfrescoSession>)session searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage;
+- (instancetype)initWithSearchString:(NSString *)string searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage session:(id<AlfrescoSession>)session;
 
 /**
  Use the folder type id initialiser when needing to display folders such as "My Files" or "Shared Files"
@@ -111,6 +111,14 @@
  @param session - an active session
  */
 - (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+
+/**
+ Use the search statement initialiser to initiate a CMIS search
+
+ @param statement - the CMIS statement
+ @param session - an active session
+ */
+- (instancetype)initWithSearchStatement:(NSString *)statement session:(id<AlfrescoSession>)session;
 
 /**
  Convenience method used to help initialise the internal state of the controller once initialised.
