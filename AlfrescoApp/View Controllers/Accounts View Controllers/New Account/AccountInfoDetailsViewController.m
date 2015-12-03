@@ -175,7 +175,7 @@ static NSInteger const kTagCertificateCell = 1;
     for (UIControl *control in @[self.usernameTextField, self.serverAddressTextField, self.protocolSwitch, self.portTextField, self.serviceDocumentTextField])
     {
         control.enabled = self.canEditAccounts;
-        control.alpha = self.canEditAccounts ? 1.0f : 0.2f;
+        control.alpha = self.canEditAccounts ? 1.0f : 0.3f;
     }
     
     self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, protocolCell],

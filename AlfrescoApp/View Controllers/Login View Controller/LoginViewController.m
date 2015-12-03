@@ -124,7 +124,7 @@
                                                                                   usernameCell.frame.size.width - xPosition,
                                                                                   usernameCell.frame.size.height - (topBottomPadding * 2))];
     usernameTextField.placeholder = NSLocalizedString(@"login.username.textfield.placeholder", @"Username Placeholder Text");
-    usernameTextField.text = (self.username) ? self.username : nil;
+    usernameTextField.text = self.username;
     usernameTextField.textAlignment = NSTextAlignmentRight;
     usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;

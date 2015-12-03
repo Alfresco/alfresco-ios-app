@@ -122,9 +122,9 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)configureViewForConfiguration:(NSDictionary *)configuration
 {
     [self.configuration addEntriesFromDictionary:configuration];
-    NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
+    NSNumber *canAddAccounts = self.configuration[kAppConfigurationCanAddAccountsKey];
     self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
-    NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
+    NSNumber *canRemoveAccounts = self.configuration[kAppConfigurationCanRemoveAccountsKey];
     self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
     
     // Remove the add button if configuration to add accounts is set to NO

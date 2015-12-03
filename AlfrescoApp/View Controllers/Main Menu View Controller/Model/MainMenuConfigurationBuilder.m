@@ -69,7 +69,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 - (void)sectionsForHeaderGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
     // Accounts Menu Item
-    AccountsViewController *accountsController = [[AccountsViewController alloc] initWithSession:self.session];
+    AccountsViewController *accountsController = [[AccountsViewController alloc] initWithConfiguration:self.managedAccountConfiguration session:self.session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsController];
     MainMenuItem *accountsItem = [MainMenuItem itemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier
                                                             title:NSLocalizedString(@"accounts.title", @"Accounts")
