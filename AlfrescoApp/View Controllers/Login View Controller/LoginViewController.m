@@ -124,14 +124,14 @@
                                                                                   usernameCell.frame.size.width - xPosition,
                                                                                   usernameCell.frame.size.height - (topBottomPadding * 2))];
     usernameTextField.placeholder = NSLocalizedString(@"login.username.textfield.placeholder", @"Username Placeholder Text");
-    usernameTextField.text = (self.username) ? self.username : nil;
+    usernameTextField.text = self.username;
     usernameTextField.textAlignment = NSTextAlignmentRight;
     usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameTextField.returnKeyType = UIReturnKeyNext;
     usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     usernameTextField.delegate = self;
-    usernameTextField.enabled = NO;
+    usernameTextField.enabled = (self.username.length == 0);
     self.usernameTextField = usernameTextField;
     [usernameCell.contentView addSubview:usernameTextField];
     
@@ -241,14 +241,7 @@
 
 - (void)validateAndSetDisplayNameWithName:(NSString *)proposedDisplayName
 {
-    if (proposedDisplayName && ![proposedDisplayName isEqualToString:@""])
-    {
-        self.serverDisplayName = proposedDisplayName;
-    }
-    else
-    {
-        self.serverDisplayName = self.serverAddress;
-    }
+    self.serverDisplayName = (proposedDisplayName.length > 0) ? proposedDisplayName : self.serverAddress;
 }
 
 - (NSString *)serverDisplayString

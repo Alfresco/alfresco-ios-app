@@ -194,12 +194,12 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
 {
     SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:[self syncIdentifierForNode:node] inAccountWithId:accountId inManagedObjectContext:managedContext];
     
-    if (nodeInfo.syncContentPath == nil || [nodeInfo.syncContentPath isEqualToString:@""])
+    if (nodeInfo.syncContentPath.length == 0)
     {
         NSString *newName = @"";
         NSString *nodeExtension = [node.name pathExtension];
         
-        if (nodeExtension == nil || [nodeExtension isEqualToString:@""])
+        if (nodeExtension.length == 0)
         {
             newName = [[self syncIdentifierForNode:node] lastPathComponent];
         }

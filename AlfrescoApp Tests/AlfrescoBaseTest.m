@@ -174,7 +174,7 @@ static NSString * const kAlfrescoTestServersPlist = @"test-servers.plist";
     NSString *pathExt = [filename pathExtension];
     NSString *strippedString = [filename stringByDeletingPathExtension];
     
-    if (![pathExt isEqualToString:@""])
+    if (pathExt.length > 0)
     {
         return [NSString stringWithFormat:@"%@%@.%@", strippedString, [formatter stringFromDate:currentDate], pathExt];
     }

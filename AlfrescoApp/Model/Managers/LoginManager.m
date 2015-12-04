@@ -81,7 +81,7 @@
         
         if (account.accountType == UserAccountTypeOnPremise)
         {
-            if (!account.password || [account.password isEqualToString:@""])
+            if (account.username.length == 0 || account.password.length == 0)
             {
                 [self hideHUD];
                 [self displayLoginViewControllerWithAccount:account username:account.username];
@@ -348,6 +348,11 @@
 
 - (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock
 {
+    [self authenticateOnPremiseAccount:account username:account.username password:password completionBlock:completionBlock];
+}
+
+- (void)authenticateOnPremiseAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock
+{
     NSDictionary *sessionParameters = [@{kAlfrescoMetadataExtraction : @YES,
                                          kAlfrescoThumbnailCreation : @YES} mutableCopy];
     if (account.accountCertificate)
@@ -361,7 +366,7 @@
                               kAlfrescoClientCertificateCredentials : certificateCredential};
     }
             self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
-            self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:account.username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+            self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                 if (session)
                 {
                     [UniversalDevice clearDetailViewController];
@@ -436,10 +441,11 @@
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
 {
     [self showHUDOnView:loginViewController.view];
-    [self authenticateOnPremiseAccount:account password:(NSString *)password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+    [self authenticateOnPremiseAccount:account username:username password:password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         [self hideHUD];
         if (successful)
         {
+            account.username = username;
             account.password = password;
             [[AccountManager sharedManager] saveAccountsToKeychain];
             if (self.authenticationCompletionBlock != NULL)

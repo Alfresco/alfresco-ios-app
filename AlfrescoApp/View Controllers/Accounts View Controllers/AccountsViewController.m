@@ -122,9 +122,9 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)configureViewForConfiguration:(NSDictionary *)configuration
 {
     [self.configuration addEntriesFromDictionary:configuration];
-    NSNumber *canAddAccounts = configuration[kAppConfigurationCanAddAccountsKey];
+    NSNumber *canAddAccounts = self.configuration[kAppConfigurationCanAddAccountsKey];
     self.canAddAccounts = (canAddAccounts) ? canAddAccounts.boolValue : YES;
-    NSNumber *canRemoveAccounts = configuration[kAppConfigurationCanRemoveAccountsKey];
+    NSNumber *canRemoveAccounts = self.configuration[kAppConfigurationCanRemoveAccountsKey];
     self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
     
     // Remove the add button if configuration to add accounts is set to NO
@@ -398,7 +398,22 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (!successful)
             {
-                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                if (account.password.length > 0)
+                {
+                    displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                }
+                else
+                {
+                    // Missing details - possibly first launch of an MDM-configured account
+                    if ([account.username length] == 0)
+                    {
+                        displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                    }
+                    else
+                    {
+                        displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                    }
+                }
             }
             else
             {

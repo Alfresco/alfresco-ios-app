@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoConfigService *configService;
+@property (nonatomic, strong) NSDictionary *managedAccountConfiguration;
 
 - (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session;
 
