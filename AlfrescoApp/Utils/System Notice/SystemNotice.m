@@ -124,7 +124,7 @@ CGFloat hiddenYOrigin;
     CGFloat statusBarHeight = 20.0f;
     
     // Padding
-    CGFloat paddingBetweenMessageLabelAndBottonOfView = 10.0f;
+    CGFloat paddingBetweenMessageLabelAndBottomOfView = 10.0f;
     
     CGFloat messageLineHeight = 15.0;
     CGFloat originY = (self.message) ? statusBarHeight : 25.0;
@@ -161,7 +161,7 @@ CGFloat hiddenYOrigin;
     }
     
     // Calculate the notice view height
-    float noticeViewHeight = 25.0 + messageLineHeight + paddingBetweenMessageLabelAndBottonOfView;
+    float noticeViewHeight = 25.0 + messageLineHeight + paddingBetweenMessageLabelAndBottomOfView;
     
     // Allow for shadow when hiding
     hiddenYOrigin = 0.0 - noticeViewHeight - 20.0;
@@ -242,6 +242,33 @@ CGFloat hiddenYOrigin;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)layoutSubviews
+{
+    if (self.message)
+    {
+        CGRect parentRect = self.viewToDisplayOn.frame;
+        CGFloat constrainedWidth = parentRect.size.width - 70.0f;
+
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:self.message attributes:@{ NSFontAttributeName: self.messageLabel.font }];
+        CGRect boundingRect = [attributedText boundingRectWithSize:(CGSize){constrainedWidth, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        boundingRect.size.height = ceilf(boundingRect.size.height);
+        boundingRect.size.width = ceilf(boundingRect.size.width);
+        
+        CGRect messageLabelRect = self.messageLabel.frame;
+        CGFloat originalHeight = messageLabelRect.size.height;
+        messageLabelRect.size = boundingRect.size;
+        [self.messageLabel setFrame:messageLabelRect];
+        
+        if (boundingRect.size.height > originalHeight)
+        {
+            // Increase the height of the notice view to accomodate the taller message
+            CGRect selfRect = self.frame;
+            selfRect.size.height += (boundingRect.size.height - originalHeight);
+            [self setFrame:selfRect];
+        }
+    }
 }
 
 #pragma mark - Device Orientation Notification
