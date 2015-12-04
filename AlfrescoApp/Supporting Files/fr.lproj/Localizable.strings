@@ -220,6 +220,9 @@
 "accountdetails.alert.save.title" = "Enregistrer le compte";
 "accountdetails.alert.save.validationerror" = "L'enregistrement du compte a échoué. Vérifiez vos paramètres de compte avec l'administrateur Alfresco.";
 
+"accountdetails.fields.accountSettings" = "Entrez vos nom d'utilisateur et mot de passe pour accéder à ce compte";
+"accountdetails.fields.confirmPassword" = "Confirmez votre mot de passe pour accéder à ce compte";
+
 /* Client Certificate */
 "certificate-manage.import.label" = "Importer depuis les fichiers locaux";
 "certificate-manage.download.label" = "Télécharger depuis serveur web";
