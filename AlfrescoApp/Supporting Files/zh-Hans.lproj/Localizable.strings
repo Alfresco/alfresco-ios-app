@@ -220,6 +220,9 @@
 "accountdetails.alert.save.title" = "保存帐户";
 "accountdetails.alert.save.validationerror" = "无法保存帐户。请与您的 Alfresco 管理员核实您的帐户设置。";
 
+"accountdetails.fields.accountSettings" = "输入您的用户名和密码访问此帐户";
+"accountdetails.fields.confirmPassword" = "确认您的密码访问此帐户";
+
 /* Client Certificate */
 "certificate-manage.import.label" = "从\"本地文件\"导入";
 "certificate-manage.download.label" = "从 Web 服务器下载";

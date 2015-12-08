@@ -220,6 +220,9 @@
 "accountdetails.alert.save.title" = "アカウントの保存";
 "accountdetails.alert.save.validationerror" = "アカウントを保存できませんでした。Alfresco 管理者に、お使いのアカウントの設定を確認してください。";
 
+"accountdetails.fields.accountSettings" = "このアカウントにアクセスするためのユーザー名とパスワードを入力してください";
+"accountdetails.fields.confirmPassword" = "確認のために、このアカウントにアクセスするためのパスワードを入力してください";
+
 /* Client Certificate */
 "certificate-manage.import.label" = "ローカルファイルからインポート";
 "certificate-manage.download.label" = "Web サーバーからダウンロード";

@@ -220,6 +220,9 @@
 "accountdetails.alert.save.title" = "Guardar cuenta";
 "accountdetails.alert.save.validationerror" = "No se pudo guardar la cuenta. Compruebe los ajustes de su cuenta con su administrador de Alfresco.";
 
+"accountdetails.fields.accountSettings" = "Introduzca su nombre de usuario y contraseña para acceder a esta cuenta";
+"accountdetails.fields.confirmPassword" = "Confirme su contraseña para acceder a esta cuenta";
+
 /* Client Certificate */
 "certificate-manage.import.label" = "Importar desde ficheros locales";
 "certificate-manage.download.label" = "Descargar del servidor Web";
