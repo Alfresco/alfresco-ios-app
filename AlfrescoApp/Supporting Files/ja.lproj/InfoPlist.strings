@@ -4,9 +4,9 @@
  *
  * Japanese (ja)
  *
- * Copyright (c) 2014 Alfresco. All rights reserved.
+ * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationUsageDescription = "現在の位置は、このデバイスで撮影した写真の位置情報（ジオタグ）に使用されます。";
+NSLocationUsageDescription = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用されます。";
 NSMicrophoneUsageDescription = "マイクを使用して音声を録音します。音声は後でリポジトリにアップロードできます。";
