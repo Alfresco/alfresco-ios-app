@@ -243,6 +243,7 @@ NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification = @"Alfresco
 // Main Menu
 ///
 NSString * const kAlfrescoEmbeddedConfigurationFileName = @"configuration.json";
+NSString * const kAlfrescoNoAccountConfigurationFileName = @"noAccountsConfiguration.json";
 /// Notifications
 NSString * const kAlfrescoConfigFileDidUpdateNotification = @"AlfrescoConfigurationFileDidUpdateNotification";
 NSString * const kAlfrescoConfigShouldUpdateMainMenuNotification = @"AlfrescoConfigurationShouldUpdateMainMenuNotification";

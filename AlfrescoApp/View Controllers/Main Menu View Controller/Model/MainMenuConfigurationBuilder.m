@@ -104,12 +104,29 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         }];
     };
     
-    if (self.account == [AccountManager sharedManager].selectedAccount)
+    if(self.account)
     {
-        buildItemsForProfile(configManager.selectedProfile);
+        if (self.account == [AccountManager sharedManager].selectedAccount)
+        {
+            buildItemsForProfile(configManager.selectedProfile);
+        }
+        else
+        {
+            [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
+                if (defaultConfigError)
+                {
+                    AlfrescoLogError(@"Could not retrieve root config for profile %@", defaultConfig.rootViewId);
+                }
+                else
+                {
+                    buildItemsForProfile(defaultConfig);
+                }
+            }];
+        }
     }
     else
     {
+        self.configService = [[AppConfigurationManager sharedManager] configurationServiceForNoAccountConfiguration];
         [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
             if (defaultConfigError)
             {
