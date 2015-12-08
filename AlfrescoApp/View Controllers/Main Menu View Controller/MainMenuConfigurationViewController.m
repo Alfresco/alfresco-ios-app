@@ -57,6 +57,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
         self.autoselectDefaultMenuOption = YES;
         
         [self loadGroupType:MainMenuGroupTypeHeader completionBlock:nil];
+        [self loadGroupType:MainMenuGroupTypeContent completionBlock:nil];
         [self loadGroupType:MainMenuGroupTypeFooter completionBlock:nil];
     }
     return self;
@@ -84,7 +85,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 - (void)accountListEmpty:(NSNotification *)notification
 {
-    [self clearGroupType:MainMenuGroupTypeContent];
+    
 }
 
 - (void)accountUpdated:(NSNotification *)notification
@@ -115,7 +116,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 - (void)configurationDidChange:(NSNotification *)notification
 {
     MainMenuConfigurationBuilder *builder = notification.object;
-    self.builder = builder;
+    self.builder = builder? : [[MainMenuConfigurationBuilder alloc] initWithAccount:nil session:self.session];
     
     [self updateMenu:notification];
 }

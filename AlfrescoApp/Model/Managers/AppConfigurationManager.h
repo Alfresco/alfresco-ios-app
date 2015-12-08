@@ -48,6 +48,7 @@
 - (AlfrescoConfigService *)configurationServiceForCurrentAccount;
 - (AlfrescoConfigService *)configurationServiceForAccount:(UserAccount *)account;
 - (AlfrescoConfigService *)configurationServiceForEmbeddedConfiguration;
+- (AlfrescoConfigService *)configurationServiceForNoAccountConfiguration;
 - (BOOL)serverConfigurationExistsForAccount:(UserAccount *)account;
 
 - (void)removeConfigurationFileForAccount:(UserAccount *)account;

@@ -283,6 +283,7 @@ extern NSString * const kAlfrescoPagedScrollViewLayoutSubviewsNotification;
 // Main Menu
 ///
 extern NSString * const kAlfrescoEmbeddedConfigurationFileName;
+extern NSString * const kAlfrescoNoAccountConfigurationFileName;
 /// Notifications
 extern NSString * const kAlfrescoConfigFileDidUpdateNotification;
 extern NSString * const kAlfrescoConfigShouldUpdateMainMenuNotification;

@@ -29,6 +29,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 @interface AppConfigurationManager ()
 @property (nonatomic, strong) AlfrescoConfigService *currentConfigService;
 @property (nonatomic, strong) AlfrescoConfigService *embeddedConfigService;
+@property (nonatomic, strong) AlfrescoConfigService *noAccountConfigService;
 @property (nonatomic, strong) NSString *currentConfigAccountIdentifier;
 @end
 
@@ -65,9 +66,19 @@ static dispatch_once_t onceToken;
         [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
             NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: configurationFilePath.stringByDeletingLastPathComponent,
                                          kAlfrescoConfigServiceParameterFileName: configurationFilePath.lastPathComponent};
+            NSDictionary *noAccountParameters = @{kAlfrescoConfigServiceParameterFolder:configurationFilePath.stringByDeletingLastPathComponent,
+                                                  kAlfrescoConfigServiceParameterFileName: kAlfrescoNoAccountConfigurationFileName};
             
-            self.currentConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
             self.embeddedConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+            self.noAccountConfigService = [[AlfrescoConfigService alloc] initWithDictionary:noAccountParameters];
+            if([AccountManager sharedManager].allAccounts.count > 0)
+            {
+                self.currentConfigService = self.embeddedConfigService;
+            }
+            else
+            {
+                self.currentConfigService = self.noAccountConfigService;
+            }
             
             [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
                 if (defaultProfileError)
@@ -188,24 +199,36 @@ static dispatch_once_t onceToken;
 {
     AlfrescoConfigService *returnService = nil;
     
-    if ([self.currentConfigAccountIdentifier isEqualToString:account.accountIdentifier])
+    if(account)
     {
-        returnService = [self configurationServiceForCurrentAccount];
-    }
-    else if ([self serverConfigurationExistsForAccount:account])
-    {
-        NSString *accountConfigurationFolderPath = [self accountSpecificConfigurationFolderPath:account];
-        NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: accountConfigurationFolderPath,
-                                     kAlfrescoConfigServiceParameterFileName: kAlfrescoEmbeddedConfigurationFileName};
-        returnService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
-        returnService.session = self.session;
+        if ([self.currentConfigAccountIdentifier isEqualToString:account.accountIdentifier])
+        {
+            returnService = [self configurationServiceForCurrentAccount];
+        }
+        else if ([self serverConfigurationExistsForAccount:account])
+        {
+            NSString *accountConfigurationFolderPath = [self accountSpecificConfigurationFolderPath:account];
+            NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: accountConfigurationFolderPath,
+                                         kAlfrescoConfigServiceParameterFileName: kAlfrescoEmbeddedConfigurationFileName};
+            returnService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+            returnService.session = self.session;
+        }
+        else
+        {
+            returnService = [self configurationServiceForEmbeddedConfiguration];
+        }
     }
     else
     {
-        returnService = [self configurationServiceForEmbeddedConfiguration];
+        returnService = [self configurationServiceForNoAccountConfiguration];
     }
     
     return returnService;
+}
+                         
+- (AlfrescoConfigService *)configurationServiceForNoAccountConfiguration
+{
+    return self.noAccountConfigService;
 }
 
 - (AlfrescoConfigService *)configurationServiceForEmbeddedConfiguration
@@ -363,11 +386,22 @@ static dispatch_once_t onceToken;
 
 - (void)accountRemoved:(NSNotification *)notification
 {
-    // TODO
+    UserAccount *accountRemoved = notification.object;
+    AlfrescoConfigService *configService = [self configurationServiceForAccount:accountRemoved];
+    configService.session = nil;
+    [configService clear];
+    
+    if([self.currentConfigAccountIdentifier isEqualToString:accountRemoved.accountIdentifier])
+    {
+        self.currentConfigAccountIdentifier = nil;
+        self.selectedProfile = nil;
+        self.session = nil;
+    }
 }
 
 - (void)noMoreAccounts:(NSNotification *)notification
 {
+    self.currentConfigService = self.noAccountConfigService;
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:nil userInfo:nil];
 }
 
@@ -415,10 +449,13 @@ static dispatch_once_t onceToken;
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     
     // File location to the configuration file
-    NSString *completeDestinationPath = [self filePathForEmbeddedConfigurationFile];
+    NSString *completeDestinationPath = ([AccountManager sharedManager].allAccounts.count > 0) ? [self filePathForEmbeddedConfigurationFile] : [self filePathForNoAccountsConfigurationFile];
+
     if (![fileManager fileExistsAtPath:completeDestinationPath])
     {
-        NSString *fileLocationInBundle = [[NSBundle mainBundle] pathForResource:kAlfrescoEmbeddedConfigurationFileName.stringByDeletingPathExtension ofType:kAlfrescoEmbeddedConfigurationFileName.pathExtension];
+        NSString *configFileName = ([AccountManager sharedManager].allAccounts.count > 0) ? kAlfrescoEmbeddedConfigurationFileName : kAlfrescoNoAccountConfigurationFileName;
+        
+        NSString *fileLocationInBundle = [[NSBundle mainBundle] pathForResource:configFileName.stringByDeletingPathExtension ofType:configFileName.pathExtension];
         NSError *copyError = nil;
 
         [fileManager copyItemAtPath:fileLocationInBundle toPath:completeDestinationPath error:&copyError];
@@ -439,6 +476,12 @@ static dispatch_once_t onceToken;
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     return [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];
+}
+
+- (NSString *)filePathForNoAccountsConfigurationFile
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    return [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:kAlfrescoNoAccountConfigurationFileName];
 }
 
 @end

@@ -196,6 +196,7 @@
 		2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */; };
 		2B1A050A1BB2D27C00EE4AAE /* SiteMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A05091BB2D27C00EE4AAE /* SiteMembersViewController.m */; };
 		2B1A050C1BB2E4CE00EE4AAE /* SiteMembersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */; };
+		2B2472011C11C7DC00153247 /* noAccountsConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */; };
 		2B2609911B4AD2C100F2F26B /* dots-A.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098D1B4AD2C100F2F26B /* dots-A.png */; };
 		2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */; };
 		2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
@@ -1091,6 +1092,7 @@
 		2B1A05081BB2D27C00EE4AAE /* SiteMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteMembersViewController.h; sourceTree = "<group>"; };
 		2B1A05091BB2D27C00EE4AAE /* SiteMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteMembersViewController.m; sourceTree = "<group>"; };
 		2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteMembersViewController.xib; sourceTree = "<group>"; };
+		2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = noAccountsConfiguration.json; sourceTree = "<group>"; };
 		2B26098D1B4AD2C100F2F26B /* dots-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A.png"; sourceTree = "<group>"; };
 		2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A@2x.png"; sourceTree = "<group>"; };
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
@@ -2637,6 +2639,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */,
 				73B579961B15FBF1009D30B6 /* configuration.json */,
 				27C2EBF71907044A003B09B9 /* Activities.strings */,
 				274E61B4189DCF9200202572 /* AlfrescoApp-Info.plist */,
@@ -4374,6 +4377,7 @@
 				73A04F30187F11C800C4EAB4 /* BaseDocumentPreviewViewController~ipad.xib in Resources */,
 				738BE9581A962AA7006264E5 /* MetadataDisplayList.plist in Resources */,
 				0804DCCB181AB0C400E3ACC2 /* AccountInfoViewController.xib in Resources */,
+				2B2472011C11C7DC00153247 /* noAccountsConfiguration.json in Resources */,
 				0808B9E2183D1083000A8984 /* empty_icon.png in Resources */,
 				73FF558D18ACE2370009CA56 /* large_zip.png in Resources */,
 				080A812318561E6D00B79306 /* certificate.png in Resources */,
