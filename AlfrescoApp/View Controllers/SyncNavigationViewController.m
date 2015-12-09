@@ -119,7 +119,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         }];
         
         self.isProgressViewShowing = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:self];
     }
 }
 
@@ -140,7 +140,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
         }];
         
         self.isProgressViewShowing = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:self];
     }
 }
 

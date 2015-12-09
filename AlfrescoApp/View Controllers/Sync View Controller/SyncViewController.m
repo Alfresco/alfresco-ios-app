@@ -93,7 +93,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     
     self.title = [self listTitle];
-    [self adjustCollectionViewForProgressView];
+    [self adjustCollectionViewForProgressView:nil];
     
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
@@ -125,7 +125,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                                  name:kAlfrescoNodeAddedOnServerNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(adjustCollectionViewForProgressView)
+                                             selector:@selector(adjustCollectionViewForProgressView:)
                                                  name:kSyncProgressViewVisiblityChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -693,9 +693,19 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
-- (void)adjustCollectionViewForProgressView
+- (void)adjustCollectionViewForProgressView:(NSNotification *)notification
 {
     id navigationController = self.navigationController;
+    
+    if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(SyncManagerProgressDelegate)]))
+    {
+        /* The sender is not the navigation controller of this view controller, but the navigation controller of another instance of SyncViewController (namely the favorites view controller
+         which was created when the account was first added). Will update the progress delegate on SyncManager to be able to show the progress view. The cause of this problem is a timing issue
+         between begining the syncing process, menu reloading and delegate calls and notifications going around from component to component.
+         */
+        [SyncManager sharedManager].progressDelegate = navigationController;
+    }
+    
     if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
     {
         SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
