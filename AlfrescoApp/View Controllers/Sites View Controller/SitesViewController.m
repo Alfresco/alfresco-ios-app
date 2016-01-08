@@ -135,6 +135,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     [self.favoritesVC didMoveToParentViewController:self];
     
     self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self];
+    self.mySitesVC.view.frame = self.mySitesContainerView.bounds;
     [self.mySitesContainerView addSubview:self.mySitesVC.view];
     [self addChildViewController:self.mySitesVC];
     [self.mySitesVC didMoveToParentViewController:self];
@@ -144,7 +145,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
         self.searchVC.sitesPushHandler = self;
         self.searchVC.shouldHideNavigationBarOnSearchControllerPresentation = NO;
-
+        
         // Add some spacing between UISegmentControl and search control
         CGRect siteFinderRect = CGRectInset(self.siteFinderContainerView.bounds, 0, kSegmentToSearchControlPadding);
         self.searchVC.view.frame = siteFinderRect;
@@ -156,6 +157,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     else
     {
         self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
+        self.allSitesVC.view.frame = self.siteFinderContainerView.bounds;
         [self.siteFinderContainerView addSubview:self.allSitesVC.view];
         [self addChildViewController:self.allSitesVC];
         [self.allSitesVC didMoveToParentViewController:self];
