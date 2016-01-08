@@ -579,7 +579,9 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             [self deleteUnWantedSyncedNodes:nodes inManagedObjectContext:privateManagedObjectContext completionBlock:^(BOOL completed) {
                 [self.syncCoreDataHelper saveContextForManagedObjectContext:privateManagedObjectContext];
-                [privateManagedObjectContext reset];
+                [privateManagedObjectContext performBlock:^{
+                    [privateManagedObjectContext reset];
+                }];
                 syncInfoandContent();
             }];
         }
@@ -1481,7 +1483,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
             }
         }
-        [privateManagedObjectContext reset];
         privateManagedObjectContext = nil;
     }
 }
@@ -1565,7 +1566,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     
-    [privateManagedObjectContext reset];
     privateManagedObjectContext = nil;
 }
 

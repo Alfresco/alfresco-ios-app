@@ -84,7 +84,9 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
             }
         }
         [self.syncCoreDataHelper saveContextForManagedObjectContext:managedContext];
-        [managedContext reset];
+        [managedContext performBlock:^{
+            [managedContext reset];
+        }];
     }
 }
 
