@@ -312,8 +312,8 @@
     self.cloudAPIKey = CLOUD_OAUTH_KEY;
     self.cloudSecretKey = CLOUD_OAUTH_SECRET;
     
-    // Checks for a cloud-config.plist file with custom connection parameters
-    NSString *plistPath = [[[AlfrescoFileManager sharedManager] documentsDirectory] stringByAppendingPathComponent:kCloudConfigFile];
+    // Checks for a cloud-config.plist file in the "Local Files" area with custom connection parameters
+    NSString *plistPath = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:kCloudConfigFile];
     NSDictionary *config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     NSString *customCloudURL = config[kCloudConfigParamURL];
 
