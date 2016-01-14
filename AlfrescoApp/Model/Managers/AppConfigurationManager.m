@@ -71,7 +71,7 @@ static dispatch_once_t onceToken;
             
             self.embeddedConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
             self.noAccountConfigService = [[AlfrescoConfigService alloc] initWithDictionary:noAccountParameters];
-            if([AccountManager sharedManager].allAccounts.count > 0)
+            if(([AccountManager sharedManager].allAccounts.count > 0) || ([AccountManager sharedManager].selectedAccount != nil))
             {
                 self.currentConfigService = self.embeddedConfigService;
             }
@@ -267,6 +267,9 @@ static dispatch_once_t onceToken;
 {
     id<AlfrescoSession> session = notification.object;
     self.session = session;
+    
+    self.currentConfigService = [self configurationServiceForAccount:[AccountManager sharedManager].selectedAccount];
+    self.currentConfigService.session = session;
 
     [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         if (defaultProfileError)
@@ -402,6 +405,7 @@ static dispatch_once_t onceToken;
 - (void)noMoreAccounts:(NSNotification *)notification
 {
     self.currentConfigService = self.noAccountConfigService;
+    [AppConfigurationManager resetInstanceAndReturnManager];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:nil userInfo:nil];
 }
 
@@ -449,11 +453,13 @@ static dispatch_once_t onceToken;
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     
     // File location to the configuration file
-    NSString *completeDestinationPath = ([AccountManager sharedManager].allAccounts.count > 0) ? [self filePathForEmbeddedConfigurationFile] : [self filePathForNoAccountsConfigurationFile];
+    BOOL areThereAccounts = ([AccountManager sharedManager].allAccounts.count > 0) || ([AccountManager sharedManager].selectedAccount != nil);
+    
+    NSString *completeDestinationPath = areThereAccounts ? [self filePathForEmbeddedConfigurationFile] : [self filePathForNoAccountsConfigurationFile];
 
     if (![fileManager fileExistsAtPath:completeDestinationPath])
     {
-        NSString *configFileName = ([AccountManager sharedManager].allAccounts.count > 0) ? kAlfrescoEmbeddedConfigurationFileName : kAlfrescoNoAccountConfigurationFileName;
+        NSString *configFileName = areThereAccounts ? kAlfrescoEmbeddedConfigurationFileName : kAlfrescoNoAccountConfigurationFileName;
         
         NSString *fileLocationInBundle = [[NSBundle mainBundle] pathForResource:configFileName.stringByDeletingPathExtension ofType:configFileName.pathExtension];
         NSError *copyError = nil;
