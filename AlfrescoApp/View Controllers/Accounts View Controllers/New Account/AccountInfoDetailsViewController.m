@@ -105,6 +105,15 @@ static NSInteger const kTagCertificateCell = 1;
 
 - (void)constructTableCellsForAlfrescoServer
 {
+    TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    descriptionCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.description", @"Description Cell Text");
+    descriptionCell.valueTextField.placeholder = NSLocalizedString(@"accountdetails.placeholder.required", @"required");
+    descriptionCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    descriptionCell.valueTextField.delegate = self;
+    self.descriptionTextField = descriptionCell.valueTextField;
+    self.descriptionTextField.text = self.formBackupAccount.accountDescription;
+    
     TextFieldCell *usernameCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
     usernameCell.selectionStyle = UITableViewCellSelectionStyleNone;
     usernameCell.titleLabel.text = NSLocalizedString(@"login.username.cell.label", @"Username Cell Text");
@@ -178,10 +187,11 @@ static NSInteger const kTagCertificateCell = 1;
         control.alpha = self.canEditAccounts ? 1.0f : 0.3f;
     }
     
-    self.tableViewData = [NSMutableArray arrayWithArray:@[ @[usernameCell, passwordCell, serverAddressCell, protocolCell],
-                                                            @[portCell, serviceDocumentCell, certificateCell]]];
-    self.tableGroupHeaders = @[@"",@"accountdetails.header.advanced"];
-    self.tableGroupFooters = @[@"",@""];
+    self.tableViewData = [NSMutableArray arrayWithArray:@[ @[descriptionCell],
+                                                           @[usernameCell, passwordCell, serverAddressCell, protocolCell],
+                                                           @[portCell, serviceDocumentCell, certificateCell]]];
+    self.tableGroupHeaders = @[@"",@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+    self.tableGroupFooters = @[@"", @"",@""];
 }
 
 #pragma mark - TableView Datasource
@@ -263,7 +273,11 @@ static NSInteger const kTagCertificateCell = 1;
 {
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
     
-    if (textField == self.usernameTextField)
+    if (textField == self.descriptionTextField)
+    {
+        [self.usernameTextField becomeFirstResponder];
+    }
+    else if (textField == self.usernameTextField)
     {
         [self.passwordTextField becomeFirstResponder];
     }
@@ -272,10 +286,6 @@ static NSInteger const kTagCertificateCell = 1;
         [self.serverAddressTextField becomeFirstResponder];
     }
     else if (textField == self.serverAddressTextField)
-    {
-        [self.descriptionTextField becomeFirstResponder];
-    }
-    else if (textField == self.descriptionTextField)
     {
         [self.portTextField becomeFirstResponder];
     }
@@ -373,6 +383,7 @@ static NSInteger const kTagCertificateCell = 1;
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
         // User input validations
+        NSString *descriptionString = [self.descriptionTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSString *hostname = self.serverAddressTextField.text;
         NSString *port = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -381,16 +392,21 @@ static NSInteger const kTagCertificateCell = 1;
         
         NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
         
+        BOOL descriptionError = descriptionString.length == 0;
         BOOL hostnameError = ( !hostname || (hostnameRange.location == NSNotFound) );
         BOOL portIsInvalid = ([port rangeOfString:@"^[0-9]*$" options:NSRegularExpressionSearch].location == NSNotFound);
         BOOL usernameError = username.length == 0;
         BOOL passwordError = password.length == 0;
         BOOL serviceDocError = serviceDoc.length == 0;
         
-        didChangeAndIsValid = !hostnameError && !portIsInvalid && !usernameError && !passwordError && !serviceDocError;
+        didChangeAndIsValid = !descriptionError && !hostnameError && !portIsInvalid && !usernameError && !passwordError && !serviceDocError;
         
         if (didChangeAndIsValid)
         {
+            if ([self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text] == NO)
+            {
+                hasAccountPropertiesChanged = YES;
+            }
             if (![self.formBackupAccount.username isEqualToString:self.usernameTextField.text])
             {
                 hasAccountPropertiesChanged = YES;

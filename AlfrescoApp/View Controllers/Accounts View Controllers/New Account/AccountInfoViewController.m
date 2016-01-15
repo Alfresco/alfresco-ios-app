@@ -346,7 +346,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
         accountDetailsCell.selectionStyle = UITableViewCellSelectionStyleDefault;
         accountDetailsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         accountDetailsCell.tag = kTagAccountDetailsCell;
-        accountDetailsCell.titleLabel.text = self.account.accountDescription;
+        accountDetailsCell.titleLabel.text = self.formBackupAccount.accountDescription;
         accountDetailsCell.valueLabel.text = self.formBackupAccount.username;
         accountDetailsCell.valueLabel.textColor = [UIColor lightGrayColor];
         
@@ -580,6 +580,11 @@ static NSInteger const kTagAccountDetailsCell = 4;
 {
     self.hasChangedAccountDetails = YES;
     self.formBackupAccount = [newAccount copy];
+    
+    self.title = self.formBackupAccount.accountDescription;
+    [self constructTableCellsForAlfrescoServer];
+    [self.tableView reloadData];
+    
 }
 
 #pragma mark - UITextFieldDelegate Functions
