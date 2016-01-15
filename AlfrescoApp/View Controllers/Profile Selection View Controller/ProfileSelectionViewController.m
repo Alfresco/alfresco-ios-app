@@ -95,6 +95,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
         {
             [appConfigManager removeConfigurationFileForAccount:self.account];
             self.configService = [appConfigManager configurationServiceForAccount:self.account];
+            self.configService.session = nil;
             [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                 self.tableViewData = [NSArray arrayWithObject:config];
                 [self.tableView reloadData];
