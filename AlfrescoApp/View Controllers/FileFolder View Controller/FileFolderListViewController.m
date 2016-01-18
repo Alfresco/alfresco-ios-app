@@ -396,8 +396,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) { }];
         
         [alertController addAction:[self alertActionCancel]];
-            NSString *desiredFolderName = [alertController.textFields[0].text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSString *desiredFolderName = [[alertController.textFields[0] text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
             if ([Utility isValidFolderName:desiredFolderName])
             {
