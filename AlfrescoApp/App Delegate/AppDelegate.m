@@ -39,6 +39,8 @@
 
 #import <HockeySDK/HockeySDK.h>
 
+@import MediaPlayer;
+
 static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 
 @interface AppDelegate()
@@ -235,6 +237,12 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                 {
                     supportedOrientations = [presentedController supportedInterfaceOrientations];
                 }
+            }
+            else if ([modalViewController isKindOfClass:[MPMoviePlayerViewController class]])
+            {
+                MPMoviePlaybackState playbackState = [(MPMoviePlayerViewController *)modalViewController moviePlayer].playbackState;
+                
+                supportedOrientations = (playbackState == MPMoviePlaybackStateStopped || playbackState == MPMoviePlaybackStatePaused) ? supportedOrientations : UIInterfaceOrientationMaskAllButUpsideDown;
             }
             else
             {
