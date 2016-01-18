@@ -494,10 +494,10 @@ static NSInteger const kTagCertificateCell = 1;
     if([self validateAccountFieldsValuesForServer])
     {
         UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.confirmation.back.title", @"Unsaved changes") message:NSLocalizedString(@"action.confirmation.back.message", @"Save changes?") preferredStyle:UIAlertControllerStyleAlert];
-        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.discard", @"Discard") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.discard", @"Discard") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self.navigationController popViewControllerAnimated:YES];
         }]];
-        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.save", @"Save") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.save", @"Save") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self saveButtonClicked:sender];
         }]];
         
