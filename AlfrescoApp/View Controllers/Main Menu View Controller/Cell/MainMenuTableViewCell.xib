@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -16,7 +15,8 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YQy-LM-lsT">
-                        <rect key="frame" x="8" y="15" width="30" height="30"/>
+                        <rect key="frame" x="2" y="15" width="30" height="30"/>
+                        <animations/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="DY6-Hu-xsJ"/>
@@ -24,21 +24,24 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bED-Pc-f8N" userLabel="Label Container View">
-                        <rect key="frame" x="48" y="8" width="264" height="43.5"/>
+                        <rect key="frame" x="42" y="8" width="270" height="43.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YHe-0b-vUP" userLabel="Title Label">
-                                <rect key="frame" x="0.0" y="0.0" width="264" height="27"/>
+                                <rect key="frame" x="0.0" y="0.0" width="270" height="27"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3oK-xA-Gow" userLabel="Description Label">
-                                <rect key="frame" x="0.0" y="27" width="264" height="12"/>
+                                <rect key="frame" x="0.0" y="27" width="270" height="12"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="1iU-gp-k6g"/>
@@ -52,9 +55,10 @@
                         </constraints>
                     </view>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="bED-Pc-f8N" firstAttribute="leading" secondItem="YQy-LM-lsT" secondAttribute="trailing" constant="10" id="1P9-X0-qbA"/>
-                    <constraint firstItem="YQy-LM-lsT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="DZT-2j-ZLi"/>
+                    <constraint firstItem="YQy-LM-lsT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-6" id="DZT-2j-ZLi"/>
                     <constraint firstItem="bED-Pc-f8N" firstAttribute="topMargin" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="topMargin" priority="750" id="Dn0-Pd-guB"/>
                     <constraint firstItem="bED-Pc-f8N" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" priority="750" id="RHK-gW-EEi"/>
                     <constraint firstAttribute="centerY" secondItem="bED-Pc-f8N" secondAttribute="centerY" id="doF-Bz-ucL"/>
@@ -62,6 +66,7 @@
                     <constraint firstAttribute="centerY" secondItem="YQy-LM-lsT" secondAttribute="centerY" id="mfB-59-Cxf"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="itemDescriptionLabel" destination="3oK-xA-Gow" id="qRO-LD-OvT"/>
                 <outlet property="itemImageView" destination="YQy-LM-lsT" id="eRd-sV-u2r"/>
