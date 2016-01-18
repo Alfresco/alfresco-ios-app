@@ -368,7 +368,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionCancel
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         if ([[LocationManager sharedManager] isTrackingLocation])
         {
             [[LocationManager sharedManager] stopLocationUpdates];
@@ -378,7 +378,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionCreateFile
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:self.displayFolder session:self.session delegate:self];
         NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
         [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
@@ -387,17 +387,17 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionAddFolder
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         // Display the create folder UIAlertController
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
                                                                                  message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) { }];
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) { }];
         
         [alertController addAction:[self alertActionCancel]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSString *desiredFolderName = [alertController.textFields[0].text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSString *desiredFolderName = [[alertController.textFields[0] text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
             if ([Utility isValidFolderName:desiredFolderName])
             {
@@ -425,7 +425,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionUpload
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload", @"Upload") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload", @"Upload") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         // Upload type UIAlertController
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[self alertActionUploadExistingPhotos]];
@@ -442,7 +442,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionUploadExistingPhotos
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
         self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -452,7 +452,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionUploadExistingPhotosOrVideos
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
         self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -462,7 +462,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionUploadDocument
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
         downloadPicker.isDownloadPickerEnabled = YES;
         downloadPicker.downloadPickerDelegate = self;
@@ -475,7 +475,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionTakePhoto
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         // start location services
         [[LocationManager sharedManager] startLocationUpdates];
         
@@ -488,7 +488,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionTakePhotoOrVideo
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         // start location services
         [[LocationManager sharedManager] startLocationUpdates];
         
@@ -501,7 +501,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (UIAlertAction *)alertActionRecordAudio
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:self.displayFolder delegate:self];
         NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
         [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
@@ -781,7 +781,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"multiselect.button.delete", @"Delete") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         [self deleteMultiSelectedNodes];
     }]];
     [alertController addAction:[self alertActionCancel]];

@@ -75,7 +75,11 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(UIInterfaceOrientationMask)supportedInterfaceOrientations
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+#else
+- (NSUInteger)supportedInterfaceOrientations
+#endif
 {
     if (!IS_IPAD)
     {

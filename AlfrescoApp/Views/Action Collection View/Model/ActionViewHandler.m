@@ -535,10 +535,10 @@
     __block NSString *passedPath = path;
     
     UIAlertController *renameAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.rename.alert.message", @"Rename document to, message") message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [renameAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) { }];
-    [renameAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }]];
-    [renameAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.rename.alert.title", @"Rename") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *newName = renameAlert.textFields[0].text;
+    [renameAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) { }];
+    [renameAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) { }]];
+    [renameAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.rename.alert.title", @"Rename") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSString *newName = [renameAlert.textFields[0] text];
         
         if (newName && newName.length > 0)
         {

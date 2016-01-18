@@ -343,7 +343,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     [self.fileCoordinator coordinateWritingItemAtURL:url options:NSFileCoordinatorWritingForDeleting error:NULL byAccessor:^(NSURL *newURL) {
         [[NSFileManager defaultManager] removeItemAtURL:newURL error:NULL];
     }];
-    [self providePlaceholderAtURL:url completionHandler:^(NSError * _Nullable error) {}];
+    [self providePlaceholderAtURL:url completionHandler:^(NSError *error) {}];
 }
 
 @end

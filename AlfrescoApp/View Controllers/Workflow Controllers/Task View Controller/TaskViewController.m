@@ -304,7 +304,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
     // "My Tasks" filter
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.mytasks", @"My Tasks Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.displayingMyTasks = YES;
         [self loadDataWithListingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -312,7 +312,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }]];
 
     // "Tasks I Started" filter
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"tasks.title.taskistarted", @"Tasks I Started Title") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.displayingMyTasks = NO;
         [self loadDataWithListingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
@@ -320,7 +320,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }]];
     
     // Cancel
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}]];
 
     alertController.modalPresentationStyle = UIModalPresentationPopover;
     UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
