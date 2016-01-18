@@ -275,6 +275,26 @@ static dispatch_once_t onceToken;
         if (defaultProfileError)
         {
             AlfrescoLogError(@"Error retrieving the default profile. Error: %@", defaultProfileError.localizedDescription);
+            
+            if (defaultProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound) // The requested node wasn't found
+            {
+                // If the node is not found on the server, delete configuration.json from user's folder.
+                UserAccount *account = [AccountManager sharedManager].selectedAccount;
+                NSString *accountSpecificFolderPath = [self accountSpecificConfigurationFolderPath:account];
+                accountSpecificFolderPath = [accountSpecificFolderPath stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];
+                
+                if ([[NSFileManager defaultManager] fileExistsAtPath:accountSpecificFolderPath])
+                {
+                    NSError *removeConfigurationError;
+                    BOOL fileRemovedSuccessfully = [[NSFileManager defaultManager] removeItemAtPath:accountSpecificFolderPath error:&removeConfigurationError];
+                    
+                    if (fileRemovedSuccessfully)
+                    {
+                        MainMenuLocalConfigurationBuilder *localBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:account session:session];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:localBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @YES}];
+                    }
+                }
+            }
         }
         else
         {
