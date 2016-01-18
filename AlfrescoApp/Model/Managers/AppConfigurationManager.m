@@ -276,7 +276,7 @@ static dispatch_once_t onceToken;
         {
             AlfrescoLogError(@"Error retrieving the default profile. Error: %@", defaultProfileError.localizedDescription);
             
-            if (defaultProfileError.code == 2) // The requested node wasn't found
+            if (defaultProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound) // The requested node wasn't found
             {
                 // If the node is not found on the server, delete configuration.json from user's folder.
                 UserAccount *account = [AccountManager sharedManager].selectedAccount;
