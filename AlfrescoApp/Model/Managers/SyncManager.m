@@ -579,9 +579,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         {
             [self deleteUnWantedSyncedNodes:nodes inManagedObjectContext:privateManagedObjectContext completionBlock:^(BOOL completed) {
                 [self.syncCoreDataHelper saveContextForManagedObjectContext:privateManagedObjectContext];
-                [privateManagedObjectContext performBlock:^{
-                    [privateManagedObjectContext reset];
-                }];
+                [privateManagedObjectContext reset];
                 syncInfoandContent();
             }];
         }
@@ -663,30 +661,32 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             AlfrescoNode *localNode = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
             // check if there is any problem with removing the node from local sync
             
-            [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
-                
-                totalChecksForObstacles--;
-                
-                if (encounteredObstacle == NO)
-                {
-                    // if no problem with removing the node from local sync then delete the node from local sync nodes
-                    [self.syncHelper deleteNodeFromSync:localNode inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:managedContext];
-                }
-                else
-                {
-                    // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
-                    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
-                    nodeInfo.parentNode = nil;
-                }
-                
-                if (totalChecksForObstacles == 0)
-                {
-                    if (completionBlock != NULL)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self checkForObstaclesInRemovingDownloadForNode:localNode inManagedObjectContext:managedContext completionBlock:^(BOOL encounteredObstacle) {
+                    
+                    totalChecksForObstacles--;
+                    
+                    if (encounteredObstacle == NO)
                     {
-                        completionBlock(YES);
+                        // if no problem with removing the node from local sync then delete the node from local sync nodes
+                        [self.syncHelper deleteNodeFromSync:localNode inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:managedContext];
                     }
-                }
-            }];
+                    else
+                    {
+                        // if any problem encountered then set isRemovedFromSyncHasLocalChanges flag to YES so its not on deleted until its changes are synced to server
+                        nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:YES];
+                        nodeInfo.parentNode = nil;
+                    }
+                    
+                    if (totalChecksForObstacles == 0)
+                    {
+                        if (completionBlock != NULL)
+                        {
+                            completionBlock(YES);
+                        }
+                    }
+                }];
+            });
         }
     }
     else
@@ -1231,7 +1231,6 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     }
 }
 
-
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
 {
     [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:self.selectedAccountIdentifier];
@@ -1483,6 +1482,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
                 }
             }
         }
+        [privateManagedObjectContext reset];
         privateManagedObjectContext = nil;
     }
 }
@@ -1501,26 +1501,24 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
     if ([propertyChanged isEqualToString:kSyncTotalSize])
     {
         SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:nodeStatus.nodeId inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:privateManagedObjectContext];
+        
         SyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
-        if(nodeInfo)
+        if (parentNodeInfo)
         {
-            if (parentNodeInfo)
+            AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
+            SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:parentNode]];
+            
+            NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
+            parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+        }
+        else
+        {
+            // if parent folder is nil - update total size for account
+            SyncNodeStatus *accountSyncStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:self.selectedAccountIdentifier inSyncNodesStatus:self.syncNodesStatus];
+            if (nodeStatus != accountSyncStatus)
             {
-                AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
-                SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:parentNode]];
-                
                 NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-                parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
-            }
-            else
-            {
-                // if parent folder is nil - update total size for account
-                SyncNodeStatus *accountSyncStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:self.selectedAccountIdentifier inSyncNodesStatus:self.syncNodesStatus];
-                if (nodeStatus != accountSyncStatus)
-                {
-                    NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-                    accountSyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
-                }
+                accountSyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
             }
         }
     }
@@ -1566,6 +1564,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
         }
     }
     
+    [privateManagedObjectContext reset];
     privateManagedObjectContext = nil;
 }
 
