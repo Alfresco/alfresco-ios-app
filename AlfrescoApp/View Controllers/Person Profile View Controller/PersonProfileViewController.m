@@ -296,7 +296,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     NSMutableArray *contactDetails = [NSMutableArray array];
     
     ContactInformation *contactInformation = nil;
-    if (person.email.length == 0)
+    if (person.email.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.email.title", @"Email")
                                                         contactInformation:person.email
@@ -305,7 +305,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (person.skypeId.length == 0)
+    if (person.skypeId.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.title", @"Skype")
                                                         contactInformation:person.skypeId
@@ -314,7 +314,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (person.telephoneNumber.length == 0)
+    if (person.telephoneNumber.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.telephone.title", @"Telephone")
                                                         contactInformation:person.telephoneNumber
@@ -323,7 +323,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (person.mobileNumber.length == 0)
+    if (person.mobileNumber.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.mobile.title", @"Mobile")
                                                         contactInformation:person.mobileNumber
@@ -344,7 +344,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     
     ContactInformation *contactInformation = nil;
     
-    if (company.name.length == 0)
+    if (company.name.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.name.title", @"Name")
                                                         contactInformation:company.name
@@ -353,7 +353,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (company.fullAddress.length == 0)
+    if (company.fullAddress.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.address.title", @"Address")
                                                         contactInformation:[company.fullAddress stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
@@ -362,7 +362,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (company.telephoneNumber.length == 0)
+    if (company.telephoneNumber.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.telephone.title", @"Email")
                                                         contactInformation:company.telephoneNumber
@@ -371,7 +371,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (company.faxNumber.length == 0)
+    if (company.faxNumber.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.fax.title", @"Fax")
                                                         contactInformation:company.faxNumber
@@ -380,7 +380,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [contactDetails addObject:contactInformation];
     }
     
-    if (company.email.length == 0)
+    if (company.email.length != 0)
     {
         contactInformation = [[ContactInformation alloc] initWithTitleText:NSLocalizedString(@"person.profile.view.controller.contact.information.type.email.title", @"Email")
                                                         contactInformation:company.email
