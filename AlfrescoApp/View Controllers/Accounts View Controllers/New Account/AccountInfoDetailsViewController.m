@@ -463,10 +463,13 @@ static NSInteger const kTagCertificateCell = 1;
             if (successful)
             {
                 AccountManager *accountManager = [AccountManager sharedManager];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 [accountManager saveAccountsToKeychain];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                
+                if(self.account == accountManager.selectedAccount)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
+                }
                 [self.navigationController popViewControllerAnimated:YES];
             }
         }];
