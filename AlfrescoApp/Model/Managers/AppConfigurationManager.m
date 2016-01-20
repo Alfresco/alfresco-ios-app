@@ -211,7 +211,6 @@ static dispatch_once_t onceToken;
             NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder: accountConfigurationFolderPath,
                                          kAlfrescoConfigServiceParameterFileName: kAlfrescoEmbeddedConfigurationFileName};
             returnService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
-            returnService.session = self.session;
         }
         else
         {
