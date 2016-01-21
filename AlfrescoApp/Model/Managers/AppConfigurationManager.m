@@ -319,15 +319,23 @@ static dispatch_once_t onceToken;
                 // Attempt to download and select the default profile
                 AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithSession:session];
                 // define a success block
-                void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *selectedProfile) {
+                void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile, BOOL isEmbeddedConfig) = ^(AlfrescoProfileConfig *selectedProfile, BOOL isEmbeddedConfig) {
                     self.currentConfigService = configService;
                     self.selectedProfile = selectedProfile;
                     self.currentConfigAccountIdentifier = account.accountIdentifier;
                     account.selectedProfileIdentifier = selectedProfile.identifier;
                     account.selectedProfileName = selectedProfile.label;
                     
-                    MainMenuRemoteConfigurationBuilder *remoteBuilder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:account session:session];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:remoteBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @NO}];
+                    MainMenuConfigurationBuilder *builder;
+                    if(isEmbeddedConfig)
+                    {
+                        builder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:account session:session];
+                    }
+                    else
+                    {
+                        builder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:account session:session];
+                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:builder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : [NSNumber numberWithBool:isEmbeddedConfig]}];
                 };
                 
                 NSString *selectedProfileIdentifier = account.selectedProfileIdentifier;
@@ -354,20 +362,20 @@ static dispatch_once_t onceToken;
                                             }
                                             else
                                             {
-                                                profileSuccessfullySelectedBlock(defaultProfile);
+                                                profileSuccessfullySelectedBlock(defaultProfile, YES);
                                             }
                                         }];
                                     }
                                 }
                                 else
                                 {
-                                    profileSuccessfullySelectedBlock(defaultServerProfile);
+                                    profileSuccessfullySelectedBlock(defaultServerProfile, NO);
                                 }
                             }];
                         }
                         else
                         {
-                            profileSuccessfullySelectedBlock(identifierProfile);
+                            profileSuccessfullySelectedBlock(identifierProfile, NO);
                         }
                     }];
                 }
@@ -390,14 +398,14 @@ static dispatch_once_t onceToken;
                                     }
                                     else
                                     {
-                                        profileSuccessfullySelectedBlock(defaultProfile);
+                                        profileSuccessfullySelectedBlock(defaultProfile, YES);
                                     }
                                 }];
                             }
                         }
                         else
                         {
-                            profileSuccessfullySelectedBlock(defaultServerProfile);
+                            profileSuccessfullySelectedBlock(defaultServerProfile, NO);
                         }
                     }];
                 }
