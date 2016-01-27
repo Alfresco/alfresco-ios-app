@@ -315,6 +315,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                 fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName session:self.session];
             }
         }
+        else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterNodeRefKey])
+        {
+            NSString *nodeRef = viewConfig.parameters[kAlfrescoConfigViewParameterNodeRefKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+        }
         else
         {
             fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
