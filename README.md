@@ -42,7 +42,7 @@ Setting Up The Project
 
 Contributors
 ---
-[Bhagya Silva](https://about.me/bhagyas) ([Loftux AB](https://loftux.com)) 
+[Bhagya Silva](https://about.me/bhagyas) ([Loftux AB](https://loftux.com?ref=ios)) 
 
 Getting Help
 ===
