@@ -27,6 +27,9 @@ This product distribution is made available under the [Apache 2.0 license](http:
 
 Portions of this product distribution require certain copyright or other notices to be included with the product distribution. These notices may also appear in individual source files. 
 
+Contributors
+---
+Bhagya Silva (Loftux AB) 
 
 Getting Help
 ===
