@@ -66,6 +66,7 @@
 
 - (void) trackScreenWithName: (NSString *) screenName
 {
+    NSLog(@"GA - track screen with name: %@", screenName);
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName value:screenName];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
@@ -95,7 +96,8 @@
     
     if (!self.googleAnalyticsHasStarted)
     {
-        [[GAI sharedInstance] trackerWithTrackingId:@"UA-xxxx-x"];
+        NSLog(@"GA: %@", GA_API_KEY);
+        [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
         self.googleAnalyticsHasStarted = YES;
     }
     
