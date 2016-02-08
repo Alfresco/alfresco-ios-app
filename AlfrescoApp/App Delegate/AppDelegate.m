@@ -95,7 +95,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
      * to be set to ${bamboo.buildNumner} when building using our internal Bamboo server.
      */
     NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    if (![bundleVersion isEqualToString:@"dev"])
+//    if (![bundleVersion isEqualToString:@"dev"])
     {
         // HockeyApp SDK
         if (HOCKEYAPP_APPID.length > 0)
@@ -111,6 +111,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         // Flurry Analytics
         if (FLURRY_API_KEY.length > 0)
         {
+            NSLog(@"%@", FLURRY_API_KEY);
             [[AnalyticsManager sharedManager] startAnalytics];
         }
     }

@@ -19,9 +19,11 @@
 #import "AnalyticsManager.h"
 #import "Flurry.h"
 #import "PreferenceManager.h"
+#import <Google/Analytics.h>
 
 @interface AnalyticsManager ()
 @property (nonatomic, assign, readwrite) BOOL flurryHasStarted;
+@property (nonatomic, assign, readwrite) BOOL googleAnalyticsHasStarted;
 @property (nonatomic, assign, readwrite) BOOL analyticsAreActive;
 @end
 
@@ -60,6 +62,23 @@
     [self stop];
 }
 
+#pragma mark - Tracking Methods
+
+- (void) trackScreenWithName: (NSString *) screenName
+{
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:screenName];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
+
+- (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value
+{
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
+    NSDictionary *dictionary = [builder build];
+    [tracker send:dictionary];
+}
+
 #pragma mark - Private Methods
 
 - (void)start
@@ -73,6 +92,15 @@
     [Flurry setEventLoggingEnabled:YES];
     [Flurry setSessionReportsOnCloseEnabled:YES];
     [Flurry setSessionReportsOnPauseEnabled:YES];
+    
+    if (!self.googleAnalyticsHasStarted)
+    {
+        [[GAI sharedInstance] trackerWithTrackingId:@"UA-xxxx-x"];
+        self.googleAnalyticsHasStarted = YES;
+    }
+    
+    [GAI sharedInstance].optOut = NO;
+    
     self.analyticsAreActive = YES;
 }
 
@@ -81,6 +109,9 @@
     [Flurry setEventLoggingEnabled:NO];
     [Flurry setSessionReportsOnCloseEnabled:NO];
     [Flurry setSessionReportsOnPauseEnabled:NO];
+    
+    [GAI sharedInstance].optOut = YES;
+    
     self.analyticsAreActive = NO;
 }
 
