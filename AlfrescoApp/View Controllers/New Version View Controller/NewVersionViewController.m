@@ -72,6 +72,13 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewDocumentCreateUpdateForm];
+}
+
 #pragma mark - Private Functions
 
 - (void)createCells

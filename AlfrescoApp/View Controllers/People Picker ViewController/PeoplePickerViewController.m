@@ -101,6 +101,13 @@ static NSInteger const kSearchResultsIndex = 0;
     self.navigationItem.hidesBackButton = YES;
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewUserListing];
+}
+
 - (void)cancelButtonPressed:(id)sender
 {
     [self.peoplePicker cancel];

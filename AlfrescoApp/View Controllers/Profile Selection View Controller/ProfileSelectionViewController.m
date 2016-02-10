@@ -58,6 +58,13 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [self loadData];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditActiveProfile];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];

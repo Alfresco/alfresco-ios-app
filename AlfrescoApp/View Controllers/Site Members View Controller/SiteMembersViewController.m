@@ -98,6 +98,13 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
     [self loadData];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteMembers];
+}
+
 #pragma mark - UITableViewDataSource and UITableViewDelegate methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

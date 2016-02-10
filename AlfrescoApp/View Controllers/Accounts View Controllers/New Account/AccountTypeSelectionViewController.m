@@ -67,6 +67,13 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     self.navigationItem.leftBarButtonItem = cancel;
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountCreateTypePicker];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -39,3 +39,4 @@
 #import "UITextField+RightAlignmentSpacingFix.h"
 #import "MBProgressHUD.h"
 #import "AnalyticsConstants.h"
+#import "AnalyticsManager.h"

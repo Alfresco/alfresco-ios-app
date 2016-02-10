@@ -96,6 +96,13 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [self loadData];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditEditMainMenu];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];

@@ -127,6 +127,13 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
     [self validateForm];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewTaskCreateForm];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

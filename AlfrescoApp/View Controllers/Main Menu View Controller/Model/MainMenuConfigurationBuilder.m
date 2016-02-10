@@ -20,7 +20,7 @@
 #import "AlfrescoConfigService.h"
 #import "ActivitiesViewController.h"
 #import "FileFolderListViewController.h"
-#import "SitesListViewController.h"
+//#import "SitesListViewController.h"
 #import "DownloadsViewController.h"
 #import "SyncViewController.h"
 #import "TaskViewController.h"
@@ -211,8 +211,15 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             }
             
             // define a block
-            void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem) {
+            void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem)
+            {
                 NSString *bundledIconName = [self imageFileNameForAlfrescoViewConfig:subItem];
+                
+                if ([bundledIconName isEqualToString:@"mainmenu-repository.png"])
+                {
+                    NSLog(@"icon: %@", bundledIconName);
+                }
+                
                 id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
                 // Do not render the view if it's not supported
                 if (associatedObject)
@@ -355,6 +362,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Local
         DownloadsViewController *localFilesViewController = [[DownloadsViewController alloc] initWithSession:self.session];
+        localFilesViewController.screenNameTrackingEnabled = YES;
         associatedObject = localFilesViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypePersonProfile])
@@ -499,6 +507,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 - (NSString *)imageFileNameForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
 {
     NSString *bundledIconName = nil;
+//    NSLog(@"viewConfig.iconIdentifier: %@", viewConfig.iconIdentifier);
     
     if (viewConfig.iconIdentifier)
     {
@@ -513,6 +522,8 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         bundledIconName = @"mainmenu-help.png";
     }
+    
+//    NSLog(@"icon: %@", bundledIconName);
     
     return bundledIconName;
 }

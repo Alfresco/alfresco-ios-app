@@ -140,6 +140,8 @@ static NSInteger const kTagProfileCell = 3;
 {
     [super viewDidAppear:animated];
     
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountCreateCredentials];
+    
     // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

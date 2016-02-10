@@ -308,7 +308,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.tapToDismissDeleteAction.delegate = self;
     [self.collectionView addGestureRecognizer:self.tapToDismissDeleteAction];
     
-    [self changeCollectionViewStyle:self.style animated:YES];
+    [self changeCollectionViewStyle:self.style animated:YES trackAnalytics:NO];
     
     if (self.initialFolder)
     {
@@ -355,6 +355,30 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         [self selectIndexPathForAlfrescoNodeInDetailView];
     }
+    
+    if (self.navigationController.viewControllers && self != self.navigationController.viewControllers.firstObject)
+    {
+        [[AnalyticsManager sharedManager] trackScreenWithName:self.style == CollectionViewStyleList ? kAnalyticsViewDocumentListing : kAnalyticsViewDocumentGallery];
+        
+        return;
+    }
+    
+    NSString *screenName = nil;
+    
+    if (self.controllerType == FileFolderCollectionViewControllerTypeCustomFolderType) // Shared Files or My Files
+    {
+        if (self.customFolderType == CustomFolderServiceFolderTypeMyFiles)
+            screenName = kAnalyticsViewMenuMyFiles;
+        else if (self.customFolderType == CustomFolderServiceFolderTypeSharedFiles)
+            screenName = kAnalyticsViewMenuSharedFiles;
+    }
+    else if (self.controllerType == FileFolderCollectionViewControllerTypeFolderNode) // Repository
+    {
+        screenName = kAnalyticsViewMenuRepository;
+    }
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
+    
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -2183,11 +2207,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         if(self.style == CollectionViewStyleList)
         {
-            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES];
+            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES trackAnalytics:YES];
         }
         else
         {
-            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES];
+            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES trackAnalytics:YES];
         }
     }];
     [self.actionsAlertController addAction:changeLayoutAction];
@@ -2199,11 +2223,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.actionsAlertController addAction:cancelAction];
 }
 
-- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated
+- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated trackAnalytics: (BOOL) trackAnalytics
 {
     [super changeCollectionViewStyle:style animated:animated];
     BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
     self.swipeToDeleteGestureRecognizer.enabled = associatedLayoutForStyle.shouldSwipeToDelete;
+    
+    if (trackAnalytics)
+        [[AnalyticsManager sharedManager] trackScreenWithName:style == CollectionViewStyleList ? kAnalyticsViewDocumentListing : kAnalyticsViewDocumentGallery];
 }
 
 @end

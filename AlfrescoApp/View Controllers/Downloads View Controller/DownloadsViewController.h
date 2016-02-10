@@ -32,6 +32,7 @@
 
 @property (nonatomic) BOOL isDownloadPickerEnabled;
 @property (nonatomic, weak) id<DownloadsPickerDelegate> downloadPickerDelegate;
+@property (nonatomic, getter=isScreenNameTrackingEnabled) BOOL screenNameTrackingEnabled;
 
 - (id)initWithDocumentFilter:(id<DocumentFilter>)documentFilter;
 

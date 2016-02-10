@@ -131,6 +131,13 @@ static CGFloat const kProgressBarHeight = 2.0f;
     [self initiateHTTPRequestToURL:self.url];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewHelp];
+}
+
 #pragma mark - Private Functions
 
 - (void)initiateHTTPRequestToURL:(NSURL *)url

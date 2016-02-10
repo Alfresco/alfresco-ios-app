@@ -99,6 +99,8 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     
     // Reselect the node in the detail view
     [self selectIndexPathForAlfrescoNodeInDetailView];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuActivities];
 }
 
 #pragma mark - Property getters & setters

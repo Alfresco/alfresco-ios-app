@@ -90,6 +90,13 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuAccounts];
+}
+
 - (void)updateAccountList
 {
     self.tableViewData = [NSMutableArray array];

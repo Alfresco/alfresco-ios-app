@@ -157,6 +157,13 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewUserDetails];
+}
+
 #pragma mark - Private Methods
 
 - (void)createServicesWithSession:(id<AlfrescoSession>)session

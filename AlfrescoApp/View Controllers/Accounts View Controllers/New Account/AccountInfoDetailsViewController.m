@@ -103,6 +103,13 @@ static NSInteger const kTagCertificateCell = 1;
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditAccountDetails];
+}
+
 - (void)constructTableCellsForAlfrescoServer
 {
     TextFieldCell *descriptionCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];

@@ -77,6 +77,13 @@ static NSUInteger const kCellLeftInset = 10;
     [self.tableView reloadData];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSettingsDetails];
+}
+
 #pragma mark - Private Functions
 
 - (NSMutableArray *)filteredPreferences:(NSMutableArray *)unfilteredPreferences

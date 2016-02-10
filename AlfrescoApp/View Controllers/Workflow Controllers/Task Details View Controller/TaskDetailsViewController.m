@@ -134,6 +134,13 @@ static UILayoutPriority const kLowPriority = 250;
     [self localiseUI];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewTaskDetails];
+}
+
 #pragma mark - Private Functions
 
 - (void)localiseUI

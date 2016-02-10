@@ -48,6 +48,7 @@ NSString * const kAnalyticsViewDocumentDetailsVersions    = @"Document - Details
 NSString * const kAnalyticsViewDocumentDetailsMap         = @"Document - Details - Map";
 NSString * const kAnalyticsViewDocumentCreateTextFile     = @"Document - Create - Text File";
 NSString * const kAnalyticsViewDocumentCreateUploadForm   = @"Document - Create = Upload Form";
+NSString * const kAnalyticsViewDocumentCreateUpdateForm   = @"Document - Create = Update Form";
 NSString * const kAnalyticsViewDocumentGallery            = @"Document - Gallery";
 
 // Task
@@ -59,7 +60,7 @@ NSString * const kAnalyticsViewTaskCreateForm                 = @"Task - Create 
 
 // Search
 NSString * const kAnalyticsViewSearchFiles          = @"Search - Files";
-NSString * const kAnalyticsViewSearchFolder         = @"Search - Folders";
+NSString * const kAnalyticsViewSearchFolders        = @"Search - Folders";
 NSString * const kAnalyticsViewSearchPeople         = @"Search - People";
 NSString * const kAnalyticsViewSearchSites          = @"Search - Sites";
 NSString * const kAnalyticsViewSearchResultFiles    = @"Search - Result - Files";
@@ -96,16 +97,20 @@ NSString * const kAnalyticsEventCategoryBPM                 = @"BPM";
 NSString * const kAnalyticsEventCategorySearch              = @"Search";
 NSString * const kAnalyticsEventCategorySync                = @"Sync";
 NSString * const kAnalyticsEventCategorySettings            = @"Settings";
-NSString * const kAnalyticsEventCategoryWidget              = @"Widget";
 NSString * const kAnalyticsEventCategoryDocumentProvider    = @"Document Provider";
 
 // Actions
 NSString * const kAnalyticsEventActionCreate             = @"Create";
 NSString * const kAnalyticsEventActionDelete             = @"Delete";
+NSString * const kAnalyticsEventActionUpdateMenu         = @"Update Menu";
+NSString * const kAnalyticsEventActionInfo               = @"Info";
 NSString * const kAnalyticsEventActionSwitch             = @"Switch";
-NSString * const kAnalyticsEventActionUpdateContent      = @"Update (Content)";
+NSString * const kAnalyticsEventActionQuickAction        = @"Quick Action";
+NSString * const kAnalyticsEventActionFullScreenView     = @"Full Screen View";
+NSString * const kAnalyticsEventActionUpdate             = @"Update";
 NSString * const kAnalyticsEventActionDownload           = @"Download";
 NSString * const kAnalyticsEventActionOpen               = @"Open";
+NSString * const kAnalyticsEventActionSync               = @"Sync"; // 2.3
 NSString * const kAnalyticsEventActionShare              = @"Share";
 NSString * const kAnalyticsEventActionEmail              = @"Email";
 NSString * const kAnalyticsEventActionEmailLink          = @"Email Link";
@@ -120,18 +125,12 @@ NSString * const kAnalyticsEventActionCall               = @"Call";
 NSString * const kAnalyticsEventActionSkype              = @"Skype";
 NSString * const kAnalyticsEventActionShowInMaps         = @"Show in Maps";
 NSString * const kAnalyticsEventActionMembership         = @"Membership";
-NSString * const kAnalyticsEventActionMembers            = @"Members";
 NSString * const kAnalyticsEventActionReassign           = @"Reassign";
 NSString * const kAnalyticsEventActionComplete           = @"Complete";
 NSString * const kAnalyticsEventActionRunSimple          = @"Run Simple";
-NSString * const kAnalyticsEventActionDataProtection     = @"Data Protection";
+NSString * const kAnalyticsEventActionRun                = @"Run";
 NSString * const kAnalyticsEventActionAnalytics          = @"Analytics";
-NSString * const kAnalyticsEventActionFullContentSearch  = @"Full Content Search";
-NSString * const kAnalyticsEventActionSyncMobile         = @"Sync Mobile";
 NSString * const kAnalyticsEventActionClearData          = @"Clear Data";
-NSString * const kAnalyticsEventActionCreateFile         = @"Create File";
-NSString * const kAnalyticsEventActionOpenFile           = @"Open File";
-NSString * const kAnalyticsEventActionUpdateFile         = @"Update File";
 
 // Labels
 NSString * const kAnalyticsEventLabelOnPremise           = @"OnPremise";
@@ -140,6 +139,9 @@ NSString * const kAnalyticsEventLabelNetwork             = @"Network";
 NSString * const kAnalyticsEventLabelProfile             = @"Profile";
 NSString * const kAnalyticsEventLabelDocumentMimetype    = @"Document Mimetype";
 NSString * const kAnalyticsEventLabelFolder              = @"Folder";
+NSString * const kAnalyticsEventLabelTakePhoto           = @"Take Photo";
+NSString * const kAnalyticsEventLabelRecordVideo         = @"Record Video";
+NSString * const kAnalyticsEventLabelRecordAudio         = @"Record Audio";
 NSString * const kAnalyticsEventLabelPhone               = @"Phone";
 NSString * const kAnalyticsEventLabelMobile              = @"Mobile";
 NSString * const kAnalyticsEventLabelEnterprise          = @"Enterprise";
@@ -151,16 +153,17 @@ NSString * const kAnalyticsEventLabelUser                = @"User";
 NSString * const kAnalyticsEventLabelCompany             = @"Company";
 NSString * const kAnalyticsEventLabelJoin                = @"Join";
 NSString * const kAnalyticsEventLabelLeave               = @"Leave";
-NSString * const kAnalyticsEventLabelRequest             = @"Request";
 NSString * const kAnalyticsEventLabelCancel              = @"Cancel";
 NSString * const kAnalyticsEventLabelEnable              = @"Enable";
 NSString * const kAnalyticsEventLabelDisable             = @"Disable";
-NSString * const kAnalyticsEventLabelList                = @"List";
-NSString * const kAnalyticsEventLabelTaskType            = @"Task Type";
+NSString * const kAnalyticsEventLabelProcessDefinitionIdentifier    = @"ProcessDefinition Identifier";
+NSString * const kAnalyticsEventLabelTaskKey                        = @"Task Key";
 NSString * const kAnalyticsEventLabelFiles               = @"Files";
 NSString * const kAnalyticsEventLabelFolders             = @"Folders";
 NSString * const kAnalyticsEventLabelSites               = @"Sites";
 NSString * const kAnalyticsEventLabelPeople              = @"People";
+NSString * const kAnalyticsEventLabelSyncedFolders      = @"Synced Folders";
 NSString * const kAnalyticsEventLabelSyncedFiles         = @"Synced Files";
+NSString * const kAnalyticsEventLabelDisableConfig      = @"Disable Config";
 NSString * const kAnalyticsEventLabelPartial             = @"Partial";
 NSString * const kAnalyticsEventLabelFull                = @"Full";

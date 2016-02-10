@@ -66,7 +66,11 @@
 
 - (void) trackScreenWithName: (NSString *) screenName
 {
+    if (screenName == nil)
+        return;
+    
     NSLog(@"GA - track screen with name: %@", screenName);
+    
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName value:screenName];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];

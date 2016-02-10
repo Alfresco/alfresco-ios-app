@@ -81,6 +81,16 @@
     }
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.listType == SiteListTypeSelectionSearch)
+    {
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSearchResultSites];
+    }
+}
+
 #pragma mark - Table view data source and delegate methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -100,13 +110,16 @@
         siteCell.delegate = self;
     }
     
-    AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
-    siteCell.siteNameLabelView.text = currentSite.title;
-    siteCell.siteImageView.image = smallImageForType(@"site");
-    siteCell.expandButton.transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
-    
-    [siteCell updateCellStateWithSite:currentSite];
-    
+    if (indexPath.row < self.tableViewData.count)
+    {
+        AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
+        siteCell.siteNameLabelView.text = currentSite.title;
+        siteCell.siteImageView.image = smallImageForType(@"site");
+        siteCell.expandButton.transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
+        
+        [siteCell updateCellStateWithSite:currentSite];
+    }
+        
     return siteCell;
 }
 

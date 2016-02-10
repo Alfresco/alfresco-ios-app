@@ -66,6 +66,13 @@ static const CGFloat kTableCellHeight = 60.f;
     [super viewWillAppear:animated];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountCreateDiagnostics];
+}
+
 - (void)dealloc
 {
     _mainTableView.delegate = nil;

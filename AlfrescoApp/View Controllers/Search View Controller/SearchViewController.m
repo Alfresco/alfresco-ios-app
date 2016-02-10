@@ -33,7 +33,7 @@ static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
 static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
-@interface SearchViewController () < UISearchResultsUpdating, UISearchBarDelegate >
+@interface SearchViewController () < UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate>
 
 @property (nonatomic, strong) SearchViewControllerDataSource *dataSource;
 @property (nonatomic) SearchViewControllerDataSourceType dataSourceType;
@@ -45,6 +45,9 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 @end
 
 @implementation SearchViewController
+{
+    BOOL _searchResultsAreDisplayed;
+}
 
 - (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session
 {
@@ -133,8 +136,9 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         self.definesPresentationContext = YES;
 
         self.navigationController.navigationBar.translucent = YES;
-        
         self.searchController.hidesNavigationBarDuringPresentation = self.shouldHideNavigationBarOnSearchControllerPresentation;
+        
+        self.searchController.delegate = self;
     }
 }
 
@@ -149,6 +153,58 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
     [self.tableView reloadData];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self trackScreen];
+}
+
+#pragma mark - Analytics
+
+- (void) trackScreen
+{
+    NSString *screenName = nil;
+    
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeLandingPage:
+            screenName = kAnalyticsViewMenuSearch;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchFiles:
+            screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchFiles : kAnalyticsViewSearchResultFiles;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchFolders:
+            screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchFolders : kAnalyticsViewSearchResultFolders;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            if ([self.sitesPushHandler isKindOfClass:[SearchViewController class]]) // Menu -> Search -> Sites
+            {
+                screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchSites : kAnalyticsViewSearchResultSites;
+            }
+            else // Menu -> Sites
+            {
+                NSLog(@"self: %@, pusher: %@", self, self.sitesPushHandler);
+            }
+        }
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchUsers:
+            screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchPeople : kAnalyticsViewSearchResultPeople;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (screenName)
+        [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
 }
 
 #pragma mark - Table view data source
@@ -365,6 +421,21 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     return YES;
+}
+
+#pragma mark - UISearchControllerDelegate
+
+- (void) willPresentSearchController:(UISearchController *)searchController
+{
+    NSLog(@"willPresentSearchController");
+    _searchResultsAreDisplayed = YES;
+}
+
+- (void) willDismissSearchController:(UISearchController *)searchController
+{
+    NSLog(@"willDismissSearchController");
+    _searchResultsAreDisplayed = NO;
+    [self trackScreen];
 }
 
 #pragma mark - Public methods

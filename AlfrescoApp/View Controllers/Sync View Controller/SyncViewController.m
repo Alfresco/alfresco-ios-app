@@ -154,6 +154,18 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.parentNode != nil)
+        return;
+    
+    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+    [[AnalyticsManager sharedManager] trackScreenWithName:isSyncOn ? kAnalyticsViewMenuSyncedContent : kAnalyticsViewMenuFavorites];
+//    title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

@@ -105,6 +105,13 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuTasks];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -239,6 +246,8 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 
 - (void)loadDataWithListingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
+    [[AnalyticsManager sharedManager] trackScreenWithName:self.isDisplayingMyTasks ? kAnalyticsViewTaskListingTasksAssignedToMe : kAnalyticsViewTaskListingTasksIVeStarted];
+    
     TaskGroupItem *groupToSwitchTo = [self taskGroupItem];
     self.title = groupToSwitchTo.title;
     

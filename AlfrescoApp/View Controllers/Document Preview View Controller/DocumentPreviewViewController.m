@@ -70,6 +70,13 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self trackScreenNameForIndex:self.pagingScrollView.selectedPageIndex];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -290,6 +297,36 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [commentsViewController focusCommentEntry:shouldFocusComments];
 }
 
+- (void) trackScreenNameForIndex: (NSUInteger) index
+{
+    NSString *screenName;
+    
+    switch (index)
+    {
+        case 0:
+            screenName = kAnalyticsViewDocumentDetailsPreview;
+            break;
+        case 1:
+            screenName = kAnalyticsViewDocumentDetailsProperties;
+            break;
+        case 2:
+            screenName = kAnalyticsViewDocumentDetailsVersions;
+            break;
+        case 3:
+            screenName = kAnalyticsViewDocumentDetailsComments;
+            break;
+        case 4:
+            screenName = kAnalyticsViewDocumentDetailsMap;
+            break;
+            
+        default:
+            break;
+    }
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
+
+}
+
 #pragma mark - Document Editing Notification
 
 - (void)editingDocumentCompleted:(NSNotification *)notification
@@ -385,6 +422,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     {
         [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
     }
+    
+    [self trackScreenNameForIndex:viewIndex];
 }
 
 #pragma mark - CommentViewControllerDelegate Functions

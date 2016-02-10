@@ -11,78 +11,79 @@
 #pragma mark - Screens
 
 // Acount
-extern NSString * const kAnalyticsViewAccountCreateTypePicker;
-extern NSString * const kAnalyticsViewAccountCreateCredentials;
-extern NSString * const kAnalyticsViewAccountCreateDiagnostics;
-extern NSString * const kAnalyticsViewAccountEdit;
-extern NSString * const kAnalyticsViewAccountEditActiveProfile;
-extern NSString * const kAnalyticsViewAccountEditEditMainMenu;
-extern NSString * const kAnalyticsViewAccountEditAccountDetails;
+extern NSString * const kAnalyticsViewAccountCreateTypePicker;  // AccountTypeSelectionViewController
+extern NSString * const kAnalyticsViewAccountCreateCredentials; // NewAccountViewController
+extern NSString * const kAnalyticsViewAccountCreateDiagnostics; // ConnectionDiagnosticViewController
+extern NSString * const kAnalyticsViewAccountEdit;              // AccountInfoViewController
+extern NSString * const kAnalyticsViewAccountEditActiveProfile; // ProfileSelectionViewController
+extern NSString * const kAnalyticsViewAccountEditEditMainMenu;  // MainMenuReorderViewController
+extern NSString * const kAnalyticsViewAccountEditAccountDetails;// AccountInfoDetailsViewController
 
 // Menu
-extern NSString * const kAnalyticsViewMenuActivities;
-extern NSString * const kAnalyticsViewMenuRepository;
-extern NSString * const kAnalyticsViewMenuSharedFiles;
-extern NSString * const kAnalyticsViewMenuMyFiles;
-extern NSString * const kAnalyticsViewMenuSites;
-extern NSString * const kAnalyticsViewMenuFavorites;
-extern NSString * const kAnalyticsViewMenuSyncedContent;
-extern NSString * const kAnalyticsViewMenuSearch;
-extern NSString * const kAnalyticsViewMenuLocalFiles;
-extern NSString * const kAnalyticsViewMenuTasks;
-extern NSString * const kAnalyticsViewMenuAccounts;
+extern NSString * const kAnalyticsViewMenuActivities;       // ActivitiesViewController
+extern NSString * const kAnalyticsViewMenuRepository;       // FileFolderCollectionViewController
+extern NSString * const kAnalyticsViewMenuSharedFiles;      // FileFolderCollectionViewController
+extern NSString * const kAnalyticsViewMenuMyFiles;          // FileFolderCollectionViewController
+extern NSString * const kAnalyticsViewMenuSites;            // SitesViewController
+extern NSString * const kAnalyticsViewMenuFavorites;        // SyncViewController
+extern NSString * const kAnalyticsViewMenuSyncedContent;    // SyncViewController
+extern NSString * const kAnalyticsViewMenuSearch;           // SearchViewController
+extern NSString * const kAnalyticsViewMenuLocalFiles;       // DownloadsViewController
+extern NSString * const kAnalyticsViewMenuTasks;            // TaskViewController
+extern NSString * const kAnalyticsViewMenuAccounts;         // AccountsViewController
 
 // Site
-extern NSString * const kAnalyticsViewSiteListingMy;
-extern NSString * const kAnalyticsViewSiteListingFavorites;
-extern NSString * const kAnalyticsViewSiteListingSearch;
-extern NSString * const kAnalyticsViewSiteListingAll;
-extern NSString * const kAnalyticsViewSiteMembers;
+extern NSString * const kAnalyticsViewSiteListingMy;        // SitesViewController
+extern NSString * const kAnalyticsViewSiteListingFavorites; // SitesViewController
+extern NSString * const kAnalyticsViewSiteListingSearch;    // SitesViewController
+extern NSString * const kAnalyticsViewSiteListingAll;       //
+extern NSString * const kAnalyticsViewSiteMembers;          // SiteMembersViewController
 
 // Document
-extern NSString * const kAnalyticsViewDocumentListing;
-extern NSString * const kAnalyticsViewDocumentDetailsProperties;
-extern NSString * const kAnalyticsViewDocumentDetailsPreview;
-extern NSString * const kAnalyticsViewDocumentDetailsComments;
-extern NSString * const kAnalyticsViewDocumentDetailsVersions;
-extern NSString * const kAnalyticsViewDocumentDetailsMap;
-extern NSString * const kAnalyticsViewDocumentCreateTextFile;
-extern NSString * const kAnalyticsViewDocumentCreateUploadForm;
-extern NSString * const kAnalyticsViewDocumentGallery;
+extern NSString * const kAnalyticsViewDocumentListing;              // FileFolderCollectionViewController
+extern NSString * const kAnalyticsViewDocumentDetailsProperties;    // DocumentPreviewViewController
+extern NSString * const kAnalyticsViewDocumentDetailsPreview;       // DocumentPreviewViewController
+extern NSString * const kAnalyticsViewDocumentDetailsComments;      // DocumentPreviewViewController
+extern NSString * const kAnalyticsViewDocumentDetailsVersions;      // DocumentPreviewViewController
+extern NSString * const kAnalyticsViewDocumentDetailsMap;           // DocumentPreviewViewController
+extern NSString * const kAnalyticsViewDocumentCreateTextFile;       // TextFileViewController
+extern NSString * const kAnalyticsViewDocumentCreateUploadForm;     // UploadFormViewController
+extern NSString * const kAnalyticsViewDocumentCreateUpdateForm;     // NewVersionViewController
+extern NSString * const kAnalyticsViewDocumentGallery;              // FileFolderCollectionViewController
 
 // Task
-extern NSString * const kAnalyticsViewTaskListingTasksAssignedToMe;
-extern NSString * const kAnalyticsViewTaskListingTasksIVeStarted;
-extern NSString * const kAnalyticsViewTaskDetails;
-extern NSString * const kAnalyticsViewTaskCreateType;
-extern NSString * const kAnalyticsViewTaskCreateForm;
+extern NSString * const kAnalyticsViewTaskListingTasksAssignedToMe; // TaskViewController
+extern NSString * const kAnalyticsViewTaskListingTasksIVeStarted;   // TaskViewController
+extern NSString * const kAnalyticsViewTaskDetails;                  // TaskDetailsViewController
+extern NSString * const kAnalyticsViewTaskCreateType;               // TaskTypeViewController
+extern NSString * const kAnalyticsViewTaskCreateForm;               // CreateTaskViewController
 
 // Search
-extern NSString * const kAnalyticsViewSearchFiles;
-extern NSString * const kAnalyticsViewSearchFolders;
-extern NSString * const kAnalyticsViewSearchPeople;
-extern NSString * const kAnalyticsViewSearchSited;
-extern NSString * const kAnalyticsViewSearchResultFiles;
-extern NSString * const kAnalyticsViewSearchResultFolders;
-extern NSString * const kAnalyticsViewSearchResultPeople;
-extern NSString * const kAnalyticsViewSearchResultSites;
+extern NSString * const kAnalyticsViewSearchFiles;          // SearchViewController
+extern NSString * const kAnalyticsViewSearchFolders;        // SearchViewController
+extern NSString * const kAnalyticsViewSearchPeople;         // SearchViewController
+extern NSString * const kAnalyticsViewSearchSites;          // SearchViewController
+extern NSString * const kAnalyticsViewSearchResultFiles;    // SearchResultsTableViewController
+extern NSString * const kAnalyticsViewSearchResultFolders;  // SearchResultsTableViewController
+extern NSString * const kAnalyticsViewSearchResultPeople;   // SearchResultsTableViewController
+extern NSString * const kAnalyticsViewSearchResultSites;    // SitesTableListViewController
 
 // Text Editor
-extern NSString * const kAnalyticsViewTextEditorEditor;
+extern NSString * const kAnalyticsViewTextEditorEditor; // TextFileViewController
 
 // Settings
-extern NSString * const kAnalyticsViewSettingsDetails;
-//extern NSString * const kAnalyticsViewSettingsPasscode; // 2.3
+extern NSString * const kAnalyticsViewSettingsDetails;      // SettingsViewController
+//extern NSString * const kAnalyticsViewSettingsPasscode;   // 2.3
 
 // User
-extern NSString * const kAnalyticsViewUserListing;
-extern NSString * const kAnalyticsViewUserDetails;
+extern NSString * const kAnalyticsViewUserListing;  // PeoplePickerViewController
+extern NSString * const kAnalyticsViewUserDetails;  // PersonProfileViewController
 
 // Help
-extern NSString * const kAnalyticsViewHelp;
+extern NSString * const kAnalyticsViewHelp;     // WebBrowserViewController
 
 // About
-extern NSString * const kAnalyticsViewAbout;
+extern NSString * const kAnalyticsViewAbout;    // AboutViewController
 
 #pragma mark - Events
 
@@ -101,10 +102,15 @@ extern NSString * const kAnalyticsEventCategoryDocumentProvider;
 // Actions
 extern NSString * const kAnalyticsEventActionCreate;
 extern NSString * const kAnalyticsEventActionDelete;
+extern NSString * const kAnalyticsEventActionUpdateMenu;
+extern NSString * const kAnalyticsEventActionInfo;
 extern NSString * const kAnalyticsEventActionSwitch;
-extern NSString * const kAnalyticsEventActionUpdateContent;
+extern NSString * const kAnalyticsEventActionQuickAction;
+extern NSString * const kAnalyticsEventActionFullScreenView;
+extern NSString * const kAnalyticsEventActionUpdate;
 extern NSString * const kAnalyticsEventActionDownload;
 extern NSString * const kAnalyticsEventActionOpen;
+extern NSString * const kAnalyticsEventActionSync; // 2.3
 extern NSString * const kAnalyticsEventActionShare;
 extern NSString * const kAnalyticsEventActionEmail;
 extern NSString * const kAnalyticsEventActionEmailLink;
@@ -119,18 +125,12 @@ extern NSString * const kAnalyticsEventActionCall;
 extern NSString * const kAnalyticsEventActionSkype;
 extern NSString * const kAnalyticsEventActionShowInMaps;
 extern NSString * const kAnalyticsEventActionMembership;
-extern NSString * const kAnalyticsEventActionMembers;
 extern NSString * const kAnalyticsEventActionReassign;
 extern NSString * const kAnalyticsEventActionComplete;
 extern NSString * const kAnalyticsEventActionRunSimple;
-extern NSString * const kAnalyticsEventActionDataProtection;
+extern NSString * const kAnalyticsEventActionRun;
 extern NSString * const kAnalyticsEventActionAnalytics;
-extern NSString * const kAnalyticsEventActionFullContentSearch;
-extern NSString * const kAnalyticsEventActionSyncMobile;
 extern NSString * const kAnalyticsEventActionClearData;
-extern NSString * const kAnalyticsEventActionCreateFile;
-extern NSString * const kAnalyticsEventActionOpenFile;
-extern NSString * const kAnalyticsEventActionUpdateFile;
 
 // Labels
 extern NSString * const kAnalyticsEventLabelOnPremise;
@@ -139,6 +139,9 @@ extern NSString * const kAnalyticsEventLabelNetwork;
 extern NSString * const kAnalyticsEventLabelProfile;
 extern NSString * const kAnalyticsEventLabelDocumentMimetype;
 extern NSString * const kAnalyticsEventLabelFolder;
+extern NSString * const kAnalyticsEventLabelTakePhoto;
+extern NSString * const kAnalyticsEventLabelRecordVideo;
+extern NSString * const kAnalyticsEventLabelRecordAudio;
 extern NSString * const kAnalyticsEventLabelPhone;
 extern NSString * const kAnalyticsEventLabelMobile;
 extern NSString * const kAnalyticsEventLabelEnterprise;
@@ -150,16 +153,17 @@ extern NSString * const kAnalyticsEventLabelUser;
 extern NSString * const kAnalyticsEventLabelCompany;
 extern NSString * const kAnalyticsEventLabelJoin;
 extern NSString * const kAnalyticsEventLabelLeave;
-extern NSString * const kAnalyticsEventLabelRequest;
 extern NSString * const kAnalyticsEventLabelCancel;
 extern NSString * const kAnalyticsEventLabelEnable;
 extern NSString * const kAnalyticsEventLabelDisable;
-extern NSString * const kAnalyticsEventLabelList;
-extern NSString * const kAnalyticsEventLabelTaskType;
+extern NSString * const kAnalyticsEventLabelProcessDefinitionIdentifier;
+extern NSString * const kAnalyticsEventLabelTaskKey;
 extern NSString * const kAnalyticsEventLabelFiles;
 extern NSString * const kAnalyticsEventLabelFolders;
 extern NSString * const kAnalyticsEventLabelSites;
 extern NSString * const kAnalyticsEventLabelPeople;
+extern NSString * const kAnalyticsEventLabelSyncedFolders;
 extern NSString * const kAnalyticsEventLabelSyncedFiles;
+extern NSString * const kAnalyticsEventLabelDisableConfig;
 extern NSString * const kAnalyticsEventLabelPartial;
 extern NSString * const kAnalyticsEventLabelFull;
