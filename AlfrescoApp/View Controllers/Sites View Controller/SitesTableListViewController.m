@@ -404,8 +404,14 @@
     
     if (selectedSite.isFavorite)
     {
-        [self.siteService removeFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+        [self.siteService removeFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
+        {
             favoriteButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionFavorite
+                                                               label:kAnalyticsEventLabelDisable
+                                                               value:@1];
             
             if (site)
             {
@@ -432,8 +438,15 @@
     }
     else
     {
-        [self.siteService addFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+        [self.siteService addFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
+        {
             favoriteButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionFavorite
+                                                               label:kAnalyticsEventLabelEnable
+                                                               value:@1];
+            
             if (site)
             {
                 // if the favourites are displayed, add the cell to the table view, otherwise replace the site with the updated one
@@ -471,8 +484,14 @@
     
     if (!selectedSite.isMember && !selectedSite.isPendingMember)
     {
-        [self.siteService joinSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+        [self.siteService joinSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
+        {
             joinButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionMembership
+                                                               label:kAnalyticsEventLabelJoin
+                                                               value:@1];
             
             if (site)
             {
@@ -507,8 +526,14 @@
     else if (selectedSite.isPendingMember)
     {
         // cancel the request
-        [self.siteService cancelPendingJoinRequestForSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+        [self.siteService cancelPendingJoinRequestForSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
+        {
             joinButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionMembership
+                                                               label:kAnalyticsEventLabelCancel
+                                                               value:@1];
             
             if (site)
             {
@@ -530,8 +555,14 @@
     }
     else
     {
-        [self.siteService leaveSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
+        [self.siteService leaveSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
+        {
             joinButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionMembership
+                                                               label:kAnalyticsEventLabelLeave
+                                                               value:@1];
             
             if (site)
             {

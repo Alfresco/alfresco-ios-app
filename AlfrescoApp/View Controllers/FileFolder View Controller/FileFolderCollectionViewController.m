@@ -608,12 +608,23 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:self.displayFolder session:self.session delegate:self];
         NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
         [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
+        
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionQuickAction
+                                                           label:@"text/plain"
+                                                           value:@1];
     }];
 }
 
 - (UIAlertAction *)alertActionAddFolder
 {
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
+    {
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionQuickAction
+                                                           label:kAnalyticsEventLabelFolder
+                                                           value:@1];
+        
         // Display the create folder UIAlertController
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
                                                                                  message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
@@ -633,6 +644,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         [self retrievePermissionsForNode:folder];
                         [self addAlfrescoNodes:@[folder] completion:nil];
                         [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                        
+                        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                          action:kAnalyticsEventActionCreate
+                                                                           label:kAnalyticsEventLabelFolder
+                                                                           value:@1];
                     }
                     else
                     {
@@ -728,6 +744,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
         self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+        
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionQuickAction
+                                                           label:kAnalyticsEventLabelTakePhotoOrVideo
+                                                           value:@1];
     }];
 }
 
@@ -737,6 +758,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:self.displayFolder delegate:self];
         NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
         [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
+        
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionQuickAction
+                                                           label:kAnalyticsEventLabelRecordAudio
+                                                           value:@1];
     }];
 }
 
@@ -1152,6 +1178,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self.documentService deleteNode:nodeToDelete completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            NSString *analyticsLabel = nil;
+            
+            if ([nodeToDelete isKindOfClass:[AlfrescoDocument class]])
+                analyticsLabel = ((AlfrescoDocument *)nodeToDelete).contentMimeType;
+            else if ([nodeToDelete isKindOfClass:[AlfrescoFolder class]])
+                analyticsLabel = kAnalyticsEventLabelFolder;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionDelete
+                                                               label:analyticsLabel
+                                                               value:@1];
+            
             if ([[UniversalDevice detailViewItemIdentifier] isEqualToString:nodeToDelete.identifier])
             {
                 [UniversalDevice clearDetailViewController];

@@ -110,6 +110,9 @@ static NSInteger const kTagProfileCell = 3;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.allowsPullToRefresh = NO;
     [self constructTableCellsForAlfrescoServer];
+    
+#warning : Don't forget to remove this:
+//    [self setupDebugAccount];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -156,6 +159,19 @@ static NSInteger const kTagProfileCell = 3;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self updateFormBackupAccount];
+}
+
+#pragma mark - Dev
+
+- (void) setupDebugAccount
+{
+    self.usernameTextField.text = @"aposmangiu";
+    self.passwordTextField.text = @"test";
+    self.serverAddressTextField.text = @"172.30.141.155";
+    self.protocolSwitch.on = NO;
+    self.portTextField.text = @"8080";
+    self.descriptionTextField.text = @"Local";
+    self.saveButton.enabled = YES;
 }
 
 #pragma mark - private Methods
@@ -275,6 +291,11 @@ static NSInteger const kTagProfileCell = 3;
         [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
             if (successful)
             {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                  action:kAnalyticsEventActionCreate
+                                                                   label:kAnalyticsEventLabelOnPremise
+                                                                   value:@1];
+                
                 AccountManager *accountManager = [AccountManager sharedManager];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)

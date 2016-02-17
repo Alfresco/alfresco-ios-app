@@ -637,6 +637,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
 
         if (document)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionCreate
+                                                               label:document.contentMimeType
+                                                               value:@1
+                                                        customMetric:AnalyticsMetricFileSize
+                                                         metricValue:@(document.contentLength)
+             ];
+            
             NSError *deleteAfterUploadError = nil;
             [[AlfrescoFileManager sharedManager] removeItemAtPath:weakSelf.contentFile.fileUrl.absoluteURL.path error:&deleteAfterUploadError];
             

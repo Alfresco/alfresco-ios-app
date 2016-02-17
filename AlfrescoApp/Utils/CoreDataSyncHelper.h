@@ -41,4 +41,7 @@ extern NSString * const kSyncErrorManagedObject;
 
 - (AlfrescoDocument *)retrieveSyncedAlfrescoDocumentForIdentifier:(NSString *)documentIdentifier managedObjectContext:(NSManagedObjectContext *)managedContext;
 
+- (NSArray *) retrieveSyncFileNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSArray *) retrieveSyncFolderNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+
 @end

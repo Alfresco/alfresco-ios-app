@@ -291,6 +291,16 @@ static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId
     return nodeStatus;
 }
 
+- (NSArray *) retrieveSyncFileNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    return [self.syncCoreDataHelper retrieveSyncFileNodesForAccountWithId:accountId inManagedObjectContext:managedContext];
+}
+
+- (NSArray *) retrieveSyncFolderNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+{
+    return [self.syncCoreDataHelper retrieveSyncFolderNodesForAccountWithId:accountId inManagedObjectContext:managedContext];
+}
+
 #pragma mark - Delete Methods
 
 - (void)deleteNodeFromSync:(AlfrescoNode *)node inAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext

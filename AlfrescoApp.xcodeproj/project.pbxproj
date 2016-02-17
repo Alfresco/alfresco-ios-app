@@ -82,9 +82,6 @@
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
-		23E0E1A41C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
-		23E0E1A51C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
-		23E0E1A61C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
 		27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */; };
@@ -941,6 +938,8 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		23BD07321C748D89003A8EA0 /* libPods-AlfrescoApp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AlfrescoApp.a"; path = "Pods/../build/Debug-iphoneos/libPods-AlfrescoApp.a"; sourceTree = "<group>"; };
+		23BD07341C748D94003A8EA0 /* libPods-AlfrescoApp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AlfrescoApp.a"; path = "Pods/../build/Debug-iphoneos/libPods-AlfrescoApp.a"; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
@@ -2612,6 +2611,8 @@
 		7373B4F717A66E9400869949 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23BD07341C748D94003A8EA0 /* libPods-AlfrescoApp.a */,
+				23BD07321C748D89003A8EA0 /* libPods-AlfrescoApp.a */,
 				73697BB41A9B8DDA009F10BA /* MobileCoreServices.framework */,
 				73697BB21A9B8DC0009F10BA /* SystemConfiguration.framework */,
 				9DB5D92344964A91B3E95A3F /* libPods.a */,
@@ -4639,7 +4640,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23E0E1A41C68B002001A6F1B /* AnalyticsConstants.m in Sources */,
 				7390B3871B03742200E7191F /* AlfrescoBaseTest.m in Sources */,
 				7390B3861B03741F00E7191F /* SyncTest.m in Sources */,
 				7390B3811B03684400E7191F /* AlfrescoConfigServiceTest.m in Sources */,
@@ -4660,7 +4660,6 @@
 				735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */,
 				278658A41BB60280003B77AA /* CustomFolderService.m in Sources */,
 				73697B951A979895009F10BA /* PersistentQueueStore.m in Sources */,
-				23E0E1A51C68B002001A6F1B /* AnalyticsConstants.m in Sources */,
 				738B41081A714872008F8784 /* UserAccountWrapper.m in Sources */,
 				734B87641A9F7A0F0093E702 /* Utilities.m in Sources */,
 				73B2679D1ADD581400310592 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
@@ -4675,7 +4674,6 @@
 				73697B961A979895009F10BA /* PersistentQueueStore.m in Sources */,
 				73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */,
 				734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */,
-				23E0E1A61C68B002001A6F1B /* AnalyticsConstants.m in Sources */,
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
@@ -5243,6 +5241,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5271,6 +5273,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5299,6 +5305,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5328,6 +5338,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -5357,6 +5371,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -5386,6 +5404,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

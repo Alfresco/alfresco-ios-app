@@ -64,6 +64,11 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     return [[self preferenceForIdentifier:kSettingsFullTextSearchIdentifier] boolValue];
 }
 
+- (BOOL)shouldProtectFiles
+{
+    return [[self preferenceForIdentifier:kSettingsFileProtectionIdentifier] boolValue];
+}
+
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier
 {
     return [self.preferences valueForKey:preferenceIdentifier];

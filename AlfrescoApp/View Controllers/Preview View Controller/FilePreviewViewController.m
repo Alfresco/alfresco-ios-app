@@ -548,6 +548,18 @@ static CGFloat sDownloadProgressHeight;
         [self presentViewController:navigationPresentationViewController animated:YES completion:^{
             [presentationViewController.navigationController setNavigationBarHidden:YES animated:YES];
         }];
+        
+        NSString *mimeType = nil;
+        
+        if (self.document)
+            mimeType = self.document.contentMimeType;
+        else if (self.filePathForFileToLoad)
+            mimeType = [Utility mimeTypeForFileExtension:self.filePathForFileToLoad.pathExtension];
+
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionFullScreenView
+                                                           label:mimeType
+                                                           value:@1];
     }
 }
 

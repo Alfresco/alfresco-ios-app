@@ -359,6 +359,15 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 {
     self.session = notification.object;
     
+    NSString *labelString = [self.session isKindOfClass:[AlfrescoRepositorySession class]] ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                      action:kAnalyticsEventActionInfo
+                                                       label:labelString
+                                                       value:@1
+                                                customMetric:AnalyticsMetricNone
+                                                 metricValue:nil
+                                                     session:self.session];
 }
 
 - (void)configureManagedObjectWithDictionary:(NSDictionary *)managedDictionary completionBlock:(void (^)(BOOL successful, BOOL addedAccount, UserAccount *configuredAccount, NSError *configurationError))completionBlock

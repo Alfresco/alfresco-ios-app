@@ -20,6 +20,12 @@
 #import "Flurry.h"
 #import "PreferenceManager.h"
 #import <Google/Analytics.h>
+#import "AccountManager.h"
+#import "AppConfigurationManager.h"
+#import "DownloadManager.h"
+#import "SyncManager.h"
+#import "SyncHelper.h"
+#import "SyncNodeInfo.h"
 
 @interface AnalyticsManager ()
 @property (nonatomic, assign, readwrite) BOOL flurryHasStarted;
@@ -69,7 +75,7 @@
     if (screenName == nil)
         return;
     
-    NSLog(@"GA - track screen with name: %@", screenName);
+    NSLog(@"GA_SCREEN: %@", screenName);
     
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName value:screenName];
@@ -78,10 +84,148 @@
 
 - (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value
 {
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [self trackEventWithCategory:category action:action label:label value:value customMetric:AnalyticsMetricNone metricValue:nil];
+}
+
+- (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value customMetric: (AnalyticsMetric) metric metricValue: (NSNumber *) metricValue
+{
+    [self trackEventWithCategory:category action:action label:label value:value customMetric:metric metricValue:metricValue session:nil];
+}
+
+- (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value customMetric: (AnalyticsMetric) metric metricValue: (NSNumber *) metricValue session: (id<AlfrescoSession>) session
+{
+    if (category == nil || action == nil || label == nil)
+        return;
+    
+    if (value == nil)
+        value = @1;
+    
+    NSLog(@"GA_EVENT: %@ - %@ - %@ - %@%@", category, action, label, value, metric == AnalyticsMetricNone ? @"" : [NSString stringWithFormat:@" - %lu - %@", (unsigned long)metric, metricValue.stringValue]);
+    
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
-    NSDictionary *dictionary = [builder build];
-    [tracker send:dictionary];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    
+    if (metric != AnalyticsMetricNone)
+    {
+        [tracker set:[GAIFields customMetricForIndex:metric]
+               value:metricValue.stringValue];
+    }
+    
+    if (session) // create new session and add custom dimensions
+    {
+        [builder set:@"start" forKey:kGAISessionControl];
+        
+        // Accounts Info / Number of accounts
+        [self addAccountsInfoInTracker:tracker];
+        
+        // Settings Info
+        [self addSettingsInfoInTracker:tracker];
+        
+        // Server Info
+        [self addServerInfoMetricsInTracker:tracker session:session];
+        
+        // Download Info / Local Files
+        [self addDownloadInfoMetricsInTracker:tracker];
+        
+        // Sync Info
+        [self addSyncInfoMetricsInTracker:tracker];
+        
+        AppConfigurationManager *appConfigManager = [AppConfigurationManager sharedManager];
+        AlfrescoConfigService *configService = [appConfigManager configurationServiceForCurrentAccount];
+        configService.session = session;
+        
+        [configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError)
+        {
+            // Profiles Info / Number of profiles
+            [self addProfilesInfoInTracker:tracker profilesArray:profilesArray];
+            
+            NSDictionary *dictionary = [builder build];
+            [tracker send:dictionary];
+        }];
+    }
+    else
+    {
+        NSDictionary *dictionary = [builder build];
+        [tracker send:dictionary];
+    }
+}
+
+#pragma mark - Private Methods For Analytics
+
+- (void) addSettingsInfoInTracker: (id<GAITracker>) tracker
+{
+    // Sync Cellular
+    BOOL syncOnCellular = [[PreferenceManager sharedManager] shouldSyncOnCellular];
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricSyncOnCellular] value:syncOnCellular ? @"1" : @"0"];
+    
+    // Data Protection
+    BOOL fileProtection = [[PreferenceManager sharedManager] shouldProtectFiles];
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricDataProtection] value:fileProtection ? @"1" : @"0"];
+    
+    // Passcode - v2.3
+}
+
+- (void) addProfilesInfoInTracker: (id<GAITracker>) tracker profilesArray: (NSArray *) profilesArray
+{
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricProfilesCounts]
+           value:[NSString stringWithFormat:@"%lu", (unsigned long)profilesArray.count]];
+}
+
+- (void) addAccountsInfoInTracker: (id<GAITracker>) tracker
+{
+    NSUInteger accountsCount = [AccountManager sharedManager].allAccounts.count;
+    NSString *accountsCountString = [NSString stringWithFormat:@"%lu", (unsigned long)accountsCount];
+    
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricAccounts] value:accountsCountString];
+}
+
+- (void) addServerInfoMetricsInTracker: (id<GAITracker>) tracker session: (id<AlfrescoSession>) session
+{
+    NSString *serverTypeString = [session isKindOfClass:[AlfrescoRepositorySession class]] ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricSessionCreated] value:@"1"];
+    [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionServerType] value:serverTypeString];
+    [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionServerEdition] value:[session repositoryInfo].edition];
+    [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionServerVersion] value:[session repositoryInfo].version];
+}
+
+- (void) addDownloadInfoMetricsInTracker: (id<GAITracker>) tracker
+{
+    NSArray *documentPaths = [[DownloadManager sharedManager] downloadedDocumentPaths];
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricLocalFiles]
+           value:[NSString stringWithFormat:@"%lu", (unsigned long)documentPaths.count]];
+}
+
+- (void) addSyncInfoMetricsInTracker: (id<GAITracker>) tracker
+{
+    UserAccount *account = [AccountManager sharedManager].selectedAccount;
+    
+    // Number of files
+    NSArray *syncFiles = [[SyncHelper sharedHelper] retrieveSyncFileNodesForAccountWithId:account.accountIdentifier inManagedObjectContext:nil];
+    NSUInteger syncFilesCount = syncFiles.count;
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricSyncedFiles] value:[NSString stringWithFormat:@"%lu", (unsigned long)syncFilesCount]];
+    
+    // Number of folders
+    NSArray *syncFolders = [[SyncHelper sharedHelper] retrieveSyncFolderNodesForAccountWithId:account.accountIdentifier inManagedObjectContext:nil];
+    NSUInteger syncFoldersCount = syncFolders.count;
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricSyncedFolders] value:[NSString stringWithFormat:@"%lu", (unsigned long)syncFoldersCount]];
+    
+    // Files size
+    __block unsigned long long filesSize = 0;
+    [syncFiles enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+    {
+        SyncNodeInfo *node = (SyncNodeInfo *) obj;
+        NSError *error;
+        NSString *path = node.syncContentPath;
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+        
+        NSNumber *fileSize = attributes[NSFileSize];
+        
+        if (fileSize)
+            filesSize += fileSize.unsignedLongLongValue;
+    }];
+    
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricFileSize] value:[NSString stringWithFormat:@"%llu", filesSize]];
 }
 
 #pragma mark - Private Methods

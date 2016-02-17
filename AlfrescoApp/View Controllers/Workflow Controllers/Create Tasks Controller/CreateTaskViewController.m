@@ -209,6 +209,11 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                            [self dismissViewControllerAnimated:YES completion:^{
                                                                displayInformationMessage(NSLocalizedString(@"task.create.created", @"Task Created"));
                                                            }];
+                                                           
+                                                           [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryBPM
+                                                                                                             action:kAnalyticsEventActionCreate
+                                                                                                              label:process.processDefinitionIdentifier
+                                                                                                              value:@1];
                                                        }
                                                    }];
         }

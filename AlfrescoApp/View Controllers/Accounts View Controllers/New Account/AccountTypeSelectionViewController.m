@@ -121,6 +121,11 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
         [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                  action:kAnalyticsEventActionCreate
+                                                                   label:kAnalyticsEventLabelCloud
+                                                                   value:@1];
+                
                 AccountManager *accountManager = [AccountManager sharedManager];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)

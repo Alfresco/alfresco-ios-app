@@ -105,6 +105,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 - (void)removeAccount:(UserAccount *)account
 {
+    NSString *labelString = account.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                      action:kAnalyticsEventActionDelete
+                                                       label:labelString
+                                                       value:@1];
+    
     [self.accountsFromKeychain removeObject:account];
     [self saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];

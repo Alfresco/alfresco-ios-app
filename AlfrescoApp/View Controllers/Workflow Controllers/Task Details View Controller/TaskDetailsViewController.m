@@ -365,6 +365,11 @@ static UILayoutPriority const kLowPriority = 250;
             displayInformationMessage(NSLocalizedString(@"task.completed.success.message", @"Task completed"));
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
             [UniversalDevice clearDetailViewController];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryBPM
+                                                              action:kAnalyticsEventActionComplete
+                                                               label:weakSelf.task.type
+                                                               value:@1];
         }
     }];
 }
@@ -508,6 +513,11 @@ static UILayoutPriority const kLowPriority = 250;
                     [weakSelf enableActionButtons:YES];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
                     [UniversalDevice clearDetailViewController];
+                    
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryBPM
+                                                                      action:kAnalyticsEventActionReassign
+                                                                       label:weakSelf.task.type
+                                                                       value:@1];
                 }
             }];
         }

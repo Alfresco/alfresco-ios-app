@@ -304,6 +304,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                 {
                     [[AccountManager sharedManager] selectAccount:account selectNetwork:account.accountNetworks.firstObject alfrescoSession:alfrescoSession];
                     [self updateAccountList];
+                    
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                                      action:kAnalyticsEventActionSwitch
+                                                                       label:kAnalyticsEventLabelCloud
+                                                                       value:@1];
                 }
             }];
         }
@@ -426,6 +431,12 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             {
                 [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
                 [self.tableView reloadData];
+                
+                NSString *label = account.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                                  action:kAnalyticsEventActionSwitch
+                                                                   label:label
+                                                                   value:@1];
             }
         }];
     }

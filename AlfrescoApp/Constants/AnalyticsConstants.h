@@ -139,8 +139,7 @@ extern NSString * const kAnalyticsEventLabelNetwork;
 extern NSString * const kAnalyticsEventLabelProfile;
 extern NSString * const kAnalyticsEventLabelDocumentMimetype;
 extern NSString * const kAnalyticsEventLabelFolder;
-extern NSString * const kAnalyticsEventLabelTakePhoto;
-extern NSString * const kAnalyticsEventLabelRecordVideo;
+extern NSString * const kAnalyticsEventLabelTakePhotoOrVideo;
 extern NSString * const kAnalyticsEventLabelRecordAudio;
 extern NSString * const kAnalyticsEventLabelPhone;
 extern NSString * const kAnalyticsEventLabelMobile;
@@ -156,8 +155,6 @@ extern NSString * const kAnalyticsEventLabelLeave;
 extern NSString * const kAnalyticsEventLabelCancel;
 extern NSString * const kAnalyticsEventLabelEnable;
 extern NSString * const kAnalyticsEventLabelDisable;
-extern NSString * const kAnalyticsEventLabelProcessDefinitionIdentifier;
-extern NSString * const kAnalyticsEventLabelTaskKey;
 extern NSString * const kAnalyticsEventLabelFiles;
 extern NSString * const kAnalyticsEventLabelFolders;
 extern NSString * const kAnalyticsEventLabelSites;
@@ -167,3 +164,32 @@ extern NSString * const kAnalyticsEventLabelSyncedFiles;
 extern NSString * const kAnalyticsEventLabelDisableConfig;
 extern NSString * const kAnalyticsEventLabelPartial;
 extern NSString * const kAnalyticsEventLabelFull;
+
+#pragma mark - Custom Metrics
+
+typedef NS_ENUM(NSUInteger, AnalyticsMetric)
+{
+    AnalyticsMetricNone                = 0,
+    AnalyticsMetricAccounts            = 1, // Number of accounts. -> 1..n
+    AnalyticsMetricDataProtection      = 2, // Is data protection enabled? -> 1|0
+    AnalyticsMetricPasscode            = 3, // Is passcode enabled? -> 1|0
+    AnalyticsMetricLocalFiles          = 4, // The number of local files. -> 1..n
+    AnalyticsMetricSyncedFolders       = 5,
+    AnalyticsMetricSyncedFiles         = 6,
+    AnalyticsMetricSyncedFileSize      = 7,
+    AnalyticsMetricSessionCreated      = 8, // 1
+    AnalyticsMetricSyncStarted         = 9,
+    AnalyticsMetricFileSize            = 10,
+    AnalyticsMetricProfilesCounts      = 11,// The number of profiles. -> 1..n
+    AnalyticsMetricFullContentSearch   = 12,
+    AnalyticsMetricSyncOnCellular      = 13
+};
+
+typedef NS_ENUM(NSUInteger, AnalyticsDimension)
+{
+    AnalyticsDimensionServerType        = 1,
+    AnalyticsDimensionServerVersion     = 2,
+    AnalyticsDimensionServerEdition     = 3,
+//    AnalyticsDimensionSyncFileCount     = 4,
+//    AnalyticsDimensionAccountCount      = 5
+};

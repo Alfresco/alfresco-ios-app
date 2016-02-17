@@ -78,6 +78,11 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigProfileDidChangeNotification
                                                                 object:self.currentlySelectedProfile
                                                               userInfo:@{kAlfrescoConfigProfileDidChangeForAccountKey : self.account}];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                              action:kAnalyticsEventActionSwitch
+                                                               label:kAnalyticsEventLabelProfile
+                                                               value:@1];
         }
     }
 }
