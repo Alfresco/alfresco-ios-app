@@ -437,6 +437,13 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                                                                   action:kAnalyticsEventActionSwitch
                                                                    label:label
                                                                    value:@1];
+                if (networkId)
+                {
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                                      action:kAnalyticsEventActionSwitch
+                                                                       label:kAnalyticsEventLabelNetwork
+                                                                       value:@1];
+                }
             }
         }];
     }

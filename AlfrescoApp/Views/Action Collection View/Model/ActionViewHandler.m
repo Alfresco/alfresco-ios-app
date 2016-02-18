@@ -644,7 +644,7 @@
 
 - (void)pressedSendForReviewActionItem:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document
 {
-    CreateTaskViewController *createTaskViewController = [[CreateTaskViewController alloc] initWithSession:self.session workflowType:WorkflowTypeReview attachments:@[document]];
+    CreateTaskViewController *createTaskViewController = [[CreateTaskViewController alloc] initWithSession:self.session workflowType:WorkflowTypeReview attachments:@[document] documentReview:YES];
     NavigationViewController *createTaskNavigationController = [[NavigationViewController alloc] initWithRootViewController:createTaskViewController];
     createTaskNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.controller presentViewController:createTaskNavigationController animated:YES completion:nil];

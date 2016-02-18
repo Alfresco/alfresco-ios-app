@@ -28,9 +28,10 @@
 #import "SyncNodeInfo.h"
 
 @interface AnalyticsManager ()
-@property (nonatomic, assign, readwrite) BOOL flurryHasStarted;
+@property (nonatomic, assign, readwrite) BOOL flurryAnalyticsHasStarted;
 @property (nonatomic, assign, readwrite) BOOL googleAnalyticsHasStarted;
-@property (nonatomic, assign, readwrite) BOOL analyticsAreActive;
+@property (nonatomic, assign, readwrite) BOOL flurryAnalyticsAreActive;
+@property (nonatomic, assign, readwrite) BOOL googleAnalyticsAreActive;
 @end
 
 @implementation AnalyticsManager
@@ -57,21 +58,36 @@
 
 - (void)startAnalytics
 {
-    if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
+    // Flurry Analytics
+    if (FLURRY_API_KEY.length > 0)
     {
-        [self start];
+        NSLog(@"FLURRY_API_KEY: %@", FLURRY_API_KEY);
+        
+        if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
+            [self startAnalyticsType:AnalyticsTypeFlurry];
+    }
+    
+    // Google Analytics
+    if (GA_API_KEY.length > 0)
+    {
+        NSLog(@"GA_API_KEY: %@", GA_API_KEY);
+        [self startAnalyticsType:AnalyticsTypeGoogleAnalytics];
     }
 }
 
 - (void)stopAnalytics
 {
-    [self stop];
+    [self stopAnalyticsType:AnalyticsTypeFlurry];
+    [self stopAnalyticsType:AnalyticsTypeGoogleAnalytics];
 }
 
 #pragma mark - Tracking Methods
 
 - (void) trackScreenWithName: (NSString *) screenName
 {
+    if (self.googleAnalyticsAreActive == NO)
+        return;
+    
     if (screenName == nil)
         return;
     
@@ -94,6 +110,9 @@
 
 - (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value customMetric: (AnalyticsMetric) metric metricValue: (NSNumber *) metricValue session: (id<AlfrescoSession>) session
 {
+    if (self.googleAnalyticsAreActive == NO)
+        return;
+    
     if (category == nil || action == nil || label == nil)
         return;
     
@@ -230,57 +249,83 @@
 
 #pragma mark - Private Methods
 
-- (void)start
+- (void)startAnalyticsType:(AnalyticsType)type
 {
-    if (!self.flurryHasStarted)
+    switch (type)
     {
-        [Flurry startSession:FLURRY_API_KEY];
-        self.flurryHasStarted = YES;
+        case AnalyticsTypeFlurry:
+        {
+            if (self.flurryAnalyticsHasStarted == NO)
+            {
+                [Flurry startSession:FLURRY_API_KEY];
+                self.flurryAnalyticsHasStarted = YES;
+            }
+            
+            [Flurry setEventLoggingEnabled:YES];
+            [Flurry setSessionReportsOnCloseEnabled:YES];
+            [Flurry setSessionReportsOnPauseEnabled:YES];
+            
+            self.flurryAnalyticsAreActive = YES;
+        }
+            break;
+        
+        case AnalyticsTypeGoogleAnalytics:
+        {
+            if (self.googleAnalyticsHasStarted == NO)
+            {
+                [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+                self.googleAnalyticsHasStarted = YES;
+            }
+            
+            [GAI sharedInstance].optOut = NO;
+            
+            self.googleAnalyticsAreActive = YES;
+        }
+            break;
+            
+        default:
+            break;
     }
-
-    [Flurry setEventLoggingEnabled:YES];
-    [Flurry setSessionReportsOnCloseEnabled:YES];
-    [Flurry setSessionReportsOnPauseEnabled:YES];
-    
-    if (!self.googleAnalyticsHasStarted)
-    {
-        NSLog(@"GA: %@", GA_API_KEY);
-        [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
-        self.googleAnalyticsHasStarted = YES;
-    }
-    
-    [GAI sharedInstance].optOut = NO;
-    
-    self.analyticsAreActive = YES;
 }
 
-- (void)stop
+- (void)stopAnalyticsType:(AnalyticsType)type
 {
-    [Flurry setEventLoggingEnabled:NO];
-    [Flurry setSessionReportsOnCloseEnabled:NO];
-    [Flurry setSessionReportsOnPauseEnabled:NO];
-    
-    [GAI sharedInstance].optOut = YES;
-    
-    self.analyticsAreActive = NO;
+    switch (type)
+    {
+        case AnalyticsTypeFlurry:
+        {
+            [Flurry setEventLoggingEnabled:NO];
+            [Flurry setSessionReportsOnCloseEnabled:NO];
+            [Flurry setSessionReportsOnPauseEnabled:NO];
+            
+            self.flurryAnalyticsAreActive = NO;
+        }
+            break;
+            
+        case AnalyticsTypeGoogleAnalytics:
+        {
+            [GAI sharedInstance].optOut = YES;
+            
+            self.googleAnalyticsAreActive = NO;
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)preferencesDidChange:(NSNotification *)notification
 {
     NSString *preferenceKeyChanged = notification.object;
 
-    if ([preferenceKeyChanged isEqualToString:kSettingsSendDiagnosticsIdentifier])
+    if ([preferenceKeyChanged isEqualToString:kSettingsSendDiagnosticsIdentifier]) // Flurry
     {
         BOOL shouldSendDiagnostics = [notification.userInfo[kSettingChangedToKey] boolValue];
         
-        if (shouldSendDiagnostics && !self.analyticsAreActive)
-        {
-            [self start];
-        }
-        else if (self.analyticsAreActive)
-        {
-            [self stop];
-        }
+        if (shouldSendDiagnostics && self.flurryAnalyticsAreActive == NO)
+            [self startAnalyticsType:AnalyticsTypeFlurry];
+        else if (self.flurryAnalyticsAreActive)
+            [self stopAnalyticsType:AnalyticsTypeFlurry];
     }
 }
 

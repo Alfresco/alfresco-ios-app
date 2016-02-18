@@ -29,6 +29,9 @@
 #import "FileMetadata.h"
 #import "PersistentQueueStore.h"
 #import "Utilities.h"
+#import <Google/Analytics.h>
+#import "AnalyticsConstants.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -721,6 +724,17 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             {
                 AlfrescoLogError(@"Unable to copy from: %@ to: %@", newURL, outURL);
             }
+            else
+            {
+                GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:kAnalyticsEventCategoryDocumentProvider
+                                                                                       action:kAnalyticsEventActionCreate
+                                                                                        label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]
+                                                                                        value:@1];
+                id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+                NSDictionary *dictionary = [builder build];
+                [tracker send:dictionary];
+
+            }
         }];
         
         [self dismissGrantingAccessToURL:outURL];
@@ -734,6 +748,14 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles];
             [self.queueStore addObjectToQueue:metadata];
             [self.queueStore saveQueue];
+            
+            GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:kAnalyticsEventCategoryDocumentProvider
+                                                                                   action:kAnalyticsEventActionOpen
+                                                                                    label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]
+                                                                                    value:@1];
+            id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+            NSDictionary *dictionary = [builder build];
+            [tracker send:dictionary];
         }
         
         [self dismissGrantingAccessToURL:outURL];
@@ -745,6 +767,39 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 - (void)favoritesListViewController:(AKFavoritesListViewController *)favoritesListViewController didSelectNodes:(NSArray *)selectedNodes
 {
     [self handleSelectionFromController:favoritesListViewController selectedNodes:selectedNodes];
+}
+
+#pragma mark - Utility
+
++ (NSString *)mimeTypeForFileExtension:(NSString *)extension
+{
+    CFStringRef pathExtension = (__bridge_retained CFStringRef)extension;
+    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType);
+    if (NULL != type)
+    {
+        CFRelease(type);
+    }
+    if (NULL != pathExtension)
+    {
+        CFRelease(pathExtension);
+    }
+    
+    if (mimeType.length == 0)
+    {
+        mimeType = @"application/octet-stream";
+    }
+    
+    /**
+     * Force the mimetype to audio/mp4 it iOS determined it should be audio/x-m4a
+     * Otherwise the repo applies both audio and exif aspects to the node
+     */
+    if ([mimeType isEqualToString:@"audio/x-m4a"])
+    {
+        mimeType = @"audio/mp4";
+    }
+    
+    return mimeType;
 }
 
 @end

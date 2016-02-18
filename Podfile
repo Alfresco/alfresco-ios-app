@@ -9,4 +9,9 @@ end
 
 target 'AlfrescoDocumentPicker' do
     pod 'MBProgressHUD', '~> 0.9'
+    pod 'Google/Analytics'
+end
+
+target 'AlfrescoDocumentPickerFileProvider’ do
+    pod 'Google/Analytics'
 end
