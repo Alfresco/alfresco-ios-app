@@ -111,7 +111,6 @@ extern NSString * const kAnalyticsEventActionUpdate;
 extern NSString * const kAnalyticsEventActionDownload;
 extern NSString * const kAnalyticsEventActionOpen;
 extern NSString * const kAnalyticsEventActionSync; // 2.3
-extern NSString * const kAnalyticsEventActionShare;
 extern NSString * const kAnalyticsEventActionEmail;
 extern NSString * const kAnalyticsEventActionEmailLink;
 extern NSString * const kAnalyticsEventActionSendForReview;
@@ -170,17 +169,17 @@ extern NSString * const kAnalyticsEventLabelFull;
 typedef NS_ENUM(NSUInteger, AnalyticsMetric)
 {
     AnalyticsMetricNone                = 0,
-    AnalyticsMetricAccounts            = 1, // Number of accounts. -> 1..n
-    AnalyticsMetricDataProtection      = 2, // Is data protection enabled? -> 1|0
-    AnalyticsMetricPasscode            = 3, // Is passcode enabled? -> 1|0
-    AnalyticsMetricLocalFiles          = 4, // The number of local files. -> 1..n
+    AnalyticsMetricAccounts            = 1,
+    AnalyticsMetricDataProtection      = 2,
+    AnalyticsMetricPasscode            = 3,
+    AnalyticsMetricLocalFiles          = 4,
     AnalyticsMetricSyncedFolders       = 5,
     AnalyticsMetricSyncedFiles         = 6,
     AnalyticsMetricSyncedFileSize      = 7,
-    AnalyticsMetricSessionCreated      = 8, // 1
+    AnalyticsMetricSessionCreated      = 8,
     AnalyticsMetricSyncStarted         = 9,
     AnalyticsMetricFileSize            = 10,
-    AnalyticsMetricProfilesCounts      = 11,// The number of profiles. -> 1..n
+    AnalyticsMetricProfilesCounts      = 11,
     AnalyticsMetricFullContentSearch   = 12,
     AnalyticsMetricSyncOnCellular      = 13
 };
@@ -190,6 +189,4 @@ typedef NS_ENUM(NSUInteger, AnalyticsDimension)
     AnalyticsDimensionServerType        = 1,
     AnalyticsDimensionServerVersion     = 2,
     AnalyticsDimensionServerEdition     = 3,
-//    AnalyticsDimensionSyncFileCount     = 4,
-//    AnalyticsDimensionAccountCount      = 5
 };

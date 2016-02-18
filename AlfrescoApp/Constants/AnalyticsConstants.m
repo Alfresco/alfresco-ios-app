@@ -111,7 +111,6 @@ NSString * const kAnalyticsEventActionUpdate             = @"Update";
 NSString * const kAnalyticsEventActionDownload           = @"Download";
 NSString * const kAnalyticsEventActionOpen               = @"Open";
 NSString * const kAnalyticsEventActionSync               = @"Sync"; // 2.3
-NSString * const kAnalyticsEventActionShare              = @"Share";
 NSString * const kAnalyticsEventActionEmail              = @"Email";
 NSString * const kAnalyticsEventActionEmailLink          = @"Email Link";
 NSString * const kAnalyticsEventActionSendForReview      = @"Send for Review";
