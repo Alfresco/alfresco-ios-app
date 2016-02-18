@@ -23,13 +23,12 @@
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) NSString *rendition;
 @property (nonatomic, copy) AlfrescoContentFileCompletionBlock contentFileCompletionBlock;
+@property (nonatomic, strong) AlfrescoRequest *renditionRequest;
 @end
 
 @implementation ThumbnailOperation
 {
-    BOOL _complete;
     BOOL _stopRunLoop;
-    NSThread *_myThread;
 }
 
 - (id)initWithDocumentFolderService:(AlfrescoDocumentFolderService *)service document:(AlfrescoDocument *)document renditionName:(NSString *)rendition completionBlock:(AlfrescoContentFileCompletionBlock)completionBlock
@@ -49,45 +48,43 @@
 - (void)rateLimitMonitor:(NSTimer *)timer
 {
     [timer invalidate];
+    [self initiateRenditionRequest];
+}
 
-    [self.documentFolderService retrieveRenditionOfNode:self.document renditionName:self.rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+- (void)initiateRenditionRequest
+{
+    self.renditionRequest = [self.documentFolderService retrieveRenditionOfNode:self.document renditionName:self.rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
         if (self.contentFileCompletionBlock)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.contentFileCompletionBlock(contentFile, error);
             });
         }
-        [self setComplete];
+        _stopRunLoop = YES;
     }];
 }
 
 - (void)main
 {
-    _myThread = [NSThread currentThread];
-    
-    NSTimer *myTimer = [NSTimer timerWithTimeInterval:self.minimumDelayBetweenRequests target:self selector:@selector(rateLimitMonitor:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:NSDefaultRunLoopMode];
+    if (self.minimumDelayBetweenRequests > 0)
+    {
+        // Used for cloud accounts: rate-limits the rendition requests
+        NSTimer *myTimer = [NSTimer timerWithTimeInterval:self.minimumDelayBetweenRequests target:self selector:@selector(rateLimitMonitor:) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:NSDefaultRunLoopMode];
+    }
+    else
+    {
+        [self initiateRenditionRequest];
+    }
     
     while (!self.isCancelled && !_stopRunLoop)
     {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        if (self.isCancelled)
+        {
+            [self.renditionRequest cancel];
+        }
     }
-    _complete = YES;
-}
-
-- (void)internalComplete
-{
-    _stopRunLoop = YES;
-}
-
-- (void)setComplete
-{
-    [self performSelector:@selector(internalComplete) onThread:_myThread withObject:nil waitUntilDone:NO];
-}
-
-- (BOOL)isFinished
-{
-    return _complete;
 }
 
 @end
