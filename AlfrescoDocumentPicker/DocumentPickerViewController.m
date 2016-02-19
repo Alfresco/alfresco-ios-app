@@ -370,6 +370,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     NSFileManager *fileManager = [[NSFileManager alloc] init];
                     [fileManager setAttributes:@{NSFileModificationDate : document.modifiedAt} ofItemAtPath:outURL.path error:nil];
                     [fileManager copyItemAtURL:outURL toURL:newURL error:nil];
+                    
+                    [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionOpen
+                                                                 label:[DocumentPickerViewController mimeTypeForFileExtension:newURL.absoluteString]];
                 }];
                 
                 [self dismissGrantingAccessToURL:outURL];
@@ -411,6 +414,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                         NSUInteger indexOfMetadata = [fileURLs indexOfObject:outURL];
                         [self.queueStore replaceObjectInQueueAtIndex:indexOfMetadata withObject:metadata];
                         [self.queueStore saveQueue];
+                        
+                        [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionOpen
+                                                                     label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]];
                     }
                     
                     [self dismissGrantingAccessToURL:outURL];
@@ -597,6 +603,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     }
                     else
                     {
+                        [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionCreate
+                                                                     label:document.contentMimeType];
                         [self dismissGrantingAccessToURL:outURL];
                     }
                 } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
@@ -646,6 +654,11 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                         {
                             AlfrescoLogError(@"Unable to copy from: %@ to: %@", completeDocumentStorageURL, downloadPath);
                         }
+                        else
+                        {
+                            [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionUpdate
+                                                                         label:[DocumentPickerViewController mimeTypeForFileExtension:downloadPath.absoluteString]];
+                        }
                         
                         [self dismissGrantingAccessToURL:completeDocumentStorageURL];
                     }];
@@ -665,6 +678,11 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     if (copyError)
                     {
                         AlfrescoLogError(@"Unable to copy from: %@ to: %@", completeDocumentStorageURL, downloadPath);
+                    }
+                    else
+                    {
+                        [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionCreate
+                                                                     label:[DocumentPickerViewController mimeTypeForFileExtension:downloadPath.absoluteString]];
                     }
                     
                     [self dismissGrantingAccessToURL:completeDocumentStorageURL];
@@ -726,14 +744,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             }
             else
             {
-                GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:kAnalyticsEventCategoryDocumentProvider
-                                                                                       action:kAnalyticsEventActionCreate
-                                                                                        label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]
-                                                                                        value:@1];
-                id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
-                NSDictionary *dictionary = [builder build];
-                [tracker send:dictionary];
-
+                [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionOpen
+                                                             label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]];
             }
         }];
         
@@ -748,16 +760,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles];
             [self.queueStore addObjectToQueue:metadata];
             [self.queueStore saveQueue];
-            
-            GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:kAnalyticsEventCategoryDocumentProvider
-                                                                                   action:kAnalyticsEventActionOpen
-                                                                                    label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]
-                                                                                    value:@1];
-            id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
-            NSDictionary *dictionary = [builder build];
-            [tracker send:dictionary];
         }
         
+        [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionOpen
+                                                     label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]];
         [self dismissGrantingAccessToURL:outURL];
     }
 }
@@ -771,6 +777,19 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 #pragma mark - Utility
 
++ (void)trackEventWithAction:(NSString *)action label:(NSString *)label
+{
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:kAnalyticsEventCategoryDocumentProvider
+                                                                           action:action
+                                                                            label:label
+                                                                            value:@1];
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+    NSDictionary *dictionary = [builder build];
+    [tracker send:dictionary];
+}
+
+// This method is a clone of Utility class's method mimeTypeForFileExtension:
+// TODO: break up Utility in smaller functional pieces (FileUtility, UIUtility and so on) and get rid of this duplicate method.
 + (NSString *)mimeTypeForFileExtension:(NSString *)extension
 {
     CFStringRef pathExtension = (__bridge_retained CFStringRef)extension;

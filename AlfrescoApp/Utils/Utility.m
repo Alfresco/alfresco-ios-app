@@ -575,6 +575,8 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return randomString;
 }
 
+// This method has a clone in DocumentPickerViewControllerClass.
+// TODO: break up Utility in smaller functional pieces (FileUtility, UIUtility and so on) and get rid of the clone.
 + (NSString *)mimeTypeForFileExtension:(NSString *)extension
 {
     CFStringRef pathExtension = (__bridge_retained CFStringRef)extension;
