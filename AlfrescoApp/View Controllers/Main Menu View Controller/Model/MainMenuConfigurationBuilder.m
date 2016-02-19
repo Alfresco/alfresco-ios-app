@@ -20,7 +20,6 @@
 #import "AlfrescoConfigService.h"
 #import "ActivitiesViewController.h"
 #import "FileFolderListViewController.h"
-//#import "SitesListViewController.h"
 #import "DownloadsViewController.h"
 #import "SyncViewController.h"
 #import "TaskViewController.h"
@@ -214,11 +213,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem)
             {
                 NSString *bundledIconName = [self imageFileNameForAlfrescoViewConfig:subItem];
-                
-                if ([bundledIconName isEqualToString:@"mainmenu-repository.png"])
-                {
-                    NSLog(@"icon: %@", bundledIconName);
-                }
                 
                 id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
                 // Do not render the view if it's not supported
@@ -507,7 +501,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 - (NSString *)imageFileNameForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
 {
     NSString *bundledIconName = nil;
-//    NSLog(@"viewConfig.iconIdentifier: %@", viewConfig.iconIdentifier);
     
     if (viewConfig.iconIdentifier)
     {
@@ -522,8 +515,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         bundledIconName = @"mainmenu-help.png";
     }
-    
-//    NSLog(@"icon: %@", bundledIconName);
     
     return bundledIconName;
 }

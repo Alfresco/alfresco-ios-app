@@ -77,7 +77,7 @@ static NSUInteger const kCellLeftInset = 10;
     [self.tableView reloadData];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

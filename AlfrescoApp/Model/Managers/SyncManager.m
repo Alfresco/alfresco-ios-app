@@ -539,8 +539,7 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
             [self updateFolderSizes:YES andCheckIfAnyFileModifiedLocally:NO];
             unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodesToDownload];
             
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [self trackSyncRunWithNodesToDownload:nodesToDownload nodesToUpload:nodesToUpload];
                 
                 AccountSyncProgress *syncProgress = self.accountsSyncProgress[self.selectedAccountIdentifier];

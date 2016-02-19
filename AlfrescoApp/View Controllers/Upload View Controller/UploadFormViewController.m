@@ -343,7 +343,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

@@ -155,7 +155,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     [self.tableView reloadData];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
@@ -164,7 +164,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 #pragma mark - Analytics
 
-- (void) trackScreen
+- (void)trackScreen
 {
     NSString *screenName = nil;
     
@@ -175,18 +175,18 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             break;
             
         case SearchViewControllerDataSourceTypeSearchFiles:
-            screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchFiles : kAnalyticsViewSearchResultFiles;
+            screenName = _searchResultsAreDisplayed ? kAnalyticsViewSearchResultFiles : kAnalyticsViewSearchFiles;
             break;
             
         case SearchViewControllerDataSourceTypeSearchFolders:
-            screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchFolders : kAnalyticsViewSearchResultFolders;
+            screenName = _searchResultsAreDisplayed ? kAnalyticsViewSearchResultFolders : kAnalyticsViewSearchFolders;
             break;
             
         case SearchViewControllerDataSourceTypeSearchSites:
         {
             if ([self.sitesPushHandler isKindOfClass:[SearchViewController class]]) // Menu -> Search -> Sites
             {
-                screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchSites : kAnalyticsViewSearchResultSites;
+                screenName = _searchResultsAreDisplayed ? kAnalyticsViewSearchResultSites : kAnalyticsViewSearchSites;
             }
             else // Menu -> Sites
             {
@@ -196,7 +196,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             break;
             
         case SearchViewControllerDataSourceTypeSearchUsers:
-            screenName = _searchResultsAreDisplayed == NO ? kAnalyticsViewSearchPeople : kAnalyticsViewSearchResultPeople;
+            screenName = _searchResultsAreDisplayed ? kAnalyticsViewSearchResultPeople : kAnalyticsViewSearchPeople;
             break;
             
         default:
@@ -204,7 +204,9 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     }
     
     if (screenName)
+    {
         [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
+    }
 }
 
 #pragma mark - Table view data source

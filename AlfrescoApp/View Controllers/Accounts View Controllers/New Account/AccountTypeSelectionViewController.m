@@ -67,7 +67,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     self.navigationItem.leftBarButtonItem = cancel;
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

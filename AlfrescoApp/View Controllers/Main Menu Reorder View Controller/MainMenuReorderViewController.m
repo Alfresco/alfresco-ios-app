@@ -96,7 +96,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [self loadData];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

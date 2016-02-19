@@ -58,7 +58,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [self loadData];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

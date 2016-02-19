@@ -101,7 +101,7 @@ static NSInteger const kSearchResultsIndex = 0;
     self.navigationItem.hidesBackButton = YES;
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

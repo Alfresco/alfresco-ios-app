@@ -105,7 +105,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
@@ -339,7 +339,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void) trackScreenName
+- (void)trackScreenName
 {
     [[AnalyticsManager sharedManager] trackScreenWithName:self.isDisplayingMyTasks ? kAnalyticsViewTaskListingTasksAssignedToMe : kAnalyticsViewTaskListingTasksIVeStarted];
 }

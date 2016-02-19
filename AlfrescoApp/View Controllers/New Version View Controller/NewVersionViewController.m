@@ -72,7 +72,7 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

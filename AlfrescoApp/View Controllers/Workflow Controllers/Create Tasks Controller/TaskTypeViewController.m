@@ -60,7 +60,7 @@ static NSInteger const kSectionNumberAdHoc = 0;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kTaskTypeCellIdentifier];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

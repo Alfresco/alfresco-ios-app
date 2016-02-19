@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
     [self validateForm];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

@@ -153,7 +153,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
                                                object:nil];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

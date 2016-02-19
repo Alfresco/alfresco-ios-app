@@ -157,7 +157,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

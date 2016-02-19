@@ -98,7 +98,7 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
     [self loadData];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

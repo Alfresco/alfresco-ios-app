@@ -90,7 +90,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

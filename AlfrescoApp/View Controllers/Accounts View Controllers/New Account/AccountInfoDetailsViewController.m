@@ -103,7 +103,7 @@ static NSInteger const kTagCertificateCell = 1;
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

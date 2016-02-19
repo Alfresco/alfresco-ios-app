@@ -37,6 +37,11 @@
 #import "VersionHistoryViewController.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
+#define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
+                                         kAnalyticsViewDocumentDetailsProperties,\
+                                         kAnalyticsViewDocumentDetailsVersions,\
+                                         kAnalyticsViewDocumentDetailsComments,\
+                                         kAnalyticsViewDocumentDetailsMap]
 
 @interface DocumentPreviewViewController () <ActionCollectionViewDelegate,
                                              ActionViewDelegate,
@@ -70,7 +75,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
@@ -297,34 +302,13 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [commentsViewController focusCommentEntry:shouldFocusComments];
 }
 
-- (void) trackScreenNameForIndex: (NSUInteger) index
+- (void)trackScreenNameForIndex:(NSUInteger)index
 {
-    NSString *screenName;
-    
-    switch (index)
+    if (index < kDocumentDetailsAnalyticsNames.count)
     {
-        case 0:
-            screenName = kAnalyticsViewDocumentDetailsPreview;
-            break;
-        case 1:
-            screenName = kAnalyticsViewDocumentDetailsProperties;
-            break;
-        case 2:
-            screenName = kAnalyticsViewDocumentDetailsVersions;
-            break;
-        case 3:
-            screenName = kAnalyticsViewDocumentDetailsComments;
-            break;
-        case 4:
-            screenName = kAnalyticsViewDocumentDetailsMap;
-            break;
-            
-        default:
-            break;
+        NSString *screenName = kDocumentDetailsAnalyticsNames[index];
+        [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
     }
-    
-    [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
-
 }
 
 #pragma mark - Document Editing Notification

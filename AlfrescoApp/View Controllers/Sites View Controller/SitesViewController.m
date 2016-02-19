@@ -175,7 +175,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

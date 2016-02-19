@@ -131,7 +131,7 @@ static CGFloat const kProgressBarHeight = 2.0f;
     [self initiateHTTPRequestToURL:self.url];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     

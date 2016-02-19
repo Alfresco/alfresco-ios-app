@@ -29,9 +29,9 @@ typedef NS_ENUM(NSUInteger, AnalyticsType)
 - (void)stopAnalytics;
 
 // Tracking methods
-- (void) trackScreenWithName: (NSString *) screenName;
-- (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value;
-- (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value customMetric: (AnalyticsMetric) metric metricValue: (NSNumber *) metricValue;
-- (void) trackEventWithCategory: (NSString *) category action: (NSString *) action label: (NSString *) label value: (NSNumber *) value customMetric: (AnalyticsMetric) metric metricValue: (NSNumber *) metricValue session: (id<AlfrescoSession>) session;
+- (void)trackScreenWithName:(NSString *)screenName;
+- (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value;
+- (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value customMetric:(AnalyticsMetric)metric metricValue:(NSNumber *)metricValue;
+- (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value customMetric:(AnalyticsMetric)metric metricValue:(NSNumber *)metricValue session:(id<AlfrescoSession>)session;
 
 @end
