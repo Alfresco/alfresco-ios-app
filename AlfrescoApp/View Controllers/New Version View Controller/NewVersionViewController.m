@@ -72,6 +72,13 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewDocumentCreateUpdateForm];
+}
+
 #pragma mark - Private Functions
 
 - (void)createCells
@@ -163,6 +170,13 @@
                 }
                 else
                 {
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                      action:kAnalyticsEventActionUpdate
+                                                                       label:self.document.contentMimeType
+                                                                       value:@1
+                                                                customMetric:AnalyticsMetricFileSize
+                                                                 metricValue:@(self.document.contentLength)];
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentUpdatedOnServerNotification object:updatedDocument userInfo:@{kAlfrescoDocumentUpdatedFromDocumentParameterKey : self.document}];
                     });

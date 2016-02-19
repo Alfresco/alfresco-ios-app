@@ -184,6 +184,33 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return syncedDocument;
 }
 
+- (NSArray *) retrieveSyncFileNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@ && isFolder == NO", accountId];
+    NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
+    
+    return nodes;
+}
+
+- (NSArray *) retrieveSyncFolderNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+{
+    if (!managedContext)
+    {
+        managedContext = self.managedObjectContext;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.accountId == %@ && isFolder == YES", accountId];
+    NSArray *nodes = [self retrieveRecordsForTable:kSyncNodeInfoManagedObject withPredicate:predicate inManagedObjectContext:managedContext];
+    
+    return nodes;
+}
+
+
 #pragma mark - Debugging Dump Methods
 
 - (void)logAllDataInManagedObjectContext:(NSManagedObjectContext *)managedContext

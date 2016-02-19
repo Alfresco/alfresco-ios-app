@@ -37,6 +37,11 @@
 #import "VersionHistoryViewController.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
+#define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
+                                         kAnalyticsViewDocumentDetailsProperties,\
+                                         kAnalyticsViewDocumentDetailsVersions,\
+                                         kAnalyticsViewDocumentDetailsComments,\
+                                         kAnalyticsViewDocumentDetailsMap]
 
 @interface DocumentPreviewViewController () <ActionCollectionViewDelegate,
                                              ActionViewDelegate,
@@ -68,6 +73,13 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self trackScreenNameForIndex:self.pagingScrollView.selectedPageIndex];
 }
 
 - (void)dealloc
@@ -290,6 +302,15 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [commentsViewController focusCommentEntry:shouldFocusComments];
 }
 
+- (void)trackScreenNameForIndex:(NSUInteger)index
+{
+    if (index < kDocumentDetailsAnalyticsNames.count)
+    {
+        NSString *screenName = kDocumentDetailsAnalyticsNames[index];
+        [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
+    }
+}
+
 #pragma mark - Document Editing Notification
 
 - (void)editingDocumentCompleted:(NSNotification *)notification
@@ -385,6 +406,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     {
         [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
     }
+    
+    [self trackScreenNameForIndex:viewIndex];
 }
 
 #pragma mark - CommentViewControllerDelegate Functions

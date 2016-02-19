@@ -111,6 +111,9 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 {
     [super viewDidAppear:animated];
     [self selectIndexPathForAlfrescoNodeInDetailView:nil];
+    
+    if (self.isScreenNameTrackingEnabled)
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuLocalFiles];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated

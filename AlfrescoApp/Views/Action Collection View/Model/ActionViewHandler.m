@@ -51,6 +51,9 @@
 @end
 
 @implementation ActionViewHandler
+{
+    NSString *_emailedFileMimetype;
+}
 
 - (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session controller:(UIViewController<ActionViewDelegate> *)controller;
 {
@@ -82,9 +85,16 @@
 
 - (AlfrescoRequest *)pressedLikeActionItem:(ActionCollectionItem *)actionItem
 {
+    __weak typeof(self) weakSelf = self;
+    
     return [self.ratingService likeNode:self.node completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionLike
+                                                               label:[weakSelf analyticsLabel]
+                                                               value:@1];
+            
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnlike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unlike", @"Unlike Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-unlike.png"};
@@ -95,9 +105,16 @@
 
 - (AlfrescoRequest *)pressedUnlikeActionItem:(ActionCollectionItem *)actionItem
 {
+    __weak typeof(self) weakSelf = self;
+    
     return [self.ratingService unlikeNode:self.node completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionUnlike
+                                                               label:[weakSelf analyticsLabel]
+                                                               value:@1];
+            
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierLike,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.like", @"Like Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-like.png"};
@@ -108,9 +125,16 @@
 
 - (AlfrescoRequest *)pressedFavouriteActionItem:(ActionCollectionItem *)actionItem
 {
+    __weak typeof(self) weakSelf = self;
+    
     return [[FavouriteManager sharedManager] addFavorite:self.node session:self.session completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionFavorite
+                                                               label:[weakSelf analyticsLabel]
+                                                               value:@1];
+            
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavorite.png"};
@@ -121,9 +145,16 @@
 
 - (AlfrescoRequest *)pressedUnfavouriteActionItem:(ActionCollectionItem *)actionItem
 {
+    __weak typeof(self) weakSelf = self;
+    
     return [[FavouriteManager sharedManager] removeFavorite:self.node session:self.session completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionUnfavorite
+                                                               label:[weakSelf analyticsLabel]
+                                                               value:@1];
+            
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-favorite.png"};
@@ -147,6 +178,8 @@
             {
                 mimeType = @"application/octet-stream";
             }
+            _emailedFileMimetype = mimeType;
+            
             NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
             [emailController addAttachmentData:documentData mimeType:mimeType fileName:filePath.lastPathComponent];
             
@@ -213,13 +246,21 @@
         }
         else
         {
-            downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:tempPath session:self.session completionBlock:^(NSString *filePath) {
+            downloadRequest = [[DownloadManager sharedManager] downloadDocument:(AlfrescoDocument *)self.node contentPath:tempPath session:self.session completionBlock:^(NSString *filePath)
+            {
                 // delete the copied file in the completion block to avoid deleting it too early (MOBILE-2533)
                 NSError *deleteError = nil;
                 if (![fileManager removeItemAtPath:tempPath error:&deleteError])
                 {
                     AlfrescoLogError(@"Unable to delete file at path: %@", tempPath);
                 }
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionDownload
+                                                                   label:((AlfrescoDocument *)self.node).contentMimeType
+                                                                   value:@1
+                                                            customMetric:AnalyticsMetricFileSize
+                                                             metricValue:@(((AlfrescoDocument *)self.node).contentLength)];
             }];
         }
     }
@@ -233,6 +274,13 @@
             if (filePath)
             {
                 [[DownloadManager sharedManager] saveDocument:(AlfrescoDocument *)self.node documentName:self.node.name contentPath:filePath completionBlock:nil];
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionDownload
+                                                                   label:((AlfrescoDocument *)self.node).contentMimeType
+                                                                   value:@1
+                                                            customMetric:AnalyticsMetricFileSize
+                                                             metricValue:@(((AlfrescoDocument *)self.node).contentLength)];
             }
         };
         
@@ -276,6 +324,13 @@
                     if (!completed && printError)
                     {
                         AlfrescoLogError(@"Unable to print document %@ with error: %@", fileURL.path, printError.localizedDescription);
+                    }
+                    else
+                    {
+                        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                          action:kAnalyticsEventActionPrint
+                                                                           label:[Utility mimeTypeForFileExtension:filePath.pathExtension]
+                                                                           value:@1];
                     }
                 };
                 
@@ -442,6 +497,11 @@
                 }
                 if (succeeded)
                 {
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                      action:kAnalyticsEventActionDelete
+                                                                       label:[weakSelf analyticsLabel]
+                                                                       value:@1];
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.node];
                     [UniversalDevice clearDetailViewController];
                     SyncManager *syncManager = [SyncManager sharedManager];
@@ -490,6 +550,12 @@
     [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         if (!isCancelButton)
         {
+            NSString *mimetype = [Utility mimeTypeForFileExtension:documentPath.pathExtension];
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionDelete
+                                                               label:mimetype
+                                                               value:@1];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeleteLocalDocumentNotification object:documentPath];
             [UniversalDevice clearDetailViewController];
         }
@@ -578,7 +644,7 @@
 
 - (void)pressedSendForReviewActionItem:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document
 {
-    CreateTaskViewController *createTaskViewController = [[CreateTaskViewController alloc] initWithSession:self.session workflowType:WorkflowTypeReview attachments:@[document]];
+    CreateTaskViewController *createTaskViewController = [[CreateTaskViewController alloc] initWithSession:self.session workflowType:WorkflowTypeReview attachments:@[document] documentReview:YES];
     NavigationViewController *createTaskNavigationController = [[NavigationViewController alloc] initWithRootViewController:createTaskViewController];
     createTaskNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.controller presentViewController:createTaskNavigationController animated:YES completion:nil];
@@ -627,10 +693,32 @@
     [self.queuedCompletionBlocks removeAllObjects];
 }
 
+- (NSString *) analyticsLabel
+{
+    NSString *analyticsLabel = nil;
+    
+    if ([self.node isKindOfClass:[AlfrescoDocument class]])
+        analyticsLabel = ((AlfrescoDocument *)self.node).contentMimeType;
+    else if ([self.node isKindOfClass:[AlfrescoFolder class]])
+        analyticsLabel = kAnalyticsEventLabelFolder;
+    
+    return analyticsLabel;
+}
+
 #pragma mark - MFMailComposeViewControllerDelegate Functions
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
+    if (result == MFMailComposeResultSent)
+    {
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionEmail
+                                                           label:_emailedFileMimetype
+                                                           value:@1];
+    }
+    
+    _emailedFileMimetype = nil;
+    
     if (result != MFMailComposeResultFailed)
     {
         [controller dismissViewControllerAnimated:YES completion:nil];
@@ -646,6 +734,13 @@
 
 - (void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
 {
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                      action:kAnalyticsEventActionOpen
+                                                       label:((AlfrescoDocument *)self.node).contentMimeType
+                                                       value:@1
+                                                customMetric:AnalyticsMetricFileSize
+                                                 metricValue:@(((AlfrescoDocument *)self.node).contentLength)];
+    
     NSDictionary *annotationDictionary = nil;
     NSString *filePath = controller.URL.path;
     

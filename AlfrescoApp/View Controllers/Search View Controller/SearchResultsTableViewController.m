@@ -102,6 +102,7 @@ static CGFloat const kCellHeight = 73.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     if(self.shouldAutoPushFirstResult)
     {
         if (!IS_IPAD)
@@ -115,6 +116,29 @@ static CGFloat const kCellHeight = 73.0f;
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         self.shouldAutoPushFirstResult = NO;
     }
+    
+    NSString *screenName = nil;
+    
+    switch (self.dataType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+            screenName = kAnalyticsViewSearchResultFiles;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchFolders:
+            screenName = kAnalyticsViewSearchResultFolders;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchUsers:
+            screenName = kAnalyticsViewSearchResultPeople;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (screenName)
+        [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
 }
 
 #pragma mark - Table view data source

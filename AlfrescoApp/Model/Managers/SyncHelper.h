@@ -57,6 +57,9 @@ extern NSString * const kSyncReloadContentKey;
 
 - (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef;
 
+- (NSArray *) retrieveSyncFileNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSArray *) retrieveSyncFolderNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+
 + (SyncHelper *)sharedHelper;
 
 @end

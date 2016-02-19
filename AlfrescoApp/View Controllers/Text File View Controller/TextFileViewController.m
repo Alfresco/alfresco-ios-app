@@ -126,6 +126,8 @@ static NSString * const kTextFileMimeType = @"text/plain";
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.textView becomeFirstResponder];
     });
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:self.editingDocument ? kAnalyticsViewTextEditorEditor : kAnalyticsViewDocumentCreateTextFile];
 }
 
 #pragma mark - Private Functions

@@ -25,5 +25,6 @@
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType;
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments documentReview: (BOOL) documentReview;
 
 @end

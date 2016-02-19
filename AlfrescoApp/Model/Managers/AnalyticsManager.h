@@ -15,13 +15,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
+
+typedef NS_ENUM(NSUInteger, AnalyticsType)
+{
+    AnalyticsTypeFlurry             = 1 << 0,
+    AnalyticsTypeGoogleAnalytics    = 1 << 1,
+};
   
 @interface AnalyticsManager : NSObject
-
-@property (nonatomic, assign, readonly) BOOL analyticsAreActive;
 
 + (AnalyticsManager *)sharedManager;
 - (void)startAnalytics;
 - (void)stopAnalytics;
+
+// Tracking methods
+- (void)trackScreenWithName:(NSString *)screenName;
+- (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value;
+- (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value customMetric:(AnalyticsMetric)metric metricValue:(NSNumber *)metricValue;
+- (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value customMetric:(AnalyticsMetric)metric metricValue:(NSNumber *)metricValue session:(id<AlfrescoSession>)session;
 
 @end

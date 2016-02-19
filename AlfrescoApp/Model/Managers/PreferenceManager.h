@@ -26,6 +26,7 @@
 - (BOOL)shouldSyncOnCellular;
 - (BOOL)shouldSendDiagnostics;
 - (BOOL)shouldCarryOutFullSearch;
+- (BOOL)shouldProtectFiles;
 
 // Accessors and Modifiers
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier;

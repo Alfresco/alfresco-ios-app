@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
 @property (nonatomic, strong) PeoplePicker *peoplePicker;
 @property (nonatomic, strong) NSMutableArray *assignees;
 @property (nonatomic, strong) NSMutableArray *attachments;
+@property (nonatomic) BOOL documentReview;
 @property (nonatomic, strong) DatePickerViewController *datePickerViewController;
 @property (nonatomic, strong) UIPopoverController *datePopoverController;
 @property (nonatomic, strong) NSDate *dueDate;
@@ -75,6 +76,11 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments
 {
+    return [self initWithSession:session workflowType:workflowType attachments:attachments documentReview:NO];
+}
+
+- (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments documentReview: (BOOL) documentReview
+{
     self = [self init];
     if (self)
     {
@@ -82,6 +88,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         _workflowType = workflowType;
         _workflowService = [[AlfrescoWorkflowService alloc] initWithSession:session];
         _attachments = [attachments mutableCopy];
+        _documentReview = documentReview;
     }
     return self;
 }
@@ -125,6 +132,13 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
     [super viewWillAppear:animated];
     [self.tableView reloadData];
     [self validateForm];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewTaskCreateForm];
 }
 
 - (void)dealloc
@@ -202,6 +216,24 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                            [self dismissViewControllerAnimated:YES completion:^{
                                                                displayInformationMessage(NSLocalizedString(@"task.create.created", @"Task Created"));
                                                            }];
+                                                           
+                                                           if (_documentReview)
+                                                           {
+                                                               AlfrescoDocument *document = self.attachments.firstObject;
+                                                               NSString *mimeType = document.contentMimeType;
+                                                               
+                                                               [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                                                                 action:kAnalyticsEventActionSendForReview
+                                                                                                                  label:mimeType
+                                                                                                                  value:@1];
+                                                           }
+                                                           else
+                                                           {
+                                                               [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryBPM
+                                                                                                                 action:kAnalyticsEventActionCreate
+                                                                                                                  label:process.processDefinitionIdentifier
+                                                                                                                  value:@1];
+                                                           }
                                                        }
                                                    }];
         }

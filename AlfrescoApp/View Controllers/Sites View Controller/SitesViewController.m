@@ -175,6 +175,13 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSites];
+}
+
 #pragma mark - Private methods
 
 - (SiteListTypeSelection)selectionTypeForFilter:(SitesListViewFilter)filter
@@ -215,6 +222,9 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
             self.mySitesContainerView.hidden = YES;
             self.siteFinderContainerView.hidden = YES;
             [self.view bringSubviewToFront:self.favoritesContainerView];
+            
+            [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteListingFavorites];
+            
             break;
         }
         case 1:
@@ -223,6 +233,9 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
             self.mySitesContainerView.hidden = NO;
             self.siteFinderContainerView.hidden = YES;
             [self.view bringSubviewToFront:self.mySitesContainerView];
+            
+            [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteListingMy];
+            
             break;
         }
         case 2:
@@ -231,6 +244,12 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
             self.mySitesContainerView.hidden = YES;
             self.siteFinderContainerView.hidden = NO;
             [self.view bringSubviewToFront:self.siteFinderContainerView];
+            
+            if (self.selectedListType == SiteListTypeSelectionAllSites)
+                [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteListingAll];
+            else
+                [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteListingSearch];
+            
             break;
         }
         default:

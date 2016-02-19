@@ -58,6 +58,13 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [self loadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditActiveProfile];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -71,6 +78,11 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigProfileDidChangeNotification
                                                                 object:self.currentlySelectedProfile
                                                               userInfo:@{kAlfrescoConfigProfileDidChangeForAccountKey : self.account}];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                              action:kAnalyticsEventActionSwitch
+                                                               label:kAnalyticsEventLabelProfile
+                                                               value:@1];
         }
     }
 }
