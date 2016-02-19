@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -20,7 +20,7 @@
 
 #pragma mark - Screens
 
-// Acount
+// Account
 extern NSString * const kAnalyticsViewAccountCreateTypePicker;
 extern NSString * const kAnalyticsViewAccountCreateCredentials;
 extern NSString * const kAnalyticsViewAccountCreateDiagnostics;
