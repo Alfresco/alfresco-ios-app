@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -99,6 +99,13 @@ static NSInteger const kSearchResultsIndex = 0;
 {
     [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewUserListing];
 }
 
 - (void)cancelButtonPressed:(id)sender

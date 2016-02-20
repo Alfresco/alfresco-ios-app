@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -151,6 +151,13 @@ static NSInteger const kTagAccountDetailsCell = 4;
                                              selector:@selector(profileDidChange:)
                                                  name:kAlfrescoConfigProfileDidChangeNotification
                                                object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEdit];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

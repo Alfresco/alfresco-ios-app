@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -26,6 +26,7 @@
 - (BOOL)shouldSyncOnCellular;
 - (BOOL)shouldSendDiagnostics;
 - (BOOL)shouldCarryOutFullSearch;
+- (BOOL)shouldProtectFiles;
 
 // Accessors and Modifiers
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier;

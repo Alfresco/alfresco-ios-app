@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -103,6 +103,13 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuTasks];
 }
 
 - (void)dealloc
@@ -239,6 +246,8 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 
 - (void)loadDataWithListingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
+//    [[AnalyticsManager sharedManager] trackScreenWithName:self.isDisplayingMyTasks ? kAnalyticsViewTaskListingTasksAssignedToMe : kAnalyticsViewTaskListingTasksIVeStarted];
+    
     TaskGroupItem *groupToSwitchTo = [self taskGroupItem];
     self.title = groupToSwitchTo.title;
     
@@ -309,6 +318,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         [self loadDataWithListingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
+        [self trackScreenName];
     }]];
 
     // "Tasks I Started" filter
@@ -317,6 +327,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         [self loadDataWithListingContext:nil forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
+        [self trackScreenName];
     }]];
     
     // Cancel
@@ -326,6 +337,11 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
     popoverPresenter.barButtonItem = sender;
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)trackScreenName
+{
+    [[AnalyticsManager sharedManager] trackScreenWithName:self.isDisplayingMyTasks ? kAnalyticsViewTaskListingTasksAssignedToMe : kAnalyticsViewTaskListingTasksIVeStarted];
 }
 
 #pragma mark - Overridden Functions

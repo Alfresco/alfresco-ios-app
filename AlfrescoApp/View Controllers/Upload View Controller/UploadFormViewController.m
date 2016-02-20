@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -343,6 +343,13 @@ static NSString * const kAudioFileName = @"audio.m4a";
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewDocumentCreateUploadForm];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -630,6 +637,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
 
         if (document)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionCreate
+                                                               label:document.contentMimeType
+                                                               value:@1
+                                                        customMetric:AnalyticsMetricFileSize
+                                                         metricValue:@(document.contentLength)
+             ];
+            
             NSError *deleteAfterUploadError = nil;
             [[AlfrescoFileManager sharedManager] removeItemAtPath:weakSelf.contentFile.fileUrl.absoluteURL.path error:&deleteAfterUploadError];
             
@@ -732,6 +747,13 @@ static NSString * const kAudioFileName = @"audio.m4a";
         [weakSelf.documentService createDocumentWithName:documentNameWithPathExtension inParentFolder:weakSelf.uploadToFolder contentStream:contentStream properties:nil aspects:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
             if (document)
             {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionCreate
+                                                                   label:document.contentMimeType
+                                                                   value:@1
+                                                            customMetric:AnalyticsMetricFileSize
+                                                             metricValue:@(document.contentLength)];
+                
                 NSError *deleteAfterUploadError = nil;
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:pathToTempFile error:&deleteAfterUploadError];
                 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -58,6 +58,13 @@ static NSInteger const kSectionNumberAdHoc = 0;
     self.navigationItem.leftBarButtonItem = cancelButton;
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kTaskTypeCellIdentifier];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewTaskCreateType];
 }
 
 - (void)cancelButtonTapped:(id)sender

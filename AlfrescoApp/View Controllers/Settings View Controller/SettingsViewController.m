@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -75,6 +75,13 @@ static NSUInteger const kCellLeftInset = 10;
     self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
     self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
     [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSettingsDetails];
 }
 
 #pragma mark - Private Functions
@@ -190,6 +197,11 @@ static NSUInteger const kCellLeftInset = 10;
                 CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
                 [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
                 
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                                  action:kAnalyticsEventActionClearData
+                                                                   label:kAnalyticsEventLabelPartial
+                                                                   value:@1];
+                
                 UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
                                                                             message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
                                                                            delegate:self
@@ -222,6 +234,11 @@ static NSUInteger const kCellLeftInset = 10;
                 [[DownloadManager sharedManager] removeAllDownloads];
                 // Remove all contents of the temp folder
                 [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                                  action:kAnalyticsEventActionClearData
+                                                                   label:kAnalyticsEventLabelFull
+                                                                   value:@1];
                 
                 UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
                                                                        message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")

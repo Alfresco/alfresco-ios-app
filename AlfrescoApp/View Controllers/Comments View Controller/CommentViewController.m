@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -340,6 +340,22 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
             
             if (comment)
             {
+                NSString *analyticsLabel = nil;
+                
+                if ([weakSelf.node isKindOfClass:[AlfrescoDocument class]])
+                {
+                    analyticsLabel = ((AlfrescoDocument *)weakSelf.node).contentMimeType;
+                }
+                else if ([weakSelf.node isKindOfClass:[AlfrescoFolder class]])
+                {
+                    analyticsLabel = kAnalyticsEventLabelFolder;
+                }
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionComment
+                                                                   label:analyticsLabel
+                                                                   value:@1];
+                
                 [weakSelf.tableViewData insertObject:comment atIndex:0];
                 NSIndexPath *insertIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                 [weakSelf.tableView insertRowsAtIndexPaths:@[insertIndexPath] withRowAnimation:UITableViewRowAnimationTop];

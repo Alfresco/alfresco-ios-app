@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -140,6 +140,8 @@ static NSInteger const kTagProfileCell = 3;
 {
     [super viewDidAppear:animated];
     
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountCreateCredentials];
+    
     // A small delay is necessary in order for the keyboard animation not to clash with the appear animation
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -273,6 +275,11 @@ static NSInteger const kTagProfileCell = 3;
         [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
             if (successful)
             {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                  action:kAnalyticsEventActionCreate
+                                                                   label:kAnalyticsEventLabelOnPremise
+                                                                   value:@1];
+                
                 AccountManager *accountManager = [AccountManager sharedManager];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)

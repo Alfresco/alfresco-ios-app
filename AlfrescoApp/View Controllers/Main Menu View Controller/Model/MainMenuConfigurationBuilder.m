@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -20,7 +20,6 @@
 #import "AlfrescoConfigService.h"
 #import "ActivitiesViewController.h"
 #import "FileFolderListViewController.h"
-#import "SitesListViewController.h"
 #import "DownloadsViewController.h"
 #import "SyncViewController.h"
 #import "TaskViewController.h"
@@ -213,6 +212,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             // define a block
             void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem) {
                 NSString *bundledIconName = [self imageFileNameForAlfrescoViewConfig:subItem];
+                
                 id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];
                 // Do not render the view if it's not supported
                 if (associatedObject)
@@ -315,6 +315,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                 fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName session:self.session];
             }
         }
+        else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterNodeRefKey])
+        {
+            NSString *nodeRef = viewConfig.parameters[kAlfrescoConfigViewParameterNodeRefKey];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+        }
         else
         {
             fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolder:nil folderDisplayName:nil session:self.session];
@@ -355,6 +360,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Local
         DownloadsViewController *localFilesViewController = [[DownloadsViewController alloc] initWithSession:self.session];
+        localFilesViewController.screenNameTrackingEnabled = YES;
         associatedObject = localFilesViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypePersonProfile])

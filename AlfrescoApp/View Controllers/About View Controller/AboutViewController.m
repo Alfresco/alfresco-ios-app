@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -36,6 +36,13 @@
                                     [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     
     self.buildDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"about.build.date.time", @"Build Date: %s %s"), __DATE__, __TIME__];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAbout];
 }
 
 @end

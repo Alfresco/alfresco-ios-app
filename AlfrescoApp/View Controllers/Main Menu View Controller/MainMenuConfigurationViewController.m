@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -123,6 +123,13 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 - (void)updateMenu:(NSNotification *)notification
 {
+    NSString *label = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                      action:kAnalyticsEventActionUpdateMenu
+                                                       label:label
+                                                       value:@1];
+    
     [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
         if(self.autoselectDefaultMenuOption)
         {

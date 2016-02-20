@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -64,6 +64,13 @@ static const CGFloat kTableCellHeight = 60.f;
         }
     }
     [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountCreateDiagnostics];
 }
 
 - (void)dealloc

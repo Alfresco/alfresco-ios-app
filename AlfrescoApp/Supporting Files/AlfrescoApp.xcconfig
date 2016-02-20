@@ -1,5 +1,5 @@
 //******************************************************************************
-//* Copyright (C) 2005-2014 Alfresco Software Limited.
+//* Copyright (C) 2005-2016 Alfresco Software Limited.
 //*
 //* This file is part of the Alfresco Mobile iOS App.
 //*
@@ -16,4 +16,4 @@
 //*  limitations under the License.
 //******************************************************************************
 
-OTHER_CFLAGS=-DCLOUD_OAUTH_KEY="@\"${ALFRESCO_IOS_CLOUD_OAUTH_KEY}\"" -DCLOUD_OAUTH_SECRET="@\"${ALFRESCO_IOS_CLOUD_OAUTH_SECRET}\"" -DINTERNAL_CLOUD_API_KEY="@\"${INTERNAL_CLOUD_API_KEY}\"" -DFLURRY_API_KEY="@\"${ALFRESCO_IOS_FLURRY_API_KEY}\"" -DQUICKOFFICE_PARTNER_KEY="@\"${QUICKOFFICE_PARTNER_KEY}\"" -DHOCKEYAPP_APPID="@\"${ALFRESCO_IOS_HOCKEYAPP_APPID}\"" -DHOCKEYAPP_UPDATES="@\"${HOCKEYAPP_UPDATES}\""
+OTHER_CFLAGS=-DCLOUD_OAUTH_KEY="@\"${ALFRESCO_IOS_CLOUD_OAUTH_KEY}\"" -DCLOUD_OAUTH_SECRET="@\"${ALFRESCO_IOS_CLOUD_OAUTH_SECRET}\"" -DINTERNAL_CLOUD_API_KEY="@\"${INTERNAL_CLOUD_API_KEY}\"" -DFLURRY_API_KEY="@\"${ALFRESCO_IOS_FLURRY_API_KEY}\"" -DQUICKOFFICE_PARTNER_KEY="@\"${QUICKOFFICE_PARTNER_KEY}\"" -DHOCKEYAPP_APPID="@\"${ALFRESCO_IOS_HOCKEYAPP_APPID}\"" -DHOCKEYAPP_UPDATES="@\"${HOCKEYAPP_UPDATES}\"" -DGA_API_KEY="@\"${ALFRESCO_IOS_GA_API_KEY}\""

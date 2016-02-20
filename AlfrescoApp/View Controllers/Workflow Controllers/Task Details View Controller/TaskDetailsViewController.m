@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -132,6 +132,13 @@ static UILayoutPriority const kLowPriority = 250;
     
     // Localise UI
     [self localiseUI];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewTaskDetails];
 }
 
 #pragma mark - Private Functions
@@ -358,6 +365,11 @@ static UILayoutPriority const kLowPriority = 250;
             displayInformationMessage(NSLocalizedString(@"task.completed.success.message", @"Task completed"));
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
             [UniversalDevice clearDetailViewController];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryBPM
+                                                              action:kAnalyticsEventActionComplete
+                                                               label:weakSelf.task.type
+                                                               value:@1];
         }
     }];
 }
@@ -501,6 +513,11 @@ static UILayoutPriority const kLowPriority = 250;
                     [weakSelf enableActionButtons:YES];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoWorkflowTaskListDidChangeNotification object:task];
                     [UniversalDevice clearDetailViewController];
+                    
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryBPM
+                                                                      action:kAnalyticsEventActionReassign
+                                                                       label:weakSelf.task.type
+                                                                       value:@1];
                 }
             }];
         }

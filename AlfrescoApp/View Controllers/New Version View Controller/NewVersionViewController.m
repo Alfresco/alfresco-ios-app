@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -70,6 +70,13 @@
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissController:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewDocumentCreateUpdateForm];
 }
 
 #pragma mark - Private Functions
@@ -163,6 +170,13 @@
                 }
                 else
                 {
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                      action:kAnalyticsEventActionUpdate
+                                                                       label:self.document.contentMimeType
+                                                                       value:@1
+                                                                customMetric:AnalyticsMetricFileSize
+                                                                 metricValue:@(self.document.contentLength)];
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentUpdatedOnServerNotification object:updatedDocument userInfo:@{kAlfrescoDocumentUpdatedFromDocumentParameterKey : self.document}];
                     });

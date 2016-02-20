@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -81,6 +81,16 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.listType == SiteListTypeSelectionSearch)
+    {
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSearchResultSites];
+    }
+}
+
 #pragma mark - Table view data source and delegate methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -100,13 +110,16 @@
         siteCell.delegate = self;
     }
     
-    AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
-    siteCell.siteNameLabelView.text = currentSite.title;
-    siteCell.siteImageView.image = smallImageForType(@"site");
-    siteCell.expandButton.transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
-    
-    [siteCell updateCellStateWithSite:currentSite];
-    
+    if (indexPath.row < self.tableViewData.count)
+    {
+        AlfrescoSite *currentSite = [self.tableViewData objectAtIndex:indexPath.row];
+        siteCell.siteNameLabelView.text = currentSite.title;
+        siteCell.siteImageView.image = smallImageForType(@"site");
+        siteCell.expandButton.transform = CGAffineTransformMakeRotation([indexPath isEqual:self.expandedCellIndexPath] ? M_PI : 0);
+        
+        [siteCell updateCellStateWithSite:currentSite];
+    }
+        
     return siteCell;
 }
 
@@ -394,6 +407,11 @@
         [self.siteService removeFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             favoriteButton.enabled = YES;
             
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionFavorite
+                                                               label:kAnalyticsEventLabelDisable
+                                                               value:@1];
+            
             if (site)
             {
                 // if the favourites are displayed, remove from the table view, otherwise replace the site with the updated one
@@ -421,6 +439,12 @@
     {
         [self.siteService addFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             favoriteButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionFavorite
+                                                               label:kAnalyticsEventLabelEnable
+                                                               value:@1];
+            
             if (site)
             {
                 // if the favourites are displayed, add the cell to the table view, otherwise replace the site with the updated one
@@ -461,6 +485,11 @@
         [self.siteService joinSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             joinButton.enabled = YES;
             
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionMembership
+                                                               label:kAnalyticsEventLabelJoin
+                                                               value:@1];
+            
             if (site)
             {
                 // if my sites are displayed, add the cell to the table view, otherwise replace the site with the updated one
@@ -497,6 +526,11 @@
         [self.siteService cancelPendingJoinRequestForSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             joinButton.enabled = YES;
             
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionMembership
+                                                               label:kAnalyticsEventLabelCancel
+                                                               value:@1];
+            
             if (site)
             {
                 // replace the site with the updated one, if the all sites are displayed
@@ -519,6 +553,11 @@
     {
         [self.siteService leaveSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             joinButton.enabled = YES;
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
+                                                              action:kAnalyticsEventActionMembership
+                                                               label:kAnalyticsEventLabelLeave
+                                                               value:@1];
             
             if (site)
             {

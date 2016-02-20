@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -129,6 +129,13 @@ static CGFloat const kProgressBarHeight = 2.0f;
     
     // Make an initial HTTP request to check if the page is accessible
     [self initiateHTTPRequestToURL:self.url];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewHelp];
 }
 
 #pragma mark - Private Functions

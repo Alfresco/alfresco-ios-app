@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -62,6 +62,11 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 - (BOOL)shouldCarryOutFullSearch
 {
     return [[self preferenceForIdentifier:kSettingsFullTextSearchIdentifier] boolValue];
+}
+
+- (BOOL)shouldProtectFiles
+{
+    return [[self preferenceForIdentifier:kSettingsFileProtectionIdentifier] boolValue];
 }
 
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier

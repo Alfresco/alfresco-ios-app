@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -67,6 +67,13 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     self.navigationItem.leftBarButtonItem = cancel;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountCreateTypePicker];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -114,6 +121,11 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
         [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                  action:kAnalyticsEventActionCreate
+                                                                   label:kAnalyticsEventLabelCloud
+                                                                   value:@1];
+                
                 AccountManager *accountManager = [AccountManager sharedManager];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)

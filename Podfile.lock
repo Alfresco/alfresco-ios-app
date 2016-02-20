@@ -1,4 +1,20 @@
 PODS:
+  - Google/Analytics (1.3.2):
+    - Google/Core
+    - GoogleAnalytics (= 3.13.0)
+  - Google/Core (1.3.2):
+    - GoogleInterchangeUtilities (~> 1.0)
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.1)
+  - GoogleAnalytics (3.13.0)
+  - GoogleInterchangeUtilities (1.1.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleNetworkingUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.0.3)
+  - GoogleUtilities (1.1.0):
+    - GoogleSymbolUtilities (~> 1.0.0)
   - HockeySDK (3.8.4):
     - HockeySDK/AllFeaturesLib (= 3.8.4)
   - HockeySDK/AllFeaturesLib (3.8.4)
@@ -10,11 +26,22 @@ PODS:
   - NJKWebViewProgress/ProgressView (0.2.3)
 
 DEPENDENCIES:
+  - Google/Analytics (from `http://alfresco.github.io/alfresco-ios-app/Google.podspec.json`)
   - HockeySDK (~> 3.8)
   - MBProgressHUD (~> 0.9)
   - NJKWebViewProgress (~> 0.2)
 
+EXTERNAL SOURCES:
+  Google:
+    :podspec: http://alfresco.github.io/alfresco-ios-app/Google.podspec.json
+
 SPEC CHECKSUMS:
+  Google: dde0f3de4ad27d6c5ec54f00a533e235c6a4a5d5
+  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  GoogleInterchangeUtilities: d7f7174176fbcf9710f696f1acebad4dbd98ac03
+  GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
+  GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   HockeySDK: 464a9eb01c42718515629d8d1d406983e5f855dc
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d

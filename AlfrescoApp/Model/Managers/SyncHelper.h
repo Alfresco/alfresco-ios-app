@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -56,6 +56,9 @@ extern NSString * const kSyncReloadContentKey;
                    inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 - (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef;
+
+- (NSArray *)retrieveSyncFileNodesForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSArray *)retrieveSyncFolderNodesForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
 
 + (SyncHelper *)sharedHelper;
 

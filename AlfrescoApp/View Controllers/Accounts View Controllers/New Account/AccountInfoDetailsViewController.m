@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -101,6 +101,13 @@ static NSInteger const kTagCertificateCell = 1;
 {
     [super viewWillAppear:animated];
     self.saveButton.enabled = [self validateAccountFieldsValuesForServer];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditAccountDetails];
 }
 
 - (void)constructTableCellsForAlfrescoServer

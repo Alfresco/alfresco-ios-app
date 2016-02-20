@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -25,5 +25,6 @@
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType;
 - (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments;
+- (instancetype)initWithSession:(id<AlfrescoSession>)session workflowType:(WorkflowType)workflowType attachments:(NSArray *)attachments documentReview: (BOOL) documentReview;
 
 @end

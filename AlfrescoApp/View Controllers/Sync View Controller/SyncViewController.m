@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -151,6 +151,17 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         [self loadSyncNodesForFolder:self.parentNode];
         self.didSyncAfterSessionRefresh = YES;
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.parentNode == nil)
+    {
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+        [[AnalyticsManager sharedManager] trackScreenWithName:isSyncOn ? kAnalyticsViewMenuSyncedContent : kAnalyticsViewMenuFavorites];
     }
 }
 

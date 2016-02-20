@@ -365,29 +365,30 @@
                               kAlfrescoConnectUsingClientSSLCertificate : @YES,
                               kAlfrescoClientCertificateCredentials : certificateCredential};
     }
-            self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
-            self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                if (session)
-                {
-                    [UniversalDevice clearDetailViewController];
-                    
-                    self.currentLoginURLString = nil;
-                    self.currentLoginRequest = nil;
 
-                    account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
-
-                    if (completionBlock != NULL)
-                    {
-                        completionBlock(YES, session, nil);
-                    }
-                }
-                else
-                {
-                    if (completionBlock != NULL)
-                    {
-                        completionBlock(NO, nil, error);
-                    }
-                }
+    self.currentLoginURLString = [Utility serverURLStringFromAccount:account];
+    self.currentLoginRequest = [AlfrescoRepositorySession connectWithUrl:[NSURL URLWithString:self.currentLoginURLString] username:username password:password parameters:sessionParameters completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+        if (session)
+        {
+            [UniversalDevice clearDetailViewController];
+            
+            self.currentLoginURLString = nil;
+            self.currentLoginRequest = nil;
+            
+            account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+            
+            if (completionBlock != NULL)
+            {
+                completionBlock(YES, session, nil);
+            }
+        }
+        else
+        {
+            if (completionBlock != NULL)
+            {
+                completionBlock(NO, nil, error);
+            }
+        }
     }];
 }
 

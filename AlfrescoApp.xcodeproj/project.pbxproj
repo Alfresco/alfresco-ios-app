@@ -81,6 +81,8 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
+		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
 		27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */; };
@@ -937,6 +939,8 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
+		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
 		2711979D1912ADE60073C3EC /* ALFTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ALFTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2715E03619300C520049FA32 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -1748,6 +1752,7 @@
 		8B9C8363C10BDC21F10B8547 /* libPods-AlfrescoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DB5D92344964A91B3E95A3F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E79EDF428481D75323F4ACA9 /* Pods-AlfrescoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.release.xcconfig"; sourceTree = "<group>"; };
+		FA0528FF52881483B110A628 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPickerFileProvider/Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3393,6 +3398,8 @@
 				73B957CC17A673A90099FB84 /* Constants.m */,
 				73CD5B0C1A729526000A5523 /* SharedConstants.h */,
 				73CD5B0D1A729526000A5523 /* SharedConstants.m */,
+				23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */,
+				23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -3894,6 +3901,7 @@
 				5E94C5EF6AA4498598C65FBE /* Pods-AlfrescoDocumentPicker.debug.xcconfig */,
 				2DDAD7488C5D07BE47218131 /* Pods-AlfrescoDocumentPicker.release.xcconfig */,
 				386644BAD9E13F10A635FE60 /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */,
+				FA0528FF52881483B110A628 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -4651,6 +4659,7 @@
 				735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */,
 				278658A41BB60280003B77AA /* CustomFolderService.m in Sources */,
 				73697B951A979895009F10BA /* PersistentQueueStore.m in Sources */,
+				23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */,
 				738B41081A714872008F8784 /* UserAccountWrapper.m in Sources */,
 				734B87641A9F7A0F0093E702 /* Utilities.m in Sources */,
 				73B2679D1ADD581400310592 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
@@ -4784,6 +4793,7 @@
 				2BA24A691B8C5D470075CA99 /* SearchViewControllerDataSource.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,
+				23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */,
 				08E1EA3118DB057900F9052F /* TasksAndAttachmentsViewController.m in Sources */,
 				7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
@@ -5231,6 +5241,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5259,6 +5270,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5287,6 +5299,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5316,6 +5329,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -5345,6 +5359,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -5374,6 +5389,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AlfrescoDocumentPickerFileProvider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

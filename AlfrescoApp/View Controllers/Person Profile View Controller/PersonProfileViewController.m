@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -155,6 +155,13 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             [progressHUD hide:YES];
         }];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewUserDetails];
 }
 
 #pragma mark - Private Methods
@@ -472,16 +479,19 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
 {
     // Which container view was tapped
     UIView *containerViewTapped = button.superview.superview;
+    NSString *analyticsLabel;
     
     // Which contacts array do we need to use
     NSArray *contactDetailsArrayToUse = nil;
     if (containerViewTapped == self.contactDetailsListViewContainer)
     {
         contactDetailsArrayToUse = self.availableUserContactInformation;
+        analyticsLabel = kAnalyticsEventLabelUser;
     }
     else
     {
         contactDetailsArrayToUse = self.availableCompanyContactInformation;
+        analyticsLabel = kAnalyticsEventLabelCompany;
     }
     
     NSArray *contactViews = containerViewTapped.subviews;
@@ -507,6 +517,11 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             mailViewController.modalPresentationStyle = UIModalPresentationPageSheet;
             
             [self presentViewController:mailViewController animated:YES completion:nil];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
+                                                              action:kAnalyticsEventActionEmail
+                                                               label:analyticsLabel
+                                                               value:@1];
         }
         break;
             
@@ -516,17 +531,22 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             
             if (skypeInstalled)
             {
-                void (^handleSkypeRequestWithSkypeCommunicationType)(NSString *) = ^(NSString *contactType) {
+                void (^handleSkypeRequestWithSkypeCommunicationType)(NSString *, NSString *) = ^(NSString *contactType, NSString *analyticsLabelString) {
                     NSString *skypeString = [NSString stringWithFormat:@"%@%@?%@", kSkypeURLScheme, selectedContactInformation.contactInformation, contactType];
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeString]];
+                    
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
+                                                                      action:kAnalyticsEventActionSkype
+                                                                       label:analyticsLabelString
+                                                                       value:@1];
                 };
                 
                 // Actions
                 UIAlertAction *chatAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.chat", @"Chat") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeChat);
+                    handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeChat, kAnalyticsEventLabelChat);
                 }];
                 UIAlertAction *callAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"person.profile.view.controller.contact.information.type.skype.call", @"Call") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeCall);
+                    handleSkypeRequestWithSkypeCommunicationType(kSkypeURLCommunicationTypeCall, kAnalyticsEventLabelCall);
                 }];
                 UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil];
                 
@@ -568,6 +588,11 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         {
             NSString *phoneNumber = [kPhoneURLScheme stringByAppendingString:selectedContactInformation.contactInformation];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
+                                                              action:kAnalyticsEventActionCall
+                                                               label:kAnalyticsEventLabelPhone
+                                                               value:@1];
         }
         break;
             
@@ -575,6 +600,11 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         {
             NSString *mobileNumber = [kPhoneURLScheme stringByAppendingString:selectedContactInformation.contactInformation];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:mobileNumber]];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
+                                                              action:kAnalyticsEventActionCall
+                                                               label:kAnalyticsEventLabelMobile
+                                                               value:@1];
         }
         break;
             
@@ -586,6 +616,11 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             NSURL *mapsQueryURL = [NSURL URLWithString:query];
             
             [[UIApplication sharedApplication] openURL:mapsQueryURL];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
+                                                              action:kAnalyticsEventActionShowInMaps
+                                                               label:analyticsLabel
+                                                               value:@1];
         }
         break;
             

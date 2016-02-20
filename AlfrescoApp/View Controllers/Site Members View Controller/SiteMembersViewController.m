@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -96,6 +96,13 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
     [self.tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass([PersonCell class])];
     
     [self loadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteMembers];
 }
 
 #pragma mark - UITableViewDataSource and UITableViewDelegate methods

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -105,6 +105,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 - (void)removeAccount:(UserAccount *)account
 {
+    NSString *labelString = account.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                      action:kAnalyticsEventActionDelete
+                                                       label:labelString
+                                                       value:@1];
+    
     [self.accountsFromKeychain removeObject:account];
     [self saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountRemovedNotification object:account];

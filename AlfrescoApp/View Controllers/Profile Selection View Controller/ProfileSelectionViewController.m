@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -58,6 +58,13 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [self loadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditActiveProfile];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -71,6 +78,11 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigProfileDidChangeNotification
                                                                 object:self.currentlySelectedProfile
                                                               userInfo:@{kAlfrescoConfigProfileDidChangeForAccountKey : self.account}];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                              action:kAnalyticsEventActionSwitch
+                                                               label:kAnalyticsEventLabelProfile
+                                                               value:@1];
         }
     }
 }
