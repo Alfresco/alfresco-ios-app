@@ -188,10 +188,6 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             {
                 screenName = _searchResultsAreDisplayed ? kAnalyticsViewSearchResultSites : kAnalyticsViewSearchSites;
             }
-            else // Menu -> Sites
-            {
-                NSLog(@"self: %@, pusher: %@", self, self.sitesPushHandler);
-            }
         }
             break;
             
@@ -454,13 +450,11 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 - (void) willPresentSearchController:(UISearchController *)searchController
 {
-    NSLog(@"willPresentSearchController");
     _searchResultsAreDisplayed = YES;
 }
 
 - (void) willDismissSearchController:(UISearchController *)searchController
 {
-    NSLog(@"willDismissSearchController");
     _searchResultsAreDisplayed = NO;
     [self trackScreen];
 }

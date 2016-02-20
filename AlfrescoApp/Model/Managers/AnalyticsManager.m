@@ -128,7 +128,10 @@
         value = @1;
     }
     
-    AlfrescoLogInfo(@"GA_EVENT: %@ - %@ - %@ - %@%@", category, action, label, value, metric == AnalyticsMetricNone ? @"" : [NSString stringWithFormat:@" - %@ - %@", @(metric), metricValue.stringValue]);
+    if ([AlfrescoLog sharedInstance].logLevel == AlfrescoLogLevelTrace)
+    {
+        AlfrescoLogTrace(@"GA_EVENT: %@ - %@ - %@ - %@%@", category, action, label, value, metric == AnalyticsMetricNone ? @"" : [NSString stringWithFormat:@" - %@ - %@", @(metric), metricValue.stringValue]);
+    }
     
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
