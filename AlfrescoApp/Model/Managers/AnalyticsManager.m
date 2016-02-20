@@ -61,8 +61,6 @@
     // Flurry Analytics
     if (FLURRY_API_KEY.length > 0)
     {
-        AlfrescoLogInfo(@"FLURRY_API_KEY: %@", FLURRY_API_KEY);
-        
         if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
         {
             [self startAnalyticsType:AnalyticsTypeFlurry];
@@ -72,7 +70,6 @@
     // Google Analytics
     if (GA_API_KEY.length > 0)
     {
-        AlfrescoLogInfo(@"GA_API_KEY: %@", GA_API_KEY);
         [self startAnalyticsType:AnalyticsTypeGoogleAnalytics];
     }
 }
