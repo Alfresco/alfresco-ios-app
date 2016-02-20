@@ -404,8 +404,7 @@
     
     if (selectedSite.isFavorite)
     {
-        [self.siteService removeFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
-        {
+        [self.siteService removeFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             favoriteButton.enabled = YES;
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
@@ -438,8 +437,7 @@
     }
     else
     {
-        [self.siteService addFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
-        {
+        [self.siteService addFavoriteSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             favoriteButton.enabled = YES;
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
@@ -484,8 +482,7 @@
     
     if (!selectedSite.isMember && !selectedSite.isPendingMember)
     {
-        [self.siteService joinSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
-        {
+        [self.siteService joinSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             joinButton.enabled = YES;
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
@@ -526,8 +523,7 @@
     else if (selectedSite.isPendingMember)
     {
         // cancel the request
-        [self.siteService cancelPendingJoinRequestForSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
-        {
+        [self.siteService cancelPendingJoinRequestForSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             joinButton.enabled = YES;
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite
@@ -555,8 +551,7 @@
     }
     else
     {
-        [self.siteService leaveSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error)
-        {
+        [self.siteService leaveSite:selectedSite completionBlock:^(AlfrescoSite *site, NSError *error) {
             joinButton.enabled = YES;
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySite

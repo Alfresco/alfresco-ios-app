@@ -210,8 +210,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             }
             
             // define a block
-            void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem)
-            {
+            void (^createMenuItem)(AlfrescoViewConfig *subItem) = ^(AlfrescoViewConfig *subItem) {
                 NSString *bundledIconName = [self imageFileNameForAlfrescoViewConfig:subItem];
                 
                 id associatedObject = [self associatedObjectForAlfrescoViewConfig:(AlfrescoViewConfig *)subItem];

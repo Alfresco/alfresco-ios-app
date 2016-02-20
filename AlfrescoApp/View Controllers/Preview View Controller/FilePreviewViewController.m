@@ -552,9 +552,13 @@ static CGFloat sDownloadProgressHeight;
         NSString *mimeType = nil;
         
         if (self.document)
+        {
             mimeType = self.document.contentMimeType;
+        }
         else if (self.filePathForFileToLoad)
+        {
             mimeType = [Utility mimeTypeForFileExtension:self.filePathForFileToLoad.pathExtension];
+        }
 
         [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                           action:kAnalyticsEventActionFullScreenView

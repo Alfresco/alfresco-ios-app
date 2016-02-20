@@ -1181,9 +1181,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             NSString *analyticsLabel = nil;
             
             if ([nodeToDelete isKindOfClass:[AlfrescoDocument class]])
+            {
                 analyticsLabel = ((AlfrescoDocument *)nodeToDelete).contentMimeType;
+            }
             else if ([nodeToDelete isKindOfClass:[AlfrescoFolder class]])
+            {
                 analyticsLabel = kAnalyticsEventLabelFolder;
+            }
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                               action:kAnalyticsEventActionDelete
@@ -2268,7 +2272,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.swipeToDeleteGestureRecognizer.enabled = associatedLayoutForStyle.shouldSwipeToDelete;
     
     if (trackAnalytics)
+    {
         [[AnalyticsManager sharedManager] trackScreenWithName:style == CollectionViewStyleList ? kAnalyticsViewDocumentListing : kAnalyticsViewDocumentGallery];
+    }
 }
 
 @end

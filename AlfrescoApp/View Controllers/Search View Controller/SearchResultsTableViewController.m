@@ -138,7 +138,9 @@ static CGFloat const kCellHeight = 73.0f;
     }
     
     if (screenName)
+    {
         [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
+    }
 }
 
 #pragma mark - Table view data source

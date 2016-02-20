@@ -343,9 +343,13 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
                 NSString *analyticsLabel = nil;
                 
                 if ([weakSelf.node isKindOfClass:[AlfrescoDocument class]])
+                {
                     analyticsLabel = ((AlfrescoDocument *)weakSelf.node).contentMimeType;
+                }
                 else if ([weakSelf.node isKindOfClass:[AlfrescoFolder class]])
+                {
                     analyticsLabel = kAnalyticsEventLabelFolder;
+                }
                 
                 [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                                   action:kAnalyticsEventActionComment

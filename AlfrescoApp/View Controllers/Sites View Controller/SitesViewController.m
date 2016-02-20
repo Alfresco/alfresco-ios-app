@@ -246,9 +246,13 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
             [self.view bringSubviewToFront:self.siteFinderContainerView];
             
             if (self.selectedListType == SiteListTypeSelectionAllSites)
+            {
                 [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteListingAll];
+            }
             else
+            {
                 [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSiteListingSearch];
+            }
             
             break;
         }

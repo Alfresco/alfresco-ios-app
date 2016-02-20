@@ -698,9 +698,13 @@
     NSString *analyticsLabel = nil;
     
     if ([self.node isKindOfClass:[AlfrescoDocument class]])
+    {
         analyticsLabel = ((AlfrescoDocument *)self.node).contentMimeType;
+    }
     else if ([self.node isKindOfClass:[AlfrescoFolder class]])
+    {
         analyticsLabel = kAnalyticsEventLabelFolder;
+    }
     
     return analyticsLabel;
 }

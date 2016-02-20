@@ -158,12 +158,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     [super viewDidAppear:animated];
     
-    if (self.parentNode != nil)
-        return;
-    
-    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-    [[AnalyticsManager sharedManager] trackScreenWithName:isSyncOn ? kAnalyticsViewMenuSyncedContent : kAnalyticsViewMenuFavorites];
-//    title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+    if (self.parentNode == nil)
+    {
+        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
+        [[AnalyticsManager sharedManager] trackScreenWithName:isSyncOn ? kAnalyticsViewMenuSyncedContent : kAnalyticsViewMenuFavorites];
+    }
 }
 
 - (void)dealloc

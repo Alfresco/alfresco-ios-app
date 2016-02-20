@@ -184,7 +184,7 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return syncedDocument;
 }
 
-- (NSArray *) retrieveSyncFileNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (NSArray *)retrieveSyncFileNodesForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     if (!managedContext)
     {
@@ -197,7 +197,7 @@ NSString * const kSyncErrorManagedObject = @"SyncError";
     return nodes;
 }
 
-- (NSArray *) retrieveSyncFolderNodesForAccountWithId: (NSString *) accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
+- (NSArray *)retrieveSyncFolderNodesForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext
 {
     if (!managedContext)
     {
