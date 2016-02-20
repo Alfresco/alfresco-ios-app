@@ -239,8 +239,8 @@
     [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricSyncedFolders] value:[NSString stringWithFormat:@"%@", @(syncFolders.count)]];
     
     // Files size
-    __block unsigned long long filesSize = 0;
-    [syncFiles enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop){
+    __block unsigned long long totalFileSize = 0;
+    [syncFiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         SyncNodeInfo *node = (SyncNodeInfo *) obj;
         NSError *error;
         NSString *path = node.syncContentPath;
@@ -249,10 +249,12 @@
         NSNumber *fileSize = attributes[NSFileSize];
         
         if (fileSize)
-            filesSize += fileSize.unsignedLongLongValue;
+        {
+            totalFileSize += fileSize.unsignedLongLongValue;
+        }
     }];
     
-    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricFileSize] value:[NSString stringWithFormat:@"%@", @(filesSize)]];
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricFileSize] value:[NSString stringWithFormat:@"%@", @(totalFileSize)]];
 }
 
 #pragma mark - Private Methods

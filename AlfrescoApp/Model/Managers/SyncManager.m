@@ -704,33 +704,35 @@ static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedL
 
 #pragma mark - Analytics
 
-- (void) trackSyncRunWithNodesToDownload: (NSArray *) nodesToDownload nodesToUpload: (NSArray *) nodesToUpload
+- (void)trackSyncRunWithNodesToDownload:(NSArray *)nodesToDownload nodesToUpload:(NSArray *)nodesToUpload
 {
     __block NSUInteger numberOfFiles = 0;
     __block NSUInteger numberOfFolders = 0;
     __block unsigned long long totalFileSize = 0;
     
-    [nodesToDownload enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL * _Nonnull stop)
-     {
-         if (node.isDocument)
-         {
-             numberOfFiles++;
-             totalFileSize += ((AlfrescoDocument *)node).contentLength;
-         }
-         else
-             numberOfFolders++;
-     }];
+    [nodesToDownload enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL * stop){
+        if (node.isDocument)
+        {
+            numberOfFiles++;
+            totalFileSize += ((AlfrescoDocument *)node).contentLength;
+        }
+        else
+        {
+            numberOfFolders++;
+        }
+    }];
     
-    [nodesToUpload enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL * _Nonnull stop)
-     {
-         if (node.isDocument)
-         {
-             numberOfFiles++;
-             totalFileSize += ((AlfrescoDocument *)node).contentLength;
-         }
-         else
-             numberOfFolders++;
-     }];
+    [nodesToUpload enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL *stop){
+        if (node.isDocument)
+        {
+            numberOfFiles++;
+            totalFileSize += ((AlfrescoDocument *)node).contentLength;
+        }
+        else
+        {
+            numberOfFolders++;
+        }
+    }];
     
     if (numberOfFiles)
     {
