@@ -19,10 +19,8 @@
 		212E03C7943A8A1851B0686B11D13BDD /* Rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 22428DA656AF7F2A87C8AE014DD3FE31 /* Rectangle.png */; };
 		21DFCF8A7E5A1138BC0921E0A58F71B7 /* hu.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 7C04D826E1B30531F6C455890FF1DAC7 /* hu.lproj */; };
 		24D48F739A5668CE8A45D7030C8DF2F9 /* Blur.png in Resources */ = {isa = PBXBuildFile; fileRef = E962BBFDFA6CC524ED37E2D2B3F35342 /* Blur.png */; };
-		2D4BC6CEDEB30981C8A3C80D39544AE5 /* Pods-AlfrescoDocumentPickerFileProvider-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A017C86A18FD34816932C2D21822EB /* Pods-AlfrescoDocumentPickerFileProvider-dummy.m */; };
 		2EFE407B3EEC616706C709EF2D5561A4 /* buttonRoundedRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25885047B47C304074980849A88DD520 /* buttonRoundedRegular@2x.png */; };
 		2FE850A4689D37D60EAECCC86AE8BA77 /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 10B569DDDBEDEE7856C22C1563DEC646 /* MBProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32DBBC055E77241FF9B2636694B552EC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E093D627869B650AB8D6411D2DE6B7A /* Foundation.framework */; };
 		33E43093A72FCBC57F118CF2915C6DD9 /* IconGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A64B20928DF6FBA453FBA5AD6983A9D /* IconGradient.png */; };
 		3A2639FF39652C32A18F2DC9A9EFC964 /* Rectangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BA8ECED63F921883D36431686515084 /* Rectangle@2x.png */; };
 		43DE456EA026E48597393B8970258755 /* buttonRoundedRegularHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E884214C4272C18289647EDFB988A3D6 /* buttonRoundedRegularHighlighted@2x.png */; };
@@ -115,7 +113,6 @@
 		086E373759CC1DC281BFE1FC1344B7C1 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GAIEcommercePromotion.h; path = Headers/Public/GAIEcommercePromotion.h; sourceTree = "<group>"; };
 		08DA3D3E8EE0F14C766BFF0CB852D6E1 /* buttonRoundedDelete@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "buttonRoundedDelete@2x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/buttonRoundedDelete@2x.png"; sourceTree = "<group>"; };
 		095B0253687763DF396F5712BE3B2E54 /* iconCamera.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = iconCamera.png; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/iconCamera.png"; sourceTree = "<group>"; };
-		0B11D6F646198ABF173D46834B0D9B9C /* Pods-AlfrescoDocumentPickerFileProvider-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AlfrescoDocumentPickerFileProvider-resources.sh"; sourceTree = "<group>"; };
 		0E5F2405268E7D3B2CCCB1913A1FB193 /* buttonRoundedDeleteHighlighted.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = buttonRoundedDeleteHighlighted.png; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/buttonRoundedDeleteHighlighted.png"; sourceTree = "<group>"; };
 		10B569DDDBEDEE7856C22C1563DEC646 /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		1264325C4220C1BDC3C73E5D496129FD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
@@ -131,9 +128,7 @@
 		23BBDC77BAB2BEE0F4336E225CE6FD51 /* Pods-AlfrescoDocumentPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AlfrescoDocumentPicker.release.xcconfig"; sourceTree = "<group>"; };
 		25885047B47C304074980849A88DD520 /* buttonRoundedRegular@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "buttonRoundedRegular@2x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/buttonRoundedRegular@2x.png"; sourceTree = "<group>"; };
 		25F11562516F7A1A152BE276BBE3A71F /* libNJKWebViewProgress.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNJKWebViewProgress.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		26422608600D3377A83682A7E186AC0B /* libPods-AlfrescoDocumentPickerFileProvider.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoDocumentPickerFileProvider.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		280FED365763518970EA43C746316B70 /* libGTMSessionFetcher_core.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGTMSessionFetcher_core.a; path = Libraries/libGTMSessionFetcher_core.a; sourceTree = "<group>"; };
-		2857AB5BCB64CA26711FF97AD75DE76C /* Pods-AlfrescoDocumentPickerFileProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AlfrescoDocumentPickerFileProvider.release.xcconfig"; sourceTree = "<group>"; };
 		2917BAD6C2ABE0ED5F484D5A86E8D353 /* libGTM_GTMURLBuilder.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGTM_GTMURLBuilder.a; path = Libraries/libGTM_GTMURLBuilder.a; sourceTree = "<group>"; };
 		2B2137C362F4BA67E75BD06333534737 /* Cancel.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = Cancel.png; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/Cancel.png"; sourceTree = "<group>"; };
 		2EBFB44037A09F38C0066900145720A5 /* NJKWebViewProgress.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NJKWebViewProgress.xcconfig; sourceTree = "<group>"; };
@@ -170,7 +165,6 @@
 		623C06BBFB874009114E985543E591CC /* feedbackActivity@2x~ipad.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "feedbackActivity@2x~ipad.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/feedbackActivity@2x~ipad.png"; sourceTree = "<group>"; };
 		640441A8C0534773D4B159053B32B4A7 /* MBProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		64DC2FA7C8352A0375E386B3DB6C953D /* NJKWebViewProgressView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NJKWebViewProgressView.m; path = NJKWebViewProgress/NJKWebViewProgressView.m; sourceTree = "<group>"; };
-		65D7C1B31643A16074E699A2B43E997F /* Pods-AlfrescoDocumentPickerFileProvider-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AlfrescoDocumentPickerFileProvider-acknowledgements.plist"; sourceTree = "<group>"; };
 		66BE93B05F775E611FD7EB39FE6F4856 /* Pods-AlfrescoDocumentPicker-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AlfrescoDocumentPicker-resources.sh"; sourceTree = "<group>"; };
 		672DC05CF20AB5A0EF29B2109E59C25B /* libGTM_NSStringHTML.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGTM_NSStringHTML.a; path = Libraries/libGTM_NSStringHTML.a; sourceTree = "<group>"; };
 		68384677E1BBCB2B9A298938D5362908 /* libGTMStackTrace.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGTMStackTrace.a; path = Libraries/libGTMStackTrace.a; sourceTree = "<group>"; };
@@ -181,13 +175,11 @@
 		6E800A01BB73BB4E1F0138A79AD303A9 /* NJKWebViewProgressView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NJKWebViewProgressView.h; path = NJKWebViewProgress/NJKWebViewProgressView.h; sourceTree = "<group>"; };
 		74153742DC2DABDE156A484B30C166D4 /* feedbackActivity@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "feedbackActivity@3x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/feedbackActivity@3x.png"; sourceTree = "<group>"; };
 		751B32A9462DB2A2D6CC7836DC92E830 /* libMBProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMBProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		7AD479E7F5F6CCF53D46D83E311C2B26 /* Pods-AlfrescoDocumentPickerFileProvider-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AlfrescoDocumentPickerFileProvider-frameworks.sh"; sourceTree = "<group>"; };
 		7C04D826E1B30531F6C455890FF1DAC7 /* hu.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = hu.lproj; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/hu.lproj"; sourceTree = "<group>"; };
 		7D5885EF3948BC3A4D0CC483747A33E0 /* Cancel@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "Cancel@3x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/Cancel@3x.png"; sourceTree = "<group>"; };
 		7D7706718EDA3F2D2D5DD06311290AA0 /* Analytics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Analytics.h; path = Headers/GGLAnalytics/Public/Analytics.h; sourceTree = "<group>"; };
 		7E0D7DD0DE0138E15FCD77800E003056 /* hr.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = hr.lproj; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/hr.lproj"; sourceTree = "<group>"; };
 		81042D502ED31991F06575B2E1000254 /* MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
-		8201A2B0B09D5AF4CD35082865EFE324 /* Pods-AlfrescoDocumentPickerFileProvider-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AlfrescoDocumentPickerFileProvider-acknowledgements.markdown"; sourceTree = "<group>"; };
 		820BD7FD3B48095521610FF080B6BC8F /* NJKWebViewProgress-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NJKWebViewProgress-dummy.m"; sourceTree = "<group>"; };
 		8262F3FBBE1542FE12BDE4E00AE5A7EB /* nl.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = nl.lproj; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/nl.lproj"; sourceTree = "<group>"; };
 		82E05F2BA1B88CFC85724279916800F9 /* libProtocolBuffers.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libProtocolBuffers.a; path = Libraries/libProtocolBuffers.a; sourceTree = "<group>"; };
@@ -230,7 +222,6 @@
 		E0EED2AFCF38EE077584F51394F27FDE /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		E0F44932C6700FE45CBEDA4D2AA9A0CB /* Cancel@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "Cancel@2x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/Cancel@2x.png"; sourceTree = "<group>"; };
 		E3F2E398C9B12CE16B1915063C86845C /* Pods-AlfrescoDocumentPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AlfrescoDocumentPicker.debug.xcconfig"; sourceTree = "<group>"; };
-		E4A017C86A18FD34816932C2D21822EB /* Pods-AlfrescoDocumentPickerFileProvider-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AlfrescoDocumentPickerFileProvider-dummy.m"; sourceTree = "<group>"; };
 		E6AF7B244AF3780B75B35B0A48F8D21F /* libGTM_NSData+zlib.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = "libGTM_NSData+zlib.a"; path = "Libraries/libGTM_NSData+zlib.a"; sourceTree = "<group>"; };
 		E884214C4272C18289647EDFB988A3D6 /* buttonRoundedRegularHighlighted@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "buttonRoundedRegularHighlighted@2x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/buttonRoundedRegularHighlighted@2x.png"; sourceTree = "<group>"; };
 		E962BBFDFA6CC524ED37E2D2B3F35342 /* Blur.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = Blur.png; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/Blur.png"; sourceTree = "<group>"; };
@@ -241,8 +232,6 @@
 		F436E80F730F50E493B63DF6B5516C31 /* libGTM_core.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGTM_core.a; path = Libraries/libGTM_core.a; sourceTree = "<group>"; };
 		F4595358242ED9D5A92E0FCF839CD5CA /* Arrow@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "Arrow@2x.png"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/Arrow@2x.png"; sourceTree = "<group>"; };
 		F55B777AFBFA8767A6A8FAE48065C6C6 /* de.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = de.lproj; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/de.lproj"; sourceTree = "<group>"; };
-		F55BFB3863A5008CD28C190BD225B176 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		F669203D0C838D2BF8F044585AFFECEB /* Pods-AlfrescoDocumentPickerFileProvider.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AlfrescoDocumentPickerFileProvider.adhoc.xcconfig"; sourceTree = "<group>"; };
 		F90B50700C1B623C06C5CC9908D66BE4 /* NJKWebViewProgress-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NJKWebViewProgress-prefix.pch"; sourceTree = "<group>"; };
 		F972AEA9847C2C0F9C5BED5E4803ED00 /* libGTM_iPhone.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGTM_iPhone.a; path = Libraries/libGTM_iPhone.a; sourceTree = "<group>"; };
 		FD118DF047B2686BF9CC456353AE59CD /* zh-Hans.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework/Versions/A/Resources/HockeySDKResources.bundle/zh-Hans.lproj"; sourceTree = "<group>"; };
@@ -273,14 +262,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A43A8EA5F0A6911BF0F880A2EE431EF4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				32DBBC055E77241FF9B2636694B552EC /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,22 +435,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5D4F200C7DDCF31DC742E366399C677A /* Pods-AlfrescoDocumentPickerFileProvider */ = {
-			isa = PBXGroup;
-			children = (
-				8201A2B0B09D5AF4CD35082865EFE324 /* Pods-AlfrescoDocumentPickerFileProvider-acknowledgements.markdown */,
-				65D7C1B31643A16074E699A2B43E997F /* Pods-AlfrescoDocumentPickerFileProvider-acknowledgements.plist */,
-				E4A017C86A18FD34816932C2D21822EB /* Pods-AlfrescoDocumentPickerFileProvider-dummy.m */,
-				7AD479E7F5F6CCF53D46D83E311C2B26 /* Pods-AlfrescoDocumentPickerFileProvider-frameworks.sh */,
-				0B11D6F646198ABF173D46834B0D9B9C /* Pods-AlfrescoDocumentPickerFileProvider-resources.sh */,
-				F669203D0C838D2BF8F044585AFFECEB /* Pods-AlfrescoDocumentPickerFileProvider.adhoc.xcconfig */,
-				F55BFB3863A5008CD28C190BD225B176 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */,
-				2857AB5BCB64CA26711FF97AD75DE76C /* Pods-AlfrescoDocumentPickerFileProvider.release.xcconfig */,
-			);
-			name = "Pods-AlfrescoDocumentPickerFileProvider";
-			path = "Target Support Files/Pods-AlfrescoDocumentPickerFileProvider";
-			sourceTree = "<group>";
-		};
 		5E7278BB78108806119036CC8C03A5FD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -609,7 +574,6 @@
 				25F11562516F7A1A152BE276BBE3A71F /* libNJKWebViewProgress.a */,
 				8EF50A1813C04ED4E7021BF56719495A /* libPods-AlfrescoApp.a */,
 				5BE1532E2C581F50C62E542903A3CA7E /* libPods-AlfrescoDocumentPicker.a */,
-				26422608600D3377A83682A7E186AC0B /* libPods-AlfrescoDocumentPickerFileProvider.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -682,7 +646,6 @@
 			children = (
 				F57057623D5E2B3740C4809CFB8F8974 /* Pods-AlfrescoApp */,
 				4171FE732AA82D2A8C5080C8E87D015F /* Pods-AlfrescoDocumentPicker */,
-				5D4F200C7DDCF31DC742E366399C677A /* Pods-AlfrescoDocumentPickerFileProvider */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -759,22 +722,6 @@
 			productName = "HockeySDK-HockeySDKResources";
 			productReference = 82F5D0345212934C2543A090D4974A1B /* HockeySDKResources.bundle */;
 			productType = "com.apple.product-type.bundle";
-		};
-		295A7A689B81480F5A3C8898DFDAD5FF /* Pods-AlfrescoDocumentPickerFileProvider */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F77D36BA193D4142D716EEB18C7CA176 /* Build configuration list for PBXNativeTarget "Pods-AlfrescoDocumentPickerFileProvider" */;
-			buildPhases = (
-				3E3D452CCE7267AF618A7C70605749ED /* Sources */,
-				A43A8EA5F0A6911BF0F880A2EE431EF4 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-AlfrescoDocumentPickerFileProvider";
-			productName = "Pods-AlfrescoDocumentPickerFileProvider";
-			productReference = 26422608600D3377A83682A7E186AC0B /* libPods-AlfrescoDocumentPickerFileProvider.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 		8F6AD1878E444A98D2F0DC0FB8421941 /* NJKWebViewProgress */ = {
 			isa = PBXNativeTarget;
@@ -872,7 +819,6 @@
 				8F6AD1878E444A98D2F0DC0FB8421941 /* NJKWebViewProgress */,
 				A380C878E9C6FC2C938FF50FE9CA71AF /* Pods-AlfrescoApp */,
 				C9F91C1FE605C93564F895B0931EE5D3 /* Pods-AlfrescoDocumentPicker */,
-				295A7A689B81480F5A3C8898DFDAD5FF /* Pods-AlfrescoDocumentPickerFileProvider */,
 			);
 		};
 /* End PBXProject section */
@@ -951,14 +897,6 @@
 			files = (
 				45EA9123BE4F79F797D8C35698B2D483 /* MBProgressHUD-dummy.m in Sources */,
 				BF0A4D3B7C2EE8419C83387A65F5FDEC /* MBProgressHUD.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3E3D452CCE7267AF618A7C70605749ED /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2D4BC6CEDEB30981C8A3C80D39544AE5 /* Pods-AlfrescoDocumentPickerFileProvider-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1090,24 +1028,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		63CA799FBEA7A5CC67AAD1456ABF612F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F55BFB3863A5008CD28C190BD225B176 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1321,24 +1241,6 @@
 			};
 			name = AdHoc;
 		};
-		DBB8A73D7E671A3A77FCD96752B4BE31 /* AdHoc */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F669203D0C838D2BF8F044585AFFECEB /* Pods-AlfrescoDocumentPickerFileProvider.adhoc.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = AdHoc;
-		};
 		E67E90D8DD270FD3B330E8DA6F77B1DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFF33CD1D273410766FBE4FEFE03A188 /* MBProgressHUD.xcconfig */;
@@ -1361,24 +1263,6 @@
 		F426671FAA1CF683B5F1C3A302733F1D /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 23BBDC77BAB2BEE0F4336E225CE6FD51 /* Pods-AlfrescoDocumentPicker.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		FA3BD1736FBD88CB3D92CB06422ED215 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2857AB5BCB64CA26711FF97AD75DE76C /* Pods-AlfrescoDocumentPickerFileProvider.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1487,16 +1371,6 @@
 				7CEF0EF3B4AA221F0BE247E1310CCF6A /* AdHoc */,
 				9A120FAAEF8B2FB031677DAB28F68BF4 /* Debug */,
 				0104AC960B6E5E31DEF0364894A9AA01 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F77D36BA193D4142D716EEB18C7CA176 /* Build configuration list for PBXNativeTarget "Pods-AlfrescoDocumentPickerFileProvider" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DBB8A73D7E671A3A77FCD96752B4BE31 /* AdHoc */,
-				63CA799FBEA7A5CC67AAD1456ABF612F /* Debug */,
-				FA3BD1736FBD88CB3D92CB06422ED215 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
