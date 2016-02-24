@@ -24,7 +24,7 @@
 
 @property (nonatomic) BOOL isFolder;
 @property (nonatomic) BOOL isTopLevelSyncNode;
-@property (nonatomic) BOOL *isRemovedFromSyncHasLocalChanges;
+@property (nonatomic) BOOL isRemovedFromSyncHasLocalChanges;
 @property (nonatomic, strong) NSDate *lastDownloadedDate;
 @property (nonatomic, strong) NSData *node;
 @property (nonatomic, strong) NSData *permissions;

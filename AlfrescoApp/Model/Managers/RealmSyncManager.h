@@ -16,26 +16,13 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncError.h"
+#import <Foundation/Foundation.h>
+#import <Realm.h>
 
-@implementation RealmSyncError
+@interface RealmSyncManager : NSObject
 
-+ (NSDictionary *)defaultPropertyValues
-{
-    return @{@"errorUUID" : [[NSUUID UUID] UUIDString],
-             @"errorCode" : @0,
-             @"errorDescription" : @"",
-             @"errorId" : @""};
-}
-
-+ (NSString *)primaryKey
-{
-    return @"errorUUID";
-}
-
-- (NSArray *)nodeInfo
-{
-    return [self linkingObjectsOfClass:@"RealmSyncNodeInfo" forProperty:@"syncError"];
-}
+- (RLMRealm *)createRealmForAccount:(UserAccount *)account;
+- (void)deleteRealmForAccount:(UserAccount *)account;
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 
 @end

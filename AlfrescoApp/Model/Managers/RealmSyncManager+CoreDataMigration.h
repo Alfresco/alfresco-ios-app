@@ -16,26 +16,10 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncError.h"
+#import "RealmSyncManager.h"
 
-@implementation RealmSyncError
+@interface RealmSyncManager (CoreDataMigration)
 
-+ (NSDictionary *)defaultPropertyValues
-{
-    return @{@"errorUUID" : [[NSUUID UUID] UUIDString],
-             @"errorCode" : @0,
-             @"errorDescription" : @"",
-             @"errorId" : @""};
-}
-
-+ (NSString *)primaryKey
-{
-    return @"errorUUID";
-}
-
-- (NSArray *)nodeInfo
-{
-    return [self linkingObjectsOfClass:@"RealmSyncNodeInfo" forProperty:@"syncError"];
-}
+- (void)initiateMigrationProcess;
 
 @end

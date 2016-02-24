@@ -20,6 +20,7 @@
 
 @interface RealmSyncError : RLMObject
 
+@property (nonatomic, strong) NSString *errorUUID;
 @property (nonatomic) NSInteger errorCode;
 @property (nonatomic, strong) NSString *errorDescription;
 @property (nonatomic, strong) NSString *errorId;

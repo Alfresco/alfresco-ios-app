@@ -30,8 +30,13 @@
              @"permissions" : [NSData data],
              @"reloadContent" : @false,
              @"syncContentPath" : @"",
-             @"syncNodeInfoId" : @"syncNodeInfoId",
+             @"syncNodeInfoId" : @"",
              @"title" : @""};
+}
+
++ (NSString *)primaryKey
+{
+    return @"syncNodeInfoId";
 }
 
 - (NSArray *)nodes
