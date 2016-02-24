@@ -58,19 +58,19 @@
 
 - (void)startAnalytics
 {
-    // Flurry Analytics
-    if (FLURRY_API_KEY.length > 0)
+    if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
     {
-        if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
+        // Flurry Analytics
+        if (FLURRY_API_KEY.length > 0)
         {
             [self startAnalyticsType:AnalyticsTypeFlurry];
         }
-    }
-    
-    // Google Analytics
-    if (GA_API_KEY.length > 0)
-    {
-        [self startAnalyticsType:AnalyticsTypeGoogleAnalytics];
+        
+        // Google Analytics
+        if (GA_API_KEY.length > 0)
+        {
+            [self startAnalyticsType:AnalyticsTypeGoogleAnalytics];
+        }
     }
 }
 
@@ -284,6 +284,7 @@
             if (self.googleAnalyticsHasStarted == NO)
             {
                 [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+                [[GAI sharedInstance] setDispatchInterval:1];
                 self.googleAnalyticsHasStarted = YES;
             }
             
@@ -327,19 +328,24 @@
 - (void)preferencesDidChange:(NSNotification *)notification
 {
     NSString *preferenceKeyChanged = notification.object;
-
-    if ([preferenceKeyChanged isEqualToString:kSettingsSendDiagnosticsIdentifier]) // Flurry
+    
+    void (^startOrStopAnalytics)(BOOL, AnalyticsType, BOOL) = ^void(BOOL shouldSendDiagnostics, AnalyticsType analyticsType, BOOL analyticsAreActive){
+        if (shouldSendDiagnostics && analyticsAreActive == NO)
+        {
+            [self startAnalyticsType:analyticsType];
+        }
+        else if (analyticsAreActive)
+        {
+            [self stopAnalyticsType:analyticsType];
+        }
+    };
+    
+    if ([preferenceKeyChanged isEqualToString:kSettingsSendDiagnosticsIdentifier])
     {
         BOOL shouldSendDiagnostics = [notification.userInfo[kSettingChangedToKey] boolValue];
         
-        if (shouldSendDiagnostics && self.flurryAnalyticsAreActive == NO)
-        {
-            [self startAnalyticsType:AnalyticsTypeFlurry];
-        }
-        else if (self.flurryAnalyticsAreActive)
-        {
-            [self stopAnalyticsType:AnalyticsTypeFlurry];
-        }
+        startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
+        startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
     }
 }
 
