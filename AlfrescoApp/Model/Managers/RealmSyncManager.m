@@ -44,36 +44,11 @@
     
     if(error)
     {
-        //TODO:
+        NSException *exception = [NSException exceptionWithName:kFailedToCreateRealmDatabase reason:error.description userInfo:@{kRealmSyncErrorKey : error}];
+        [exception raise];
     }
     
     return realm;
-}
-
-- (void)deleteRealmForAccount:(UserAccount *)account
-{
-    @autoreleasepool {
-        // all Realm usage here
-    }
-    NSFileManager *manager = [NSFileManager defaultManager];
-    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    // Use the default directory, but replace the filename with the accountId
-    config.path = [[[config.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:account.accountIdentifier] stringByAppendingPathExtension:@"realm"];
-    NSArray<NSString *> *realmFilePaths = @[config.path,
-                                            [config.path stringByAppendingPathExtension:@"lock"],
-                                            [config.path stringByAppendingPathExtension:@"log_a"],
-                                            [config.path stringByAppendingPathExtension:@"log_b"],
-                                            [config.path stringByAppendingPathExtension:@"note"]
-                                            ];
-    for (NSString *path in realmFilePaths)
-    {
-        NSError *error = nil;
-        [manager removeItemAtPath:path error:&error];
-        if (error)
-        {
-            // handle error
-        }
-    }
 }
 
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account

@@ -159,7 +159,20 @@
 {
     [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kHasCoreDataMigrationOccurred];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    //TODO:
+    
+    //creating a background context
+    CoreDataSyncHelper *coreDataSyncHelper = [CoreDataSyncHelper new];
+    NSManagedObjectContext *privateContext = [coreDataSyncHelper createChildManagedObjectContext];
+    
+    NSFetchRequest *accountRequest = [[NSFetchRequest alloc] initWithEntityName:@"SyncAccount"];
+    NSBatchDeleteRequest *delete = [[NSBatchDeleteRequest alloc] initWithFetchRequest:accountRequest];
+    
+    //deleting all core data sync information
+    __block NSError *deleteError = nil;
+    
+    [privateContext performBlockAndWait:^{
+        [privateContext executeRequest:delete error:&deleteError];
+    }];
 }
 
 @end

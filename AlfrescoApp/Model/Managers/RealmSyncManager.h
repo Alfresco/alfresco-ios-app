@@ -27,7 +27,6 @@
 + (RealmSyncManager *)sharedManager;
 
 - (RLMRealm *)createRealmForAccount:(UserAccount *)account;
-- (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 
 @end
