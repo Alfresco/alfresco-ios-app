@@ -104,6 +104,7 @@ extern NSString * const kSearchTypeFiles;
 extern NSString * const kSearchTypeFolders;
 extern NSString * const kSearchTypeSites;
 extern NSString * const kSearchTypeUsers;
+extern NSString * const kHasCoreDataMigrationOccurred;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;

@@ -37,6 +37,8 @@
 #import "UniversalDevice.h"
 #import "MainMenuLocalConfigurationBuilder.h"
 
+#import "RealmSyncManager+CoreDataMigration.h"
+
 #import <HockeySDK/HockeySDK.h>
 
 @import MediaPlayer;
@@ -130,6 +132,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     }
     
     [MigrationAssistant runDownloadsMigration];
+    
+    if([[RealmSyncManager sharedManager] isCoreDataMigrationNeeded])
+    {
+        [[RealmSyncManager sharedManager] initiateMigrationProcess];
+    }
     
     // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];

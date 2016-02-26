@@ -28,6 +28,11 @@
              @"errorId" : @""};
 }
 
++(NSArray<NSString *> *)requiredProperties
+{
+    return @[@"errorUUID", @"errorCode", @"errorDescription", @"errorId"];
+}
+
 + (NSString *)primaryKey
 {
     return @"errorUUID";

@@ -21,6 +21,7 @@
 #import <CoreData/CoreData.h>
 #import "AccountManager.h"
 #import "CoreDataSyncHelper.h"
+#import "SyncManager.h"
 
 #import "SyncNodeInfo.h"
 #import "SyncError.h"
@@ -30,6 +31,13 @@
 #import "RealmSyncError.h"
 
 @implementation RealmSyncManager (CoreDataMigration)
+
+- (BOOL)isCoreDataMigrationNeeded
+{
+    BOOL isMigrationNeededResult = ![[NSUserDefaults standardUserDefaults] objectForKey:kHasCoreDataMigrationOccurred];
+    
+    return isMigrationNeededResult;
+}
 
 - (void)initiateMigrationProcess
 {
@@ -49,7 +57,8 @@
 - (void)migrateAccount:(UserAccount *)account
 {
     //creating a background context
-    NSManagedObjectContext *privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    CoreDataSyncHelper *coreDataSyncHelper = [CoreDataSyncHelper new];
+    NSManagedObjectContext *privateContext = [coreDataSyncHelper createChildManagedObjectContext];
     
     NSFetchRequest *accountRequest = [[NSFetchRequest alloc] initWithEntityName:@"SyncAccount"];
     NSPredicate *specificAccountPredicate = [NSPredicate predicateWithFormat:@"accountId == %@", account.accountIdentifier];
@@ -65,7 +74,7 @@
     
     if(coreDataAccountFetchError)
     {
-        //TODO: handle error
+        AlfrescoLogDebug(@"Error with core data account fetch for migration: %@", coreDataAccountFetchError);
     }
     else if(coreDataAccountRecord.count > 0)
     {
@@ -117,7 +126,12 @@
             {
                 [realm addOrUpdateObject:object];
             }
-            [realm commitWriteTransaction];
+            NSError *writeError = nil;
+            [realm commitWriteTransaction:&writeError];
+            if(writeError)
+            {
+                AlfrescoLogDebug(@"Error with realm transaction: %@", writeError);
+            }
         }
         
         if([parentNodeMappingDictionary allKeys].count > 0)
@@ -125,18 +139,27 @@
             [realm beginWriteTransaction];
             for(NSString *key in [parentNodeMappingDictionary allKeys])
             {
-                RealmSyncNodeInfo *firstNode = [RealmSyncNodeInfo objectsWhere:@"syncNodeInfoId == %@", key].firstObject;
-                RealmSyncNodeInfo *secondNode = [RealmSyncNodeInfo objectsWhere:@"syncNodeInfoId == %@", parentNodeMappingDictionary[key]].firstObject;
+                RLMResults *firstObjectResult = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId == %@", key];
+                RealmSyncNodeInfo *firstNode = firstObjectResult.firstObject;
+                RLMResults *secondObjectResult = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId == %@", parentNodeMappingDictionary[key]];
+                RealmSyncNodeInfo *secondNode = secondObjectResult.firstObject;
                 firstNode.parentNode = secondNode;
             }
-            [realm commitWriteTransaction];
+            NSError *writeError = nil;
+            [realm commitWriteTransaction:&writeError];
+            if(writeError)
+            {
+                AlfrescoLogDebug(@"Error with realm transaction: %@", writeError);
+            }
         }
     }
 }
 
 - (void)cleanCoreData
 {
-    
+    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kHasCoreDataMigrationOccurred];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    //TODO:
 }
 
 @end

@@ -21,5 +21,6 @@
 @interface RealmSyncManager (CoreDataMigration)
 
 - (void)initiateMigrationProcess;
+- (BOOL)isCoreDataMigrationNeeded;
 
 @end

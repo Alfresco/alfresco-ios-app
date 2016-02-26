@@ -21,6 +21,11 @@
 
 @interface RealmSyncManager : NSObject
 
+/**
+ * Returns the shared singleton
+ */
++ (RealmSyncManager *)sharedManager;
+
 - (RLMRealm *)createRealmForAccount:(UserAccount *)account;
 - (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;

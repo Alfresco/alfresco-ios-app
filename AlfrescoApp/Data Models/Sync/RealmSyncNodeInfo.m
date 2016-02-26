@@ -25,13 +25,16 @@
     return @{@"isFolder" : @false,
              @"isTopLevelSyncNode" : @true,
              @"isRemovedFromSyncHasLocalChanges" : @false,
-             @"lastDownloadedDate" : [NSDate date],
              @"node" : [NSData data],
              @"permissions" : [NSData data],
              @"reloadContent" : @false,
-             @"syncContentPath" : @"",
              @"syncNodeInfoId" : @"",
              @"title" : @""};
+}
+
++ (NSArray<NSString *> *)requiredProperties
+{
+    return @[@"isFolder", @"isTopLevelSyncNode", @"isRemovedFromSyncHasLocalChanges", @"node", @"permissions", @"reloadContent", @"syncNodeInfoId", @"title"];
 }
 
 + (NSString *)primaryKey
