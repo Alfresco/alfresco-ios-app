@@ -206,10 +206,14 @@
 		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
 		2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */; };
 		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
+		2B410F561C7B5DBE00A3F52F /* RealmSyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */; };
+		2B410F571C7B5DBE00A3F52F /* RealmSyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */; };
 		2B55920B1B90AB1C00D85C7B /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */; };
 		2B55920C1B90AB1C00D85C7B /* SearchResultsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */; };
 		2B7169F71B567CC1009A4487 /* large_folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F51B567CC1009A4487 /* large_folder.png */; };
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
+		2B8CF8101C7C57D40079BB99 /* RealmSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */; };
+		2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */; };
 		2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9031F91C0EF78B005C10ED /* SearchService.m */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
@@ -1102,11 +1106,19 @@
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
 		2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCollectionSectionHeader.xib; sourceTree = "<group>"; };
+		2B410F521C7B5DBE00A3F52F /* RealmSyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncError.h; sourceTree = "<group>"; };
+		2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncError.m; sourceTree = "<group>"; };
+		2B410F541C7B5DBE00A3F52F /* RealmSyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncNodeInfo.h; sourceTree = "<group>"; };
+		2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncNodeInfo.m; sourceTree = "<group>"; };
 		2B5592081B90AB1C00D85C7B /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SearchResultsTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SearchResultsTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
 		2B7169F51B567CC1009A4487 /* large_folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_folder.png; sourceTree = "<group>"; };
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
+		2B8CF80E1C7C57D40079BB99 /* RealmSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncManager.h; sourceTree = "<group>"; };
+		2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncManager.m; sourceTree = "<group>"; };
+		2B8CF8181C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RealmSyncManager+CoreDataMigration.h"; sourceTree = "<group>"; };
+		2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RealmSyncManager+CoreDataMigration.m"; sourceTree = "<group>"; };
 		2B9031F81C0EF78B005C10ED /* SearchService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchService.h; path = "../../View Controllers/Search View Controller/SearchService.h"; sourceTree = "<group>"; };
 		2B9031F91C0EF78B005C10ED /* SearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchService.m; path = "../../View Controllers/Search View Controller/SearchService.m"; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
@@ -2702,6 +2714,10 @@
 		7379732918AA8E9B007613B2 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
+				2B410F521C7B5DBE00A3F52F /* RealmSyncError.h */,
+				2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */,
+				2B410F541C7B5DBE00A3F52F /* RealmSyncNodeInfo.h */,
+				2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */,
 				7379732A18AA8E9B007613B2 /* AlfrescoSync.xcdatamodeld */,
 				7379732C18AA8E9B007613B2 /* SyncAccount.h */,
 				7379732D18AA8E9B007613B2 /* SyncAccount.m */,
@@ -3462,6 +3478,10 @@
 				08E89C9317E7488C006936DF /* SyncManager.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailManager.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailManager.m */,
+				2B8CF80E1C7C57D40079BB99 /* RealmSyncManager.h */,
+				2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */,
+				2B8CF8181C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.h */,
+				2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -4717,6 +4737,7 @@
 				7390B3761B03681E00E7191F /* AlfrescoWorkflowConfig.m in Sources */,
 				73B9584317A6750F0099FB84 /* DownloadManager.m in Sources */,
 				7390B35E1B03681E00E7191F /* AlfrescoFeatureConfigHelper.m in Sources */,
+				2B410F571C7B5DBE00A3F52F /* RealmSyncNodeInfo.m in Sources */,
 				73B579901B15EC4E009D30B6 /* MainMenuSection.m in Sources */,
 				738664A61906AD8E0021D1BD /* SitesListViewController.m in Sources */,
 				2BB1BA121BDFDDB0005AEE12 /* NewAccountViewController.m in Sources */,
@@ -4779,6 +4800,7 @@
 				7390B36B1B03681E00E7191F /* AlfrescoFieldGroupConfig.m in Sources */,
 				73B9585717A6750F0099FB84 /* Utility.m in Sources */,
 				7379733518AA8E9B007613B2 /* DocumentPreviewImageCache.m in Sources */,
+				2B410F561C7B5DBE00A3F52F /* RealmSyncError.m in Sources */,
 				0876A06018D9A9E30035370A /* PeoplePickerViewController.m in Sources */,
 				7390B35B1B03681E00E7191F /* AlfrescoConfigPropertyConstants.m in Sources */,
 				738664E21906B2260021D1BD /* LabelCell.m in Sources */,
@@ -4860,6 +4882,7 @@
 				7384BDF117F2F8C000C6A54F /* SettingsViewController.m in Sources */,
 				738664AE1906AF6A0021D1BD /* SyncOperation.m in Sources */,
 				73E9E20D17E7394900A198B4 /* UserAccount.m in Sources */,
+				2B8CF8101C7C57D40079BB99 /* RealmSyncManager.m in Sources */,
 				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
 				7390B35C1B03681E00E7191F /* AlfrescoConfigHelper.m in Sources */,
@@ -4916,6 +4939,7 @@
 				7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
+				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,

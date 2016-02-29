@@ -30,6 +30,7 @@ extern NSString * const kSyncErrorManagedObject;
 - (SyncAccount *)createSyncAccountMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (SyncNodeInfo *)createSyncNodeInfoMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext;
 - (SyncError *)createSyncErrorMangedObjectInManagedObjectContext:(NSManagedObjectContext *)managedContext;
+- (NSPersistentStoreCoordinator *)syncPersistenceStoreCoordinator;
 
 // Retrieve ManagedObjects
 - (SyncAccount *)accountObjectForAccountWithId:(NSString *)accountId inManagedObjectContext:(NSManagedObjectContext *)managedContext;
