@@ -308,7 +308,9 @@
             if (self.googleAnalyticsHasStarted == NO)
             {
                 [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+#if DEBUG
                 [[GAI sharedInstance] setDispatchInterval:1];
+#endif
                 self.googleAnalyticsHasStarted = YES;
             }
             
