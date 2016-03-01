@@ -118,6 +118,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
     if (self.accountsFromKeychain.count == 0)
     {
+        self.selectedAccount = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
     }
     

@@ -109,4 +109,18 @@
     return requestedFeatureConfig;
 }
 
+- (NSMutableDictionary *)configPropertiesFromJSON:(NSDictionary *)json
+{
+    NSMutableDictionary *properties = [super configPropertiesFromJSON:json];
+    
+    NSNumber *enable = json[kAlfrescoJSONEnable];
+    
+    if (enable != nil)
+    {
+        properties[kAlfrescoJSONEnable] = enable;
+    }
+    
+    return properties;
+}
+
 @end

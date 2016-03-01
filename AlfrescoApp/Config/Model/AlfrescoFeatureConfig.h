@@ -22,4 +22,6 @@
 
 @interface AlfrescoFeatureConfig : AlfrescoBaseConfig
 
+@property (nonatomic, assign, readonly) BOOL isEnable;
+
 @end

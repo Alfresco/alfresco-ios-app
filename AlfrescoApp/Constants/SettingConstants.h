@@ -53,3 +53,5 @@ extern NSString * const kSettingsFileProtectionIdentifier;
 extern NSString * const kSettingsResetAccountsIdentifier;
 extern NSString * const kSettingsResetEntireAppIdentifier;
 extern NSString * const kSettingsFullTextSearchIdentifier;
+
+extern NSString * const kSettingsSendDiagnosticsEnable;

@@ -337,4 +337,12 @@ static NSUInteger const kCellLeftInset = 10;
     }
 }
 
+-(BOOL)isCellEnabled:(SettingCell *)cell
+{
+    if (![cell.preferenceIdentifier isEqualToString:kSettingsSendDiagnosticsIdentifier])
+        return YES;
+    
+    return [[PreferenceManager sharedManager] isSendDiagnosticsEnable];
+}
+
 @end

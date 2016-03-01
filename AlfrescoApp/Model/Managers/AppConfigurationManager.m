@@ -38,7 +38,6 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 static dispatch_once_t onceToken;
 + (AppConfigurationManager *)sharedManager
 {
-    
     static AppConfigurationManager *sharedConfigurationManager = nil;
     dispatch_once(&onceToken, ^{
         sharedConfigurationManager = [[self alloc] init];
@@ -89,6 +88,8 @@ static dispatch_once_t onceToken;
                 {
                     self.selectedProfile = defaultProfile;
                 }
+                
+                [[AnalyticsManager sharedManager] checkAnalyticsFeature];
             }];
         }];
 
@@ -271,6 +272,33 @@ static dispatch_once_t onceToken;
     self.currentConfigService.session = session;
 
     [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
+        
+        UserAccount *account = [AccountManager sharedManager].selectedAccount;
+        AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithSession:session];
+        
+        void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile, BOOL isEmbeddedConfig) = ^(AlfrescoProfileConfig *selectedProfile, BOOL isEmbeddedConfig) {
+            self.currentConfigService = configService;
+            if ((isEmbeddedConfig && [AppConfigurationManager sharedManager].currentConfigService == [AppConfigurationManager sharedManager].embeddedConfigService) || isEmbeddedConfig == NO)
+            {
+                [[AnalyticsManager sharedManager] checkAnalyticsFeature];
+            }
+            self.selectedProfile = selectedProfile;
+            self.currentConfigAccountIdentifier = account.accountIdentifier;
+            account.selectedProfileIdentifier = selectedProfile.identifier;
+            account.selectedProfileName = selectedProfile.label;
+            
+            MainMenuConfigurationBuilder *builder;
+            if(isEmbeddedConfig)
+            {
+                builder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:account session:session];
+            }
+            else
+            {
+                builder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:account session:session];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:builder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : [NSNumber numberWithBool:isEmbeddedConfig]}];
+        };
+        
         if (defaultProfileError)
         {
             AlfrescoLogError(@"Error retrieving the default profile. Error: %@", defaultProfileError.localizedDescription);
@@ -278,7 +306,6 @@ static dispatch_once_t onceToken;
             if (defaultProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound) // The requested node wasn't found
             {
                 // If the node is not found on the server, delete configuration.json from user's folder.
-                UserAccount *account = [AccountManager sharedManager].selectedAccount;
                 NSString *accountSpecificFolderPath = [self accountSpecificConfigurationFolderPath:account];
                 accountSpecificFolderPath = [accountSpecificFolderPath stringByAppendingPathComponent:kAlfrescoEmbeddedConfigurationFileName];
                 
@@ -293,14 +320,33 @@ static dispatch_once_t onceToken;
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:localBuilder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : @YES}];
                     }
                 }
+                
+                if (![session isKindOfClass:[AlfrescoCloudSession class]])
+                {
+                    // something happened with the configuration as it is not found; will load the embedded configuration
+                    AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
+                    appConfigM.configurationServiceForCurrentAccount.session = session;
+                    appConfigM.session = session;
+                    [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                        if (error)
+                        {
+                            AlfrescoLogWarning(@"Could not retrieve the default profile: %@", error.localizedDescription);
+                        }
+                        else
+                        {
+                            profileSuccessfullySelectedBlock(config, YES);
+                        }
+                    }];
+                }
+            }
+            else
+            {
+                [[AnalyticsManager sharedManager] checkAnalyticsFeature];
             }
         }
         else
         {
             self.selectedProfile = defaultProfile;
-            
-            // Selected account
-            UserAccount *account = [AccountManager sharedManager].selectedAccount;
             
             // Update the Main Menu Controller
             MainMenuLocalConfigurationBuilder *localBuilder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:account session:session];
@@ -315,28 +361,6 @@ static dispatch_once_t onceToken;
                 NSDictionary *parameters = @{kAlfrescoConfigServiceParameterFolder : accountSpecificFolderPath,
                                              kAlfrescoConfigServiceParameterFileName : kAlfrescoEmbeddedConfigurationFileName};
                 [session addParametersFromDictionary:parameters];
-                
-                // Attempt to download and select the default profile
-                AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithSession:session];
-                // define a success block
-                void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile, BOOL isEmbeddedConfig) = ^(AlfrescoProfileConfig *selectedProfile, BOOL isEmbeddedConfig) {
-                    self.currentConfigService = configService;
-                    self.selectedProfile = selectedProfile;
-                    self.currentConfigAccountIdentifier = account.accountIdentifier;
-                    account.selectedProfileIdentifier = selectedProfile.identifier;
-                    account.selectedProfileName = selectedProfile.label;
-                    
-                    MainMenuConfigurationBuilder *builder;
-                    if(isEmbeddedConfig)
-                    {
-                        builder = [[MainMenuLocalConfigurationBuilder alloc] initWithAccount:account session:session];
-                    }
-                    else
-                    {
-                        builder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:account session:session];
-                    }
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:builder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : [NSNumber numberWithBool:isEmbeddedConfig]}];
-                };
                 
                 NSString *selectedProfileIdentifier = account.selectedProfileIdentifier;
                 if (selectedProfileIdentifier)
