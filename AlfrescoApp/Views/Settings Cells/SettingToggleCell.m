@@ -43,6 +43,18 @@
                                         reason:[NSString stringWithFormat:@"Invaild cell value in class %@", NSStringFromClass([self class])]
                                       userInfo:nil]);
     }
+    
+    if ([self.delegate isCellEnabled:self] == NO)
+    {
+        self.cellTitle.textColor = [UIColor lightGrayColor];
+        self.toggle.enabled = NO;
+        self.toggle.on = NO;
+    }
+    else
+    {
+        self.cellTitle.textColor = [UIColor blackColor];
+        self.toggle.enabled = YES;
+    }
 }
 
 - (IBAction)switchToggled:(id)sender

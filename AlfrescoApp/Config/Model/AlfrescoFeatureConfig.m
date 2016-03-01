@@ -19,7 +19,22 @@
  */
 
 #import "AlfrescoFeatureConfig.h"
+#import "AlfrescoSDKInternalConstants.h"
+
+@interface AlfrescoFeatureConfig ()
+@property (nonatomic, assign, readwrite) BOOL isEnable;
+@end
 
 @implementation AlfrescoFeatureConfig
+
+- (id)initWithDictionary:(NSDictionary *)properties
+{
+    self = [super initWithDictionary:properties];
+    if (nil != self)
+    {
+        self.isEnable = [properties[kAlfrescoJSONEnable] boolValue];
+    }
+    return self;
+}
 
 @end

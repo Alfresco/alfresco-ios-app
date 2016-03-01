@@ -21,5 +21,6 @@
 @protocol SettingsCellProtocol <NSObject>
 
 - (void)valueDidChangeForCell:(SettingCell *)cell preferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value;
+- (BOOL)isCellEnabled:(SettingCell *)cell;
 
 @end

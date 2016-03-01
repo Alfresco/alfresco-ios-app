@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, AnalyticsType)
 + (AnalyticsManager *)sharedManager;
 - (void)startAnalytics;
 - (void)stopAnalytics;
+- (void)checkAnalyticsFeature;
 
 // Tracking methods
 - (void)trackScreenWithName:(NSString *)screenName;

@@ -80,6 +80,30 @@
     [self stopAnalyticsType:AnalyticsTypeGoogleAnalytics];
 }
 
+- (void)checkAnalyticsFeature
+{
+    AlfrescoConfigService *currentConfigService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
+    [currentConfigService retrieveFeatureConfigWithIdentifier:@"feature-analytics-default" completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
+        if(config)
+        {
+            if (config.isEnable)
+            {
+                [[AnalyticsManager sharedManager] startAnalytics];
+            }
+            else
+            {
+                [[AnalyticsManager sharedManager] stopAnalytics];
+            }
+            [[NSUserDefaults standardUserDefaults] setBool:config.isEnable forKey:kSettingsSendDiagnosticsEnable];
+        }
+        else
+        {
+            [[AnalyticsManager sharedManager] startAnalytics];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingsSendDiagnosticsEnable];
+        }
+    }];
+}
+
 #pragma mark - Tracking Methods
 
 - (void)trackScreenWithName:(NSString *)screenName

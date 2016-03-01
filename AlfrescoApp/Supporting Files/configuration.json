@@ -10,6 +10,13 @@
       "root-view-id": "views-menu-default"
     }
   },
+  "features": [
+    {
+        "id": "feature-analytics-default",
+        "type": "org.alfresco.client.feature.analytics",
+        "enable": true
+     }
+  ],
   "view-groups": [
     {
       "id": "views-menu-default",
@@ -520,7 +527,7 @@
     },
     "size": {
       "model-id": "size",
-      "type": "org.alfresco.client.form.field.fileSize",
+      "type": "org.alfresco.client.form.field.decimal",
       "label-id": "cm_contentmodel.property.cm_size.title"
     },
     "cm:creator": {

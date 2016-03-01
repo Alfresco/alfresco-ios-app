@@ -317,13 +317,13 @@ NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll = @"all";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone = @"none";
 
 // App Configuration
-//// Notifictaions
+//// Notifications
 NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"AppConfigurationAccountsConfigurationUpdatedNotification";
 //// Keys
 NSString * const kAppConfigurationCanAddAccountsKey = @"AppConfigurationCanAddAccounts";
 NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEditAccounts";
 NSString * const kAppConfigurationCanRemoveAccountsKey = @"AppConfigurationCanRemoveAccounts";
-///// Main Menu
+//// Main Menu
 NSString * const kAppConfigurationUserCanEditMainMenuKey = @"AppConfigurationUserCanEditMainMenuKey";
 
 // Person Profile

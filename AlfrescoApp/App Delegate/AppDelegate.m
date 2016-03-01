@@ -80,6 +80,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
      * - HockeyApp SDK integration. Requires "HOCKEYAPP_APPID"
      * - Flurry Analytics. Requires "FLURRY_API_KEY"
      * - Google Quickoffice Save Back. Requires "QUICKOFFICE_PARTNER_KEY"
+     * - Google Analytics. Requires "GA_API_KEY"
      *
      * Functionality that is not made available to third-party apps:
      * - Alfresco Cloud sign-up. This is a private implementation available to Alfresco only.
