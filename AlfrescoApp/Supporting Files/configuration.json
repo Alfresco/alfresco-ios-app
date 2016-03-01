@@ -527,7 +527,7 @@
     },
     "size": {
       "model-id": "size",
-      "type": "org.alfresco.client.form.field.decimal",
+      "type": "org.alfresco.client.form.field.fileSize",
       "label-id": "cm_contentmodel.property.cm_size.title"
     },
     "cm:creator": {
