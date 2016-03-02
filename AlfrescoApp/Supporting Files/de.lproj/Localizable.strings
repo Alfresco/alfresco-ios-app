@@ -648,7 +648,7 @@
 "settings.reset.description" = "Durch das Löschen der Accounts werden alle Accounts von der App gelöscht. Durch das Löschen von Accounts, Zwischenspeicher und Downloads wird die App auf eine Neuinstallation zurückgesetzt.";
 "settings.full.text.search" = "Volltextsuche";
 "settings.full.text.search.description" = "Aktivieren Sie die Volltextsuche, um bei der Suche nach Dateien UND deren Inhalten zu suchen.";
-
+"settings.feedback.title" = "Send Feedback - DE";
 
 /**
  * Onboarding View Controller

@@ -648,7 +648,7 @@
 "settings.reset.description" = "Al borrar las cuentas se eliminarán todas las cuentas de la aplicación. Al borrar las cuentas, la caché y las descargas se restablecerá la aplicación en una instalación nueva.";
 "settings.full.text.search" = "Buscar texto completo";
 "settings.full.text.search.description" = "Active la búsqueda de texto completo para buscar ficheros Y su contenido.";
-
+"settings.feedback.title" = "Send Feedback - ES";
 
 /**
  * Onboarding View Controller
