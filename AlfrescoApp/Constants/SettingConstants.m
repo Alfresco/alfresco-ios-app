@@ -55,5 +55,7 @@ NSString * const kSettingsFileProtectionIdentifier = @"SettingsFileProtectionIde
 NSString * const kSettingsResetAccountsIdentifier = @"SettingsResetAccountsIdentifier";
 NSString * const kSettingsResetEntireAppIdentifier = @"SettingsResetEntireAppIdentifier";
 NSString * const kSettingsFullTextSearchIdentifier = @"SettingsFullTextSearchIdentifier";
+NSString * const kSettingsSendFeedbackIdentifier = @"SettingsSendFeedbackIdentifier";
 
 NSString * const kSettingsSendDiagnosticsEnable = @"SettingsDiagnosticsEnable";
+NSString * const kSettingsSendFeedbackAlfrescoRecipient = @"mobile@alfresco.com";

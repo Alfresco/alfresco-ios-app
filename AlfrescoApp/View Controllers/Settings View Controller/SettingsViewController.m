@@ -29,10 +29,12 @@
 #import "CoreDataCacheHelper.h"
 #import "AvatarImageCache.h"
 #import "DownloadManager.h"
+#import <MessageUI/MessageUI.h>
+#import <sys/utsname.h>
 
 static NSUInteger const kCellLeftInset = 10;
 
-@interface SettingsViewController () <SettingsCellProtocol>
+@interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
 
 @implementation SettingsViewController
@@ -182,73 +184,157 @@ static NSUInteger const kCellLeftInset = 10;
 {
     if ([preferenceIdentifier isEqualToString:kSettingsResetAccountsIdentifier])
     {
-        UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
-                                                                    message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-        
-        [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (!isCancelButton)
-            {
-                // Remove accounts
-                [[AccountManager sharedManager] removeAllAccounts];
-                // Delete avatar cache
-                CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-                [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-                
-                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                                  action:kAnalyticsEventActionClearData
-                                                                   label:kAnalyticsEventLabelPartial
-                                                                   value:@1];
-                
-                UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                                            message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                                           delegate:self
-                                                                  cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                                  otherButtonTitles:nil];
-                [confirmation show];
-            }
-        }];
+        [self resetAccountsHandler];
     }
     else if ([preferenceIdentifier isEqualToString:kSettingsResetEntireAppIdentifier])
     {
-        UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
-                                                                    message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-        
-        [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (!isCancelButton)
-            {
-                // Reset accounts, delete cache databases, tmp folder, downloads
-                // Remove accounts
-                [[AccountManager sharedManager] removeAllAccounts];
-                // Delete cache
-                CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-                [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-                [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
-                [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
-                // Remove downloads
-                [[DownloadManager sharedManager] removeAllDownloads];
-                // Remove all contents of the temp folder
-                [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
-                
-                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                                  action:kAnalyticsEventActionClearData
-                                                                   label:kAnalyticsEventLabelFull
-                                                                   value:@1];
-                
-                UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                                       message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                                      delegate:self
-                                                             cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                             otherButtonTitles:nil];
-                [confirmation show];
-            }
-        }];
+        [self resetEntireAppHandler];
     }
+    else if ([preferenceIdentifier isEqualToString:kSettingsSendFeedbackIdentifier])
+    {
+        [self sendFeedbackHandler];
+    }
+}
+
+- (void) resetAccountsHandler
+{
+    UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
+                                                                message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                      otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    
+    [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            // Remove accounts
+            [[AccountManager sharedManager] removeAllAccounts];
+            // Delete avatar cache
+            CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+            [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                              action:kAnalyticsEventActionClearData
+                                                               label:kAnalyticsEventLabelPartial
+                                                               value:@1];
+            
+            UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                   message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                         otherButtonTitles:nil];
+            [confirmation show];
+        }
+    }];
+}
+
+- (void) resetEntireAppHandler
+{
+    UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
+                                                                message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                      otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    
+    [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            // Reset accounts, delete cache databases, tmp folder, downloads
+            // Remove accounts
+            [[AccountManager sharedManager] removeAllAccounts];
+            // Delete cache
+            CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+            [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+            [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
+            [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
+            // Remove downloads
+            [[DownloadManager sharedManager] removeAllDownloads];
+            // Remove all contents of the temp folder
+            [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                              action:kAnalyticsEventActionClearData
+                                                               label:kAnalyticsEventLabelFull
+                                                               value:@1];
+            
+            UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                   message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                         otherButtonTitles:nil];
+            [confirmation show];
+        }
+    }];
+}
+
+- (void) sendFeedbackHandler
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
+        emailController.mailComposeDelegate = self;
+        [emailController setSubject:[self emailFeedbackSubject]];
+        [emailController setToRecipients:@[kSettingsSendFeedbackAlfrescoRecipient]];
+        
+        // Content body template
+        NSString *footer = [self emailFeedbackFooter];
+        NSString *messageBody = [NSString stringWithFormat:@"<br><br>%@", footer];
+        [emailController setMessageBody:messageBody isHTML:YES];
+        emailController.modalPresentationStyle = UIModalPresentationPageSheet;
+        
+        [self presentViewController:emailController animated:YES completion:nil];
+    }
+    else
+    {
+        displayErrorMessageWithTitle(NSLocalizedString(@"error.no.email.accounts.message", @"No mail accounts"), NSLocalizedString(@"error.no.email.accounts.title", @"No mail accounts"));
+    }
+}
+
+#pragma mark - Feedback Utils
+
+- (NSString *) emailFeedbackSubject
+{
+    NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *subjectString = [NSString stringWithFormat:@"iOS App v%@ Feedback", versionString];
+    
+    return subjectString;
+}
+
+- (NSString *) emailFeedbackFooter
+{
+    NSString *footerString = [NSString stringWithFormat: @"--<br>App: %@ %@(%@)<br>Device: %@(%@)<br>Locale: %@",
+                              [self bundleIdentifier],
+                              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+                              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
+                              [self deviceModel],
+                              [self operatingSystemVersion],
+                              [self localeIdentifier]];
+    
+    return footerString;
+}
+
+- (NSString *) deviceModel
+{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *code = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    
+    return code;
+}
+
+- (NSString *) bundleIdentifier
+{
+    return [[NSBundle mainBundle] bundleIdentifier];
+}
+
+- (NSString *) operatingSystemVersion
+{
+    return [[UIDevice currentDevice] systemVersion];
+}
+
+- (NSString *) localeIdentifier
+{
+    return [NSLocale currentLocale].localeIdentifier;
 }
 
 #pragma mark - Table view data source
@@ -343,6 +429,29 @@ static NSUInteger const kCellLeftInset = 10;
         return YES;
     
     return [[PreferenceManager sharedManager] isSendDiagnosticsEnable];
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate Methods
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    void (^completionBlock)() = nil;
+    
+    switch (result)
+    {
+        case MFMailComposeResultFailed:
+        {
+            completionBlock = ^{
+                displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
+            };
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:completionBlock];
 }
 
 @end

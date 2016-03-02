@@ -648,7 +648,7 @@
 "settings.reset.description" = "L'effacement des comptes supprimera tous les comptes de l'application. L'effacement des comptes, du cache et des téléchargements réinitialise l'application pour une nouvelle installation.";
 "settings.full.text.search" = "Recherche de texte";
 "settings.full.text.search.description" = "Activez la recherche de texte pour rechercher les fichiers ET leur contenu.";
-
+"settings.feedback.title" = "Send Feedback - FR";
 
 /**
  * Onboarding View Controller
