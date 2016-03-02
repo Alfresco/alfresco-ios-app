@@ -648,7 +648,7 @@
 "settings.reset.description" = "清除帐户会从应用程序中删除所有帐户。清除帐户、缓存和下载会将应用程序重新设置为全新安装。";
 "settings.full.text.search" = "全文搜索";
 "settings.full.text.search.description" = "搜索时，打开完整内容搜索以搜索文件及其内容。";
-
+"settings.feedback.title" = "Send Feedback - CN";
 
 /**
  * Onboarding View Controller

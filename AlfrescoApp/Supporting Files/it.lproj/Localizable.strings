@@ -648,7 +648,7 @@
 "settings.reset.description" = "Eliminerai tutti gli account dall'app. Cancellando gli account, i dati in cache e i download riporterai l'app alle impostazioni di fabbrica.";
 "settings.full.text.search" = "Ricerca globale";
 "settings.full.text.search.description" = "Attiva la ricerca globale per i file E i relativi contenuti.";
-
+"settings.feedback.title" = "Send Feedback - IT";
 
 /**
  * Onboarding View Controller

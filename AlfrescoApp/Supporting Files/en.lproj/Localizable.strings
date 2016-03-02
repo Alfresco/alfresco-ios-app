@@ -648,7 +648,7 @@
 "settings.reset.description" = "Clearing the accounts will delete all accounts from the app. Clearing accounts, cache, and downloads will reset the app to a fresh install.";
 "settings.full.text.search" = "Full Content Search";
 "settings.full.text.search.description" = "Switch on the full content search to search files AND their content when searching.";
-
+"settings.feedback.title" = "Send Feedback";
 
 /**
  * Onboarding View Controller
