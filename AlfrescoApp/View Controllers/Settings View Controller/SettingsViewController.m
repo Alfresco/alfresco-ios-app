@@ -273,22 +273,26 @@ static NSUInteger const kCellLeftInset = 10;
     {
         MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
         emailController.mailComposeDelegate = self;
-        [emailController setSubject:[self getFeedbackSubject]];
+        [emailController setSubject:[self emailFeedbackSubject]];
         [emailController setToRecipients:@[kSettingsSendFeedbackAlfrescoRecipient]];
         
         // Content body template
-        NSString *footer = [self getFeedbackFooter];
+        NSString *footer = [self emailFeedbackFooter];
         NSString *messageBody = [NSString stringWithFormat:@"<br><br>%@", footer];
         [emailController setMessageBody:messageBody isHTML:YES];
         emailController.modalPresentationStyle = UIModalPresentationPageSheet;
         
         [self presentViewController:emailController animated:YES completion:nil];
     }
+    else
+    {
+        displayErrorMessageWithTitle(NSLocalizedString(@"error.no.email.accounts.message", @"No mail accounts"), NSLocalizedString(@"error.no.email.accounts.title", @"No mail accounts"));
+    }
 }
 
 #pragma mark - Feedback Utils
 
-- (NSString *) getFeedbackSubject
+- (NSString *) emailFeedbackSubject
 {
     NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSString *subjectString = [NSString stringWithFormat:@"iOS App v%@ Feedback", versionString];
@@ -296,20 +300,20 @@ static NSUInteger const kCellLeftInset = 10;
     return subjectString;
 }
 
-- (NSString *) getFeedbackFooter
+- (NSString *) emailFeedbackFooter
 {
     NSString *footerString = [NSString stringWithFormat: @"--<br>App: %@ %@(%@)<br>Device: %@(%@)<br>Locale: %@",
-                              [self getBundleIdentifier],
+                              [self bundleIdentifier],
                               [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                               [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
-                              [self getDeviceModel],
-                              [self getIOSVersion],
-                              [self getLocale]];
+                              [self deviceModel],
+                              [self operatingSystemVersion],
+                              [self localeIdentifier]];
     
     return footerString;
 }
 
-- (NSString *) getDeviceModel
+- (NSString *) deviceModel
 {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -318,17 +322,17 @@ static NSUInteger const kCellLeftInset = 10;
     return code;
 }
 
-- (NSString *) getBundleIdentifier
+- (NSString *) bundleIdentifier
 {
     return [[NSBundle mainBundle] bundleIdentifier];
 }
 
-- (NSString *) getIOSVersion
+- (NSString *) operatingSystemVersion
 {
     return [[UIDevice currentDevice] systemVersion];
 }
 
-- (NSString *) getLocale
+- (NSString *) localeIdentifier
 {
     return [NSLocale currentLocale].localeIdentifier;
 }
