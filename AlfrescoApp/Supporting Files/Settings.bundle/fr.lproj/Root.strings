@@ -1,16 +1,32 @@
+/*******************************************************************************
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
+
 /**
  * Root.strings
  * AlfrescoApp
  *
  * French (fr)
- *
- * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 "settings.about" = "À propos";
 "settings.about.version" = "Version";
 "settings.about.acknowledgements" = "Remerciements";
-"settings.about.footer" = "© 2015 Alfresco Software, Inc. Tous droits réservés.";
+"settings.about.footer" = "© 2016 Alfresco Software, Inc. Tous droits réservés.";
 "settings.advanced" = "Avancé";
 "settings.advanced.safe.mode" = "Mode sécurisé";
 "settings.advanced.footer" = "Le mode sécurisé vous permet d'accéder à l'application, sans vous connecter automatiquement au compte par défaut.\n\nÀ noter que vous devez fermer l'application pour que ce paramètre soit effectif.";
