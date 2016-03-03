@@ -74,7 +74,7 @@ static NSUInteger const kCellLeftInset = 10;
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
 
-    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
+    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title");
     self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
     [self.tableView reloadData];
 }
@@ -331,7 +331,7 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (NSString *)emailFeedbackFooter
 {
-    NSString *footerString = [NSString stringWithFormat: @"--<br>App: %@ %@(%@)<br>Device: %@(%@)<br>Locale: %@",
+    NSString *footerString = [NSString stringWithFormat: @"------<br>App: %@ %@ (%@)<br>Device: %@ (%@)<br>Locale: %@",
                               [self bundleIdentifier],
                               [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                               [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
@@ -466,22 +466,15 @@ static NSUInteger const kCellLeftInset = 10;
 
 #pragma mark - MFMailComposeViewControllerDelegate Methods
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     void (^completionBlock)() = nil;
     
-    switch (result)
+    if (result == MFMailComposeResultFailed)
     {
-        case MFMailComposeResultFailed:
-        {
-            completionBlock = ^{
-                displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
-            };
-        }
-            break;
-            
-        default:
-            break;
+        completionBlock = ^{
+            displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
+        };
     }
     
     [controller dismissViewControllerAnimated:YES completion:completionBlock];
