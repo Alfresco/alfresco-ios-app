@@ -70,7 +70,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     /**
-     * This version of the app has been coded in such a way to require valid Alfresco Cloud OAuth key and secret tokens.
+     * This version of the app has been coded in such a way to require valid Alfresco in the Cloud OAuth key and secret tokens.
      * These should be populated in the AlfrescoApp.xcconfig file, either via an environment variable or directly in the file.
      * - "CLOUD_OAUTH_KEY"
      * - "CLOUD_OAUTH_SECRET"
@@ -82,8 +82,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
      * - Google Quickoffice Save Back. Requires "QUICKOFFICE_PARTNER_KEY"
      * - Google Analytics. Requires "GA_API_KEY"
      *
-     * Functionality that is not made available to third-party apps:
-     * - Alfresco Cloud sign-up. This is a private implementation available to Alfresco only.
      */
     if (CLOUD_OAUTH_KEY.length == 0) AlfrescoLogError(@"CLOUD_OAUTH_KEY must have non-zero length");
     if (CLOUD_OAUTH_SECRET.length == 0) AlfrescoLogError(@"CLOUD_OAUTH_SECRET must have non-zero length");

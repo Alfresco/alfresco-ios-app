@@ -99,7 +99,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     if (indexPath.section == 0)
     {
         cell.imageView.image = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
+        cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco in the Cloud");
     }
     else
     {
@@ -116,7 +116,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     if (indexPath.section == kCloudSectionNumber)
     {
         UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
-        account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco Cloud");
+        account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco in the Cloud");
         
         [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)

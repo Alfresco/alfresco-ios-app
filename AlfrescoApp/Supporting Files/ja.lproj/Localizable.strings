@@ -190,11 +190,11 @@
 "accounts.empty" = "アカウントはありません";
 "accountdetails.title.newaccount" = "新しいアカウント";
 "accountdetails.title.editingaccount" = "アカウントの編集";
-"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.cloud" = "Alfresco in the Cloud";
 "accounttype.alfrescoServer" = "Alfresco サーバー";
 
 "accounttype.footer.alfrescoServer" = "Alfresco サーバーに接続します";
-"accounttype.footer.alfrescoCloud" = "Alfresco Cloud アカウントにアクセスします";
+"accounttype.footer.alfrescoCloud" = "Alfresco in the Cloud アカウントにアクセスします";
 
 "accountdetails.placeholder.required" = "必須";
 "accountdetails.placeholder.optional" = "任意";
@@ -324,7 +324,7 @@
  * About View Controller
  */
 "about.title" = "バージョン情報";
-"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco Cloud やオンプレミスの Alfresco サーバー (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って（HTTP または HTTPS 経由で） 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
+"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco in the Cloud やオンプレミスの Alfresco サーバー (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って（HTTP または HTTPS 経由で） 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
 "about.version.number" = "バージョン: %@ (%@)";
 "about.build.date.time" = "ビルド日時: %s %s";
 

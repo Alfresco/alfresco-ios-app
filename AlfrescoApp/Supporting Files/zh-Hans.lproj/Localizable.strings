@@ -190,11 +190,11 @@
 "accounts.empty" = "无帐户";
 "accountdetails.title.newaccount" = "新建帐户";
 "accountdetails.title.editingaccount" = "编辑帐户";
-"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.cloud" = "Alfresco in the Cloud";
 "accounttype.alfrescoServer" = "Alfresco 服务器";
 
 "accounttype.footer.alfrescoServer" = "连接至 Alfresco 服务器";
-"accounttype.footer.alfrescoCloud" = "访问您的 Alfresco Cloud 帐户";
+"accounttype.footer.alfrescoCloud" = "访问您的 Alfresco in the Cloud 帐户";
 
 "accountdetails.placeholder.required" = "必填";
 "accountdetails.placeholder.optional" = "可选";
@@ -324,7 +324,7 @@
  * About View Controller
  */
 "about.title" = "关于";
-"about.content" = "Alfresco 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，连接 Alfresco Cloud 和 Alfresco 内部部署服务器（3.4.8 和更高版本）以随时安全访问您的企业文件。此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
+"about.content" = "Alfresco 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，连接 Alfresco in the Cloud 和 Alfresco 内部部署服务器（3.4.8 和更高版本）以随时安全访问您的企业文件。此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
 "about.version.number" = "版本：%@ (%@)";
 "about.build.date.time" = "创建日期：%s %s";
 

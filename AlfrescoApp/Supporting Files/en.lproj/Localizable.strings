@@ -190,11 +190,11 @@
 "accounts.empty" = "No Accounts";
 "accountdetails.title.newaccount" = "New Account";
 "accountdetails.title.editingaccount" = "Editing Account";
-"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.cloud" = "Alfresco in the Cloud";
 "accounttype.alfrescoServer" = "Alfresco Server";
 
 "accounttype.footer.alfrescoServer" = "Connect to an Alfresco Server";
-"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the cloud account";
+"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the Cloud account";
 
 "accountdetails.placeholder.required" = "Required";
 "accountdetails.placeholder.optional" = "Optional";
@@ -324,7 +324,7 @@
  * About View Controller
  */
 "about.title" = "About";
-"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the cloud and Alfresco on-premise servers (3.4.8 and above) to provide safe access to your corporate files on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
+"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the Cloud and Alfresco on-premise servers (3.4.8 and above) to provide safe access to your corporate files on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
 "about.version.number" = "Version: %@ (%@)";
 "about.build.date.time" = "Build Date: %s %s";
 
