@@ -278,10 +278,6 @@ static dispatch_once_t onceToken;
         
         void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile, BOOL isEmbeddedConfig) = ^(AlfrescoProfileConfig *selectedProfile, BOOL isEmbeddedConfig) {
             self.currentConfigService = configService;
-            if ((isEmbeddedConfig && [AppConfigurationManager sharedManager].currentConfigService == [AppConfigurationManager sharedManager].embeddedConfigService) || isEmbeddedConfig == NO)
-            {
-                [[AnalyticsManager sharedManager] checkAnalyticsFeature];
-            }
             self.selectedProfile = selectedProfile;
             self.currentConfigAccountIdentifier = account.accountIdentifier;
             account.selectedProfileIdentifier = selectedProfile.identifier;
@@ -297,6 +293,8 @@ static dispatch_once_t onceToken;
                 builder = [[MainMenuRemoteConfigurationBuilder alloc] initWithAccount:account session:session];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:builder userInfo:@{kAppConfigurationUserCanEditMainMenuKey : [NSNumber numberWithBool:isEmbeddedConfig]}];
+            
+            [[AnalyticsManager sharedManager] checkAnalyticsFeature];
         };
         
         if (defaultProfileError)
@@ -451,6 +449,13 @@ static dispatch_once_t onceToken;
         self.selectedProfile = nil;
         self.session = nil;
     }
+    
+    [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL * _Nonnull stop){
+         AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
+        [configService clear];
+     }];
+    
+    [[AnalyticsManager sharedManager] checkAnalyticsFeature];
 }
 
 - (void)noMoreAccounts:(NSNotification *)notification
