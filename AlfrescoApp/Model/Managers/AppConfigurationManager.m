@@ -450,6 +450,22 @@ static dispatch_once_t onceToken;
         self.session = nil;
     }
     
+    //delete account folder
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    NSString *accountIdentifier = accountRemoved.accountIdentifier;
+    NSString *accountSpecificFolderPath = [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:accountIdentifier];
+    
+    if ([fileManager fileExistsAtPath:accountSpecificFolderPath])
+    {
+        NSError *deleteError = nil;
+        [fileManager removeItemAtPath:accountSpecificFolderPath error:&deleteError];
+        
+        if (deleteError)
+        {
+            AlfrescoLogError(@"Unable to delete folder at path: %@", accountSpecificFolderPath);
+        }
+    }
+    
     [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL * _Nonnull stop){
          AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         [configService clear];
