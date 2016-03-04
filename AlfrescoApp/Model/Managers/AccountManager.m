@@ -22,6 +22,7 @@
 #import "Constants.h"
 #import "AccountCertificate.h"
 #import "AlfrescoProfileConfig.h"
+#import "AppConfigurationManager.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -165,7 +166,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier alfrescoSession:(id<AlfrescoSession>)alfrescoSession
 {
+    if (self.selectedAccount == selectedAccount)
+    {
+        [[[AppConfigurationManager sharedManager] configurationServiceForAccount:selectedAccount] clear];
+    }
+    
     self.selectedAccount = selectedAccount;
+    
     
     for (UserAccount *account in self.accountsFromKeychain)
     {
