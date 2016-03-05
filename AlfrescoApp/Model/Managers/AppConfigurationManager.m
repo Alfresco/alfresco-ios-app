@@ -466,7 +466,7 @@ static dispatch_once_t onceToken;
         }
     }
     
-    [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL * _Nonnull stop){
+    [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
          AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         [configService clear];
      }];
