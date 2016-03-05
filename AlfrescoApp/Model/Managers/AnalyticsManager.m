@@ -52,6 +52,7 @@
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:kSettingsDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountAdded:) name:kAlfrescoAccountAddedNotification object:nil];
     }
     return self;
 }
@@ -82,25 +83,23 @@
 
 - (void)checkAnalyticsFeature
 {
-    AlfrescoConfigService *currentConfigService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
-    [currentConfigService retrieveFeatureConfigWithIdentifier:@"feature-analytics-default" completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
-        if(config)
-        {
-            if (config.isEnable)
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingsSendDiagnosticsEnable];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[AnalyticsManager sharedManager] startAnalytics];
+    
+    [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
+        AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
+        
+        [configService retrieveFeatureConfigWithIdentifier:@"feature-analytics-default" completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
+            if (config && !config.isEnable)
             {
-                [[AnalyticsManager sharedManager] startAnalytics];
-            }
-            else
-            {
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSettingsSendDiagnosticsEnable];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [[AnalyticsManager sharedManager] stopAnalytics];
+                
+                *stop = YES;
             }
-            [[NSUserDefaults standardUserDefaults] setBool:config.isEnable forKey:kSettingsSendDiagnosticsEnable];
-        }
-        else
-        {
-            [[AnalyticsManager sharedManager] startAnalytics];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingsSendDiagnosticsEnable];
-        }
+        }];
     }];
 }
 
@@ -351,6 +350,8 @@
     }
 }
 
+#pragma mark - Notifications Handlers
+
 - (void)preferencesDidChange:(NSNotification *)notification
 {
     NSString *preferenceKeyChanged = notification.object;
@@ -373,6 +374,11 @@
         startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
         startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
     }
+}
+
+- (void)accountAdded:(NSNotification *)notification
+{
+    [self checkAnalyticsFeature];
 }
 
 @end
