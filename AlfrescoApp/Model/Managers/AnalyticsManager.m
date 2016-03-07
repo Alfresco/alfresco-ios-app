@@ -90,7 +90,7 @@
     [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
         AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
         
-        [configService retrieveFeatureConfigWithIdentifier:@"feature-analytics-default" completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
+        [configService retrieveFeatureConfigWithType:kAlfrescoConfigFeatureTypeAnalytics completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
             if (config && !config.isEnable)
             {
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSettingsSendDiagnosticsEnable];

@@ -173,7 +173,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     
     self.selectedAccount = selectedAccount;
     
-    
     for (UserAccount *account in self.accountsFromKeychain)
     {
         account.selectedNetworkId = nil;

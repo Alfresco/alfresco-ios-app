@@ -72,8 +72,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 - (BOOL)isSendDiagnosticsEnable
 {
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
-    return enable;
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
 }
 
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier

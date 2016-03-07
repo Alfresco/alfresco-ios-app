@@ -25,7 +25,8 @@ NSString * const kSettingChangedToKey = @"SettingChangedToKey";
 
 // Plist keys
 NSString * const kSettingsLocalizedTitleKey = @"LocalizedTitleKey";
-NSString * const kSettingsPaidAccountsOnly = @"PaidAccountsOnly";
+NSString * const kSettingsRestrictionHasPaidAccount = @"HasPaidAccount";
+NSString * const kSettingsRestrictionCanSendEmail = @"CanSendEmail";
 NSString * const kSettingsTableViewData = @"SettingsTableViewData";
 NSString * const kSettingsGroupHeaderLocalizedKey = @"GroupHeaderLocalizedKey";
 NSString * const kSettingsGroupFooterLocalizedKey = @"GroupFooterLocalizedKey";

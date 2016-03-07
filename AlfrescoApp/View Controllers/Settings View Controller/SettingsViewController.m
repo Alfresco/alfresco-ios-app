@@ -74,7 +74,7 @@ static NSUInteger const kCellLeftInset = 10;
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
 
-    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
+    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title");
     self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
     [self.tableView reloadData];
 }
@@ -90,37 +90,55 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (NSMutableArray *)filteredPreferences:(NSMutableArray *)unfilteredPreferences
 {
+    NSMutableArray *filteredPreferences = unfilteredPreferences;
+    
+    // Remove Enterprise-only preferences
     BOOL hasPaidAccounts = [[AccountManager sharedManager] numberOfPaidAccounts] > 0;
     if (!hasPaidAccounts)
     {
-        // Filter the groups first
-        NSMutableArray *filteredGroups = [NSMutableArray array];
-        for (NSDictionary *unfilteredGroup in unfilteredPreferences)
+        filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionHasPaidAccount];
+    }
+    
+    // Remove Feedback option if no email capability
+    BOOL canSendMail = [MFMailComposeViewController canSendMail];
+    if (!canSendMail)
+    {
+        filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionCanSendEmail];
+    }
+    
+    return filteredPreferences;
+}
+
+- (NSMutableArray *)removePreferences:(NSMutableArray *)preferences withRestriction:(NSString *)restriction
+{
+    // Filter the groups first
+    NSMutableArray *filteredPreferences = [NSMutableArray array];
+    
+    for (NSDictionary *unfilteredGroup in preferences)
+    {
+        NSMutableDictionary *filteredGroup = [unfilteredGroup mutableCopy];
+        NSNumber *groupValue = [filteredGroup objectForKey:restriction];
+        if (groupValue == nil || ![groupValue boolValue])
         {
-            NSMutableDictionary *filteredGroup = [unfilteredGroup mutableCopy];
-            NSNumber *groupValue = [filteredGroup objectForKey:kSettingsPaidAccountsOnly];
-            if (groupValue == nil || ![groupValue boolValue])
+            // Now filter the items
+            NSMutableArray *filteredItems = [NSMutableArray array];
+            for (NSDictionary *item in filteredGroup[kSettingsGroupCells])
             {
-                // Filter the items
-                NSMutableArray *filteredItems = [NSMutableArray array];
-                for (NSDictionary *item in filteredGroup[kSettingsGroupCells])
+                NSNumber *itemValue = [item objectForKey:restriction];
+                if (itemValue == nil || ![itemValue boolValue])
                 {
-                    NSNumber *itemValue = [item objectForKey:kSettingsPaidAccountsOnly];
-                    if (itemValue == nil || ![itemValue boolValue])
-                    {
-                        [filteredItems addObject:item];
-                    }
-                }
-                if (filteredItems.count > 0)
-                {
-                    filteredGroup[kSettingsGroupCells] = filteredItems;
-                    [filteredGroups addObject:filteredGroup];
+                    [filteredItems addObject:item];
                 }
             }
+            if (filteredItems.count > 0)
+            {
+                filteredGroup[kSettingsGroupCells] = filteredItems;
+                [filteredPreferences addObject:filteredGroup];
+            }
         }
-        return filteredGroups;
     }
-    return unfilteredPreferences;
+    
+    return filteredPreferences;
 }
 
 - (void)doneButtonPressed:(id)sender
@@ -196,7 +214,7 @@ static NSUInteger const kCellLeftInset = 10;
     }
 }
 
-- (void) resetAccountsHandler
+- (void)resetAccountsHandler
 {
     UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
                                                                 message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
@@ -228,7 +246,7 @@ static NSUInteger const kCellLeftInset = 10;
     }];
 }
 
-- (void) resetEntireAppHandler
+- (void)resetEntireAppHandler
 {
     UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
                                                                 message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
@@ -267,7 +285,7 @@ static NSUInteger const kCellLeftInset = 10;
     }];
 }
 
-- (void) sendFeedbackHandler
+- (void)sendFeedbackHandler
 {
     if ([MFMailComposeViewController canSendMail])
     {
@@ -290,9 +308,20 @@ static NSUInteger const kCellLeftInset = 10;
     }
 }
 
+- (BOOL)cellEnabled:(SettingCell *)cell
+{
+    if ([cell.preferenceIdentifier isEqualToString:kSettingsSendDiagnosticsIdentifier])
+    {
+        return [[PreferenceManager sharedManager] isSendDiagnosticsEnable];
+    }
+    
+    return YES;
+}
+
+
 #pragma mark - Feedback Utils
 
-- (NSString *) emailFeedbackSubject
+- (NSString *)emailFeedbackSubject
 {
     NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSString *subjectString = [NSString stringWithFormat:@"iOS App v%@ Feedback", versionString];
@@ -300,9 +329,9 @@ static NSUInteger const kCellLeftInset = 10;
     return subjectString;
 }
 
-- (NSString *) emailFeedbackFooter
+- (NSString *)emailFeedbackFooter
 {
-    NSString *footerString = [NSString stringWithFormat: @"--<br>App: %@ %@(%@)<br>Device: %@(%@)<br>Locale: %@",
+    NSString *footerString = [NSString stringWithFormat: @"------<br>App: %@ %@ (%@)<br>Device: %@ (%@)<br>Locale: %@",
                               [self bundleIdentifier],
                               [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                               [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
@@ -313,7 +342,7 @@ static NSUInteger const kCellLeftInset = 10;
     return footerString;
 }
 
-- (NSString *) deviceModel
+- (NSString *)deviceModel
 {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -322,17 +351,17 @@ static NSUInteger const kCellLeftInset = 10;
     return code;
 }
 
-- (NSString *) bundleIdentifier
+- (NSString *)bundleIdentifier
 {
     return [[NSBundle mainBundle] bundleIdentifier];
 }
 
-- (NSString *) operatingSystemVersion
+- (NSString *)operatingSystemVersion
 {
     return [[UIDevice currentDevice] systemVersion];
 }
 
-- (NSString *) localeIdentifier
+- (NSString *)localeIdentifier
 {
     return [NSLocale currentLocale].localeIdentifier;
 }
@@ -358,14 +387,25 @@ static NSUInteger const kCellLeftInset = 10;
 {
     NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:section];
     NSString *groupHeaderTitle = [groupInfoDictionary objectForKey:kSettingsGroupHeaderLocalizedKey];
+    
     return NSLocalizedString(groupHeaderTitle, @"Section header title");
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:section];
-    NSString *groupHeaderTitle = [groupInfoDictionary objectForKey:kSettingsGroupFooterLocalizedKey];
-    return NSLocalizedString(groupHeaderTitle, @"Section footer title");
+    NSString *groupFooterTitle = [groupInfoDictionary objectForKey:kSettingsGroupFooterLocalizedKey];
+    
+    // TODO: Find a cleaner way to replace this section footer
+    if ([groupFooterTitle isEqualToString:@"settings.send.diagnostics.description"])
+    {
+        if (![[PreferenceManager sharedManager] isSendDiagnosticsEnable])
+        {
+            groupFooterTitle = @"accountdetails.footer.main.menu.config.disabled";
+        }
+    }
+    
+    return NSLocalizedString(groupFooterTitle, @"Section footer title");
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -388,6 +428,7 @@ static NSUInteger const kCellLeftInset = 10;
     id preferenceValue = [[PreferenceManager sharedManager] preferenceForIdentifier:[currentCellInfo valueForKey:kSettingsCellPreferenceIdentifier]];
     
     [cell updateCellForCellInfo:currentCellInfo value:preferenceValue delegate:self];
+    cell.enabled = [self cellEnabled:cell];
     
     return cell;
 }
@@ -412,7 +453,7 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (void)valueDidChangeForCell:(SettingCell *)cell preferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value
 {
-    // If it's an action cell that requires action, else, update the prefernces
+    // If it's an action cell that requires action, else, update the preferences
     if ([cell isKindOfClass:[SettingButtonCell class]])
     {
         [self handleActionWithPreferenceIdentifier:preferenceIdentifier];
@@ -423,32 +464,17 @@ static NSUInteger const kCellLeftInset = 10;
     }
 }
 
--(BOOL)isCellEnabled:(SettingCell *)cell
-{
-    if (![cell.preferenceIdentifier isEqualToString:kSettingsSendDiagnosticsIdentifier])
-        return YES;
-    
-    return [[PreferenceManager sharedManager] isSendDiagnosticsEnable];
-}
-
 #pragma mark - MFMailComposeViewControllerDelegate Methods
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     void (^completionBlock)() = nil;
     
-    switch (result)
+    if (result == MFMailComposeResultFailed)
     {
-        case MFMailComposeResultFailed:
-        {
-            completionBlock = ^{
-                displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
-            };
-        }
-            break;
-            
-        default:
-            break;
+        completionBlock = ^{
+            displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
+        };
     }
     
     [controller dismissViewControllerAnimated:YES completion:completionBlock];

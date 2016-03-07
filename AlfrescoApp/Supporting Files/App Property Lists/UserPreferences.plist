@@ -12,6 +12,8 @@
 			<key>GroupCells</key>
 			<array>
 				<dict>
+					<key>CanSendEmail</key>
+					<true/>
 					<key>PreferenceIdentifier</key>
 					<string>SettingsSendFeedbackIdentifier</string>
 					<key>Type</key>
@@ -103,7 +105,7 @@
 			<key>GroupCells</key>
 			<array>
 				<dict>
-					<key>PaidAccountsOnly</key>
+					<key>HasPaidAccount</key>
 					<true/>
 					<key>PreferenceIdentifier</key>
 					<string>SettingsFileProtectionIdentifier</string>

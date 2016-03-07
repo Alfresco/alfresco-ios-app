@@ -437,15 +437,10 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 {
     if ([self.delegate respondsToSelector:@selector(mainMenuViewController:didDeselectItem:inSectionItem:)])
     {
-        // Only call this when a current selection is being deselected
-        NSIndexPath *currentlySelectedIndexPath = [self.tableView indexPathForSelectedRow];
-        if (currentlySelectedIndexPath)
-        {
-            MainMenuSection *deselectedSection = self.tableViewData[indexPath.section];
-            MainMenuItem *deselectedItem = deselectedSection.visibleSectionItems[indexPath.row];
-            
-            [self.delegate mainMenuViewController:self didDeselectItem:deselectedItem inSectionItem:deselectedSection];
-        }
+        MainMenuSection *deselectedSection = self.tableViewData[indexPath.section];
+        MainMenuItem *deselectedItem = deselectedSection.visibleSectionItems[indexPath.row];
+        
+        [self.delegate mainMenuViewController:self didDeselectItem:deselectedItem inSectionItem:deselectedSection];
     }
 }
 
