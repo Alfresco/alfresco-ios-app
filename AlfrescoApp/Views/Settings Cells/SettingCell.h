@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSString *preferenceIdentifier;
 @property (nonatomic, weak) id<SettingsCellProtocol> delegate;
 @property (nonatomic, strong) IBOutlet UILabel *cellTitle;
+@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 
 - (void)updateCellForCellInfo:(NSDictionary *)cellInfo value:(id)cellValue delegate:(id<SettingsCellProtocol>)delegate;
 

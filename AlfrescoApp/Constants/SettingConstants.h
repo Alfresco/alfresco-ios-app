@@ -23,7 +23,8 @@ extern NSString * const kSettingChangedToKey;
 
 // Plist keys
 extern NSString * const kSettingsLocalizedTitleKey;
-extern NSString * const kSettingsPaidAccountsOnly;
+extern NSString * const kSettingsRestrictionHasPaidAccount;
+extern NSString * const kSettingsRestrictionCanSendEmail;
 extern NSString * const kSettingsTableViewData;
 extern NSString * const kSettingsGroupHeaderLocalizedKey;
 extern NSString * const kSettingsGroupFooterLocalizedKey;
