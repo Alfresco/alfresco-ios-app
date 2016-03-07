@@ -38,6 +38,7 @@
 #import "MainMenuLocalConfigurationBuilder.h"
 
 #import "RealmSyncManager+CoreDataMigration.h"
+#import "UnderlayViewController.h"
 
 #import <HockeySDK/HockeySDK.h>
 
@@ -370,6 +371,13 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                                                 customMetric:AnalyticsMetricNone
                                                  metricValue:nil
                                                      session:self.session];
+    
+    if([[RealmSyncManager sharedManager] shouldShowSyncInfoPanel])
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SyncRefactorInfoPanel" bundle:[NSBundle mainBundle]];
+        UnderlayViewController *underlayViewController = (UnderlayViewController *)[storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([UnderlayViewController class])];
+        [(RootRevealViewController *)[UniversalDevice revealViewController] addOverlayedViewController:underlayViewController];
+    }
 }
 
 - (void)configureManagedObjectWithDictionary:(NSDictionary *)managedDictionary completionBlock:(void (^)(BOOL successful, BOOL addedAccount, UserAccount *configuredAccount, NSError *configurationError))completionBlock

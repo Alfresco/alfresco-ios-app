@@ -832,3 +832,9 @@
 "search.searchfor" = "Search For";
 "search.search" = "Search";
 "search.previoussearches" = "Previous Searches";
+
+/**
+ * Sync Info Panel
+ */
+"sync.info.skip" = "Skip";
+"sync.info.next.laststep" = "Ok, I've got it.";

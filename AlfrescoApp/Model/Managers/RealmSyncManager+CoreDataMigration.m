@@ -39,6 +39,13 @@
     return isMigrationNeededResult;
 }
 
+- (BOOL)shouldShowSyncInfoPanel
+{
+    BOOL shouldShowSyncInfoPanelResult = (![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]);
+    
+    return shouldShowSyncInfoPanelResult;
+}
+
 - (void)initiateMigrationProcess
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

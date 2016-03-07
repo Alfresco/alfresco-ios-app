@@ -16,12 +16,18 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncManager.h"
+#import "UnderlayViewController.h"
 
-@interface RealmSyncManager (CoreDataMigration)
+@interface UnderlayViewController ()
 
-- (void)initiateMigrationProcess;
-- (BOOL)isCoreDataMigrationNeeded;
-- (BOOL)shouldShowSyncInfoPanel;
+@end
+
+@implementation UnderlayViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
 
 @end

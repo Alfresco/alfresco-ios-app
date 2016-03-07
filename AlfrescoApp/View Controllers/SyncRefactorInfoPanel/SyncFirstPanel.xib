@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SyncFirstPanel">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="421"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync has changed!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a3w-HD-hlA">
+                    <rect key="frame" x="223" y="89" width="155" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can now sync different files on different devices. Just find a file and sync it!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ANJ-WJ-FxR">
+                    <rect key="frame" x="30" y="118" width="540" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View and edit your synced files when you're offline. When you're back online they'll automatically sync with Alfresco." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEc-Sn-ePT">
+                    <rect key="frame" x="30" y="286" width="540" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_sync_focus.png" translatesAutoresizingMaskIntoConstraints="NO" id="wTu-jr-cs8">
+                    <rect key="frame" x="50" y="143" width="500" height="135"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="280" id="w0a-BD-LvA"/>
+                        <constraint firstAttribute="width" secondItem="wTu-jr-cs8" secondAttribute="height" multiplier="495:133" id="zus-wX-6CJ"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="w0a-BD-LvA"/>
+                        </mask>
+                    </variation>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="ANJ-WJ-FxR" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2Rh-JS-VUY"/>
+                <constraint firstItem="ANJ-WJ-FxR" firstAttribute="top" secondItem="a3w-HD-hlA" secondAttribute="bottom" constant="8" id="M5N-GC-XeR"/>
+                <constraint firstAttribute="trailing" secondItem="ANJ-WJ-FxR" secondAttribute="trailing" constant="30" id="PZI-0F-Z3r"/>
+                <constraint firstItem="ANJ-WJ-FxR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="QO1-QE-2uA"/>
+                <constraint firstItem="DEc-Sn-ePT" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aPu-EA-kVU"/>
+                <constraint firstItem="wTu-jr-cs8" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="k7N-6d-ac7"/>
+                <constraint firstItem="wTu-jr-cs8" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="lRO-8Z-3fQ"/>
+                <constraint firstItem="DEc-Sn-ePT" firstAttribute="top" secondItem="wTu-jr-cs8" secondAttribute="bottom" constant="8" id="qTp-j1-cIV"/>
+                <constraint firstItem="a3w-HD-hlA" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="rhu-id-9UR"/>
+                <constraint firstItem="wTu-jr-cs8" firstAttribute="top" secondItem="ANJ-WJ-FxR" secondAttribute="bottom" constant="8" id="tyH-Ls-Ghv"/>
+                <constraint firstItem="wTu-jr-cs8" firstAttribute="leading" secondItem="DEc-Sn-ePT" secondAttribute="leading" constant="20" id="uyZ-Aw-yUW"/>
+                <constraint firstItem="ANJ-WJ-FxR" firstAttribute="width" secondItem="DEc-Sn-ePT" secondAttribute="width" id="zfS-Vc-9nN"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="syncFirstLabel" destination="ANJ-WJ-FxR" id="8F2-UU-5rl"/>
+                <outlet property="syncImage" destination="wTu-jr-cs8" id="Gc4-QI-2S9"/>
+                <outlet property="syncSecondLabel" destination="DEc-Sn-ePT" id="0P8-ec-EE5"/>
+                <outlet property="syncTitleLabel" destination="a3w-HD-hlA" id="m3v-7j-jkW"/>
+            </connections>
+            <point key="canvasLocation" x="522" y="373.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_sync_focus.png" width="495" height="133"/>
+    </resources>
+</document>
