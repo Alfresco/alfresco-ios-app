@@ -265,11 +265,29 @@ static dispatch_once_t onceToken;
 
 - (void)sessionReceived:(NSNotification *)notification
 {
+    BOOL shouldClearCurrentConfigService = NO;
+    
     id<AlfrescoSession> session = notification.object;
+    
+    if ([session isKindOfClass:[AlfrescoCloudSession class]] && ![self.session isKindOfClass:[AlfrescoCloudSession class]])
+    {
+        shouldClearCurrentConfigService = YES;
+    }
+    
     self.session = session;
+    
+    if ([session isKindOfClass:[AlfrescoCloudSession class]] && self.currentConfigService == self.noAccountConfigService)
+    {
+        shouldClearCurrentConfigService = YES;
+    }
     
     self.currentConfigService = [self configurationServiceForAccount:[AccountManager sharedManager].selectedAccount];
     self.currentConfigService.session = session;
+    
+    if (shouldClearCurrentConfigService)
+    {
+        [self.currentConfigService clear];
+    }
 
     [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         
@@ -319,23 +337,20 @@ static dispatch_once_t onceToken;
                     }
                 }
                 
-                if (![session isKindOfClass:[AlfrescoCloudSession class]])
-                {
-                    // something happened with the configuration as it is not found; will load the embedded configuration
-                    AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
-                    appConfigM.configurationServiceForCurrentAccount.session = session;
-                    appConfigM.session = session;
-                    [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
-                        if (error)
-                        {
-                            AlfrescoLogWarning(@"Could not retrieve the default profile: %@", error.localizedDescription);
-                        }
-                        else
-                        {
-                            profileSuccessfullySelectedBlock(config, YES);
-                        }
-                    }];
-                }
+                // something happened with the configuration as it is not found; will load the embedded configuration
+                AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
+                appConfigM.configurationServiceForCurrentAccount.session = session;
+                appConfigM.session = session;
+                [appConfigM.configurationServiceForCurrentAccount retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                    if (error)
+                    {
+                        AlfrescoLogWarning(@"Could not retrieve the default profile: %@", error.localizedDescription);
+                    }
+                    else
+                    {
+                        profileSuccessfullySelectedBlock(config, YES);
+                    }
+                }];
             }
             else
             {
