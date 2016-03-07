@@ -22,7 +22,7 @@
 #import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 
-static CGFloat const kSpacingBetweenButtons = 10.0f;
+static CGFloat const kSpacingBetweenButtons = 22.0f;
 static CGFloat const kProgressBarHeight = 2.0f;
 
 @interface WebBrowserViewController () <UIWebViewDelegate, NJKWebViewProgressDelegate>
