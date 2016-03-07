@@ -297,6 +297,8 @@ extern NSString * const kAlfrescoMainMenuItemSitesIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSyncIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSettingsIdentifier;
 extern NSString * const kAlfrescoMainMenuItemHelpIdentifier;
+/// Features
+extern NSString * const kAlfrescoConfigFeatureTypeAnalytics;
 /// View Types
 extern NSString * const kAlfrescoConfigViewTypeActivities;
 extern NSString * const kAlfrescoConfigViewTypeRepository;
