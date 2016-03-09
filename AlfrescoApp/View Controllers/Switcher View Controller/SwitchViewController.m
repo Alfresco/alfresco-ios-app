@@ -88,7 +88,10 @@
 
 - (void)mainMenuViewController:(MainMenuViewController *)controller didDeselectItem:(MainMenuItem *)menuItem inSectionItem:(MainMenuSection *)sectionItem
 {
-    self.previouslySelectedItem = menuItem;
+    if (menuItem.displayType != MainMenuDisplayTypeModal)
+    {
+        self.previouslySelectedItem = menuItem;
+    }
 }
 
 - (void)mainMenuViewController:(MainMenuViewController *)controller didSelectItem:(MainMenuItem *)menuItem inSectionItem:(MainMenuSection *)sectionItem

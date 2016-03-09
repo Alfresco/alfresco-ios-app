@@ -365,8 +365,8 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withDescription:(NSString *)updateDescription
 {
-    MainMenuItem *foundItem = [self itemForIdentifier:identifier];
-    foundItem.itemDescription = updateDescription;
+    MainMenuItem *menuItem = [self itemForIdentifier:identifier];
+    menuItem.itemDescription = updateDescription;
     NSIndexPath *itemIndexPath = [self indexPathForItemWithIdentifier:identifier];
     if (itemIndexPath)
     {
