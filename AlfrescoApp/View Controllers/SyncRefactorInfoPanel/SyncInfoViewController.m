@@ -23,6 +23,9 @@
 #import "SyncSecondPanel.h"
 #import "SyncThirdPanel.h"
 
+#import "RootRevealViewController.h"
+#import "UniversalDevice.h"
+
 @interface SyncInfoViewController () <PagedScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet PagedScrollView *pagedScrollView;
@@ -88,7 +91,12 @@
 {
     if(self.parentViewController)
     {
-        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+        RootRevealViewController *rootRevealController = (RootRevealViewController *)[UniversalDevice revealViewController];
+        
+        if (rootRevealController.hasOverlayController)
+        {
+            [rootRevealController removeOverlayedViewControllerWithAnimation:YES];
+        }
     }
     else
     {

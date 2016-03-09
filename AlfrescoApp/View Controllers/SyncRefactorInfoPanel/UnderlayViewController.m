@@ -18,7 +18,14 @@
 
 #import "UnderlayViewController.h"
 
+static CGFloat const kiPadLandscapeContraint = 300.0f;
+static CGFloat const kiPadPortraitContraint = 172.0f;
+static CGFloat const kiPhoneContraint = 0.0f;
+
 @interface UnderlayViewController ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerTrailingContraint;
 
 @end
 
@@ -27,7 +34,53 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    if(IS_IPAD)
+    {
+        UIInterfaceOrientation toOrientation   = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+        
+        if (UIInterfaceOrientationIsLandscape(toOrientation))
+        {
+            self.containerLeadingConstraint.constant = kiPadLandscapeContraint;
+            self.containerTrailingContraint.constant = -kiPadLandscapeContraint;
+        }
+        else
+        {
+            self.containerLeadingConstraint.constant = kiPadPortraitContraint;
+            self.containerTrailingContraint.constant = -kiPadPortraitContraint;
+        }
+    }
+    else
+    {
+        self.containerLeadingConstraint.constant = kiPhoneContraint;
+        self.containerTrailingContraint.constant = kiPhoneContraint;
+    }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    if(IS_IPAD)
+    {
+        UIInterfaceOrientation toOrientation   = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+        
+        if (UIInterfaceOrientationIsLandscape(toOrientation))
+        {
+            self.containerLeadingConstraint.constant = kiPadLandscapeContraint;
+            self.containerTrailingContraint.constant = -kiPadLandscapeContraint;
+        }
+        else
+        {
+            self.containerLeadingConstraint.constant = kiPadPortraitContraint;
+            self.containerTrailingContraint.constant = -kiPadPortraitContraint;
+        }
+    }
+    else
+    {
+        self.containerLeadingConstraint.constant = kiPhoneContraint;
+        self.containerTrailingContraint.constant = kiPhoneContraint;
+    }
+    [self.view layoutIfNeeded];
 }
 
 @end

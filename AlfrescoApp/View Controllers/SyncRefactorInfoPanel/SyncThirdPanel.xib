@@ -12,13 +12,13 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="352"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where do I find synced files?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQi-SL-aa1">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Where do I find synced files?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQi-SL-aa1">
                     <rect key="frame" x="183" y="109" width="235" height="21"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can find all your synced files in the new Synced Content view!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZZ-Fx-Qgc">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You can find all your synced files in the new Synced Content view!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZZ-Fx-Qgc">
                     <rect key="frame" x="30" y="138" width="540" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -27,7 +27,7 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_sync_screenshot_cropped.png" translatesAutoresizingMaskIntoConstraints="NO" id="CWK-oU-4wM">
                     <rect key="frame" x="200" y="165" width="200" height="187"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="200" id="sfv-pZ-3s4"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="sfv-pZ-3s4"/>
                         <constraint firstAttribute="width" secondItem="CWK-oU-4wM" secondAttribute="height" multiplier="853:800" id="yYx-A4-dn3"/>
                     </constraints>
                 </imageView>
@@ -40,6 +40,7 @@
                 <constraint firstAttribute="bottom" secondItem="CWK-oU-4wM" secondAttribute="bottom" id="UmV-YS-xfE"/>
                 <constraint firstItem="CWK-oU-4wM" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="YHD-ob-zjM"/>
                 <constraint firstItem="rZZ-Fx-Qgc" firstAttribute="top" secondItem="MQi-SL-aa1" secondAttribute="bottom" constant="8" id="eRO-Dy-WKo"/>
+                <constraint firstItem="MQi-SL-aa1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" id="lRZ-54-Sgb"/>
                 <constraint firstAttribute="trailing" secondItem="rZZ-Fx-Qgc" secondAttribute="trailing" constant="30" id="sQE-qb-5dD"/>
                 <constraint firstItem="MQi-SL-aa1" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="z1s-GE-QWi"/>
             </constraints>

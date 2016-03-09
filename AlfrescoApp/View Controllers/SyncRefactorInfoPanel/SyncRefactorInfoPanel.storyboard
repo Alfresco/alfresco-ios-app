@@ -32,11 +32,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="gS3-K7-Oky" firstAttribute="leading" secondItem="rGH-Ta-Vwu" secondAttribute="leadingMargin" id="83g-Mg-LWi"/>
-                            <constraint firstItem="gS3-K7-Oky" firstAttribute="centerX" secondItem="rGH-Ta-Vwu" secondAttribute="centerX" id="On5-m4-DA0"/>
                             <constraint firstItem="gS3-K7-Oky" firstAttribute="trailing" secondItem="rGH-Ta-Vwu" secondAttribute="trailingMargin" id="ciF-cf-i5Q"/>
                             <constraint firstItem="gS3-K7-Oky" firstAttribute="centerY" secondItem="rGH-Ta-Vwu" secondAttribute="centerY" id="fd3-UF-eRn"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="containerLeadingConstraint" destination="83g-Mg-LWi" id="nGN-UA-VyP"/>
+                        <outlet property="containerTrailingContraint" destination="ciF-cf-i5Q" id="FBN-U3-igy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LjP-Yx-EQ1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -11,8 +11,8 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="339"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What about the files I already favorited?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfn-1u-FIU">
-                    <rect key="frame" x="137" y="132" width="326" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What about the files I already favorited?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfn-1u-FIU">
+                    <rect key="frame" x="30" y="132" width="540" height="21"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -33,6 +33,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="DYo-BA-8zV" firstAttribute="top" secondItem="tgK-Qx-f7V" secondAttribute="bottom" constant="8" id="FSl-GP-0I4"/>
+                <constraint firstItem="qfn-1u-FIU" firstAttribute="width" secondItem="DYo-BA-8zV" secondAttribute="width" id="OTZ-7i-wJa"/>
                 <constraint firstItem="DYo-BA-8zV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Qbk-xK-jzG"/>
                 <constraint firstAttribute="trailing" secondItem="DYo-BA-8zV" secondAttribute="trailing" constant="30" id="Yeu-nK-OyY"/>
                 <constraint firstItem="tgK-Qx-f7V" firstAttribute="top" secondItem="qfn-1u-FIU" secondAttribute="bottom" constant="8" id="f2V-Aj-pmk"/>
