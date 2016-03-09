@@ -128,7 +128,7 @@ NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 NSString * const kFavoritesListUpdatedNotification = @"kFavoritesListUpdatedNotification";
 NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressViewVisiblityChangeNotification";
 
-// Download Notifictations
+// Download Notifications
 NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"DocumentPreviewManagerWillStartDownloadNotification";
 NSString * const kDocumentPreviewManagerProgressNotification = @"DocumentPreviewManagerProgressNotification";
 NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification = @"DocumentPreviewManagerDocumentDownloadCompletedNotification";

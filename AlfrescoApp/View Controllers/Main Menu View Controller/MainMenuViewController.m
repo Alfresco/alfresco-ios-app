@@ -425,7 +425,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuTableViewCell *cell = (MainMenuTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;

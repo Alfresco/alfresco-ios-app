@@ -27,6 +27,8 @@
 #import "SyncHelper.h"
 #import "SyncNodeInfo.h"
 
+#define kGoogleAnalyticsDefaultDispatchInterval 120
+
 @interface AnalyticsManager ()
 @property (nonatomic, assign, readwrite) BOOL flurryAnalyticsHasStarted;
 @property (nonatomic, assign, readwrite) BOOL googleAnalyticsHasStarted;
@@ -83,21 +85,54 @@
 
 - (void)checkAnalyticsFeature
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingsSendDiagnosticsEnable];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[AnalyticsManager sharedManager] startAnalytics];
+    void (^checkAnalyticsBlock)(BOOL, NSUInteger) = ^(BOOL forceAnalyticsDisable, NSUInteger checkedAccountsCount){
+        if (forceAnalyticsDisable)
+        {
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSettingsSendDiagnosticsEnable];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [self trackEventWithCategory:kAnalyticsEventCategorySettings
+                                  action:kAnalyticsEventActionAnalytics
+                                   label:kAnalyticsEventLabelDisableConfig
+                                   value:@1];
+            
+            [[GAI sharedInstance] dispatchWithCompletionHandler:^(GAIDispatchResult result)
+             {
+                 [self stopAnalytics];
+             }];
+        }
+        else
+        {
+            if (checkedAccountsCount == [AccountManager sharedManager].allAccounts.count)
+            {
+                BOOL oldDiagnosticsEnableState = [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
+                
+                if (oldDiagnosticsEnableState == NO)
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingsSendDiagnosticsEnable];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self startAnalytics];
+                    [self trackAnalyticsEnableEvent];
+                }
+            }
+        }
+    };
+    
+    if ([AccountManager sharedManager].allAccounts.count == 0)
+        checkAnalyticsBlock(NO, 0);
     
     [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
         AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
-        
+    
         [configService retrieveFeatureConfigWithType:kAlfrescoConfigFeatureTypeAnalytics completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
             if (config && !config.isEnable)
             {
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSettingsSendDiagnosticsEnable];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [[AnalyticsManager sharedManager] stopAnalytics];
-                
+                checkAnalyticsBlock(YES, idx+1);
                 *stop = YES;
+            }
+            else
+            {
+                checkAnalyticsBlock(NO, idx+1);
             }
         }];
     }];
@@ -201,6 +236,17 @@
         NSDictionary *dictionary = [builder build];
         [tracker send:dictionary];
     }
+}
+
+- (void)trackAnalyticsEnableEvent
+{
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                      action:kAnalyticsEventActionAnalytics
+                                                       label:kAnalyticsEventLabelEnable
+                                                       value:@1];
+    
+    // Reenable periodic dispatch.
+    [[GAI sharedInstance] setDispatchInterval:kGoogleAnalyticsDefaultDispatchInterval];
 }
 
 #pragma mark - Private Methods For Analytics
@@ -307,9 +353,6 @@
             if (self.googleAnalyticsHasStarted == NO)
             {
                 [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
-#if DEBUG
-                [[GAI sharedInstance] setDispatchInterval:1];
-#endif
                 self.googleAnalyticsHasStarted = YES;
             }
             
@@ -371,8 +414,29 @@
     {
         BOOL shouldSendDiagnostics = [notification.userInfo[kSettingChangedToKey] boolValue];
         
-        startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
-        startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
+        if (shouldSendDiagnostics)
+        {
+            startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
+            startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
+            
+            // Send analytics enable event after starting analytics.
+            [self trackAnalyticsEnableEvent];
+        }
+        else
+        {
+            // Send analytics disable event before stoping analytics.
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                              action:kAnalyticsEventActionAnalytics
+                                                               label:kAnalyticsEventLabelDisable
+                                                               value:@1];
+            
+            // Calling this method with a non-nil completionHandler disables periodic dispatch. Periodic dispatch can be reenabled by setting the dispatchInterval to a positive number.
+            [[GAI sharedInstance] dispatchWithCompletionHandler:^(GAIDispatchResult result)
+             {
+                 startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
+                 startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
+             }];
+        }
     }
 }
 
