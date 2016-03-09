@@ -112,7 +112,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     {
         [[AppConfigurationManager sharedManager] saveVisibleMenuItems:self.visibleItems hiddenMenuItems:self.hiddenItems forAccount:self.account];
         
-        // Only need to post a notifictaion informing the app if the current account order has been modified
+        // Only need to post a notification informing the app if the current account order has been modified
         if ([AccountManager sharedManager].selectedAccount == self.account)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigShouldUpdateMainMenuNotification object:self.mainMenuBuilder];
