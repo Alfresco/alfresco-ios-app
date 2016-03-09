@@ -96,10 +96,9 @@
                                    label:kAnalyticsEventLabelDisableConfig
                                    value:@1];
             
-            [[GAI sharedInstance] dispatchWithCompletionHandler:^(GAIDispatchResult result)
-             {
-                 [self stopAnalytics];
-             }];
+            [[GAI sharedInstance] dispatchWithCompletionHandler:^(GAIDispatchResult result){
+                [self stopAnalytics];
+            }];
         }
         else
         {
@@ -119,7 +118,9 @@
     };
     
     if ([AccountManager sharedManager].allAccounts.count == 0)
+    {
         checkAnalyticsBlock(NO, 0);
+    }
     
     [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
         AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
@@ -431,11 +432,10 @@
                                                                value:@1];
             
             // Calling this method with a non-nil completionHandler disables periodic dispatch. Periodic dispatch can be reenabled by setting the dispatchInterval to a positive number.
-            [[GAI sharedInstance] dispatchWithCompletionHandler:^(GAIDispatchResult result)
-             {
-                 startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
-                 startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
-             }];
+            [[GAI sharedInstance] dispatchWithCompletionHandler:^(GAIDispatchResult result){
+                startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeFlurry, self.flurryAnalyticsAreActive);
+                startOrStopAnalytics(shouldSendDiagnostics, AnalyticsTypeGoogleAnalytics, self.googleAnalyticsAreActive);
+            }];
         }
     }
 }
