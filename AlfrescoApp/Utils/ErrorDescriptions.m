@@ -43,6 +43,9 @@ static NSString * const kErrorDescriptionLoginFailed = @"error.login.failed";
     {
         errorDescription = error.localizedDescription;
     }
+    
+    [ErrorDescriptions logError:error];
+    
     return errorDescription;
 }
 
@@ -69,6 +72,29 @@ static NSString * const kErrorDescriptionLoginFailed = @"error.login.failed";
             break;
     }
     return errorDescription;
+}
+
++ (void)logError:(NSError *)error
+{
+    AlfrescoLogError(error.localizedDescription);
+    if (error.userInfo[kAlfrescoErrorKeyHTTPResponseCode])
+    {
+        @try {
+            AlfrescoLogError(@"Alfresco Error: HTTP Response Code = %@", (NSNumber *)error.userInfo[kAlfrescoErrorKeyHTTPResponseCode]);
+        }
+        @catch (NSException *exception) {
+            // No-op
+        }
+    }
+    if (error.userInfo[kAlfrescoErrorKeyHTTPResponseBody])
+    {
+        @try {
+            AlfrescoLogError(@"Alfresco Error: HTTP Response Body = %@", [[NSString alloc] initWithData:(NSData *)error.userInfo[kAlfrescoErrorKeyHTTPResponseBody] encoding:NSUTF8StringEncoding]);
+        }
+        @catch (NSException *exception) {
+            // No-op
+        }
+    }
 }
 
 @end
