@@ -65,6 +65,8 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     if (self.autoselectDefaultMenuOption)
     {
         // select sites
