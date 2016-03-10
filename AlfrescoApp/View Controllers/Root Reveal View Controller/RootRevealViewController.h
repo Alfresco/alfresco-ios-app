@@ -37,6 +37,7 @@
 @property (nonatomic, strong) UIViewController *masterViewController;
 @property (nonatomic, strong) UIViewController *detailViewController;
 @property (nonatomic, weak) id<RootRevealViewControllerDelegate> delegate;
+@property (nonatomic, strong, readonly) UIViewController *overlayedViewController;
 
 - (instancetype)initWithMasterViewController:(UIViewController *)masterViewController detailViewController:(UIViewController *)detailViewController;
 

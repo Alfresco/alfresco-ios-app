@@ -39,6 +39,22 @@
     return isMigrationNeededResult;
 }
 
+- (BOOL)shouldShowSyncInfoPanel
+{
+    BOOL isSyncEnabled = NO;
+    for(UserAccount *account in [[AccountManager sharedManager] allAccounts])
+    {
+        if(account.isSyncOn)
+        {
+            isSyncEnabled = YES;
+        }
+    }
+    
+    BOOL shouldShowSyncInfoPanelResult = ((![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]) && isSyncEnabled);
+    
+    return shouldShowSyncInfoPanelResult;
+}
+
 - (void)initiateMigrationProcess
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

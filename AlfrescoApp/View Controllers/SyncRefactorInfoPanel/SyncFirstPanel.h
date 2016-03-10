@@ -16,12 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncManager.h"
+#import <UIKit/UIKit.h>
 
-@interface RealmSyncManager (CoreDataMigration)
-
-- (void)initiateMigrationProcess;
-- (BOOL)isCoreDataMigrationNeeded;
-- (BOOL)shouldShowSyncInfoPanel;
+@interface SyncFirstPanel : UIView
 
 @end

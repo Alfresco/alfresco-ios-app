@@ -59,6 +59,7 @@ NSString * const kSearchTypeFolders = @"ALFSearchTypeFolders";
 NSString * const kSearchTypeSites = @"ALFSearchTypeSites";
 NSString * const kSearchTypeUsers = @"ALFSearchTypeUsers";
 NSString * const kHasCoreDataMigrationOccurred = @"hasMigrationOccurred";
+NSString * const kWasSyncInfoPanelShown = @"wasSyncInfoPanelShown";
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";

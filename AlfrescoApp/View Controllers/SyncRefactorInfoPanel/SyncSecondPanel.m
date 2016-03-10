@@ -16,12 +16,24 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncManager.h"
+#import "SyncSecondPanel.h"
 
-@interface RealmSyncManager (CoreDataMigration)
+@interface SyncSecondPanel()
 
-- (void)initiateMigrationProcess;
-- (BOOL)isCoreDataMigrationNeeded;
-- (BOOL)shouldShowSyncInfoPanel;
+@property (weak, nonatomic) IBOutlet UILabel *syncTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *syncFirstLabel;
+@property (weak, nonatomic) IBOutlet UILabel *syncSecondLabel;
+
+@end
+
+@implementation SyncSecondPanel
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+}
+*/
 
 @end
