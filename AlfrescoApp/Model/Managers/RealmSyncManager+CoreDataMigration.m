@@ -41,7 +41,16 @@
 
 - (BOOL)shouldShowSyncInfoPanel
 {
-    BOOL shouldShowSyncInfoPanelResult = (![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]);
+    BOOL isSyncEnabled = NO;
+    for(UserAccount *account in [[AccountManager sharedManager] allAccounts])
+    {
+        if(account.isSyncOn)
+        {
+            isSyncEnabled = YES;
+        }
+    }
+    
+    BOOL shouldShowSyncInfoPanelResult = ((![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]) && isSyncEnabled);
     
     return shouldShowSyncInfoPanelResult;
 }

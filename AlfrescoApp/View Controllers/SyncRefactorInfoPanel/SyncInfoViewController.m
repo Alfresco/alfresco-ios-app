@@ -89,6 +89,8 @@
 
 - (void)notifyToDismissViewController
 {
+    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kWasSyncInfoPanelShown];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     if(self.parentViewController)
     {
         RootRevealViewController *rootRevealController = (RootRevealViewController *)[UniversalDevice revealViewController];
