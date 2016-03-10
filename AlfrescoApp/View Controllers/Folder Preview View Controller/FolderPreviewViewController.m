@@ -196,6 +196,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     NSMutableArray *items = [NSMutableArray array];
     
+    [items addObject:[ActionCollectionItem syncItem]];
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
     
@@ -332,6 +333,14 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUploadDocument])
     {
         [self.actionHandler pressedUploadActionItem:actionItem presentFromView:cell inView:view];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierSync])
+    {
+        [self.actionHandler pressedSyncActionItem:actionItem];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUnsync])
+    {
+        [self.actionHandler pressedUnsyncActionItem:actionItem];
     }
     
     [self shouldFocusComments:shouldFocusComments];
