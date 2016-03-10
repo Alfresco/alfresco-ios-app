@@ -675,6 +675,8 @@
 "action.review" = "Review";
 "action.edit" = "Edit";
 "action.new.version" = "Update";
+"action.sync" = "Sync";
+"action.unsync" = "Unsync";
 // Alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename file to:";

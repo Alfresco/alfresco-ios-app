@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -38,6 +38,8 @@ extern NSString * const kActionCollectionIdentifierCreateSubfolder;
 extern NSString * const kActionCollectionIdentifierUploadDocument;
 extern NSString * const kActionCollectionIdentifierSendForReview;
 extern NSString * const kActionCollectionIdentifierUploadNewVersion;
+extern NSString * const kActionCollectionIdentifierSync;
+extern NSString * const kActionCollectionIdentifierUnsync;
 
 @interface ActionCollectionItem : NSObject
 
@@ -62,6 +64,8 @@ extern NSString * const kActionCollectionIdentifierUploadNewVersion;
 + (ActionCollectionItem *)uploadItem;
 + (ActionCollectionItem *)sendForReview;
 + (ActionCollectionItem *)uploadNewVersion;
++ (ActionCollectionItem *)syncItem;
++ (ActionCollectionItem *)unsyncItem;
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier;
 
 @end

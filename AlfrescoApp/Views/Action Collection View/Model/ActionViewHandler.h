@@ -46,5 +46,7 @@
 - (void)pressedUploadActionItem:(ActionCollectionItem *)actionItem presentFromView:(UIView *)view inView:(UIView *)inView;
 - (void)pressedSendForReviewActionItem:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document;
 - (void)pressedUploadNewVersion:(ActionCollectionItem *)actionItem node:(AlfrescoDocument *)document;
+- (void)pressedSyncActionItem:(ActionCollectionItem *)actionItem;
+- (void)pressedUnsyncActionItem:(ActionCollectionItem *)actionItem;
 
 @end

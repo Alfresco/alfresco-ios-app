@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -40,6 +40,8 @@ NSString * const kActionCollectionIdentifierCreateSubfolder = @"ActionCollection
 NSString * const kActionCollectionIdentifierUploadDocument = @"ActionCollectionIdentifierUploadDocument";
 NSString * const kActionCollectionIdentifierSendForReview = @"ActionCollectionIdentifierSendForReview";
 NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectionIdentifierUploadNewVersion";
+NSString * const kActionCollectionIdentifierSync = @"ActionCollectionIdentifierSync";
+NSString * const kActionCollectionIdentifierUnsync = @"ActionCollectionIdentifierUnsync";
 
 @interface ActionCollectionItem ()
 
@@ -135,6 +137,16 @@ NSString * const kActionCollectionIdentifierUploadNewVersion = @"ActionCollectio
 + (ActionCollectionItem *)uploadNewVersion
 {
     return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-upload.png"] title:NSLocalizedString(@"action.new.version", @"Upload New Version") identifier:kActionCollectionIdentifierUploadNewVersion];
+}
+
++ (ActionCollectionItem *)syncItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-sync.png"] title:NSLocalizedString(@"action.sync", @"Sync") identifier:kActionCollectionIdentifierSync];
+}
+
++ (ActionCollectionItem *)unsyncItem
+{
+    return [[self alloc] initWithImage:[UIImage imageNamed:@"actionsheet-unsync.png"] title:NSLocalizedString(@"action.unsync", @"Unsync") identifier:kActionCollectionIdentifierUnsync];
 }
 
 - (instancetype)initWithImage:(UIImage *)itemImage title:(NSString *)itemTitle identifier:(NSString *)itemIdentifier

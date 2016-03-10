@@ -658,6 +658,18 @@
     [self.controller presentViewController:newVersionNavigationController animated:YES completion:nil];
 }
 
+- (void)pressedSyncActionItem:(ActionCollectionItem *)actionItem
+{
+    //TODO:
+    NSLog(@"==== Sync action button pressed");
+}
+
+- (void)pressedUnsyncActionItem:(ActionCollectionItem *)actionItem
+{
+    //TODO:
+    NSLog(@"==== Unsync action button pressed");
+}
+
 #pragma mark - DocumentPreviewManager Notification Callbacks
 
 - (void)downloadComplete:(NSNotification *)notification
