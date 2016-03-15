@@ -142,6 +142,7 @@
                                                                                    passwordCell.frame.size.width - xPosition,
                                                                                    passwordCell.frame.size.height - (topBottomPadding * 2))];
     passwordTextField.placeholder = NSLocalizedString(@"login.password.textfield.placeholder", @"Password Placeholder Text");
+    passwordTextField.text = self.password;
     passwordTextField.textAlignment = NSTextAlignmentRight;
     passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     passwordTextField.returnKeyType = UIReturnKeyDone;
@@ -173,7 +174,7 @@
                                                                        style:UIBarButtonItemStylePlain
                                                                       target:self
                                                                       action:@selector(cancel:)];
-    loginBarButton.enabled = NO;
+    loginBarButton.enabled = (self.usernameTextField.text.length > 0 && self.passwordTextField.text.length > 0);
     [self.navigationItem setRightBarButtonItem:loginBarButton];
     [self.navigationItem setLeftBarButtonItem:cancelBarButton];
     self.loginButton = loginBarButton;
