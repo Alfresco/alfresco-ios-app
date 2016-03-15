@@ -48,6 +48,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *isSyncNodeImageView;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconWidthConstraint;
