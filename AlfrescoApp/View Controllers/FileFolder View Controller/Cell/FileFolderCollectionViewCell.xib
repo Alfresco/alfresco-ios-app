@@ -101,9 +101,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eVT-ia-KrZ">
                                 <rect key="frame" x="58" y="36" width="0.0" height="14"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wy0-2P-Qsp">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="status-synced.png" highlightedImage="status-synced-highlighted.png" translatesAutoresizingMaskIntoConstraints="NO" id="wy0-2P-Qsp">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="14"/>
-                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTx-r6-rwq" userLabel="syncIcon">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="14"/>
@@ -217,4 +216,8 @@
             <point key="canvasLocation" x="371" y="621.5"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="status-synced-highlighted.png" width="14" height="14"/>
+        <image name="status-synced.png" width="14" height="14"/>
+    </resources>
 </document>

@@ -26,7 +26,7 @@ static CGFloat const kFavoriteIconWidth = 14.0f;
 static CGFloat const kFavoriteIconRightSpace = 4.0f;
 static CGFloat const kSyncIconWidth = 14.0f;
 static CGFloat const kUpdateStatusLeadingSpace = 8.0f;
-static CGFloat const kUpdateStatusContainerWidth = 40.0f;
+static CGFloat const kUpdateStatusContainerWidth = 50.0f;
 static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
