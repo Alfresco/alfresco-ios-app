@@ -32,6 +32,7 @@
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "ProfileSelectionViewController.h"
 #import "AppConfigurationManager.h"
+#import "RealmSyncManager.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
@@ -281,13 +282,16 @@ static NSInteger const kTagProfileCell = 3;
                                                                    value:@1];
                 
                 AccountManager *accountManager = [AccountManager sharedManager];
+                [[RealmSyncManager sharedManager] createRealmForAccount:self.account];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
+                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:self.account];
                     [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
                 }
                 else if (accountManager.selectedAccount == self.account)
                 {
+                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:self.account];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 }
                 

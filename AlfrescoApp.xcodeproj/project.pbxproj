@@ -235,6 +235,10 @@
 		2BB1BA121BDFDDB0005AEE12 /* NewAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB1BA101BDFDDB0005AEE12 /* NewAccountViewController.m */; };
 		2BB1BA131BDFDDB0005AEE12 /* NewAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BB1BA111BDFDDB0005AEE12 /* NewAccountViewController.xib */; };
 		2BB2657D1B78938F00EE7EB0 /* AlfrescoURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB2657C1B78938F00EE7EB0 /* AlfrescoURLHandler.m */; };
+		2BC0D92F1C98480400CAFF6D /* status-synced-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92B1C98480400CAFF6D /* status-synced-highlighted.png */; };
+		2BC0D9301C98480400CAFF6D /* status-synced-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92C1C98480400CAFF6D /* status-synced-highlighted@2x.png */; };
+		2BC0D9311C98480400CAFF6D /* status-synced.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92D1C98480400CAFF6D /* status-synced.png */; };
+		2BC0D9321C98480400CAFF6D /* status-synced@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92E1C98480400CAFF6D /* status-synced@2x.png */; };
 		2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */; };
 		2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */; };
 		2BC9AE6E1BDA7738003523C8 /* AccountInfoDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9AE6C1BDA7738003523C8 /* AccountInfoDetailsViewController.m */; };
@@ -1165,6 +1169,10 @@
 		2BB1BA111BDFDDB0005AEE12 /* NewAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewAccountViewController.xib; path = "New Account/NewAccountViewController.xib"; sourceTree = "<group>"; };
 		2BB2657B1B78938F00EE7EB0 /* AlfrescoURLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoURLHandler.h; sourceTree = "<group>"; };
 		2BB2657C1B78938F00EE7EB0 /* AlfrescoURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoURLHandler.m; sourceTree = "<group>"; };
+		2BC0D92B1C98480400CAFF6D /* status-synced-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-synced-highlighted.png"; sourceTree = "<group>"; };
+		2BC0D92C1C98480400CAFF6D /* status-synced-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-synced-highlighted@2x.png"; sourceTree = "<group>"; };
+		2BC0D92D1C98480400CAFF6D /* status-synced.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-synced.png"; sourceTree = "<group>"; };
+		2BC0D92E1C98480400CAFF6D /* status-synced@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status-synced@2x.png"; sourceTree = "<group>"; };
 		2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info.png"; sourceTree = "<group>"; };
 		2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-info@2x.png"; sourceTree = "<group>"; };
 		2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewProtocols.h; sourceTree = "<group>"; };
@@ -1932,6 +1940,10 @@
 		0833245317F98CC700EE6AA8 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
+				2BC0D92B1C98480400CAFF6D /* status-synced-highlighted.png */,
+				2BC0D92C1C98480400CAFF6D /* status-synced-highlighted@2x.png */,
+				2BC0D92D1C98480400CAFF6D /* status-synced.png */,
+				2BC0D92E1C98480400CAFF6D /* status-synced@2x.png */,
 				2739574D1900B12B00169BEB /* sync-button-stop-all.png */,
 				2739574E1900B12B00169BEB /* sync-button-stop-all@2x.png */,
 				0837F294192F69A0006BE40C /* sync-button-error.png */,
@@ -4453,6 +4465,7 @@
 				733638BB1913BA1600472A57 /* system_notice_tick.png in Resources */,
 				73FF558218ACE2370009CA56 /* large_notes@2x.png in Resources */,
 				73881FD9188FF6B00052C75F /* actionsheet-like.png in Resources */,
+				2BC0D9301C98480400CAFF6D /* status-synced-highlighted@2x.png in Resources */,
 				2799610A1BB4630900421C33 /* site-action-members@2x.png in Resources */,
 				73BE420718F4021300DB8912 /* task_priority_low@2x.png in Resources */,
 				7384BDF717F3310700C6A54F /* SettingToggleCell.xib in Resources */,
@@ -4460,6 +4473,7 @@
 				2B9C608F1C9714F400898161 /* ic_sync_focus@2x.png in Resources */,
 				272962751B557BF90041C32D /* mainmenu-gallery.png in Resources */,
 				27DFEBFE1937644D006D85BC /* actionsheet-unlike@2x~ipad.png in Resources */,
+				2BC0D9311C98480400CAFF6D /* status-synced.png in Resources */,
 				27E84E7B18AD53510024B658 /* mainmenu-activities@2x.png in Resources */,
 				732DBF9718E1BC6B00F7A0BF /* small_notes@2x.png in Resources */,
 				735DDC231B30268D0091D7B4 /* mainmenu-alfresco.png in Resources */,
@@ -4489,6 +4503,7 @@
 				73D6492518AD855D00333266 /* actionsheet-folder@2x.png in Resources */,
 				271DC767189C2D250059D1B2 /* status-favourite@2x.png in Resources */,
 				272CC7CF194690AD0009FADA /* segment-icon-map@2x.png in Resources */,
+				2BC0D9321C98480400CAFF6D /* status-synced@2x.png in Resources */,
 				73B579971B15FBF1009D30B6 /* configuration.json in Resources */,
 				73B0788E189A559400D02C43 /* bubble_blue@2x.png in Resources */,
 				271DC76E189C2D250059D1B2 /* status-sync-failed.png in Resources */,
@@ -4567,6 +4582,7 @@
 				73B95AB817A68B7E0099FB84 /* site-action-leave@2x.png in Resources */,
 				73881FD1188FF6B00052C75F /* actionsheet-download@2x.png in Resources */,
 				738BE94A1A960787006264E5 /* Launch Screen.xib in Resources */,
+				2BC0D92F1C98480400CAFF6D /* status-synced-highlighted.png in Resources */,
 				2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */,
 				732DBF9818E1BC6B00F7A0BF /* small_pdf.png in Resources */,
 				731901A61844C9F8002C82C1 /* alfrescoColourLogo.png in Resources */,
