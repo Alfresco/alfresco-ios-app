@@ -44,7 +44,8 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
     FileFolderCollectionViewControllerTypeDocumentPath,
     FileFolderCollectionViewControllerTypeSearchString,
     FileFolderCollectionViewControllerTypeCustomFolderType,
-    FileFolderCollectionViewControllerTypeCMISSearch
+    FileFolderCollectionViewControllerTypeCMISSearch,
+    FileFolderCollectionViewControllerTypeFavorites
 };
 
 static CGFloat const kCellHeight = 64.0f;
@@ -219,10 +220,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             case CustomFolderServiceFolderTypeMyFiles:
             case CustomFolderServiceFolderTypeSharedFiles:
                 break;
-            case CustomfolderServiceFolderTypeFavorites:
-                self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
-                break;
-                
             default:
                 AlfrescoLogError(@"%@ / %@: Unknown folder type %@", NSStringFromClass(self.class), _cmd, @(folderType));
                 return nil;
@@ -230,6 +227,20 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         self.controllerType = FileFolderCollectionViewControllerTypeCustomFolderType;
         self.customFolderType = folderType;
+        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:displayName session:session];
+    }
+    
+    return self;
+}
+
+- (instancetype)initForFavoritesWithSession:(id<AlfrescoSession>)session
+{
+    self = [super initWithSession:session];
+    if (self)
+    {
+        self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
+        self.controllerType = FileFolderCollectionViewControllerTypeFavorites;
+        NSString *displayName = NSLocalizedString(@"favourites.title", @"Favorites Title");
         [self setupWithFolder:nil folderPermissions:nil folderDisplayName:displayName session:session];
     }
     
@@ -283,7 +294,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.title = self.folderDisplayName;
     self.nodePermissions = [[NSMutableDictionary alloc] init];
     
-    self.shouldIncludeSearchBar = !((self.controllerType == FileFolderCollectionViewControllerTypeCustomFolderType) && (self.customFolderType == CustomfolderServiceFolderTypeFavorites));
+    self.shouldIncludeSearchBar = (self.controllerType != FileFolderCollectionViewControllerTypeFavorites);
     if(self.shouldIncludeSearchBar)
     {
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -1124,27 +1135,31 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:completionBlock];
                         break;
                     }
-                    case CustomfolderServiceFolderTypeFavorites:
-                    {
-                        [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session completionBlock:^(NSArray *array, NSError *error) {
-                            if(array)
-                            {
-                                self.collectionViewData = [array mutableCopy];
-                                [self hideHUD];
-                                [self hidePullToRefreshView];
-                                [self reloadCollectionView];
-                                [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                            }
-                            else
-                            {
-                                NSLog(@"==== topLevelFavoriteNodes error %@", error);
-                            }
-                        }];
-                    }
                         
                     default:
                         break;
                 }
+                break;
+            }
+            case FileFolderCollectionViewControllerTypeFavorites:
+            {
+                [self showHUD];
+                [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session completionBlock:^(NSArray *array, NSError *error) {
+                    if(array)
+                    {
+                        self.collectionViewData = [array mutableCopy];
+                        [self hideHUD];
+                        [self hidePullToRefreshView];
+                        [self reloadCollectionView];
+                        [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                    }
+                    else
+                    {
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.favorites.failed", @"Favorites failed"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                }];
                 break;
             }
             case FileFolderCollectionViewControllerTypeCMISSearch:

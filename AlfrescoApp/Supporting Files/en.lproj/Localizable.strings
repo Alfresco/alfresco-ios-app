@@ -108,6 +108,7 @@
 "error.filefolder.content.failedtoretrieve" = "The file / folder couldn’t be retrieved.\n\n%@.";
 "error.filefolder.unable.to.delete" = "The file / folder couldn’t be deleted.\n\n%@";
 "error.sites.documentlibrary.failed" = "Couldn’t to access Document Library.\n\n%@.";
+"error.filefolder.favorites.failed" = "Couldn't access Favorites.\n\n%@";
 "error.sites.retrieval.failed" = "Couldn’t retrieve sites.\n\n%@.";
 "error.sites.folder.failed" = "Couldn’t retrieve sites folder.\n\n%@.";
 "error.sites.search.failed" = "Couldn’t search across sites.\n\n%@.";

@@ -352,8 +352,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
     {
         // Favorites
-        NSString *displayName = NSLocalizedString(@"favourites.title", @"Favorites Title");
-        FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomfolderServiceFolderTypeFavorites folderDisplayName:displayName session:self.session];
+        FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initForFavoritesWithSession:self.session];
         associatedObject = favoritesViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
