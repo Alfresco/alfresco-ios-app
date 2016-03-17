@@ -113,6 +113,13 @@
 - (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
+ Use when needing to display the list of top level favorite nodes
+ 
+ @param session - an active session
+ */
+- (instancetype)initForFavoritesWithSession:(id<AlfrescoSession>)session;
+
+/**
  Use the search statement initialiser to initiate a CMIS search
 
  @param statement - the CMIS statement

@@ -148,23 +148,6 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 {
     MainMenuTableViewCell *cell = (MainMenuTableViewCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    MainMenuSection *sectionItem = self.tableViewData[indexPath.section];
-    MainMenuItem *item = sectionItem.visibleSectionItems[indexPath.row];
-    
-    // If the current item is the favourites item, check to see if we should display the sync text/image or favourites
-    if ([item.itemIdentifier isEqualToString:kFavouritesViewIdentifier])
-    {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-        NSString *textTitle = NSLocalizedString(isSyncOn ? @"sync.title" : @"favourites.title", @"Key") ;
-        NSString *imageName = isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png";
-        UIImage *image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        
-        item.itemImage = image;
-        cell.itemImageView.image = image;
-        item.itemTitle = textTitle;
-        cell.itemTextLabel.text = textTitle.uppercaseString;
-    }
-    
     return cell;
 }
 
