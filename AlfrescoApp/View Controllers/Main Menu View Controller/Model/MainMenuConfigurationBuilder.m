@@ -351,6 +351,13 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
     {
+        // Favorites
+        NSString *displayName = NSLocalizedString(@"favourites.title", @"Favorites Title");
+        FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomfolderServiceFolderTypeFavorites folderDisplayName:displayName session:self.session];
+        associatedObject = favoritesViewController;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
+    {
         // Sync
         SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
         SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
@@ -411,6 +418,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeDocumentDetails])
     {
+        // Document
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
         
@@ -429,6 +437,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearchRepository])
     {
+        // Search repository
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
         if([parameterKeys containsObject:kAlfrescoConfigViewParameterKeywordsKey])
@@ -445,6 +454,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearch])
     {
+        // Search
         SearchViewController *controller = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeLandingPage session:self.session];
         associatedObject = controller;
     }
@@ -455,6 +465,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSite])
     {
+        // Sites
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         SitesViewController *sitesListViewController = nil;
         

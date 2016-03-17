@@ -38,7 +38,8 @@ typedef NS_ENUM(NSInteger, SearchViewControllerDataSourceType)
 typedef NS_ENUM(NSInteger, CustomFolderServiceFolderType)
 {
     CustomFolderServiceFolderTypeMyFiles,
-    CustomFolderServiceFolderTypeSharedFiles
+    CustomFolderServiceFolderTypeSharedFiles,
+    CustomfolderServiceFolderTypeFavorites
 };
 
 typedef NS_ENUM(NSInteger, SiteListTypeSelection)

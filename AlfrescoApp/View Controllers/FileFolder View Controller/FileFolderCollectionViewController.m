@@ -33,6 +33,7 @@
 #import "SearchCollectionSectionHeader.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
 #import "CustomFolderService.h"
+#import "FavouriteManager.h"
 
 typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
 {
@@ -218,6 +219,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             case CustomFolderServiceFolderTypeMyFiles:
             case CustomFolderServiceFolderTypeSharedFiles:
                 break;
+            case CustomfolderServiceFolderTypeFavorites:
+                self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
+                break;
                 
             default:
                 AlfrescoLogError(@"%@ / %@: Unknown folder type %@", NSStringFromClass(self.class), _cmd, @(folderType));
@@ -279,19 +283,23 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.title = self.folderDisplayName;
     self.nodePermissions = [[NSMutableDictionary alloc] init];
     
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchResultsUpdater = self;
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.searchBar.delegate = self;
-    self.searchController.searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    self.searchController.delegate = self;
-    self.definesPresentationContext = YES;
+    self.shouldIncludeSearchBar = !((self.controllerType == FileFolderCollectionViewControllerTypeCustomFolderType) && (self.customFolderType == CustomfolderServiceFolderTypeFavorites));
+    if(self.shouldIncludeSearchBar)
+    {
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+        self.searchController.searchResultsUpdater = self;
+        self.searchController.dimsBackgroundDuringPresentation = NO;
+        self.searchController.searchBar.delegate = self;
+        self.searchController.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+        self.searchController.delegate = self;
+        self.definesPresentationContext = YES;
+    }
 
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:YES];
+    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:self.shouldIncludeSearchBar];
     self.listLayout.dataSourceInfoDelegate = self;
-    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:YES];
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:self.shouldIncludeSearchBar];
     self.gridLayout.dataSourceInfoDelegate = self;
     
     self.multiSelectToolbar.multiSelectDelegate = self;
@@ -336,9 +344,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (!IS_IPAD)
     {
-        // hide search bar initially
-        self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, self.collectionView.bounds.size.height - self.collectionView.contentInset.bottom - self.collectionView.contentInset.top + 40.0);
-        self.collectionView.contentOffset = CGPointMake(0., 40.);
+        if(self.shouldIncludeSearchBar)
+        {
+            // hide search bar initially
+            self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, self.collectionView.bounds.size.height - self.collectionView.contentInset.bottom - self.collectionView.contentInset.top + 40.0);
+            self.collectionView.contentOffset = CGPointMake(0., 40.);
+        }
     }
     
     [self deselectAllItems];
@@ -1104,12 +1115,32 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 switch (self.customFolderType)
                 {
                     case CustomFolderServiceFolderTypeMyFiles:
+                    {
                         [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:completionBlock];
                         break;
-                    
+                    }
                     case CustomFolderServiceFolderTypeSharedFiles:
+                    {
                         [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:completionBlock];
                         break;
+                    }
+                    case CustomfolderServiceFolderTypeFavorites:
+                    {
+                        [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session completionBlock:^(NSArray *array, NSError *error) {
+                            if(array)
+                            {
+                                self.collectionViewData = [array mutableCopy];
+                                [self hideHUD];
+                                [self hidePullToRefreshView];
+                                [self reloadCollectionView];
+                                [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                            }
+                            else
+                            {
+                                NSLog(@"==== topLevelFavoriteNodes error %@", error);
+                            }
+                        }];
+                    }
                         
                     default:
                         break;
@@ -2230,12 +2261,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self setEditing:!self.editing animated:YES];
-    }];
-    editAction.enabled = (self.collectionViewData.count > 0);
-    
-    [self.actionsAlertController addAction:editAction];
+    if (self.folderPermissions.canEdit)
+    {
+        UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self setEditing:!self.editing animated:YES];
+        }];
+        editAction.enabled = (self.collectionViewData.count > 0);
+        
+        [self.actionsAlertController addAction:editAction];
+    }
     
     NSString *changeLayoutTitle;
     if(self.style == CollectionViewStyleList)
