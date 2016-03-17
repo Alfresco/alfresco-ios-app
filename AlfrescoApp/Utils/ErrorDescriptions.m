@@ -31,20 +31,23 @@ static NSString * const kErrorDescriptionLoginFailed = @"error.login.failed";
 {
     NSString *errorDescription = nil;
     
-    if (error.code < 0 || ![[ConnectivityManager sharedManager] hasInternetConnection])
+    if (error)
     {
-        errorDescription = NSLocalizedString(kErrorDescriptionNetworkNotAvailable, @"Network not available");
+        if (error.code < 0 || ![[ConnectivityManager sharedManager] hasInternetConnection])
+        {
+            errorDescription = NSLocalizedString(kErrorDescriptionNetworkNotAvailable, @"Network not available");
+        }
+        else if ([error.domain isEqualToString:kAlfrescoErrorDomainName])
+        {
+            errorDescription = [self descriptionForAlfrescoError:error];
+        }
+        else
+        {
+            errorDescription = error.localizedDescription;
+        }
+        
+        [ErrorDescriptions logError:error];
     }
-    else if ([error.domain isEqualToString:kAlfrescoErrorDomainName])
-    {
-        errorDescription = [self descriptionForAlfrescoError:error];
-    }
-    else
-    {
-        errorDescription = error.localizedDescription;
-    }
-    
-    [ErrorDescriptions logError:error];
     
     return errorDescription;
 }
@@ -53,30 +56,40 @@ static NSString * const kErrorDescriptionLoginFailed = @"error.login.failed";
 {
     NSString *errorDescription = nil;
     
-    switch (error.code)
+    if (error)
     {
-        case kAlfrescoErrorCodeHTTPResponse:
-            errorDescription = NSLocalizedString(kErrorDescriptionServerError, @"Error occurred on the server");
-            break;
-            
-        case kAlfrescoErrorCodeNoNetworkConnection:
-            errorDescription = NSLocalizedString(kErrorDescriptionHostUnreachable, @"Host unreachable");
-            break;
+        switch (error.code)
+        {
+            case kAlfrescoErrorCodeHTTPResponse:
+                errorDescription = NSLocalizedString(kErrorDescriptionServerError, @"Error occurred on the server");
+                break;
+                
+            case kAlfrescoErrorCodeNoNetworkConnection:
+                errorDescription = NSLocalizedString(kErrorDescriptionHostUnreachable, @"Host unreachable");
+                break;
 
-        case kAlfrescoErrorCodeUnauthorisedAccess:
-            errorDescription = NSLocalizedString(kErrorDescriptionLoginFailed, @"Login failed");
-            break;
+            case kAlfrescoErrorCodeUnauthorisedAccess:
+                errorDescription = NSLocalizedString(kErrorDescriptionLoginFailed, @"Login failed");
+                break;
 
-        default:
-            errorDescription = error.localizedDescription;
-            break;
+            default:
+                errorDescription = error.localizedDescription;
+                break;
+        }
     }
+    
     return errorDescription;
 }
 
 + (void)logError:(NSError *)error
 {
-    AlfrescoLogError(error.localizedDescription);
+    @try {
+        AlfrescoLogError(error.localizedDescription);
+    }
+    @catch (NSException *exception) {
+        // No-op
+    }
+
     if (error.userInfo[kAlfrescoErrorKeyHTTPResponseCode])
     {
         @try {
