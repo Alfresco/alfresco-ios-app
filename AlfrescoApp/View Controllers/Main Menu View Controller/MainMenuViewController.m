@@ -365,8 +365,8 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 - (void)updateMainMenuItemWithIdentifier:(NSString *)identifier withDescription:(NSString *)updateDescription
 {
-    MainMenuItem *foundItem = [self itemForIdentifier:identifier];
-    foundItem.itemDescription = updateDescription;
+    MainMenuItem *menuItem = [self itemForIdentifier:identifier];
+    menuItem.itemDescription = updateDescription;
     NSIndexPath *itemIndexPath = [self indexPathForItemWithIdentifier:identifier];
     if (itemIndexPath)
     {
@@ -425,7 +425,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MainMenuTableViewCell *cell = (MainMenuTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
@@ -437,15 +437,10 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 {
     if ([self.delegate respondsToSelector:@selector(mainMenuViewController:didDeselectItem:inSectionItem:)])
     {
-        // Only call this when a current selection is being deselected
-        NSIndexPath *currentlySelectedIndexPath = [self.tableView indexPathForSelectedRow];
-        if (currentlySelectedIndexPath)
-        {
-            MainMenuSection *deselectedSection = self.tableViewData[indexPath.section];
-            MainMenuItem *deselectedItem = deselectedSection.visibleSectionItems[indexPath.row];
-            
-            [self.delegate mainMenuViewController:self didDeselectItem:deselectedItem inSectionItem:deselectedSection];
-        }
+        MainMenuSection *deselectedSection = self.tableViewData[indexPath.section];
+        MainMenuItem *deselectedItem = deselectedSection.visibleSectionItems[indexPath.row];
+        
+        [self.delegate mainMenuViewController:self didDeselectItem:deselectedItem inSectionItem:deselectedSection];
     }
 }
 

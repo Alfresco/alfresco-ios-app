@@ -45,6 +45,21 @@
     }
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    if (enabled)
+    {
+        self.cellTitle.textColor = [UIColor blackColor];
+        self.toggle.enabled = YES;
+    }
+    else
+    {
+        self.cellTitle.textColor = [UIColor lightGrayColor];
+        self.toggle.enabled = NO;
+        self.toggle.on = NO;
+    }
+}
+
 - (IBAction)switchToggled:(id)sender
 {
     NSNumber *isOn = [NSNumber numberWithBool:[self.toggle isOn]];

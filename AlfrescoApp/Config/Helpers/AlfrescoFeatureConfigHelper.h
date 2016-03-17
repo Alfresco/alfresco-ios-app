@@ -26,5 +26,6 @@
 - (NSArray *)featureConfigWithScope:(AlfrescoConfigScope *)scope;
 
 - (AlfrescoFeatureConfig *)featureConfigForIdentifier:(NSString *)identifier scope:(AlfrescoConfigScope *)scope;
+- (AlfrescoFeatureConfig *)featureConfigForType:(NSString *)type scope:(AlfrescoConfigScope *)scope;
 
 @end

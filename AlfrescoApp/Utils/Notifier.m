@@ -22,32 +22,35 @@
 
 + (void)notifyWithAlfrescoError:(NSError *)alfrescoError
 {
-    NSInteger errorCode = [alfrescoError code];
-    
-    switch (errorCode)
+    if (alfrescoError)
     {
-        case kAlfrescoErrorCodeUnauthorisedAccess:
+        NSInteger errorCode = [alfrescoError code];
+        
+        switch (errorCode)
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
-        }
-        break;
-            
-        // RELATED TO BUG MOBSDK-560
-        case kAlfrescoErrorCodeDocumentFolderPermissions:
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
-        }
-        break;
-            
-        // RELATED TO BUG MOBSDK-561
-        case kAlfrescoErrorCodeUnknown:
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
-        }
-        break;
-            
-        default:
+            case kAlfrescoErrorCodeUnauthorisedAccess:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
+            }
             break;
+                
+            // RELATED TO BUG MOBSDK-560
+            case kAlfrescoErrorCodeDocumentFolderPermissions:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
+            }
+            break;
+                
+            // RELATED TO BUG MOBSDK-561
+            case kAlfrescoErrorCodeUnknown:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
+            }
+            break;
+                
+            default:
+                break;
+        }
     }
 }
 

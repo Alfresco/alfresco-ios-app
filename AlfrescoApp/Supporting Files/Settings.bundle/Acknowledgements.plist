@@ -24,6 +24,14 @@
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>
+			<string>Google Analytics</string>
+			<key>File</key>
+			<string>GoogleAnalytics</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
 			<string>IconsMind.com</string>
 			<key>File</key>
 			<string>IconsMind</string>

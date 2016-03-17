@@ -286,6 +286,15 @@ static NSString * const kParamTypePath = @"path";
 {
     if(!error)
     {
+        [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *userAccount, NSUInteger idx, BOOL *stop){
+            if ([userAccount.accountIdentifier isEqualToString:[account identifier]])
+            {
+                [[AccountManager sharedManager] selectAccount:userAccount selectNetwork:[account selectedNetworkIdentifier] alfrescoSession:session];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:nil];
+                *stop = YES;
+            }
+        }];
+        
         SwitchViewController *switchController = [self presentingViewController];
         if(switchController)
         {

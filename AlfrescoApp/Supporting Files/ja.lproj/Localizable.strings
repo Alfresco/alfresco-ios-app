@@ -1,10 +1,26 @@
+/*******************************************************************************
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
+
 /**
  * Localizable.strings
  * AlfrescoApp
  *
  * Japanese (ja)
- *
- * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 /**
@@ -190,11 +206,11 @@
 "accounts.empty" = "アカウントはありません";
 "accountdetails.title.newaccount" = "新しいアカウント";
 "accountdetails.title.editingaccount" = "アカウントの編集";
-"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.cloud" = "Alfresco in the Cloud";
 "accounttype.alfrescoServer" = "Alfresco サーバー";
 
 "accounttype.footer.alfrescoServer" = "Alfresco サーバーに接続します";
-"accounttype.footer.alfrescoCloud" = "Alfresco Cloud アカウントにアクセスします";
+"accounttype.footer.alfrescoCloud" = "Alfresco in the Cloud アカウントにアクセスします";
 
 "accountdetails.placeholder.required" = "必須";
 "accountdetails.placeholder.optional" = "任意";
@@ -324,7 +340,7 @@
  * About View Controller
  */
 "about.title" = "バージョン情報";
-"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco Cloud やオンプレミスの Alfresco サーバー (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って（HTTP または HTTPS 経由で） 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
+"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco in the Cloud やオンプレミスの Alfresco サーバー (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って（HTTP または HTTPS 経由で） 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
 "about.version.number" = "バージョン: %@ (%@)";
 "about.build.date.time" = "ビルド日時: %s %s";
 
@@ -648,7 +664,7 @@
 "settings.reset.description" = "アカウントを消去すると、そのアプリからすべてのアカウントが削除されます。アカウント、キャッシュ、ダウンロード済みファイルを消去すると、アプリがリセットされ、新しくインストールできる状態になります。";
 "settings.full.text.search" = "全文検索";
 "settings.full.text.search.description" = "ファイルだけでなく、そのコンテンツも一緒に検索する場合は、全コンテンツ検索のスイッチをオンにします。";
-
+"settings.feedback.title" = "フィードバックの送信";
 
 /**
  * Onboarding View Controller

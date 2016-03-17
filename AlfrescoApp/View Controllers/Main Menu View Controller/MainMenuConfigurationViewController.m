@@ -63,6 +63,17 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.autoselectDefaultMenuOption)
+    {
+        // select sites
+        [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
+    }
+}
+
 - (void)sessionUpdated:(NSNotification *)notification
 {
     id<AlfrescoSession> session = (id<AlfrescoSession>)notification.object;
@@ -109,7 +120,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     if ([selectedAccount.accountIdentifier isEqualToString:removedAccount.accountIdentifier])
     {
         self.session = nil;
-        [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withDescription:@""];
+        [self reloadGroupType:MainMenuGroupTypeHeader completionBlock:nil];
     }
 }
 
@@ -131,7 +142,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
                                                        value:@1];
     
     [self reloadGroupType:MainMenuGroupTypeContent completionBlock:^{
-        if(self.autoselectDefaultMenuOption)
+        if (self.autoselectDefaultMenuOption)
         {
             // select sites
             [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
