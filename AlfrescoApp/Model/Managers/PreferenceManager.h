@@ -27,6 +27,7 @@
 - (BOOL)shouldSendDiagnostics;
 - (BOOL)shouldCarryOutFullSearch;
 - (BOOL)shouldProtectFiles;
+- (BOOL)isSendDiagnosticsEnable;
 
 // Accessors and Modifiers
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier;

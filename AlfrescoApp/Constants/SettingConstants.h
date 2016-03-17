@@ -23,7 +23,8 @@ extern NSString * const kSettingChangedToKey;
 
 // Plist keys
 extern NSString * const kSettingsLocalizedTitleKey;
-extern NSString * const kSettingsPaidAccountsOnly;
+extern NSString * const kSettingsRestrictionHasPaidAccount;
+extern NSString * const kSettingsRestrictionCanSendEmail;
 extern NSString * const kSettingsTableViewData;
 extern NSString * const kSettingsGroupHeaderLocalizedKey;
 extern NSString * const kSettingsGroupFooterLocalizedKey;
@@ -53,3 +54,8 @@ extern NSString * const kSettingsFileProtectionIdentifier;
 extern NSString * const kSettingsResetAccountsIdentifier;
 extern NSString * const kSettingsResetEntireAppIdentifier;
 extern NSString * const kSettingsFullTextSearchIdentifier;
+extern NSString * const kSettingsSendFeedbackIdentifier;
+
+extern NSString * const kSettingsSendDiagnosticsEnable;
+extern NSString * const kSettingsSendFeedbackAlfrescoRecipient;
+

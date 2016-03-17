@@ -183,7 +183,14 @@
         {
             // show error
             [self hideHUD];
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.documentlibrary.failed", @"Doc Library Retrieval"), [ErrorDescriptions descriptionForError:error]]);
+            
+            NSString *errorString = [ErrorDescriptions descriptionForError:error];
+            if (!errorString)
+            {
+                errorString = NSLocalizedString(@"error.access.permissions.message", @"Check you have permission...");
+            }
+            
+            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.documentlibrary.failed", @"Doc Library Retrieval"), errorString]);
             [Notifier notifyWithAlfrescoError:error];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }

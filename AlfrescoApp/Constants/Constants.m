@@ -134,7 +134,7 @@ NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressV
 NSString * const kFailedToCreateRealmDatabase = @"FailedToCreateRealmDatabase";
 NSString * const kRealmSyncErrorKey = @"RealmSyncErrorKey";
 
-// Download Notifictations
+// Download Notifications
 NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"DocumentPreviewManagerWillStartDownloadNotification";
 NSString * const kDocumentPreviewManagerProgressNotification = @"DocumentPreviewManagerProgressNotification";
 NSString * const kDocumentPreviewManagerDocumentDownloadCompletedNotification = @"DocumentPreviewManagerDocumentDownloadCompletedNotification";
@@ -263,6 +263,8 @@ NSString * const kAlfrescoMainMenuItemSitesIdentifier = @"org.alfresco.com.mobil
 NSString * const kAlfrescoMainMenuItemSyncIdentifier = @"org.alfresco.com.mobile.main.menu.sync.identifier";
 NSString * const kAlfrescoMainMenuItemSettingsIdentifier = @"org.alfresco.com.mobile.main.menu.settings.identifier";
 NSString * const kAlfrescoMainMenuItemHelpIdentifier = @"org.alfresco.com.mobile.main.menu.help.identifier";
+// Features
+NSString * const kAlfrescoConfigFeatureTypeAnalytics = @"org.alfresco.client.feature.analytics";
 // View Types
 NSString * const kAlfrescoConfigViewTypeActivities = @"org.alfresco.client.view.activities";
 NSString * const kAlfrescoConfigViewTypeRepository = @"org.alfresco.client.view.repository";
@@ -323,13 +325,13 @@ NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll = @"all";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone = @"none";
 
 // App Configuration
-//// Notifictaions
+//// Notifications
 NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification = @"AppConfigurationAccountsConfigurationUpdatedNotification";
 //// Keys
 NSString * const kAppConfigurationCanAddAccountsKey = @"AppConfigurationCanAddAccounts";
 NSString * const kAppConfigurationCanEditAccountsKey = @"AppConfigurationCanEditAccounts";
 NSString * const kAppConfigurationCanRemoveAccountsKey = @"AppConfigurationCanRemoveAccounts";
-///// Main Menu
+//// Main Menu
 NSString * const kAppConfigurationUserCanEditMainMenuKey = @"AppConfigurationUserCanEditMainMenuKey";
 
 // Person Profile

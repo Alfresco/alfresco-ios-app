@@ -122,6 +122,22 @@
     return nil;
 }
 
+- (AlfrescoRequest *)retrieveFeatureConfigWithType:(NSString *)type
+                                   completionBlock:(AlfrescoFeatureConfigCompletionBlock)completionBlock
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+
+- (AlfrescoRequest *)retrieveFeatureConfigWithType:(NSString *)type
+                                             scope:(AlfrescoConfigScope *)scope
+                                   completionBlock:(AlfrescoFeatureConfigCompletionBlock)completionBlock
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 - (AlfrescoRequest *)retrieveViewConfigWithIdentifier:(NSString *)identifier
                                       completionBlock:(AlfrescoViewConfigCompletionBlock)completionBlock
 {

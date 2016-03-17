@@ -411,6 +411,13 @@
             {
                 displayWarningMessageWithTitle(NSLocalizedString(@"document.open-in.noapps.message", @"No Apps Message"), NSLocalizedString(@"document.open-in.noapps.title", @"No Apps Title"));
             }
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionOpen
+                                                               label:((AlfrescoDocument *)self.node).contentMimeType
+                                                               value:@1
+                                                        customMetric:AnalyticsMetricFileSize
+                                                         metricValue:@(((AlfrescoDocument *)self.node).contentLength)];
         }
     };
     
@@ -750,13 +757,6 @@
 
 - (void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
 {
-    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                      action:kAnalyticsEventActionOpen
-                                                       label:((AlfrescoDocument *)self.node).contentMimeType
-                                                       value:@1
-                                                customMetric:AnalyticsMetricFileSize
-                                                 metricValue:@(((AlfrescoDocument *)self.node).contentLength)];
-    
     NSDictionary *annotationDictionary = nil;
     NSString *filePath = controller.URL.path;
     

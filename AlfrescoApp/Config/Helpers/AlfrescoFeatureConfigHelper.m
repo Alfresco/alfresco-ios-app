@@ -33,7 +33,7 @@
 -(void)parse
 {
     NSArray *featuresJSON = self.json[kAlfrescoJSONFeatures];
-        
+
     self.featuresConfigData = [NSMutableDictionary dictionary];
     for (NSDictionary *featureJSON in featuresJSON)
     {
@@ -42,6 +42,12 @@
         if (identifier == nil)
         {
             AlfrescoLogWarning(@"Ignoring feature config without identifier: %@", featureJSON);
+            break;
+        }
+        
+        if (self.featuresConfigData[identifier] != nil)
+        {
+            AlfrescoLogWarning(@"Ignoring duplicate config identifier: %@", featureJSON);
             break;
         }
         
@@ -54,15 +60,7 @@
         featureConfigData.evaluator = featureJSON[kAlfrescoJSONEvaluator];
         
         // store featureConfigData object
-        NSMutableArray *storedArray = self.featuresConfigData[identifier];
-        if (storedArray != nil)
-        {
-            [storedArray addObject:featureConfigData];
-        }
-        else
-        {
-            self.featuresConfigData[identifier] = [NSMutableArray arrayWithObject:featureConfigData];
-        }
+        self.featuresConfigData[identifier] = featureConfigData;
         
         AlfrescoLogDebug(@"Stored config data for feature with id: %@", identifier);
     }
@@ -71,16 +69,13 @@
 - (NSArray *)featureConfigWithScope:(AlfrescoConfigScope *)scope
 {
     NSMutableArray *features = [NSMutableArray array];
-    for (NSArray *potentialFeatureWithId in [self.featuresConfigData allValues])
+    for (AlfrescoConfigData *configData in [self.featuresConfigData allValues])
     {
-        for (AlfrescoConfigData *configData in potentialFeatureWithId)
+        if ([self processEvaluator:configData.evaluator withScope:scope])
         {
-            if ([self processEvaluator:configData.evaluator withScope:scope])
-            {
-                AlfrescoFeatureConfig *featureConfig = [[AlfrescoFeatureConfig alloc] initWithDictionary:configData.properties];
-                [features addObject:featureConfig];
-                break;
-            }
+            AlfrescoFeatureConfig *featureConfig = [[AlfrescoFeatureConfig alloc] initWithDictionary:configData.properties];
+            [features addObject:featureConfig];
+            break;
         }
     }
     
@@ -92,21 +87,48 @@
 - (AlfrescoFeatureConfig *)featureConfigForIdentifier:(NSString *)identifier scope:(AlfrescoConfigScope *)scope
 {
     AlfrescoFeatureConfig *requestedFeatureConfig = nil;
-    
-    NSArray *potentialFeatureWithId = self.featuresConfigData[identifier];
-    // for each id add the first one whose evaluator matches
-    for (AlfrescoConfigData *configData in potentialFeatureWithId)
+    AlfrescoConfigData *configData = self.featuresConfigData[identifier];
+
+    if ([self processEvaluator:configData.evaluator withScope:scope])
     {
-        if ([self processEvaluator:configData.evaluator withScope:scope])
+        requestedFeatureConfig = [[AlfrescoFeatureConfig alloc] initWithDictionary:configData.properties];
+    }
+    
+    AlfrescoLogDebug(@"Returning feature config for identifier '%@': %@", identifier, requestedFeatureConfig);
+    
+    return requestedFeatureConfig;
+}
+
+- (AlfrescoFeatureConfig *)featureConfigForType:(NSString *)type scope:(AlfrescoConfigScope *)scope
+{
+    AlfrescoFeatureConfig *requestedFeatureConfig = nil;
+    
+    // for each id add the first one whose evaluator matches
+    for (AlfrescoConfigData *configData in [self.featuresConfigData allValues])
+    {
+        if ([configData.properties[kAlfrescoJSONType] isEqualToString:type] && [self processEvaluator:configData.evaluator withScope:scope])
         {
             requestedFeatureConfig = [[AlfrescoFeatureConfig alloc] initWithDictionary:configData.properties];
             break;
         }
     }
     
-    AlfrescoLogDebug(@"Returning feature config for identifier '%@': %@", identifier, requestedFeatureConfig);
+    AlfrescoLogDebug(@"Returning feature config for type '%@': %@", type, requestedFeatureConfig);
     
     return requestedFeatureConfig;
+}
+
+- (NSMutableDictionary *)configPropertiesFromJSON:(NSDictionary *)json
+{
+    NSMutableDictionary *properties = [super configPropertiesFromJSON:json];
+    NSNumber *enable = json[kAlfrescoJSONEnable];
+    
+    if (enable != nil)
+    {
+        properties[kAlfrescoJSONEnable] = enable;
+    }
+    
+    return properties;
 }
 
 @end

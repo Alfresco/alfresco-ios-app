@@ -97,6 +97,14 @@
                                                    scope:(AlfrescoConfigScope *)scope
                                          completionBlock:(AlfrescoFeatureConfigCompletionBlock)completionBlock;
 
+- (AlfrescoRequest *)retrieveFeatureConfigWithType:(NSString *)type
+                                   completionBlock:(AlfrescoFeatureConfigCompletionBlock)completionBlock;
+
+
+- (AlfrescoRequest *)retrieveFeatureConfigWithType:(NSString *)type
+                                             scope:(AlfrescoConfigScope *)scope
+                                   completionBlock:(AlfrescoFeatureConfigCompletionBlock)completionBlock;
+
 
 - (AlfrescoRequest *)retrieveViewConfigWithIdentifier:(NSString *)identifier
                                       completionBlock:(AlfrescoViewConfigCompletionBlock)completionBlock;

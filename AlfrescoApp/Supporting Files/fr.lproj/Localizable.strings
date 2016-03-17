@@ -1,10 +1,26 @@
+/*******************************************************************************
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
+ *
+ * This file is part of the Alfresco Mobile iOS App.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************/
+
 /**
  * Localizable.strings
  * AlfrescoApp
  *
  * French (fr)
- *
- * Copyright (c) 2015 Alfresco. All rights reserved.
  */
 
 /**
@@ -190,11 +206,11 @@
 "accounts.empty" = "Aucun compte";
 "accountdetails.title.newaccount" = "Nouveau compte";
 "accountdetails.title.editingaccount" = "Modification en cours du compte";
-"accounttype.cloud" = "Alfresco Cloud";
+"accounttype.cloud" = "Alfresco in the Cloud";
 "accounttype.alfrescoServer" = "Serveur Alfresco";
 
 "accounttype.footer.alfrescoServer" = "Connexion à un serveur Alfresco";
-"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco Cloud";
+"accounttype.footer.alfrescoCloud" = "Accéder au compte Alfresco in the Cloud";
 
 "accountdetails.placeholder.required" = "Requis";
 "accountdetails.placeholder.optional" = "Facultatif";
@@ -324,7 +340,7 @@
  * About View Controller
  */
 "about.title" = "A propos";
-"about.content" = "Alfresco est la plate-forme ouverte pour la gestion du contenu commercial stratégique et la collaboration.\n\nL'application Alfresco Mobile a été conçue et développée par Alfresco Software, Inc. et se connecte à Alfresco Cloud et aux serveurs sur site Alfresco (3.4.8 et supérieur) pour vous offrir un accès sécurisé à vos fichiers professionnels en déplacement. Cette application mobile se connecte à votre entrepôt Alfresco à l'aide de vos identifiants de connexion Alfresco (via HTTP ou HTTPS) et gère vos accès en fonction de vos permissions.";
+"about.content" = "Alfresco est la plate-forme ouverte pour la gestion du contenu commercial stratégique et la collaboration.\n\nL'application Alfresco Mobile a été conçue et développée par Alfresco Software, Inc. et se connecte à Alfresco in the Cloud et aux serveurs sur site Alfresco (3.4.8 et supérieur) pour vous offrir un accès sécurisé à vos fichiers professionnels en déplacement. Cette application mobile se connecte à votre entrepôt Alfresco à l'aide de vos identifiants de connexion Alfresco (via HTTP ou HTTPS) et gère vos accès en fonction de vos permissions.";
 "about.version.number" = "Version : %@ (%@)";
 "about.build.date.time" = "Date de la version : %s %s";
 
@@ -648,7 +664,7 @@
 "settings.reset.description" = "L'effacement des comptes supprimera tous les comptes de l'application. L'effacement des comptes, du cache et des téléchargements réinitialise l'application pour une nouvelle installation.";
 "settings.full.text.search" = "Recherche de texte";
 "settings.full.text.search.description" = "Activez la recherche de texte pour rechercher les fichiers ET leur contenu.";
-
+"settings.feedback.title" = "Envoyer les données";
 
 /**
  * Onboarding View Controller

@@ -18,6 +18,7 @@
  
 #import "PreferenceManager.h"
 #import "SettingConstants.h"
+#import "AppConfigurationManager.h"
 
 static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
@@ -67,6 +68,11 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 - (BOOL)shouldProtectFiles
 {
     return [[self preferenceForIdentifier:kSettingsFileProtectionIdentifier] boolValue];
+}
+
+- (BOOL)isSendDiagnosticsEnable
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
 }
 
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier

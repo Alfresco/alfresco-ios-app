@@ -303,6 +303,8 @@ extern NSString * const kAlfrescoMainMenuItemSitesIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSyncIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSettingsIdentifier;
 extern NSString * const kAlfrescoMainMenuItemHelpIdentifier;
+/// Features
+extern NSString * const kAlfrescoConfigFeatureTypeAnalytics;
 /// View Types
 extern NSString * const kAlfrescoConfigViewTypeActivities;
 extern NSString * const kAlfrescoConfigViewTypeRepository;
@@ -363,13 +365,13 @@ extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone;
 
 // App Configuration
-//// Notifictaions
+//// Notifications
 extern NSString * const kAppConfigurationAccountsConfigurationUpdatedNotification;
 //// Keys
 extern NSString * const kAppConfigurationCanAddAccountsKey;
 extern NSString * const kAppConfigurationCanEditAccountsKey;
 extern NSString * const kAppConfigurationCanRemoveAccountsKey;
-///// Main Menu
+//// Main Menu
 extern NSString * const kAppConfigurationUserCanEditMainMenuKey;
 
 // Person Profile

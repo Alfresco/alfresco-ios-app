@@ -26,6 +26,7 @@
 // Alfresco SDK
 extern NSString * const kAlfrescoJSONIdentifier;
 extern NSString * const kAlfrescoJSONItems;
+extern NSString * const kAlfrescoJSONEnable;
 extern NSString * const kAlfrescoRepositoryEditionCommunity;
 extern NSString * const kAlfrescoRepositoryEditionEnterprise;
 extern NSString * const kAlfrescoRepositoryEditionCloud;

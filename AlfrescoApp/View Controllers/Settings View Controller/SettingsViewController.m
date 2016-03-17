@@ -29,10 +29,12 @@
 #import "CoreDataCacheHelper.h"
 #import "AvatarImageCache.h"
 #import "DownloadManager.h"
+#import <MessageUI/MessageUI.h>
+#import <sys/utsname.h>
 
 static NSUInteger const kCellLeftInset = 10;
 
-@interface SettingsViewController () <SettingsCellProtocol>
+@interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
 
 @implementation SettingsViewController
@@ -72,7 +74,7 @@ static NSUInteger const kCellLeftInset = 10;
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
 
-    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title") ;
+    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title");
     self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
     [self.tableView reloadData];
 }
@@ -88,37 +90,55 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (NSMutableArray *)filteredPreferences:(NSMutableArray *)unfilteredPreferences
 {
+    NSMutableArray *filteredPreferences = unfilteredPreferences;
+    
+    // Remove Enterprise-only preferences
     BOOL hasPaidAccounts = [[AccountManager sharedManager] numberOfPaidAccounts] > 0;
     if (!hasPaidAccounts)
     {
-        // Filter the groups first
-        NSMutableArray *filteredGroups = [NSMutableArray array];
-        for (NSDictionary *unfilteredGroup in unfilteredPreferences)
+        filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionHasPaidAccount];
+    }
+    
+    // Remove Feedback option if no email capability
+    BOOL canSendMail = [MFMailComposeViewController canSendMail];
+    if (!canSendMail)
+    {
+        filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionCanSendEmail];
+    }
+    
+    return filteredPreferences;
+}
+
+- (NSMutableArray *)removePreferences:(NSMutableArray *)preferences withRestriction:(NSString *)restriction
+{
+    // Filter the groups first
+    NSMutableArray *filteredPreferences = [NSMutableArray array];
+    
+    for (NSDictionary *unfilteredGroup in preferences)
+    {
+        NSMutableDictionary *filteredGroup = [unfilteredGroup mutableCopy];
+        NSNumber *groupValue = [filteredGroup objectForKey:restriction];
+        if (groupValue == nil || ![groupValue boolValue])
         {
-            NSMutableDictionary *filteredGroup = [unfilteredGroup mutableCopy];
-            NSNumber *groupValue = [filteredGroup objectForKey:kSettingsPaidAccountsOnly];
-            if (groupValue == nil || ![groupValue boolValue])
+            // Now filter the items
+            NSMutableArray *filteredItems = [NSMutableArray array];
+            for (NSDictionary *item in filteredGroup[kSettingsGroupCells])
             {
-                // Filter the items
-                NSMutableArray *filteredItems = [NSMutableArray array];
-                for (NSDictionary *item in filteredGroup[kSettingsGroupCells])
+                NSNumber *itemValue = [item objectForKey:restriction];
+                if (itemValue == nil || ![itemValue boolValue])
                 {
-                    NSNumber *itemValue = [item objectForKey:kSettingsPaidAccountsOnly];
-                    if (itemValue == nil || ![itemValue boolValue])
-                    {
-                        [filteredItems addObject:item];
-                    }
-                }
-                if (filteredItems.count > 0)
-                {
-                    filteredGroup[kSettingsGroupCells] = filteredItems;
-                    [filteredGroups addObject:filteredGroup];
+                    [filteredItems addObject:item];
                 }
             }
+            if (filteredItems.count > 0)
+            {
+                filteredGroup[kSettingsGroupCells] = filteredItems;
+                [filteredPreferences addObject:filteredGroup];
+            }
         }
-        return filteredGroups;
     }
-    return unfilteredPreferences;
+    
+    return filteredPreferences;
 }
 
 - (void)doneButtonPressed:(id)sender
@@ -182,73 +202,168 @@ static NSUInteger const kCellLeftInset = 10;
 {
     if ([preferenceIdentifier isEqualToString:kSettingsResetAccountsIdentifier])
     {
-        UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
-                                                                    message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-        
-        [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (!isCancelButton)
-            {
-                // Remove accounts
-                [[AccountManager sharedManager] removeAllAccounts];
-                // Delete avatar cache
-                CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-                [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-                
-                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                                  action:kAnalyticsEventActionClearData
-                                                                   label:kAnalyticsEventLabelPartial
-                                                                   value:@1];
-                
-                UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                                            message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                                           delegate:self
-                                                                  cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                                  otherButtonTitles:nil];
-                [confirmation show];
-            }
-        }];
+        [self resetAccountsHandler];
     }
     else if ([preferenceIdentifier isEqualToString:kSettingsResetEntireAppIdentifier])
     {
-        UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
-                                                                    message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-        
-        [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (!isCancelButton)
-            {
-                // Reset accounts, delete cache databases, tmp folder, downloads
-                // Remove accounts
-                [[AccountManager sharedManager] removeAllAccounts];
-                // Delete cache
-                CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-                [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-                [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
-                [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
-                // Remove downloads
-                [[DownloadManager sharedManager] removeAllDownloads];
-                // Remove all contents of the temp folder
-                [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
-                
-                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                                  action:kAnalyticsEventActionClearData
-                                                                   label:kAnalyticsEventLabelFull
-                                                                   value:@1];
-                
-                UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                                       message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                                      delegate:self
-                                                             cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                             otherButtonTitles:nil];
-                [confirmation show];
-            }
-        }];
+        [self resetEntireAppHandler];
     }
+    else if ([preferenceIdentifier isEqualToString:kSettingsSendFeedbackIdentifier])
+    {
+        [self sendFeedbackHandler];
+    }
+}
+
+- (void)resetAccountsHandler
+{
+    UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
+                                                                message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                      otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    
+    [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            // Remove accounts
+            [[AccountManager sharedManager] removeAllAccounts];
+            // Delete avatar cache
+            CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+            [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                              action:kAnalyticsEventActionClearData
+                                                               label:kAnalyticsEventLabelPartial
+                                                               value:@1];
+            
+            UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                   message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                         otherButtonTitles:nil];
+            [confirmation show];
+        }
+    }];
+}
+
+- (void)resetEntireAppHandler
+{
+    UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
+                                                                message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                                      otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    
+    [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (!isCancelButton)
+        {
+            // Reset accounts, delete cache databases, tmp folder, downloads
+            // Remove accounts
+            [[AccountManager sharedManager] removeAllAccounts];
+            // Delete cache
+            CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+            [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+            [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
+            [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
+            // Remove downloads
+            [[DownloadManager sharedManager] removeAllDownloads];
+            // Remove all contents of the temp folder
+            [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                              action:kAnalyticsEventActionClearData
+                                                               label:kAnalyticsEventLabelFull
+                                                               value:@1];
+            
+            UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                   message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                         otherButtonTitles:nil];
+            [confirmation show];
+        }
+    }];
+}
+
+- (void)sendFeedbackHandler
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
+        emailController.mailComposeDelegate = self;
+        [emailController setSubject:[self emailFeedbackSubject]];
+        [emailController setToRecipients:@[kSettingsSendFeedbackAlfrescoRecipient]];
+        
+        // Content body template
+        NSString *footer = [self emailFeedbackFooter];
+        NSString *messageBody = [NSString stringWithFormat:@"<br><br>%@", footer];
+        [emailController setMessageBody:messageBody isHTML:YES];
+        emailController.modalPresentationStyle = UIModalPresentationPageSheet;
+        
+        [self presentViewController:emailController animated:YES completion:nil];
+    }
+    else
+    {
+        displayErrorMessageWithTitle(NSLocalizedString(@"error.no.email.accounts.message", @"No mail accounts"), NSLocalizedString(@"error.no.email.accounts.title", @"No mail accounts"));
+    }
+}
+
+- (BOOL)cellEnabled:(SettingCell *)cell
+{
+    if ([cell.preferenceIdentifier isEqualToString:kSettingsSendDiagnosticsIdentifier])
+    {
+        return [[PreferenceManager sharedManager] isSendDiagnosticsEnable];
+    }
+    
+    return YES;
+}
+
+
+#pragma mark - Feedback Utils
+
+- (NSString *)emailFeedbackSubject
+{
+    NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *subjectString = [NSString stringWithFormat:@"iOS App v%@ Feedback", versionString];
+    
+    return subjectString;
+}
+
+- (NSString *)emailFeedbackFooter
+{
+    NSString *footerString = [NSString stringWithFormat: @"------<br>App: %@ %@ (%@)<br>Device: %@ (%@)<br>Locale: %@",
+                              [self bundleIdentifier],
+                              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+                              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
+                              [self deviceModel],
+                              [self operatingSystemVersion],
+                              [self localeIdentifier]];
+    
+    return footerString;
+}
+
+- (NSString *)deviceModel
+{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *code = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    
+    return code;
+}
+
+- (NSString *)bundleIdentifier
+{
+    return [[NSBundle mainBundle] bundleIdentifier];
+}
+
+- (NSString *)operatingSystemVersion
+{
+    return [[UIDevice currentDevice] systemVersion];
+}
+
+- (NSString *)localeIdentifier
+{
+    return [NSLocale currentLocale].localeIdentifier;
 }
 
 #pragma mark - Table view data source
@@ -272,14 +387,25 @@ static NSUInteger const kCellLeftInset = 10;
 {
     NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:section];
     NSString *groupHeaderTitle = [groupInfoDictionary objectForKey:kSettingsGroupHeaderLocalizedKey];
+    
     return NSLocalizedString(groupHeaderTitle, @"Section header title");
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     NSDictionary *groupInfoDictionary = [self.tableViewData objectAtIndex:section];
-    NSString *groupHeaderTitle = [groupInfoDictionary objectForKey:kSettingsGroupFooterLocalizedKey];
-    return NSLocalizedString(groupHeaderTitle, @"Section footer title");
+    NSString *groupFooterTitle = [groupInfoDictionary objectForKey:kSettingsGroupFooterLocalizedKey];
+    
+    // TODO: Find a cleaner way to replace this section footer
+    if ([groupFooterTitle isEqualToString:@"settings.send.diagnostics.description"])
+    {
+        if (![[PreferenceManager sharedManager] isSendDiagnosticsEnable])
+        {
+            groupFooterTitle = @"accountdetails.footer.main.menu.config.disabled";
+        }
+    }
+    
+    return NSLocalizedString(groupFooterTitle, @"Section footer title");
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -302,6 +428,7 @@ static NSUInteger const kCellLeftInset = 10;
     id preferenceValue = [[PreferenceManager sharedManager] preferenceForIdentifier:[currentCellInfo valueForKey:kSettingsCellPreferenceIdentifier]];
     
     [cell updateCellForCellInfo:currentCellInfo value:preferenceValue delegate:self];
+    cell.enabled = [self cellEnabled:cell];
     
     return cell;
 }
@@ -326,7 +453,7 @@ static NSUInteger const kCellLeftInset = 10;
 
 - (void)valueDidChangeForCell:(SettingCell *)cell preferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value
 {
-    // If it's an action cell that requires action, else, update the prefernces
+    // If it's an action cell that requires action, else, update the preferences
     if ([cell isKindOfClass:[SettingButtonCell class]])
     {
         [self handleActionWithPreferenceIdentifier:preferenceIdentifier];
@@ -335,6 +462,22 @@ static NSUInteger const kCellLeftInset = 10;
     {
         [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
     }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate Methods
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    void (^completionBlock)() = nil;
+    
+    if (result == MFMailComposeResultFailed)
+    {
+        completionBlock = ^{
+            displayErrorMessageWithTitle(NSLocalizedString(@"error.person.profile.email.failed.message", @"Email Failed Message"), NSLocalizedString(@"error.person.profile.email.failed.title", @"Sending Failed Title"));
+        };
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:completionBlock];
 }
 
 @end

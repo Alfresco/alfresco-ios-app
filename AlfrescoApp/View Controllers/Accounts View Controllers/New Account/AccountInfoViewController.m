@@ -539,11 +539,11 @@ static NSInteger const kTagAccountDetailsCell = 4;
     }];
 }
 
-#pragma mark - Notifictaions
+#pragma mark - Notifications
 
--(void)profileDidChange:(NSNotification *)notifictaion
+-(void)profileDidChange:(NSNotification *)notification
 {
-    AlfrescoProfileConfig *selectedProfile = notifictaion.object;
+    AlfrescoProfileConfig *selectedProfile = notification.object;
     self.profileLabel.text = selectedProfile.label;
     
     NSString *title = NSLocalizedString(@"main.menu.profile.selection.banner.title", @"Profile Changed Title");
