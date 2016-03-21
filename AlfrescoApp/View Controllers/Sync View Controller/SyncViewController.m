@@ -203,7 +203,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (NSString *)listTitle
 {
     NSString *title = @"";
-    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
     
     if (self.parentNode)
     {
@@ -211,10 +210,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     else
     {
-        title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+        title = NSLocalizedString(@"sync.title", @"Sync Title");
     }
     
-    self.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
+    self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
     return title;
 }
 
