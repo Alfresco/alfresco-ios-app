@@ -398,6 +398,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         screenName = kAnalyticsViewMenuRepository;
     }
+    else if (self.controllerType == FileFolderCollectionViewControllerTypeFavorites) // Favorites
+    {
+        screenName = kAnalyticsViewMenuFavorites;
+    }
     
     [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
     

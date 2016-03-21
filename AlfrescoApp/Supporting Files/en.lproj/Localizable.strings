@@ -785,6 +785,7 @@
 "view-favorite-default" = "Favorites";
 "view-search-default" = "Search";
 "view-local-default" = "Local Files";
+"view-sync-default" = "Synced Content";
 
 "configuration.manager.configuration.file.updated.title" = "Configuration Updated";
 "configuration.manager.configuration.file.updated.message" = "The configuration file has been updated";
