@@ -160,8 +160,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     if (self.parentNode == nil)
     {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-        [[AnalyticsManager sharedManager] trackScreenWithName:isSyncOn ? kAnalyticsViewMenuSyncedContent : kAnalyticsViewMenuFavorites];
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
     }
 }
 
