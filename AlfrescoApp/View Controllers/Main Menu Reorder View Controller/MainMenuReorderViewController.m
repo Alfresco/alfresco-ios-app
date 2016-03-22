@@ -20,9 +20,10 @@
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
 #import "MainMenuLocalConfigurationBuilder.h"
-#import "SyncManager.h"
 
-static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
+#import "RealmSyncManager.h"
+
+static NSString * const kSyncViewIdentifier = @"view-sync-default";
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
@@ -40,6 +41,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 @property (nonatomic, strong) NSMutableArray *hiddenItems;
 @property (nonatomic, strong) MainMenuBuilder *mainMenuBuilder;
 @property (nonatomic, strong) UserAccount *account;
+@property (nonatomic) BOOL isSyncPresent;
+@property (nonatomic) BOOL isSyncVisible;
 @end
 
 @implementation MainMenuReorderViewController
@@ -110,6 +113,32 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     // If the order or visibility has changed
     if (![self.oldData isEqualToArray:self.visibleItems])
     {
+        if(self.isSyncPresent)
+        {
+            if(self.isSyncVisible)
+            {
+                //check if the sync menu item is now in the hidden items
+                for(MainMenuItem *item in self.hiddenItems)
+                {
+                    if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+                    {
+                        
+                    }
+                }
+            }
+            else
+            {
+                //check if the sync menu item is now in the visible items
+                for(MainMenuItem *item in self.visibleItems)
+                {
+                    if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+                    {
+                        [[RealmSyncManager sharedManager] createRealmForAccount:self.account];
+                    }
+                }
+            }
+        }
+        
         [[AppConfigurationManager sharedManager] saveVisibleMenuItems:self.visibleItems hiddenMenuItems:self.hiddenItems forAccount:self.account];
         
         // Only need to post a notification informing the app if the current account order has been modified
@@ -156,6 +185,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         self.oldData = sortedVisibleItems;
         self.hiddenItems = sortedHiddenItems.mutableCopy;
         
+        [self determineSyncMenuItemInitialStatus];
+        
         [progress hide:YES];
         [self.tableView reloadData];
     }];
@@ -186,6 +217,27 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     return returnArray;
 }
 
+- (void)determineSyncMenuItemInitialStatus
+{
+    self.isSyncPresent = NO;
+    self.isSyncVisible = NO;
+    for(MainMenuItem *item in self.visibleItems)
+    {
+        if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+        {
+            self.isSyncPresent = YES;
+            self.isSyncVisible = YES;
+        }
+    }
+    for(MainMenuItem *item in self.hiddenItems)
+    {
+        if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+        {
+            self.isSyncPresent = YES;
+        }
+    }
+}
+
 #pragma mark - UITableViewDataSourceDelegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -210,16 +262,6 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     cell.showsReorderControl = YES;
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
     cell.imageView.image = currentItem.itemImage;
-    
-
-    // If the current item is the favourites item, check to see if we should display the sync text/image or favourites
-    if ([currentItem.itemIdentifier isEqualToString:kFavouritesViewIdentifier])
-    {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-        cell.textLabel.text = NSLocalizedString(isSyncOn ? @"sync.title" : @"favourites.title", @"Key") ;
-        NSString *imageName = isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png";
-        cell.imageView.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }
     
     return cell;
 }
