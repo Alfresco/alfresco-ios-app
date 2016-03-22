@@ -112,6 +112,13 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     {
         [[AppConfigurationManager sharedManager] saveVisibleMenuItems:self.visibleItems hiddenMenuItems:self.hiddenItems forAccount:self.account];
         
+        NSString *label = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+        
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                          action:kAnalyticsEventActionUpdateMenu
+                                                           label:label
+                                                           value:@1];
+
         // Only need to post a notification informing the app if the current account order has been modified
         if ([AccountManager sharedManager].selectedAccount == self.account)
         {
