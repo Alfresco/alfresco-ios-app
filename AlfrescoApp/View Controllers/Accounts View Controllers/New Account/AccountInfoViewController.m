@@ -47,7 +47,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 @property (nonatomic, strong) NSArray *tableGroupFooters;
 @property (nonatomic, weak) UITextField *descriptionTextField;
 @property (nonatomic, weak) UILabel *profileLabel;
-@property (nonatomic, weak) UISwitch *syncPreferenceSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
@@ -165,7 +164,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self updateFormBackupAccount];
 }
 
 - (void)saveButtonClicked:(id)sender
@@ -214,15 +212,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
         }
         else
         {
-            [self updateFormBackupAccount];
-            
             self.account.accountDescription = self.formBackupAccount.accountDescription;
-            self.account.isSyncOn = self.formBackupAccount.isSyncOn;
-            // If Sync is now enabled, suppress the prompt in the Favorites view
-            if (self.account.isSyncOn)
-            {
-                self.account.didAskToSync = YES;
-            }
             
             [[AccountManager sharedManager] saveAccountsToKeychain];
             
@@ -316,12 +306,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
     self.descriptionTextField = descriptionCell.valueTextField;
     self.descriptionTextField.text = self.formBackupAccount.accountDescription;
     
-    SwitchCell *syncPreferenceCell = (SwitchCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([SwitchCell class]) owner:self options:nil] lastObject];
-    syncPreferenceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    syncPreferenceCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.syncPreference", @"Sync Favorite Content");
-    self.syncPreferenceSwitch = syncPreferenceCell.valueSwitch;
-    [self.syncPreferenceSwitch setOn:self.formBackupAccount.isSyncOn animated:YES];
-    
     if (self.account.accountType == UserAccountTypeOnPremise)
     {
         /**
@@ -359,12 +343,9 @@ static NSInteger const kTagAccountDetailsCell = 4;
         
         self.tableViewData = [NSMutableArray arrayWithArray:@[ @[profileCell],
                                                                @[configurationCell],
-                                                               @[syncPreferenceCell],
-                                                               @[accountDetailsCell]
-                                                               /*@[usernameCell, passwordCell, serverAddressCell, descriptionCell, protocolCell],
-                                                                @[portCell, serviceDocumentCell, certificateCell]*/]];
-        self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"/*, @"accountdetails.header.advanced"*/];
-        self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"accountdetails.fields.syncPreference.footer", @""/*,  @""*/];
+                                                               @[accountDetailsCell] ]];
+        self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"];
+        self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @""];
     }
     else
     {
@@ -372,9 +353,9 @@ static NSInteger const kTagAccountDetailsCell = 4;
          * Note: Additional account-specific settings should be in their own group with an empty header string.
          * This will allow a description footer to be added under each setting if required.
          */
-        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[descriptionCell], @[syncPreferenceCell]]];
+        self.tableViewData = [NSMutableArray arrayWithArray:@[ @[descriptionCell]]];
         self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.setting"];
-        self.tableGroupFooters = @[@"", @"accountdetails.fields.syncPreference.footer"];
+        self.tableGroupFooters = @[@""];
     }
 }
 
@@ -444,11 +425,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 
 #pragma mark - private Methods
 
-- (void)updateFormBackupAccount
-{
-    self.formBackupAccount.isSyncOn = self.syncPreferenceSwitch.isOn;
-}
-
 /**
  validateAccountFieldsValues
  checks the validity of hostname, port and username in terms of characters entered.
@@ -462,10 +438,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
     {
         if (self.activityType == AccountActivityTypeEditAccount)
         {
-            if (!(self.formBackupAccount.isSyncOn == self.syncPreferenceSwitch.isOn))
-            {
-                hasAccountPropertiesChanged = YES;
-            }
             if(self.hasChangedAccountDetails)
             {
                 hasAccountPropertiesChanged = YES;
@@ -480,10 +452,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
         {
             hasAccountPropertiesChanged = YES;
         }
-        if (!(self.formBackupAccount.isSyncOn == self.syncPreferenceSwitch.isOn))
-        {
-            hasAccountPropertiesChanged = YES;
-        }
         didChangeAndIsValid = hasAccountPropertiesChanged;
     }
     return didChangeAndIsValid;
@@ -491,7 +459,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session))completionBlock
 {
-    [self updateFormBackupAccount];
     void (^updateAccountInfo)(UserAccount *) = ^(UserAccount *temporaryAccount)
     {
         self.account.username = temporaryAccount.username;
@@ -502,12 +469,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     
@@ -565,12 +526,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     
