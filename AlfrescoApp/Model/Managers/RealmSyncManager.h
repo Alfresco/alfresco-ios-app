@@ -28,5 +28,13 @@
 
 - (RLMRealm *)createRealmForAccount:(UserAccount *)account;
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
+- (void)deleteRealmForAccount:(UserAccount *)account;
+
+- (void)cancelAllSyncOperations;
+
+/*
+ * Sync Utilities
+ */
+- (BOOL)isCurrentlySyncing;
 
 @end
