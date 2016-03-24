@@ -20,9 +20,10 @@
 #import "AppConfigurationManager.h"
 #import "AccountManager.h"
 #import "MainMenuLocalConfigurationBuilder.h"
-#import "SyncManager.h"
 
-static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
+#import "RealmSyncManager.h"
+
+static NSString * const kSyncViewIdentifier = @"view-sync-default";
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
@@ -40,6 +41,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 @property (nonatomic, strong) NSMutableArray *hiddenItems;
 @property (nonatomic, strong) MainMenuBuilder *mainMenuBuilder;
 @property (nonatomic, strong) UserAccount *account;
+@property (nonatomic) BOOL isSyncPresent;
+@property (nonatomic) BOOL isSyncVisible;
 @end
 
 @implementation MainMenuReorderViewController
@@ -87,6 +90,9 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"main.menu.reorder.title", @"Reorder Title");
+    
+    UIBarButtonItem *saveBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = saveBarButton;
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellIdentifier];
     [self.tableView setEditing:YES];
@@ -156,6 +162,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         self.oldData = sortedVisibleItems;
         self.hiddenItems = sortedHiddenItems.mutableCopy;
         
+        [self determineSyncMenuItemInitialStatus];
+        
         [progress hide:YES];
         [self.tableView reloadData];
     }];
@@ -186,6 +194,124 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     return returnArray;
 }
 
+- (void)determineSyncMenuItemInitialStatus
+{
+    self.isSyncPresent = NO;
+    self.isSyncVisible = NO;
+    for(MainMenuItem *item in self.visibleItems)
+    {
+        if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+        {
+            self.isSyncPresent = YES;
+            self.isSyncVisible = YES;
+        }
+    }
+    for(MainMenuItem *item in self.hiddenItems)
+    {
+        if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+        {
+            self.isSyncPresent = YES;
+        }
+    }
+}
+
+- (void)moveSyncMenuItemToVisibleItems
+{
+    MainMenuItem *syncMenuItem = nil;
+    for(int i = 0; i < self.hiddenItems.count; i++)
+    {
+        MainMenuItem *item = self.hiddenItems[i];
+        if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+        {
+            syncMenuItem = item;
+        }
+    }
+    
+    if(syncMenuItem)
+    {
+        [self.hiddenItems removeObject:syncMenuItem];
+        [self.visibleItems addObject:syncMenuItem];
+    }
+    
+    [self.tableView reloadData];
+}
+
+- (void)disableSync
+{
+    __block RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+    if([syncManager isCurrentlySyncing])
+    {
+        UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.pendingoperations.title", @"Pending sync operations") message:NSLocalizedString(@"action.pendingoperations.message", @"Stop pending operations") preferredStyle:UIAlertControllerStyleAlert];
+        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [self moveSyncMenuItemToVisibleItems];
+        }]];
+        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [syncManager cancelAllSyncOperations];
+            [syncManager deleteRealmForAccount:self.account];
+            [self.navigationController popViewControllerAnimated:YES];
+        }]];
+        
+        [self presentViewController:confirmAlert animated:YES completion:nil];
+    }
+    else
+    {
+        [syncManager deleteRealmForAccount:self.account];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)save
+{
+    // If the order or visibility has changed
+    if (![self.oldData isEqualToArray:self.visibleItems])
+    {
+        if(self.isSyncPresent)
+        {
+            if(self.isSyncVisible)
+            {
+                //check if the sync menu item is now in the hidden items
+                BOOL syncWasMovedToHiddedItems = NO;
+                for(MainMenuItem *item in self.hiddenItems)
+                {
+                    if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+                    {
+                        syncWasMovedToHiddedItems = YES;
+                    }
+                }
+                
+                if(syncWasMovedToHiddedItems)
+                {
+                    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.disablesync.title", @"Disable sync?") message:NSLocalizedString(@"action.disablesync.message", @"This will disable sync") preferredStyle:UIAlertControllerStyleAlert];
+                    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        [self moveSyncMenuItemToVisibleItems];
+                    }]];
+                    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.disablesync.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                        [self disableSync];
+                    }]];
+                    
+                    [self presentViewController:confirmAlert animated:YES completion:nil];
+                }
+            }
+            else
+            {
+                //check if the sync menu item is now in the visible items
+                for(MainMenuItem *item in self.visibleItems)
+                {
+                    if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+                    {
+                        [[RealmSyncManager sharedManager] createRealmForAccount:self.account];
+                    }
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - UITableViewDataSourceDelegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -210,16 +336,6 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     cell.showsReorderControl = YES;
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
     cell.imageView.image = currentItem.itemImage;
-    
-
-    // If the current item is the favourites item, check to see if we should display the sync text/image or favourites
-    if ([currentItem.itemIdentifier isEqualToString:kFavouritesViewIdentifier])
-    {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-        cell.textLabel.text = NSLocalizedString(isSyncOn ? @"sync.title" : @"favourites.title", @"Key") ;
-        NSString *imageName = isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png";
-        cell.imageView.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }
     
     return cell;
 }

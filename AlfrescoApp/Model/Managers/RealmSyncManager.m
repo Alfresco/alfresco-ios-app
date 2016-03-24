@@ -62,4 +62,20 @@
     [RLMRealmConfiguration setDefaultConfiguration:config];
 }
 
+- (void)deleteRealmForAccount:(UserAccount *)account
+{
+    //actual deletion of account
+}
+
+- (void)cancelAllSyncOperations
+{
+    
+}
+
+
+- (BOOL)isCurrentlySyncing
+{
+    return YES;
+}
+
 @end

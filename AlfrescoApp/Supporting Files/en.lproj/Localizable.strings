@@ -712,6 +712,14 @@
 "action.delete.failed.message" = "%@ couldn’t be deleted.";
 "action.confirmation.back.message" = "Do you want to save changes to this account?";
 "action.confirmation.back.title" = "Unsaved Changes";
+"action.disablesync.title" = "Turn Off Sync";
+"action.disablesync.message" = "This will turn off sync functionality and remove any synced content.";
+"action.disablesync.confirm" = "Turn Off Sync";
+"action.pendingoperations.title" = "Unfinished Syncs";
+"action.pendingoperations.message" = "Some files are still syncing to Alfresco. If you turn off sync now these won't finish.";
+"action.pendingoperations.cancel" = "Continue Syncing";
+"action.pendingoperations.confirm" = "Turn Off Sync";
+
 
 /**
  * SaveBack
