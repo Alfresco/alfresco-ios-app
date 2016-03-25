@@ -238,26 +238,11 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 
 - (void)disableSync
 {
-    __block RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    if([syncManager isCurrentlySyncing])
-    {
-        UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.pendingoperations.title", @"Pending sync operations") message:NSLocalizedString(@"action.pendingoperations.message", @"Stop pending operations") preferredStyle:UIAlertControllerStyleAlert];
-        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [self moveSyncMenuItemToVisibleItems];
-        }]];
-        [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [syncManager cancelAllSyncOperations];
-            [syncManager deleteRealmForAccount:self.account];
-            [self.navigationController popViewControllerAnimated:YES];
-        }]];
-        
-        [self presentViewController:confirmAlert animated:YES completion:nil];
-    }
-    else
-    {
-        [syncManager deleteRealmForAccount:self.account];
+    [[RealmSyncManager sharedManager] disableSyncForAccount:self.account fromViewController:self cancelBlock:^{
+        [self moveSyncMenuItemToVisibleItems];
+    } completionBlock:^{
         [self.navigationController popViewControllerAnimated:YES];
-    }
+    }];
 }
 
 - (void)save

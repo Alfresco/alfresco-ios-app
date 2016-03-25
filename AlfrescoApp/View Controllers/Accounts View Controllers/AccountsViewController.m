@@ -24,6 +24,7 @@
 #import "LoginManager.h"
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
+#import "RealmSyncManager.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -344,8 +345,12 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     AccountManager *accountManager = [AccountManager sharedManager];
     UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
     
-    [accountManager removeAccount:account];
-    [self updateAccountList];
+    [[RealmSyncManager sharedManager] disableSyncForAccount:account fromViewController:self cancelBlock:^{
+        [self performSelector:@selector(hideDeleteButton) withObject:nil afterDelay:0.05];
+    } completionBlock:^{
+        [accountManager removeAccount:account];
+        [self updateAccountList];
+    }];
 }
 
 #pragma mark - Add Account
@@ -447,6 +452,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             }
         }];
     }
+}
+
+- (void)hideDeleteButton
+{
+    [self.tableView setEditing:NO animated:YES];
 }
 
 @end
