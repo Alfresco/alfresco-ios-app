@@ -27,14 +27,18 @@
 + (RealmSyncManager *)sharedManager;
 
 - (RLMRealm *)createRealmForAccount:(UserAccount *)account;
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (void)deleteRealmForAccount:(UserAccount *)account;
-
-- (void)cancelAllSyncOperations;
+- (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
 
 /*
  * Sync Utilities
  */
 - (BOOL)isCurrentlySyncing;
+- (void)cancelAllSyncOperations;
+
+/**
+ * Realm Utilities
+ */
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 
 @end
