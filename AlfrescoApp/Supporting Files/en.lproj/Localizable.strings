@@ -38,6 +38,8 @@
 "No Files" = "No Files";
 "No Folders" = "No Folders";
 "No Users" = "No Users";
+"On" = "On";
+"Off" = "Off";
 
 /**
  * Relative Dates
@@ -652,6 +654,24 @@
 "settings.security.title" = "Security";
 "settings.security.file.protection" = "File Protection";
 "settings.security.file.protection.description" = "Encrypts files stored on this device when it is locked.";
+"settings.security.passcode.lock" = "Passcode Lock";
+"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files and local files will be wiped after 10 failed passcode attempts.";
+"settings.security.passcode.lock.title" = "Passcode";
+"settings.security.passcode.touch.id" = "Touch ID";
+"settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the Alfresco app.";
+"settings.security.passcode.change" = "Change Passcode";
+"settings.security.passcode.turn.on" = "Turn Passcode On";
+"settings.security.passcode.turn.off" = "Turn Passcode Off";
+"settings.security.passcode.set.title" = "Set Passcode";
+"settings.security.passcode.enter.title" = "Enter Passcode";
+"settings.security.passcode.enter" = "Enter your Alfresco Passcode";
+"settings.security.passcode.re-enter" = "Re-enter your Alfresco Passcode";
+"settings.security.passcode.missmatch" = "Passcodes did not match. Try again.";
+"settings.security.passcode.enter.new" = "Enter your new Alfresco passcode";
+"settings.security.passcode.enter.old" = "Enter your old Alfresco passcode";
+"settings.security.passcode.re-enter.new" = "Re-enter your new passcode";
+"settings.security.passcode.attempts.1" = "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files and local files will be wiped.";
+"settings.security.passcode.attempts.several" = "%d attempts remaining";
 "settings.reset.title" = "Clear Data";
 "settings.reset.accounts" = "Clear Accounts";
 "settings.reset.accounts.confirmation.title" = "Clear Accounts?";

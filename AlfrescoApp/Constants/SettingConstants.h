@@ -20,11 +20,13 @@
 extern NSString * const kSettingsDidChangeNotification;
 extern NSString * const kSettingChangedFromKey;
 extern NSString * const kSettingChangedToKey;
+extern NSString * const kSettingResetEntireApp;
 
 // Plist keys
 extern NSString * const kSettingsLocalizedTitleKey;
 extern NSString * const kSettingsRestrictionHasPaidAccount;
 extern NSString * const kSettingsRestrictionCanSendEmail;
+extern NSString * const kSettingsRestrictionCanUseTouchID;
 extern NSString * const kSettingsTableViewData;
 extern NSString * const kSettingsGroupHeaderLocalizedKey;
 extern NSString * const kSettingsGroupFooterLocalizedKey;
@@ -33,6 +35,8 @@ extern NSString * const kSettingsCellPreferenceIdentifier;
 extern NSString * const kSettingsCellType;
 extern NSString * const kSettingsCellDefaultValue;
 extern NSString * const kSettingsCellLocalizedTitleKey;
+extern NSString * const kSettingsPasscodeLockTableViewData;
+extern NSString * const kSettingsPasscodeLockLocalizedTitleKey;
 
 // Cell types
 extern NSString * const kSettingsToggleCell;
@@ -55,7 +59,29 @@ extern NSString * const kSettingsResetAccountsIdentifier;
 extern NSString * const kSettingsResetEntireAppIdentifier;
 extern NSString * const kSettingsFullTextSearchIdentifier;
 extern NSString * const kSettingsSendFeedbackIdentifier;
-
+extern NSString * const kSettingsPasscodeLockIdentifier;
+extern NSString * const kSettingsSecurityUsePasscodeLockIdentifier;
+extern NSString * const kSettingsChangePasscodeIdentifier;
+extern NSString * const kSettingsPasscodeTouchIDIdentifier;
 extern NSString * const kSettingsSendDiagnosticsEnable;
 extern NSString * const kSettingsSendFeedbackAlfrescoRecipient;
 
+static NSUInteger const kCellLeftInset = 10;
+
+// Pin Screen strings
+extern NSString * const kSettingsSecurityPasscodeMissmatchString; // "Passcodes did not match. Try again."
+extern NSString * const kSettingsSecurityPasscodeEnterString; // "Enter your Alfresco Passcode"
+extern NSString * const kSettingsSecurityPasscodeReenterString; // "Re-enter your Alfresco Passcode"
+extern NSString * const kSettingsSecurityPasscodeAttemptsOne; // "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files and local files will be wiped."
+extern NSString * const kSettingsSecurityPasscodeAttemptsMany; // "%d attempts remaining"
+extern NSString * const kSettingsSecurityPasscodeSetTitle; // "Set Passcode"
+extern NSString * const kSettingsSecurityPasscodeEnterTitle; // "Enter Passcode"
+
+extern NSString * const kSettingsSecurityPasscodeTurnOn; //"Turn Passcode On"
+extern NSString * const kSettingsSecurityPasscodeTurnOff; //"Turn Passcode Off"
+
+typedef NS_ENUM(NSUInteger, SettingsType)
+{
+    SettingsTypeGeneral,
+    SettingsTypePasscode,
+};

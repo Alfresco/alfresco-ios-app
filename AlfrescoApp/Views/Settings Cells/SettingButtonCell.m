@@ -18,6 +18,7 @@
 
 #import "SettingButtonCell.h"
 #import "SettingConstants.h"
+#import "PreferenceManager.h"
 
 @interface SettingButtonCell ()
 
@@ -32,8 +33,20 @@
     [super updateCellForCellInfo:cellInfo value:cellValue delegate:delegate];
     
     NSString *cellTitle = NSLocalizedString([cellInfo objectForKey:kSettingsCellLocalizedTitleKey], @"Cell text");
+    
+    if ([[cellInfo objectForKey:kSettingsCellPreferenceIdentifier] isEqualToString:kSettingsSecurityUsePasscodeLockIdentifier])
+    {
+        BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
+        cellTitle = shouldUsePasscodeLock ? NSLocalizedString(kSettingsSecurityPasscodeTurnOff, @"Turn Passcode Off") : NSLocalizedString(kSettingsSecurityPasscodeTurnOn, @"Turn Passcode On");
+    }
+    
     self.cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [self.cellButton setTitle:cellTitle forState:UIControlStateNormal];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    self.cellButton.enabled = enabled;
 }
 
 - (IBAction)didPressButton:(id)sender

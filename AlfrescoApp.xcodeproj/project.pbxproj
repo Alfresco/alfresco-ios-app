@@ -81,7 +81,13 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		231A0B4F1CABCCCD0029A10E /* SecurityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 231A0B4E1CABCCCD0029A10E /* SecurityManager.m */; };
 		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
+		23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
+		23B2B2A21CA1A4FD00A8196C /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
+		23B2B2A31CA1A4FD00A8196C /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
+		23B462E01CA590AA009C13EB /* PinBulletsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B462DF1CA590AA009C13EB /* PinBulletsView.m */; };
+		23B462E61CA59917009C13EB /* PinBulletsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B462E51CA59917009C13EB /* PinBulletsView.xib */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
@@ -939,6 +945,16 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		231A0B4D1CABCCCD0029A10E /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityManager.h; sourceTree = "<group>"; };
+		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
+		23A681E01CA2A1E200E90D89 /* BulletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletView.h; sourceTree = "<group>"; };
+		23A681E11CA2A1E200E90D89 /* BulletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletView.m; sourceTree = "<group>"; };
+		23B2B29F1CA1A4FD00A8196C /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
+		23B2B2A01CA1A4FD00A8196C /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
+		23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinViewController.xib; sourceTree = "<group>"; };
+		23B462DE1CA590AA009C13EB /* PinBulletsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinBulletsView.h; sourceTree = "<group>"; };
+		23B462DF1CA590AA009C13EB /* PinBulletsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinBulletsView.m; sourceTree = "<group>"; };
+		23B462E51CA59917009C13EB /* PinBulletsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinBulletsView.xib; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
@@ -2092,6 +2108,21 @@
 				08E89CA617E7593B006936DF /* AlfrescoApp Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		23B2B29A1CA1A4E800A8196C /* PinViewController */ = {
+			isa = PBXGroup;
+			children = (
+				23B2B29F1CA1A4FD00A8196C /* PinViewController.h */,
+				23B2B2A01CA1A4FD00A8196C /* PinViewController.m */,
+				23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */,
+				23A681E01CA2A1E200E90D89 /* BulletView.h */,
+				23A681E11CA2A1E200E90D89 /* BulletView.m */,
+				23B462DE1CA590AA009C13EB /* PinBulletsView.h */,
+				23B462DF1CA590AA009C13EB /* PinBulletsView.m */,
+				23B462E51CA59917009C13EB /* PinBulletsView.xib */,
+			);
+			path = PinViewController;
 			sourceTree = "<group>";
 		};
 		2711979A1912AD860073C3EC /* Subclasses */ = {
@@ -3462,6 +3493,8 @@
 				08E89C9317E7488C006936DF /* SyncManager.m */,
 				73B957D917A6750E0099FB84 /* ThumbnailManager.h */,
 				73B957DA17A6750E0099FB84 /* ThumbnailManager.m */,
+				231A0B4D1CABCCCD0029A10E /* SecurityManager.h */,
+				231A0B4E1CABCCCD0029A10E /* SecurityManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -3571,6 +3604,7 @@
 		73B9580F17A6750E0099FB84 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				23B2B29A1CA1A4E800A8196C /* PinViewController */,
 				73B9582617A6750E0099FB84 /* NavigationViewController.h */,
 				73B9582717A6750E0099FB84 /* NavigationViewController.m */,
 				73B9582817A6750E0099FB84 /* ParentListViewController.h */,
@@ -4242,6 +4276,7 @@
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
 				738BE9571A962AA7006264E5 /* LargeThumbnailImageMapping.plist in Resources */,
 				738664F51906B2420021D1BD /* TaskPriorityCell.xib in Resources */,
+				23B462E61CA59917009C13EB /* PinBulletsView.xib in Resources */,
 				080A812418561E6D00B79306 /* certificate@2x.png in Resources */,
 				080A811B18561CD800B79306 /* ClientCertificateViewController.xib in Resources */,
 				0876A06118D9A9E30035370A /* PeoplePickerViewController.xib in Resources */,
@@ -4283,6 +4318,7 @@
 				738665001906B27C0021D1BD /* NodePickerScopeCell.xib in Resources */,
 				736C4BFE1B8F1920008B7663 /* contact-details-email@2x.png in Resources */,
 				27DFEBF81937644D006D85BC /* actionsheet-like@2x~ipad.png in Resources */,
+				23B2B2A31CA1A4FD00A8196C /* PinViewController.xib in Resources */,
 				271DC779189C2D250059D1B2 /* status-sync-waiting-highlighted@2x.png in Resources */,
 				73FF557A18ACE2370009CA56 /* large_document@2x.png in Resources */,
 				730D1EB3192BB55E00C85C55 /* green_selected_circle@2x.png in Resources */,
@@ -4744,6 +4780,7 @@
 				738664F21906B2420021D1BD /* TaskApproversCell.m in Sources */,
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */,
+				231A0B4F1CABCCCD0029A10E /* SecurityManager.m in Sources */,
 				73BA7CBE191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld in Sources */,
 				7367CFC01AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,
@@ -4752,6 +4789,7 @@
 				739E108318FC19B100495616 /* DownloadsDocumentPreviewViewController.m in Sources */,
 				08E1EA3D18DB2E1200F9052F /* CreateTaskViewController.m in Sources */,
 				2B09B0461B86121200448A52 /* SearchViewController.m in Sources */,
+				23B462E01CA590AA009C13EB /* PinBulletsView.m in Sources */,
 				7390B3621B03681E00E7191F /* AlfrescoActionConfig.m in Sources */,
 				7390B3791B03681E00E7191F /* AlfrescoPlaceholderConfigService.m in Sources */,
 				7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */,
@@ -4892,6 +4930,7 @@
 				7304DA7E1884348B00229809 /* VersionHistoryViewController.m in Sources */,
 				7390B36A1B03681E00E7191F /* AlfrescoFieldConfig.m in Sources */,
 				2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */,
+				23B2B2A21CA1A4FD00A8196C /* PinViewController.m in Sources */,
 				2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */,
 				73881F53188831410052C75F /* UIView+DrawingUtils.m in Sources */,
 				0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */,
@@ -4914,6 +4953,7 @@
 				08E1EA2C18DB057900F9052F /* TaskGroupItem.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */,
+				23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
@@ -5141,6 +5181,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_BITCODE = NO;
@@ -5170,6 +5211,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5227,6 +5269,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPicker/AlfrescoDocumentPicker-Prefix.pch";
@@ -5259,6 +5302,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5288,6 +5332,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5415,6 +5460,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
@@ -5451,6 +5497,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_BITCODE = NO;
@@ -5480,6 +5527,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5511,6 +5559,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",

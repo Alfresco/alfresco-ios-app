@@ -2,8 +2,63 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>PasscodeLockLocalizedTitleKey</key>
+	<string>settings.security.passcode.lock.title</string>
 	<key>LocalizedTitleKey</key>
 	<string>settings.title</string>
+	<key>PasscodeLockTableViewData</key>
+	<array>
+		<dict>
+			<key>GroupHeaderLocalizedKey</key>
+			<string></string>
+			<key>GroupCells</key>
+			<array>
+				<dict>
+					<key>PreferenceIdentifier</key>
+					<string>SettingsSecurityUsePasscodeLockIdentifier</string>
+					<key>Type</key>
+					<string>AlfrescoSettingsButton</string>
+					<key>DefaultValue</key>
+					<false/>
+					<key>LocalizedCellTitleKey</key>
+					<string>settings.security.use.passcode.lock</string>
+				</dict>
+				<dict>
+					<key>PreferenceIdentifier</key>
+					<string>SettingsChangePasscodeIdentifier</string>
+					<key>Type</key>
+					<string>AlfrescoSettingsButton</string>
+					<key>DefaultValue</key>
+					<false/>
+					<key>LocalizedCellTitleKey</key>
+					<string>settings.security.passcode.change</string>
+				</dict>
+			</array>
+			<key>GroupFooterLocalizedKey</key>
+			<string>settings.security.passcode.lock.description</string>
+		</dict>
+		<dict>
+			<key>GroupHeaderLocalizedKey</key>
+			<string></string>
+			<key>GroupCells</key>
+			<array>
+				<dict>
+					<key>CanUseTouchID</key>
+					<true/>
+					<key>PreferenceIdentifier</key>
+					<string>SettingsPasscodeTouchIDIdentifier</string>
+					<key>Type</key>
+					<string>AlfrescoSettingsToggle</string>
+					<key>DefaultValue</key>
+					<false/>
+					<key>LocalizedCellTitleKey</key>
+					<string>settings.security.passcode.touch.id</string>
+				</dict>
+			</array>
+			<key>GroupFooterLocalizedKey</key>
+			<string>settings.security.passcode.touch.id.description</string>
+		</dict>
+	</array>
 	<key>SettingsTableViewData</key>
 	<array>
 		<dict>
@@ -119,6 +174,25 @@
 			</array>
 			<key>GroupFooterLocalizedKey</key>
 			<string>settings.security.file.protection.description</string>
+		</dict>
+		<dict>
+			<key>GroupHeaderLocalizedKey</key>
+			<string></string>
+			<key>GroupCells</key>
+			<array>
+				<dict>
+					<key>PreferenceIdentifier</key>
+					<string>SettingsPasscodeLockIdentifier</string>
+					<key>Type</key>
+					<string>AlfrescoSettingsLabel</string>
+					<key>DefaultValue</key>
+					<false/>
+					<key>LocalizedCellTitleKey</key>
+					<string>settings.security.passcode.lock</string>
+				</dict>
+			</array>
+			<key>GroupFooterLocalizedKey</key>
+			<string>settings.security.passcode.lock.description</string>
 		</dict>
 		<dict>
 			<key>GroupHeaderLocalizedKey</key>

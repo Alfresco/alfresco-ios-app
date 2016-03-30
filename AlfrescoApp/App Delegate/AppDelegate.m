@@ -36,7 +36,7 @@
 #import "NSDictionary+Extension.h"
 #import "UniversalDevice.h"
 #import "MainMenuLocalConfigurationBuilder.h"
-
+#import "SecurityManager.h"
 #import <HockeySDK/HockeySDK.h>
 
 @import MediaPlayer;
@@ -124,6 +124,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         if (!safeMode)
         {
             [[AccountManager sharedManager] removeAllAccounts];
+            [SecurityManager reset];
         }
         [self updateAppFirstLaunchFlag];
     }

@@ -21,6 +21,8 @@
 
 @implementation KeychainUtils
 
+static NSString *kKeychainItemServiceName = @"Alfresco";
+
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error
 {
 #ifndef DEBUG
@@ -115,6 +117,139 @@
         deleteSucceeded = NO;
     }
     return deleteSucceeded;
+}
+
+#pragma mark - Public Methods
+
++ (OSStatus)saveItem:(id)value forKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
+{
+    id existingValue = [self retrieveItemForKey:keychainItemId error:error];
+    
+    if (existingValue == nil)
+    {
+        NSMutableDictionary *keychainItem = [self keychainItem:keychainItemId withValue:value];
+        
+        OSStatus statusCode = SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
+        if (statusCode != errSecSuccess)
+        {
+            *error = [NSError errorWithDomain:@"SecItemAdd failed" code:statusCode userInfo:nil];
+        }
+        
+        return statusCode;
+    }
+    else
+    {
+        NSMutableDictionary *keychainItemQuery = [self keychainItem:keychainItemId];
+        NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
+        NSData *encodedValue = [NSData data];
+        
+        if(value != nil)
+        {
+            encodedValue = [NSKeyedArchiver archivedDataWithRootObject:value];
+        }
+        
+        [updateDictionary setObject:encodedValue forKey:(__bridge id)kSecValueData];
+        
+        OSStatus statusCode = SecItemUpdate((__bridge CFDictionaryRef)keychainItemQuery, (__bridge CFDictionaryRef)updateDictionary);
+        if (statusCode != errSecSuccess)
+        {
+            *error = [NSError errorWithDomain:@"SecItemUpdate failed" code:statusCode userInfo:nil];
+        }
+        
+        return statusCode;
+    }
+}
+
++ (id)retrieveItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
+{
+    NSMutableDictionary *keychainItemQuery = [self keychainItemQuery:keychainItemId];
+    
+    CFTypeRef decryptedItem = NULL;
+    OSStatus statusCode = SecItemCopyMatching((__bridge CFDictionaryRef)keychainItemQuery, &decryptedItem);
+    
+    if (statusCode == errSecSuccess)
+    {
+        NSData *decryptedData = (__bridge NSData *) decryptedItem;
+        id obj = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
+        return obj;
+    }
+    else if (statusCode == errSecItemNotFound)
+    {
+        *error = [NSError errorWithDomain:@"SecItemCopyMatching failed. Item not found" code:statusCode userInfo:nil];
+        return nil;
+    }
+    else
+    {
+        *error = [NSError errorWithDomain:@"SecItemCopyMatching failed " code:statusCode userInfo:nil];
+        return nil;
+    }
+}
+
++ (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
+{
+    NSMutableDictionary *keychainItemQuery = [self keychainItem:keychainItemId];
+    
+    OSStatus statusCode = SecItemDelete((__bridge CFDictionaryRef)keychainItemQuery);
+    
+    if (error)
+    {
+        if (statusCode == errSecItemNotFound)
+        {
+            // Already deleted; we're good
+            *error = [NSError errorWithDomain:@"SecItemDelete failed. Item not found" code:statusCode userInfo:nil];
+        }
+        else if (statusCode != noErr)
+        {
+            *error = [NSError errorWithDomain:@"SecItemDelete failed" code:statusCode userInfo:nil];
+        }
+    }
+    
+    return statusCode;
+}
+
+#pragma mark - Private Methods
+
++ (NSMutableDictionary *)keychainItem:(NSString *)keychainItemId
+{
+    // Create a new keychain item as a key/value pair dictionary
+    NSMutableDictionary *keychainItem = [[NSMutableDictionary alloc] init];
+    
+    // Set as generic password type
+    [keychainItem setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+    
+    // Set the unique key for this keychain item
+    [keychainItem setObject:keychainItemId forKey:(__bridge id)kSecAttrGeneric];
+    
+    // Set the service name
+    [keychainItem setObject:kKeychainItemServiceName forKey:(__bridge id)kSecAttrService];
+    
+    // Set the account name the same as the unique key
+    [keychainItem setObject:keychainItemId forKey:(__bridge id)kSecAttrAccount];
+    
+    return keychainItem;
+}
+
++ (NSMutableDictionary *)keychainItem:(NSString *)keychainItemId withValue:(id)value
+{
+    // Create a new keychain item as a key/value pair dictionary
+    NSMutableDictionary *keychainItem = [self keychainItem:keychainItemId];
+    
+    // Set the value as the encrypted data
+    NSData *encryptedData = [NSKeyedArchiver archivedDataWithRootObject:value];
+    [keychainItem setObject:encryptedData forKey:(__bridge id)kSecValueData];
+    
+    return keychainItem;
+}
+
++ (NSMutableDictionary *)keychainItemQuery:(NSString *)keychainItemId
+{
+    // Create a new keychain item query as a key/value pair dictionary
+    NSMutableDictionary *keychainItemQuery = [self keychainItem:keychainItemId];
+    
+    // Return the data (not the attributes) of the keychain item
+    [keychainItemQuery setObject:(id)kCFBooleanTrue forKey:(__bridge id)kSecReturnData];
+    
+    return keychainItemQuery;
 }
 
 @end

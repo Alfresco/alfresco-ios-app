@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10116"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PinBulletsView">
+            <connections>
+                <outletCollection property="_bullets" destination="cWE-57-RPo" id="6wx-6d-hQt"/>
+                <outletCollection property="_bullets" destination="rv2-qV-D1x" id="DbT-Da-jWH"/>
+                <outletCollection property="_bullets" destination="4hL-Hi-ho6" id="eBB-GF-pJJ"/>
+                <outletCollection property="_bullets" destination="NBf-AS-kWB" id="BYV-mZ-aAt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7e-85-DWk" userLabel="Bullets View">
+            <rect key="frame" x="0.0" y="0.0" width="98" height="17"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWE-57-RPo" userLabel="Bullet 1" customClass="BulletView">
+                    <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
+                    <color key="backgroundColor" red="0.4039215686" green="0.4039215686" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="17" id="sSJ-jd-lWf"/>
+                        <constraint firstAttribute="height" constant="17" id="zcz-Vr-WfP"/>
+                    </constraints>
+                </view>
+                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rv2-qV-D1x" userLabel="Bullet 2" customClass="BulletView">
+                    <rect key="frame" x="27" y="0.0" width="17" height="17"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="3Sc-di-pAl"/>
+                        <constraint firstAttribute="width" constant="17" id="arq-pu-VNI"/>
+                    </constraints>
+                </view>
+                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4hL-Hi-ho6" userLabel="Bullet 3" customClass="BulletView">
+                    <rect key="frame" x="54" y="0.0" width="17" height="17"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="sJC-Qh-2gE"/>
+                        <constraint firstAttribute="width" constant="17" id="zuH-Xy-fGo"/>
+                    </constraints>
+                </view>
+                <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NBf-AS-kWB" userLabel="Bullet 4" customClass="BulletView">
+                    <rect key="frame" x="81" y="0.0" width="17" height="17"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="NGc-Oz-zEO"/>
+                        <constraint firstAttribute="width" constant="17" id="yJb-sy-Ktj"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="NBf-AS-kWB" firstAttribute="centerY" secondItem="h7e-85-DWk" secondAttribute="centerY" id="3wy-t6-Gk4"/>
+                <constraint firstItem="4hL-Hi-ho6" firstAttribute="leading" secondItem="rv2-qV-D1x" secondAttribute="trailing" constant="10" id="CNq-i8-qf6"/>
+                <constraint firstItem="cWE-57-RPo" firstAttribute="centerY" secondItem="h7e-85-DWk" secondAttribute="centerY" id="MaM-Wi-dPo"/>
+                <constraint firstItem="NBf-AS-kWB" firstAttribute="leading" secondItem="4hL-Hi-ho6" secondAttribute="trailing" constant="10" id="Miw-H8-N00"/>
+                <constraint firstItem="rv2-qV-D1x" firstAttribute="centerY" secondItem="h7e-85-DWk" secondAttribute="centerY" id="Nii-KQ-UOS"/>
+                <constraint firstItem="cWE-57-RPo" firstAttribute="leading" secondItem="h7e-85-DWk" secondAttribute="leading" id="QtP-oE-LfY"/>
+                <constraint firstItem="rv2-qV-D1x" firstAttribute="leading" secondItem="cWE-57-RPo" secondAttribute="trailing" constant="10" id="TJ3-Qa-JYO"/>
+                <constraint firstAttribute="width" constant="98" id="df1-Ia-7y9"/>
+                <constraint firstItem="4hL-Hi-ho6" firstAttribute="centerY" secondItem="h7e-85-DWk" secondAttribute="centerY" id="g3M-dG-vyX"/>
+                <constraint firstAttribute="height" constant="17" id="jC5-uO-els"/>
+                <constraint firstAttribute="trailing" secondItem="NBf-AS-kWB" secondAttribute="trailing" id="l6X-Eu-ZdS"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

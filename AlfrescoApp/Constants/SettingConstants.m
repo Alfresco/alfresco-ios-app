@@ -22,11 +22,13 @@
 NSString * const kSettingsDidChangeNotification = @"SettingsDidChangeNotification";
 NSString * const kSettingChangedFromKey = @"SettingChangedFromKey";
 NSString * const kSettingChangedToKey = @"SettingChangedToKey";
+NSString * const kSettingResetEntireApp = @"SettingResetEntireApp";
 
 // Plist keys
 NSString * const kSettingsLocalizedTitleKey = @"LocalizedTitleKey";
 NSString * const kSettingsRestrictionHasPaidAccount = @"HasPaidAccount";
 NSString * const kSettingsRestrictionCanSendEmail = @"CanSendEmail";
+NSString * const kSettingsRestrictionCanUseTouchID = @"CanUseTouchID";
 NSString * const kSettingsTableViewData = @"SettingsTableViewData";
 NSString * const kSettingsGroupHeaderLocalizedKey = @"GroupHeaderLocalizedKey";
 NSString * const kSettingsGroupFooterLocalizedKey = @"GroupFooterLocalizedKey";
@@ -35,6 +37,8 @@ NSString * const kSettingsCellPreferenceIdentifier = @"PreferenceIdentifier";
 NSString * const kSettingsCellType = @"Type";
 NSString * const kSettingsCellDefaultValue = @"DefaultValue";
 NSString * const kSettingsCellLocalizedTitleKey = @"LocalizedCellTitleKey";
+NSString * const kSettingsPasscodeLockTableViewData = @"PasscodeLockTableViewData";
+NSString * const kSettingsPasscodeLockLocalizedTitleKey = @"PasscodeLockLocalizedTitleKey";
 
 // Cell types
 NSString * const kSettingsToggleCell = @"AlfrescoSettingsToggle";
@@ -57,6 +61,21 @@ NSString * const kSettingsResetAccountsIdentifier = @"SettingsResetAccountsIdent
 NSString * const kSettingsResetEntireAppIdentifier = @"SettingsResetEntireAppIdentifier";
 NSString * const kSettingsFullTextSearchIdentifier = @"SettingsFullTextSearchIdentifier";
 NSString * const kSettingsSendFeedbackIdentifier = @"SettingsSendFeedbackIdentifier";
-
+NSString * const kSettingsPasscodeLockIdentifier = @"SettingsPasscodeLockIdentifier";
+NSString * const kSettingsSecurityUsePasscodeLockIdentifier = @"SettingsSecurityUsePasscodeLockIdentifier";
+NSString * const kSettingsChangePasscodeIdentifier = @"SettingsChangePasscodeIdentifier";
+NSString * const kSettingsPasscodeTouchIDIdentifier = @"SettingsPasscodeTouchIDIdentifier";
 NSString * const kSettingsSendDiagnosticsEnable = @"SettingsDiagnosticsEnable";
 NSString * const kSettingsSendFeedbackAlfrescoRecipient = @"mobile@alfresco.com";
+
+// Pin Screen strings
+NSString * const kSettingsSecurityPasscodeMissmatchString = @"settings.security.passcode.missmatch"; // "Passcodes did not match. Try again."
+NSString * const kSettingsSecurityPasscodeEnterString = @"settings.security.passcode.enter"; // "Enter your Alfresco Passcode"
+NSString * const kSettingsSecurityPasscodeReenterString = @"settings.security.passcode.re-enter"; // "Re-enter your Alfresco Passcode"
+NSString * const kSettingsSecurityPasscodeAttemptsOne = @"settings.security.passcode.attempts.1"; // "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files and local files will be wiped."
+NSString * const kSettingsSecurityPasscodeAttemptsMany = @"settings.security.passcode.attempts.several"; // @"%d attempts remaining"
+NSString * const kSettingsSecurityPasscodeSetTitle = @"settings.security.passcode.set.title"; // "Set Passcode"
+NSString * const kSettingsSecurityPasscodeEnterTitle = @"settings.security.passcode.enter.title"; // "Enter Passcode"
+
+NSString * const kSettingsSecurityPasscodeTurnOn = @"settings.security.passcode.turn.on"; // "Turn Passcode On"
+NSString * const kSettingsSecurityPasscodeTurnOff = @"settings.security.passcode.turn.off"; // "Turn Passcode Off"

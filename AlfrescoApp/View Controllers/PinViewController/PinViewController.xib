@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PinViewController">
+            <connections>
+                <outlet property="_bulletsView" destination="2dh-dE-Gqd" id="Pm9-hG-qnR"/>
+                <outlet property="_bulletsViewTopConstraint" destination="GCK-Db-RgF" id="Z4Y-OZ-STT"/>
+                <outlet property="_logoHeightConstraint" destination="WXw-7b-bhZ" id="Lsb-ks-hnh"/>
+                <outlet property="_logoTopConstraint" destination="JwO-U9-IxL" id="HvZ-ai-3sZ"/>
+                <outlet property="_subtitleLabel" destination="kWJ-nb-tEc" id="5UC-nz-PTj"/>
+                <outlet property="_subtitleLabelTopConstraint" destination="cxS-w9-UXh" id="EUZ-RH-VIJ"/>
+                <outlet property="_titleLabel" destination="7fE-e8-92b" id="G9c-R6-NsF"/>
+                <outlet property="_titleLabelTopConstraint" destination="EoA-S1-6Qe" id="RP1-rh-8wY"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your Alfresco Passcode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fE-e8-92b">
+                    <rect key="frame" x="20" y="161" width="560" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="wIB-K0-fcw"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2dh-dE-Gqd" userLabel="Bullets View" customClass="PinBulletsView">
+                    <rect key="frame" x="251" y="206" width="98" height="17"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="98" id="pPW-h2-KZk"/>
+                        <constraint firstAttribute="height" constant="17" id="yCT-6M-fQz"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 attempt remaining." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWJ-nb-tEc">
+                    <rect key="frame" x="20" y="253" width="560" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="abP-KR-rln"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="abP-KR-rln"/>
+                        </mask>
+                    </variation>
+                </label>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="alfrescoColourLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ads-q4-Ade">
+                    <rect key="frame" x="263" y="40" width="74" height="74"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="74" id="WXw-7b-bhZ"/>
+                        <constraint firstAttribute="width" constant="74" id="gUx-Bc-H0e"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="kWJ-nb-tEc" secondAttribute="trailing" constant="20" id="31F-H8-fMa"/>
+                <constraint firstItem="7fE-e8-92b" firstAttribute="top" secondItem="Ads-q4-Ade" secondAttribute="bottom" constant="47" id="EoA-S1-6Qe"/>
+                <constraint firstItem="2dh-dE-Gqd" firstAttribute="top" secondItem="7fE-e8-92b" secondAttribute="bottom" constant="20" id="GCK-Db-RgF"/>
+                <constraint firstItem="kWJ-nb-tEc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="Gdy-rS-DRL"/>
+                <constraint firstAttribute="trailing" secondItem="7fE-e8-92b" secondAttribute="trailing" constant="20" id="HoB-zu-d5a"/>
+                <constraint firstItem="Ads-q4-Ade" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="JwO-U9-IxL"/>
+                <constraint firstItem="kWJ-nb-tEc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="MlL-Ir-1HT"/>
+                <constraint firstItem="7fE-e8-92b" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="NcZ-jA-frQ"/>
+                <constraint firstItem="kWJ-nb-tEc" firstAttribute="top" secondItem="2dh-dE-Gqd" secondAttribute="bottom" constant="30" id="cxS-w9-UXh"/>
+                <constraint firstItem="2dh-dE-Gqd" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="flK-uA-ZTz"/>
+                <constraint firstItem="Ads-q4-Ade" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="kcO-Yj-h4e"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <point key="canvasLocation" x="474" y="160"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="alfrescoColourLogo.png" width="200" height="200"/>
+    </resources>
+</document>

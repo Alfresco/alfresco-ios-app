@@ -20,7 +20,6 @@
 #import "PreferenceManager.h"
 #import "SettingToggleCell.h"
 #import "SettingTextFieldCell.h"
-#import "SettingConstants.h"
 #import "SettingLabelCell.h"
 #import "AboutViewController.h"
 #import "AccountManager.h"
@@ -31,8 +30,8 @@
 #import "DownloadManager.h"
 #import <MessageUI/MessageUI.h>
 #import <sys/utsname.h>
-
-static NSUInteger const kCellLeftInset = 10;
+#import "PinViewController.h"
+#import "UniversalDevice.h"
 
 @interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
@@ -61,21 +60,26 @@ static NSUInteger const kCellLeftInset = 10;
     
     self.allowsPullToRefresh = NO;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(doneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = doneButton;
+    if (self.settingsType == SettingsTypeGeneral)
+    {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                    target:self
+                                                                                    action:@selector(doneButtonPressed:)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetEntireApp:) name:kSettingResetEntireApp object:nil];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferenceDidChange:) name:kSettingsDidChangeNotification object:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
-
-    self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title");
-    self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
+    [self buildTableDataSource];
     [self.tableView reloadData];
 }
 
@@ -83,27 +87,64 @@ static NSUInteger const kCellLeftInset = 10;
 {
     [super viewDidAppear:animated];
     
-    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSettingsDetails];
+    if (self.settingsType == SettingsTypeGeneral)
+    {
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSettingsDetails];
+    }
 }
 
 #pragma mark - Private Functions
+
+- (void) buildTableDataSource
+{
+    NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
+    
+    switch (self.settingsType)
+    {
+        case SettingsTypeGeneral:
+            self.title = NSLocalizedString([dictionary objectForKey:kSettingsLocalizedTitleKey], @"Settings Title");
+            self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsTableViewData]];
+            break;
+            
+        case SettingsTypePasscode:
+            self.title = NSLocalizedString([dictionary objectForKey:kSettingsPasscodeLockLocalizedTitleKey], @"Passcode Settings Title");
+            self.tableViewData = [self filteredPreferences:[dictionary objectForKey:kSettingsPasscodeLockTableViewData]];
+            break;
+            
+        default:
+            break;
+    }
+}
 
 - (NSMutableArray *)filteredPreferences:(NSMutableArray *)unfilteredPreferences
 {
     NSMutableArray *filteredPreferences = unfilteredPreferences;
     
-    // Remove Enterprise-only preferences
-    BOOL hasPaidAccounts = [[AccountManager sharedManager] numberOfPaidAccounts] > 0;
-    if (!hasPaidAccounts)
+    if (self.settingsType == SettingsTypeGeneral)
     {
-        filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionHasPaidAccount];
+        // Remove Enterprise-only preferences
+        BOOL hasPaidAccounts = [[AccountManager sharedManager] numberOfPaidAccounts] > 0;
+        if (!hasPaidAccounts)
+        {
+            filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionHasPaidAccount];
+        }
+        
+        // Remove Feedback option if no email capability
+        BOOL canSendMail = [MFMailComposeViewController canSendMail];
+        if (!canSendMail)
+        {
+            filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionCanSendEmail];
+        }
     }
-    
-    // Remove Feedback option if no email capability
-    BOOL canSendMail = [MFMailComposeViewController canSendMail];
-    if (!canSendMail)
+    else if (self.settingsType == SettingsTypePasscode)
     {
-        filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionCanSendEmail];
+        BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
+        
+        if (!shouldUsePasscodeLock)
+        {
+            filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionCanUseTouchID];
+        }
     }
     
     return filteredPreferences;
@@ -190,7 +231,7 @@ static NSUInteger const kCellLeftInset = 10;
     {
         reuseIdentifier = kSettingsLabelCellReuseIdentifier;
     }
-    else if ([cellPreferenceType isEqualToString:kSettingsButtonCellReuseIdentifier])
+    else if ([cellPreferenceType isEqualToString:kSettingsButtonCell])
     {
         reuseIdentifier = kSettingsButtonCellReuseIdentifier;
     }
@@ -211,6 +252,14 @@ static NSUInteger const kCellLeftInset = 10;
     else if ([preferenceIdentifier isEqualToString:kSettingsSendFeedbackIdentifier])
     {
         [self sendFeedbackHandler];
+    }
+    else if ([preferenceIdentifier isEqualToString:kSettingsSecurityUsePasscodeLockIdentifier])
+    {
+        [self enableOrDisablePasscodeHandler];
+    }
+    else if ([preferenceIdentifier isEqualToString:kSettingsChangePasscodeIdentifier])
+    {
+        [self changePasscodeHandler];
     }
 }
 
@@ -254,33 +303,12 @@ static NSUInteger const kCellLeftInset = 10;
                                                       cancelButtonTitle:NSLocalizedString(@"No", @"No")
                                                       otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
     
+    __weak typeof(self) weakSelf = self;
+    
     [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         if (!isCancelButton)
         {
-            // Reset accounts, delete cache databases, tmp folder, downloads
-            // Remove accounts
-            [[AccountManager sharedManager] removeAllAccounts];
-            // Delete cache
-            CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-            [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-            [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
-            [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
-            // Remove downloads
-            [[DownloadManager sharedManager] removeAllDownloads];
-            // Remove all contents of the temp folder
-            [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
-            
-            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                              action:kAnalyticsEventActionClearData
-                                                               label:kAnalyticsEventLabelFull
-                                                               value:@1];
-            
-            UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                                   message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                         otherButtonTitles:nil];
-            [confirmation show];
+            [weakSelf resetEntireApp:nil];
         }
     }];
 }
@@ -308,11 +336,34 @@ static NSUInteger const kCellLeftInset = 10;
     }
 }
 
+- (void)enableOrDisablePasscodeHandler
+{
+    BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
+    shouldUsePasscodeLock = !shouldUsePasscodeLock;
+    
+    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:shouldUsePasscodeLock ? PinFlowSet : PinFlowUnset];
+    [self presentViewController:pinNavigationViewController animated:YES completion:nil];
+}
+
+- (void)changePasscodeHandler
+{
+    displayInformationMessage(@"This feature is not implemented yet.");
+    return;
+    
+    // To be fully implemented in next sprint.
+    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange];
+    [self presentViewController:pinNavigationViewController animated:YES completion:nil];
+}
+
 - (BOOL)cellEnabled:(SettingCell *)cell
 {
     if ([cell.preferenceIdentifier isEqualToString:kSettingsSendDiagnosticsIdentifier])
     {
         return [[PreferenceManager sharedManager] isSendDiagnosticsEnable];
+    }
+    else if ([cell.preferenceIdentifier isEqualToString:kSettingsChangePasscodeIdentifier])
+    {
+        return [[PreferenceManager sharedManager] shouldUsePasscodeLock];
     }
     
     return YES;
@@ -435,6 +486,12 @@ static NSUInteger const kCellLeftInset = 10;
 
 #pragma mark - Table view delegate
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SettingCell *cell = (SettingCell *)[tableView cellForRowAtIndexPath:indexPath];
+    return cell.enabled;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SettingCell *cell = (SettingCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -443,10 +500,57 @@ static NSUInteger const kCellLeftInset = 10;
         AboutViewController *aboutViewController = [[AboutViewController alloc] init];
         [self.navigationController pushViewController:aboutViewController animated:YES];
     }
+    else if ([cell.preferenceIdentifier isEqualToString:kSettingsPasscodeLockIdentifier])
+    {
+        SettingsViewController *passcodeSettingsViewController = [[SettingsViewController alloc] initWithSession:self.session];
+        passcodeSettingsViewController.settingsType = SettingsTypePasscode;
+        [self.navigationController pushViewController:passcodeSettingsViewController animated:YES];
+    }
     else
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+#pragma mark - Notifications Handlers
+
+- (void)preferenceDidChange:(NSNotification *)notification
+{
+    NSString *preferenceKeyChanged = notification.object;
+    
+    if ([preferenceKeyChanged isEqualToString:kSettingsSecurityUsePasscodeLockIdentifier])
+    {
+        [self buildTableDataSource];
+        [self.tableView reloadData];
+    }
+}
+
+- (void)resetEntireApp:(NSNotification *)notification
+{
+    // Reset accounts, delete cache databases, tmp folder, downloads
+    // Remove accounts
+    [[AccountManager sharedManager] removeAllAccounts];
+    // Delete cache
+    CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+    [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+    [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
+    [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
+    // Remove downloads
+    [[DownloadManager sharedManager] removeAllDownloads];
+    // Remove all contents of the temp folder
+    [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                      action:kAnalyticsEventActionClearData
+                                                       label:kAnalyticsEventLabelFull
+                                                       value:@1];
+    
+    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                           message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                 otherButtonTitles:nil];
+    [confirmation show];
 }
 
 #pragma mark - SettingsCellProtocol Functions
@@ -461,6 +565,11 @@ static NSUInteger const kCellLeftInset = 10;
     else
     {
         [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
+        
+        if ([preferenceIdentifier isEqualToString:kSettingsPasscodeTouchIDIdentifier])
+        {
+            displayInformationMessage(@"This feature is not implemented yet.");
+        }
     }
 }
 
