@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -118,7 +118,7 @@
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="wy0-2P-Qsp" firstAttribute="trailing" secondItem="JTx-r6-rwq" secondAttribute="leading" id="17C-GB-oY6"/>
+                                    <constraint firstItem="JTx-r6-rwq" firstAttribute="leading" secondItem="wy0-2P-Qsp" secondAttribute="trailing" id="17C-GB-oY6"/>
                                     <constraint firstAttribute="bottom" secondItem="uuu-U3-Dk6" secondAttribute="bottom" id="3r7-dp-g2S"/>
                                     <constraint firstItem="JTx-r6-rwq" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="6vX-wk-fOf"/>
                                     <constraint firstItem="uuu-U3-Dk6" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="AxP-Jk-g7F"/>
@@ -192,11 +192,13 @@
                 <outlet property="editView" destination="iIc-1b-X5G" id="0ys-kl-0dF"/>
                 <outlet property="editViewLeadingContraint" destination="ZT0-1F-6ak" id="4Ak-oR-gHo"/>
                 <outlet property="editViewWidthContraint" destination="por-3m-VF8" id="kM6-mb-b97"/>
+                <outlet property="favoriteIconRightSpaceConstraint" destination="wqN-pq-ESd" id="66u-wm-cHj"/>
                 <outlet property="favoriteIconWidthConstraint" destination="iEM-dI-bCH" id="MEU-Dw-C2F"/>
                 <outlet property="favoriteStatusImageView" destination="uuu-U3-Dk6" id="n0i-dF-FiC"/>
                 <outlet property="filename" destination="dt6-M8-QGz" id="hh8-7O-EIA"/>
                 <outlet property="image" destination="Fri-0V-cC7" id="zoE-gL-L9S"/>
                 <outlet property="isSyncNodeImageView" destination="wy0-2P-Qsp" id="8up-QS-Sga"/>
+                <outlet property="isSyncRightSpaceConstraint" destination="17C-GB-oY6" id="Rjx-Ub-ST2"/>
                 <outlet property="leadingContentViewContraint" destination="V14-yf-vs5" id="w3i-0i-8cI"/>
                 <outlet property="nodeNameLeadingConstraint" destination="Mzc-06-FcE" id="Krn-fu-2YQ"/>
                 <outlet property="nodeNameTopSpaceConstraint" destination="SFR-PQ-fhq" id="nkx-9G-zbh"/>
