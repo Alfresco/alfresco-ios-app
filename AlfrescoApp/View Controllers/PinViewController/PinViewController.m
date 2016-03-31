@@ -32,11 +32,9 @@
 
 @implementation PinViewController
 {
+    __weak IBOutlet NSLayoutConstraint *_containerHeightConstraint;
     __weak IBOutlet NSLayoutConstraint *_logoTopConstraint;
     __weak IBOutlet NSLayoutConstraint *_logoHeightConstraint;
-    __weak IBOutlet NSLayoutConstraint *_titleLabelTopConstraint;
-    __weak IBOutlet NSLayoutConstraint *_bulletsViewTopConstraint;
-    __weak IBOutlet NSLayoutConstraint *_subtitleLabelTopConstraint;
     __weak IBOutlet UILabel *_titleLabel;
     __weak IBOutlet UILabel *_subtitleLabel;
     __weak IBOutlet PinBulletsView *_bulletsView;
@@ -74,13 +72,36 @@
 {
     [super viewDidLoad];
     
-    [self setup];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
     [self becomeFirstResponder];
+    [self setup];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Orientation
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    [self setupConstraints];
+}
+
+#pragma mark - Notification Handlers
+
+- (void)keyboardWillShow:(NSNotification*)notification
+{
+    NSDictionary *info = [notification userInfo];
+    CGRect keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    _containerHeightConstraint.constant = CGRectGetMinY(keyboardFrame)-64; // subtract nav bar and status bar
 }
 
 #pragma mark - UIResponder Methods
@@ -215,6 +236,8 @@
         _shouldAllowPinEntry = NO;
         
         __weak typeof(self) weakSelf = self;
+        
+        // This delay allows the user to see the 4th bullet getting filled.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeReenterString, @"Re-enter your Alfresco Passcode");
             [weakSelf fillBullets:NO];
@@ -330,7 +353,7 @@
     {
         _subtitleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeAttemptsOne, @"1 attempt remaining");
     }
-    
+
     _subtitleLabel.hidden = NO;
 }
 
@@ -365,22 +388,17 @@
 
 - (void)setupConstraints
 {
-    if (IS_IPAD || IS_IPHONE_6 || IS_IPHONE_6_PLUS)
+    if (IS_IPAD)
     {
-        _logoTopConstraint.constant = 40;
+        UIInterfaceOrientation toOrientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+        _logoTopConstraint.constant = UIInterfaceOrientationIsPortrait(toOrientation) ? 140 : 40;
     }
-    else if (IS_IPHONE_4)
+    
+    // Remove the logo for small screen devices (3.5" devices).
+    if ([[UIScreen mainScreen] bounds].size.height < 568)
     {
-        _logoHeightConstraint.constant = 50;
-        _logoTopConstraint.constant = 10;
-        _titleLabelTopConstraint.constant = 10;
-        _bulletsViewTopConstraint.constant = 10;
-        _subtitleLabelTopConstraint.constant = 10;
-    }
-    else if (IS_IPHONE_5)
-    {
-        _logoTopConstraint.constant = 25;
-        _titleLabelTopConstraint.constant = 20;
+        _logoHeightConstraint.constant = 0;
+        _logoTopConstraint.constant = 0;
     }
 }
 
