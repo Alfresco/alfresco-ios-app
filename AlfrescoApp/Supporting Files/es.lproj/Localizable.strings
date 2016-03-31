@@ -655,7 +655,7 @@
 "settings.security.file.protection" = "Protección de ficheros";
 "settings.security.file.protection.description" = "Los ficheros cifrados se almacenan en este dispositivo al bloquearlo.";
 "settings.security.passcode.lock" = "Passcode Lock";
-"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files and local files will be wiped after 10 failed passcode attempts.";
+"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files and local files will be wiped after %d failed passcode attempts.";
 "settings.security.passcode.lock.title" = "Passcode";
 "settings.security.passcode.touch.id" = "Touch ID";
 "settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the Alfresco app.";

@@ -33,7 +33,7 @@
     {
         _onOffLabel.hidden = NO;
         BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
-        _onOffLabel.text = shouldUsePasscodeLock ? NSLocalizedString(@"On", @"Off") : NSLocalizedString(@"Off", @"Off");
+        _onOffLabel.text = shouldUsePasscodeLock ? NSLocalizedString(@"On", @"On") : NSLocalizedString(@"Off", @"Off");
     }
     else
     {

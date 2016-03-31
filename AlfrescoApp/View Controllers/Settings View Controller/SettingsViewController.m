@@ -448,7 +448,11 @@
     NSString *groupFooterTitle = [groupInfoDictionary objectForKey:kSettingsGroupFooterLocalizedKey];
     
     // TODO: Find a cleaner way to replace this section footer
-    if ([groupFooterTitle isEqualToString:@"settings.send.diagnostics.description"])
+    if ([groupFooterTitle isEqualToString:@"settings.security.passcode.lock.description"])
+    {
+        return [NSString stringWithFormat:NSLocalizedString(groupFooterTitle, @"Section footer title"), kRemainingAttemptsMaxValue];
+    }
+    else if ([groupFooterTitle isEqualToString:@"settings.send.diagnostics.description"])
     {
         if (![[PreferenceManager sharedManager] isSendDiagnosticsEnable])
         {

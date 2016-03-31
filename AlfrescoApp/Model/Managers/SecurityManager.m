@@ -19,8 +19,8 @@
 #import "SecurityManager.h"
 #import "KeychainUtils.h"
 
-NSString * const kPinKey = @"PinCodeKey-t5";
-NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey-t5";
+NSString * const kPinKey = @"PinCodeKey";
+NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 
 @implementation SecurityManager
 

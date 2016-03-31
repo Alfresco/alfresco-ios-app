@@ -24,8 +24,6 @@
 #import "KeychainUtils.h"
 #import "SecurityManager.h"
 
-#define kRemainingAttemptsMaxValue 10
-
 @interface PinViewController ()
 
 @property (nonatomic) PinFlow pinFlow;
@@ -94,6 +92,13 @@
 
 #pragma - UIKeyInput Methods
 
+// Responders that implement the UIKeyInput protocol will be driven by the system-provided keyboard,
+// which will be made available whenever a conforming responder becomes first responder.
+
+/*
+ A Boolean value that indicates whether the text-entry objects has any text.
+ YES if the backing store has textual content, NO otherwise.
+ */
 - (BOOL)hasText
 {
     NSMutableString *pin = [self pinInUse];
@@ -101,6 +106,10 @@
     return pin.length != 0;
 }
 
+/*
+ Insert a character into the displayed text.
+ Add the character text to your class’s backing store at the index corresponding to the cursor and redisplay the text.
+ */
 - (void)insertText:(NSString *)text
 {
     if (_shouldAllowPinEntry == NO)
@@ -135,6 +144,10 @@
     }
 }
 
+/*
+ Delete a character from the displayed text.
+ Remove the character just before the cursor from your class’s backing store and redisplay the text.
+ */
 - (void)deleteBackward
 {
     NSMutableString *pin = [self pinInUse];
@@ -150,6 +163,9 @@
 }
 
 #pragma mark - UITextInputTraits Methods
+
+// Controls features of text widgets (or other custom objects that might wish
+// to respond to keyboard input).
 
 - (UIKeyboardType)keyboardType
 {
@@ -199,8 +215,7 @@
         _shouldAllowPinEntry = NO;
         
         __weak typeof(self) weakSelf = self;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeReenterString, @"Re-enter your Alfresco Passcode");
             [weakSelf fillBullets:NO];
             _shouldAllowPinEntry = YES;
@@ -225,13 +240,11 @@
             _step = 1;
             _enteredPin = [NSMutableString string];
             _reenteredPin = [NSMutableString string];
-            [self fillBullets:NO];
             
-            CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.x"];
-            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-            animation.duration = 0.6;
-            animation.values = @[ @(-20), @(20), @(-20), @(20), @(-10), @(10), @(-5), @(5), @(0) ];
-            [_bulletsView.layer addAnimation:animation forKey:@"shake"];
+            __weak typeof(self) weakSelf = self;
+            [_bulletsView shakeWithCompletionBlock:^{
+                [weakSelf fillBullets:NO];
+            }];
         }
     }
 }

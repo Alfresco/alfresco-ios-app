@@ -18,10 +18,10 @@
 
 #import "BulletView.h"
 
-#define kColorBulletBorder  [UIColor colorWithWhite: 0.4 alpha: 1.0]
-#define kColorBulletBlank   [UIColor whiteColor]
-#define kColorBulletFull    [UIColor colorWithWhite: 0.76 alpha: 1.0]
-#define kBulletBorderWidth  1
+#define BULLET_BORDER_COLOR [UIColor colorWithWhite: 0.4 alpha: 1.0]
+#define BULLET_BLANK_COLOR  [UIColor whiteColor]
+#define BULLET_FULL_COLOR   [UIColor colorWithWhite: 0.76 alpha: 1.0]
+#define BULLET_BORDER_WIDTH 1
 
 @implementation BulletView
 
@@ -48,8 +48,8 @@
 - (void)commonSetup
 {
     self.layer.cornerRadius = MIN(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))/2;
-    self.layer.borderColor = kColorBulletBorder.CGColor;
-    self.layer.borderWidth = kBulletBorderWidth;
+    self.layer.borderColor = BULLET_BORDER_COLOR.CGColor;
+    self.layer.borderWidth = BULLET_BORDER_WIDTH;
     self.blank = YES;
 }
 
@@ -58,7 +58,7 @@
 - (void) setBlank:(BOOL)blank
 {
     _blank = blank;
-    self.backgroundColor = _blank ? kColorBulletBlank : kColorBulletFull;
+    self.backgroundColor = _blank ? BULLET_BLANK_COLOR : BULLET_FULL_COLOR;
 }
 
 @end

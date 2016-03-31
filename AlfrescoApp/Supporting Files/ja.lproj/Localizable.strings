@@ -655,7 +655,7 @@
 "settings.security.file.protection" = "ファイルの保護";
 "settings.security.file.protection.description" = "デバイスがロックされているときに、デバイスに保存されているファイルを暗号化します。";
 "settings.security.passcode.lock" = "Passcode Lock";
-"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files and local files will be wiped after 10 failed passcode attempts.";
+"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files and local files will be wiped after %d failed passcode attempts.";
 "settings.security.passcode.lock.title" = "Passcode";
 "settings.security.passcode.touch.id" = "Touch ID";
 "settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the Alfresco app.";
