@@ -75,6 +75,17 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     return [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
 }
 
+- (BOOL)shouldUsePasscodeLock
+{
+    return [[self preferenceForIdentifier:kSettingsSecurityUsePasscodeLockIdentifier] boolValue];
+}
+
+- (BOOL)shouldUseTouchID
+{
+    return NO;
+    // To be implemented in next sprint
+}
+
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier
 {
     return [self.preferences valueForKey:preferenceIdentifier];
@@ -113,26 +124,36 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:pListPath];
-    NSArray *allSettings = dictionary[kSettingsTableViewData];
     
-    for (NSDictionary *sectionDictionary in allSettings)
-    {
-        NSArray *allCellsInfo = sectionDictionary[kSettingsGroupCells];
-        for (NSDictionary *cellInfo in allCellsInfo)
+    __weak typeof(self) weakSelf = self;
+    
+    void (^addPreferences)(NSArray *) = ^void(NSArray *settingsArray){
+        for (NSDictionary *sectionDictionary in settingsArray)
         {
-            NSString *preferenceIdentifier = cellInfo[kSettingsCellPreferenceIdentifier];
-            
-            // Check for missing preferences, or preferences of the wrong type
-            if (self.preferences[preferenceIdentifier] == nil ||
-                ![self.preferences[preferenceIdentifier] isKindOfClass:[cellInfo[kSettingsCellDefaultValue] class]])
+            NSArray *allCellsInfo = sectionDictionary[kSettingsGroupCells];
+            for (NSDictionary *cellInfo in allCellsInfo)
             {
-                // Set the default value
-                // MOBILE-3045: Devices running iOS 8 refuse to recognise the preferences property as mutable so re-create
-                self.preferences = [NSMutableDictionary dictionaryWithDictionary:self.preferences];
-                self.preferences[preferenceIdentifier] = cellInfo[kSettingsCellDefaultValue];
+                NSString *preferenceIdentifier = cellInfo[kSettingsCellPreferenceIdentifier];
+                
+                // Check for missing preferences, or preferences of the wrong type
+                if (weakSelf.preferences[preferenceIdentifier] == nil ||
+                    ![weakSelf.preferences[preferenceIdentifier] isKindOfClass:[cellInfo[kSettingsCellDefaultValue] class]])
+                {
+                    // Set the default value
+                    // MOBILE-3045: Devices running iOS 8 refuse to recognise the preferences property as mutable so re-create
+                    weakSelf.preferences = [NSMutableDictionary dictionaryWithDictionary:self.preferences];
+                    weakSelf.preferences[preferenceIdentifier] = cellInfo[kSettingsCellDefaultValue];
+                }
             }
         }
-    }
+    };
+
+    NSArray *allSettings = dictionary[kSettingsTableViewData];
+    addPreferences(allSettings);
+    
+    // Add Passcode preferences
+    NSArray *passcodeSettingsArray = dictionary[kSettingsPasscodeLockTableViewData];
+    addPreferences(passcodeSettingsArray);
 
     [defaults setObject:self.preferences forKey:kPreferenceKey];
     [defaults synchronize];

@@ -18,9 +18,11 @@
   
 #import "ParentListViewController.h"
 #import "DismissCompletionProtocol.h"
+#import "SettingConstants.h"
 
 @interface SettingsViewController : ParentListViewController <DismissCompletionProtocol>
 
 @property (nonatomic, copy) DismissCompletionBlock dismissCompletionBlock;
+@property (nonatomic) SettingsType settingsType;
 
 @end

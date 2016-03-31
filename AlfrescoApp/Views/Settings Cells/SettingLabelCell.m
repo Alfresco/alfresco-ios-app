@@ -17,7 +17,28 @@
  ******************************************************************************/
  
 #import "SettingLabelCell.h"
+#import "SettingConstants.h"
+#import "PreferenceManager.h"
 
 @implementation SettingLabelCell
+{
+    __weak IBOutlet UILabel *_onOffLabel;
+}
+
+- (void)updateCellForCellInfo:(NSDictionary *)cellInfo value:(id)cellValue delegate:(id<SettingsCellProtocol>)delegate
+{
+    [super updateCellForCellInfo:cellInfo value:cellValue delegate:delegate];
+    
+    if ([cellInfo[@"PreferenceIdentifier"] isEqualToString: kSettingsPasscodeLockIdentifier])
+    {
+        _onOffLabel.hidden = NO;
+        BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
+        _onOffLabel.text = shouldUsePasscodeLock ? NSLocalizedString(@"On", @"On") : NSLocalizedString(@"Off", @"Off");
+    }
+    else
+    {
+        _onOffLabel.hidden = YES;
+    }
+}
 
 @end
