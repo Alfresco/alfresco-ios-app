@@ -258,7 +258,7 @@
         else
         {
             _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeEnterString, @"Enter your Alfresco Passcode");
-            _subtitleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeMissmatchString, @"Passcodes did not match. Try again.");
+            _subtitleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeMissmatchString, @"Passcodes didn't match. Try again.");
             _subtitleLabel.hidden = NO;
             _step = 1;
             _enteredPin = [NSMutableString string];

@@ -69,10 +69,10 @@ NSString * const kSettingsSendDiagnosticsEnable = @"SettingsDiagnosticsEnable";
 NSString * const kSettingsSendFeedbackAlfrescoRecipient = @"mobile@alfresco.com";
 
 // Pin Screen strings
-NSString * const kSettingsSecurityPasscodeMissmatchString = @"settings.security.passcode.missmatch"; // "Passcodes did not match. Try again."
+NSString * const kSettingsSecurityPasscodeMissmatchString = @"settings.security.passcode.missmatch"; // "Passcodes didn't match. Try again."
 NSString * const kSettingsSecurityPasscodeEnterString = @"settings.security.passcode.enter"; // "Enter your Alfresco Passcode"
 NSString * const kSettingsSecurityPasscodeReenterString = @"settings.security.passcode.re-enter"; // "Re-enter your Alfresco Passcode"
-NSString * const kSettingsSecurityPasscodeAttemptsOne = @"settings.security.passcode.attempts.1"; // "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files and local files will be wiped."
+NSString * const kSettingsSecurityPasscodeAttemptsOne = @"settings.security.passcode.attempts.1"; // "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files, and local files will be wiped."
 NSString * const kSettingsSecurityPasscodeAttemptsMany = @"settings.security.passcode.attempts.several"; // @"%d attempts remaining"
 NSString * const kSettingsSecurityPasscodeSetTitle = @"settings.security.passcode.set.title"; // "Set Passcode"
 NSString * const kSettingsSecurityPasscodeEnterTitle = @"settings.security.passcode.enter.title"; // "Enter Passcode"

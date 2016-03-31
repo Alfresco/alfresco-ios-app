@@ -655,7 +655,7 @@
 "settings.security.file.protection" = "ファイルの保護";
 "settings.security.file.protection.description" = "デバイスがロックされているときに、デバイスに保存されているファイルを暗号化します。";
 "settings.security.passcode.lock" = "Passcode Lock";
-"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files and local files will be wiped after %d failed passcode attempts.";
+"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files, and local files will be wiped after %d unsuccessful passcode attempts.";
 "settings.security.passcode.lock.title" = "Passcode";
 "settings.security.passcode.touch.id" = "Touch ID";
 "settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the Alfresco app.";
@@ -666,11 +666,11 @@
 "settings.security.passcode.enter.title" = "Enter Passcode";
 "settings.security.passcode.enter" = "Enter your Alfresco Passcode";
 "settings.security.passcode.re-enter" = "Re-enter your Alfresco Passcode";
-"settings.security.passcode.missmatch" = "Passcodes did not match. Try again.";
+"settings.security.passcode.missmatch" = "Passcodes didn't match. Try again.";
 "settings.security.passcode.enter.new" = "Enter your new Alfresco passcode";
 "settings.security.passcode.enter.old" = "Enter your old Alfresco passcode";
 "settings.security.passcode.re-enter.new" = "Re-enter your new passcode";
-"settings.security.passcode.attempts.1" = "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files and local files will be wiped.";
+"settings.security.passcode.attempts.1" = "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files, and local files will be wiped.";
 "settings.security.passcode.attempts.several" = "%d attempts remaining";
 "settings.reset.title" = "データの消去";
 "settings.reset.accounts" = "アカウントの消去";
