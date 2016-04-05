@@ -1313,52 +1313,6 @@
     nodeStatus.bytesTransfered = 0;
 }
 
-- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
-{
-    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
-    
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
-    {
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[self.selectedAccountIdentifier];
-        syncProgress.totalSyncSize += document.contentLength;
-        [self notifyProgressDelegateAboutCurrentProgress];
-        
-        if (nodeStatus.activityType == SyncActivityTypeDownload)
-        {
-            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-                [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-        else
-        {
-            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
-                [self.syncCoreDataHelper saveContextForManagedObjectContext:self.syncCoreDataHelper.managedObjectContext];
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-    }
-    else
-    {
-        if (nodeStatus.activityType != SyncActivityTypeDownload)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
-        
-        if (completionBlock)
-        {
-            completionBlock();
-        }
-    }
-}
-
 - (void)cancelAllSyncOperationsForAccountWithId:(NSString *)accountId
 {
     NSArray *syncDocumentIdentifiers = [self.syncOperations[accountId] allKeys];
