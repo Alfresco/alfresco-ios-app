@@ -222,6 +222,91 @@
 
 - (void)validateChangeFlow
 {
+    if (_step == 1)
+    {
+        NSError *error;
+        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+        
+        if ([_oldPin isEqualToString:pin])
+        {
+            _step ++;
+            _shouldAllowPinEntry = NO;
+            _subtitleLabel.hidden = YES;
+            [KeychainUtils saveItem:@(kRemainingAttemptsMaxValue) forKey:kRemainingAttemptsKey error:&error];
+            
+            __weak typeof(self) weakSelf = self;
+            
+            // This delay allows the user to see the 4th bullet getting filled.
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                _titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.new", @"Enter your new Alfresco passcode");
+                [weakSelf fillBullets:NO];
+                _shouldAllowPinEntry = YES;
+            });
+        }
+        else
+        {
+            _remainingAttempts --;
+            NSError *error;
+            [KeychainUtils saveItem:@(_remainingAttempts) forKey:kRemainingAttemptsKey error:&error];
+            
+            __weak typeof(self) weakSelf = self;
+            
+            [_bulletsView shakeWithCompletionBlock:^{
+                if (_remainingAttempts == 0)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSettingResetEntireApp object:nil];
+                    [weakSelf unsetPinAndDismiss];
+                }
+                else
+                {
+                    _oldPin = [NSMutableString string];
+                    
+                    [weakSelf fillBullets:NO];
+                    [weakSelf showNumberOfAttemptsRemaining];
+                }
+            }];
+        }
+    }
+    else if (_step == 2)
+    {
+        _step ++;
+        _shouldAllowPinEntry = NO;
+        _subtitleLabel.hidden = YES;
+        
+        __weak typeof(self) weakSelf = self;
+        
+        // This delay allows the user to see the 4th bullet getting filled.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            _titleLabel.text = NSLocalizedString(@"settings.security.passcode.re-enter.new", @"Re-enter your new passcode");
+            [weakSelf fillBullets:NO];
+            _shouldAllowPinEntry = YES;
+        });
+    }
+    else if (_step == 3)
+    {
+        if ([_reenteredPin isEqualToString:_enteredPin])
+        {
+            NSError *error;
+            [KeychainUtils saveItem:_enteredPin forKey:kPinKey error:&error];
+            
+            [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            _titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.new", @"Enter your new Alfresco passcode");
+            _subtitleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeMissmatchString, @"Passcodes didn't match. Try again.");
+            _subtitleLabel.hidden = NO;
+            _step = 2;
+            _enteredPin = [NSMutableString string];
+            _reenteredPin = [NSMutableString string];
+            
+            __weak typeof(self) weakSelf = self;
+            [_bulletsView shakeWithCompletionBlock:^{
+                [weakSelf fillBullets:NO];
+            }];
+        }
+    }
 }
 
 - (void)validateEnterFlow
@@ -379,6 +464,11 @@
     else
     {
         _subtitleLabel.hidden = YES;
+    }
+    
+    if (self.pinFlow == PinFlowChange)
+    {
+        _titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.old", @"Enter your old Alfresco passcode");
     }
     
     [self setupConstraints];

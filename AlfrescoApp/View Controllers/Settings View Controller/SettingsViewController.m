@@ -347,10 +347,6 @@
 
 - (void)changePasscodeHandler
 {
-    displayInformationMessage(@"This feature is not implemented yet.");
-    return;
-    
-    // To be fully implemented in next sprint.
     UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange];
     [self presentViewController:pinNavigationViewController animated:YES completion:nil];
 }
