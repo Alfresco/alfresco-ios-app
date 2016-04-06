@@ -143,7 +143,7 @@
         return;
     }
     
-    if (self.pinFlow == PinFlowSet && _step == 1)
+    if ((self.pinFlow == PinFlowSet && _step == 1) || (self.pinFlow == PinFlowChange && _step == 2))
     {
         _subtitleLabel.hidden = YES;
     }
