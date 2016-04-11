@@ -338,90 +338,6 @@
     [syncQueueForSelectedAccount addOperation:uploadOperation];
 }
 
-#pragma mark - Sync Operations - Delete
-
-
-#pragma mark -
-- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
-{
-    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
-    
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
-    {
-        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[selectedAccountIdentifier];
-        syncProgress.totalSyncSize += document.contentLength;
-        [self notifyProgressDelegateAboutCurrentProgress];
-        
-        if (nodeStatus.activityType == SyncActivityTypeDownload)
-        {
-            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-        else
-        {
-            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-    }
-    else
-    {
-        if (nodeStatus.activityType != SyncActivityTypeDownload)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
-        
-        if (completionBlock)
-        {
-            completionBlock();
-        }
-    }
-}
-
-- (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
-{
-    NSDate *downloadedDate = nil;
-    NSDate *localModificationDate = nil;
-    if (node.isDocument)
-    {
-        // getting last downloaded date for node from local info
-        downloadedDate = [self.syncHelper lastDownloadedDateForNode:node inRealm:realm];
-        
-        // getting downloaded file locally updated Date
-        NSError *dateError = nil;
-        
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:realm];
-        NSString *pathToSyncedFile = nodeInfo.syncContentPath;
-        NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
-        localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
-    }
-    BOOL isModifiedLocally = ([downloadedDate compare:localModificationDate] == NSOrderedAscending);
-    
-    if (isModifiedLocally)
-    {
-        SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
-        
-        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-        NSError *dateError = nil;
-        NSString *pathToSyncedFile = [self contentPathForNode:(AlfrescoDocument *)node];
-        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
-        if (!dateError)
-        {
-            nodeStatus.localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
-        }
-    }
-    return isModifiedLocally;
-}
-
 #pragma mark - Sync Utilities
 - (void)cancelAllSyncOperations
 {
@@ -557,6 +473,86 @@
             completionBlock(NO);
         }
     }
+}
+
+- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
+{
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
+    
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+        AccountSyncProgress *syncProgress = self.accountsSyncProgress[selectedAccountIdentifier];
+        syncProgress.totalSyncSize += document.contentLength;
+        [self notifyProgressDelegateAboutCurrentProgress];
+        
+        if (nodeStatus.activityType == SyncActivityTypeDownload)
+        {
+            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+        else
+        {
+            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+    }
+    else
+    {
+        if (nodeStatus.activityType != SyncActivityTypeDownload)
+        {
+            nodeStatus.status = SyncStatusWaiting;
+            nodeStatus.activityType = SyncActivityTypeUpload;
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    }
+}
+
+- (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
+{
+    NSDate *downloadedDate = nil;
+    NSDate *localModificationDate = nil;
+    if (node.isDocument)
+    {
+        // getting last downloaded date for node from local info
+        downloadedDate = [self.syncHelper lastDownloadedDateForNode:node inRealm:realm];
+        
+        // getting downloaded file locally updated Date
+        NSError *dateError = nil;
+        
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:realm];
+        NSString *pathToSyncedFile = nodeInfo.syncContentPath;
+        NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
+        localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
+    }
+    BOOL isModifiedLocally = ([downloadedDate compare:localModificationDate] == NSOrderedAscending);
+    
+    if (isModifiedLocally)
+    {
+        SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
+        
+        AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+        NSError *dateError = nil;
+        NSString *pathToSyncedFile = [self contentPathForNode:(AlfrescoDocument *)node];
+        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
+        if (!dateError)
+        {
+            nodeStatus.localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
+        }
+    }
+    return isModifiedLocally;
 }
 
 #pragma mark - Realm Utilities
