@@ -121,6 +121,18 @@
     }
 }
 
+#pragma mark - Delete node
+- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+        SyncNodeStatus *syncNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
+        syncNodeStatus.totalSize = 0;
+        [self.syncHelper deleteNodeFromSync:node inRealm:backgroundRealm];
+        completionBlock(NO);
+    });
+}
+
 #pragma mark - Sync Operations - Download
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {

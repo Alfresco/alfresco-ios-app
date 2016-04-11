@@ -42,6 +42,11 @@
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
 
 /*
+ * Sync Methods
+ */
+- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
+
+/*
  * Sync Utilities
  */
 - (BOOL)isCurrentlySyncing;

@@ -20,6 +20,7 @@
 #import "RealmManager.h"
 #import "SyncNodeStatus.h"
 #import "SyncConstants.h"
+#import "AccountManager.h"
 
 @interface RealmSyncHelper()
 
@@ -71,6 +72,12 @@
     return [nodeInfo.syncContentPath lastPathComponent];
 }
 
+- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] inRealm:realm];
+    return nodeInfo.lastDownloadedDate;
+}
+
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses
 {
     SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:nodeId];
@@ -111,6 +118,20 @@
         syncIdentifier = [Utility nodeRefWithoutVersionID:node.identifier];
     }
     return syncIdentifier;
+}
+
+#pragma mark - Delete Methods
+
+- (void)deleteNodeFromSync:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
+{
+    NSString *nodeSyncName = [self syncNameForNode:node inRealm:realm];
+    NSString *syncNodeContentPath = [[self syncContentDirectoryPathForAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier] stringByAppendingPathComponent:nodeSyncName];
+    
+    // No error handling here as we don't want to end up with Sync orphans
+    [self.fileManager removeItemAtPath:syncNodeContentPath error:nil];
+    
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] inRealm:realm];
+    [[RealmManager sharedManager] deleteRealmObject:nodeInfo inRealm:realm];
 }
 
 @end

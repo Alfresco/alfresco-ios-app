@@ -26,9 +26,11 @@
 + (RealmSyncHelper *)sharedHelper;
 
 - (NSString *)syncNameForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
+- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses;
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
 
 - (NSString *)syncIdentifierForNode:(AlfrescoNode *)node;
+- (void)deleteNodeFromSync:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
 
 @end
