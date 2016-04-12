@@ -98,8 +98,8 @@
     {
         contentDirectory = [contentDirectory stringByAppendingPathComponent:accountId];
     }
-    BOOL isDirectory;
-    BOOL dirExists = [self.fileManager fileExistsAtPath:contentDirectory isDirectory:&isDirectory];
+    
+    BOOL dirExists = [self.fileManager fileExistsAtPath:contentDirectory];
     NSError *error = nil;
     
     if (!dirExists)
