@@ -755,4 +755,77 @@
     }];
 }
 
+- (BOOL)isViewType:(NSString *)viewType presentInViewGroupConfig:(AlfrescoViewGroupConfig *)viewGroupConfig
+{
+    BOOL returnValue = NO;
+    for (AlfrescoItemConfig *subItem in viewGroupConfig.items)
+    {
+        if ([subItem isKindOfClass:[AlfrescoViewGroupConfig class]])
+        {
+            AlfrescoViewGroupConfig *subItemViewGroupConfig = (AlfrescoViewGroupConfig *)subItem;
+            returnValue = [self isViewType:viewType presentInViewGroupConfig:subItemViewGroupConfig];
+            if(returnValue)
+            {
+                break;
+            }
+        }
+        else if ([subItem isKindOfClass:[AlfrescoViewConfig class]])
+        {
+            AlfrescoViewConfig *subItemViewConfig = (AlfrescoViewConfig *)subItem;
+            if([subItemViewConfig.type isEqualToString:viewType])
+            {
+                returnValue = YES;
+                break;
+            }
+        }
+    }
+    return returnValue;
+}
+
+- (AlfrescoRequest *)isViewWithType:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile completionBlock:(void (^)(BOOL isViewPresent, NSError *error))completionBlock
+{
+    return [self initializeInternalStateWithCompletionBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded)
+        {
+            NSString *viewIdentifier = [self.viewConfigHelper viewIdentifierForViewType:viewType];
+            if(viewIdentifier)
+            {
+                if([profile.rootViewId isEqualToString:viewIdentifier])
+                {
+                    // profile has only sync as root view
+                    // sync should be enabled
+                    completionBlock(YES, nil);
+                }
+                else
+                {
+                    AlfrescoViewGroupConfig *viewGroupConfig = [self.viewConfigHelper viewGroupConfigForIdentifier:profile.rootViewId scope:self.defaultConfigScope];
+                    if(viewGroupConfig)
+                    {
+                        BOOL isViewTypePresent = [self isViewType:viewType presentInViewGroupConfig:viewGroupConfig];
+                        // sync should be enabled/disabled based on bool
+                        completionBlock(isViewTypePresent, nil);
+                    }
+                    else
+                    {
+                        // view group is not found - sync should stay as it is
+                        // should return error
+                        completionBlock(NO, [NSError new]);
+                    }
+                }
+            }
+            else
+            {
+                // view type was not found in the views config section
+                // should disable sync
+                completionBlock(NO, nil);
+            }
+        }
+        else
+        {
+            // should return error
+            completionBlock(NO, error);
+        }
+    }];
+}
+
 @end
