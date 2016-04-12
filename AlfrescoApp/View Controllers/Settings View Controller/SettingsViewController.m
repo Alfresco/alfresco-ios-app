@@ -565,11 +565,6 @@
     else
     {
         [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
-        
-        if ([preferenceIdentifier isEqualToString:kSettingsPasscodeTouchIDIdentifier])
-        {
-            displayInformationMessage(@"This feature is not implemented yet.");
-        }
     }
 }
 

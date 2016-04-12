@@ -24,6 +24,8 @@
 #import "KeychainUtils.h"
 #import "SecurityManager.h"
 
+NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScreenNotification";
+
 @interface PinViewController ()
 
 @property (nonatomic) PinFlow pinFlow;
@@ -63,6 +65,11 @@
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:pinViewController action:@selector(pressedCancelButton:)];
     pinViewController.navigationItem.rightBarButtonItem = cancelButton;
     
+    if (pinFlow == PinFlowEnter)
+    {
+        [navigationController setNavigationBarHidden:YES animated:NO];
+    }
+    
     return navigationController;
 }
 
@@ -72,10 +79,8 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboardInPinScreen:) name:kShowKeyboardInPinScreenNotification object:nil];
     
     [self becomeFirstResponder];
     [self setup];
@@ -97,7 +102,14 @@
 
 #pragma mark - Notification Handlers
 
-- (void)keyboardWillShow:(NSNotification*)notification
+- (void)showKeyboardInPinScreen:(NSNotification *)notification
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self becomeFirstResponder];
+    });
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     CGRect keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -311,6 +323,45 @@
 
 - (void)validateEnterFlow
 {
+    _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeEnterString, @"Enter your Alfresco Passcode");
+    
+    NSError *error;
+    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+    
+    if ([_oldPin isEqualToString:pin])
+    {
+        _shouldAllowPinEntry = NO;
+        _subtitleLabel.hidden = YES;
+        [KeychainUtils saveItem:@(kRemainingAttemptsMaxValue) forKey:kRemainingAttemptsKey error:&error];
+        
+        // This will prevent hiding the keyboard in any other instance of PinViewController that may be underneath.
+        [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        _remainingAttempts --;
+        NSError *error;
+        [KeychainUtils saveItem:@(_remainingAttempts) forKey:kRemainingAttemptsKey error:&error];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        [_bulletsView shakeWithCompletionBlock:^{
+            if (_remainingAttempts == 0)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kSettingResetEntireApp object:nil];
+                [weakSelf unsetPinAndDismiss];
+            }
+            else
+            {
+                _oldPin = [NSMutableString string];
+                
+                [weakSelf fillBullets:NO];
+                [weakSelf showNumberOfAttemptsRemaining];
+            }
+        }];
+    }
 }
 
 - (void)validateSetFlow
@@ -489,6 +540,11 @@
     {
         _logoHeightConstraint.constant = 0;
         _logoTopConstraint.constant = 0;
+    }
+    
+    if (self.pinFlow == PinFlowEnter)
+    {
+        _logoTopConstraint.constant += 64;
     }
 }
 
