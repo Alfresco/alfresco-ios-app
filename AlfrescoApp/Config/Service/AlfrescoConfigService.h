@@ -140,6 +140,12 @@
                                            completionBlock:(AlfrescoCreationConfigCompletionBlock)completionBlock;
 
 
+/**---------------------------------------------------------------------------------------
+ * @name Helper methods
+ *  ---------------------------------------------------------------------------------------
+ */
+- (AlfrescoRequest *)isViewWithType:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile completionBlock:(void (^)(BOOL isViewPresent, NSError *error))completionBlock;
+
 /**
  Clears any cached state the service has.
  */

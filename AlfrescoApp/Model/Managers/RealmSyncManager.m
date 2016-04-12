@@ -27,7 +27,7 @@
 #import "RealmSyncHelper.h"
 #import "RealmManager.h"
 #import "ConnectivityManager.h"
-
+#import "AppConfigurationManager.h"
 
 @interface RealmSyncManager()
 
@@ -77,6 +77,8 @@
         
         _syncHelper = [RealmSyncHelper sharedHelper];
         _realmManager = [RealmManager sharedManager];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
     }
     
     return self;
@@ -593,6 +595,29 @@
     {
         AccountSyncProgress *syncProgress = self.accountsSyncProgress[[[AccountManager sharedManager] selectedAccount].accountIdentifier];
         [self.progressDelegate totalSizeToSync:syncProgress.totalSyncSize syncedSize:syncProgress.syncProgressSize];
+    }
+}
+
+#pragma mark - Notifications
+- (void)selectedProfileDidChange:(NSNotification *)notification
+{
+    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigProfileDidChangeForAccountKey];
+    AlfrescoProfileConfig *selectedProfile = notification.object;
+    BOOL isSyncPresentInNewProfile = [[AppConfigurationManager sharedManager] isView:kAlfrescoConfigViewTypeSync presentInProfile:selectedProfile forAccount:changedAccount];
+    if(isSyncPresentInNewProfile && !changedAccount.isSyncOn)
+    {
+        // Sync is off and should be turned on
+        [self createRealmForAccount:changedAccount];
+        changedAccount.isSyncOn = YES;
+        if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
+        {
+            [self changeDefaultConfigurationForAccount:changedAccount];
+        }
+    }
+    else if (!isSyncPresentInNewProfile && changedAccount.isSyncOn)
+    {
+        // Sync is on and should be turned off; pending upload operations should be allowed, conflicts are saved to local files
+        
     }
 }
 
