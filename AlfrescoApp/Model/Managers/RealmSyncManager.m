@@ -79,9 +79,16 @@
         _realmManager = [RealmManager sharedManager];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuConfigurationChanged:) name:kAlfrescoConfigFileDidUpdateNotification object:nil];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Public methods
@@ -630,10 +637,8 @@
 }
 
 #pragma mark - Notifications
-- (void)selectedProfileDidChange:(NSNotification *)notification
+- (void)determineSyncFeatureStatus:(UserAccount *)changedAccount selectedProfile:(AlfrescoProfileConfig *)selectedProfile
 {
-    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigProfileDidChangeForAccountKey];
-    AlfrescoProfileConfig *selectedProfile = notification.object;
     [[AppConfigurationManager sharedManager] isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:selectedProfile forAccount:changedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
         if(!error && (isViewPresent != changedAccount.isSyncOn))
         {
@@ -654,6 +659,39 @@
             }
         }
     }];
+}
+
+- (void)selectedProfileDidChange:(NSNotification *)notification
+{
+    UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigProfileDidChangeForAccountKey];
+    AlfrescoProfileConfig *selectedProfile = notification.object;
+    [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfile];
+}
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
+    AlfrescoProfileConfig *selectedProfileForAccount = [AppConfigurationManager sharedManager].selectedProfile;
+    [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
+}
+
+- (void)mainMenuConfigurationChanged:(NSNotification *)notification
+{
+    // if no object is passed with the notification then we have no accounts in the app
+    if(notification.object)
+    {
+        if([notification.object respondsToSelector:@selector(account)])
+        {
+            UserAccount *changedAccount = [notification.object account];
+            AlfrescoConfigService *configServiceForAccount = [[AppConfigurationManager sharedManager] configurationServiceForAccount:changedAccount];
+            [configServiceForAccount retrieveProfileWithIdentifier:changedAccount.selectedProfileIdentifier completionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                if(config)
+                {
+                    [self determineSyncFeatureStatus:changedAccount selectedProfile:config];
+                }
+            }];
+        }
+    }
 }
 
 @end
