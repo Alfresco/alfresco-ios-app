@@ -682,7 +682,7 @@
     {
         if([notification.object respondsToSelector:@selector(account)])
         {
-            UserAccount *changedAccount = [notification.object account];
+            UserAccount *changedAccount = [notification.object performSelector:@selector(account)];
             AlfrescoConfigService *configServiceForAccount = [[AppConfigurationManager sharedManager] configurationServiceForAccount:changedAccount];
             [configServiceForAccount retrieveProfileWithIdentifier:changedAccount.selectedProfileIdentifier completionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                 if(config)
