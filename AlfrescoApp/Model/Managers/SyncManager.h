@@ -18,9 +18,6 @@
   
 #import "SyncNodeStatus.h"
 
-extern NSString * const kDocumentsRemovedFromSyncOnServerWithLocalChanges;
-extern NSString * const kDocumentsDeletedOnServerWithLocalChanges;
-
 @protocol SyncManagerProgressDelegate <NSObject>
 
 @optional

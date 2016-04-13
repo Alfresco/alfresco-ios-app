@@ -173,7 +173,6 @@ static NSInteger const kTagProfileCell = 3;
     self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
     self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.isSyncOn = self.syncPreferenceSwitch.isOn;
 }
 
 /**
@@ -232,12 +231,6 @@ static NSInteger const kTagProfileCell = 3;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     
@@ -316,13 +309,6 @@ static NSInteger const kTagProfileCell = 3;
         [self updateFormBackupAccount];
         
         self.account.accountDescription = self.formBackupAccount.accountDescription;
-        self.account.isSyncOn = self.formBackupAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
-        
         [[AccountManager sharedManager] saveAccountsToKeychain];
         
         [self dismissViewControllerAnimated:YES completion:^{
@@ -667,12 +653,6 @@ static NSInteger const kTagProfileCell = 3;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     

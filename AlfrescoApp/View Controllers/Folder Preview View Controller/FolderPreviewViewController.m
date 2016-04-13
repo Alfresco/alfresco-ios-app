@@ -24,6 +24,7 @@
 #import "FavouriteManager.h"
 #import "ActionViewHandler.h"
 #import "ConnectivityManager.h"
+#import "AccountManager.h"
 
 static CGFloat sActionViewHeight = 0;
 static CGFloat segmentControlHeight = 0;
@@ -196,7 +197,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     NSMutableArray *items = [NSMutableArray array];
     
-    [items addObject:[ActionCollectionItem syncItem]];
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        [items addObject:[ActionCollectionItem syncItem]];
+    }
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
     

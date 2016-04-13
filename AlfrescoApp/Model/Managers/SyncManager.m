@@ -31,17 +31,6 @@
 #import "AccountSyncProgress.h"
 #import "AlfrescoFileManager+Extensions.h"
 
-static NSUInteger const kSyncMaxConcurrentOperations = 2;
-
-static NSUInteger const kSyncOperationCancelledErrorCode = 1800;
-
-/*
- * Sync Obstacle keys
- */
-NSString * const kDocumentsRemovedFromSyncOnServerWithLocalChanges = @"removedFromSyncOnServerWithLocalChanges";
-NSString * const kDocumentsDeletedOnServerWithLocalChanges = @"deletedOnServerWithLocalChanges";
-static NSString * const kDocumentsToBeDeletedLocallyAfterUpload = @"toBeDeletedLocallyAfterUpload";
-
 @interface SyncManager ()
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;

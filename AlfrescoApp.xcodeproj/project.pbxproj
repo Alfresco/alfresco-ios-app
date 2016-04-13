@@ -81,6 +81,9 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		1DE950731CAC054D009299C8 /* RealmSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950721CAC054D009299C8 /* RealmSyncHelper.m */; };
+		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
+		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
 		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
@@ -966,6 +969,12 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		1DE950711CAC054D009299C8 /* RealmSyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncHelper.h; sourceTree = "<group>"; };
+		1DE950721CAC054D009299C8 /* RealmSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncHelper.m; sourceTree = "<group>"; };
+		1DE950781CAC0887009299C8 /* RealmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmManager.h; sourceTree = "<group>"; };
+		1DE950791CAC0887009299C8 /* RealmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmManager.m; sourceTree = "<group>"; };
+		1DE9507B1CAE6D09009299C8 /* SyncConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncConstants.h; sourceTree = "<group>"; };
+		1DE9507C1CAE6D09009299C8 /* SyncConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConstants.m; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
@@ -3509,6 +3518,8 @@
 				73CD5B0D1A729526000A5523 /* SharedConstants.m */,
 				23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */,
 				23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */,
+				1DE9507B1CAE6D09009299C8 /* SyncConstants.h */,
+				1DE9507C1CAE6D09009299C8 /* SyncConstants.m */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -3575,6 +3586,10 @@
 				2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */,
 				2B8CF8181C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.h */,
 				2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */,
+				1DE950711CAC054D009299C8 /* RealmSyncHelper.h */,
+				1DE950721CAC054D009299C8 /* RealmSyncHelper.m */,
+				1DE950781CAC0887009299C8 /* RealmManager.h */,
+				1DE950791CAC0887009299C8 /* RealmManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -4840,6 +4855,7 @@
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
 				7379731218AA2E55007613B2 /* CoreDataCacheHelper.m in Sources */,
 				7390B3601B03681E00E7191F /* AlfrescoProfileConfigHelper.m in Sources */,
+				1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */,
 				0804DCBC18197F8600E3ACC2 /* AccountTypeSelectionViewController.m in Sources */,
 				277FC4B2194F094200B311E1 /* PrintingWebView.m in Sources */,
 				732F275417FAC5AF00BAFDDE /* DetailSplitViewController.m in Sources */,
@@ -5003,6 +5019,7 @@
 				2B8CF8101C7C57D40079BB99 /* RealmSyncManager.m in Sources */,
 				730B444E18EC3A96008A0977 /* AnalyticsManager.m in Sources */,
 				73B9587417A6750F0099FB84 /* MultiSelectActionItem.m in Sources */,
+				1DE950731CAC054D009299C8 /* RealmSyncHelper.m in Sources */,
 				7390B35C1B03681E00E7191F /* AlfrescoConfigHelper.m in Sources */,
 				7390B38C1B03793400E7191F /* AlfrescoSDKInternalConstants.m in Sources */,
 				7390B3771B03681E00E7191F /* AlfrescoClientBasedConfigService.m in Sources */,
@@ -5058,6 +5075,7 @@
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
 				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
+				1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,

@@ -28,4 +28,6 @@
 
 - (AlfrescoViewGroupConfig *)viewGroupConfigForIdentifier:(NSString *)identifier scope:(AlfrescoConfigScope *)scope;
 
+- (NSString *)viewIdentifierForViewType:(NSString *)viewType;
+
 @end

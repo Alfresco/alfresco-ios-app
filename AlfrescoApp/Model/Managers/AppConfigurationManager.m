@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -259,6 +259,12 @@ static dispatch_once_t onceToken;
             self.currentConfigService.session = self.session;
         }];
     }
+}
+
+- (void)isViewOfType:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile forAccount:(UserAccount *)account completionBlock:(void (^)(BOOL isViewPresent, NSError *error))completionBlock
+{
+    AlfrescoConfigService *configService = [self configurationServiceForAccount:account];
+    [configService isViewWithType:viewType presentInProfile:profile completionBlock:completionBlock];
 }
 
 #pragma mark - Notification Method

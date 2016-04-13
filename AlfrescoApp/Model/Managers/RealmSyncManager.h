@@ -18,8 +18,19 @@
 
 #import <Foundation/Foundation.h>
 #import <Realm/Realm.h>
+#import "SyncConstants.h"
+
+@protocol RealmSyncManagerProgressDelegate <NSObject>
+
+@optional
+- (void)numberOfSyncOperationsInProgress:(NSInteger)numberOfOperations;
+- (void)totalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize;
+
+@end
 
 @interface RealmSyncManager : NSObject
+
+@property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
 
 /**
  * Returns the shared singleton
@@ -29,6 +40,11 @@
 - (RLMRealm *)createRealmForAccount:(UserAccount *)account;
 - (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
+
+/*
+ * Sync Methods
+ */
+- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 
 /*
  * Sync Utilities

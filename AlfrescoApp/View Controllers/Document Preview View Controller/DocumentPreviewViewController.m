@@ -35,6 +35,7 @@
 #import "ThumbnailManager.h"
 #import "UniversalDevice.h"
 #import "VersionHistoryViewController.h"
+#import "AccountManager.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 #define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
@@ -199,7 +200,10 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     
     NSMutableArray *items = [NSMutableArray array];
     
-    [items addObject:[ActionCollectionItem unsyncItem]];
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        [items addObject:[ActionCollectionItem unsyncItem]];
+    }
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
     

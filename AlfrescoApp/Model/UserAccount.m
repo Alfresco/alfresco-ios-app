@@ -68,6 +68,7 @@ static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfi
     if (self)
     {
         self.accountType = accountType;
+        self.isSyncOn = YES;
     }
     return self;
 }

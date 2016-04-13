@@ -26,7 +26,7 @@ static CGFloat const kFavoriteIconWidth = 14.0f;
 static CGFloat const kFavoriteIconRightSpace = 4.0f;
 static CGFloat const kSyncIconWidth = 14.0f;
 static CGFloat const kUpdateStatusLeadingSpace = 8.0f;
-static CGFloat const kUpdateStatusContainerWidth = 50.0f;
+static CGFloat const kUpdateStatusContainerWidth = 54.0f;
 static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
@@ -56,6 +56,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconRightSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconRightSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *updateStatusViewContainerWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *isSyncRightSpaceConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingContentViewContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trainlingContentViewContraint;
@@ -187,12 +188,14 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         if (self.isSyncNode)
         {
             self.syncIconWidthConstraint.constant = kSyncIconWidth;
+            self.isSyncRightSpaceConstraint.constant = kFavoriteIconRightSpace;
         }
         else
         {
             self.syncIconWidthConstraint.constant = 0;
             self.favoriteIconRightSpaceConstraint.constant = 0;
-            updateContainerWidth = updateContainerWidth - kSyncIconWidth - kFavoriteIconRightSpace;
+            self.isSyncRightSpaceConstraint.constant = 0;
+            updateContainerWidth = updateContainerWidth - kSyncIconWidth - 2 * kFavoriteIconRightSpace;
         }
         
         if (updateContainerWidth < 0.0f)
