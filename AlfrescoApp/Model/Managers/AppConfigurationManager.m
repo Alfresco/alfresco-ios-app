@@ -261,29 +261,10 @@ static dispatch_once_t onceToken;
     }
 }
 
-- (BOOL)isView:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile forAccount:(UserAccount *)account
+- (void)isViewOfType:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile forAccount:(UserAccount *)account completionBlock:(void (^)(BOOL isViewPresent, NSError *error))completionBlock
 {
-    BOOL returnValue = NO;
     AlfrescoConfigService *configService = [self configurationServiceForAccount:account];
-    if(configService)
-    {
-        [configService isViewWithType:viewType presentInProfile:profile completionBlock:^(BOOL isViewPresent, NSError *error) {
-            if(error)
-            {
-                // should leave sync as it is
-            }
-            else if (isViewPresent)
-            {
-                // should enable sync
-            }
-            else
-            {
-                // should disable sync
-            }
-            
-        }];
-    }
-    return returnValue;
+    [configService isViewWithType:viewType presentInProfile:profile completionBlock:completionBlock];
 }
 
 #pragma mark - Notification Method

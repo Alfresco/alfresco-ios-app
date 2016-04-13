@@ -109,8 +109,11 @@
             cancelBlock();
         }]];
         [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self cancelAllSyncOperations];
+            [self cancelDownloadOperations:YES uploadOperations:YES forAccountWithId:account.accountIdentifier];
             [self deleteRealmForAccount:account];
+            account.isSyncOn = NO;
+            [[AccountManager sharedManager] saveAccountsToKeychain];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
             completionBlock();
         }]];
         
@@ -119,8 +122,20 @@
     else
     {
         [self deleteRealmForAccount:account];
+        account.isSyncOn = NO;
+        [[AccountManager sharedManager] saveAccountsToKeychain];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
         completionBlock();
     }
+}
+
+- (void)disableSyncForAccountFromConfig:(UserAccount *)account
+{
+    [self cancelDownloadOperations:YES uploadOperations:NO forAccountWithId:account.accountIdentifier];
+    [self deleteRealmForAccount:account];
+    account.isSyncOn = NO;
+    [[AccountManager sharedManager] saveAccountsToKeychain];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
 }
 
 #pragma mark - Delete node
@@ -347,22 +362,38 @@
     
     for (NSString *accountId in syncOperationKeys)
     {
-        [self cancelAllSyncOperationsForAccountWithId:accountId];
+        [self cancelDownloadOperations:YES uploadOperations:YES forAccountWithId:accountId];
     }
 }
 
-- (void)cancelAllSyncOperationsForAccountWithId:(NSString *)accountId
+- (void)cancelAllDownloadOperationsForAccountWithId:(NSString *)accountId
+{
+    [self cancelDownloadOperations:YES uploadOperations:NO forAccountWithId:accountId];
+}
+
+- (void)cancelDownloadOperations:(BOOL)shouldCancelDownloadOperations uploadOperations:(BOOL)shouldCancelUploadOperations forAccountWithId:(NSString *)accountId
 {
     NSArray *syncDocumentIdentifiers = [self.syncOperations[accountId] allKeys];
     
     for (NSString *documentIdentifier in syncDocumentIdentifiers)
     {
-        [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:accountId];
+        SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:documentIdentifier];
+        if((nodeStatus.activityType == SyncActivityTypeDownload) && shouldCancelDownloadOperations)
+        {
+            [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:accountId];
+        }
+        else if ((nodeStatus.activityType == SyncActivityTypeUpload) && shouldCancelUploadOperations)
+        {
+            [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:accountId];
+        }
     }
     
-    AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
-    syncProgress.totalSyncSize = 0;
-    syncProgress.syncProgressSize = 0;
+    if(shouldCancelUploadOperations && shouldCancelDownloadOperations)
+    {
+        AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
+        syncProgress.totalSyncSize = 0;
+        syncProgress.syncProgressSize = 0;
+    }
 }
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier inAccountWithId:(NSString *)accountId
@@ -415,7 +446,7 @@
         }
     }];
     
-    return YES;
+    return isSyncing;
 }
 
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
@@ -427,7 +458,7 @@
     if(nodeInfo)
     {
         NSString *storedPath = nodeInfo.syncContentPath;
-        NSString *relativePath = [self getRelativeSyncPath:storedPath];
+        NSString *relativePath = [self relativeSyncPath:storedPath];
         NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
         newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
     }
@@ -436,7 +467,7 @@
 }
 
 // this parses a path to get the relative path to the Sync folder
-- (NSString *) getRelativeSyncPath:(NSString *)oldPath
+- (NSString *)relativeSyncPath:(NSString *)oldPath
 {
     NSString *newPath = nil;
     NSArray *array = [oldPath componentsSeparatedByString:[NSString stringWithFormat:@"%@/",kSyncFolder]];
@@ -603,22 +634,26 @@
 {
     UserAccount *changedAccount = notification.userInfo[kAlfrescoConfigProfileDidChangeForAccountKey];
     AlfrescoProfileConfig *selectedProfile = notification.object;
-    BOOL isSyncPresentInNewProfile = [[AppConfigurationManager sharedManager] isView:kAlfrescoConfigViewTypeSync presentInProfile:selectedProfile forAccount:changedAccount];
-    if(isSyncPresentInNewProfile && !changedAccount.isSyncOn)
-    {
-        // Sync is off and should be turned on
-        [self createRealmForAccount:changedAccount];
-        changedAccount.isSyncOn = YES;
-        if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
+    [[AppConfigurationManager sharedManager] isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:selectedProfile forAccount:changedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
+        if(!error && (isViewPresent != changedAccount.isSyncOn))
         {
-            [self changeDefaultConfigurationForAccount:changedAccount];
+            if(isViewPresent)
+            {
+                [self createRealmForAccount:changedAccount];
+                changedAccount.isSyncOn = YES;
+                [[AccountManager sharedManager] saveAccountsToKeychain];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:changedAccount];
+                if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
+                {
+                    [self changeDefaultConfigurationForAccount:changedAccount];
+                }
+            }
+            else
+            {
+                [self disableSyncForAccountFromConfig:changedAccount];
+            }
         }
-    }
-    else if (!isSyncPresentInNewProfile && changedAccount.isSyncOn)
-    {
-        // Sync is on and should be turned off; pending upload operations should be allowed, conflicts are saved to local files
-        
-    }
+    }];
 }
 
 @end
