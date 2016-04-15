@@ -180,24 +180,8 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
          {
              AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
              
-             switch (authenticationError.code)
-             {
-                 case kLAErrorUserFallback:
-                 case kLAErrorAuthenticationFailed:
-                 case kLAErrorUserCancel:
-                 case kLAErrorSystemCancel:
-                 case kLAErrorTouchIDLockout:
-                 {
-                     [self showPinScreenAnimated:NO];
-                     [self showBlankScreen:NO];
-                 }
-                     break;
-                     
-                 default:
-                 {
-                 }
-                     break;
-             }
+             [self showPinScreenAnimated:NO];
+             [self showBlankScreen:NO];
          }
      }];
 }
