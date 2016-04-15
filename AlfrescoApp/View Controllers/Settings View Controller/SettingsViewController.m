@@ -32,6 +32,7 @@
 #import <sys/utsname.h>
 #import "PinViewController.h"
 #import "UniversalDevice.h"
+#import "SecurityManager.h"
 
 @interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
@@ -72,6 +73,7 @@
     else
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferenceDidChange:) name:kSettingsDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
 }
 
@@ -140,8 +142,9 @@
     else if (self.settingsType == SettingsTypePasscode)
     {
         BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
+        BOOL isTouchIDAvailable = [SecurityManager isTouchIDAvailable];
         
-        if (!shouldUsePasscodeLock)
+        if (!shouldUsePasscodeLock || !isTouchIDAvailable)
         {
             filteredPreferences = [self removePreferences:filteredPreferences withRestriction:kSettingsRestrictionCanUseTouchID];
         }
@@ -446,7 +449,7 @@
     // TODO: Find a cleaner way to replace this section footer
     if ([groupFooterTitle isEqualToString:@"settings.security.passcode.lock.description"])
     {
-        return [NSString stringWithFormat:NSLocalizedString(groupFooterTitle, @"Section footer title"), kRemainingAttemptsMaxValue];
+        return [NSString stringWithFormat:NSLocalizedString(groupFooterTitle, @"Section footer title"), REMAINING_ATTEMPTS_MAX_VALUE];
     }
     else if ([groupFooterTitle isEqualToString:@"settings.send.diagnostics.description"])
     {
@@ -553,6 +556,12 @@
     [confirmation show];
 }
 
+- (void)applicationWillEnterForegroundNotification:(NSNotification *)notification
+{
+    [self buildTableDataSource];
+    [self.tableView reloadData];
+}
+
 #pragma mark - SettingsCellProtocol Functions
 
 - (void)valueDidChangeForCell:(SettingCell *)cell preferenceIdentifier:(NSString *)preferenceIdentifier value:(id)value
@@ -565,11 +574,6 @@
     else
     {
         [[PreferenceManager sharedManager] updatePreferenceToValue:value preferenceIdentifier:preferenceIdentifier];
-        
-        if ([preferenceIdentifier isEqualToString:kSettingsPasscodeTouchIDIdentifier])
-        {
-            displayInformationMessage(@"This feature is not implemented yet.");
-        }
     }
 }
 

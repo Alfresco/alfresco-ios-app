@@ -19,6 +19,7 @@
 #import "PreferenceManager.h"
 #import "SettingConstants.h"
 #import "AppConfigurationManager.h"
+#import "SecurityManager.h"
 
 static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
@@ -82,8 +83,9 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 - (BOOL)shouldUseTouchID
 {
-    return NO;
-    // To be implemented in next sprint
+    BOOL isTouchIDAvailable = [SecurityManager isTouchIDAvailable];
+    BOOL isTouchIDSwitchOn = [[self preferenceForIdentifier:kSettingsPasscodeTouchIDIdentifier] boolValue];
+    return isTouchIDAvailable && isTouchIDSwitchOn;
 }
 
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier
@@ -98,6 +100,15 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
     // MOBILE-3045: Devices running iOS 8 refuse to recognise the preferences property as mutable so re-create
     self.preferences = [NSMutableDictionary dictionaryWithDictionary:self.preferences];
     self.preferences[preferenceIdentifier] = obj;
+    
+    if ([preferenceIdentifier isEqualToString:kSettingsSecurityUsePasscodeLockIdentifier])
+    {
+        if ([obj boolValue] == NO)
+        {
+            self.preferences[kSettingsPasscodeTouchIDIdentifier] = @NO;
+        }
+    }
+    
     [self savePreferences];
     [[NSNotificationCenter defaultCenter] postNotificationName:kSettingsDidChangeNotification object:preferenceIdentifier userInfo:@{kSettingChangedFromKey : existingValue, kSettingChangedToKey : obj}];
 }

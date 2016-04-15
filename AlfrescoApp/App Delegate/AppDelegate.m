@@ -145,6 +145,8 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     // Make the window visible
     [self.window makeKeyAndVisible];
     
+    [[SecurityManager sharedManager] setup];
+    
     if (!safeMode)
     {
         // If there is a selected Account, attempt login
