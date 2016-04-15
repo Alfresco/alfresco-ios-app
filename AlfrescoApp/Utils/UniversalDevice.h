@@ -107,4 +107,9 @@
  */
 + (UIViewController *)rootDetailViewController;
 
+/*
+ * Returns the top presented view controller.
+ */
++ (UIViewController *)topPresentedViewController;
+
 @end

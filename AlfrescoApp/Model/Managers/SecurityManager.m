@@ -22,6 +22,7 @@
 #import "AppDelegate.h"
 #import "PinViewController.h"
 #import "PreferenceManager.h"
+#import "UniversalDevice.h"
 
 NSString * const kPinKey = @"PinCodeKey";
 NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
@@ -81,18 +82,6 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 
 #pragma mark - Utils
 
-+ (UIViewController *)topController
-{
-    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    
-    while (topController.presentedViewController)
-    {
-        topController = topController.presentedViewController;
-    }
-    
-    return topController;
-}
-
 + (void)reset
 {
     NSError *error;
@@ -104,7 +93,7 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 
 - (void)showPinScreenAnimated:(BOOL)animated
 {
-    UIViewController *topController = [SecurityManager topController];
+    UIViewController *topController = [UniversalDevice topPresentedViewController];
     
     if ([topController isKindOfClass:[UINavigationController class]])
     {

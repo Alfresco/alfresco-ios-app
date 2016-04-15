@@ -281,4 +281,16 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
     return rootViewController.detailViewController;
 }
 
++ (UIViewController *)topPresentedViewController
+{
+    UIViewController *viewController = [self containerViewController];
+    
+    while (viewController.presentedViewController)
+    {
+        viewController = viewController.presentedViewController;
+    }
+    
+    return viewController;
+}
+
 @end
