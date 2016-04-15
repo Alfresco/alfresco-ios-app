@@ -26,10 +26,11 @@ typedef NS_ENUM(NSUInteger, PinFlow)
     PinFlowEnter
 };
 
-#define kRemainingAttemptsMaxValue 10
+#define REMAINING_ATTEMPTS_MAX_VALUE 10
 
 @interface PinViewController : UIViewController <UIKeyInput>
 
 + (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow;
+- (PinFlow)pinFlow;
 
 @end

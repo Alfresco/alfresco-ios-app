@@ -25,15 +25,9 @@
 
 NSString * const kPinKey = @"PinCodeKey";
 NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
+
 #define BLANK_SCREEN_TAG 234
 #define FADE_ANIMATION_DURATION 0.2
-
-@interface SecurityManager ()
-
-@property (nonatomic, strong) UINavigationController *pinNavigationController;
-
-@end
-
 
 @implementation SecurityManager
 
@@ -47,16 +41,6 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     });
     
     return sharedManager;
-}
-
-- (instancetype)init
-{
-    if (self = [super init])
-    {
-        [self setup];
-    }
-    
-    return self;
 }
 
 - (void)setup
@@ -83,8 +67,6 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     {
         return;
     }
-    
-    [self dismissPinScreenAnimated:NO];
     
     if ([[PreferenceManager sharedManager] shouldUseTouchID])
     {
@@ -120,26 +102,27 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 
 #pragma mark -
 
-- (void)dismissPinScreenAnimated:(BOOL)animated
-{
-    if (self.pinNavigationController)
-    {
-        [self.pinNavigationController dismissViewControllerAnimated:animated completion:nil];
-    }
-}
-
 - (void)showPinScreenAnimated:(BOOL)animated
 {
-    void (^showPinScreen)() = ^void(){
-        UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter];
-        UIViewController *topController = [SecurityManager topController];
-        [topController presentViewController:navController animated:animated completion:nil];
-        self.pinNavigationController = navController;
-    };
+    UIViewController *topController = [SecurityManager topController];
     
-    [self dismissPinScreenAnimated:NO];
+    if ([topController isKindOfClass:[UINavigationController class]])
+    {
+        UINavigationController *topNavigationController = (UINavigationController *)topController;
+        PinViewController *pvc = topNavigationController.viewControllers.firstObject;
+        
+        if ([pvc isKindOfClass:[PinViewController class]])
+        {
+            if ([pvc pinFlow] == PinFlowEnter)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowKeyboardInPinScreenNotification" object:nil];
+                return;
+            }
+        }
+    }
     
-    showPinScreen();
+    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter];
+    [topController presentViewController:navController animated:animated completion:nil];
 }
 
 - (void)showBlankScreen:(BOOL)show
@@ -201,12 +184,12 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
      {
          if (success)
          {
-             AlfrescoLogInfo(@"Touch ID success!");
              [self showBlankScreen:NO];
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowKeyboardInPinScreenNotification" object:nil];
          }
          else
          {
-             AlfrescoLogInfo(@"Touch ID error: %@", authenticationError.localizedDescription);
+             AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
              
              switch (authenticationError.code)
              {
@@ -216,7 +199,7 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
                  case kLAErrorSystemCancel:
                  case kLAErrorTouchIDLockout:
                  {
-                     [self showPinScreenAnimated:YES];
+                     [self showPinScreenAnimated:NO];
                      [self showBlankScreen:NO];
                  }
                      break;

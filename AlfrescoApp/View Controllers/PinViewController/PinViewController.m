@@ -104,6 +104,15 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 - (void)showKeyboardInPinScreen:(NSNotification *)notification
 {
+    if (self.pinFlow != PinFlowEnter && _step == 1)
+    {
+        NSError *error;
+        NSNumber *number = [KeychainUtils retrieveItemForKey:kRemainingAttemptsKey error:&error];
+        _remainingAttempts = number ? number.integerValue : REMAINING_ATTEMPTS_MAX_VALUE;
+        
+        [self showNumberOfAttemptsRemaining];
+    }
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self becomeFirstResponder];
     });
@@ -244,7 +253,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             _step ++;
             _shouldAllowPinEntry = NO;
             _subtitleLabel.hidden = YES;
-            [KeychainUtils saveItem:@(kRemainingAttemptsMaxValue) forKey:kRemainingAttemptsKey error:&error];
+            [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
             
             __weak typeof(self) weakSelf = self;
             
@@ -332,7 +341,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     {
         _shouldAllowPinEntry = NO;
         _subtitleLabel.hidden = YES;
-        [KeychainUtils saveItem:@(kRemainingAttemptsMaxValue) forKey:kRemainingAttemptsKey error:&error];
+        [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
         
         // This will prevent hiding the keyboard in any other instance of PinViewController that may be underneath.
         [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
@@ -386,7 +395,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         {
             NSError *error;
             [KeychainUtils saveItem:_enteredPin forKey:kPinKey error:&error];
-            [KeychainUtils saveItem:@(kRemainingAttemptsMaxValue) forKey:kRemainingAttemptsKey error:&error];
+            [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
             
             [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -472,7 +481,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
     
     NSError *error;
-    [KeychainUtils saveItem:@(kRemainingAttemptsMaxValue) forKey:kRemainingAttemptsKey error:&error];
+    [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
     [KeychainUtils deleteItemForKey:kPinKey error:&error];
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -480,7 +489,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 - (void)showNumberOfAttemptsRemaining
 {
-    if (_remainingAttempts > 1)
+    if (_remainingAttempts == REMAINING_ATTEMPTS_MAX_VALUE)
+    {
+        _subtitleLabel.text = @"";
+    }
+    else if (_remainingAttempts > 1)
     {
         NSString *attemptsRemainingFormat = NSLocalizedString(kSettingsSecurityPasscodeAttemptsMany, @"%d attempts remaining");
         _subtitleLabel.text = [NSString stringWithFormat:attemptsRemainingFormat, _remainingAttempts];
@@ -504,7 +517,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     
     NSError *error;
     NSNumber *number = [KeychainUtils retrieveItemForKey:kRemainingAttemptsKey error:&error];
-    _remainingAttempts = number ? number.integerValue : kRemainingAttemptsMaxValue;
+    _remainingAttempts = number ? number.integerValue : REMAINING_ATTEMPTS_MAX_VALUE;
     
     _shouldAllowPinEntry = YES;
     
@@ -590,6 +603,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         default:
             break;
     }
+}
+
+- (PinFlow)pinFlow
+{
+    return _pinFlow;
 }
 
 #pragma mark - Actions
