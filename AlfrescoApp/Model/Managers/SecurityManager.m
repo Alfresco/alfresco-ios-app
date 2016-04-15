@@ -167,7 +167,7 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     BOOL success = [context canEvaluatePolicy: LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
     
     NSString *message = success ? @"Touch ID is available." : [NSString stringWithFormat:@"Touch ID is not available. Error: %@", error.localizedDescription];
-    AlfrescoLogInfo(@"%@", message);
+    AlfrescoLogDebug(@"%@", message);
     
     return success;
 }
