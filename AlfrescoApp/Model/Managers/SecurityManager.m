@@ -48,6 +48,7 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackgroundNotification:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunchingNotification:) name:UIApplicationDidFinishLaunchingNotification object:nil];
 }
 
 #pragma mark - Notification Handlers
@@ -79,6 +80,25 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
         [self showBlankScreen:NO];
     }
 }
+
+- (void)applicationDidFinishLaunchingNotification:(NSNotification *)notification
+{
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
+    {
+        return;
+    }
+    
+    if ([[PreferenceManager sharedManager] shouldUseTouchID])
+    {
+        [self showBlankScreen:YES];
+        [self evaluatePolicy];
+    }
+    else
+    {
+        [self showPinScreenAnimated:YES];
+    }
+}
+
 
 #pragma mark - Utils
 
