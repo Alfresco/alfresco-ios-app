@@ -21,7 +21,6 @@
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "AccountSyncProgress.h"
-#import "SyncNodeStatus.h"
 #import "SyncOperation.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "RealmSyncHelper.h"
@@ -41,6 +40,7 @@
 @property (nonatomic, strong) NSDictionary *syncObstacles;
 @property (nonatomic, strong) RealmSyncHelper *syncHelper;
 @property (nonatomic, strong) RealmManager *realmManager;
+@property (nonatomic, strong) NSMutableDictionary *permissions;
 
 @end
 
@@ -107,6 +107,13 @@
     [self.realmManager deleteRealmWithName:account.accountIdentifier];
 }
 
+- (RLMRealm *)mainThreadRealm
+{
+    _mainThreadRealm = [self createRealmForAccount:[AccountManager sharedManager].selectedAccount];
+    
+    return _mainThreadRealm;
+}
+
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock
 {
     if([self isCurrentlySyncing])
@@ -143,6 +150,34 @@
     account.isSyncOn = NO;
     [[AccountManager sharedManager] saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+}
+
+- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
+{
+    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:syncNodeId inSyncNodesStatus:self.syncNodesStatus];
+    return nodeStatus;
+}
+
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
+{
+    [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+}
+
+- (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node
+{
+    AlfrescoPermissions *permissions = [self.permissions objectForKey:[self.syncHelper syncIdentifierForNode:node]];
+    
+    if (!permissions)
+    {
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:[RLMRealm defaultRealm]];
+        
+        if (nodeInfo.permissions)
+        {
+            permissions = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.permissions];
+        }
+    }
+    return permissions;
 }
 
 #pragma mark - Delete node
@@ -430,13 +465,6 @@
         syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
         nodeStatus.bytesTransfered = 0;
     });
-}
-
-- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
-{
-    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
-    SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:syncNodeId inSyncNodesStatus:self.syncNodesStatus];
-    return nodeStatus;
 }
 
 - (BOOL)isCurrentlySyncing

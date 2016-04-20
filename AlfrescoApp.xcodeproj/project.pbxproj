@@ -31,7 +31,6 @@
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
 		0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244F17F9823800EE6AA8 /* SyncViewController.m */; };
-		0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833245117F9853600EE6AA8 /* SyncViewController.xib */; };
 		0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */; };
 		0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */; };
 		0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */; };
@@ -214,6 +213,8 @@
 		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
 		2B410F561C7B5DBE00A3F52F /* RealmSyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */; };
 		2B410F571C7B5DBE00A3F52F /* RealmSyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */; };
+		2B482B3C1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B482B3B1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m */; };
+		2B482B3F1CC523D7003CDEE6 /* RealmSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B482B3E1CC523D7003CDEE6 /* RealmSyncViewController.m */; };
 		2B53B3551C91DA9800D4FD48 /* actionsheet-sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B53B34F1C91DA9800D4FD48 /* actionsheet-sync.png */; };
 		2B53B3561C91DA9800D4FD48 /* actionsheet-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B53B3501C91DA9800D4FD48 /* actionsheet-sync@2x.png */; };
 		2B53B3571C91DA9800D4FD48 /* actionsheet-sync@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B53B3511C91DA9800D4FD48 /* actionsheet-sync@2x~ipad.png */; };
@@ -885,7 +886,6 @@
 		0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNodeStatus.m; sourceTree = "<group>"; };
 		0833244E17F9823800EE6AA8 /* SyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncViewController.h; path = "Sync View Controller/SyncViewController.h"; sourceTree = "<group>"; };
 		0833244F17F9823800EE6AA8 /* SyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SyncViewController.m; path = "Sync View Controller/SyncViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		0833245117F9853600EE6AA8 /* SyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncViewController.xib; path = "Sync View Controller/SyncViewController.xib"; sourceTree = "<group>"; };
 		0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncObstaclesViewController.h; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.h"; sourceTree = "<group>"; };
 		0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncObstaclesViewController.m; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.m"; sourceTree = "<group>"; };
 		0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncObstaclesViewController.xib; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.xib"; sourceTree = "<group>"; };
@@ -1145,6 +1145,10 @@
 		2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncError.m; sourceTree = "<group>"; };
 		2B410F541C7B5DBE00A3F52F /* RealmSyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncNodeInfo.h; sourceTree = "<group>"; };
 		2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncNodeInfo.m; sourceTree = "<group>"; };
+		2B482B3A1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncCollectionViewDataSource.h; sourceTree = "<group>"; };
+		2B482B3B1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncCollectionViewDataSource.m; sourceTree = "<group>"; };
+		2B482B3D1CC523D7003CDEE6 /* RealmSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RealmSyncViewController.h; path = "Sync View Controller/RealmSyncViewController.h"; sourceTree = "<group>"; };
+		2B482B3E1CC523D7003CDEE6 /* RealmSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RealmSyncViewController.m; path = "Sync View Controller/RealmSyncViewController.m"; sourceTree = "<group>"; };
 		2B53B34F1C91DA9800D4FD48 /* actionsheet-sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-sync.png"; sourceTree = "<group>"; };
 		2B53B3501C91DA9800D4FD48 /* actionsheet-sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-sync@2x.png"; sourceTree = "<group>"; };
 		2B53B3511C91DA9800D4FD48 /* actionsheet-sync@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-sync@2x~ipad.png"; sourceTree = "<group>"; };
@@ -1937,11 +1941,13 @@
 		0833244D17F981EC00EE6AA8 /* Sync View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				2B482B351CC4C732003CDEE6 /* Data Source */,
 				738665011906B2A60021D1BD /* Cell */,
 				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
 				0833244E17F9823800EE6AA8 /* SyncViewController.h */,
 				0833244F17F9823800EE6AA8 /* SyncViewController.m */,
-				0833245117F9853600EE6AA8 /* SyncViewController.xib */,
+				2B482B3D1CC523D7003CDEE6 /* RealmSyncViewController.h */,
+				2B482B3E1CC523D7003CDEE6 /* RealmSyncViewController.m */,
 			);
 			name = "Sync View Controller";
 			sourceTree = "<group>";
@@ -2291,6 +2297,16 @@
 				2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */,
 			);
 			path = "Site Members View Controller";
+			sourceTree = "<group>";
+		};
+		2B482B351CC4C732003CDEE6 /* Data Source */ = {
+			isa = PBXGroup;
+			children = (
+				2B482B3A1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.h */,
+				2B482B3B1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m */,
+			);
+			name = "Data Source";
+			path = "Sync View Controller/Data Source";
 			sourceTree = "<group>";
 		};
 		2B93CBC41ABACC34003BAD2E /* Connection Diagnostic View Controller */ = {
@@ -4370,7 +4386,6 @@
 				27E84E8E18AD53510024B658 /* mainmenu-tasks.png in Resources */,
 				737972F418A3B6B6007613B2 /* FolderPreviewViewController~ipad.xib in Resources */,
 				272CC7CD194690AD0009FADA /* segment-icon-comments@2x.png in Resources */,
-				0833245217F9853600EE6AA8 /* SyncViewController.xib in Resources */,
 				271DC772189C2D250059D1B2 /* status-sync-loading.png in Resources */,
 				73FF558618ACE2370009CA56 /* large_powerpoint@2x.png in Resources */,
 				738BE9571A962AA7006264E5 /* LargeThumbnailImageMapping.plist in Resources */,
@@ -4850,6 +4865,7 @@
 				7390B3741B03681E00E7191F /* AlfrescoViewConfig.m in Sources */,
 				2BFD96B51C889A4C00FDABA5 /* SyncFirstPanel.m in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
+				2B482B3F1CC523D7003CDEE6 /* RealmSyncViewController.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
 				27B01F37193F491600EA4D77 /* AlfrescoProtectionAwareFileManager.m in Sources */,
 				08E1EA2518DB057900F9052F /* TaskHeaderView.m in Sources */,
@@ -5028,6 +5044,7 @@
 				7384BDFD17F3510E00C6A54F /* SettingCell.m in Sources */,
 				73B9587517A6750F0099FB84 /* MultiSelectActionsToolbar.m in Sources */,
 				73632AF01806F674007172EE /* MainMenuViewController.m in Sources */,
+				2B482B3C1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m in Sources */,
 				7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */,
 				7390B3631B03681E00E7191F /* AlfrescoActionGroupConfig.m in Sources */,
 				735DDC071B2882EB0091D7B4 /* MainMenuRemoteConfigurationBuilder.m in Sources */,
