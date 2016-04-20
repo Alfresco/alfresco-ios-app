@@ -80,6 +80,7 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */; };
 		1DE950731CAC054D009299C8 /* RealmSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950721CAC054D009299C8 /* RealmSyncHelper.m */; };
 		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
 		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
@@ -969,6 +970,9 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		1D2A52AA1CC7687000991186 /* RepositoryCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RepositoryCollectionViewDataSource.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RepositoryCollectionViewDataSource.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		1D2A52B11CC76DA000991186 /* RepositoryCollectionViewDataSource+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RepositoryCollectionViewDataSource+Internal.h"; sourceTree = "<group>"; };
 		1DE950711CAC054D009299C8 /* RealmSyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncHelper.h; sourceTree = "<group>"; };
 		1DE950721CAC054D009299C8 /* RealmSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncHelper.m; sourceTree = "<group>"; };
 		1DE950781CAC0887009299C8 /* RealmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmManager.h; sourceTree = "<group>"; };
@@ -2302,6 +2306,9 @@
 		2B482B351CC4C732003CDEE6 /* Data Source */ = {
 			isa = PBXGroup;
 			children = (
+				1D2A52AA1CC7687000991186 /* RepositoryCollectionViewDataSource.h */,
+				1D2A52B11CC76DA000991186 /* RepositoryCollectionViewDataSource+Internal.h */,
+				1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */,
 				2B482B3A1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.h */,
 				2B482B3B1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m */,
 			);
@@ -4906,6 +4913,7 @@
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
 				2BFD96BB1C889A7200FDABA5 /* SyncThirdPanel.m in Sources */,
 				738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */,
+				1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */,
 				73B9584617A6750F0099FB84 /* ThumbnailManager.m in Sources */,
 				2BC9AE6E1BDA7738003523C8 /* AccountInfoDetailsViewController.m in Sources */,
 				2BFB07FD1B149FFD00ED8DFF /* ParentCollectionViewController.m in Sources */,

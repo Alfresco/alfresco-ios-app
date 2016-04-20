@@ -16,11 +16,10 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
 #import "RepositoryCollectionViewDataSource.h"
 
-@interface SyncCollectionViewDataSource : RepositoryCollectionViewDataSource 
+@interface RepositoryCollectionViewDataSource ()
 
-- (instancetype)initWithTopLevelSyncNodes;
+@property (nonatomic, strong) NSMutableArray *dataSourceCollection;
 
 @end

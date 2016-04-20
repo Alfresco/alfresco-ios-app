@@ -23,13 +23,15 @@
 #import "RealmSyncManager.h"
 #import "UniversalDevice.h"
 #import "FailedTransferDetailViewController.h"
+#import "PreferenceManager.h"
+#import "SyncNavigationViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
 static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSeriesId.value";
 
-@interface RealmSyncViewController () < SyncCollectionViewDataSourceDelegate >
+@interface RealmSyncViewController () < RepositoryCollectionViewDataSourceDelegate >
 
 @property (nonatomic) AlfrescoNode *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
@@ -82,7 +84,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     
     self.title = [self listTitle];
-//    [self adjustCollectionViewForProgressView:nil];
+    [self adjustCollectionViewForProgressView:nil];
     
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
@@ -107,10 +109,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
                                                object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didUpdatePreference:)
-//                                                 name:kSettingsDidChangeNotification
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didUpdatePreference:)
+                                                 name:kSettingsDidChangeNotification
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(accountInfoUpdated:)
                                                  name:kAlfrescoAccountUpdatedNotification
@@ -257,6 +259,32 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     self.retrySyncPopover = nil;
 }
 
+- (void)adjustCollectionViewForProgressView:(NSNotification *)notification
+{
+    id navigationController = self.navigationController;
+    
+    if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(SyncManagerProgressDelegate)]))
+    {
+        /* The sender is not the navigation controller of this view controller, but the navigation controller of another instance of SyncViewController (namely the favorites view controller
+         which was created when the account was first added). Will update the progress delegate on SyncManager to be able to show the progress view. The cause of this problem is a timing issue
+         between begining the syncing process, menu reloading and delegate calls and notifications going around from component to component.
+         */
+        [SyncManager sharedManager].progressDelegate = navigationController;
+    }
+    
+    if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
+    {
+        SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
+        
+        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+        if ([syncNavigationController isProgressViewVisible])
+        {
+            edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
+        }
+        self.collectionView.contentInset = edgeInset;
+    }
+}
+
 #pragma mark - UIAdaptivePresentationControllerDelegate methods
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
 {
@@ -316,6 +344,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate
 {
     return self;
+}
+
+- (void)dataSourceHasChanged
+{
+    [super reloadCollectionView];
 }
 
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods

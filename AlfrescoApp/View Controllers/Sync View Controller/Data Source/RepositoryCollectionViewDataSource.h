@@ -17,10 +17,20 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import "RepositoryCollectionViewDataSource.h"
+#import "BaseCollectionViewFlowLayout.h"
+#import "CollectionViewProtocols.h"
 
-@interface SyncCollectionViewDataSource : RepositoryCollectionViewDataSource 
+@protocol RepositoryCollectionViewDataSourceDelegate <NSObject>
 
-- (instancetype)initWithTopLevelSyncNodes;
+- (BaseCollectionViewFlowLayout *)currentSelectedLayout;
+- (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate;
+- (void)dataSourceHasChanged;
+
+@end
+
+@interface RepositoryCollectionViewDataSource : NSObject <UICollectionViewDataSource>
+
+@property (nonatomic, weak) id<RepositoryCollectionViewDataSourceDelegate> delegate;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
