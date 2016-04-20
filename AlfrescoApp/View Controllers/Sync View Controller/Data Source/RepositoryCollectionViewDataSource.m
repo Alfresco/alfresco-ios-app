@@ -98,4 +98,10 @@
     return nodeCell;
 }
 
+#pragma mark - Public methods
+- (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index
+{
+    return self.dataSourceCollection[index];
+}
+
 @end

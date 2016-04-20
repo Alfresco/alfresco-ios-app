@@ -45,6 +45,9 @@
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
 - (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
+- (NSString *)contentPathForNode:(AlfrescoDocument *)document;
+
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *results, NSError *error))block;
 
 /*
  * Sync Methods

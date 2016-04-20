@@ -21,6 +21,4 @@
 
 @interface SyncCollectionViewDataSource : RepositoryCollectionViewDataSource 
 
-- (instancetype)initWithTopLevelSyncNodes;
-
 @end

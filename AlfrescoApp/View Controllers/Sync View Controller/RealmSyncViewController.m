@@ -89,7 +89,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     
-    self.dataSource = [[SyncCollectionViewDataSource alloc] initWithTopLevelSyncNodes];
+    self.dataSource = [[SyncCollectionViewDataSource alloc] initWithParentNode:self.parentNode];
     self.dataSource.session = self.session;
     self.dataSource.delegate = self;
     
@@ -414,6 +414,80 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
             {
                 break;
             }
+        }
+    }
+}
+
+#pragma mark - UICollectionViewDelegate methods
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+    AlfrescoNode *selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.row];
+    SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:selectedNode.identifier];
+    
+    if (selectedNode.isFolder)
+    {
+        RealmSyncViewController *controller = [[RealmSyncViewController alloc] initWithParentNode:selectedNode andSession:self.session];
+        controller.style = self.style;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+    else
+    {
+        if (nodeStatus.status == SyncStatusLoading)
+        {
+            [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+            return;
+        }
+        
+        NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
+        AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
+        if (filePath)
+        {
+            if ([[ConnectivityManager sharedManager] hasInternetConnection])
+            {
+                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                               permissions:syncNodePermissions
+                                                                               contentFile:filePath
+                                                                          documentLocation:InAppDocumentLocationSync
+                                                                                   session:self.session
+                                                                      navigationController:self.navigationController
+                                                                                  animated:YES];
+            }
+            else
+            {
+                [UniversalDevice pushToDisplayDownloadDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                       permissions:nil
+                                                                                       contentFile:filePath
+                                                                                  documentLocation:InAppDocumentLocationSync
+                                                                                           session:self.session
+                                                                              navigationController:self.navigationController
+                                                                                          animated:YES];
+            }
+        }
+        else if ([[ConnectivityManager sharedManager] hasInternetConnection])
+        {
+            [self showHUD];
+            [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                
+                [self hideHUD];
+                if (!error)
+                {
+                    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                   permissions:permissions
+                                                                                   contentFile:filePath
+                                                                              documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                       session:self.session
+                                                                          navigationController:self.navigationController
+                                                                                      animated:YES];
+                }
+                else
+                {
+                    // display an error
+                    NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+                    displayErrorMessage(permissionRetrievalErrorMessage);
+                    [Notifier notifyWithAlfrescoError:error];
+                }
+            }];
         }
     }
 }

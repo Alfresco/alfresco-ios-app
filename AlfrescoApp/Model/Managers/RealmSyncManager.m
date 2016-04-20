@@ -180,6 +180,39 @@
     return permissions;
 }
 
+- (NSString *)contentPathForNode:(AlfrescoDocument *)document
+{
+    RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:[RLMRealm defaultRealm]];
+    
+    //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
+    NSString *newNodePath = nil;
+    if(nodeInfo)
+    {
+        NSString *storedPath = nodeInfo.syncContentPath;
+        NSString *relativePath = [self relativeSyncPath:storedPath];
+        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
+        newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
+    }
+    
+    return newNodePath;
+}
+
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *, NSError *))block
+{
+    RLMNotificationToken *token = nil;
+    
+    if(node)
+    {
+        token = [[RealmSyncNodeInfo objectsInRealm:self.mainThreadRealm where:@"syncNodeInfoId == %@", [[RealmSyncHelper sharedHelper] syncIdentifierForNode:node]] addNotificationBlock:block];
+    }
+    else
+    {
+        token = [[RealmSyncNodeInfo objectsInRealm:[RealmSyncManager sharedManager].mainThreadRealm where:@"isTopLevelSyncNode = %@", @YES] addNotificationBlock:block];
+    }
+    
+    return token;
+}
+
 #pragma mark - Delete node
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
 {
@@ -482,23 +515,6 @@
     }];
     
     return isSyncing;
-}
-
-- (NSString *)contentPathForNode:(AlfrescoDocument *)document
-{
-    RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:[RLMRealm defaultRealm]];
-    
-    //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
-    NSString *newNodePath = nil;
-    if(nodeInfo)
-    {
-        NSString *storedPath = nodeInfo.syncContentPath;
-        NSString *relativePath = [self relativeSyncPath:storedPath];
-        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
-        newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
-    }
-    
-    return newNodePath;
 }
 
 // this parses a path to get the relative path to the Sync folder

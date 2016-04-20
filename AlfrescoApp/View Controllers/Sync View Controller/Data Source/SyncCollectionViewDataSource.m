@@ -19,6 +19,8 @@
 #import "SyncCollectionViewDataSource.h"
 #import "RepositoryCollectionViewDataSource+Internal.h"
 #import "RealmSyncManager.h"
+#import "RealmManager.h"
+#import "RealmSyncHelper.h"
 #import "RealmSyncNodeInfo.h"
 
 @interface SyncCollectionViewDataSource()
@@ -30,7 +32,7 @@
 
 @implementation SyncCollectionViewDataSource
 
-- (instancetype)initWithTopLevelSyncNodes
+- (instancetype)initWithParentNode:(AlfrescoNode *)node
 {
     self = [super init];
     if(!self)
@@ -38,9 +40,22 @@
         return nil;
     }
     
-    self.token = [[RealmSyncNodeInfo objectsInRealm:[RealmSyncManager sharedManager].mainThreadRealm where:@"isTopLevelSyncNode = %@", @YES] addNotificationBlock:^(RLMResults * _Nullable results, NSError * _Nullable error) {
-        self.syncDataSourceCollection = results;
-        [self setupDataSourceCollection];
+    self.parentNode = node;
+    self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults *results, NSError *error) {
+        if(results.count > 0)
+        {
+            self.syncDataSourceCollection = results;
+            if(node)
+            {
+                RealmSyncNodeInfo *syncParentNode = self.syncDataSourceCollection.firstObject;
+                [self setupDataSourceCollection:syncParentNode.nodes];
+            }
+            else
+            {
+                [self setupDataSourceCollection:self.syncDataSourceCollection];
+            }
+            
+        }
     }];
     
     return self;
@@ -48,10 +63,10 @@
 
 #pragma mark - Helper methods
 
-- (void)setupDataSourceCollection
+- (void)setupDataSourceCollection:(id<NSFastEnumeration>)collection
 {
     self.dataSourceCollection = [NSMutableArray new];
-    for(RealmSyncNodeInfo *nodeInfo in self.syncDataSourceCollection)
+    for(RealmSyncNodeInfo *nodeInfo in collection)
     {
         [self.dataSourceCollection addObject:nodeInfo.alfrescoNode];
     }

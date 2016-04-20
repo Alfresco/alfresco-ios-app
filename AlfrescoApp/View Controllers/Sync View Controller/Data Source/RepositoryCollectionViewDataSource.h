@@ -33,4 +33,7 @@
 @property (nonatomic, weak) id<RepositoryCollectionViewDataSourceDelegate> delegate;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 
+- (instancetype)initWithParentNode:(AlfrescoNode *)node;
+- (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index;
+
 @end

@@ -20,6 +20,7 @@
 
 @interface RepositoryCollectionViewDataSource ()
 
+@property (nonatomic, strong) AlfrescoNode *parentNode;
 @property (nonatomic, strong) NSMutableArray *dataSourceCollection;
 
 @end
