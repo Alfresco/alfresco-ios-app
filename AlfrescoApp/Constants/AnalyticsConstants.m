@@ -138,6 +138,7 @@ NSString * const kAnalyticsEventActionReassign           = @"Reassign";
 NSString * const kAnalyticsEventActionComplete           = @"Complete";
 NSString * const kAnalyticsEventActionRunSimple          = @"Run Simple";
 NSString * const kAnalyticsEventActionRun                = @"Run";
+NSString * const kAnalyticsEventActionHistory            = @"History";
 NSString * const kAnalyticsEventActionAnalytics          = @"Analytics";
 NSString * const kAnalyticsEventActionClearData          = @"Clear Data";
 

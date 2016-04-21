@@ -205,6 +205,34 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     }
 }
 
+- (void)trackSearchEventWithAction:(NSString *)action
+{
+    NSString *analyticsLabel = nil;
+    
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+            analyticsLabel = kAnalyticsEventLabelFiles;
+            break;
+        case SearchViewControllerDataSourceTypeSearchFolders:
+            analyticsLabel = kAnalyticsEventLabelFolders;
+            break;
+        case SearchViewControllerDataSourceTypeSearchSites:
+            analyticsLabel = kAnalyticsEventLabelSites;
+            break;
+        case SearchViewControllerDataSourceTypeSearchUsers:
+            analyticsLabel = kAnalyticsEventLabelPeople;
+            break;
+        default:
+            break;
+    }
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySearch
+                                                      action:action
+                                                       label:analyticsLabel
+                                                       value:@1];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -280,6 +308,11 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSourceType != SearchViewControllerDataSourceTypeLandingPage)
+    {
+        [self trackSearchEventWithAction:kAnalyticsEventActionHistory];
+    }
+    
     switch (self.dataSourceType)
     {
         case SearchViewControllerDataSourceTypeLandingPage:
@@ -401,30 +434,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         [self.tableView reloadData];
     }
     
-    NSString *analyticsLabel = nil;
-    
-    switch (self.dataSourceType)
-    {
-        case SearchViewControllerDataSourceTypeSearchFiles:
-            analyticsLabel = kAnalyticsEventLabelFiles;
-            break;
-        case SearchViewControllerDataSourceTypeSearchFolders:
-            analyticsLabel = kAnalyticsEventLabelFolders;
-            break;
-        case SearchViewControllerDataSourceTypeSearchSites:
-            analyticsLabel = kAnalyticsEventLabelSites;
-            break;
-        case SearchViewControllerDataSourceTypeSearchUsers:
-            analyticsLabel = kAnalyticsEventLabelPeople;
-            break;
-        default:
-            break;
-    }
-    
-    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySearch
-                                                      action:kAnalyticsEventActionRunSimple
-                                                       label:analyticsLabel
-                                                       value:@1];
+    [self trackSearchEventWithAction:kAnalyticsEventActionRunSimple];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar

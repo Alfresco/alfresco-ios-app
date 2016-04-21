@@ -138,6 +138,7 @@ extern NSString * const kAnalyticsEventActionReassign;
 extern NSString * const kAnalyticsEventActionComplete;
 extern NSString * const kAnalyticsEventActionRunSimple;
 extern NSString * const kAnalyticsEventActionRun;
+extern NSString * const kAnalyticsEventActionHistory;
 extern NSString * const kAnalyticsEventActionAnalytics;
 extern NSString * const kAnalyticsEventActionClearData;
 
