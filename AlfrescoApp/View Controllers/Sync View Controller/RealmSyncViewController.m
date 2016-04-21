@@ -54,22 +54,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         self.session = session;
         self.parentNode = node;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(siteRequestsCompleted:)
-                                                     name:kAlfrescoSiteRequestsCompletedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didAddNodeToFavourites:)
-                                                     name:kFavouritesDidAddNodeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didRemoveNodeFromFavourites:)
-                                                     name:kFavouritesDidRemoveNodeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(documentDeleted:)
-                                                     name:kAlfrescoDocumentDeletedOnServerNotification
-                                                   object:nil];
     }
     return self;
 }
@@ -105,6 +89,43 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     [self changeCollectionViewStyle:self.style animated:YES];
     
+    [self addNotificationListeners];
+    
+    [self setupBarButtonItems];
+    
+    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
+    {
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+//        [self loadSyncNodesForFolder:self.parentNode];
+        [super reloadCollectionView];
+        self.didSyncAfterSessionRefresh = YES;
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Private methods
+- (void)addNotificationListeners
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(siteRequestsCompleted:)
+                                                 name:kAlfrescoSiteRequestsCompletedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didAddNodeToFavourites:)
+                                                 name:kFavouritesDidAddNodeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRemoveNodeFromFavourites:)
+                                                 name:kFavouritesDidRemoveNodeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(documentDeleted:)
+                                                 name:kAlfrescoDocumentDeletedOnServerNotification
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
@@ -128,19 +149,8 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(editingDocumentCompleted:)
                                                  name:kAlfrescoDocumentEditedNotification object:nil];
-    
-    [self setupBarButtonItems];
-    
-    if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
-    {
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-//        [self loadSyncNodesForFolder:self.parentNode];
-        [super reloadCollectionView];
-        self.didSyncAfterSessionRefresh = YES;
-    }
 }
 
-#pragma mark - Private methods
 - (NSString *)listTitle
 {
     NSString *title = @"";
@@ -195,20 +205,22 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
     }
+    
+    __weak typeof(self) weakSelf = self;
     UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        if(self.style == CollectionViewStyleList)
+        if(weakSelf.style == CollectionViewStyleList)
         {
-            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES];
+            [weakSelf changeCollectionViewStyle:CollectionViewStyleGrid animated:YES];
         }
         else
         {
-            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES];
+            [weakSelf changeCollectionViewStyle:CollectionViewStyleList animated:YES];
         }
     }];
     [self.actionsAlertController addAction:changeLayoutAction];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
     }];
     
     [self.actionsAlertController addAction:cancelAction];
@@ -448,17 +460,18 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         else if ([[ConnectivityManager sharedManager] hasInternetConnection])
         {
             [self showHUD];
+            __weak typeof(self) weakSelf = self;
             [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 
-                [self hideHUD];
+                [weakSelf hideHUD];
                 if (!error)
                 {
                     [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
                                                                                    permissions:permissions
                                                                                    contentFile:filePath
                                                                               documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                       session:self.session
-                                                                          navigationController:self.navigationController
+                                                                                       session:weakSelf.session
+                                                                          navigationController:weakSelf.navigationController
                                                                                       animated:YES];
                 }
                 else

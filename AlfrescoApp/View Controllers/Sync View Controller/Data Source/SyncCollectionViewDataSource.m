@@ -41,18 +41,20 @@
     }
     
     self.parentNode = node;
+    
+    __weak typeof(self) weakSelf = self;
     self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults *results, NSError *error) {
         if(results.count > 0)
         {
-            self.syncDataSourceCollection = results;
+            weakSelf.syncDataSourceCollection = results;
             if(node)
             {
-                RealmSyncNodeInfo *syncParentNode = self.syncDataSourceCollection.firstObject;
-                [self setupDataSourceCollection:syncParentNode.nodes];
+                RealmSyncNodeInfo *syncParentNode = weakSelf.syncDataSourceCollection.firstObject;
+                [weakSelf setupDataSourceCollection:syncParentNode.nodes];
             }
             else
             {
-                [self setupDataSourceCollection:self.syncDataSourceCollection];
+                [weakSelf setupDataSourceCollection:weakSelf.syncDataSourceCollection];
             }
             
         }
