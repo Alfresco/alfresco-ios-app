@@ -47,4 +47,9 @@
     return [self linkingObjectsOfClass:@"RealmSyncNodeInfo" forProperty:@"parentNode"];
 }
 
+- (AlfrescoNode *)alfrescoNode
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:self.node];
+}
+
 @end

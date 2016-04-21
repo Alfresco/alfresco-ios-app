@@ -38,6 +38,8 @@
 #import "SyncNavigationViewController.h"
 #import "SearchResultsTableViewController.h"
 
+#import "RealmSyncViewController.h"
+
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
 
@@ -358,7 +360,9 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
     {
         // Sync
-        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
+//        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
+        
+        RealmSyncViewController *syncViewController = [[RealmSyncViewController alloc] initWithParentNode:nil andSession:self.session];
         SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
         associatedObject = syncNavigationController;
     }

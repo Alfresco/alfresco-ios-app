@@ -21,7 +21,6 @@
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "AccountSyncProgress.h"
-#import "SyncNodeStatus.h"
 #import "SyncOperation.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "RealmSyncHelper.h"
@@ -41,6 +40,7 @@
 @property (nonatomic, strong) NSDictionary *syncObstacles;
 @property (nonatomic, strong) RealmSyncHelper *syncHelper;
 @property (nonatomic, strong) RealmManager *realmManager;
+@property (nonatomic, strong) NSMutableDictionary *permissions;
 
 @end
 
@@ -107,6 +107,13 @@
     [self.realmManager deleteRealmWithName:account.accountIdentifier];
 }
 
+- (RLMRealm *)mainThreadRealm
+{
+    _mainThreadRealm = [self createRealmForAccount:[AccountManager sharedManager].selectedAccount];
+    
+    return _mainThreadRealm;
+}
+
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock
 {
     if([self isCurrentlySyncing])
@@ -143,6 +150,118 @@
     account.isSyncOn = NO;
     [[AccountManager sharedManager] saveAccountsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+}
+
+- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
+{
+    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:syncNodeId inSyncNodesStatus:self.syncNodesStatus];
+    return nodeStatus;
+}
+
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
+{
+    [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+}
+
+- (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node
+{
+    AlfrescoPermissions *permissions = [self.permissions objectForKey:[self.syncHelper syncIdentifierForNode:node]];
+    
+    if (!permissions)
+    {
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:[RLMRealm defaultRealm]];
+        
+        if (nodeInfo.permissions)
+        {
+            permissions = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.permissions];
+        }
+    }
+    return permissions;
+}
+
+- (NSString *)contentPathForNode:(AlfrescoDocument *)document
+{
+    RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:[RLMRealm defaultRealm]];
+    
+    //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
+    NSString *newNodePath = nil;
+    if(nodeInfo)
+    {
+        NSString *storedPath = nodeInfo.syncContentPath;
+        NSString *relativePath = [self relativeSyncPath:storedPath];
+        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
+        newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
+    }
+    
+    return newNodePath;
+}
+
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *, NSError *))block
+{
+    RLMNotificationToken *token = nil;
+    
+    if(node)
+    {
+        token = [[RealmSyncNodeInfo objectsInRealm:self.mainThreadRealm where:@"syncNodeInfoId == %@", [[RealmSyncHelper sharedHelper] syncIdentifierForNode:node]] addNotificationBlock:block];
+    }
+    else
+    {
+        token = [[RealmSyncNodeInfo objectsInRealm:[RealmSyncManager sharedManager].mainThreadRealm where:@"isTopLevelSyncNode = %@", @YES] addNotificationBlock:block];
+    }
+    
+    return token;
+}
+
+- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
+{
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
+    
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+        AccountSyncProgress *syncProgress = self.accountsSyncProgress[selectedAccountIdentifier];
+        syncProgress.totalSyncSize += document.contentLength;
+        [self notifyProgressDelegateAboutCurrentProgress];
+        
+        if (nodeStatus.activityType == SyncActivityTypeDownload)
+        {
+            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+        else
+        {
+            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+    }
+    else
+    {
+        if (nodeStatus.activityType != SyncActivityTypeDownload)
+        {
+            nodeStatus.status = SyncStatusWaiting;
+            nodeStatus.activityType = SyncActivityTypeUpload;
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    }
+}
+
+- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
+{
+    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:self.mainThreadRealm];
+    return syncError.errorDescription;
 }
 
 #pragma mark - Delete node
@@ -432,13 +551,6 @@
     });
 }
 
-- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
-{
-    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
-    SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:syncNodeId inSyncNodesStatus:self.syncNodesStatus];
-    return nodeStatus;
-}
-
 - (BOOL)isCurrentlySyncing
 {
     __block BOOL isSyncing = NO;
@@ -454,23 +566,6 @@
     }];
     
     return isSyncing;
-}
-
-- (NSString *)contentPathForNode:(AlfrescoDocument *)document
-{
-    RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:[RLMRealm defaultRealm]];
-    
-    //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
-    NSString *newNodePath = nil;
-    if(nodeInfo)
-    {
-        NSString *storedPath = nodeInfo.syncContentPath;
-        NSString *relativePath = [self relativeSyncPath:storedPath];
-        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
-        newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
-    }
-    
-    return newNodePath;
 }
 
 // this parses a path to get the relative path to the Sync folder
@@ -511,51 +606,6 @@
         if (completionBlock != NULL)
         {
             completionBlock(NO);
-        }
-    }
-}
-
-- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
-{
-    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
-    
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
-    {
-        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[selectedAccountIdentifier];
-        syncProgress.totalSyncSize += document.contentLength;
-        [self notifyProgressDelegateAboutCurrentProgress];
-        
-        if (nodeStatus.activityType == SyncActivityTypeDownload)
-        {
-            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-        else
-        {
-            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-    }
-    else
-    {
-        if (nodeStatus.activityType != SyncActivityTypeDownload)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
-        
-        if (completionBlock)
-        {
-            completionBlock();
         }
     }
 }

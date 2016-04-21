@@ -310,8 +310,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.collectionView.delegate = self;
     self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:self.shouldIncludeSearchBar];
     self.listLayout.dataSourceInfoDelegate = self;
+    self.listLayout.collectionViewMultiSelectDelegate = self;
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:self.shouldIncludeSearchBar];
     self.gridLayout.dataSourceInfoDelegate = self;
+    self.gridLayout.collectionViewMultiSelectDelegate = self;
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
