@@ -97,10 +97,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     self.collectionView.delegate = self;
     
     self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:NO];
-    self.listLayout.dataSourceInfoDelegate = self;
+    self.listLayout.dataSourceInfoDelegate = self.dataSource;
     self.listLayout.collectionViewMultiSelectDelegate = self;
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:NO];
-    self.gridLayout.dataSourceInfoDelegate = self;
+    self.gridLayout.dataSourceInfoDelegate = self.dataSource;
     self.gridLayout.collectionViewMultiSelectDelegate = self;
     
     [self changeCollectionViewStyle:self.style animated:YES];
@@ -158,7 +158,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     return title;
 }
 
-- (void) setupBarButtonItems
+- (void)setupBarButtonItems
 {
     NSMutableArray *rightBarButtonItems = [NSMutableArray array];
     
@@ -216,44 +216,44 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
-//    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-//    AlfrescoNode *node = self.collectionViewData[indexPath.row];
-//    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
-//    
-//    if (IS_IPAD)
-//    {
-//        FailedTransferDetailViewController *syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
-//                                                                                                                           message:errorDescription retryCompletionBlock:^() {
-//                                                                                                                               [self retrySyncAndCloseRetryPopover];
-//                                                                                                                           }];
-//        
-//        if (self.retrySyncPopover)
-//        {
-//            [self.retrySyncPopover dismissPopoverAnimated:YES];
-//        }
-//        self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
-//        [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
-//        
-//        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-//        
-//        if (cell.accessoryView.window != nil)
-//        {
-//            [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//        }
-//    }
-//    else
-//    {
-//        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
-//                                    message:errorDescription
-//                                   delegate:self
-//                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-//                          otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
-//    }
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+    AlfrescoNode *node = [self.dataSource alfrescoNodeAtIndex:indexPath.row];
+    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
+    
+    if (IS_IPAD)
+    {
+        FailedTransferDetailViewController *syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
+                                                                                                                           message:errorDescription retryCompletionBlock:^() {
+                                                                                                                               [self retrySyncAndCloseRetryPopover];
+                                                                                                                           }];
+        
+        if (self.retrySyncPopover)
+        {
+            [self.retrySyncPopover dismissPopoverAnimated:YES];
+        }
+        self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
+        [self.retrySyncPopover setPopoverContentSize:syncFailedDetailController.view.frame.size];
+        
+        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        
+        if (cell.accessoryView.window != nil)
+        {
+            [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
+                                    message:errorDescription
+                                   delegate:self
+                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                          otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
+    }
 }
 
 - (void)retrySyncAndCloseRetryPopover
 {
-//    [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
+    [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
     [self.retrySyncPopover dismissPopoverAnimated:YES];
     self.retrySyncNode = nil;
     self.retrySyncPopover = nil;
@@ -261,6 +261,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
 - (void)adjustCollectionViewForProgressView:(NSNotification *)notification
 {
+#warning Change progressDelegate from SyncManagerProgressDelegate to RealmSyncManagerProgressDelegate and the new Realm backed system
     id navigationController = self.navigationController;
     
     if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(SyncManagerProgressDelegate)]))
@@ -297,14 +298,14 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 }
 
 #pragma mark - CollectionViewMultiSelectDelegate methods
-- (BOOL) isItemSelected:(NSIndexPath *) indexPath
+- (BOOL)isItemSelected:(NSIndexPath *) indexPath
 {
     if(self.isEditing)
     {
         AlfrescoNode *selectedNode = nil;
-        if(indexPath.item < self.collectionViewData.count)
+        if(indexPath.item < [self.dataSource numberOfNodesInCollection])
         {
-            selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
+            selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.row];
         }
         
         if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
@@ -313,26 +314,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         }
     }
     return NO;
-}
-
-#pragma mark - DataSourceInformationProtocol methods
-- (NSInteger)indexOfNode:(AlfrescoNode *)node
-{
-    NSInteger index = NSNotFound;
-    index = [self.collectionViewData indexOfObject:node];
-    
-    return index;
-}
-
-- (BOOL)isNodeAFolderAtIndex:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *selectedNode = nil;
-    if(indexPath.item < self.collectionViewData.count)
-    {
-        selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-    }
-    
-    return [selectedNode isKindOfClass:[AlfrescoFolder class]];
 }
 
 #pragma mark - SyncCollectionViewDataSourceDelegate methods

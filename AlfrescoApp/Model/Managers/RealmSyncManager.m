@@ -213,6 +213,57 @@
     return token;
 }
 
+- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
+{
+    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
+    
+    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+        AccountSyncProgress *syncProgress = self.accountsSyncProgress[selectedAccountIdentifier];
+        syncProgress.totalSyncSize += document.contentLength;
+        [self notifyProgressDelegateAboutCurrentProgress];
+        
+        if (nodeStatus.activityType == SyncActivityTypeDownload)
+        {
+            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+        else
+        {
+            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+    }
+    else
+    {
+        if (nodeStatus.activityType != SyncActivityTypeDownload)
+        {
+            nodeStatus.status = SyncStatusWaiting;
+            nodeStatus.activityType = SyncActivityTypeUpload;
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    }
+}
+
+- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
+{
+    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:self.mainThreadRealm];
+    return syncError.errorDescription;
+}
+
 #pragma mark - Delete node
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
 {
@@ -555,51 +606,6 @@
         if (completionBlock != NULL)
         {
             completionBlock(NO);
-        }
-    }
-}
-
-- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock
-{
-    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:document]];
-    
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
-    {
-        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[selectedAccountIdentifier];
-        syncProgress.totalSyncSize += document.contentLength;
-        [self notifyProgressDelegateAboutCurrentProgress];
-        
-        if (nodeStatus.activityType == SyncActivityTypeDownload)
-        {
-            [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-        else
-        {
-            [self uploadDocument:document withCompletionBlock:^(BOOL completed) {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        }
-    }
-    else
-    {
-        if (nodeStatus.activityType != SyncActivityTypeDownload)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
-        
-        if (completionBlock)
-        {
-            completionBlock();
         }
     }
 }

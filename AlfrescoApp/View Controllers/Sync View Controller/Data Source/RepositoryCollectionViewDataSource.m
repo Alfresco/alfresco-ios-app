@@ -24,6 +24,17 @@
 
 @implementation RepositoryCollectionViewDataSource
 
+- (instancetype)initWithParentNode:(AlfrescoNode *)node
+{
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    return self;
+}
+
 #pragma mark - UICollectionViewDataSource methods
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -41,8 +52,8 @@
     
 //    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
 //        BOOL isSyncOn = [syncManager isNodeInSyncList:node];
-    
-    //    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
+//    
+//        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
 //        [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
 //    
 //            [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
@@ -98,10 +109,35 @@
     return nodeCell;
 }
 
+#pragma mark - DataSourceInformationProtocol methods
+- (NSInteger)indexOfNode:(AlfrescoNode *)node
+{
+    NSInteger index = NSNotFound;
+    index = [self.dataSourceCollection indexOfObject:node];
+    
+    return index;
+}
+
+- (BOOL)isNodeAFolderAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *selectedNode = nil;
+    if(indexPath.item < self.dataSourceCollection.count)
+    {
+        selectedNode = [self.dataSourceCollection objectAtIndex:indexPath.row];
+    }
+    
+    return [selectedNode isKindOfClass:[AlfrescoFolder class]];
+}
+
 #pragma mark - Public methods
 - (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index
 {
     return self.dataSourceCollection[index];
+}
+
+- (NSInteger)numberOfNodesInCollection
+{
+    return self.dataSourceCollection.count;
 }
 
 @end

@@ -133,6 +133,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     [MigrationAssistant runDownloadsMigration];
     
+#warning Code commented for testing purposes
 //    if([[RealmSyncManager sharedManager] isCoreDataMigrationNeeded])
 //    {
         [[RealmSyncManager sharedManager] initiateMigrationProcess];
