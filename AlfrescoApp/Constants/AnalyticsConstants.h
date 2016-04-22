@@ -191,7 +191,7 @@ typedef NS_ENUM(NSUInteger, AnalyticsMetric)
     AnalyticsMetricSessionCreated      = 8,
     AnalyticsMetricSyncStarted         = 9,
     AnalyticsMetricFileSize            = 10,
-    AnalyticsMetricProfilesCounts      = 11,
+    AnalyticsMetricProfilesCount       = 11,
     AnalyticsMetricFullContentSearch   = 12,
     AnalyticsMetricSyncOnCellular      = 13
 };
@@ -202,4 +202,6 @@ typedef NS_ENUM(NSUInteger, AnalyticsDimension)
     AnalyticsDimensionServerType        = 1,
     AnalyticsDimensionServerVersion     = 2,
     AnalyticsDimensionServerEdition     = 3,
+    AnalyticsDimensionAccounts          = 4,
+    AnalyticsDimensionProfiles          = 5
 };
