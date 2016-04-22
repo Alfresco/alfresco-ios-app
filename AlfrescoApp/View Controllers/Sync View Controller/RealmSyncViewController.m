@@ -18,13 +18,16 @@
 
 #import "RealmSyncViewController.h"
 #import "ConnectivityManager.h"
-#import "FileFolderCollectionViewCell.h"
 #import "SyncCollectionViewDataSource.h"
 #import "RealmSyncManager.h"
 #import "UniversalDevice.h"
-#import "FailedTransferDetailViewController.h"
 #import "PreferenceManager.h"
+#import "AccountManager.h"
+
+#import "SyncObstaclesViewController.h"
 #import "SyncNavigationViewController.h"
+#import "FailedTransferDetailViewController.h"
+#import "FileFolderCollectionViewCell.h"
 
 static CGFloat const kCellHeight = 64.0f;
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
@@ -73,18 +76,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     
-    self.dataSource = [[SyncCollectionViewDataSource alloc] initWithParentNode:self.parentNode];
-    self.dataSource.session = self.session;
-    self.dataSource.delegate = self;
-    
-    self.collectionView.dataSource = self.dataSource;
     self.collectionView.delegate = self;
     
     self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:NO];
-    self.listLayout.dataSourceInfoDelegate = self.dataSource;
     self.listLayout.collectionViewMultiSelectDelegate = self;
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:NO];
-    self.gridLayout.dataSourceInfoDelegate = self.dataSource;
     self.gridLayout.collectionViewMultiSelectDelegate = self;
     
     [self changeCollectionViewStyle:self.style animated:YES];
@@ -96,7 +92,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-//        [self loadSyncNodesForFolder:self.parentNode];
+        [self loadSyncNodesForFolder:self.parentNode];
         [super reloadCollectionView];
         self.didSyncAfterSessionRefresh = YES;
     }
@@ -115,28 +111,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                                  name:kAlfrescoSiteRequestsCompletedNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didAddNodeToFavourites:)
-                                                 name:kFavouritesDidAddNodeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didRemoveNodeFromFavourites:)
-                                                 name:kFavouritesDidRemoveNodeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(documentDeleted:)
-                                                 name:kAlfrescoDocumentDeletedOnServerNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleSyncObstacles:)
                                                  name:kSyncObstaclesNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didUpdatePreference:)
                                                  name:kSettingsDidChangeNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountInfoUpdated:)
-                                                 name:kAlfrescoAccountUpdatedNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(nodeAdded:)
@@ -166,6 +146,20 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
     return title;
+}
+
+- (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
+{
+    self.dataSource = [[SyncCollectionViewDataSource alloc] initWithParentNode:self.parentNode];
+    self.dataSource.session = self.session;
+    self.dataSource.delegate = self;
+    
+    self.listLayout.dataSourceInfoDelegate = self.dataSource;
+    self.gridLayout.dataSourceInfoDelegate = self.dataSource;
+    self.collectionView.dataSource = self.dataSource;
+    
+    [self reloadCollectionView];
+    [self hidePullToRefreshView];
 }
 
 - (void)setupBarButtonItems
@@ -234,9 +228,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     if (IS_IPAD)
     {
+        __weak typeof(self) weakSelf = self;
         FailedTransferDetailViewController *syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
                                                                                                                            message:errorDescription retryCompletionBlock:^() {
-                                                                                                                               [self retrySyncAndCloseRetryPopover];
+                                                                                                                               [weakSelf retrySyncAndCloseRetryPopover];
                                                                                                                            }];
         
         if (self.retrySyncPopover)
@@ -271,31 +266,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     self.retrySyncPopover = nil;
 }
 
-- (void)adjustCollectionViewForProgressView:(NSNotification *)notification
+- (void)cancelSync
 {
-#warning Change progressDelegate from SyncManagerProgressDelegate to RealmSyncManagerProgressDelegate and the new Realm backed system
-    id navigationController = self.navigationController;
-    
-    if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(SyncManagerProgressDelegate)]))
-    {
-        /* The sender is not the navigation controller of this view controller, but the navigation controller of another instance of SyncViewController (namely the favorites view controller
-         which was created when the account was first added). Will update the progress delegate on SyncManager to be able to show the progress view. The cause of this problem is a timing issue
-         between begining the syncing process, menu reloading and delegate calls and notifications going around from component to component.
-         */
-        [SyncManager sharedManager].progressDelegate = navigationController;
-    }
-    
-    if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
-    {
-        SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
-        
-        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
-        if ([syncNavigationController isProgressViewVisible])
-        {
-            edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
-        }
-        self.collectionView.contentInset = edgeInset;
-    }
+    [[RealmSyncManager sharedManager] cancelAllSyncOperations];
 }
 
 #pragma mark - UIAdaptivePresentationControllerDelegate methods
@@ -370,13 +343,14 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         }
         else
         {
+            __weak typeof(self) weakSelf = self;
             [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 if (permissions)
                 {
                     [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
                                                                                  permissions:permissions
-                                                                                     session:self.session
-                                                                        navigationController:self.navigationController
+                                                                                     session:weakSelf.session
+                                                                        navigationController:weakSelf.navigationController
                                                                                     animated:YES];
                 }
                 else
@@ -484,6 +458,136 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
             }];
         }
     }
+}
+
+#pragma mark - Notifications methods
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+    self.didSyncAfterSessionRefresh = NO;
+    self.title = [self listTitle];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    // Hold off making sync network requests until either the Sites requests have completed, or a timeout period has passed
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kSyncOnSiteRequestsCompletionTimeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        if (!self.didSyncAfterSessionRefresh)
+        {
+            [self loadSyncNodesForFolder:self.parentNode];
+            self.didSyncAfterSessionRefresh = YES;
+        }
+    });
+}
+
+- (void)siteRequestsCompleted:(NSNotification *)notification
+{
+    [self loadSyncNodesForFolder:self.parentNode];
+    self.didSyncAfterSessionRefresh = YES;
+}
+
+- (void)editingDocumentCompleted:(NSNotification *)notification
+{
+    AlfrescoDocument *editedDocument = notification.object;
+    NSString *editedDocumentIdentifier = [Utility nodeRefWithoutVersionID:editedDocument.identifier];
+    
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocumentIdentifier inNodeIdentifiers:[self.collectionViewData valueForKeyPath:kVersionSeriesValueKeyPath]];
+    
+    if (indexPath)
+    {
+        [self.collectionViewData replaceObjectAtIndex:indexPath.row withObject:editedDocument];
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    }
+}
+
+- (void)didUpdatePreference:(NSNotification *)notification
+{
+    NSString *preferenceKeyChanged = notification.object;
+    BOOL isCurrentlyOnCellular = [[ConnectivityManager sharedManager] isOnCellular];
+    
+    if ([preferenceKeyChanged isEqualToString:kSettingsSyncOnCellularIdentifier] && isCurrentlyOnCellular)
+    {
+        BOOL shouldSyncOnCellular = [notification.userInfo[kSettingChangedToKey] boolValue];
+        
+        // if changed to no and is syncing, then cancel sync
+        if ([[RealmSyncManager sharedManager] isCurrentlySyncing] && !shouldSyncOnCellular)
+        {
+            [self cancelSync];
+        }
+        else if (shouldSyncOnCellular)
+        {
+            [self loadSyncNodesForFolder:self.parentNode];
+        }
+    }
+}
+
+- (void)nodeAdded:(NSNotification *)notification
+{
+    NSDictionary *infoDictionary = notification.object;
+    AlfrescoFolder *parentFolder = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerParentFolderKey];
+    
+    if ([parentFolder.identifier isEqualToString:self.parentNode.identifier])
+    {
+        AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
+        [self addAlfrescoNodes:@[subnode] completion:nil];
+    }
+}
+
+#warning Change progressDelegate from SyncManagerProgressDelegate to RealmSyncManagerProgressDelegate and the new Realm backed system - part of IOS-564
+- (void)adjustCollectionViewForProgressView:(NSNotification *)notification
+{
+    id navigationController = self.navigationController;
+    
+    if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(SyncManagerProgressDelegate)]))
+    {
+        /* The sender is not the navigation controller of this view controller, but the navigation controller of another instance of SyncViewController (namely the favorites view controller
+         which was created when the account was first added). Will update the progress delegate on SyncManager to be able to show the progress view. The cause of this problem is a timing issue
+         between begining the syncing process, menu reloading and delegate calls and notifications going around from component to component.
+         */
+        [SyncManager sharedManager].progressDelegate = navigationController;
+    }
+    
+    if ([navigationController isKindOfClass:[SyncNavigationViewController class]])
+    {
+        SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
+        
+        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+        if ([syncNavigationController isProgressViewVisible])
+        {
+            edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
+        }
+        self.collectionView.contentInset = edgeInset;
+    }
+}
+
+- (void)handleSyncObstacles:(NSNotification *)notification
+{
+    NSMutableDictionary *syncObstacles = [[notification.userInfo objectForKey:kSyncObstaclesKey] mutableCopy];
+    
+    if (syncObstacles)
+    {
+        SyncObstaclesViewController *syncObstaclesController = [[SyncObstaclesViewController alloc] initWithErrors:syncObstacles];
+        syncObstaclesController.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        UINavigationController *syncObstaclesNavigationController = [[UINavigationController alloc] initWithRootViewController:syncObstaclesController];
+        [UniversalDevice displayModalViewController:syncObstaclesNavigationController onController:self withCompletionBlock:nil];
+    }
+}
+
+// @Override
+- (void)connectivityChanged:(NSNotification *)notification
+{
+    BOOL hasInternet = [notification.object boolValue];
+    if (hasInternet)
+    {
+        [self enablePullToRefresh];
+    }
+    else
+    {
+        [self disablePullToRefresh];
+    }
+    [self loadSyncNodesForFolder:self.parentNode];
 }
 
 @end
