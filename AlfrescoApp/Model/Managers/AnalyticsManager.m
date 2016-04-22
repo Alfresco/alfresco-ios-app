@@ -1,21 +1,21 @@
 /*******************************************************************************
  * Copyright (C) 2005-2016 Alfresco Software Limited.
- * 
+ *
  * This file is part of the Alfresco Mobile iOS App.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
+
 #import "AnalyticsManager.h"
 #import "Flurry.h"
 #import "PreferenceManager.h"
@@ -124,7 +124,7 @@
     
     [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
         AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
-    
+        
         [configService retrieveFeatureConfigWithType:kAlfrescoConfigFeatureTypeAnalytics completionBlock:^(AlfrescoFeatureConfig *config, NSError *error) {
             if (config && !config.isEnable)
             {
@@ -252,7 +252,7 @@
 
 #pragma mark - Private Methods For Analytics
 
-- (void) addSettingsInfoInTracker: (id<GAITracker>) tracker
+- (void)addSettingsInfoInTracker:(id<GAITracker>)tracker
 {
     // Sync Cellular
     BOOL syncOnCellular = [[PreferenceManager sharedManager] shouldSyncOnCellular];
@@ -265,21 +265,24 @@
     // Passcode - v2.3
 }
 
-- (void) addProfilesInfoInTracker: (id<GAITracker>) tracker profilesArray: (NSArray *) profilesArray
+- (void)addProfilesInfoInTracker:(id<GAITracker>)tracker profilesArray:(NSArray *)profilesArray
 {
-    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricProfilesCounts]
-           value:[NSString stringWithFormat:@"%@", @(profilesArray.count)]];
+    NSString *profileCountString = [NSString stringWithFormat:@"%@", @(profilesArray.count)];
+    
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricProfilesCount] value:profileCountString];
+    [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionProfiles] value:profileCountString];
 }
 
-- (void) addAccountsInfoInTracker: (id<GAITracker>) tracker
+- (void)addAccountsInfoInTracker:(id<GAITracker>)tracker
 {
     NSUInteger accountsCount = [AccountManager sharedManager].allAccounts.count;
     NSString *accountsCountString = [NSString stringWithFormat:@"%@", @(accountsCount)];
     
     [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricAccounts] value:accountsCountString];
+    [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionAccounts] value:accountsCountString];
 }
 
-- (void) addServerInfoMetricsInTracker: (id<GAITracker>) tracker session: (id<AlfrescoSession>) session
+- (void)addServerInfoMetricsInTracker:(id<GAITracker>)tracker session:(id<AlfrescoSession>)session
 {
     NSString *serverTypeString = [session isKindOfClass:[AlfrescoRepositorySession class]] ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
     
@@ -289,14 +292,14 @@
     [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionServerVersion] value:[session repositoryInfo].version];
 }
 
-- (void) addDownloadInfoMetricsInTracker: (id<GAITracker>) tracker
+- (void)addDownloadInfoMetricsInTracker:(id<GAITracker>)tracker
 {
     NSArray *documentPaths = [[DownloadManager sharedManager] downloadedDocumentPaths];
     [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricLocalFiles]
            value:[NSString stringWithFormat:@"%@", @(documentPaths.count)]];
 }
 
-- (void) addSyncInfoMetricsInTracker: (id<GAITracker>) tracker
+- (void)addSyncInfoMetricsInTracker:(id<GAITracker>)tracker
 {
     UserAccount *account = [AccountManager sharedManager].selectedAccount;
     
@@ -348,7 +351,7 @@
             self.flurryAnalyticsAreActive = YES;
         }
             break;
-        
+
         case AnalyticsTypeGoogleAnalytics:
         {
             if (self.googleAnalyticsHasStarted == NO)
