@@ -275,7 +275,7 @@ static NSInteger const kTagProfileCell = 3;
                                                                    value:@1];
                 
                 AccountManager *accountManager = [AccountManager sharedManager];
-                [[RealmSyncManager sharedManager] createRealmForAccount:self.account];
+                [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {

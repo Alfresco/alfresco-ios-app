@@ -93,7 +93,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [self loadSyncNodesForFolder:self.parentNode];
-        [super reloadCollectionView];
+        [self reloadCollectionView];
         self.didSyncAfterSessionRefresh = YES;
     }
 }
@@ -104,6 +104,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 }
 
 #pragma mark - Private methods
+- (void)reloadCollectionView
+{
+    [super reloadCollectionView];
+    self.collectionView.contentOffset = CGPointMake(0., 0.);
+}
+
 - (void)addNotificationListeners
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -314,7 +320,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
 - (void)dataSourceHasChanged
 {
-    [super reloadCollectionView];
+    [self reloadCollectionView];
 }
 
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods

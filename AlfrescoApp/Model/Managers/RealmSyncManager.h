@@ -34,37 +34,41 @@
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
 @property (nonatomic, strong) RLMRealm *mainThreadRealm;
 
-/**
- * Returns the shared singleton
- */
 + (RealmSyncManager *)sharedManager;
-
-- (RLMRealm *)createRealmForAccount:(UserAccount *)account;
-- (void)deleteRealmForAccount:(UserAccount *)account;
-- (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
-- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
-- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
-- (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
-- (NSString *)contentPathForNode:(AlfrescoDocument *)document;
-- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
-- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
-
-- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *results, NSError *error))block;
-
-/*
- * Sync Methods
- */
-- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 
 /*
  * Sync Utilities
  */
 - (BOOL)isCurrentlySyncing;
+- (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
 - (void)cancelAllSyncOperations;
 
 /**
- * Realm Utilities
+ * Sync node information
+ */
+- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
+- (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
+- (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
+- (NSString *)contentPathForNode:(AlfrescoDocument *)document;
+
+/**
+ * Sync operations
+ */
+- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
+- (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+
+/**
+ * Sync Feature
  */
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
+- (RLMRealm *)realmForAccount:(NSString *)accountId;
+- (void)deleteRealmForAccount:(UserAccount *)account;
+- (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
+
+/**
+ * Realm notifications
+ */
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *results, NSError *error))block;
 
 @end
