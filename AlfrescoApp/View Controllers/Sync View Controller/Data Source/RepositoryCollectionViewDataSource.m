@@ -50,14 +50,13 @@
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
     
-//    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-//        BOOL isSyncOn = [syncManager isNodeInSyncList:node];
-//    
-//        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
-//        [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-//    
-//            [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
-//        }];
+    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    BOOL isSyncOn = [[RealmSyncManager sharedManager] isNodeInSyncList:node];
+    
+    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
+    [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
+    }];
     
     BaseCollectionViewFlowLayout *currentLayout = [self.delegate currentSelectedLayout];
     

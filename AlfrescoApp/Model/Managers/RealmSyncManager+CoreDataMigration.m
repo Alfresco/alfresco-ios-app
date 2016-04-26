@@ -94,7 +94,7 @@
     }
     else if(coreDataAccountRecord.count > 0)
     {
-        RLMRealm *realm = [self createRealmForAccount:account];
+        RLMRealm *realm = [self realmForAccount:account.accountIdentifier];
         
         NSMutableArray *objectsToAddToRealm = [NSMutableArray new];
         NSMutableDictionary *parentNodeMappingDictionary = [NSMutableDictionary new];

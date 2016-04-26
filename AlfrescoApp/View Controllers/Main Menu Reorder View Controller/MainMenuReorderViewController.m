@@ -284,7 +284,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
                 {
                     if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
                     {
-                        [[RealmSyncManager sharedManager] createRealmForAccount:self.account];
+                        [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
                     }
                 }
                 [self.navigationController popViewControllerAnimated:YES];

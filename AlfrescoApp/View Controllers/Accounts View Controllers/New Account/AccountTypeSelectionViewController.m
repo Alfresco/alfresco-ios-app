@@ -127,7 +127,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
                                                                    value:@1];
                 
                 AccountManager *accountManager = [AccountManager sharedManager];
-                [[RealmSyncManager sharedManager] createRealmForAccount:account];
+                [[RealmSyncManager sharedManager] realmForAccount:account.accountIdentifier];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
