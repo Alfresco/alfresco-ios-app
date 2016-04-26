@@ -536,7 +536,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     if ([parentFolder.identifier isEqualToString:self.parentNode.identifier])
     {
         AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
-        [self addAlfrescoNodes:@[subnode] completion:nil];
+        if(subnode)
+        {
+            [self addAlfrescoNodes:@[subnode] completion:nil];
+        }
     }
 }
 
@@ -581,18 +584,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
-// @Override
 - (void)connectivityChanged:(NSNotification *)notification
 {
-    BOOL hasInternet = [notification.object boolValue];
-    if (hasInternet)
-    {
-        [self enablePullToRefresh];
-    }
-    else
-    {
-        [self disablePullToRefresh];
-    }
+    [super connectivityChanged:notification];
     [self loadSyncNodesForFolder:self.parentNode];
 }
 

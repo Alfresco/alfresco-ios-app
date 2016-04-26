@@ -79,6 +79,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers;
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl;
 - (void)showLoadingTextInRefreshControl:(UIRefreshControl *)refreshControl;
+- (void)connectivityChanged:(NSNotification *)notification;
 
 - (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated;
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style;
