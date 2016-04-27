@@ -20,6 +20,7 @@
 #import "URLHandlerProtocol.h"
 #import "FileURLHandler.h"
 #import "AlfrescoURLHandler.h"
+#import "PreferenceManager.h"
 
 @interface FileHandlerManager ()
 
@@ -51,6 +52,35 @@
 
 - (BOOL)handleURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation session:(id<AlfrescoSession>)session
 {
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] && self.cachedPackage == nil)
+    {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        
+        if (url)
+        {
+            dict[@"url"] = url;
+        }
+        
+        if (sourceApplication)
+        {
+            dict[@"sourceApplication"] = sourceApplication;
+        }
+        
+        if (annotation)
+        {
+            dict[@"annotation"] = annotation;
+        }
+        
+        if (session)
+        {
+            dict[@"session"] = session;
+        }
+        
+        self.cachedPackage = dict;
+        
+        return NO;
+    }
+
     id<URLHandlerProtocol> fileHandler = nil;
     
     // find the handler
@@ -71,6 +101,21 @@
     }
     
     return handled;
+}
+
+- (void) handleCachedPackage
+{
+    if (self.cachedPackage)
+    {
+        NSDictionary *package = self.cachedPackage;
+        
+        [self handleURL:package[@"url"]
+      sourceApplication:package[@"sourceApplication"]
+             annotation:package[@"annotation"]
+                session:package[@"session"]];
+        
+        self.cachedPackage = nil;
+    }
 }
 
 @end

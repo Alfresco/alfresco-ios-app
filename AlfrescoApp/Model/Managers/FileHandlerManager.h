@@ -22,4 +22,8 @@
 
 - (BOOL)handleURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation session:(id<AlfrescoSession>)session;
 
+@property (nonatomic, strong) NSDictionary *cachedPackage;
+
+- (void) handleCachedPackage;
+
 @end

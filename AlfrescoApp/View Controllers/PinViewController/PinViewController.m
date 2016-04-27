@@ -23,6 +23,7 @@
 #import "PinBulletsView.h"
 #import "KeychainUtils.h"
 #import "SecurityManager.h"
+#import "FileHandlerManager.h"
 
 NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScreenNotification";
 
@@ -275,7 +276,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             [_bulletsView shakeWithCompletionBlock:^{
                 if (_remainingAttempts == 0)
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kSettingResetEntireApp object:nil];
+                    [SecurityManager resetEntireApp];
                     [weakSelf unsetPinAndDismiss];
                 }
                 else
@@ -346,7 +347,10 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         // This will prevent hiding the keyboard in any other instance of PinViewController that may be underneath.
         [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^
+        {
+            [[FileHandlerManager sharedManager] handleCachedPackage];
+        }];
     }
     else
     {
@@ -359,7 +363,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kSettingResetEntireApp object:nil];
+                [SecurityManager resetEntireApp];
                 [weakSelf unsetPinAndDismiss];
             }
             else
@@ -437,7 +441,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kSettingResetEntireApp object:nil];
+                [SecurityManager resetEntireApp];
                 [weakSelf unsetPinAndDismiss];
             }
             else

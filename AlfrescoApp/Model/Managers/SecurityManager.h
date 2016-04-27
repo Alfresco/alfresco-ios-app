@@ -24,8 +24,11 @@ extern NSString * const kRemainingAttemptsKey;
 @interface SecurityManager : NSObject
 
 + (instancetype)sharedManager;
-+ (void)reset;
 + (BOOL)isTouchIDAvailable;
+
++ (void)reset;
++ (void)resetAccounts;
++ (void)resetEntireApp;
 
 - (void)setup;
 
