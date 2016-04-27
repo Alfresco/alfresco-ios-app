@@ -18,7 +18,7 @@
 
 #import "ParentCollectionViewController.h"
 #import "FileFolderCollectionViewCell.h"
-#import "SyncManager.h"
+#import "RealmSyncManager.h"
 #import "FavouriteManager.h"
 #import "ThumbnailManager.h"
 #import "LoadingCollectionViewCell.h"

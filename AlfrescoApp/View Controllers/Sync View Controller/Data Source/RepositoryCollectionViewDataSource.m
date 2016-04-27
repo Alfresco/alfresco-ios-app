@@ -52,10 +52,11 @@
     
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
     BOOL isSyncOn = [[RealmSyncManager sharedManager] isNodeInSyncList:node];
+    BOOL isTopLevelNode = [[RealmSyncManager sharedManager] isTopLevelSyncNode:node];
     
-    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
+    [nodeCell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
     [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
+        [nodeCell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
     }];
     
     BaseCollectionViewFlowLayout *currentLayout = [self.delegate currentSelectedLayout];

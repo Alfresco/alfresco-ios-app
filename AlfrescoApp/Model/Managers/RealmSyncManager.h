@@ -41,6 +41,7 @@
  */
 - (BOOL)isCurrentlySyncing;
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
+- (BOOL)isTopLevelSyncNode:(AlfrescoNode *)node;
 - (void)cancelAllSyncOperations;
 
 /**

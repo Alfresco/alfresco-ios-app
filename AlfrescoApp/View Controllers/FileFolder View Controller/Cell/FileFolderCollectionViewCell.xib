@@ -103,6 +103,9 @@
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="status-synced.png" highlightedImage="status-synced-highlighted.png" translatesAutoresizingMaskIntoConstraints="NO" id="wy0-2P-Qsp">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" id="zJQ-8C-Alm"/>
+                                        </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTx-r6-rwq" userLabel="syncIcon">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="14"/>
@@ -126,7 +129,6 @@
                                     <constraint firstAttribute="bottom" secondItem="wy0-2P-Qsp" secondAttribute="bottom" id="LVf-rF-xDL"/>
                                     <constraint firstAttribute="bottom" secondItem="JTx-r6-rwq" secondAttribute="bottom" id="TN8-Cr-6LF"/>
                                     <constraint firstAttribute="width" id="Vp6-AT-jyB"/>
-                                    <constraint firstItem="JTx-r6-rwq" firstAttribute="width" secondItem="wy0-2P-Qsp" secondAttribute="width" id="b1V-UG-tVf"/>
                                     <constraint firstItem="uuu-U3-Dk6" firstAttribute="leading" secondItem="eVT-ia-KrZ" secondAttribute="leading" id="kCf-Ib-Y99"/>
                                     <constraint firstItem="wy0-2P-Qsp" firstAttribute="top" secondItem="eVT-ia-KrZ" secondAttribute="top" id="niu-Fo-Adj"/>
                                     <constraint firstItem="wy0-2P-Qsp" firstAttribute="leading" secondItem="uuu-U3-Dk6" secondAttribute="trailing" id="wqN-pq-ESd"/>
@@ -199,6 +201,7 @@
                 <outlet property="image" destination="Fri-0V-cC7" id="zoE-gL-L9S"/>
                 <outlet property="isSyncNodeImageView" destination="wy0-2P-Qsp" id="8up-QS-Sga"/>
                 <outlet property="isSyncRightSpaceConstraint" destination="17C-GB-oY6" id="Rjx-Ub-ST2"/>
+                <outlet property="isSyncWidthConstraint" destination="zJQ-8C-Alm" id="Hx7-w8-TTO"/>
                 <outlet property="leadingContentViewContraint" destination="V14-yf-vs5" id="w3i-0i-8cI"/>
                 <outlet property="nodeNameLeadingConstraint" destination="Mzc-06-FcE" id="Krn-fu-2YQ"/>
                 <outlet property="nodeNameTopSpaceConstraint" destination="SFR-PQ-fhq" id="nkx-9G-zbh"/>

@@ -1605,7 +1605,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                     else
                     {
-                        NSString *contentPath = [[SyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
+                        NSString *contentPath = [[RealmSyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
                         if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
                         {
                             contentPath = nil;
@@ -1924,7 +1924,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
-    SyncManager *syncManager = [SyncManager sharedManager];
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
     AlfrescoNode *node = self.collectionViewData[indexPath.row];
     NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
     
@@ -1960,7 +1960,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)retrySyncAndCloseRetryPopover
 {
-    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
+    [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
     [self.retrySyncPopover dismissPopoverAnimated:YES];
     self.retrySyncNode = nil;
     self.retrySyncPopover = nil;
@@ -2023,7 +2023,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else
     {
-        SyncManager *syncManager = [SyncManager sharedManager];
+        RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
         SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
         
         switch (nodeStatus.status)

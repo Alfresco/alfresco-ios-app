@@ -363,10 +363,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
-    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
+//    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
     [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
         
-        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
+//        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
     }];
     
     BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];

@@ -631,6 +631,22 @@
     return isInSyncList;
 }
 
+- (BOOL)isTopLevelSyncNode:(AlfrescoNode *)node
+{
+    BOOL isTopLevelSyncNode = NO;
+    
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:self.mainThreadRealm];
+    if (nodeInfo)
+    {
+        if (nodeInfo.isTopLevelSyncNode)
+        {
+            isTopLevelSyncNode = YES;
+        }
+    }
+    
+    return isTopLevelSyncNode;
+}
+
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
 {
     RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:self.mainThreadRealm];

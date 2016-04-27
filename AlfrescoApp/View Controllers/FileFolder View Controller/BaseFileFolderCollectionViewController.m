@@ -95,17 +95,18 @@
         currentNode = [self.collectionViewData objectAtIndex:indexPath.item];
     }
 
-    SyncManager *syncManager = [SyncManager sharedManager];
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
     
     BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+    BOOL isTopLevelSyncNode = [syncManager isTopLevelSyncNode:currentNode];
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
     [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
+    
+    [cell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncNode isTopLevelSyncNode:isTopLevelSyncNode animate:NO];
     
     [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        
-        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
+        [cell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncNode isTopLevelSyncNode:isTopLevelSyncNode animate:NO];
     }];
     
     BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];
