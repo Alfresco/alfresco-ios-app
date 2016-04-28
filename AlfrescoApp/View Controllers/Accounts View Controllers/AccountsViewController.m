@@ -336,7 +336,32 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.canRemoveAccounts && (indexPath.row == kAccountRowNumber);
+    if (self.canRemoveAccounts == NO)
+    {
+        return NO;
+    }
+    
+    if (self.tableViewData.count > 1)
+    {
+        if (indexPath.row != kAccountRowNumber)
+        {
+            return NO;
+        }
+        
+        UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
+        
+        if (account.isSelectedAccount)
+        {
+            // Prevent deletion of active account.
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    
+    return indexPath.row == kAccountRowNumber;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
