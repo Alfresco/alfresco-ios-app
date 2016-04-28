@@ -22,6 +22,11 @@
 #import "AlfrescoURLHandler.h"
 #import "PreferenceManager.h"
 
+static NSString * const kCachedPackageURLKey                = @"url";
+static NSString * const kCachedPackageSourceApplicationKey  = @"sourceApplication";
+static NSString * const kCachedPackageAnnotationKey         = @"annotation";
+static NSString * const kCachedPackageSessionKey            = @"session";
+
 @interface FileHandlerManager ()
 
 @property (nonatomic, strong) NSArray *fileHandlers;
@@ -58,22 +63,22 @@
         
         if (url)
         {
-            dict[@"url"] = url;
+            dict[kCachedPackageURLKey] = url;
         }
         
         if (sourceApplication)
         {
-            dict[@"sourceApplication"] = sourceApplication;
+            dict[kCachedPackageSourceApplicationKey] = sourceApplication;
         }
         
         if (annotation)
         {
-            dict[@"annotation"] = annotation;
+            dict[kCachedPackageAnnotationKey] = annotation;
         }
         
         if (session)
         {
-            dict[@"session"] = session;
+            dict[kCachedPackageSessionKey] = session;
         }
         
         self.cachedPackage = dict;
@@ -109,10 +114,10 @@
     {
         NSDictionary *package = self.cachedPackage;
         
-        [self handleURL:package[@"url"]
-      sourceApplication:package[@"sourceApplication"]
-             annotation:package[@"annotation"]
-                session:package[@"session"]];
+        [self handleURL:package[kCachedPackageURLKey]
+      sourceApplication:package[kCachedPackageSourceApplicationKey]
+             annotation:package[kCachedPackageAnnotationKey]
+                session:package[kCachedPackageSessionKey]];
         
         self.cachedPackage = nil;
     }
