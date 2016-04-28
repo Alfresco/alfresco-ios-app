@@ -25,9 +25,7 @@
 #import "AccountManager.h"
 #import "SettingButtonCell.h"
 #import "UIAlertView+ALF.h"
-#import "CoreDataCacheHelper.h"
 #import "AvatarImageCache.h"
-#import "DownloadManager.h"
 #import <MessageUI/MessageUI.h>
 #import <sys/utsname.h>
 #import "PinViewController.h"
@@ -67,8 +65,6 @@
                                                                                     target:self
                                                                                     action:@selector(doneButtonPressed:)];
         self.navigationItem.rightBarButtonItem = doneButton;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetEntireApp:) name:kSettingResetEntireApp object:nil];
     }
     else
     {
@@ -277,23 +273,7 @@
     [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         if (!isCancelButton)
         {
-            // Remove accounts
-            [[AccountManager sharedManager] removeAllAccounts];
-            // Delete avatar cache
-            CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-            [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-            
-            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                              action:kAnalyticsEventActionClearData
-                                                               label:kAnalyticsEventLabelPartial
-                                                               value:@1];
-            
-            UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                                   message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                         otherButtonTitles:nil];
-            [confirmation show];
+            [SecurityManager resetAccounts];
         }
     }];
 }
@@ -306,12 +286,10 @@
                                                       cancelButtonTitle:NSLocalizedString(@"No", @"No")
                                                       otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
     
-    __weak typeof(self) weakSelf = self;
-    
     [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         if (!isCancelButton)
         {
-            [weakSelf resetEntireApp:nil];
+            [SecurityManager resetEntireApp];
         }
     }];
 }
@@ -526,34 +504,6 @@
         [self buildTableDataSource];
         [self.tableView reloadData];
     }
-}
-
-- (void)resetEntireApp:(NSNotification *)notification
-{
-    // Reset accounts, delete cache databases, tmp folder, downloads
-    // Remove accounts
-    [[AccountManager sharedManager] removeAllAccounts];
-    // Delete cache
-    CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
-    [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
-    [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
-    [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
-    // Remove downloads
-    [[DownloadManager sharedManager] removeAllDownloads];
-    // Remove all contents of the temp folder
-    [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
-    
-    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
-                                                      action:kAnalyticsEventActionClearData
-                                                       label:kAnalyticsEventLabelFull
-                                                       value:@1];
-    
-    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                           message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                 otherButtonTitles:nil];
-    [confirmation show];
 }
 
 - (void)applicationWillEnterForegroundNotification:(NSNotification *)notification

@@ -20,7 +20,6 @@
 extern NSString * const kSettingsDidChangeNotification;
 extern NSString * const kSettingChangedFromKey;
 extern NSString * const kSettingChangedToKey;
-extern NSString * const kSettingResetEntireApp;
 
 // Plist keys
 extern NSString * const kSettingsLocalizedTitleKey;

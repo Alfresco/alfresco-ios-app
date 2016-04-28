@@ -20,6 +20,12 @@
 #import "URLHandlerProtocol.h"
 #import "FileURLHandler.h"
 #import "AlfrescoURLHandler.h"
+#import "PreferenceManager.h"
+
+static NSString * const kCachedPackageURLKey                = @"url";
+static NSString * const kCachedPackageSourceApplicationKey  = @"sourceApplication";
+static NSString * const kCachedPackageAnnotationKey         = @"annotation";
+static NSString * const kCachedPackageSessionKey            = @"session";
 
 @interface FileHandlerManager ()
 
@@ -51,6 +57,35 @@
 
 - (BOOL)handleURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation session:(id<AlfrescoSession>)session
 {
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] && self.cachedPackage == nil)
+    {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        
+        if (url)
+        {
+            dict[kCachedPackageURLKey] = url;
+        }
+        
+        if (sourceApplication)
+        {
+            dict[kCachedPackageSourceApplicationKey] = sourceApplication;
+        }
+        
+        if (annotation)
+        {
+            dict[kCachedPackageAnnotationKey] = annotation;
+        }
+        
+        if (session)
+        {
+            dict[kCachedPackageSessionKey] = session;
+        }
+        
+        self.cachedPackage = dict;
+        
+        return NO;
+    }
+
     id<URLHandlerProtocol> fileHandler = nil;
     
     // find the handler
@@ -71,6 +106,21 @@
     }
     
     return handled;
+}
+
+- (void)handleCachedPackage
+{
+    if (self.cachedPackage)
+    {
+        NSDictionary *package = self.cachedPackage;
+        
+        [self handleURL:package[kCachedPackageURLKey]
+      sourceApplication:package[kCachedPackageSourceApplicationKey]
+             annotation:package[kCachedPackageAnnotationKey]
+                session:package[kCachedPackageSessionKey]];
+        
+        self.cachedPackage = nil;
+    }
 }
 
 @end

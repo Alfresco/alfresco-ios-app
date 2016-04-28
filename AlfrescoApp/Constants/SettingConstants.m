@@ -22,7 +22,6 @@
 NSString * const kSettingsDidChangeNotification = @"SettingsDidChangeNotification";
 NSString * const kSettingChangedFromKey = @"SettingChangedFromKey";
 NSString * const kSettingChangedToKey = @"SettingChangedToKey";
-NSString * const kSettingResetEntireApp = @"SettingResetEntireApp";
 
 // Plist keys
 NSString * const kSettingsLocalizedTitleKey = @"LocalizedTitleKey";

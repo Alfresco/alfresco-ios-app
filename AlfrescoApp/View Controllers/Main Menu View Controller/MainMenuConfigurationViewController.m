@@ -96,7 +96,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
 
 - (void)accountListEmpty:(NSNotification *)notification
 {
-    
+    [self reloadGroupType:MainMenuGroupTypeHeader completionBlock:nil];
 }
 
 - (void)accountUpdated:(NSNotification *)notification

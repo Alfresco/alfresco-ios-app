@@ -23,6 +23,10 @@
 #import "PinViewController.h"
 #import "PreferenceManager.h"
 #import "UniversalDevice.h"
+#import "FileHandlerManager.h"
+#import "AccountManager.h"
+#import "CoreDataCacheHelper.h"
+#import "DownloadManager.h"
 
 NSString * const kPinKey = @"PinCodeKey";
 NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
@@ -107,6 +111,55 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     NSError *error;
     [KeychainUtils deleteItemForKey:kPinKey error:&error];
     [KeychainUtils deleteItemForKey:kRemainingAttemptsKey error:&error];
+}
+
++ (void)resetAccounts
+{
+    // Remove accounts
+    [[AccountManager sharedManager] removeAllAccounts];
+    // Delete avatar cache
+    CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+    [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                      action:kAnalyticsEventActionClearData
+                                                       label:kAnalyticsEventLabelPartial
+                                                       value:@1];
+    
+    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                           message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                 otherButtonTitles:nil];
+    [confirmation show];
+}
+
++ (void)resetEntireApp
+{
+    // Reset accounts, delete cache databases, tmp folder, downloads
+    // Remove accounts
+    [[AccountManager sharedManager] removeAllAccounts];
+    // Delete cache
+    CoreDataCacheHelper *cacheHelper = [[CoreDataCacheHelper alloc] init];
+    [cacheHelper removeAllAvatarDataInManagedObjectContext:nil];
+    [cacheHelper removeAllDocLibImageDataInManagedObjectContext:nil];
+    [cacheHelper removeAllDocumentPreviewImageDataInManagedObjectContext:nil];
+    // Remove downloads
+    [[DownloadManager sharedManager] removeAllDownloads];
+    // Remove all contents of the temp folder
+    [[AlfrescoFileManager sharedManager] clearTemporaryDirectory];
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySettings
+                                                      action:kAnalyticsEventActionClearData
+                                                       label:kAnalyticsEventLabelFull
+                                                       value:@1];
+    
+    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                           message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                                 otherButtonTitles:nil];
+    [confirmation show];
 }
 
 #pragma mark -
@@ -195,6 +248,8 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
          {
              [self showBlankScreen:NO];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowKeyboardInPinScreenNotification" object:nil];
+             
+             [[FileHandlerManager sharedManager] handleCachedPackage];
          }
          else
          {
