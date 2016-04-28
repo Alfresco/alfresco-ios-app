@@ -24,6 +24,6 @@
 
 @property (nonatomic, strong) NSDictionary *cachedPackage;
 
-- (void) handleCachedPackage;
+- (void)handleCachedPackage;
 
 @end

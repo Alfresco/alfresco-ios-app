@@ -103,7 +103,7 @@
     return handled;
 }
 
-- (void) handleCachedPackage
+- (void)handleCachedPackage
 {
     if (self.cachedPackage)
     {
