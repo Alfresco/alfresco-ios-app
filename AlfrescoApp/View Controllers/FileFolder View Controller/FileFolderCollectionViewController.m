@@ -830,6 +830,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                             {
                                 self.displayFolder = folder;
                                 self.navigationItem.title = folder.name;
+                                [self hideHUD];
                                 [self retrieveAndSetPermissionsOfCurrentFolder];
                                 [self hidePullToRefreshView];
                                 [self.view bringSubviewToFront:self.collectionView];
@@ -839,6 +840,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                                 // display error
                                 displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
                                 [Notifier notifyWithAlfrescoError:error];
+                                [self hideHUD];
                             }
                         }];
                     }
@@ -873,15 +875,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.siteService retrieveDocumentLibraryFolderForSite:self.siteShortName completionBlock:^(AlfrescoFolder *documentLibraryFolder, NSError *documentLibraryFolderError) {
                     if (documentLibraryFolderError)
                     {
-                        if(documentLibraryFolderError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // display error
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:documentLibraryFolderError]]);
-                        }
-                        else
-                        {
-                            [Notifier notifyWithAlfrescoError:documentLibraryFolderError];
-                        }
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:documentLibraryFolderError]]);
+                        [Notifier notifyWithAlfrescoError:documentLibraryFolderError];
+
                         [self hideHUD];
                     }
                     else
@@ -919,15 +916,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.documentService retrieveNodeWithFolderPath:self.folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
                     if (folderPathNodeError)
                     {
-                        if(folderPathNodeError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // display error
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:folderPathNodeError]]);
-                        }
-                        else
-                        {
-                            [Notifier notifyWithAlfrescoError:folderPathNodeError];
-                        }
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:folderPathNodeError]]);
+                        [Notifier notifyWithAlfrescoError:folderPathNodeError];
+
                         [self hideHUD];
                     }
                     else
@@ -970,15 +962,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 [self.documentService retrieveNodeWithIdentifier:self.nodeRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
                     if (nodeRefError)
                     {
-                        if(nodeRefError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // display error
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:nodeRefError]]);
-                        }
-                        else
-                        {
-                            [Notifier notifyWithAlfrescoError:nodeRefError];
-                        }
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:nodeRefError]]);
+                        [Notifier notifyWithAlfrescoError:nodeRefError];
+
                         [self hideHUD];
                     }
                     else
@@ -1034,15 +1021,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                     else
                     {
-                        if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // display error
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
-                        }
-                        else
-                        {
-                            [Notifier notifyWithAlfrescoError:error];
-                        }
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+
                         [self hideHUD];
                     }
                 }];
