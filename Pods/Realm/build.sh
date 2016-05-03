@@ -14,13 +14,13 @@ set -o pipefail
 set -e
 
 # You can override the version of the core library
-: ${REALM_CORE_VERSION:=0.97.1} # set to "current" to always use the current build
+: ${REALM_CORE_VERSION:=0.98.4} # set to "current" to always use the current build
 
 # You can override the xcmode used
 : ${XCMODE:=xcodebuild} # must be one of: xcodebuild (default), xcpretty, xctool
 
 # Provide a fallback value for TMPDIR, relevant for Xcode Bots
-: ${TMPDIR:=getconf DARWIN_USER_TEMP_DIR}
+: ${TMPDIR:=$(getconf DARWIN_USER_TEMP_DIR)}
 
 PATH=/usr/libexec:$PATH
 
@@ -239,12 +239,12 @@ build_docs() {
     local language="$1"
     local version=$(sh build.sh get-version)
 
-    local xcodebuild_arguments="--objc,Realm/Realm.h,-x,objective-c,-isysroot,$(xcrun --show-sdk-path),-I,$(pwd)"
+    local xcodebuild_arguments="--objc,Realm/Realm.h,--,-x,objective-c,-isysroot,$(xcrun --show-sdk-path),-I,$(pwd)"
     local module="Realm"
     local objc="--objc"
 
     if [[ "$language" == "swift" ]]; then
-        : ${REALM_SWIFT_VERSION:=2.1.1}
+        : ${REALM_SWIFT_VERSION:=2.2}
         sh build.sh set-swift-version
         xcodebuild_arguments="-scheme,RealmSwift"
         module="RealmSwift"
@@ -254,6 +254,7 @@ build_docs() {
     touch Realm/RLMPlatform.h # jazzy will fail if it can't find all public header files
     jazzy \
       ${objc} \
+      --swift-version 2.2 \
       --clean \
       --author Realm \
       --author_url https://realm.io \
@@ -410,7 +411,7 @@ case "$COMMAND" in
             exit 1
         fi
 
-        git -C $path format-patch --stdout $commit..HEAD | git am -p 2 --directory Realm/ObjectStore --exclude='*CMake*'
+        git -C $path format-patch --stdout $commit..HEAD src | git am -p 2 --directory Realm/ObjectStore --exclude='*CMake*' --reject
         ;;
 
     ######################################
@@ -647,6 +648,12 @@ case "$COMMAND" in
         ;;
 
     "verify-cocoapods")
+        pod setup
+        pod spec lint Realm.podspec
+        # allow warnings in the Swift podspec because there's no way to
+        # prevent the typealias->associatedtype deprecation warning without
+        # also breaking backwards compatibility with previous Swift 2.x versions
+        pod spec lint RealmSwift.podspec --allow-warnings
         cd examples/installation
         sh build.sh test-ios-objc-cocoapods || exit 1
         sh build.sh test-ios-swift-cocoapods || exit 1
@@ -772,11 +779,13 @@ case "$COMMAND" in
         else
             workspace="examples/ios/xcode-7/objc/RealmExamples.xcworkspace"
         fi
+        pod install --project-directory="$workspace/.." --no-repo-update
         xc "-workspace $workspace -scheme Simple -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme TableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme Migration -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme Backlink -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme GroupedTableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme RACTableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme Encryption -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
 
         if [ ! -z "${JENKINS_HOME}" ]; then
@@ -789,12 +798,14 @@ case "$COMMAND" in
     "examples-ios-swift")
         sh build.sh prelaunch-simulator
         workspace="examples/ios/swift-$REALM_SWIFT_VERSION/RealmExamples.xcworkspace"
+        pod install --project-directory="$workspace/.." --no-repo-update
         xc "-workspace $workspace -scheme Simple -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme TableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme Migration -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme Encryption -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme Backlink -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         xc "-workspace $workspace -scheme GroupedTableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
+        xc "-workspace $workspace -scheme ReactKitTableView -configuration $CONFIGURATION -destination 'name=iPhone 6' build ${CODESIGN_PARAMS}"
         exit 0
         ;;
 
@@ -902,10 +913,12 @@ case "$COMMAND" in
           mv core/include include/core
 
           mkdir -p include/impl/apple
+          mkdir -p include/util
           cp Realm/*.hpp include
           cp Realm/ObjectStore/*.hpp include
           cp Realm/ObjectStore/impl/*.hpp include/impl
           cp Realm/ObjectStore/impl/apple/*.hpp include/impl/apple
+          cp Realm/ObjectStore/util/*.hpp include/util
 
           touch Realm/RLMPlatform.h
           if [ -n "$COCOAPODS_VERSION" ]; then
@@ -979,7 +992,7 @@ case "$COMMAND" in
         cp -r $(dirname $0)/scripts ${OBJC}
         cd ${OBJC}
         REALM_SWIFT_VERSION=1.2 sh build.sh examples-ios
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh examples-ios
+        REALM_SWIFT_VERSION=2.2 sh build.sh examples-ios
         sh build.sh examples-osx
         cd ..
         rm -rf ${OBJC}
@@ -989,7 +1002,7 @@ case "$COMMAND" in
         cp $0 ${SWIFT}
         cp -r $(dirname $0)/scripts ${SWIFT}
         cd ${SWIFT}
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh examples-ios-swift
+        REALM_SWIFT_VERSION=2.2 sh build.sh examples-ios-swift
         cd ..
         rm -rf ${SWIFT}
         ;;
@@ -1003,9 +1016,9 @@ case "$COMMAND" in
         move_to_clean_dir build/ios-static/Realm.framework xcode-6
         rm -rf build
 
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh prelaunch-simulator
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh test-ios-static
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh ios-static
+        REALM_SWIFT_VERSION=2.2 sh build.sh prelaunch-simulator
+        REALM_SWIFT_VERSION=2.2 sh build.sh test-ios-static
+        REALM_SWIFT_VERSION=2.2 sh build.sh ios-static
         move_to_clean_dir build/ios-static/Realm.framework xcode-7
 
         zip --symlinks -r build/ios-static/realm-framework-ios.zip xcode-6 xcode-7
@@ -1018,8 +1031,8 @@ case "$COMMAND" in
         move_to_clean_dir build/ios/Realm.framework xcode-6
         rm -rf build
 
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh prelaunch-simulator
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh ios-dynamic
+        REALM_SWIFT_VERSION=2.2 sh build.sh prelaunch-simulator
+        REALM_SWIFT_VERSION=2.2 sh build.sh ios-dynamic
         move_to_clean_dir build/ios/Realm.framework xcode-7
 
         zip --symlinks -r build/ios/realm-dynamic-framework-ios.zip xcode-6 xcode-7
@@ -1027,7 +1040,7 @@ case "$COMMAND" in
 
     "package-osx")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh test-osx
+        REALM_SWIFT_VERSION=2.2 sh build.sh test-osx
 
         cd build/DerivedData/Realm/Build/Products/Release
         zip --symlinks -r realm-framework-osx.zip Realm.framework
@@ -1035,27 +1048,27 @@ case "$COMMAND" in
 
     "package-ios-swift")
         cd tightdb_objc
-        for version in 2.1.1; do
+        for version in 2.2; do
             rm -rf build/ios/Realm.framework
             REALM_SWIFT_VERSION=$version sh build.sh prelaunch-simulator
             REALM_SWIFT_VERSION=$version sh build.sh ios-swift
         done
 
         cd build/ios
-        zip --symlinks -r realm-swift-framework-ios.zip swift-2.1.1
+        zip --symlinks -r realm-swift-framework-ios.zip swift-2.2
         ;;
 
     "package-osx-swift")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh osx-swift
+        REALM_SWIFT_VERSION=2.2 sh build.sh osx-swift
 
         cd build/osx
-        zip --symlinks -r realm-swift-framework-osx.zip swift-2.1.1
+        zip --symlinks -r realm-swift-framework-osx.zip swift-2.2
         ;;
 
     "package-watchos")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh watchos
+        REALM_SWIFT_VERSION=2.2 sh build.sh watchos
 
         cd build/watchos
         zip --symlinks -r realm-framework-watchos.zip Realm.framework
@@ -1063,7 +1076,7 @@ case "$COMMAND" in
 
     "package-watchos-swift")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh watchos-swift
+        REALM_SWIFT_VERSION=2.2 sh build.sh watchos-swift
 
         cd build/watchos
         zip --symlinks -r realm-swift-framework-watchos.zip RealmSwift.framework Realm.framework
@@ -1071,7 +1084,7 @@ case "$COMMAND" in
 
     "package-tvos")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh tvos
+        REALM_SWIFT_VERSION=2.2 sh build.sh tvos
 
         cd build/tvos
         zip --symlinks -r realm-framework-tvos.zip Realm.framework
@@ -1079,7 +1092,7 @@ case "$COMMAND" in
 
     "package-tvos-swift")
         cd tightdb_objc
-        REALM_SWIFT_VERSION=2.1.1 sh build.sh tvos-swift
+        REALM_SWIFT_VERSION=2.2 sh build.sh tvos-swift
 
         cd build/tvos
         zip --symlinks -r realm-swift-framework-tvos.zip RealmSwift.framework Realm.framework
@@ -1162,7 +1175,7 @@ case "$COMMAND" in
             unzip ${WORKSPACE}/realm-examples.zip
             cd examples
             if [[ "${LANG}" == "objc" ]]; then
-                rm -rf ios/swift-2.1.1
+                rm -rf ios/swift-2.2
             else
                 rm -rf ios/objc ios/rubymotion osx
             fi

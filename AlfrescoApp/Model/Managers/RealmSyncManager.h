@@ -20,6 +20,7 @@
 #import <Realm/Realm.h>
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
+#import "RealmManager.h"
 
 @protocol RealmSyncManagerProgressDelegate <NSObject>
 
@@ -70,6 +71,6 @@
 /**
  * Realm notifications
  */
-- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *results, NSError *error))block;
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error))block;
 
 @end

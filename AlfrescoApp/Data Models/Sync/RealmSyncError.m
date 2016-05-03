@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import "RealmSyncError.h"
+#import "RealmSyncNodeInfo.h"
 
 @implementation RealmSyncError
 
@@ -38,9 +39,11 @@
     return @"errorUUID";
 }
 
-- (NSArray *)nodeInfo
++ (NSDictionary *)linkingObjectsProperties
 {
-    return [self linkingObjectsOfClass:@"RealmSyncNodeInfo" forProperty:@"syncError"];
+    return @{
+             @"nodeInfo": [RLMPropertyDescriptor descriptorWithClass:RealmSyncNodeInfo.class propertyName:@"syncError"],
+             };
 }
 
 @end

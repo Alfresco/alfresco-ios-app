@@ -49,7 +49,7 @@
 - (void)deleteRealmWithName:(NSString *)realmName
 {
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *realmFilepath = [self configForName:realmName].path;
+    NSString *realmFilepath = [self configForName:realmName].fileURL.path;
     NSArray<NSString *> *realmFilePaths = @[
                                             realmFilepath,
                                             [realmFilepath stringByAppendingPathExtension:@"lock"],
@@ -77,7 +77,9 @@
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
     
     // Use the default directory, but replace the filename with the accountId
-    config.path = [[[config.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
+    
     return config;
 }
 

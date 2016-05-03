@@ -24,7 +24,7 @@
 @property (nonatomic) NSInteger errorCode;
 @property (nonatomic, strong) NSString *errorDescription;
 @property (nonatomic, strong) NSString *errorId;
-@property (readonly) NSArray *nodeInfo;
+@property (readonly) RLMLinkingObjects *nodeInfo;
 
 @end
 

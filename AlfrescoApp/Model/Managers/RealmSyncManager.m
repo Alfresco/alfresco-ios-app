@@ -24,7 +24,6 @@
 #import "SyncOperation.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "RealmSyncHelper.h"
-#import "RealmManager.h"
 #import "ConnectivityManager.h"
 #import "AppConfigurationManager.h"
 
@@ -146,7 +145,8 @@
 - (void)resetDefaultRealmConfiguration
 {
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    config.path = [[[config.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"default"] stringByAppendingPathExtension:@"realm"];
+    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"default"] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
     [RLMRealmConfiguration setDefaultConfiguration:config];
 }
 
@@ -755,7 +755,7 @@
 }
 
 #pragma mark - Realm notifications
-- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *, NSError *))block
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error))block
 {
     RLMNotificationToken *token = nil;
     
