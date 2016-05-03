@@ -558,6 +558,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             {
                 self.displayFolder = rootFolder;
                 self.navigationItem.title = rootFolder.name;
+                [self hideHUD];
                 [self retrieveAndSetPermissionsOfCurrentFolder];
                 [self hidePullToRefreshView];
             }
@@ -568,6 +569,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     {
                         self.displayFolder = folder;
                         self.navigationItem.title = folder.name;
+                        [self hideHUD];
                         [self retrieveAndSetPermissionsOfCurrentFolder];
                         [self hidePullToRefreshView];
                     }
@@ -576,6 +578,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         // display error
                         displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
                         [Notifier notifyWithAlfrescoError:error];
+                        [self hideHUD];
                     }
                 }];
             }
