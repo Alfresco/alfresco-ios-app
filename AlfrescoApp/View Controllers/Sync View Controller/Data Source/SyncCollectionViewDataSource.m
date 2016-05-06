@@ -47,7 +47,7 @@
         if(results.count > 0)
         {
             weakSelf.syncDataSourceCollection = results;
-            if(node)
+            if(weakSelf.parentNode)
             {
                 RealmSyncNodeInfo *syncParentNode = weakSelf.syncDataSourceCollection.firstObject;
                 [weakSelf setupDataSourceCollection:syncParentNode.nodes];

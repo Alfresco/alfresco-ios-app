@@ -258,7 +258,7 @@
                                                                         [outputStream close];
                                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                                             RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
-                                                                            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:backgroundRealm];
+                                                                            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                             
                                                                             if (succeeded)
                                                                             {
@@ -367,7 +367,7 @@
                                                                         [readStream close];
                                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                                             RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
-                                                                            RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:backgroundRealm];
+                                                                            RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                             if (uploadedDocument)
                                                                             {
                                                                                 nodeStatus.status = SyncStatusSuccessful;
@@ -475,7 +475,7 @@
         [syncOperationForAccount removeObjectForKey:syncDocumentIdentifier];
         nodeStatus.status = SyncStatusFailed;
         
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier inRealm:backgroundRealm];
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
         RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
         [backgroundRealm beginWriteTransaction];
         syncError.errorCode = kSyncOperationCancelledErrorCode;
@@ -581,6 +581,55 @@
     }
 }
 
+- (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder
+{
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        RLMRealm *realm = [[RealmManager sharedManager] createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+        if([self isNodeInSyncList:folder inRealm:realm])
+        {
+            NSString *syncNameForNode = [self.syncHelper syncNameForNode:node inRealm:realm];
+            NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+            NSString *syncContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:selectedAccountIdentifier] stringByAppendingPathComponent:syncNameForNode];
+            
+            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:YES inRealm:realm];
+            RealmSyncNodeInfo *parentSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:realm];
+            [realm beginWriteTransaction];
+            syncNodeInfo.parentNode = parentSyncNodeInfo;
+            syncNodeInfo.isTopLevelSyncNode = NO;
+            [realm commitWriteTransaction];
+            
+            NSError *movingFileError = nil;
+            [[AlfrescoFileManager sharedManager] copyItemAtPath:tempPath toPath:syncContentPath error:&movingFileError];
+            
+            SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
+            if(movingFileError)
+            {
+                nodeStatus.status = SyncStatusFailed;
+                
+                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:YES inRealm:realm];
+                [realm beginWriteTransaction];
+                syncError.errorCode = movingFileError.code;
+                syncError.errorDescription = [movingFileError localizedDescription];
+                
+                syncNodeInfo.syncError = syncError;
+                syncNodeInfo.reloadContent = NO;
+                [realm commitWriteTransaction];
+            }
+            else
+            {
+                [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self.syncHelper syncIdentifierForNode:node] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncContentPath inRealm:realm];
+                nodeStatus.status = SyncStatusSuccessful;
+                nodeStatus.activityType = SyncActivityTypeIdle;
+                [realm beginWriteTransaction];
+                syncNodeInfo.reloadContent = NO;
+                [realm commitWriteTransaction];
+            }
+        
+        }
+    }
+}
+
 #pragma mark - Sync node information
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
@@ -594,7 +643,7 @@
         // getting downloaded file locally updated Date
         NSError *dateError = nil;
         
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:realm];
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:realm];
         NSString *pathToSyncedFile = nodeInfo.syncContentPath;
         NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
         localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
@@ -619,8 +668,13 @@
 
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node
 {
+    return [self isNodeInSyncList:node inRealm:self.mainThreadRealm];
+}
+
+- (BOOL)isNodeInSyncList:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
+{
     BOOL isInSyncList = NO;
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:self.mainThreadRealm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:realm];
     if (nodeInfo)
     {
         if (nodeInfo.isTopLevelSyncNode || nodeInfo.parentNode)
@@ -635,7 +689,7 @@
 {
     BOOL isTopLevelSyncNode = NO;
     
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:self.mainThreadRealm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:self.mainThreadRealm];
     if (nodeInfo)
     {
         if (nodeInfo.isTopLevelSyncNode)
@@ -666,7 +720,7 @@
     
     if (!permissions)
     {
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] inRealm:[RLMRealm defaultRealm]];
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
         
         if (nodeInfo.permissions)
         {
@@ -678,7 +732,7 @@
 
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document
 {
-    RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] inRealm:[RLMRealm defaultRealm]];
+    RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
     
     //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
     NSString *newNodePath = nil;

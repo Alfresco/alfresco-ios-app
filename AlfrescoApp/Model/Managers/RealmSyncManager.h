@@ -42,6 +42,7 @@
  */
 - (BOOL)isCurrentlySyncing;
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
+- (BOOL)isNodeInSyncList:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
 - (BOOL)isTopLevelSyncNode:(AlfrescoNode *)node;
 - (void)cancelAllSyncOperations;
 
@@ -59,6 +60,7 @@
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 
 /**
  * Sync Feature
