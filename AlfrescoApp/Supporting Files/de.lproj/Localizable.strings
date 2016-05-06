@@ -100,7 +100,7 @@
 "sync.progress.label.plural" = "%d Dateien werden synchronisiert; %@ übrig"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Synchronisieren";
 "sync.cancelAll.alert.message" = "Möchten Sie alle Synchronisierungsvorgänge abbrechen?";
-"sync.cancelAll.alert.button.continue" = "Fortfahren";
+"sync.cancelAll.alert.button.continue" = "Weiter";
 "sync.cancelAll.alert.button.stop" = "Synchronisierung stoppen";
 
 /**
@@ -244,12 +244,12 @@
 /* Client Certificate */
 "certificate-manage.import.label" = "Aus lokalen Dateien importieren";
 "certificate-manage.download.label" = "Vom Webserver herunterladen";
-"certificate-import.tableHeader" = "PKCS 12-Passwort";
-"certificate-import.fields.passcode" = "Passwort";
-"certificate-import.tableFooter" = "Geben Sie das Passwort für die Datei PKCS 12 ein.";
+"certificate-import.tableHeader" = "PKCS 12-Code";
+"certificate-import.fields.passcode" = "Code";
+"certificate-import.tableFooter" = "Geben Sie den Code für die Datei PKCS 12 ein.";
 "certificate-import.button.import" = "Importieren";
 "certificate-import.error.title" = "Zertifikat importieren";
-"certificate-import.error.authentication" = "Das Passwort für das Zertifikat ist ungültig.";
+"certificate-import.error.authentication" = "Der Code für das Zertifikat ist ungültig.";
 "certificate-import.error.format" = "Die Zertifikatdatei ist fehlerhaft und kann nicht importiert werden.";
 "certificate-download.title" = "Webserver";
 "certificate-download.field.url" = "URL";
@@ -292,7 +292,7 @@
 "browser.alertview.addfolder.message" = "Ordner mit folgendem Namen anlegen:";
 "browser.alertview.addfolder.create" = "Erstellen";
 
-"browser.actionsheet.record.audio" = "Audio aufzeichnen";
+"browser.actionsheet.record.audio" = "Audio aufnehmen";
 
 "browser.actioncontroller.select" = "Mehrfachauswahl";
 "browser.actioncontroller.grid" = "Rasteransicht";
@@ -373,7 +373,7 @@
 "upload.default.video.name" = "Video %@";
 // audio
 "upload.audio.cell.label" = "Audio";
-"upload.audio.cell.button.record" = "Aufzeichnen";
+"upload.audio.cell.button.record" = "Aufnehmen";
 "upload.audio.cell.button.play" = "Wiedergeben";
 "upload.audio.cell.button.stop" = "Stoppen";
 "upload.audio.setting.disabled.title" = "Berechtigungen";
@@ -572,7 +572,7 @@
 "tasks.process.unnamed" = "Unbenannter Prozess";
 "tasks.view.button" = "Anzeigen";
 "tasks.title.mytasks" = "Meine Aufgaben";
-"tasks.title.taskistarted" = "Gestartete Aufgaben";
+"tasks.title.taskistarted" = "Von mir begonnene Aufgaben";
 "tasks.list.no-due-date" = "Kein Fälligkeitsdatum";
 // Details
 "tasks.calendar.no-due-date" = "Kein Datum";
@@ -649,8 +649,8 @@
 "settings.general.title" = "Allgemein";
 "settings.sync.on.cellular" = "Mobilfunkdaten synchronisieren";
 "settings.sync.on.cellular.description" = "Durch Ausschalten wird im Falle einer bestehenden Wi-Fi-Verbindung nur der bevorzugte Inhalt synchronisiert.";
-"settings.send.diagnostics" = "Diagnose-Daten senden";
-"settings.send.diagnostics.description" = "Um uns dabei zu helfen, Alfresco Mobile zu verbessern, sammeln wir anonyme technische Diagnose-Daten. Ausschalten wird bevorzugt.";
+"settings.send.diagnostics" = "Diagnose einsenden";
+"settings.send.diagnostics.description" = "Um Alfresco Mobile weiter zu verbessern, sammeln wir anonym technische Diagnosedaten. Wenn Sie möchten, können Sie dies hier abstellen.";
 "settings.security.title" = "Sicherheit";
 "settings.security.file.protection" = "Dateischutz";
 "settings.security.file.protection.description" = "Auf diesem Gerät gespeicherte Dateien werden im Falle einer Sperrung verschlüsselt.";
@@ -701,7 +701,7 @@
 "action.like" = "Gefällt mir";
 "action.unlike" = "Gefällt nicht mehr";
 "action.favourite" = "Favorit";
-"action.unfavourite" = "Entfernen";
+"action.unfavourite" = "Aus Favoriten entfernen";
 "action.comment" = "Kommentieren";
 "action.download" = "Herunterladen";
 "action.print" = "Drucken";
@@ -790,7 +790,7 @@
  * Configuration
  */
 // Profiles
-"profile.default.title" = "Standardeinstellungen";
+"profile.default.title" = "Standard";
 "profile.default.summary" = "Alfresco Mobile-Standardeinstellungen";
 // Views
 "view-activities-default" = "Aktivitäten";
@@ -838,9 +838,9 @@
 "person.profile.view.controller.contact.information.type.skype.download" = "Skype herunterladen";
 "person.profile.view.controller.contact.information.type.instant.message.title" = "Instant Messaging";
 "person.profile.view.controller.contact.information.type.telephone.title" = "Telefon";
-"person.profile.view.controller.contact.information.type.mobile.title" = "Mobiltelefon";
+"person.profile.view.controller.contact.information.type.mobile.title" = "Handy";
 "person.profile.view.controller.contact.information.type.name.title" = "Name";
-"person.profile.view.controller.contact.information.type.address.title" = "Anschrift";
+"person.profile.view.controller.contact.information.type.address.title" = "Adresse";
 "person.profile.view.controller.contact.information.type.fax.title" = "Fax";
 
 /**

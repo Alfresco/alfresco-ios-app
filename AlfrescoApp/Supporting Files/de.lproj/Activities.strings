@@ -43,7 +43,7 @@
 "activity.role.SiteManager" = "Manager";
 "activity.role.SiteCollaborator" = "Mitarbeiter";
 "activity.role.SiteContributor" = "Beitragender";
-"activity.role.SiteConsumer" = "Konsument";
+"activity.role.SiteConsumer" = "Verbraucher";
 
 /**
  * 0 = File title / page link, 1 = User profile link, 2 = custom0, 3 = custom1, 4 = Site link, 5 = second user profile link
@@ -78,19 +78,19 @@
 "org.alfresco.documentlibrary.inline-edit" = "{1} bearbeitete Datei {0}";
 "org.alfresco.documentlibrary.file-previewed" = "{1} hat eine Vorschau auf Dokument {0} angezeigt";
 "org.alfresco.documentlibrary.file-downloaded" = "{1} hat Dokument {0} heruntergeladen";
-"org.alfresco.documentlibrary.file-liked" = "{1} gefiel Datei {0}";
-"org.alfresco.documentlibrary.folder-liked" = "{1} gefiel Ordner {0}";
+"org.alfresco.documentlibrary.file-liked" = "{1} gefällt Datei {0}";
+"org.alfresco.documentlibrary.folder-liked" = "{1} gefällt Ordner {0}";
 "org.alfresco.wiki.page-created" = "{1} erstellte Wiki-Seite {0}";
 "org.alfresco.wiki.page-edited" = "{1} aktualisierte Wiki-Seite {0}";
 "org.alfresco.wiki.page-renamed" = "{1} benannte Wiki-Seite um von {2} in {0}";
 "org.alfresco.wiki.page-deleted" = "{1} löschte Wiki-Seite {0}";
 "org.alfresco.site.group-added" = "Gruppe {1} zur Site {4} mit Rolle {2} hinzugefügt";
 "org.alfresco.site.group-removed" = "Gruppe {1} von Site {4} entfernt";
-"org.alfresco.site.group-role-changed" = "Rolle der Gruppe {1} in {2} geändert";
+"org.alfresco.site.group-role-changed" = "Rolle der Gruppe von {1} zu {2} geändert";
 "org.alfresco.site.user-joined" = "{1} trat der Site {4} mit der Rolle {2} bei";
 "org.alfresco.site.user-left" = "{1} hat Site {4} verlassen";
-"org.alfresco.site.user-role-changed" = "Rolle {1} geändert in {2}";
-"org.alfresco.site.liked" = "{1} gefiel Site {0}";
+"org.alfresco.site.user-role-changed" = "Rolle von {1} zu {2} geändert";
+"org.alfresco.site.liked" = "{1} gefällt Site {0}";
 "org.alfresco.links.link-created" = "{1} erstellte Link {0}";
 "org.alfresco.links.link-updated" = "{1} aktualisierte Link {0}";
 "org.alfresco.links.link-deleted" = "{1} löschte Link {0}";

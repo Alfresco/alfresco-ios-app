@@ -34,7 +34,7 @@
 "Retry" = "Riprova";
 "Upload" = "Carica";
 "Close" = "Chiudi";
-"Next" = "Avanti";
+"Next" = "Continua";
 "No Files" = "Nessun file";
 "No Folders" = "Nessuna cartella";
 "No Users" = "Nessun utente";
@@ -193,7 +193,7 @@
 "sites.site.left.banner" = "Hai abbandonato %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Aggiungi ai preferiti"; // string length should not be extended
+"sites.siteCell.favorite" = "Preferito"; // string length should not be extended
 "sites.siteCell.unfavorite" = "Rimuovi dai preferiti"; // string length should not be extended
 "sites.siteCell.leave" = "Abbandona"; // string length should not be extended
 "sites.siteCell.cancel.request" = "Annulla richiesta"; // string length should not be extended
@@ -238,18 +238,18 @@
 "accountdetails.alert.save.title" = "Salva account";
 "accountdetails.alert.save.validationerror" = "Impossibile salvare l'account. Verifica le impostazioni dell'account con l'amministratore di Alfresco.";
 
-"accountdetails.fields.accountSettings" = "Immetti nome utente e password per accedere a questo account";
-"accountdetails.fields.confirmPassword" = "Immetti la password per accedere a questo account";
+"accountdetails.fields.accountSettings" = "Inserisci nome utente e password per accedere a questo account";
+"accountdetails.fields.confirmPassword" = "Conferma la password per accedere a questo account";
 
 /* Client Certificate */
 "certificate-manage.import.label" = "Importa da File locali";
 "certificate-manage.download.label" = "Scarica da Server web";
-"certificate-import.tableHeader" = "Passcode PKCS 12";
-"certificate-import.fields.passcode" = "Passcode";
-"certificate-import.tableFooter" = "Immetti il passcode per il file PKCS 12";
+"certificate-import.tableHeader" = "Codice PKCS 12";
+"certificate-import.fields.passcode" = "Codice";
+"certificate-import.tableFooter" = "Inserisci il codice per il file PKCS 12";
 "certificate-import.button.import" = "Importa";
 "certificate-import.error.title" = "Importa certificato";
-"certificate-import.error.authentication" = "Il passcode specificato per il certificato non è valido";
+"certificate-import.error.authentication" = "Il codice specificato per il certificato non è valido";
 "certificate-import.error.format" = "Il file del certificato non è corretto e non può essere importato";
 "certificate-download.title" = "Server web";
 "certificate-download.field.url" = "URL";
@@ -571,7 +571,7 @@
 "tasks.empty" = "Nessun compito";
 "tasks.process.unnamed" = "Processo senza nome";
 "tasks.view.button" = "Visualizza";
-"tasks.title.mytasks" = "I mie compiti";
+"tasks.title.mytasks" = "I miei compiti";
 "tasks.title.taskistarted" = "Compiti iniziati";
 "tasks.list.no-due-date" = "Nessuna data di scadenza";
 // Details
@@ -589,7 +589,7 @@
 "task.reassign.button.title" = "Riassegna";
 "task.reassign.success.message" = "Compito riassegnato";
 "task.transition.approve" = "Approva";
-"task.transition.reject" = "Rifiuta";
+"task.transition.reject" = "Respingi";
 "task.transition.done" = "Fine";
 "task.completed.success.message" = "Compito completato";
 
@@ -649,7 +649,7 @@
 "settings.general.title" = "Generale";
 "settings.sync.on.cellular" = "Sincronizzazione cellulare";
 "settings.sync.on.cellular.description" = "Disattiva per sincronizzare i contenuti preferiti solo in presenza di una connessione Wi-Fi.";
-"settings.send.diagnostics" = "Invia dati di diagnostica";
+"settings.send.diagnostics" = "Invia diagnostica";
 "settings.send.diagnostics.description" = "Al fine di migliorare Alfresco Mobile, raccogliamo dati tecnici di diagnostica in modo anonimo. L'opzione può essere disattivata.";
 "settings.security.title" = "Sicurezza";
 "settings.security.file.protection" = "Protezione dei file";
@@ -700,7 +700,7 @@
 "action.open.in" = "Apri in...";
 "action.like" = "Mi piace";
 "action.unlike" = "Non mi piace";
-"action.favourite" = "Aggiungi ai preferiti";
+"action.favourite" = "Preferito";
 "action.unfavourite" = "Rimuovi dai preferiti";
 "action.comment" = "Commenta";
 "action.download" = "Scarica";
@@ -754,7 +754,7 @@
 "new.version.upload" = "Aggiorna";
 "new.version.file.title" = "Nuova versione";
 "new.version.file.placeholder" = "Nessun file selezionato";
-"new.version.major.version.title" = "Modifiche principali";
+"new.version.major.version.title" = "Modifiche maggiori";
 "new.version.comment.title" = "Commenti";
 "new.version.commet.placeholder" = "Commenti versione (opzionali)";
 "new.version.upload.successful.title" = "File aggiornato";

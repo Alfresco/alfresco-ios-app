@@ -57,7 +57,7 @@
 "relative.date.past.n-minutes" = "%d 分前";
 "relative.date.past.one-minute" = "1 分前";
 "relative.date.past.n-seconds" = "%d 秒前";
-"relative.date.just-now" = "今すぐ";
+"relative.date.just-now" = "たった今";
 "relative.date.today" = "今日";
 "relative.date.future.n-seconds" = "%d 秒後";
 "relative.date.future.one-minute" = "1 分後";
@@ -100,7 +100,7 @@
 "sync.progress.label.plural" = "%d 個のファイルを同期しています。残り %@"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "同期";
 "sync.cancelAll.alert.message" = "すべての同期処理を取り消しますか?";
-"sync.cancelAll.alert.button.continue" = "続ける";
+"sync.cancelAll.alert.button.continue" = "続行";
 "sync.cancelAll.alert.button.stop" = "同期をやめる";
 
 /**
@@ -350,7 +350,7 @@
  * Activities View Controller
  */
 "activities.title" = "アクティビティ";
-"activities.empty" = "アクティビティはありません";
+"activities.empty" = "アクティビティなし";
 "activities.section.today" = "今日";
 "activities.section.yesterday" = "昨日";
 "activities.section.older" = "それ以前";
@@ -469,7 +469,7 @@
 "metadata.cmis:creationDate" = "作成日";
 "metadata.cmis:lastModifiedBy" = "最終変更者";
 "metadata.cmis:lastModificationDate" = "最後変更日";
-"metadata.cm:author" = "作成者";
+"metadata.cm:author" = "著者";
 "metadata.cmis:versionLabel" = "バージョン";
 
 "metadata.cm:longitude" = "経度";

@@ -86,8 +86,8 @@
  */
 "favourites.title" = "收藏夹";
 "favourites.empty" = "无收藏夹";
-"sync.title" = "同步内容";
-"sync.empty" = "无同步内容";
+"sync.title" = "已同步内容";
+"sync.empty" = "无已同步内容";
 "sync.downloadsize.prompt.title" = "下载大小";
 "sync.downloadsize.prompt.message" = "同步下载大小 %@。是否继续？";
 "sync.downloadsize.prompt.cancel" = "不同步";
@@ -650,7 +650,7 @@
 "settings.sync.on.cellular" = "单元同步";
 "settings.sync.on.cellular.description" = "当您有 Wi-Fi 连接时，关闭以仅同步收藏内容。";
 "settings.send.diagnostics" = "发送诊断数据";
-"settings.send.diagnostics.description" = "为帮助我们改进 Alfresco Mobile，我们会以匿名方式收集技术诊断数据。如果愿意，请关闭。";
+"settings.send.diagnostics.description" = "为了帮助我们改进 Alfresco Mobile，我们收集匿名技术诊断数据。如果愿意，请关闭。";
 "settings.security.title" = "安全性";
 "settings.security.file.protection" = "文件保护";
 "settings.security.file.protection.description" = "当设备锁定时，加密其上存储的文件。";
@@ -827,7 +827,7 @@
  * Person Profile View Controller
  */
 "person.profile.view.controller.header.title.about" = "关于";
-"person.profile.view.controller.header.title.contact.information" = "联系人信息";
+"person.profile.view.controller.header.title.contact.information" = "联系信息";
 "person.profile.view.controller.header.title.company.information" = "公司信息";
 "person.profile.view.controller.contact.information.type.email.title" = "电子邮件";
 "person.profile.view.controller.contact.information.type.skype.title" = "Skype";
