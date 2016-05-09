@@ -21,14 +21,19 @@
 extern NSString * const kPinKey;
 extern NSString * const kRemainingAttemptsKey;
 
+typedef NS_ENUM(NSUInteger, ResetType)
+{
+    ResetTypeAccounts,
+    ResetTypeEntireApp,
+};
+
 @interface SecurityManager : NSObject
 
 + (instancetype)sharedManager;
 + (BOOL)isTouchIDAvailable;
 
 + (void)reset;
-+ (void)resetAccounts;
-+ (void)resetEntireApp;
++ (void)resetWithType:(ResetType)resetType;
 
 - (void)setup;
 

@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, PinFlowCompletionStatus)
 {
     PinFlowCompletionStatusSuccess,
     PinFlowCompletionStatusFailure,
+    PinFlowCompletionStatusReset,
     PinFlowCompletionStatusCancel
 };
 
