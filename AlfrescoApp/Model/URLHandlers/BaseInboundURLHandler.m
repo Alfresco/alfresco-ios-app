@@ -18,8 +18,11 @@
  
 #import "BaseInboundURLHandler.h"
 #import "DownloadManager.h"
+
+#warning Should replace old sync implementation with new one (part of the update file stories)
 #import "SyncHelper.h"
 #import "SyncManager.h"
+#import "RealmSyncManager.h"
 
 @interface BaseInboundURLHandler () <NSFileManagerDelegate>
 @end
@@ -190,6 +193,8 @@
             void (^successBlock)(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) = ^(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) {
                 [progressHUD hide:YES];
                 [creationInputStream close];
+                
+                [[RealmSyncManager sharedManager] didUploadNode:createdDocument fromPath:filePath toFolder:folder];
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
 
                 [selectionController dismissViewControllerAnimated:YES completion:^{
