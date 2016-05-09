@@ -24,6 +24,8 @@
 #import "LoginManager.h"
 #import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
+#import "PinViewController.h"
+#import "PreferenceManager.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -368,9 +370,32 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 {
     AccountManager *accountManager = [AccountManager sharedManager];
     UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
+    __weak typeof(self) weakSelf = self;
     
-    [accountManager removeAccount:account];
-    [self updateAccountList];
+    void (^removeAccount)() = ^(){
+        [accountManager removeAccount:account];
+        [weakSelf updateAccountList];
+    };
+    
+    // If this is the last paid account and passcode is enabled, authenticate via passcode before deleting the account.
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] && [accountManager numberOfPaidAccounts] == 1 && account.isPaidAccount)
+    {
+        UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowVerify completionBlock:^(PinFlowCompletionStatus status){
+            if (status == PinFlowCompletionStatusSuccess)
+            {
+                removeAccount();
+            }
+            else if (status == PinFlowCompletionStatusCancel)
+            {
+                [tableView setEditing:NO animated:YES];
+            }
+        }];
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+    else
+    {
+        removeAccount();
+    }
 }
 
 #pragma mark - Add Account

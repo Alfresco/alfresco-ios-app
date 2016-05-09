@@ -30,6 +30,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 @interface PinViewController ()
 
 @property (nonatomic) PinFlow pinFlow;
+@property (nonatomic, strong) PinFlowCompletionBlock completionBlock;
 
 @end
 
@@ -53,10 +54,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 #pragma mark - Class Methods
 
-+ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow
++ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow completionBlock:(PinFlowCompletionBlock)completionBlock
 {
     PinViewController *pinViewController = [[PinViewController alloc] init];
     pinViewController.pinFlow = pinFlow;
+    pinViewController.completionBlock = completionBlock;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pinViewController];
     navigationController.navigationBar.translucent = NO;
@@ -226,6 +228,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             break;
             
         case PinFlowEnter:
+        case PinFlowVerify:
             [self validateEnterFlow];
             break;
             
@@ -337,6 +340,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     
     NSError *error;
     NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+    __weak typeof(self) weakSelf = self;
     
     if ([_oldPin isEqualToString:pin])
     {
@@ -347,8 +351,12 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         // This will prevent hiding the keyboard in any other instance of PinViewController that may be underneath.
         [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
         
-        [self dismissViewControllerAnimated:YES completion:^
-        {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (weakSelf.completionBlock)
+            {
+                weakSelf.completionBlock(PinFlowCompletionStatusSuccess);
+            }
+            
             [[FileHandlerManager sharedManager] handleCachedPackage];
         }];
     }
@@ -357,8 +365,6 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         _remainingAttempts --;
         NSError *error;
         [KeychainUtils saveItem:@(_remainingAttempts) forKey:kRemainingAttemptsKey error:&error];
-        
-        __weak typeof(self) weakSelf = self;
         
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
@@ -463,6 +469,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     {
         case PinFlowEnter:
         case PinFlowUnset:
+        case PinFlowVerify:
             return _oldPin;
             
         case PinFlowChange:
@@ -576,6 +583,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             
         case PinFlowEnter:
         case PinFlowUnset:
+        case PinFlowVerify:
             _oldPin = [NSMutableString string];
             break;
             
@@ -601,6 +609,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             
         case PinFlowChange:
         case PinFlowEnter:
+        case PinFlowVerify:
             self.title = NSLocalizedString(kSettingsSecurityPasscodeEnterTitle, @"Enter Passcode");
             break;
             
@@ -618,7 +627,14 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 - (void)pressedCancelButton:(UIBarButtonItem *)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    __weak typeof(self) weakSelf = self;
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (weakSelf.completionBlock)
+        {
+            weakSelf.completionBlock(PinFlowCompletionStatusCancel);
+        }
+    }];
 }
 
 @end

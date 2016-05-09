@@ -101,8 +101,6 @@ static BOOL sFileProtectionEnabled = NO;
 
 - (void)lastPaidAccountRemoved:(NSNotification *)notification
 {
-    displayWarningMessageWithTitle(NSLocalizedString(@"fileprotection.unavailable.message", @"Unavailable"), NSLocalizedString(@"fileprotection.title", @"File Protection"));
-
     // Update the static flag - this is deliberately done here so that existing files are not unprotected in the preference changed handler
     sFileProtectionEnabled = NO;
     [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsFileProtectionIdentifier];
