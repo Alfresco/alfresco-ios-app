@@ -42,9 +42,11 @@
     return @"syncNodeInfoId";
 }
 
-- (NSArray *)nodes
++ (NSDictionary *)linkingObjectsProperties
 {
-    return [self linkingObjectsOfClass:@"RealmSyncNodeInfo" forProperty:@"parentNode"];
+    return @{
+             @"nodes": [RLMPropertyDescriptor descriptorWithClass:RealmSyncNodeInfo.class propertyName:@"parentNode"],
+             };
 }
 
 - (AlfrescoNode *)alfrescoNode

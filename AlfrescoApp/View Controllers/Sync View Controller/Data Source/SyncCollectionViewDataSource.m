@@ -43,11 +43,11 @@
     self.parentNode = node;
     
     __weak typeof(self) weakSelf = self;
-    self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults *results, NSError *error) {
+    self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error) {
         if(results.count > 0)
         {
             weakSelf.syncDataSourceCollection = results;
-            if(node)
+            if(weakSelf.parentNode)
             {
                 RealmSyncNodeInfo *syncParentNode = weakSelf.syncDataSourceCollection.firstObject;
                 [weakSelf setupDataSourceCollection:syncParentNode.nodes];
@@ -59,7 +59,6 @@
             
         }
     }];
-    
     return self;
 }
 

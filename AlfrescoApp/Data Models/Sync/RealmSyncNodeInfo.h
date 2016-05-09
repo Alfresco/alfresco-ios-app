@@ -36,7 +36,7 @@
 @property (nonatomic) RealmSyncError *syncError;
 @property (nonatomic) RealmSyncNodeInfo *parentNode;
 //Inverse of parentNode relation
-@property (readonly) NSArray *nodes;
+@property (readonly) RLMLinkingObjects *nodes;
 @property (readonly) AlfrescoNode *alfrescoNode;
 
 @end

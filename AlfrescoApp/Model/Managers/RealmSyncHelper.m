@@ -52,7 +52,7 @@
 
 - (NSString *)syncNameForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:realm];
     
     if (nodeInfo.syncContentPath.length == 0)
     {
@@ -74,7 +74,7 @@
 
 - (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:realm];
     return nodeInfo.lastDownloadedDate;
 }
 
@@ -130,7 +130,7 @@
     // No error handling here as we don't want to end up with Sync orphans
     [self.fileManager removeItemAtPath:syncNodeContentPath error:nil];
     
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:realm];
     [[RealmManager sharedManager] deleteRealmObject:nodeInfo inRealm:realm];
 }
 

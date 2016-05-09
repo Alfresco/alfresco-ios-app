@@ -20,6 +20,7 @@
 #import <Realm/Realm.h>
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
+#import "RealmManager.h"
 
 @protocol RealmSyncManagerProgressDelegate <NSObject>
 
@@ -41,6 +42,7 @@
  */
 - (BOOL)isCurrentlySyncing;
 - (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
+- (BOOL)isNodeInSyncList:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
 - (BOOL)isTopLevelSyncNode:(AlfrescoNode *)node;
 - (void)cancelAllSyncOperations;
 
@@ -58,6 +60,7 @@
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 
 /**
  * Sync Feature
@@ -70,6 +73,6 @@
 /**
  * Realm notifications
  */
-- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults *results, NSError *error))block;
+- (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error))block;
 
 @end

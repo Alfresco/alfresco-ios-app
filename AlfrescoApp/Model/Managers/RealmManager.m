@@ -49,7 +49,7 @@
 - (void)deleteRealmWithName:(NSString *)realmName
 {
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *realmFilepath = [self configForName:realmName].path;
+    NSString *realmFilepath = [self configForName:realmName].fileURL.path;
     NSArray<NSString *> *realmFilePaths = @[
                                             realmFilepath,
                                             [realmFilepath stringByAppendingPathExtension:@"lock"],
@@ -66,9 +66,13 @@
     }
 }
 
-- (RealmSyncNodeInfo *)syncNodeInfoForObjectWithId:(NSString *)objectId inRealm:(RLMRealm *)realm
+- (RealmSyncNodeInfo *)syncNodeInfoForObjectWithId:(NSString *)objectId ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
 {
     RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId == %@", objectId].firstObject;
+    if(createNew && !nodeInfo)
+    {
+        nodeInfo = [self createSyncNodeInfoForNodeWithId:objectId inRealm:realm];
+    }
     return nodeInfo;
 }
 
@@ -77,7 +81,9 @@
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
     
     // Use the default directory, but replace the filename with the accountId
-    config.path = [[[config.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
+    
     return config;
 }
 
@@ -87,7 +93,7 @@
     
     if (nodeId)
     {
-        RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:nodeId inRealm:realm];
+        RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:nodeId ifNotExistsCreateNew:NO inRealm:realm];
         syncError = nodeInfo.syncError;
         
         if (createNew && !syncError)
@@ -107,6 +113,41 @@
     [realm commitWriteTransaction];
     return error;
     
+}
+
+- (RealmSyncNodeInfo *)createSyncNodeInfoForNodeWithId:(NSString *)nodeId inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *syncNodeInfo = [RealmSyncNodeInfo new];
+    syncNodeInfo.syncNodeInfoId = nodeId;
+    [realm beginWriteTransaction];
+    [realm addObject:syncNodeInfo];
+    [realm commitWriteTransaction];
+    return syncNodeInfo;
+}
+
+- (void)updateSyncNodeInfoWithId:(NSString *)objectId withNode:(AlfrescoNode *)node lastDownloadedDate:(NSDate *)downloadedDate syncContentPath:(NSString *)syncContentPath inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *syncNodeInfo = [self syncNodeInfoForObjectWithId:objectId ifNotExistsCreateNew:NO inRealm:realm];
+    [realm beginWriteTransaction];
+    
+    if(node)
+    {
+        syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:node];
+        syncNodeInfo.title = node.name;
+        syncNodeInfo.isFolder = node.isFolder;
+    }
+    
+    if(downloadedDate)
+    {
+        syncNodeInfo.lastDownloadedDate = downloadedDate;
+    }
+    
+    if(syncContentPath)
+    {
+        syncNodeInfo.syncContentPath = syncContentPath;
+    }
+    
+    [realm commitWriteTransaction];
 }
 
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm
