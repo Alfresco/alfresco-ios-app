@@ -34,12 +34,12 @@
 "Retry" = "Riprova";
 "Upload" = "Carica";
 "Close" = "Chiudi";
-"Next" = "Avanti";
+"Next" = "Continua";
 "No Files" = "Nessun file";
 "No Folders" = "Nessuna cartella";
 "No Users" = "Nessun utente";
-"On" = "On";
-"Off" = "Off";
+"On" = "Sì";
+"Off" = "No";
 
 /**
  * Relative Dates
@@ -193,7 +193,7 @@
 "sites.site.left.banner" = "Hai abbandonato %@";
 
 // Site Cell Buttons
-"sites.siteCell.favorite" = "Aggiungi ai preferiti"; // string length should not be extended
+"sites.siteCell.favorite" = "Preferito"; // string length should not be extended
 "sites.siteCell.unfavorite" = "Rimuovi dai preferiti"; // string length should not be extended
 "sites.siteCell.leave" = "Abbandona"; // string length should not be extended
 "sites.siteCell.cancel.request" = "Annulla richiesta"; // string length should not be extended
@@ -238,18 +238,18 @@
 "accountdetails.alert.save.title" = "Salva account";
 "accountdetails.alert.save.validationerror" = "Impossibile salvare l'account. Verifica le impostazioni dell'account con l'amministratore di Alfresco.";
 
-"accountdetails.fields.accountSettings" = "Immetti nome utente e password per accedere a questo account";
-"accountdetails.fields.confirmPassword" = "Immetti la password per accedere a questo account";
+"accountdetails.fields.accountSettings" = "Inserisci nome utente e password per accedere a questo account";
+"accountdetails.fields.confirmPassword" = "Conferma la password per accedere a questo account";
 
 /* Client Certificate */
 "certificate-manage.import.label" = "Importa da File locali";
 "certificate-manage.download.label" = "Scarica da Server web";
-"certificate-import.tableHeader" = "Passcode PKCS 12";
-"certificate-import.fields.passcode" = "Passcode";
-"certificate-import.tableFooter" = "Immetti il passcode per il file PKCS 12";
+"certificate-import.tableHeader" = "Codice PKCS 12";
+"certificate-import.fields.passcode" = "Codice";
+"certificate-import.tableFooter" = "Inserisci il codice per il file PKCS 12";
 "certificate-import.button.import" = "Importa";
 "certificate-import.error.title" = "Importa certificato";
-"certificate-import.error.authentication" = "Il passcode specificato per il certificato non è valido";
+"certificate-import.error.authentication" = "Il codice specificato per il certificato non è valido";
 "certificate-import.error.format" = "Il file del certificato non è corretto e non può essere importato";
 "certificate-download.title" = "Server web";
 "certificate-download.field.url" = "URL";
@@ -571,7 +571,7 @@
 "tasks.empty" = "Nessun compito";
 "tasks.process.unnamed" = "Processo senza nome";
 "tasks.view.button" = "Visualizza";
-"tasks.title.mytasks" = "I mie compiti";
+"tasks.title.mytasks" = "I miei compiti";
 "tasks.title.taskistarted" = "Compiti iniziati";
 "tasks.list.no-due-date" = "Nessuna data di scadenza";
 // Details
@@ -589,7 +589,7 @@
 "task.reassign.button.title" = "Riassegna";
 "task.reassign.success.message" = "Compito riassegnato";
 "task.transition.approve" = "Approva";
-"task.transition.reject" = "Rifiuta";
+"task.transition.reject" = "Respingi";
 "task.transition.done" = "Fine";
 "task.completed.success.message" = "Compito completato";
 
@@ -649,29 +649,29 @@
 "settings.general.title" = "Generale";
 "settings.sync.on.cellular" = "Sincronizzazione cellulare";
 "settings.sync.on.cellular.description" = "Disattiva per sincronizzare i contenuti preferiti solo in presenza di una connessione Wi-Fi.";
-"settings.send.diagnostics" = "Invia dati di diagnostica";
+"settings.send.diagnostics" = "Invia diagnostica";
 "settings.send.diagnostics.description" = "Al fine di migliorare Alfresco Mobile, raccogliamo dati tecnici di diagnostica in modo anonimo. L'opzione può essere disattivata.";
 "settings.security.title" = "Sicurezza";
 "settings.security.file.protection" = "Protezione dei file";
 "settings.security.file.protection.description" = "Crittografa i file salvati sul dispositivo quando il dispositivo è bloccato.";
-"settings.security.passcode.lock" = "Passcode Lock";
-"settings.security.passcode.lock.description" = "Your Alfresco account details, synced files, and local files will be wiped after %d unsuccessful passcode attempts.";
-"settings.security.passcode.lock.title" = "Passcode";
+"settings.security.passcode.lock" = "Blocco con codice";
+"settings.security.passcode.lock.description" = "I dettagli dell'account Alfresco, i file sincronizzati e i file locali saranno cancellati dopo %d tentativi non riusciti di inserimento del codice.";
+"settings.security.passcode.lock.title" = "Codice";
 "settings.security.passcode.touch.id" = "Touch ID";
-"settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the Alfresco app.";
-"settings.security.passcode.change" = "Change Passcode";
-"settings.security.passcode.turn.on" = "Turn Passcode On";
-"settings.security.passcode.turn.off" = "Turn Passcode Off";
-"settings.security.passcode.set.title" = "Set Passcode";
-"settings.security.passcode.enter.title" = "Enter Passcode";
-"settings.security.passcode.enter" = "Enter your Alfresco Passcode";
-"settings.security.passcode.re-enter" = "Re-enter your Alfresco Passcode";
-"settings.security.passcode.missmatch" = "Passcodes didn't match. Try again.";
-"settings.security.passcode.enter.new" = "Enter your new Alfresco passcode";
-"settings.security.passcode.enter.old" = "Enter your old Alfresco passcode";
-"settings.security.passcode.re-enter.new" = "Re-enter your new passcode";
-"settings.security.passcode.attempts.1" = "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files, and local files will be wiped.";
-"settings.security.passcode.attempts.several" = "%d attempts remaining";
+"settings.security.passcode.touch.id.description" = "Consente di sbloccare l'app Alfresco con la tua impronta digitale.";
+"settings.security.passcode.change" = "Modifica codice";
+"settings.security.passcode.turn.on" = "Attiva codice";
+"settings.security.passcode.turn.off" = "Disattiva codice";
+"settings.security.passcode.set.title" = "Imposta codice";
+"settings.security.passcode.enter.title" = "Inserisci codice";
+"settings.security.passcode.enter" = "Inserisci il tuo codice Alfresco";
+"settings.security.passcode.re-enter" = "Reinserisci il tuo codice Alfresco";
+"settings.security.passcode.missmatch" = "I codici non corrispondono. Riprova.";
+"settings.security.passcode.enter.new" = "Inserisci il tuo nuovo codice Alfresco";
+"settings.security.passcode.enter.old" = "Inserisci il tuo vecchio codice Alfresco";
+"settings.security.passcode.re-enter.new" = "Reinserisci il tuo nuovo codice";
+"settings.security.passcode.attempts.1" = "Ti resta 1 tentativo. Se il tentativo non riesce, Alfresco Mobile sarà riavviato e i dettagli dell'account, i file sincronizzati e i file locali saranno cancellati.";
+"settings.security.passcode.attempts.several" = "Ti restano %d tentativi";
 "settings.reset.title" = "Cancella dati";
 "settings.reset.accounts" = "Cancella account";
 "settings.reset.accounts.confirmation.title" = "Cancellare gli account?";
@@ -700,7 +700,7 @@
 "action.open.in" = "Apri in...";
 "action.like" = "Mi piace";
 "action.unlike" = "Non mi piace";
-"action.favourite" = "Aggiungi ai preferiti";
+"action.favourite" = "Preferito";
 "action.unfavourite" = "Rimuovi dai preferiti";
 "action.comment" = "Commenta";
 "action.download" = "Scarica";
@@ -754,7 +754,7 @@
 "new.version.upload" = "Aggiorna";
 "new.version.file.title" = "Nuova versione";
 "new.version.file.placeholder" = "Nessun file selezionato";
-"new.version.major.version.title" = "Modifiche principali";
+"new.version.major.version.title" = "Modifiche maggiori";
 "new.version.comment.title" = "Commenti";
 "new.version.commet.placeholder" = "Commenti versione (opzionali)";
 "new.version.upload.successful.title" = "File aggiornato";

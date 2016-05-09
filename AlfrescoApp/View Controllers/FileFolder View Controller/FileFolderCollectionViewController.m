@@ -232,13 +232,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithSearchStatement:(NSString *)statement session:(id<AlfrescoSession>)session
+- (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if(self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeCMISSearch;
-        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
+        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:displayName session:session];
         self.CMISSearchStatement = statement;
     }
     

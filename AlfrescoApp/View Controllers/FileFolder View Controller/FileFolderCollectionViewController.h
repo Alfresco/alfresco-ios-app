@@ -116,9 +116,10 @@
  Use the search statement initialiser to initiate a CMIS search
 
  @param statement - the CMIS statement
+ @param displayName - the name that will be visible to the user
  @param session - an active session
  */
-- (instancetype)initWithSearchStatement:(NSString *)statement session:(id<AlfrescoSession>)session;
+- (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
 /**
  Convenience method used to help initialise the internal state of the controller once initialised.

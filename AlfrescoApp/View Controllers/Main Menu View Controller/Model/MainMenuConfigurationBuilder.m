@@ -439,7 +439,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         }
         else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterStatementKey])
         {
-            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchStatement:viewConfig.parameters[kAlfrescoConfigViewParameterStatementKey] session:self.session];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchStatement:viewConfig.parameters[kAlfrescoConfigViewParameterStatementKey] displayName:viewConfig.label session:self.session];
         }
         associatedObject = fileFolderCollectionViewController;
     }

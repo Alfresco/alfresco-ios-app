@@ -39,7 +39,7 @@
 /**
  * Site Roles
  */
-"activity.role.None" = "Pas de privilèges";
+"activity.role.None" = "Aucun privilège";
 "activity.role.SiteManager" = "Gestionnaire";
 "activity.role.SiteCollaborator" = "Collaborateur";
 "activity.role.SiteContributor" = "Contributeur";
@@ -51,8 +51,8 @@
 "org.alfresco.blog.post-created" = "{1} a créé l’article de blog {0}";
 "org.alfresco.blog.post-updated" = "{1} a mis à jour l’article de blog {0}";
 "org.alfresco.blog.post-deleted" = "{1} a supprimé l’article de blog {0}";
-"org.alfresco.comments.comment-created" = "{1} a commenté le {0}";
-"org.alfresco.comments.comment-updated" = "{1} a mis à jour un commentaire le {0}";
+"org.alfresco.comments.comment-created" = "{1} a commenté {0}";
+"org.alfresco.comments.comment-updated" = "{1} a mis à jour son commentaire sur {0}";
 "org.alfresco.comments.comment-deleted" = "{1} a supprimé un commentaire de {0}";
 "org.alfresco.discussions.post-created" = "{1} a initié la discussion {0}";
 "org.alfresco.discussions.post-updated" = "{1} a mis à jour la discussion {0}";
