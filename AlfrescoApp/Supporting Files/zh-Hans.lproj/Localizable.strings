@@ -774,6 +774,8 @@
 "fileprotection.unavailable.message" = "文件保护不再可用";
 "fileprotection.protecting.message" = "正在保护本地文件...";
 "fileprotection.unprotecting.message" = "正在取消保护本地文件...";
+"alfresco-one-features.title" = "Alfresco One Features";
+"alfresco-one-features.message" = "File protection and Passcode security are no longer available";
 
 /**
  * Mail Action

@@ -23,14 +23,24 @@ typedef NS_ENUM(NSUInteger, PinFlow)
     PinFlowSet,
     PinFlowUnset,
     PinFlowChange,
-    PinFlowEnter
+    PinFlowEnter,   // Used when launching the app or moving the app into the foreground
+    PinFlowVerify   // Used when deleting the last paid account. Almost similar to PinFlowEnter; the navigation bar is displayed so the user has access to the Cancel button.
 };
+
+typedef NS_ENUM(NSUInteger, PinFlowCompletionStatus)
+{
+    PinFlowCompletionStatusSuccess,
+    PinFlowCompletionStatusFailure,
+    PinFlowCompletionStatusCancel
+};
+
+typedef void (^PinFlowCompletionBlock)(PinFlowCompletionStatus status);
 
 #define REMAINING_ATTEMPTS_MAX_VALUE 10
 
 @interface PinViewController : UIViewController <UIKeyInput>
 
-+ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow;
++ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow completionBlock:(PinFlowCompletionBlock)completionBlock;
 - (PinFlow)pinFlow;
 
 @end

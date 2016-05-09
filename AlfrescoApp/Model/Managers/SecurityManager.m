@@ -53,6 +53,8 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackgroundNotification:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunchingNotification:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstPaidAccountAdded:) name:kAlfrescoFirstPaidAccountAddedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lastPaidAccountRemoved:) name:kAlfrescoLastPaidAccountRemovedNotification object:nil];
 }
 
 #pragma mark - Notification Handlers
@@ -103,6 +105,18 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     }
 }
 
+- (void)firstPaidAccountAdded:(NSNotification *)notification
+{
+    [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+}
+
+- (void)lastPaidAccountRemoved:(NSNotification *)notification
+{
+    displayWarningMessageWithTitle(NSLocalizedString(@"alfresco-one-features.message", @"File protection and Passcode security are no longer available"),
+                                   NSLocalizedString(@"alfresco-one-features.title", @"Alfresco One Features"));
+    [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+    [SecurityManager reset];
+}
 
 #pragma mark - Utils
 
@@ -183,7 +197,7 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
         }
     }
     
-    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter];
+    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter completionBlock:nil];
     [topController presentViewController:navController animated:animated completion:nil];
 }
 

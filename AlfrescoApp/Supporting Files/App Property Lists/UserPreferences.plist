@@ -181,6 +181,8 @@
 			<key>GroupCells</key>
 			<array>
 				<dict>
+					<key>HasPaidAccount</key>
+					<string>YES</string>
 					<key>PreferenceIdentifier</key>
 					<string>SettingsPasscodeLockIdentifier</string>
 					<key>Type</key>

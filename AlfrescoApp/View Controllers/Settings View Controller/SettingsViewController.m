@@ -322,13 +322,13 @@
     BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
     shouldUsePasscodeLock = !shouldUsePasscodeLock;
     
-    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:shouldUsePasscodeLock ? PinFlowSet : PinFlowUnset];
+    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:shouldUsePasscodeLock ? PinFlowSet : PinFlowUnset completionBlock:nil];
     [self presentViewController:pinNavigationViewController animated:YES completion:nil];
 }
 
 - (void)changePasscodeHandler
 {
-    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange];
+    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange completionBlock:nil];
     [self presentViewController:pinNavigationViewController animated:YES completion:nil];
 }
 

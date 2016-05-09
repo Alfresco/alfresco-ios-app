@@ -774,6 +774,8 @@
 "fileprotection.unavailable.message" = "La protección de ficheros ya no está disponible";
 "fileprotection.protecting.message" = "Protegiendo ficheros locales...";
 "fileprotection.unprotecting.message" = "Desprotegiendo ficheros locales...";
+"alfresco-one-features.title" = "Alfresco One Features";
+"alfresco-one-features.message" = "File protection and Passcode security are no longer available";
 
 /**
  * Mail Action
