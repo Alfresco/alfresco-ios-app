@@ -197,9 +197,7 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
         }
     }
     
-    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter completionBlock:^(PinFlowCompletionStatus status){
-       
-    }];
+    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter completionBlock:nil];
     [topController presentViewController:navController animated:animated completion:nil];
 }
 
