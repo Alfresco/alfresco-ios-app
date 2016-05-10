@@ -672,6 +672,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         [self retrievePermissionsForNode:folder];
                         [self addAlfrescoNodes:@[folder] completion:nil];
                         [self updateUIUsingFolderPermissionsWithAnimation:NO];
+                        [[RealmSyncManager sharedManager] didUploadNode:folder fromPath:nil toFolder:self.displayFolder];
                         
                         [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                                           action:kAnalyticsEventActionCreate

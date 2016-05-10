@@ -589,43 +589,53 @@
         if([self isNodeInSyncList:folder inRealm:realm])
         {
             NSString *syncNameForNode = [self.syncHelper syncNameForNode:node inRealm:realm];
-            NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
-            NSString *syncContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:selectedAccountIdentifier] stringByAppendingPathComponent:syncNameForNode];
-            
             RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:YES inRealm:realm];
             RealmSyncNodeInfo *parentSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:realm];
+            
             [realm beginWriteTransaction];
             syncNodeInfo.parentNode = parentSyncNodeInfo;
             syncNodeInfo.isTopLevelSyncNode = NO;
             [realm commitWriteTransaction];
             
-            NSError *movingFileError = nil;
-            [[AlfrescoFileManager sharedManager] copyItemAtPath:tempPath toPath:syncContentPath error:&movingFileError];
-            
             SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
-            if(movingFileError)
+            
+            if(node.isDocument)
             {
-                nodeStatus.status = SyncStatusFailed;
+                NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+                NSString *syncContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:selectedAccountIdentifier] stringByAppendingPathComponent:syncNameForNode];
                 
-                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:YES inRealm:realm];
-                [realm beginWriteTransaction];
-                syncError.errorCode = movingFileError.code;
-                syncError.errorDescription = [movingFileError localizedDescription];
+                NSError *movingFileError = nil;
+                [[AlfrescoFileManager sharedManager] copyItemAtPath:tempPath toPath:syncContentPath error:&movingFileError];
                 
-                syncNodeInfo.syncError = syncError;
-                syncNodeInfo.reloadContent = NO;
-                [realm commitWriteTransaction];
+                if(movingFileError)
+                {
+                    nodeStatus.status = SyncStatusFailed;
+                    
+                    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:YES inRealm:realm];
+                    [realm beginWriteTransaction];
+                    syncError.errorCode = movingFileError.code;
+                    syncError.errorDescription = [movingFileError localizedDescription];
+                    
+                    syncNodeInfo.syncError = syncError;
+                    syncNodeInfo.reloadContent = NO;
+                    [realm commitWriteTransaction];
+                }
+                else
+                {
+                    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self.syncHelper syncIdentifierForNode:node] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncContentPath inRealm:realm];
+                    nodeStatus.status = SyncStatusSuccessful;
+                    nodeStatus.activityType = SyncActivityTypeIdle;
+                    [realm beginWriteTransaction];
+                    syncNodeInfo.reloadContent = NO;
+                    [realm commitWriteTransaction];
+                }
             }
-            else
+            else if (node.isFolder)
             {
-                [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self.syncHelper syncIdentifierForNode:node] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncContentPath inRealm:realm];
+                [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self.syncHelper syncIdentifierForNode:node] withNode:node lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
                 nodeStatus.status = SyncStatusSuccessful;
                 nodeStatus.activityType = SyncActivityTypeIdle;
-                [realm beginWriteTransaction];
-                syncNodeInfo.reloadContent = NO;
-                [realm commitWriteTransaction];
             }
-        
         }
     }
 }
