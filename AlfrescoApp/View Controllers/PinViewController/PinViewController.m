@@ -279,7 +279,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             [_bulletsView shakeWithCompletionBlock:^{
                 if (_remainingAttempts == 0)
                 {
-                    [SecurityManager resetEntireApp];
+                    [SecurityManager resetWithType:ResetTypeEntireApp];
                     [weakSelf unsetPinAndDismiss];
                 }
                 else
@@ -369,8 +369,13 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [SecurityManager resetEntireApp];
+                [SecurityManager resetWithType:ResetTypeEntireApp];
                 [weakSelf unsetPinAndDismiss];
+                
+                if (self.completionBlock)
+                {
+                    self.completionBlock(PinFlowCompletionStatusReset);
+                }
             }
             else
             {
@@ -378,6 +383,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
                 
                 [weakSelf fillBullets:NO];
                 [weakSelf showNumberOfAttemptsRemaining];
+                
+                if (self.completionBlock)
+                {
+                    self.completionBlock(PinFlowCompletionStatusFailure);
+                }
             }
         }];
     }
@@ -447,7 +457,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [SecurityManager resetEntireApp];
+                [SecurityManager resetWithType:ResetTypeEntireApp];
                 [weakSelf unsetPinAndDismiss];
             }
             else

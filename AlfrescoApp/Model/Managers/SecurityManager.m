@@ -127,6 +127,23 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     [KeychainUtils deleteItemForKey:kRemainingAttemptsKey error:&error];
 }
 
++ (void)resetWithType:(ResetType)resetType
+{
+    switch (resetType)
+    {
+        case ResetTypeAccounts:
+            [SecurityManager resetAccounts];
+            break;
+            
+        case ResetTypeEntireApp:
+            [SecurityManager resetEntireApp];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 + (void)resetAccounts
 {
     // Remove accounts

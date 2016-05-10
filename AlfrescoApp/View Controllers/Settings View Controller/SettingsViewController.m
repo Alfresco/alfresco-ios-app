@@ -269,11 +269,12 @@
                                                                delegate:self
                                                       cancelButtonTitle:NSLocalizedString(@"No", @"No")
                                                       otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+     __weak typeof(self) weakSelf = self;
     
     [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         if (!isCancelButton)
         {
-            [SecurityManager resetAccounts];
+            [weakSelf reloadDataAfterResetWithType:ResetTypeAccounts];
         }
     }];
 }
@@ -285,13 +286,48 @@
                                                                delegate:self
                                                       cancelButtonTitle:NSLocalizedString(@"No", @"No")
                                                       otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    __weak typeof(self) weakSelf = self;
     
     [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
         if (!isCancelButton)
         {
-            [SecurityManager resetEntireApp];
+            [weakSelf reloadDataAfterResetWithType:ResetTypeEntireApp];
         }
     }];
+}
+
+- (void)reloadDataAfterResetWithType:(ResetType)resetType
+{
+    __weak typeof(self) weakSelf = self;
+    
+    void (^reloadDataBlock)(BOOL) = ^(BOOL reset){
+        if (reset)
+        {
+            [SecurityManager resetWithType:resetType];
+        }
+        
+        [weakSelf buildTableDataSource];
+        [weakSelf.tableView reloadData];
+    };
+    
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock])
+    {
+        UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowVerify completionBlock:^(PinFlowCompletionStatus status){
+            if (status == PinFlowCompletionStatusSuccess)
+            {
+                reloadDataBlock(YES);
+            }
+            else if (status == PinFlowCompletionStatusReset)
+            {
+                reloadDataBlock(NO);
+            }
+        }];
+        [weakSelf presentViewController:navController animated:YES completion:nil];
+    }
+    else
+    {
+        reloadDataBlock(YES);
+    }
 }
 
 - (void)sendFeedbackHandler
