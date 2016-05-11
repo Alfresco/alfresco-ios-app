@@ -774,8 +774,8 @@
 "fileprotection.unavailable.message" = "ファイルの保護機能は使用できなくなりました";
 "fileprotection.protecting.message" = "ローカルファイルを保護しています...";
 "fileprotection.unprotecting.message" = "ローカルファイルの保護を解除しています...";
-"alfresco-one-features.title" = "Alfresco One Features";
-"alfresco-one-features.message" = "File protection and Passcode security are no longer available";
+"alfresco-one-features.title" = "Alfresco One の機能";
+"alfresco-one-features.message" = "ファイルの保護機能とパスコードは使用できなくなりました";
 
 /**
  * Mail Action
