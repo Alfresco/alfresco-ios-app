@@ -120,6 +120,26 @@
     return syncIdentifier;
 }
 
+- (NSMutableArray *)syncIdentifiersForNodes:(NSArray *)nodes
+{
+    NSMutableArray *syncIdentifiers = [NSMutableArray array];
+    
+    for (AlfrescoNode *node in nodes)
+    {
+        [syncIdentifiers addObject:[self syncIdentifierForNode:node]];
+    }
+    return syncIdentifiers;
+}
+
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm
+{
+    // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:realm];
+    [realm beginWriteTransaction];
+    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
+    [realm commitWriteTransaction];
+}
+
 #pragma mark - Delete Methods
 
 - (void)deleteNodeFromSync:(AlfrescoNode *)node inRealm:(RLMRealm *)realm

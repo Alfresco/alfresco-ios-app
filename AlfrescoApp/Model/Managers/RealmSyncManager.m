@@ -26,6 +26,7 @@
 #import "RealmSyncHelper.h"
 #import "ConnectivityManager.h"
 #import "AppConfigurationManager.h"
+#import "DownloadManager.h"
 
 @interface RealmSyncManager()
 
@@ -208,9 +209,47 @@
         RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
         SyncNodeStatus *syncNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
         syncNodeStatus.totalSize = 0;
-        [self.syncHelper deleteNodeFromSync:node inRealm:backgroundRealm];
-        completionBlock(NO);
+        [self checkForObstaclesInRemovingDownloadForNode:node inRealm:backgroundRealm completionBlock:^(BOOL encounteredObstacle) {
+            if(encounteredObstacle)
+            {
+                [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node];
+                completionBlock(YES);
+            }
+            else
+            {
+                [self.syncHelper deleteNodeFromSync:node inRealm:backgroundRealm];
+                completionBlock(NO);
+            }
+        }];
     });
+}
+
+- (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document
+{
+    NSString *contentPath = [self contentPathForNode:document];
+    NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+    
+    // copying to temporary location in order to rename the file to original name (sync uses node identifier as document name)
+    NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:document.name];
+    [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
+    
+    [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
+        [self.fileManager removeItemAtPath:contentPath error:nil];
+        [self.fileManager removeItemAtPath:temporaryPath error:nil];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [self.syncHelper resolvedObstacleForDocument:document inRealm:realm];
+    }];
+    
+    // remove document from obstacles dictionary
+    NSArray *syncObstaclesDeletedNodeIdentifiers = [self.syncHelper syncIdentifiersForNodes:syncObstableDeleted];
+    for (int i = 0;  i < syncObstaclesDeletedNodeIdentifiers.count; i++)
+    {
+        if ([syncObstaclesDeletedNodeIdentifiers[i] isEqualToString:[self.syncHelper syncIdentifierForNode:document]])
+        {
+            [syncObstableDeleted removeObjectAtIndex:i];
+            break;
+        }
+    }
 }
 
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -795,6 +834,7 @@
 - (void)sessionReceived:(NSNotification *)notification
 {
     UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
+    [self changeDefaultConfigurationForAccount:changedAccount];
     AlfrescoProfileConfig *selectedProfileForAccount = [AppConfigurationManager sharedManager].selectedProfile;
     [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
 }
