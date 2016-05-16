@@ -1233,6 +1233,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             NSString *analyticsLabel = nil;
             
+            if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
+            {
+                [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete withCompletionBlock:^(BOOL savedLocally) {
+                    // TODO:
+#warning should implement
+                }];
+            }
+            
             if ([nodeToDelete isKindOfClass:[AlfrescoDocument class]])
             {
                 analyticsLabel = ((AlfrescoDocument *)nodeToDelete).contentMimeType;
@@ -1976,10 +1984,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (permissionsForNodeToDelete.canDelete)
     {
         [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-            if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+            if(success)
             {
-                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-                [properLayout setSelectedIndexPathForSwipeToDelete:nil];
+                if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+                {
+                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
+                }
             }
         }];
     }
