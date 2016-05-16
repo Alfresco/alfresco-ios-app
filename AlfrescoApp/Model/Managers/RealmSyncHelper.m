@@ -126,7 +126,11 @@
     
     for (AlfrescoNode *node in nodes)
     {
-        [syncIdentifiers addObject:[self syncIdentifierForNode:node]];
+        NSString *syncIdentifier = [self syncIdentifierForNode:node];
+        if(syncIdentifier)
+        {
+            [syncIdentifiers addObject:syncIdentifier];
+        }
     }
     return syncIdentifiers;
 }

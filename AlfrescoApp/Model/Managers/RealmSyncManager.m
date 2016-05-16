@@ -231,6 +231,10 @@
     
     // copying to temporary location in order to rename the file to original name (sync uses node identifier as document name)
     NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:document.name];
+    if([self.fileManager fileExistsAtPath:temporaryPath])
+    {
+        [self.fileManager removeItemAtPath:temporaryPath error:nil];
+    }
     [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
     
     [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
