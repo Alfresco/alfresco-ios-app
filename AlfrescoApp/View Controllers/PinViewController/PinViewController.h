@@ -39,9 +39,12 @@ typedef void (^PinFlowCompletionBlock)(PinFlowCompletionStatus status);
 
 #define REMAINING_ATTEMPTS_MAX_VALUE 10
 
+extern NSString * const kShowKeyboardInPinScreenNotification;
+
 @interface PinViewController : UIViewController <UIKeyInput>
 
 + (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow completionBlock:(PinFlowCompletionBlock)completionBlock;
++ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow animatedDismiss:(BOOL)animatedDismiss completionBlock:(PinFlowCompletionBlock)completionBlock;
 - (PinFlow)pinFlow;
 
 @end

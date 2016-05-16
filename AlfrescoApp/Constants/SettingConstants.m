@@ -61,7 +61,6 @@ NSString * const kSettingsResetEntireAppIdentifier = @"SettingsResetEntireAppIde
 NSString * const kSettingsFullTextSearchIdentifier = @"SettingsFullTextSearchIdentifier";
 NSString * const kSettingsSendFeedbackIdentifier = @"SettingsSendFeedbackIdentifier";
 NSString * const kSettingsPasscodeLockIdentifier = @"SettingsPasscodeLockIdentifier";
-NSString * const kSettingsSecurityUsePasscodeLockIdentifier = @"SettingsSecurityUsePasscodeLockIdentifier";
 NSString * const kSettingsChangePasscodeIdentifier = @"SettingsChangePasscodeIdentifier";
 NSString * const kSettingsPasscodeTouchIDIdentifier = @"SettingsPasscodeTouchIDIdentifier";
 NSString * const kSettingsSendDiagnosticsEnable = @"SettingsDiagnosticsEnable";

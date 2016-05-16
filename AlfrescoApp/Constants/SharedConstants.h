@@ -33,3 +33,11 @@ extern NSString * const kAppConfigurationSitesKey;
 extern NSString * const kAppConfigurationTasksKey;
 extern NSString * const kAppConfigurationMyFilesKey;
 extern NSString * const kAppConfigurationSharedFilesKey;
+
+extern NSString * const kPinKey;
+extern NSString * const kRemainingAttemptsKey;
+
+extern NSString * const kSettingsSecurityUsePasscodeLockIdentifier;
+
+extern NSString * const kAlfrescoMobileGroup;
+extern NSString * const kShouldResetEntireAppKey;

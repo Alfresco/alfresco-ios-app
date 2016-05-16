@@ -19,11 +19,9 @@
 #import "PinViewController.h"
 #import "BulletView.h"
 #import "SettingConstants.h"
-#import "PreferenceManager.h"
 #import "PinBulletsView.h"
 #import "KeychainUtils.h"
-#import "SecurityManager.h"
-#import "FileHandlerManager.h"
+#import "SharedConstants.h"
 
 NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScreenNotification";
 
@@ -31,6 +29,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 @property (nonatomic) PinFlow pinFlow;
 @property (nonatomic, strong) PinFlowCompletionBlock completionBlock;
+@property (nonatomic) BOOL animatedDismiss;
 
 @end
 
@@ -56,9 +55,15 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 + (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow completionBlock:(PinFlowCompletionBlock)completionBlock
 {
+    return [PinViewController pinNavigationViewControllerWithFlow:pinFlow animatedDismiss:YES completionBlock:completionBlock];
+}
+
++ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow animatedDismiss:(BOOL)animatedDismiss completionBlock:(PinFlowCompletionBlock)completionBlock
+{
     PinViewController *pinViewController = [[PinViewController alloc] init];
     pinViewController.pinFlow = pinFlow;
     pinViewController.completionBlock = completionBlock;
+    pinViewController.animatedDismiss = animatedDismiss;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pinViewController];
     navigationController.navigationBar.translucent = NO;
@@ -279,7 +284,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             [_bulletsView shakeWithCompletionBlock:^{
                 if (_remainingAttempts == 0)
                 {
-                    [SecurityManager resetWithType:ResetTypeEntireApp];
+                    if (weakSelf.completionBlock)
+                    {
+                        weakSelf.completionBlock(PinFlowCompletionStatusReset);
+                    }
+
                     [weakSelf unsetPinAndDismiss];
                 }
                 else
@@ -314,8 +323,12 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             NSError *error;
             [KeychainUtils saveItem:_enteredPin forKey:kPinKey error:&error];
             
-            [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            if (self.completionBlock)
+            {
+                self.completionBlock(PinFlowCompletionStatusSuccess);
+            }
+
+            [self dismissViewControllerAnimated:self.animatedDismiss completion:nil];
         }
         else
         {
@@ -351,13 +364,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         // This will prevent hiding the keyboard in any other instance of PinViewController that may be underneath.
         [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
         
-        [self dismissViewControllerAnimated:YES completion:^{
+        [self dismissViewControllerAnimated:self.animatedDismiss completion:^{
             if (weakSelf.completionBlock)
             {
                 weakSelf.completionBlock(PinFlowCompletionStatusSuccess);
             }
-            
-            [[FileHandlerManager sharedManager] handleCachedPackage];
         }];
     }
     else
@@ -369,13 +380,12 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [SecurityManager resetWithType:ResetTypeEntireApp];
-                [weakSelf unsetPinAndDismiss];
-                
                 if (self.completionBlock)
                 {
                     self.completionBlock(PinFlowCompletionStatusReset);
                 }
+                
+                [weakSelf unsetPinAndDismiss];
             }
             else
             {
@@ -395,12 +405,12 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 - (void)validateSetFlow
 {
+    __weak typeof(self) weakSelf = self;
+    
     if (_step == 1)
     {
         _step ++;
         _shouldAllowPinEntry = NO;
-        
-        __weak typeof(self) weakSelf = self;
         
         // This delay allows the user to see the 4th bullet getting filled.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -417,8 +427,12 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
             [KeychainUtils saveItem:_enteredPin forKey:kPinKey error:&error];
             [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
             
-            [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:self.animatedDismiss completion:^{
+                if (weakSelf.completionBlock)
+                {
+                    weakSelf.completionBlock(PinFlowCompletionStatusSuccess);
+                }
+            }];
         }
         else
         {
@@ -444,6 +458,10 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     
     if ([_oldPin isEqualToString:pin])
     {
+        if (self.completionBlock)
+        {
+            self.completionBlock(PinFlowCompletionStatusSuccess);
+        }
         [self unsetPinAndDismiss];
     }
     else
@@ -457,7 +475,10 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [SecurityManager resetWithType:ResetTypeEntireApp];
+                if (weakSelf.completionBlock)
+                {
+                    weakSelf.completionBlock(PinFlowCompletionStatusReset);
+                }
                 [weakSelf unsetPinAndDismiss];
             }
             else
@@ -499,13 +520,11 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 - (void)unsetPinAndDismiss
 {
-    [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
-    
     NSError *error;
     [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
     [KeychainUtils deleteItemForKey:kPinKey error:&error];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:self.animatedDismiss completion:nil];
 }
 
 - (void)showNumberOfAttemptsRemaining
@@ -563,7 +582,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 - (void)setupConstraints
 {
-    if (IS_IPAD)
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
         UIInterfaceOrientation toOrientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
         _logoTopConstraint.constant = UIInterfaceOrientationIsPortrait(toOrientation) ? 140 : 40;
@@ -639,7 +658,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 {
     __weak typeof(self) weakSelf = self;
     
-    [self dismissViewControllerAnimated:YES completion:^{
+    [self dismissViewControllerAnimated:self.animatedDismiss completion:^{
         if (weakSelf.completionBlock)
         {
             weakSelf.completionBlock(PinFlowCompletionStatusCancel);

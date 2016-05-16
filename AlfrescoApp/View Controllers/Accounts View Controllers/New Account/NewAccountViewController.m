@@ -110,6 +110,10 @@ static NSInteger const kTagProfileCell = 3;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.allowsPullToRefresh = NO;
     [self constructTableCellsForAlfrescoServer];
+    
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setupDebugAccounts)];
+    tgr.numberOfTapsRequired = 2;
+    [self.navigationController.navigationBar addGestureRecognizer:tgr];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -690,6 +694,63 @@ static NSInteger const kTagProfileCell = 3;
     NSString *title = NSLocalizedString(@"main.menu.profile.selection.banner.title", @"Profile Changed Title");
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"main.menu.profile.selection.banner.message", @"Profile Changed"), selectedProfile.label];
     displayInformationMessageWithTitle(message, title);
+}
+
+#pragma mark - DEBUG
+
+- (NSArray *) accounts
+{
+    UserAccount *tsAccount = [UserAccount new];
+    tsAccount.username = @"aposmangiu";
+    tsAccount.password = @"hUCsSaw239@a";
+    tsAccount.serverAddress = @"ts.alfresco.com";
+    tsAccount.serverPort = @"";
+    tsAccount.accountDescription = @"TS - aposmangiu";
+    tsAccount.protocol = @"HTTPS";
+    
+    UserAccount *localAccount1 = [UserAccount new];
+    localAccount1.username = @"testUser";
+    localAccount1.password = @"test";
+    localAccount1.serverAddress = @"172.30.141.162";
+    localAccount1.serverPort = @"8080";
+    localAccount1.accountDescription = @"Local - testUser";
+    localAccount1.protocol = @"HTTP";
+    
+    UserAccount *localAccount2 = [UserAccount new];
+    localAccount2.username = @"aposmangiu";
+    localAccount2.password = @"test";
+    localAccount2.serverAddress = @"172.30.141.162";
+    localAccount2.serverPort = @"8080";
+    localAccount2.accountDescription = @"Local - aposmangiu";
+    localAccount2.protocol = @"HTTP";
+    
+    return @[tsAccount, localAccount1, localAccount2];
+}
+
+- (void) setupDebugAccounts
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose account to add" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    for (UserAccount *account in [self accounts])
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:account.accountDescription
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action)
+                                 {
+                                     self.usernameTextField.text = account.username;
+                                     self.passwordTextField.text = account.password;
+                                     self.serverAddressTextField.text = account.serverAddress;
+                                     self.portTextField.text = account.serverPort;
+                                     self.descriptionTextField.text = account.accountDescription;
+                                     self.protocolSwitch.on = [account.protocol isEqualToString:@"HTTPS"];
+                                     self.saveButton.enabled = YES;
+                                     
+                                     [alertController dismissViewControllerAnimated:YES completion:nil];
+                                 }];
+        
+        [alertController addAction:action];
+    }
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

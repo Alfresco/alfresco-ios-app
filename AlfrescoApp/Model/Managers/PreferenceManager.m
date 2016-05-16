@@ -18,8 +18,7 @@
  
 #import "PreferenceManager.h"
 #import "SettingConstants.h"
-#import "AppConfigurationManager.h"
-#import "SecurityManager.h"
+#import "SharedConstants.h"
 
 static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
@@ -73,19 +72,13 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 - (BOOL)isSendDiagnosticsEnable
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    return [defaults boolForKey:kSettingsSendDiagnosticsEnable];
 }
 
 - (BOOL)shouldUsePasscodeLock
 {
     return [[self preferenceForIdentifier:kSettingsSecurityUsePasscodeLockIdentifier] boolValue];
-}
-
-- (BOOL)shouldUseTouchID
-{
-    BOOL isTouchIDAvailable = [SecurityManager isTouchIDAvailable];
-    BOOL isTouchIDSwitchOn = [[self preferenceForIdentifier:kSettingsPasscodeTouchIDIdentifier] boolValue];
-    return isTouchIDAvailable && isTouchIDSwitchOn;
 }
 
 - (id)preferenceForIdentifier:(NSString *)preferenceIdentifier
@@ -128,7 +121,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 - (void)loadPreferences
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
     NSMutableDictionary *savedPreferenceData = [defaults valueForKey:kPreferenceKey];
     
     self.preferences = savedPreferenceData ?: [NSMutableDictionary dictionary];
@@ -172,7 +165,7 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 
 - (void)savePreferences
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
     [defaults setObject:self.preferences forKey:kPreferenceKey];
     [defaults synchronize];
 }
