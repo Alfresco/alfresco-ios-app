@@ -35,6 +35,7 @@ Realm::Config::Config(const Config& c)
 , encryption_key(c.encryption_key)
 , schema_version(c.schema_version)
 , migration_function(c.migration_function)
+, delete_realm_if_migration_needed(c.delete_realm_if_migration_needed)
 , read_only(c.read_only)
 , in_memory(c.in_memory)
 , cache(c.cache)
@@ -135,7 +136,7 @@ void Realm::init(std::shared_ptr<RealmCoordinator> coordinator)
         if (target_schema) {
             if (m_config.read_only) {
                 if (m_config.schema_version == ObjectStore::NotVersioned) {
-                    throw UnitializedRealmException("Can't open an un-initialized Realm without a Schema");
+                    throw UninitializedRealmException("Can't open an un-initialized Realm without a Schema");
                 }
                 target_schema->validate();
                 ObjectStore::verify_schema(*m_config.schema, *target_schema, true);

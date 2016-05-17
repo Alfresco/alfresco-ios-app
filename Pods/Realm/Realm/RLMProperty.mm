@@ -94,7 +94,12 @@ static bool rawTypeIsComputedProperty(NSString *rawType) {
     }
 }
 
--(void)updateAccessors {
+- (void)setName:(NSString *)name {
+    _name = name;
+    [self updateAccessors];
+}
+
+- (void)updateAccessors {
     // populate getter/setter names if generic
     if (!_getterName) {
         _getterName = _name;
@@ -316,6 +321,7 @@ static bool rawTypeIsComputedProperty(NSString *rawType) {
 
 - (instancetype)initSwiftPropertyWithName:(NSString *)name
                                   indexed:(BOOL)indexed
+                   linkPropertyDescriptor:(RLMPropertyDescriptor *)linkPropertyDescriptor
                                  property:(objc_property_t)property
                                  instance:(RLMObject *)obj {
     self = [super init];
@@ -325,6 +331,11 @@ static bool rawTypeIsComputedProperty(NSString *rawType) {
 
     _name = name;
     _indexed = indexed;
+
+    if (linkPropertyDescriptor) {
+        _objectClassName = [linkPropertyDescriptor.objectClass className];
+        _linkOriginPropertyName = linkPropertyDescriptor.propertyName;
+    }
 
     if ([self parseObjcProperty:property]) {
         return nil;
@@ -407,7 +418,7 @@ static bool rawTypeIsComputedProperty(NSString *rawType) {
     _indexed = indexed;
 
     if (linkPropertyDescriptor) {
-        _objectClassName = NSStringFromClass(linkPropertyDescriptor.objectClass);
+        _objectClassName = [linkPropertyDescriptor.objectClass className];
         _linkOriginPropertyName = linkPropertyDescriptor.propertyName;
     }
 
@@ -512,6 +523,12 @@ static bool rawTypeIsComputedProperty(NSString *rawType) {
     prop->_declarationIndex = _declarationIndex;
     prop->_linkOriginPropertyName = _linkOriginPropertyName;
 
+    return prop;
+}
+
+- (RLMProperty *)copyWithNewName:(NSString *)name {
+    RLMProperty *prop = [self copy];
+    prop.name = name;
     return prop;
 }
 
