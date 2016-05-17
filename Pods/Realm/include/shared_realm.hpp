@@ -57,6 +57,7 @@ namespace realm {
             uint64_t schema_version;
 
             MigrationFunction migration_function;
+            bool delete_realm_if_migration_needed = false;
 
             bool read_only = false;
             bool in_memory = false;
@@ -223,9 +224,9 @@ namespace realm {
         IncorrectThreadException() : std::runtime_error("Realm accessed from incorrect thread.") {}
     };
 
-    class UnitializedRealmException : public std::runtime_error {
+    class UninitializedRealmException : public std::runtime_error {
     public:
-        UnitializedRealmException(std::string message) : std::runtime_error(message) {}
+        UninitializedRealmException(std::string message) : std::runtime_error(message) {}
     };
 }
 
