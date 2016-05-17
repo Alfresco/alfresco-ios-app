@@ -324,6 +324,20 @@
             }
         }];
         [weakSelf presentViewController:navController animated:YES completion:nil];
+        
+        if ([TouchIDManager shouldUseTouchID])
+        {
+            [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
+                if (success)
+                {
+                    [navController dismissViewControllerAnimated:NO completion:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        reloadDataBlock(YES);
+                    });
+                }
+            }];
+        }
     }
     else
     {

@@ -26,6 +26,7 @@
 #import "UniversalDevice.h"
 #import "PinViewController.h"
 #import "PreferenceManager.h"
+#import "TouchIDManager.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -391,6 +392,20 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             }
         }];
         [self presentViewController:navController animated:YES completion:nil];
+        
+        if ([TouchIDManager shouldUseTouchID])
+        {
+            [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
+                if (success)
+                {
+                    [navController dismissViewControllerAnimated:NO completion:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        removeAccount();
+                    });
+                }
+            }];
+        }
     }
     else
     {
