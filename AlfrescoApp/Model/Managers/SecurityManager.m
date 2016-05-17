@@ -18,7 +18,6 @@
 
 #import "SecurityManager.h"
 #import "KeychainUtils.h"
-#import <LocalAuthentication/LocalAuthentication.h>
 #import "AppDelegate.h"
 #import "PinViewController.h"
 #import "PreferenceManager.h"
@@ -27,9 +26,7 @@
 #import "AccountManager.h"
 #import "CoreDataCacheHelper.h"
 #import "DownloadManager.h"
-
-NSString * const kPinKey = @"PinCodeKey";
-NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
+#import "TouchIDManager.h"
 
 #define BLANK_SCREEN_TAG 234
 #define FADE_ANIMATION_DURATION 0.2
@@ -71,12 +68,17 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 
 - (void)applicationWillEnterForegroundNotification:(NSNotification *)notification
 {
+    if ([self forceResetIfNecessary])
+    {
+        return;
+    }
+    
     if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
     {
         return;
     }
     
-    if ([[PreferenceManager sharedManager] shouldUseTouchID])
+    if ([TouchIDManager shouldUseTouchID])
     {
         [self evaluatePolicy];
     }
@@ -89,12 +91,17 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
 
 - (void)applicationDidFinishLaunchingNotification:(NSNotification *)notification
 {
+    if ([self forceResetIfNecessary])
+    {
+        return;
+    }
+    
     if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
     {
         return;
     }
     
-    if ([[PreferenceManager sharedManager] shouldUseTouchID])
+    if ([TouchIDManager shouldUseTouchID])
     {
         [self showBlankScreen:YES];
         [self evaluatePolicy];
@@ -193,6 +200,40 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     [confirmation show];
 }
 
+- (BOOL)forceResetIfNecessary
+{
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    BOOL shouldReset = [defaults boolForKey:kShouldResetEntireAppKey];
+    
+    if (shouldReset)
+    {
+        [defaults setBool:NO forKey:kShouldResetEntireAppKey];
+        [defaults synchronize];
+        
+        [SecurityManager resetWithType:ResetTypeEntireApp];
+        
+        UIViewController *topController = [UniversalDevice topPresentedViewController];
+        
+        if ([topController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *topNavigationController = (UINavigationController *)topController;
+            PinViewController *pvc = topNavigationController.viewControllers.firstObject;
+            
+            if ([pvc isKindOfClass:[PinViewController class]])
+            {
+                [topController dismissViewControllerAnimated:NO completion:nil];
+            }
+        }
+        
+        [self showBlankScreen:NO];
+        
+        [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+        [SecurityManager reset];
+    }
+    
+    return shouldReset;
+}
+
 #pragma mark -
 
 - (void)showPinScreenAnimated:(BOOL)animated
@@ -208,13 +249,30 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
         {
             if ([pvc pinFlow] == PinFlowEnter)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowKeyboardInPinScreenNotification" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
                 return;
             }
         }
     }
     
-    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter completionBlock:nil];
+    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter completionBlock:^(PinFlowCompletionStatus status){
+        switch (status)
+        {
+            case PinFlowCompletionStatusSuccess:
+            {
+                [[FileHandlerManager sharedManager] handleCachedPackage];
+            }
+                break;
+            case PinFlowCompletionStatusReset:
+            {
+                [SecurityManager resetWithType:ResetTypeEntireApp];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
     [topController presentViewController:navController animated:animated completion:nil];
 }
 
@@ -251,45 +309,24 @@ NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
     }
 }
 
-+ (BOOL)isTouchIDAvailable
-{
-    LAContext *context = [[LAContext alloc] init];
-    NSError *error;
-    
-    // test if we can evaluate the policy, this test will tell us if Touch ID is available and enrolled
-    BOOL success = [context canEvaluatePolicy: LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
-    
-    NSString *message = success ? @"Touch ID is available." : [NSString stringWithFormat:@"Touch ID is not available. Error: %@", error.localizedDescription];
-    AlfrescoLogDebug(@"%@", message);
-    
-    return success;
-}
-
 - (void)evaluatePolicy
 {
-    LAContext *context = [[LAContext alloc] init];
-    context.localizedFallbackTitle = @"";
-    
-    // Show the authentication UI with the localized reason string.
-    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-            localizedReason:NSLocalizedString(@"settings.security.passcode.touch.id.description", @"Allow your fingerprint to unlock the Alfresco app.")
-                      reply:^(BOOL success, NSError *authenticationError)
-     {
-         if (success)
-         {
-             [self showBlankScreen:NO];
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowKeyboardInPinScreenNotification" object:nil];
-             
-             [[FileHandlerManager sharedManager] handleCachedPackage];
-         }
-         else
-         {
-             AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
-             
-             [self showPinScreenAnimated:NO];
-             [self showBlankScreen:NO];
-         }
-     }];
+    [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
+        if (success)
+        {
+            [self showBlankScreen:NO];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
+            
+            [[FileHandlerManager sharedManager] handleCachedPackage];
+        }
+        else
+        {
+            AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
+            
+            [self showPinScreenAnimated:NO];
+            [self showBlankScreen:NO];
+        }
+    }];
 }
 
 @end

@@ -18,9 +18,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kPinKey;
-extern NSString * const kRemainingAttemptsKey;
-
 typedef NS_ENUM(NSUInteger, ResetType)
 {
     ResetTypeAccounts,
@@ -30,7 +27,6 @@ typedef NS_ENUM(NSUInteger, ResetType)
 @interface SecurityManager : NSObject
 
 + (instancetype)sharedManager;
-+ (BOOL)isTouchIDAvailable;
 
 + (void)reset;
 + (void)resetWithType:(ResetType)resetType;

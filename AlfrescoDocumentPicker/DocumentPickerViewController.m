@@ -32,6 +32,8 @@
 #import <Google/Analytics.h>
 #import "AnalyticsConstants.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "PinViewController.h"
+#import "TouchIDManager.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -45,6 +47,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                             AKFavoritesListViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *containingView;
+@property (weak, nonatomic) IBOutlet UIView *appResetedView;
+@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) id<AKUserAccount> account;
 @property (nonatomic, strong) UINavigationController *embeddedNavigationController;
@@ -74,6 +78,65 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userAccountViewController];
     self.embeddedNavigationController = navigationController;
     [self setRootEmbeddedController:navigationController];
+    
+    [self setupSecurityMechanism];
+}
+
+- (void) setupSecurityMechanism
+{
+    self.infoLabel.text = NSLocalizedString(@"document.picker.scope.enter.main.app", @"Please enter the main Alfresco application before using this extension.");
+    
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    BOOL shouldResetEntireApp = [defaults boolForKey:kShouldResetEntireAppKey];
+    
+    if (shouldResetEntireApp)
+    {
+        self.appResetedView.hidden = NO;
+    }
+    else
+    {
+        self.appResetedView.hidden = YES;
+        
+        NSError *error;
+        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+        
+        BOOL isPasscodeSet = (pin != nil);
+        
+        if (isPasscodeSet)
+        {
+            [self presentSecurityMechanism];
+        }
+    }
+}
+
+- (void)presentSecurityMechanism
+{
+    UINavigationController *navC = [PinViewController pinNavigationViewControllerWithFlow:PinFlowVerify animatedDismiss:NO completionBlock:^(PinFlowCompletionStatus status){
+                                        if (status == PinFlowCompletionStatusReset)
+                                        {
+                                            NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+                                            [defaults setBool:YES forKey:kShouldResetEntireAppKey];
+                                            [defaults synchronize];
+                                            
+                                            self.appResetedView.hidden = NO;
+                                        }
+                                        else if (status == PinFlowCompletionStatusCancel)
+                                        {
+                                            [self dismissGrantingAccessToURL:nil];
+                                        }
+                                    }];
+    
+    [self presentViewController:navC animated:NO completion:nil];
+    
+    if ([TouchIDManager shouldUseTouchID])
+    {
+        [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
+            if (success)
+            {
+                [navC dismissViewControllerAnimated:NO completion:nil];
+            }
+        }];
+    }
 }
 
 #pragma mark - Custom Getters and Setters

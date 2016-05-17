@@ -33,3 +33,11 @@ NSString * const kAppConfigurationSitesKey = @"com.alfresco.sites";
 NSString * const kAppConfigurationTasksKey = @"com.alfresco.tasks";
 NSString * const kAppConfigurationMyFilesKey = @"com.alfresco.repository.userhome";
 NSString * const kAppConfigurationSharedFilesKey = @"com.alfresco.repository.shared";
+
+NSString * const kPinKey = @"PinCodeKey";
+NSString * const kRemainingAttemptsKey = @"RemainingAttemptsKey";
+
+NSString * const kSettingsSecurityUsePasscodeLockIdentifier = @"SettingsSecurityUsePasscodeLockIdentifier";
+
+NSString * const kAlfrescoMobileGroup = @"group.com.alfresco.mobile";
+NSString * const kShouldResetEntireAppKey = @"ShouldResetEntireApp";

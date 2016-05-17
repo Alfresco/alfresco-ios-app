@@ -59,7 +59,6 @@ extern NSString * const kSettingsResetEntireAppIdentifier;
 extern NSString * const kSettingsFullTextSearchIdentifier;
 extern NSString * const kSettingsSendFeedbackIdentifier;
 extern NSString * const kSettingsPasscodeLockIdentifier;
-extern NSString * const kSettingsSecurityUsePasscodeLockIdentifier;
 extern NSString * const kSettingsChangePasscodeIdentifier;
 extern NSString * const kSettingsPasscodeTouchIDIdentifier;
 extern NSString * const kSettingsSendDiagnosticsEnable;

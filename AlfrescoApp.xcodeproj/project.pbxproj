@@ -81,13 +81,26 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		2311ADB11CE1E44E00F2E1AC /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
+		2311ADB61CE1E45400F2E1AC /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
+		2311ADB71CE1E7C300F2E1AC /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
+		2311ADB81CE1F0B000F2E1AC /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
+		2311ADB91CE1F0B400F2E1AC /* PinBulletsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B462DF1CA590AA009C13EB /* PinBulletsView.m */; };
+		2311ADBA1CE1F0B900F2E1AC /* PinBulletsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B462E51CA59917009C13EB /* PinBulletsView.xib */; };
+		2311ADC01CE1F80000F2E1AC /* PreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0417F42CA800C6A54F /* PreferenceManager.m */; };
+		2311ADC11CE1FB3300F2E1AC /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2744021F18AA83C400DF23DD /* Settings.bundle */; };
+		2311ADC21CE1FC0D00F2E1AC /* UserPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 738BE9561A962AA7006264E5 /* UserPreferences.plist */; };
 		231A0B4F1CABCCCD0029A10E /* SecurityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 231A0B4E1CABCCCD0029A10E /* SecurityManager.m */; };
+		2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */; };
+		2329C4941CE48C3B001AAB62 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
 		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
 		23B2B2A21CA1A4FD00A8196C /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
 		23B2B2A31CA1A4FD00A8196C /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
 		23B462E01CA590AA009C13EB /* PinBulletsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B462DF1CA590AA009C13EB /* PinBulletsView.m */; };
 		23B462E61CA59917009C13EB /* PinBulletsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B462E51CA59917009C13EB /* PinBulletsView.xib */; };
+		23BE84D61CE9C3B200FA5BCB /* TouchIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */; };
+		23BE84D71CE9C3B200FA5BCB /* TouchIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
@@ -955,6 +968,8 @@
 		23B462DE1CA590AA009C13EB /* PinBulletsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinBulletsView.h; sourceTree = "<group>"; };
 		23B462DF1CA590AA009C13EB /* PinBulletsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinBulletsView.m; sourceTree = "<group>"; };
 		23B462E51CA59917009C13EB /* PinBulletsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinBulletsView.xib; sourceTree = "<group>"; };
+		23BE84D41CE9C3B200FA5BCB /* TouchIDManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchIDManager.h; sourceTree = "<group>"; };
+		23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchIDManager.m; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
@@ -3495,6 +3510,8 @@
 				73B957DA17A6750E0099FB84 /* ThumbnailManager.m */,
 				231A0B4D1CABCCCD0029A10E /* SecurityManager.h */,
 				231A0B4E1CABCCCD0029A10E /* SecurityManager.m */,
+				23BE84D41CE9C3B200FA5BCB /* TouchIDManager.h */,
+				23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -4184,8 +4201,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2311ADBA1CE1F0B900F2E1AC /* PinBulletsView.xib in Resources */,
+				2311ADC21CE1FC0D00F2E1AC /* UserPreferences.plist in Resources */,
+				2311ADB11CE1E44E00F2E1AC /* PinViewController.xib in Resources */,
+				2329C4941CE48C3B001AAB62 /* alfrescoColourLogo@2x.png in Resources */,
 				735F95D61A711A2B00D8B81E /* DocumentPickerViewController.xib in Resources */,
 				27E0FE411B0A009F00CD6C5D /* Localizable.strings in Resources */,
+				2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */,
+				2311ADC11CE1FB3300F2E1AC /* Settings.bundle in Resources */,
 				735F95CF1A71038600D8B81E /* AlfrescoKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4687,15 +4710,21 @@
 			files = (
 				73CD5B0F1A729543000A5523 /* SharedConstants.m in Sources */,
 				73CD5B0B1A727D88000A5523 /* AppConfiguration.m in Sources */,
+				2311ADB71CE1E7C300F2E1AC /* SettingConstants.m in Sources */,
+				2311ADB91CE1F0B400F2E1AC /* PinBulletsView.m in Sources */,
 				73F14C201A8CDDF50042D91E /* NSFileManager+Extension.m in Sources */,
 				738B41011A71467A008F8784 /* UserAccount.m in Sources */,
+				2311ADB61CE1E45400F2E1AC /* PinViewController.m in Sources */,
 				73322D871A71439D000C1118 /* AccountCertificate.m in Sources */,
 				73697B911A979879009F10BA /* FileMetadata.m in Sources */,
+				2311ADB81CE1F0B000F2E1AC /* BulletView.m in Sources */,
 				734CC3F31A700808005D148E /* DocumentPickerViewController.m in Sources */,
 				735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */,
 				278658A41BB60280003B77AA /* CustomFolderService.m in Sources */,
 				73697B951A979895009F10BA /* PersistentQueueStore.m in Sources */,
 				23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */,
+				2311ADC01CE1F80000F2E1AC /* PreferenceManager.m in Sources */,
+				23BE84D71CE9C3B200FA5BCB /* TouchIDManager.m in Sources */,
 				738B41081A714872008F8784 /* UserAccountWrapper.m in Sources */,
 				734B87641A9F7A0F0093E702 /* Utilities.m in Sources */,
 				73B2679D1ADD581400310592 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
@@ -4950,6 +4979,7 @@
 				7333D2EC1B3AC5F300644913 /* ProfileSelectionViewController.m in Sources */,
 				7390B3711B03681E00E7191F /* AlfrescoRepositoryConfig.m in Sources */,
 				08E1EA2A18DB057900F9052F /* TasksCell.m in Sources */,
+				23BE84D61CE9C3B200FA5BCB /* TouchIDManager.m in Sources */,
 				08E1EA2C18DB057900F9052F /* TaskGroupItem.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */,

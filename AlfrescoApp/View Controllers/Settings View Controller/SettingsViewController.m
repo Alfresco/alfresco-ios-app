@@ -31,6 +31,7 @@
 #import "PinViewController.h"
 #import "UniversalDevice.h"
 #import "SecurityManager.h"
+#import "TouchIDManager.h"
 
 @interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
@@ -138,7 +139,7 @@
     else if (self.settingsType == SettingsTypePasscode)
     {
         BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
-        BOOL isTouchIDAvailable = [SecurityManager isTouchIDAvailable];
+        BOOL isTouchIDAvailable = [TouchIDManager isTouchIDAvailable];
         
         if (!shouldUsePasscodeLock || !isTouchIDAvailable)
         {
@@ -357,14 +358,63 @@
 {
     BOOL shouldUsePasscodeLock = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
     shouldUsePasscodeLock = !shouldUsePasscodeLock;
+    UINavigationController *pinNavigationViewController;
     
-    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:shouldUsePasscodeLock ? PinFlowSet : PinFlowUnset completionBlock:nil];
+    if (shouldUsePasscodeLock)
+    {
+        pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowSet completionBlock:^(PinFlowCompletionStatus status){
+            if (status == PinFlowCompletionStatusSuccess)
+            {
+                [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+            }
+        }];
+    }
+    else
+    {
+        pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowUnset completionBlock:^(PinFlowCompletionStatus status)
+        {
+            switch (status)
+            {
+                case PinFlowCompletionStatusSuccess:
+                {
+                    [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+                }
+                    break;
+                case PinFlowCompletionStatusReset:
+                {
+                    [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+                    [SecurityManager resetWithType:ResetTypeEntireApp];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }];
+    }
+    
     [self presentViewController:pinNavigationViewController animated:YES completion:nil];
 }
 
 - (void)changePasscodeHandler
 {
-    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange completionBlock:nil];
+    UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange completionBlock:^(PinFlowCompletionStatus status){
+        switch (status) {
+            case PinFlowCompletionStatusSuccess:
+            {
+                [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
+            }
+                break;
+            case PinFlowCompletionStatusReset:
+            {
+                [SecurityManager resetWithType:ResetTypeEntireApp];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
     [self presentViewController:pinNavigationViewController animated:YES completion:nil];
 }
 
