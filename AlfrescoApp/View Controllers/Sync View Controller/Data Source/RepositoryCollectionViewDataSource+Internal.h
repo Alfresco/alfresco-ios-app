@@ -22,5 +22,7 @@
 
 @property (nonatomic, strong) AlfrescoNode *parentNode;
 @property (nonatomic, strong) NSMutableArray *dataSourceCollection;
+@property (nonatomic, strong) NSMutableDictionary *nodePermissions;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 
 @end

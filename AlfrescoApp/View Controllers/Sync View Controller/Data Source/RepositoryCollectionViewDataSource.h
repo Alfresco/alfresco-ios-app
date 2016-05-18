@@ -25,10 +25,12 @@
 - (BaseCollectionViewFlowLayout *)currentSelectedLayout;
 - (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate;
 - (void)dataSourceHasChanged;
+- (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems;
+- (void)failedToDeleteItems:(NSError *)error;
 
 @end
 
-@interface RepositoryCollectionViewDataSource : NSObject <UICollectionViewDataSource, DataSourceInformationProtocol>
+@interface RepositoryCollectionViewDataSource : NSObject <UICollectionViewDataSource, DataSourceInformationProtocol, SwipeToDeleteDelegate>
 
 @property (nonatomic, weak) id<RepositoryCollectionViewDataSourceDelegate> delegate;
 @property (nonatomic, strong) id<AlfrescoSession> session;
