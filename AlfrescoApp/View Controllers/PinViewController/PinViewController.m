@@ -570,9 +570,18 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         _subtitleLabel.hidden = YES;
     }
     
-    if (self.pinFlow == PinFlowChange)
+    switch (self.pinFlow)
     {
-        _titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.old", @"Enter your old Alfresco passcode");
+        case PinFlowChange:
+            _titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.old", @"Enter your old Alfresco passcode");
+            break;
+            
+        case PinFlowSet:
+            _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeEnterString, @"Enter your Alfresco Passcode");
+            break;
+            
+        default:
+            break;
     }
     
     [self setupConstraints];
