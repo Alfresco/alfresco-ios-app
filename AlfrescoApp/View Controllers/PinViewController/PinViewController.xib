@@ -24,11 +24,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gLY-dL-iRs">
                     <rect key="frame" x="100" y="0.0" width="400" height="234"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your Alfresco Passcode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fE-e8-92b">
-                            <rect key="frame" x="20" y="114" width="360" height="25"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your Alfresco Passcode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="7fE-e8-92b">
+                            <rect key="frame" x="20" y="104" width="360" height="45"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="25" id="wIB-K0-fcw"/>
+                                <constraint firstAttribute="height" constant="45" id="wIB-K0-fcw"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -43,12 +43,12 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 attempt remaining." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="kWJ-nb-tEc">
-                            <rect key="frame" x="20" y="196" width="360" height="17"/>
+                            <rect key="frame" x="20" y="196" width="360" height="15"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="abP-KR-rln"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <variation key="default">
@@ -74,11 +74,11 @@
                         <constraint firstItem="Ads-q4-Ade" firstAttribute="centerX" secondItem="gLY-dL-iRs" secondAttribute="centerX" id="HUZ-uZ-dFd"/>
                         <constraint firstItem="2dh-dE-Gqd" firstAttribute="centerX" secondItem="gLY-dL-iRs" secondAttribute="centerX" id="Iyb-zN-icO"/>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="YJV-hJ-sI3"/>
-                        <constraint firstItem="7fE-e8-92b" firstAttribute="top" secondItem="Ads-q4-Ade" secondAttribute="bottom" constant="20" id="cRD-lc-uY5"/>
+                        <constraint firstItem="7fE-e8-92b" firstAttribute="top" secondItem="Ads-q4-Ade" secondAttribute="bottom" constant="10" id="cRD-lc-uY5"/>
                         <constraint firstItem="kWJ-nb-tEc" firstAttribute="top" secondItem="2dh-dE-Gqd" secondAttribute="bottom" constant="20" id="fJP-P4-VFy"/>
                         <constraint firstItem="Ads-q4-Ade" firstAttribute="top" secondItem="gLY-dL-iRs" secondAttribute="top" constant="20" id="qzk-FT-mUk"/>
                         <constraint firstItem="kWJ-nb-tEc" firstAttribute="leading" secondItem="gLY-dL-iRs" secondAttribute="leading" constant="20" id="r8K-cX-kIK"/>
-                        <constraint firstItem="2dh-dE-Gqd" firstAttribute="top" secondItem="7fE-e8-92b" secondAttribute="bottom" constant="20" id="wVw-z5-gfm"/>
+                        <constraint firstItem="2dh-dE-Gqd" firstAttribute="top" secondItem="7fE-e8-92b" secondAttribute="bottom" constant="10" id="wVw-z5-gfm"/>
                     </constraints>
                 </view>
             </subviews>
