@@ -63,17 +63,6 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     return self;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (self.autoselectDefaultMenuOption)
-    {
-        // select sites
-        [self selectMenuItemWithIdentifier:kSitesViewIdentifier fallbackIdentifier:kAlfrescoMainMenuItemAccountsIdentifier];
-    }
-}
-
 - (void)sessionUpdated:(NSNotification *)notification
 {
     id<AlfrescoSession> session = (id<AlfrescoSession>)notification.object;
