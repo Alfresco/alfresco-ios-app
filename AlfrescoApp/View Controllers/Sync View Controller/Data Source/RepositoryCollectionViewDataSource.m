@@ -18,6 +18,7 @@
 
 #import "RepositoryCollectionViewDataSource+Internal.h"
 #import "FileFolderCollectionViewCell.h"
+#import "BaseCollectionViewFlowLayout.h"
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "RealmSyncManager.h"
@@ -33,6 +34,12 @@
     }
     
     return self;
+}
+
+- (void)setSession:(id<AlfrescoSession>)session
+{
+    _session = session;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:_session];
 }
 
 #pragma mark - UICollectionViewDataSource methods
@@ -138,6 +145,133 @@
 - (NSInteger)numberOfNodesInCollection
 {
     return self.dataSourceCollection.count;
+}
+
+#pragma mark - SwipeToDeleteDelegate methods
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
+    AlfrescoPermissions *permissionsForNodeToDelete = [[RealmSyncManager sharedManager] permissionsForSyncNode:nodeToDelete];
+    
+    if (permissionsForNodeToDelete.canDelete)
+    {
+        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+            if(success)
+            {
+                if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+                {
+                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
+                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
+                }
+            }
+        }];
+    }
+}
+
+#pragma mark - Private methods
+- (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
+{
+    __weak typeof(self) weakSelf = self;
+    [self.documentService deleteNode:nodeToDelete completionBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded)
+        {
+            if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
+            {
+                [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete withCompletionBlock:^(BOOL savedLocally) {
+#warning should implement
+                }];
+            }
+            
+            NSString *analyticsLabel = nil;
+            if ([nodeToDelete isKindOfClass:[AlfrescoDocument class]])
+            {
+                analyticsLabel = ((AlfrescoDocument *)nodeToDelete).contentMimeType;
+            }
+            else if ([nodeToDelete isKindOfClass:[AlfrescoFolder class]])
+            {
+                analyticsLabel = kAnalyticsEventLabelFolder;
+            }
+            
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionDelete
+                                                               label:analyticsLabel
+                                                               value:@1];
+            
+            NSArray *collectionViewNodeIdentifiers = nil;
+            NSIndexPath *indexPathForNode = nil;
+            // remove nodeToDelete from collection view
+            collectionViewNodeIdentifiers = [weakSelf.dataSourceCollection valueForKeyPath:@"identifier"];
+            [weakSelf.dataSourceCollection removeObject:nodeToDelete];
+            
+            indexPathForNode = [self indexPathForNodeWithIdentifier:nodeToDelete.identifier inNodeIdentifiers:collectionViewNodeIdentifiers];
+            if (indexPathForNode != nil)
+            {
+                [weakSelf.delegate didDeleteItems:[NSArray arrayWithObject:nodeToDelete] atIndexPaths:[NSArray arrayWithObject:indexPathForNode]];
+            }
+        }
+        else
+        {
+            [weakSelf.delegate failedToDeleteItems:error];
+        }
+        
+        if (completionBlock != NULL)
+        {
+            completionBlock(succeeded);
+        }
+    }];
+}
+
+- (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers
+{
+    NSIndexPath *indexPath = nil;
+    
+    if (identifier != nil)
+    {
+        BOOL (^matchesAlfrescoNodeIdentifier)(NSString *, NSUInteger, BOOL *) = ^(NSString *nodeIdentifier, NSUInteger idx, BOOL *stop)
+        {
+            BOOL matched = NO;
+            
+            if ([nodeIdentifier isKindOfClass:[NSString class]] && [identifier hasPrefix:nodeIdentifier])
+            {
+                matched = YES;
+                *stop = YES;
+            }
+            return matched;
+        };
+        
+        // See if there's a matching node identifier in tableview node identifiers, using the block defined above
+        
+        NSUInteger matchingIndex = NSNotFound;
+        NSUInteger inSection = 0;
+        
+        for (int i = 0; i < collectionViewNodeIdentifiers.count; i++)
+        {
+            id item = collectionViewNodeIdentifiers[i];
+            
+            if ([item isKindOfClass:[NSArray class]] || [item isKindOfClass:[NSMutableArray class]])
+            {
+                matchingIndex = [item indexOfObjectPassingTest:matchesAlfrescoNodeIdentifier];
+                
+                if (matchingIndex != NSNotFound)
+                {
+                    inSection = i;
+                    break;
+                }
+            }
+            else
+            {
+                matchingIndex = [collectionViewNodeIdentifiers indexOfObjectPassingTest:matchesAlfrescoNodeIdentifier];
+                break;
+            }
+        }
+        
+        if (matchingIndex != NSNotFound)
+        {
+            indexPath = [NSIndexPath indexPathForRow:matchingIndex inSection:inSection];
+        }
+    }
+    
+    return indexPath;
 }
 
 @end
