@@ -807,6 +807,7 @@
 
 "configuration.manager.configuration.file.updated.title" = "設定が更新されました";
 "configuration.manager.configuration.file.updated.message" = "設定ファイルが更新されました";
+"configuration.manager.configuration.file.error.parse.message" = "The configuration file couldn’t be loaded.";
 
 /**
  * Main Menu Rorder View Controller

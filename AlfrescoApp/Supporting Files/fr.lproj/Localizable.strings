@@ -807,6 +807,7 @@
 
 "configuration.manager.configuration.file.updated.title" = "Configuration mise à jour";
 "configuration.manager.configuration.file.updated.message" = "Le fichier de configuration a été mis à jour";
+"configuration.manager.configuration.file.error.parse.message" = "The configuration file couldn’t be loaded.";
 
 /**
  * Main Menu Rorder View Controller

@@ -49,3 +49,4 @@ extern NSString * const kAlfrescoConfigScopeContextNode;
 extern NSString * const kAlfrescoConfigScopeContextFormMode;
 
 extern NSString * const kAlfrescoConfigNewConfigRetrievedFromServerNotification;
+extern NSString * const kAlfrescoConfigBadConfigRetrievedFromServerNotification;

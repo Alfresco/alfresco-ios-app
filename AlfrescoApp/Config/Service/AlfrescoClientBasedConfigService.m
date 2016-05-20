@@ -239,6 +239,10 @@
                                                 {
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
                                                 }
+                                                else
+                                                {
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigBadConfigRetrievedFromServerNotification object:error];
+                                                }
                                                 runAllCompletionBlocks(succeeded, error);
                                             }];
                                         }
