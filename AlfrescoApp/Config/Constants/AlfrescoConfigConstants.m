@@ -32,3 +32,4 @@ NSString * const kAlfrescoConfigScopeContextNode = @"org.alfresco.mobile.config.
 NSString * const kAlfrescoConfigScopeContextFormMode = @"org.alfresco.mobile.config.scope.context.form.mode";
 
 NSString * const kAlfrescoConfigNewConfigRetrievedFromServerNotification = @"AlfrescoConfigNewConfigRetrievedFromServerNotification";
+NSString * const kAlfrescoConfigBadConfigRetrievedFromServerNotification = @"AlfrescoConfigBadConfigRetrievedFromServerNotification";

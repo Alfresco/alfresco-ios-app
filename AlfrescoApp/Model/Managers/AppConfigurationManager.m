@@ -60,6 +60,7 @@ static dispatch_once_t onceToken;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountRemoved:) name:kAlfrescoAccountRemovedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noMoreAccounts:) name:kAlfrescoAccountsListEmptyNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationFileUpdatedFromServer:) name:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configurationFileUpdatedFromServer:) name:kAlfrescoConfigBadConfigRetrievedFromServerNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         
         [self setupConfigurationFileFromBundleIfRequiredWithCompletionBlock:^(NSString *configurationFilePath) {
@@ -422,7 +423,7 @@ static dispatch_once_t onceToken;
                         if (defaultServerProfileError)
                         {
                             AlfrescoLogWarning(@"Could not retrieve the default profile from server config: %@", defaultServerProfileError.localizedDescription);
-                            if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                            if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound || defaultServerProfileError.code == kAlfrescoErrorCodeJSONParsing)
                             {
                                 // something happened with the configuration as it is not found; will load the embedded configuration
                                 AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
@@ -496,11 +497,29 @@ static dispatch_once_t onceToken;
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:nil userInfo:nil];
 }
 
-- (void)configurationFileUpdatedFromServer:(NSNotificationCenter *)notification
+- (void)configurationFileUpdatedFromServer:(NSNotification *)notification
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        displayInformationMessageWithTitle(NSLocalizedString(@"configuration.manager.configuration.file.updated.title", @"Updated Message Text"), NSLocalizedString(@"configuration.manager.configuration.file.updated.message", @"Updated Title Text"));
-    });
+    if ([notification.name isEqualToString:kAlfrescoConfigBadConfigRetrievedFromServerNotification])
+    {
+        NSError *error = notification.object;
+        
+        if (error)
+        {
+            if(error.code == kAlfrescoErrorCodeJSONParsing)
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    NSString *parsingErrorString = NSLocalizedString(@"configuration.manager.configuration.file.error.parse.message", @"The configuration file couldn’t be loaded.");
+                    displayErrorMessage(parsingErrorString);
+                });
+            }
+        }
+    }
+    else
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            displayInformationMessageWithTitle(NSLocalizedString(@"configuration.manager.configuration.file.updated.title", @"Updated Message Text"), NSLocalizedString(@"configuration.manager.configuration.file.updated.message", @"Updated Title Text"));
+        });
+    }
 }
 
 - (void)selectedProfileDidChange:(NSNotification *)notification
