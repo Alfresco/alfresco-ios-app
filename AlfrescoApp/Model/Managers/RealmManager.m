@@ -157,4 +157,14 @@
     [realm commitWriteTransaction];
 }
 
+- (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm
+{
+    [realm beginWriteTransaction];
+    for(RLMObject *object in objectsToDelete)
+    {
+        [realm deleteObject:object];
+    }
+    [realm commitWriteTransaction];
+}
+
 @end
