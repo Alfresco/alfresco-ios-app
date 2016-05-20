@@ -205,23 +205,90 @@
 #pragma mark - Sync operations
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
-        SyncNodeStatus *syncNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
-        syncNodeStatus.totalSize = 0;
-        [self checkForObstaclesInRemovingDownloadForNode:node inRealm:backgroundRealm completionBlock:^(BOOL encounteredObstacle) {
-            if(encounteredObstacle)
+    if(node)
+    {
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+            NSMutableArray *arrayOfNodesToDelete = [NSMutableArray new];
+            NSMutableArray *arrayOfNodesToSaveLocally = [NSMutableArray new];
+            NSMutableArray *arrayOfPathsForFilesToBeDeleted = [NSMutableArray new];
+            
+            if(node.isDocument)
             {
-                [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node];
-                completionBlock(YES);
+                [weakSelf handleDocumentForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm];
             }
-            else
+            else if(node.isFolder)
             {
-                [self.syncHelper deleteNodeFromSync:node inRealm:backgroundRealm];
-                completionBlock(NO);
+                [weakSelf handleFolderForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm];
             }
-        }];
-    });
+            
+            BOOL hasSavedLocally = NO;
+            
+            if(arrayOfNodesToSaveLocally.count)
+            {
+                hasSavedLocally = YES;
+                for(AlfrescoDocument *document in arrayOfNodesToSaveLocally)
+                {
+                    [weakSelf saveDeletedFileBeforeRemovingFromSync:document];
+                }
+            }
+            
+            [[RealmManager sharedManager] deleteRealmObjects:arrayOfNodesToDelete inRealm:backgroundRealm];
+            for(NSString *path in arrayOfPathsForFilesToBeDeleted)
+            {
+                // No error handling here as we don't want to end up with Sync orphans
+                [weakSelf.fileManager removeItemAtPath:path error:nil];
+            }
+            
+            completionBlock(hasSavedLocally);
+        });
+    }
+}
+
+- (void)handleDocumentForDelete:(AlfrescoNode *)document arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm
+{
+    SyncNodeStatus *syncNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inSyncNodesStatus:self.syncNodesStatus];
+    syncNodeStatus.totalSize = 0;
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:realm];
+    if(nodeInfo)
+    {
+        [arrayToDelete addObject:nodeInfo];
+    }
+    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:document inRealm:realm];
+    if(isModifiedLocally)
+    {
+        [arrayToSave addObject:document];
+    }
+    
+    NSString *nodeSyncName = [self.syncHelper syncNameForNode:document inRealm:realm];
+    NSString *syncNodeContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier] stringByAppendingPathComponent:nodeSyncName];
+    if(syncNodeContentPath && nodeSyncName)
+    {
+        [arrayOfPaths addObject:syncNodeContentPath];
+    }
+}
+
+- (void)handleFolderForDelete:(AlfrescoNode *)folder arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *folderInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:realm];
+    if(folderInfo)
+    {
+        [arrayToDelete addObject:folderInfo];
+    }
+    RLMLinkingObjects *subNodes = folderInfo.nodes;
+    for(RealmSyncNodeInfo *subNodeInfo in subNodes)
+    {
+        AlfrescoNode *subNode = subNodeInfo.alfrescoNode;
+        if(subNode.isDocument)
+        {
+            [self handleDocumentForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm];
+        }
+        else if(subNode.isFolder)
+        {
+            [self handleFolderForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm];
+        }
+    }
 }
 
 - (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document

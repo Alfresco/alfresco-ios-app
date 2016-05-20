@@ -34,5 +34,6 @@
 
 - (RLMRealmConfiguration *)configForName:(NSString *)name;
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm;
+- (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm;
 
 @end

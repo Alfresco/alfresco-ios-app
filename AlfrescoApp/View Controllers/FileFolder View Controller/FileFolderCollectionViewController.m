@@ -1236,8 +1236,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
             {
                 [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete withCompletionBlock:^(BOOL savedLocally) {
-                    // TODO:
-#warning should implement
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSString *successMessage = @"";
+                        if (savedLocally)
+                        {
+                            successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), nodeToDelete.name];
+                        }
+                        else
+                        {
+                            successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), nodeToDelete.name];
+                        }
+                        displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                    });
                 }];
             }
             
