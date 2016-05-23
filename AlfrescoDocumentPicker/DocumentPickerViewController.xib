@@ -32,7 +32,7 @@
                                 <constraint firstAttribute="width" constant="200" id="V9o-7S-IXA"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter the main Alfresco application before using this extension." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeF-bs-R2V">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Please launch the Alfresco app before using this extension." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeF-bs-R2V">
                             <rect key="frame" x="160" y="270" width="280" height="61"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="280" id="cEd-qH-A6o"/>

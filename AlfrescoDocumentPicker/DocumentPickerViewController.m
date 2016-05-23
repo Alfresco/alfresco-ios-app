@@ -84,7 +84,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 - (void) setupSecurityMechanism
 {
-    self.infoLabel.text = NSLocalizedString(@"document.picker.scope.enter.main.app", @"Please enter the main Alfresco application before using this extension.");
+    self.infoLabel.text = NSLocalizedString(@"document.picker.scope.launch.main.app", @"Please launch the Alfresco app before using this extension.");
     
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
     BOOL shouldResetEntireApp = [defaults boolForKey:kShouldResetEntireAppKey];
