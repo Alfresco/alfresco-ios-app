@@ -59,7 +59,7 @@
 /*
  * Security
  */
-"document.picker.scope.enter.main.app" = "Please enter the main Alfresco application before using this extension.";
+"document.picker.scope.launch.main.app" = "Abra la aplicación de Alfresco antes de usar esta extensión.";
 "settings.security.passcode.touch.id.description" = "Permita que su huella digital desbloquee la aplicación Alfresco.";
 "settings.security.passcode.attempts.1" = "Queda 1 intento. Si este intento es fallido, Alfresco Mobile se reiniciará y los datos de su cuenta, ficheros sincronizados y ficheros locales se borrarán.";
 "settings.security.passcode.attempts.several" = "Quedan %d intentos";

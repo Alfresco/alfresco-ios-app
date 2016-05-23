@@ -59,7 +59,7 @@
 /*
  * Security
  */
-"document.picker.scope.enter.main.app" = "Please enter the main Alfresco application before using this extension.";
+"document.picker.scope.launch.main.app" = "在使用此扩展方式之前，请启动 Alfresco 应用程序。";
 "settings.security.passcode.touch.id.description" = "允许用您的指纹解锁 Alfresco 应用程序。";
 "settings.security.passcode.attempts.1" = "还有 1 次输入机会。 如果此次输入失败，Alfresco Mobile 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
 "settings.security.passcode.attempts.several" = "剩余 %d 次输入机会";
