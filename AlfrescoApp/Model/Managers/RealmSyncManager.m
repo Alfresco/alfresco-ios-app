@@ -378,7 +378,7 @@
                                                                                 syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
                                                                                 syncNodeInfo.lastDownloadedDate = [NSDate date];
                                                                                 syncNodeInfo.syncContentPath = destinationPath;
-                                                                                syncNodeInfo.reloadContent = [NSNumber numberWithBool:NO];
+                                                                                syncNodeInfo.reloadContent = NO;
                                                                                 
                                                                                 RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
                                                                                 [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
@@ -386,7 +386,7 @@
                                                                             else
                                                                             {
                                                                                 nodeStatus.status = SyncStatusFailed;
-                                                                                syncNodeInfo.reloadContent = [NSNumber numberWithBool:YES];
+                                                                                syncNodeInfo.reloadContent = YES;
                                                                                 
                                                                                 RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                                 
@@ -486,7 +486,7 @@
                                                                                 [backgroundRealm beginWriteTransaction];
                                                                                 nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:uploadedDocument];
                                                                                 nodeInfo.lastDownloadedDate = [NSDate date];
-                                                                                nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
+                                                                                nodeInfo.isRemovedFromSyncHasLocalChanges = NO;
                                                                                 [backgroundRealm commitWriteTransaction];
                                                                                 
                                                                                 RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
