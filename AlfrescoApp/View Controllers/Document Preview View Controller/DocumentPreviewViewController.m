@@ -57,6 +57,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [super viewDidLoad];
     
     self.title = self.document.name;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     // collection view
     [self actionViewHeightFromPreferredLanguage];
