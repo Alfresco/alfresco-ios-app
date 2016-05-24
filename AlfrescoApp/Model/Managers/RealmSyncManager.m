@@ -151,19 +151,6 @@
     [RLMRealmConfiguration setDefaultConfiguration:config];
 }
 
-// this parses a path to get the relative path to the Sync folder
-- (NSString *)relativeSyncPath:(NSString *)oldPath
-{
-    NSString *newPath = nil;
-    NSArray *array = [oldPath componentsSeparatedByString:[NSString stringWithFormat:@"%@/",kSyncFolder]];
-    if(array.count >= 2)
-    {
-        newPath = array[1];
-    }
-    
-    return newPath;
-}
-
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock
 {
     if([self isCurrentlySyncing])
@@ -750,6 +737,28 @@
     }
 }
 
+- (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path
+{
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            RLMRealm *backgroundRealm = [[RealmManager sharedManager] createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            if([weakSelf isNodeInSyncList:document])
+            {
+                RealmSyncNodeInfo *documentInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                [backgroundRealm beginWriteTransaction];
+                documentInfo.node = [NSKeyedArchiver archivedDataWithRootObject:updatedDocument];
+                documentInfo.lastDownloadedDate = [NSDate date];
+                [backgroundRealm commitWriteTransaction];
+                
+                [self.fileManager removeItemAtPath:[self contentPathForNode:document] error:nil];
+                [self.fileManager moveItemAtPath:path toPath:[self contentPathForNode:document] error:nil];
+            }
+        });
+    }
+}
+
 #pragma mark - Sync node information
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
@@ -854,14 +863,11 @@
 {
     RealmSyncNodeInfo *nodeInfo = [self.realmManager syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
     
-    //since this path was stored as a full path and not relative to the Documents folder, the following is necessary to get to the correct path for the node
     NSString *newNodePath = nil;
     if(nodeInfo)
     {
-        NSString *storedPath = nodeInfo.syncContentPath;
-        NSString *relativePath = [self relativeSyncPath:storedPath];
         NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
-        newNodePath = [syncDirectory stringByAppendingPathComponent:relativePath];
+        newNodePath = [syncDirectory stringByAppendingPathComponent:nodeInfo.syncContentPath];
     }
     
     return newNodePath;
