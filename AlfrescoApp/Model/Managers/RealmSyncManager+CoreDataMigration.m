@@ -126,7 +126,7 @@
             newSyncNodeInfo.node = coreDataSyncNodeInfo.node;
             newSyncNodeInfo.permissions = coreDataSyncNodeInfo.permissions;
             newSyncNodeInfo.reloadContent = coreDataSyncNodeInfo.reloadContent.boolValue;
-            newSyncNodeInfo.syncContentPath = coreDataSyncNodeInfo.syncContentPath;
+            newSyncNodeInfo.syncContentPath = [self relativeSyncPath:coreDataSyncNodeInfo.syncContentPath];
             newSyncNodeInfo.syncNodeInfoId = coreDataSyncNodeInfo.syncNodeInfoId;
             newSyncNodeInfo.title = coreDataSyncNodeInfo.title;
             
@@ -189,6 +189,19 @@
     [privateContext performBlockAndWait:^{
         [privateContext executeRequest:delete error:&deleteError];
     }];
+}
+
+// this parses a path to get the relative path to the Sync folder
+- (NSString *)relativeSyncPath:(NSString *)oldPath
+{
+    NSString *newPath = nil;
+    NSArray *array = [oldPath componentsSeparatedByString:[NSString stringWithFormat:@"%@/",kSyncFolder]];
+    if(array.count >= 2)
+    {
+        newPath = array[1];
+    }
+    
+    return newPath;
 }
 
 @end

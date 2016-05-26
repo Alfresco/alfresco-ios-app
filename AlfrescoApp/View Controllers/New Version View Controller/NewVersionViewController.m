@@ -21,6 +21,7 @@
 #import "NewVersionToggleCell.h"
 #import "NewVersionTextViewCell.h"
 #import "DownloadsViewController.h"
+#import "RealmSyncManager.h"
 
 @interface NewVersionViewController () <DownloadsPickerDelegate>
 
@@ -176,6 +177,8 @@
                                                                        value:@1
                                                                 customMetric:AnalyticsMetricFileSize
                                                                  metricValue:@(self.document.contentLength)];
+                    
+                    [[RealmSyncManager sharedManager] didUploadNewVersionForDocument:checkoutDocument updatedDocument:updatedDocument fromPath:self.filePathToUploadDocument];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentUpdatedOnServerNotification object:updatedDocument userInfo:@{kAlfrescoDocumentUpdatedFromDocumentParameterKey : self.document}];
