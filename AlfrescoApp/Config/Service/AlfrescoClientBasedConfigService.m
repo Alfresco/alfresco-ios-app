@@ -271,7 +271,7 @@
                     }
                     else
                     {
-                        runAllCompletionBlocks(NO, applicationDirectoryError);
+                        runAllCompletionBlocks(NO, [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeRequestedNodeNotFound]);
                     }
                 }
             }];
