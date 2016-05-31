@@ -213,7 +213,8 @@
                                 // Only initiate the download if required
                                 if (![attributes.fileModificationDate isEqualToDate:configNode.modifiedAt])
                                 {
-                                    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:completeFileConfigPath append:NO];
+                                    NSString *temporaryFileConfigPath = [configDestinationFolderPath stringByAppendingPathComponent:kAlfrescoConfigServiceTemporaryFileName];
+                                    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:temporaryFileConfigPath append:NO];
                                     
                                     AlfrescoRequest *contentRequest = [docFolderService retrieveContentOfDocument:(AlfrescoDocument *)configNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *downloadError) {
                                         if (succeeded)
@@ -225,7 +226,7 @@
                                             
                                             NSError *updateAttributesError = nil;
                                             NSDictionary *updatedAttributes = @{NSFileModificationDate : configNode.modifiedAt};
-                                            [[NSFileManager defaultManager] setAttributes:updatedAttributes ofItemAtPath:completeFileConfigPath error:&updateAttributesError];
+                                            [[NSFileManager defaultManager] setAttributes:updatedAttributes ofItemAtPath:temporaryFileConfigPath error:&updateAttributesError];
                                             
                                             if (updateAttributesError)
                                             {
@@ -233,17 +234,49 @@
                                             }
                                             
                                             // process the JSON
-                                            [self processJSONData:[NSData dataWithContentsOfFile:completeFileConfigPath] completionBlock:^(BOOL succeeded, NSError *error) {
+                                            [self processJSONData:[NSData dataWithContentsOfFile:temporaryFileConfigPath] completionBlock:^(BOOL succeeded, NSError *error) {
                                                 // Notify processing is complete
                                                 if (succeeded)
                                                 {
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
+                                                    // delete old config file
+                                                    if ([[AlfrescoFileManager sharedManager] fileExistsAtPath:completeFileConfigPath])
+                                                    {
+                                                        NSError *deleteError;
+                                                        [[AlfrescoFileManager sharedManager] removeItemAtPath:completeFileConfigPath error:&deleteError];
+                                                    }
+                                                    
+                                                    // copy temp config file to it's final path
+                                                    NSError *copyError;
+                                                    [[AlfrescoFileManager sharedManager] copyItemAtPath:temporaryFileConfigPath toPath:completeFileConfigPath error:&copyError];
+                                                    
+                                                    // remove temp config file
+                                                    if (copyError == nil)
+                                                    {
+                                                        NSError *deleteError;
+                                                        [[AlfrescoFileManager sharedManager] removeItemAtPath:temporaryFileConfigPath error:&deleteError];
+                                                        
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigNewConfigRetrievedFromServerNotification object:nil];
+                                                    }
+                                                    
+                                                    runAllCompletionBlocks(succeeded, error);
                                                 }
                                                 else
                                                 {
+                                                    // remove temp config file
+                                                    NSError *deleteError;
+                                                    [[AlfrescoFileManager sharedManager] removeItemAtPath:temporaryFileConfigPath error:&deleteError];
+                                                    
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigBadConfigRetrievedFromServerNotification object:error];
+                                                    
+                                                    if ([[AlfrescoFileManager sharedManager] fileExistsAtPath:completeFileConfigPath])
+                                                    {
+                                                        runAllCompletionBlocks(YES, nil);
+                                                    }
+                                                    else
+                                                    {
+                                                        runAllCompletionBlocks(NO, error);
+                                                    }
                                                 }
-                                                runAllCompletionBlocks(succeeded, error);
                                             }];
                                         }
                                         else
@@ -410,8 +443,8 @@
             if ([type isEqualToString:kAlfrescoConfigEvaluatorRepositoryCapability])
             {
                 evaluator = [[AlfrescoRepositoryCapabilitiesEvaluator alloc] initWithIdentifier:evaluatorId
-                                                                                parameters:parameters
-                                                                                   session:self.session];
+                                                                                     parameters:parameters
+                                                                                        session:self.session];
             }
             else if ([type isEqualToString:kAlfrescoConfigEvaluatorNodeType])
             {
@@ -450,8 +483,8 @@
                            kAlfrescoConfigEvaluatorParameterMatchAll: @(NO)};
             
             evaluator = [[AlfrescoMatchEvaluator alloc] initWithIdentifier:evaluatorId
-                                                                   parameters:parameters
-                                                                      session:self.session];
+                                                                parameters:parameters
+                                                                   session:self.session];
         }
         else if (matchAll != nil)
         {
@@ -459,8 +492,8 @@
                            kAlfrescoConfigEvaluatorParameterMatchAll: @(YES)};
             
             evaluator = [[AlfrescoMatchEvaluator alloc] initWithIdentifier:evaluatorId
-                                                                   parameters:parameters
-                                                                      session:self.session];
+                                                                parameters:parameters
+                                                                   session:self.session];
         }
         
         // add the evaluator to the dictionary

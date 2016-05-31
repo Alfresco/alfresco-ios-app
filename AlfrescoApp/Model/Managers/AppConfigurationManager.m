@@ -31,6 +31,7 @@ static NSString * const kMainMenuConfigurationDefaultsKey = @"Configuration";
 @property (nonatomic, strong) AlfrescoConfigService *embeddedConfigService;
 @property (nonatomic, strong) AlfrescoConfigService *noAccountConfigService;
 @property (nonatomic, strong) NSString *currentConfigAccountIdentifier;
+@property (nonatomic) BOOL badConfigMessageDisplayed;
 @end
 
 @implementation AppConfigurationManager
@@ -276,6 +277,7 @@ static dispatch_once_t onceToken;
     }
     
     self.session = session;
+    self.badConfigMessageDisplayed = NO;
     
     if ([session isKindOfClass:[AlfrescoCloudSession class]] && self.currentConfigService == self.noAccountConfigService)
     {
@@ -289,7 +291,7 @@ static dispatch_once_t onceToken;
     {
         [self.currentConfigService clear];
     }
-
+    
     [self.currentConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         
         UserAccount *account = [AccountManager sharedManager].selectedAccount;
@@ -387,7 +389,7 @@ static dispatch_once_t onceToken;
                                 if (defaultServerProfileError)
                                 {
                                     AlfrescoLogWarning(@"Could not retrieve the default profile from server: %@", defaultServerProfileError.localizedDescription);
-                                    if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                                    if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound || defaultServerProfileError.code == kAlfrescoErrorCodeJSONParsing)
                                     {
                                         // something happened with the configuration as it is not found; will load the embedded configuration
                                         AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
@@ -507,10 +509,15 @@ static dispatch_once_t onceToken;
         {
             if(error.code == kAlfrescoErrorCodeJSONParsing)
             {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    NSString *parsingErrorString = NSLocalizedString(@"configuration.manager.configuration.file.error.parse.message", @"The configuration file couldn’t be loaded.");
-                    displayErrorMessage(parsingErrorString);
-                });
+                if (self.badConfigMessageDisplayed == NO)
+                {
+                    self.badConfigMessageDisplayed = YES;
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        NSString *parsingErrorString = NSLocalizedString(@"configuration.manager.configuration.file.error.parse.message", @"The configuration file couldn’t be loaded.");
+                        displayErrorMessage(parsingErrorString);
+                    });
+                }
             }
         }
     }

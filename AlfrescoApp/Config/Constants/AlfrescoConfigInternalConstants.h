@@ -65,6 +65,7 @@ extern NSString * const kAlfrescoConfigApplicationDirectoryCMISSearchQuery;
 extern NSString * const kAlfrescoConfigFolderPathToConfigFileRelativeToApplicationDirectory;
 
 extern NSString * const kAlfrescoConfigServiceDefaultFileName;
+extern NSString * const kAlfrescoConfigServiceTemporaryFileName;
 extern NSString * const kAlfrescoConfigProfileDefaultIdentifier;
 extern NSString * const kAlfrescoConfigProfileDefaultLabel;
 extern NSString * const kAlfrescoConfigFormTypePrefix;
