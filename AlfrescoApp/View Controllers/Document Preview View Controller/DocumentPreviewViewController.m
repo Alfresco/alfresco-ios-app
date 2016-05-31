@@ -406,6 +406,11 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     if (dragging)
     {
         [self.pagingSegmentControl setSelectedSegmentIndex:viewIndex];
+        
+        if(viewIndex != PagingScrollViewSegmentTypeComments)
+        {
+            [self shouldFocusComments:NO];
+        }
     }
     
     [self trackScreenNameForIndex:viewIndex];

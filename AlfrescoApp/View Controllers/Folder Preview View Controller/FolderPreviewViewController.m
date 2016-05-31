@@ -381,6 +381,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     if (dragging)
     {
         [self.segmentControl setSelectedSegmentIndex:viewIndex];
+        
+        if(viewIndex != PagingScrollViewSegmentFolderTypeComments)
+        {
+            [self shouldFocusComments:NO];
+        }
     }
 }
 
