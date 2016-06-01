@@ -77,7 +77,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         [self disablePullToRefresh];
     }
     
-    self.title = [self listTitle];
     [self adjustCollectionViewForProgressView:nil];
     
     UINib *cellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
@@ -155,32 +154,15 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                                  name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
-- (NSString *)listTitle
-{
-    NSString *title = @"";
-    
-    if (self.parentNode)
-    {
-        title = self.parentNode.name;
-    }
-    else
-    {
-        title = NSLocalizedString(@"sync.title", @"Sync Title");
-    }
-    
-    self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
-    return title;
-}
-
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
 {
-    self.dataSource = [[SyncCollectionViewDataSource alloc] initWithParentNode:self.parentNode];
-    self.dataSource.session = self.session;
-    self.dataSource.delegate = self;
+    self.dataSource = [[SyncCollectionViewDataSource alloc] initWithParentNode:self.parentNode session:self.session delegate:self];
     
     self.listLayout.dataSourceInfoDelegate = self.dataSource;
     self.gridLayout.dataSourceInfoDelegate = self.dataSource;
     self.collectionView.dataSource = self.dataSource;
+    
+    self.title = self.dataSource.screenTitle;
     
     [self reloadCollectionView];
     [self hidePullToRefreshView];
@@ -336,9 +318,14 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     return self;
 }
 
-- (void)dataSourceHasChanged
+- (void)dataSourceUpdated
 {
     [self reloadCollectionView];
+}
+
+- (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
+{
+#warning TODO
 }
 
 - (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems
@@ -511,7 +498,8 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     self.session = session;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     self.didSyncAfterSessionRefresh = NO;
-    self.title = [self listTitle];
+    self.dataSource.session = session;
+    self.title = self.dataSource.screenTitle;
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     // Hold off making sync network requests until either the Sites requests have completed, or a timeout period has passed

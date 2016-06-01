@@ -25,7 +25,7 @@
 
 @implementation RepositoryCollectionViewDataSource
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node
+- (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
 {
     self = [super init];
     if(!self)
@@ -33,13 +33,67 @@
         return nil;
     }
     
+    if(node)
+    {
+        self.parentNode = node;
+        self.screenTitle = node.name;
+    }
+    
+    self.session = session;
+    self.delegate = delegate;
+    
     return self;
 }
 
 - (void)setSession:(id<AlfrescoSession>)session
 {
-    _session = session;
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:_session];
+    if(session)
+    {
+        _session = session;
+        self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:_session];
+    }
+}
+
+#pragma mark - Reload methods
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
+{
+    [self reloadCollectionViewWithPagingResult:pagingResult data:nil error:error];
+}
+
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
+{
+    if (pagingResult)
+    {
+        self.dataSourceCollection = data ?: [pagingResult.objects mutableCopy];
+        self.moreItemsAvailable = pagingResult.hasMoreItems;
+        [self.delegate dataSourceUpdated];
+    }
+}
+
+#pragma mark - Permissions methods
+- (void)retrievePermissionsForNode:(AlfrescoNode *)node
+{
+    [self.documentService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+        if (!error)
+        {
+            [self.nodesPermissions setValue:permissions forKey:node.identifier];
+        }
+    }];
+}
+
+- (void)retrieveAndSetPermissionsOfCurrentFolder
+{
+    [self.documentService retrievePermissionsOfNode:self.parentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+        if (permissions)
+        {
+            self.parentFolderPermissions = permissions;
+            [self.delegate didRetrievePermissionsForParentNode];
+        }
+        else
+        {
+            [self.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission retrieval failed")];
+        }
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource methods

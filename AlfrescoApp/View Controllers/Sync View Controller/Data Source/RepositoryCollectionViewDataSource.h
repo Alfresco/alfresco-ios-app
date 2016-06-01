@@ -24,18 +24,26 @@
 
 - (BaseCollectionViewFlowLayout *)currentSelectedLayout;
 - (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate;
-- (void)dataSourceHasChanged;
+
+- (void)dataSourceUpdated;
+- (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat;
+
 - (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems;
 - (void)failedToDeleteItems:(NSError *)error;
 
+- (void)didRetrievePermissionsForParentNode;
 @end
 
 @interface RepositoryCollectionViewDataSource : NSObject <UICollectionViewDataSource, DataSourceInformationProtocol, SwipeToDeleteDelegate>
 
 @property (nonatomic, weak) id<RepositoryCollectionViewDataSourceDelegate> delegate;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) NSString *emptyMessage;
+@property (nonatomic, strong) NSString *screenTitle;
+@property (nonatomic, strong) NSString *errorTitle;
+@property (nonatomic, assign) BOOL moreItemsAvailable;
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node;
+- (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 - (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index;
 - (NSInteger)numberOfNodesInCollection;
 

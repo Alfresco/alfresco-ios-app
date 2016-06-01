@@ -18,17 +18,8 @@
 
 #import "RepositoryCollectionViewDataSource.h"
 
-@interface RepositoryCollectionViewDataSource ()
+@interface SitesCollectionViewDataSource : RepositoryCollectionViewDataSource
 
-@property (nonatomic, strong) AlfrescoNode *parentNode;
-@property (nonatomic, strong) NSMutableArray *dataSourceCollection;
-@property (nonatomic, strong) NSMutableDictionary *nodesPermissions;
-@property (nonatomic, strong) AlfrescoPermissions *parentFolderPermissions;
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
-
-- (void)retrievePermissionsForNode:(AlfrescoNode *)node;
-- (void)retrieveAndSetPermissionsOfCurrentFolder;
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
+- (instancetype)initWithSiteShortname:(NSString *)siteShortName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 
 @end
