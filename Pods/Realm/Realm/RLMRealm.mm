@@ -48,6 +48,7 @@ using namespace realm;
 using util::File;
 
 @interface RLMRealm ()
+@property (nonatomic, strong) NSHashTable *notificationHandlers;
 - (void)sendNotifications:(NSString *)notification;
 @end
 
@@ -63,10 +64,10 @@ void RLMDisableSyncToDisk() {
 
 @implementation RLMRealmNotificationToken
 - (void)stop {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [_realm removeNotification:self];
-#pragma clang diagnostic pop
+    [_realm verifyThread];
+    [_realm.notificationHandlers removeObject:self];
+    _realm = nil;
+    _block = nil;
 }
 
 - (void)dealloc {
@@ -102,7 +103,6 @@ NSData *RLMRealmValidatedEncryptionKey(NSData *key) {
 
 @implementation RLMRealm {
     NSHashTable *_collectionEnumerators;
-    NSHashTable *_notificationHandlers;
 }
 
 + (BOOL)isCoreDebug {
@@ -133,19 +133,11 @@ NSData *RLMRealmValidatedEncryptionKey(NSData *key) {
     return _realm->is_in_transaction();
 }
 
-- (NSString *)path {
-    return @(_realm->config().path.c_str());
-}
-
 - (realm::Group *)group {
     return _realm->read_group();
 }
 
-- (BOOL)isReadOnly {
-    return _realm->config().read_only;
-}
-
--(BOOL)autorefresh {
+- (BOOL)autorefresh {
     return _realm->auto_refresh();
 }
 
@@ -161,38 +153,11 @@ NSData *RLMRealmValidatedEncryptionKey(NSData *key) {
     return [RLMRealm realmWithConfiguration:[RLMRealmConfiguration rawDefaultConfiguration] error:nil];
 }
 
-+ (instancetype)realmWithPath:(NSString *)path {
-    return [RLMRealm realmWithURL:[NSURL fileURLWithPath:path]];
-}
-
 + (instancetype)realmWithURL:(NSURL *)fileURL {
     RLMRealmConfiguration *configuration = [RLMRealmConfiguration defaultConfiguration];
     configuration.fileURL = fileURL;
     return [RLMRealm realmWithConfiguration:configuration error:nil];
 }
-
-+ (instancetype)realmWithURL:(NSURL *)fileURL
-                         key:(NSData *)key
-                    readOnly:(BOOL)readonly
-                    inMemory:(BOOL)inMemory
-                     dynamic:(BOOL)dynamic
-                      schema:(RLMSchema *)customSchema
-                       error:(NSError **)outError
-{
-    RLMRealmConfiguration *configuration = [[RLMRealmConfiguration alloc] init];
-    if (inMemory) {
-        configuration.inMemoryIdentifier = fileURL.lastPathComponent;
-    }
-    else {
-        configuration.fileURL = fileURL;
-    }
-    configuration.encryptionKey = key;
-    configuration.readOnly = readonly;
-    configuration.dynamic = dynamic;
-    configuration.customSchema = customSchema;
-    return [RLMRealm realmWithConfiguration:configuration error:outError];
-}
-
 // ARC tries to eliminate calls to autorelease when the value is then immediately
 // returned, but this results in significantly different semantics between debug
 // and release builds for RLMRealm, so force it to always autorelease.
@@ -232,7 +197,7 @@ static void RLMRealmSetSchemaAndAlign(RLMRealm *realm, RLMSchema *targetSchema) 
     return RLMAutorelease(realm);
 }
 
-void RLMRealmTranslateException(NSError **error) {
+REALM_NOINLINE void RLMRealmTranslateException(NSError **error) {
     try {
         throw;
     }
@@ -478,15 +443,6 @@ void RLMRealmTranslateException(NSError **error) {
     return token;
 }
 
-- (void)removeNotification:(RLMNotificationToken *)token {
-    [self verifyThread];
-    if (auto realmToken = RLMDynamicCast<RLMRealmNotificationToken>(token)) {
-        [_notificationHandlers removeObject:token];
-        realmToken.realm = nil;
-        realmToken.block = nil;
-    }
-}
-
 - (void)sendNotifications:(NSString *)notification {
     NSAssert(!_realm->config().read_only, @"Read-only realms do not have notifications");
 
@@ -535,16 +491,8 @@ void RLMRealmTranslateException(NSError **error) {
         _realm->commit_transaction();
         return YES;
     }
-    catch (File::AccessError const& ex) {
-        RLMSetErrorOrThrow(RLMMakeError(RLMErrorFail, ex), outError);
-        return NO;
-    }
-    catch (AddressSpaceExhausted const &ex) {
-        RLMSetErrorOrThrow(RLMMakeError(RLMErrorAddressSpaceExhausted, ex), outError);
-        return NO;
-    }
-    catch (std::exception const& ex) {
-        RLMSetErrorOrThrow(RLMMakeError(RLMErrorFail, ex), outError);
+    catch (...) {
+        RLMRealmTranslateException(outError);
         return NO;
     }
 }
@@ -727,14 +675,6 @@ void RLMRealmTranslateException(NSError **error) {
     return RLMGetObject(self, className, primaryKey);
 }
 
-+ (uint64_t)schemaVersionAtPath:(NSString *)realmPath error:(NSError **)error {
-    return [RLMRealm schemaVersionAtURL:[NSURL fileURLWithPath:realmPath] encryptionKey:nil error:error];
-}
-
-+ (uint64_t)schemaVersionAtPath:(NSString *)realmPath encryptionKey:(NSData *)key error:(NSError **)error {
-    return [self schemaVersionAtURL:[NSURL fileURLWithPath:realmPath] encryptionKey:key error:error];
-}
-
 + (uint64_t)schemaVersionAtURL:(NSURL *)fileURL encryptionKey:(NSData *)key error:(NSError **)error {
     try {
         RLMRealmConfiguration *config = [[RLMRealmConfiguration alloc] init];
@@ -769,46 +709,21 @@ void RLMRealmTranslateException(NSError **error) {
     return (RLMObject *)RLMCreateObjectInRealmWithValue(self, className, value, false);
 }
 
-- (BOOL)writeCopyToPath:(NSString *)path error:(NSError **)error {
-    return [self writeCopyToURL:[NSURL fileURLWithPath:path] encryptionKey:nil error:error];
-}
-
-- (BOOL)writeCopyToPath:(NSString *)path encryptionKey:(NSData *)key error:(NSError **)error {
-    return [self writeCopyToURL:[NSURL fileURLWithPath:path] encryptionKey:key error:error];
-}
-
 - (BOOL)writeCopyToURL:(NSURL *)fileURL encryptionKey:(NSData *)key error:(NSError **)error {
     key = RLMRealmValidatedEncryptionKey(key);
     NSString *path = fileURL.path;
 
     try {
-        self.group->write(path.UTF8String, static_cast<const char *>(key.bytes));
+        _realm->write_copy(path.UTF8String, {static_cast<const char *>(key.bytes), key.length});
         return YES;
     }
-    catch (File::PermissionDenied &ex) {
-        if (error) {
-            *error = RLMMakeError(RLMErrorFilePermissionDenied, ex);
+    catch (...) {
+        __autoreleasing NSError *dummyError;
+        if (!error) {
+            error = &dummyError;
         }
-    }
-    catch (File::Exists &ex) {
-        if (error) {
-            *error = RLMMakeError(RLMErrorFileExists, ex);
-        }
-    }
-    catch (File::NotFound &ex) {
-        if (error) {
-            *error = RLMMakeError(RLMErrorFileNotFound, ex);
-        }
-    }
-    catch (File::AccessError &ex) {
-        if (error) {
-            *error = RLMMakeError(RLMErrorFileAccess, ex);
-        }
-    }
-    catch (std::exception &ex) {
-        if (error) {
-            *error = RLMMakeError(RLMErrorFail, ex);
-        }
+        RLMRealmTranslateException(error);
+        return NO;
     }
 
     return NO;

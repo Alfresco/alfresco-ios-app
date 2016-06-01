@@ -152,9 +152,12 @@
 
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm
 {
-    [realm beginWriteTransaction];
-    [realm deleteObject:objectToDelete];
-    [realm commitWriteTransaction];
+    if(objectToDelete)
+    {
+        [realm beginWriteTransaction];
+        [realm deleteObject:objectToDelete];
+        [realm commitWriteTransaction];
+    }
 }
 
 - (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm

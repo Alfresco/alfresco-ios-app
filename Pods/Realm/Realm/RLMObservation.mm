@@ -91,7 +91,7 @@ RLMObservationInfo::~RLMObservationInfo() {
             }
         }
     }
-    // Otherwise the observed object was standalone, so nothing to do
+    // Otherwise the observed object was unmanaged, so nothing to do
 
 #ifdef DEBUG
     // ensure that incorrect cleanup fails noisily
@@ -414,7 +414,7 @@ void forEach(realm::BindingContext::ObserverState const& state, Func&& func) {
 }
 }
 
-std::vector<realm::BindingContext::ObserverState> RLMGetObservedRows(NSArray RLM_GENERIC(RLMObjectSchema *) *schema) {
+std::vector<realm::BindingContext::ObserverState> RLMGetObservedRows(NSArray<RLMObjectSchema *> *schema) {
     std::vector<realm::BindingContext::ObserverState> observers;
     for (RLMObjectSchema *objectSchema in schema) {
         for (auto info : objectSchema->_observedObjects) {

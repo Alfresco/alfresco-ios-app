@@ -41,6 +41,7 @@
 @property (nonatomic, strong) RealmSyncHelper *syncHelper;
 @property (nonatomic, strong) RealmManager *realmManager;
 @property (nonatomic, strong) NSMutableDictionary *permissions;
+@property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
 @end
 
@@ -914,6 +915,28 @@
     [self changeDefaultConfigurationForAccount:changedAccount];
     AlfrescoProfileConfig *selectedProfileForAccount = [AppConfigurationManager sharedManager].selectedProfile;
     [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
+    
+    id<AlfrescoSession> session = notification.object;
+    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    
+    self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
+    NSOperationQueue *syncQueue = self.syncQueues[self.selectedAccountSyncIdentifier];
+    
+    if (!syncQueue)
+    {
+        syncQueue = [[NSOperationQueue alloc] init];
+        syncQueue.name = self.selectedAccountSyncIdentifier;
+        syncQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
+        
+        self.syncQueues[self.selectedAccountSyncIdentifier] = syncQueue;
+        self.syncOperations[self.selectedAccountSyncIdentifier] = [NSMutableDictionary dictionary];
+        
+        AccountSyncProgress *syncProgress = [[AccountSyncProgress alloc] initWithObserver:self];
+        self.accountsSyncProgress[self.selectedAccountSyncIdentifier] = syncProgress;
+    }
+    
+    syncQueue.suspended = NO;
+    [self notifyProgressDelegateAboutNumberOfNodesInProgress];
 }
 
 - (void)mainMenuConfigurationChanged:(NSNotification *)notification
@@ -950,6 +973,18 @@
     }
     
     return token;
+}
+
+#pragma mark - Private methods
+- (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount
+{
+    NSString *accountIdentifier = userAccount.accountIdentifier;
+    
+    if (userAccount.accountType == UserAccountTypeCloud)
+    {
+        accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, userAccount.selectedNetworkId];
+    }
+    return accountIdentifier;
 }
 
 @end
