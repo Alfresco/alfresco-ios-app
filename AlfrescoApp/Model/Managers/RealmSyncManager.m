@@ -874,6 +874,19 @@
     return newNodePath;
 }
 
+- (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm
+{
+    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncNodeId ifNotExistsCreateNew:NO inRealm:realm];
+    
+    AlfrescoNode *node = nil;
+    if (nodeInfo.node)
+    {
+        node = [NSKeyedUnarchiver unarchiveObjectWithData:nodeInfo.node];
+    }
+    return node;
+}
+
 #pragma mark - Sync progress delegate
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
