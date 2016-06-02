@@ -37,6 +37,7 @@
 
 #import "FavoritesCollectionViewDataSource.h"
 #import "SitesCollectionViewDataSource.h"
+#import "FolderCollectionViewDataSource.h"
 
 typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
 {
@@ -845,60 +846,63 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             case FileFolderCollectionViewControllerTypeFolderNode:
             {
-                // if the display folder is not set, use the root view controller
-                if (!self.displayFolder)
-                {
-                    [self showHUD];
-                    AlfrescoFolder *rootFolder = [self.session rootFolder];
-                    if (rootFolder)
-                    {
-                        self.displayFolder = rootFolder;
-                        self.navigationItem.title = rootFolder.name;
-                        [self retrieveAndSetPermissionsOfCurrentFolder];
-                        [self hidePullToRefreshView];
-                        [self.view bringSubviewToFront:self.collectionView];
-                    }
-                    else
-                    {
-                        [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
-                            if (folder)
-                            {
-                                self.displayFolder = folder;
-                                self.navigationItem.title = folder.name;
-                                [self retrieveAndSetPermissionsOfCurrentFolder];
-                                [self hidePullToRefreshView];
-                                [self.view bringSubviewToFront:self.collectionView];
-                            }
-                            else
-                            {
-                                // display error
-                                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
-                                [Notifier notifyWithAlfrescoError:error];
-                            }
-                        }];
-                    }
-                }
-                else
-                {
-                    [self showHUD];
-                    [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                        // folder permissions not set, retrieve and update the UI
-                        if (!self.folderPermissions)
-                        {
-                            [self retrieveAndSetPermissionsOfCurrentFolder];
-                        }
-                        else
-                        {
-                            [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                        }
-                        
-                        [self hideHUD];
-                        [self hidePullToRefreshView];
-                        [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-                        
-                        [self.view bringSubviewToFront:self.collectionView];
-                    }];
-                }
+//                // if the display folder is not set, use the root view controller
+//                if (!self.displayFolder)
+//                {
+//                    [self showHUD];
+//                    AlfrescoFolder *rootFolder = [self.session rootFolder];
+//                    if (rootFolder)
+//                    {
+//                        self.displayFolder = rootFolder;
+//                        self.navigationItem.title = rootFolder.name;
+//                        [self retrieveAndSetPermissionsOfCurrentFolder];
+//                        [self hidePullToRefreshView];
+//                        [self.view bringSubviewToFront:self.collectionView];
+//                    }
+//                    else
+//                    {
+//                        [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+//                            if (folder)
+//                            {
+//                                self.displayFolder = folder;
+//                                self.navigationItem.title = folder.name;
+//                                [self retrieveAndSetPermissionsOfCurrentFolder];
+//                                [self hidePullToRefreshView];
+//                                [self.view bringSubviewToFront:self.collectionView];
+//                            }
+//                            else
+//                            {
+//                                // display error
+//                                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:error]]);
+//                                [Notifier notifyWithAlfrescoError:error];
+//                            }
+//                        }];
+//                    }
+//                }
+//                else
+//                {
+//                    [self showHUD];
+//                    [self retrieveContentOfFolder:self.displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//                        // folder permissions not set, retrieve and update the UI
+//                        if (!self.folderPermissions)
+//                        {
+//                            [self retrieveAndSetPermissionsOfCurrentFolder];
+//                        }
+//                        else
+//                        {
+//                            [self updateUIUsingFolderPermissionsWithAnimation:NO];
+//                        }
+//                        
+//                        [self hideHUD];
+//                        [self hidePullToRefreshView];
+//                        [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+//                        
+//                        [self.view bringSubviewToFront:self.collectionView];
+//                    }];
+//                }
+                
+                self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:self.displayFolder folderDisplayName:self.folderDisplayName folderPermissions:self.folderPermissions session:self.session delegate:self];
+                self.collectionView.dataSource = self.dataSource;
             }
             break;
                 
@@ -953,108 +957,112 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             case FileFolderCollectionViewControllerTypeFolderPath:
             {
                 [self showHUD];
-                [self.documentService retrieveNodeWithFolderPath:self.folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
-                    if (folderPathNodeError)
-                    {
-                        if(folderPathNodeError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // display error
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:folderPathNodeError]]);
-                        }
-                        else
-                        {
-                            [Notifier notifyWithAlfrescoError:folderPathNodeError];
-                        }
-                        [self hideHUD];
-                    }
-                    else
-                    {
-                        if ([folderPathNode isKindOfClass:[AlfrescoFolder class]])
-                        {
-                            self.displayFolder = (AlfrescoFolder *)folderPathNode;
-                            self.folderDisplayName = self.displayFolder.name;
-                            self.title = self.folderDisplayName;
-                            [self retrieveContentOfFolder:(AlfrescoFolder *)folderPathNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                                // folder permissions not set, retrieve and update the UI
-                                if (!self.folderPermissions)
-                                {
-                                    [self retrieveAndSetPermissionsOfCurrentFolder];
-                                }
-                                else
-                                {
-                                    [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                                }
-                                
-                                [self hideHUD];
-                                [self hidePullToRefreshView];
-                                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-                                
-                                [self.view bringSubviewToFront:self.collectionView];
-                            }];
-                        }
-                        else
-                        {
-                            AlfrescoLogError(@"Node returned wwith path; %@, is not a folder node", self.folderPath);
-                        }
-                    }
-                }];
+//                [self.documentService retrieveNodeWithFolderPath:self.folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
+//                    if (folderPathNodeError)
+//                    {
+//                        if(folderPathNodeError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+//                        {
+//                            // display error
+//                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:folderPathNodeError]]);
+//                        }
+//                        else
+//                        {
+//                            [Notifier notifyWithAlfrescoError:folderPathNodeError];
+//                        }
+//                        [self hideHUD];
+//                    }
+//                    else
+//                    {
+//                        if ([folderPathNode isKindOfClass:[AlfrescoFolder class]])
+//                        {
+//                            self.displayFolder = (AlfrescoFolder *)folderPathNode;
+//                            self.folderDisplayName = self.displayFolder.name;
+//                            self.title = self.folderDisplayName;
+//                            [self retrieveContentOfFolder:(AlfrescoFolder *)folderPathNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//                                // folder permissions not set, retrieve and update the UI
+//                                if (!self.folderPermissions)
+//                                {
+//                                    [self retrieveAndSetPermissionsOfCurrentFolder];
+//                                }
+//                                else
+//                                {
+//                                    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+//                                }
+//                                
+//                                [self hideHUD];
+//                                [self hidePullToRefreshView];
+//                                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+//                                
+//                                [self.view bringSubviewToFront:self.collectionView];
+//                            }];
+//                        }
+//                        else
+//                        {
+//                            AlfrescoLogError(@"Node returned wwith path; %@, is not a folder node", self.folderPath);
+//                        }
+//                    }
+//                }];
+                self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolderPath:self.folderPath folderDisplayName:self.folderDisplayName folderPermissions:self.folderPermissions session:self.session delegate:self];
+                self.collectionView.dataSource = self.dataSource;
             }
             break;
                 
             case FileFolderCollectionViewControllerTypeNodeRef:
             {
                 [self showHUD];
-                [self.documentService retrieveNodeWithIdentifier:self.nodeRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
-                    if (nodeRefError)
-                    {
-                        if(nodeRefError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // display error
-                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:nodeRefError]]);
-                        }
-                        else
-                        {
-                            [Notifier notifyWithAlfrescoError:nodeRefError];
-                        }
-                        [self hideHUD];
-                    }
-                    else
-                    {
-                        if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
-                        {
-                            self.displayFolder = (AlfrescoFolder *)nodeRefNode;
-                            self.folderDisplayName = self.displayFolder.name;
-                            self.title = self.folderDisplayName;
-                            [self retrieveContentOfFolder:(AlfrescoFolder *)nodeRefNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                                // folder permissions not set, retrieve and update the UI
-                                if (!self.folderPermissions)
-                                {
-                                    [self retrieveAndSetPermissionsOfCurrentFolder];
-                                }
-                                else
-                                {
-                                    [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                                }
-                                
-                                [self hideHUD];
-                                [self hidePullToRefreshView];
-                                
-                                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-                                
-                                [self.view bringSubviewToFront:self.collectionView];
-                            }];
-                        }
-                        else if([nodeRefNode isKindOfClass:[AlfrescoDocument class]])
-                        {
-                            self.collectionViewData = [NSMutableArray arrayWithObject:nodeRefNode];
-                            [self hideHUD];
-                            [self hidePullToRefreshView];
-                            self.folderDisplayName = nodeRefNode.title;
-                            [self reloadCollectionView];
-                            [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-                        }
-                    }
-                }];
+//                [self.documentService retrieveNodeWithIdentifier:self.nodeRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
+//                    if (nodeRefError)
+//                    {
+//                        if(nodeRefError.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+//                        {
+//                            // display error
+//                            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found"), [ErrorDescriptions descriptionForError:nodeRefError]]);
+//                        }
+//                        else
+//                        {
+//                            [Notifier notifyWithAlfrescoError:nodeRefError];
+//                        }
+//                        [self hideHUD];
+//                    }
+//                    else
+//                    {
+//                        if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
+//                        {
+//                            self.displayFolder = (AlfrescoFolder *)nodeRefNode;
+//                            self.folderDisplayName = self.displayFolder.name;
+//                            self.title = self.folderDisplayName;
+//                            [self retrieveContentOfFolder:(AlfrescoFolder *)nodeRefNode usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//                                // folder permissions not set, retrieve and update the UI
+//                                if (!self.folderPermissions)
+//                                {
+//                                    [self retrieveAndSetPermissionsOfCurrentFolder];
+//                                }
+//                                else
+//                                {
+//                                    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+//                                }
+//                                
+//                                [self hideHUD];
+//                                [self hidePullToRefreshView];
+//                                
+//                                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+//                                
+//                                [self.view bringSubviewToFront:self.collectionView];
+//                            }];
+//                        }
+//                        else if([nodeRefNode isKindOfClass:[AlfrescoDocument class]])
+//                        {
+//                            self.collectionViewData = [NSMutableArray arrayWithObject:nodeRefNode];
+//                            [self hideHUD];
+//                            [self hidePullToRefreshView];
+//                            self.folderDisplayName = nodeRefNode.title;
+//                            [self reloadCollectionView];
+//                            [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+//                        }
+//                    }
+//                }];
+                self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolderRef:self.nodeRef folderDisplayName:self.folderDisplayName folderPermissions:self.folderPermissions session:self.session delegate:self];
+                self.collectionView.dataSource = self.dataSource;
             }
             break;
                 
@@ -1119,22 +1127,24 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         self.displayFolder = folder;
                         self.title = self.folderDisplayName;
 
-                        [self retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                            if (!self.folderPermissions)
-                            {
-                                [self retrieveAndSetPermissionsOfCurrentFolder];
-                            }
-                            else
-                            {
-                                [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                            }
-                            
-                            [self hideHUD];
-                            [self hidePullToRefreshView];
-                            [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-                            
-                            [self.view bringSubviewToFront:self.collectionView];
-                        }];
+                        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:self.folderDisplayName folderPermissions:nil session:self.session delegate:self];
+                        self.collectionView.dataSource = self.dataSource;
+//                        [self retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//                            if (!self.folderPermissions)
+//                            {
+//                                [self retrieveAndSetPermissionsOfCurrentFolder];
+//                            }
+//                            else
+//                            {
+//                                [self updateUIUsingFolderPermissionsWithAnimation:NO];
+//                            }
+//                            
+//                            [self hideHUD];
+//                            [self hidePullToRefreshView];
+//                            [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+//                            
+//                            [self.view bringSubviewToFront:self.collectionView];
+//                        }];
                     }
                 };
                 

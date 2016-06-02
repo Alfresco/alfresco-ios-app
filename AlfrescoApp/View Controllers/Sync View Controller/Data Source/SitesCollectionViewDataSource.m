@@ -25,7 +25,6 @@
 
 @property (nonatomic, strong) NSString *siteShortName;
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
-@property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
 
 @end
 
@@ -55,19 +54,8 @@
             [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
                 self.screenTitle = site.title;
             }];
-            [self retrieveContentOfFolder:documentLibraryFolder usingListingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                // folder permissions not set, retrieve and update the UI
-                if (!self.parentFolderPermissions)
-                {
-                    [self retrieveAndSetPermissionsOfCurrentFolder];
-                }
-                else
-                {
-                    [self.delegate didRetrievePermissionsForParentNode];
-                }
-
-                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-            }];
+            
+            [self retrieveContentsOfParentNode];
         }
     }];
     
@@ -78,28 +66,6 @@
 {
     [super setSession:session];
     self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
-}
-
-- (void)retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
-{
-    if (!listingContext)
-    {
-        listingContext = self.defaultListingContext;
-    }
-    
-    [self.documentService retrieveChildrenInFolder:folder listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (!error)
-        {
-            for (AlfrescoNode *node in pagingResult.objects)
-            {
-                [self retrievePermissionsForNode:node];
-            }
-        }
-        if (completionBlock != NULL)
-        {
-            completionBlock(pagingResult, error);
-        }
-    }];
 }
 
 @end

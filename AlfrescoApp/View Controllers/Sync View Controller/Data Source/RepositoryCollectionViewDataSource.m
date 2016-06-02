@@ -33,16 +33,23 @@
         return nil;
     }
     
+    [self setupWithParentNode:node session:session delegate:delegate];
+    self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
+    
+    return self;
+}
+
+- (void)setupWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+{
+    self.session = session;
+    self.delegate = delegate;
     if(node)
     {
         self.parentNode = node;
         self.screenTitle = node.name;
+        
+        [self retrieveContentsOfParentNode];
     }
-    
-    self.session = session;
-    self.delegate = delegate;
-    
-    return self;
 }
 
 - (void)setSession:(id<AlfrescoSession>)session
@@ -337,6 +344,31 @@
     }
     
     return indexPath;
+}
+
+- (void)retrieveContentsOfParentNode
+{
+    __weak typeof(self) weakSelf = self;
+    [self.documentService retrieveChildrenInFolder:(AlfrescoFolder *)self.parentNode listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        if (!error)
+        {
+            for (AlfrescoNode *node in pagingResult.objects)
+            {
+                [weakSelf retrievePermissionsForNode:node];
+            }
+            
+            if (!self.parentFolderPermissions)
+            {
+                [self retrieveAndSetPermissionsOfCurrentFolder];
+            }
+            else
+            {
+                [self.delegate didRetrievePermissionsForParentNode];
+            }
+        }
+        
+        [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+    }];
 }
 
 @end
