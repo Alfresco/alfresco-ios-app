@@ -89,6 +89,13 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionViewVisibility) name:kAlfrescoConnectivityChangedNotification object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.translucent = NO;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
