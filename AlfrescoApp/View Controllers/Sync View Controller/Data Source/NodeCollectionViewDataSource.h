@@ -18,9 +18,8 @@
 
 #import "RepositoryCollectionViewDataSource.h"
 
-@interface FolderCollectionViewDataSource : RepositoryCollectionViewDataSource
+@interface NodeCollectionViewDataSource : RepositoryCollectionViewDataSource
 
-- (instancetype)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
-- (instancetype)initWithFolderPath:(NSString *)folderPath folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
++ (void)collectionViewDataSourceWithNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 
 @end

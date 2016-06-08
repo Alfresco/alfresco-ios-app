@@ -43,40 +43,30 @@
     [self doesNotRecognizeSelector:_cmd];
 }
 
-- (void)showSearchProgressHUD
-{
-    [self.progressHUD show:YES];
-}
-
-- (void)hideSearchProgressHUD
-{
-    [self.progressHUD hide:YES];
-}
-
 #pragma mark - Custom getters and setters
 
-- (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
-{
-    _displayFolder = displayFolder;
-    
-    if (_displayFolder)
-    {
-        [self showHUD];
-        [self retrieveContentOfFolder:_displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self hideHUD];
-            if (pagingResult)
-            {
-                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCollectionView" object:nil];
-            }
-            else
-            {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-        }];
-    }
-}
+//- (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
+//{
+//    _displayFolder = displayFolder;
+//    
+//    if (_displayFolder)
+//    {
+//        [self showHUD];
+//        [self retrieveContentOfFolder:_displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+//            [self hideHUD];
+//            if (pagingResult)
+//            {
+//                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCollectionView" object:nil];
+//            }
+//            else
+//            {
+//                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
+//                [Notifier notifyWithAlfrescoError:error];
+//            }
+//        }];
+//    }
+//}
 
 #pragma mark CollectionView Delegate and Datasource Methods
 
@@ -227,9 +217,9 @@
 #pragma mark - Public methods
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options
 {
-    [self showSearchProgressHUD];
+    [self showHUD];
     [self.searchService searchWithKeywords:stringToSearch options:options completionBlock:^(NSArray *array, NSError *error) {
-        [self hideSearchProgressHUD];
+        [self hideHUD];
         if (array)
         {
             self.isOnSearchResults = isFromSearchBar;

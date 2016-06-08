@@ -20,6 +20,8 @@
 #import "BaseCollectionViewFlowLayout.h"
 #import "CollectionViewProtocols.h"
 
+@class RepositoryCollectionViewDataSource;
+
 @protocol RepositoryCollectionViewDataSourceDelegate <NSObject>
 
 - (BaseCollectionViewFlowLayout *)currentSelectedLayout;
@@ -32,6 +34,11 @@
 - (void)failedToDeleteItems:(NSError *)error;
 
 - (void)didRetrievePermissionsForParentNode;
+
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource;
+
 @end
 
 @interface RepositoryCollectionViewDataSource : NSObject <UICollectionViewDataSource, DataSourceInformationProtocol, SwipeToDeleteDelegate>

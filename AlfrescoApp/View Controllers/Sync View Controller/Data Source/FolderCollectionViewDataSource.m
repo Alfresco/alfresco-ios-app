@@ -61,41 +61,6 @@
     return self;
 }
 
-- (instancetype)initWithFolderRef:(NSString *)folderRef folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
-{
-    self = [super init];
-    if(!self)
-    {
-        return nil;
-    }
-    AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    
-    [documentFolderService retrieveNodeWithIdentifier:folderRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
-        if (nodeRefError)
-        {
-            [delegate requestFailedWithError:nodeRefError stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
-        }
-        else
-        {
-            if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
-            {
-                [self setupWithParentNode:nodeRefNode folderDisplayName:folderDisplayName folderPermissions:permissions session:session delegate:delegate];
-            }
-            else if([nodeRefNode isKindOfClass:[AlfrescoDocument class]])
-            {
-//                self.collectionViewData = [NSMutableArray arrayWithObject:nodeRefNode];
-//                [self hideHUD];
-//                [self hidePullToRefreshView];
-//                self.folderDisplayName = nodeRefNode.title;
-//                [self reloadCollectionView];
-//                [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-            }
-        }
-    }];
-    
-    return self;
-}
-
 - (instancetype)initWithFolderPath:(NSString *)folderPath folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
 {
     self = [super init];
