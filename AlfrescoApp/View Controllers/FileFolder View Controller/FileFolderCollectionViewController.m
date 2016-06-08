@@ -294,6 +294,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
     }
     
+    self.navigationController.navigationBar.translucent = NO;
+    
     UINib *nodeCellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
     [self.collectionView registerNib:nodeCellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     UINib *loadingCellNib = [UINib nibWithNibName:NSStringFromClass([LoadingCollectionViewCell class]) bundle:nil];
