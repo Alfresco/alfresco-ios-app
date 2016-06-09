@@ -318,7 +318,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.definesPresentationContext = YES;
     }
 
-//    self.collectionView.dataSource = self;
     self.dataSource = [[RepositoryCollectionViewDataSource alloc] initWithParentNode:nil session:self.session delegate:self];
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.delegate = self;
@@ -345,14 +344,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [self changeCollectionViewStyle:self.style animated:YES trackAnalytics:NO];
     
-//    if (self.initialFolder)
-//    {
-//        self.displayFolder = self.initialFolder;
-//    }
-//    else
-//    {
-        [self loadContent];
-//    }
+    [self loadContent];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -915,6 +907,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                         self.title = self.folderDisplayName;
 
                         self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:self.folderDisplayName folderPermissions:nil session:self.session delegate:self];
+                        [self setNodeDataSource:self.dataSource];
                     }
                 };
                 
@@ -951,7 +944,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         if(self.dataSource)
         {
-            self.collectionView.dataSource = self.dataSource;
+            [self setNodeDataSource:self.dataSource];
         }
     }
 }
