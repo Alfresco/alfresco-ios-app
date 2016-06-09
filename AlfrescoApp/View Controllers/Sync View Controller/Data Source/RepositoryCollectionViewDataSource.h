@@ -39,6 +39,8 @@
 
 - (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource;
 
+- (UISearchBar *)searchBarForSupplimentaryHeaderView;
+
 @end
 
 @interface RepositoryCollectionViewDataSource : NSObject <UICollectionViewDataSource, DataSourceInformationProtocol, SwipeToDeleteDelegate>

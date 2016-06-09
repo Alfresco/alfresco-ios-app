@@ -18,7 +18,9 @@
 
 #import "RepositoryCollectionViewDataSource+Internal.h"
 #import "FileFolderCollectionViewCell.h"
+#import "LoadingCollectionViewCell.h"
 #import "BaseCollectionViewFlowLayout.h"
+#import "SearchCollectionSectionHeader.h"
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "RealmSyncManager.h"
@@ -111,16 +113,24 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if((self.moreItemsAvailable) && (indexPath.item == self.dataSourceCollection.count))
+    {
+        LoadingCollectionViewCell *cell = (LoadingCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier] forIndexPath:indexPath];
+        return cell;
+    }
+    
     FileFolderCollectionViewCell *nodeCell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
     
-    AlfrescoNode *node = self.dataSourceCollection[indexPath.row];
-    SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:node.identifier];
+    AlfrescoNode *node = self.dataSourceCollection[indexPath.item];
+    
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
+    BOOL isTopLevelNode = [syncManager isTopLevelSyncNode:node];
+    
+    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
-    
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    BOOL isSyncOn = [[RealmSyncManager sharedManager] isNodeInSyncList:node];
-    BOOL isTopLevelNode = [[RealmSyncManager sharedManager] isTopLevelSyncNode:node];
     
     [nodeCell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
     [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
@@ -163,9 +173,11 @@
             [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
                 if (image)
                 {
-                    FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-                    if (updateCell)
+                    // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
+                    // by the time completion block is called the table view could have been unloaded.
+                    if (collectionView && indexPath)
                     {
+                        FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
                         [updateCell.image setImage:image withFade:YES];
                     }
                 }
@@ -175,6 +187,27 @@
     
     nodeCell.accessoryViewDelegate = [self.delegate cellAccessoryViewDelegate];
     return nodeCell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        SearchCollectionSectionHeader *headerView = (SearchCollectionSectionHeader *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader" forIndexPath:indexPath];
+        
+        if(!headerView.hasAddedSearchBar)
+        {
+            UISearchBar *searchBar = [self.delegate searchBarForSupplimentaryHeaderView];
+            headerView.searchBar = searchBar;
+            [headerView addSubview:searchBar];
+            [searchBar sizeToFit];
+        }
+        
+        reusableview = headerView;
+    }
+    
+    return reusableview;
 }
 
 #pragma mark - DataSourceInformationProtocol methods
@@ -200,7 +233,13 @@
 #pragma mark - Public methods
 - (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index
 {
-    return self.dataSourceCollection[index];
+    AlfrescoNode *nodeToReturn = nil;
+    if(index < self.dataSourceCollection.count)
+    {
+        nodeToReturn = self.dataSourceCollection[index];
+    }
+    
+    return nodeToReturn;
 }
 
 - (NSInteger)numberOfNodesInCollection

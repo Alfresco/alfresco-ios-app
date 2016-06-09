@@ -325,7 +325,8 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
 - (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
 {
-#warning TODO
+    displayErrorMessage([NSString stringWithFormat:stringFormat, [ErrorDescriptions descriptionForError:error]]);
+    [Notifier notifyWithAlfrescoError:error];
 }
 
 - (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems
@@ -346,6 +347,27 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (void)failedToDeleteItems:(NSError *)error
 {
     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.unable.to.delete", @"Unable to delete file/folder"), [ErrorDescriptions descriptionForError:error]]);
+}
+
+- (void)didRetrievePermissionsForParentNode
+{
+#warning TODO
+}
+
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+#warning TODO
+}
+
+- (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource
+{
+ #warning TODO
+}
+
+- (UISearchBar *)searchBarForSupplimentaryHeaderView
+{
+    #warning TODO
+    return nil;
 }
 
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
