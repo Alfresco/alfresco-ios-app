@@ -31,8 +31,8 @@
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {
-    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
+//    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+//    self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
 }
 
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
@@ -107,28 +107,28 @@
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options
 {
     [self showHUD];
-    [self.searchService searchWithKeywords:stringToSearch options:options completionBlock:^(NSArray *array, NSError *error) {
-        [self hideHUD];
-        if (array)
-        {
-            self.isOnSearchResults = isFromSearchBar;
-            if(isFromSearchBar)
-            {
-                self.searchResults = [array mutableCopy];
-            }
-            else
-            {
-                self.collectionViewData = [array mutableCopy];
-            }
-            [self reloadCollectionView];
-        }
-        else
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-    }];
+//    [self.searchService searchWithKeywords:stringToSearch options:options completionBlock:^(NSArray *array, NSError *error) {
+//        [self hideHUD];
+//        if (array)
+//        {
+//            self.isOnSearchResults = isFromSearchBar;
+//            if(isFromSearchBar)
+//            {
+//                self.searchResults = [array mutableCopy];
+//            }
+//            else
+//            {
+//                self.collectionViewData = [array mutableCopy];
+//            }
+//            [self reloadCollectionView];
+//        }
+//        else
+//        {
+//            // display error
+//            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
+//            [Notifier notifyWithAlfrescoError:error];
+//        }
+//    }];
 }
 
 @end

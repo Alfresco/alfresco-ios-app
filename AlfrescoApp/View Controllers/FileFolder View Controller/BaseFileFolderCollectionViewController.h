@@ -25,8 +25,6 @@
 
 @interface BaseFileFolderCollectionViewController : ParentCollectionViewController <UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate>
 
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
-@property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) AlfrescoFolder *displayFolder;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSMutableArray *searchResults;

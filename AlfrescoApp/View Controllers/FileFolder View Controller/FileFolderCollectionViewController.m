@@ -68,10 +68,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 // Data Model
-@property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
-@property (nonatomic, strong) NSString *folderDisplayName;
-@property (nonatomic, strong) AlfrescoFolder *initialFolder;
-@property (nonatomic, strong) NSMutableDictionary *nodePermissions;
 @property (nonatomic, assign) BOOL capturingMedia;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
@@ -81,24 +77,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic) CGFloat cellActionViewWidth;
 @property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
 @property (nonatomic, assign) FileFolderCollectionViewControllerType controllerType;
-@property (nonatomic, strong) NSString *siteShortName;
-@property (nonatomic, strong) NSString *folderPath;
-@property (nonatomic, strong) NSString *nodeRef;
-@property (nonatomic, strong) NSString *documentPath;
 @property (nonatomic) CustomFolderServiceFolderType customFolderType;
 @property (nonatomic) BOOL shouldAutoSelectFirstItem;
-@property (nonatomic, strong) NSString *previousSearchString;
-@property (nonatomic, strong) AlfrescoKeywordSearchOptions *previousSearchOptions;
-@property (nonatomic, strong) NSString *CMISSearchStatement;
 // Controllers
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 // Services
-@property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) CustomFolderService *customFolderService;
-
-@property (nonatomic, strong) RepositoryCollectionViewDataSource *dataSource;
 
 @end
 
@@ -124,20 +110,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self = [super initWithSession:session];
     if (self)
     {
-        [self setupWithFolder:folder folderPermissions:permissions folderDisplayName:displayName session:session];
+        self.controllerType = FileFolderCollectionViewControllerTypeFolderNode;
+        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:displayName folderPermissions:permissions session:session delegate:self];
     }
     return self;
 }
 
 - (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [self initWithFolder:nil folderPermissions:permissions folderDisplayName:displayName session:session];
+    self = [super initWithSession:session];
     if (self)
     {
         if (siteShortName)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeSiteShortName;
-            self.siteShortName = siteShortName;
+            self.dataSource = [[SitesCollectionViewDataSource alloc] initWithSiteShortname:siteShortName session:session delegate:self];
         }
     }
     return self;
@@ -145,13 +132,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [self initWithFolder:nil folderPermissions:permissions folderDisplayName:displayName session:session];
+    self = [super initWithSession:session];
     if (self)
     {
         if (folderPath)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeFolderPath;
-            self.folderPath = folderPath;
+            self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolderPath:folderPath folderDisplayName:displayName folderPermissions:permissions session:session delegate:self];
         }
     }
     return self;
@@ -159,13 +146,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    self = [self initWithFolder:nil folderPermissions:permissions folderDisplayName:displayName session:session];
+    self = [super initWithSession:session];
     if (self)
     {
         if (nodeRef)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeNodeRef;
-            self.nodeRef = nodeRef;
+            [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:nodeRef session:session delegate:self];
         }
     }
     return self;
@@ -176,11 +163,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self = [super initWithSession:session];
     if(self)
     {
-        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
         if (nodeRef)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeNodeRef;
-            self.nodeRef = nodeRef;
+            [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:nodeRef session:session delegate:self];
             self.shouldAutoSelectFirstItem = YES;
         }
     }
@@ -193,11 +179,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self = [super initWithSession:session];
     if (self)
     {
-        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
         if (documentPath)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeDocumentPath;
-            self.documentPath = documentPath;
+            self.dataSource = [[DocumentCollectionViewDataSource alloc] initWithDocumentPath:documentPath session:session delegate:self];
             self.shouldAutoSelectFirstItem = YES;
         }
     }
@@ -211,10 +196,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeSearchString;
-        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:string session:session];
-        self.previousSearchString = string;
-        self.previousSearchOptions = options;
-        self.emptyMessage = emptyMessage;
+        self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchString:string searchOptions:options emptyMessage:emptyMessage session:session delegate:self];
     }
     
     return self;
@@ -248,10 +230,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self = [super initWithSession:session];
     if (self)
     {
-        self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
         self.controllerType = FileFolderCollectionViewControllerTypeFavorites;
-        NSString *displayName = NSLocalizedString(@"favourites.title", @"Favorites Title");
-        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:displayName session:session];
+        self.dataSource = [[FavoritesCollectionViewDataSource alloc] initWithParentNode:nil session:session delegate:self];
     }
     
     return self;
@@ -263,8 +243,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if(self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeCMISSearch;
-        [self setupWithFolder:nil folderPermissions:nil folderDisplayName:nil session:session];
-        self.CMISSearchStatement = statement;
+        self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchStatement:statement session:session delegate:self];
     }
     
     return self;
@@ -272,11 +251,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
 {
-    [super setupWithSession:session];
     [self createAlfrescoServicesWithSession:session];
-    self.initialFolder = folder;
-    self.folderPermissions = permissions;
-    self.folderDisplayName = (displayName) ? displayName : folder.name;
+}
+
+- (void)registerForNotifications
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentDeleted:) name:kAlfrescoDocumentDeletedOnServerNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nodeAdded:) name:kAlfrescoNodeAddedOnServerNotification object:nil];
@@ -303,8 +282,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     UINib *sectionHeaderNib = [UINib nibWithNibName:NSStringFromClass([SearchCollectionSectionHeader class]) bundle:nil];
     [self.collectionView registerNib:sectionHeaderNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader"];
     
-    self.title = self.folderDisplayName;
-    self.nodePermissions = [[NSMutableDictionary alloc] init];
+    self.title = self.dataSource.screenTitle;
     
     self.shouldIncludeSearchBar = (self.controllerType != FileFolderCollectionViewControllerTypeFavorites);
     if(self.shouldIncludeSearchBar)
@@ -318,7 +296,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.definesPresentationContext = YES;
     }
 
-    self.dataSource = [[RepositoryCollectionViewDataSource alloc] initWithParentNode:nil session:self.session delegate:self];
+    if(!self.dataSource)
+    {
+        self.dataSource = [[RepositoryCollectionViewDataSource alloc] initWithParentNode:nil session:self.session delegate:self];
+    }
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.delegate = self;
     self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:self.shouldIncludeSearchBar];
@@ -344,6 +325,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [self changeCollectionViewStyle:self.style animated:YES trackAnalytics:NO];
     
+    [self registerForNotifications];
     [self loadContent];
 }
 
@@ -497,58 +479,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void)retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
-{
-    if (!listingContext)
-    {
-        listingContext = self.defaultListingContext;
-    }
-    
-    [self.documentService retrieveChildrenInFolder:folder listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (!error)
-        {
-            for (AlfrescoNode *node in pagingResult.objects)
-            {
-                [self retrievePermissionsForNode:node];
-            }
-        }
-        if (completionBlock != NULL)
-        {
-            completionBlock(pagingResult, error);
-        }
-        
-        [self selectIndexPathForAlfrescoNodeInDetailView];
-        [self updateUIUsingFolderPermissionsWithAnimation:NO];
-    }];
-}
-
-- (void)retrieveAndSetPermissionsOfCurrentFolder
-{
-    [self.documentService retrievePermissionsOfNode:self.displayFolder completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-        if (permissions)
-        {
-            self.folderPermissions = permissions;
-            [self updateUIUsingFolderPermissionsWithAnimation:NO];
-        }
-        else
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission retrieval failed"), [ErrorDescriptions descriptionForError:error]]);
-            [Notifier notifyWithAlfrescoError:error];
-        }
-    }];
-}
-
-- (void)retrievePermissionsForNode:(AlfrescoNode *)node
-{
-    [self.documentService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-        if (!error)
-        {
-            [self.nodePermissions setValue:permissions forKey:node.identifier];
-        }
-    }];
-}
-
 - (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
 {
     if(self.isEditing)
@@ -586,7 +516,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [rightBarButtonItems addObject:self.editBarButtonItem];
     
-    if (!self.isEditing && (self.folderPermissions.canAddChildren || self.folderPermissions.canEdit))
+    if (!self.isEditing && (self.dataSource.parentFolderPermissions.canAddChildren || self.dataSource.parentFolderPermissions.canEdit))
     {
         [rightBarButtonItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                      target:self
@@ -599,7 +529,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    if (self.folderPermissions.canAddChildren)
+    if (self.dataSource.parentFolderPermissions.canAddChildren)
     {
         [alertController addAction:[self alertActionCreateFile]];
         [alertController addAction:[self alertActionAddFolder]];
@@ -672,25 +602,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             
             if ([Utility isValidFolderName:desiredFolderName])
             {
-                [self.documentService createFolderWithName:desiredFolderName inParentFolder:self.displayFolder properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
-                    if (folder)
-                    {
-                        [self retrievePermissionsForNode:folder];
-                        [self addAlfrescoNodes:@[folder] completion:nil];
-                        [self updateUIUsingFolderPermissionsWithAnimation:NO];
-                        [[RealmSyncManager sharedManager] didUploadNode:folder fromPath:nil toFolder:self.displayFolder];
-                        
-                        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                                          action:kAnalyticsEventActionCreate
-                                                                           label:kAnalyticsEventLabelFolder
-                                                                           value:@1];
-                    }
-                    else
-                    {
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.createfolder", @"Creation failed"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                }];
+                [self.dataSource createFolderWithName:desiredFolderName];
             }
             else
             {
@@ -843,45 +755,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         switch (self.controllerType)
         {
-            case FileFolderCollectionViewControllerTypeFolderNode:
-            {
-                self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:self.initialFolder folderDisplayName:self.folderDisplayName folderPermissions:self.folderPermissions session:self.session delegate:self];
-            }
-            break;
-                
-            case FileFolderCollectionViewControllerTypeSiteShortName:
-            {
-                [self showHUD];
-                self.dataSource = [[SitesCollectionViewDataSource alloc] initWithSiteShortname:self.siteShortName session:self.session delegate:self];
-            }
-            break;
-                
-            case FileFolderCollectionViewControllerTypeFolderPath:
-            {
-                [self showHUD];
-                self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolderPath:self.folderPath folderDisplayName:self.folderDisplayName folderPermissions:self.folderPermissions session:self.session delegate:self];
-            }
-            break;
-                
-            case FileFolderCollectionViewControllerTypeNodeRef:
-            {
-                [self showHUD];
-                [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:self.nodeRef session:self.session delegate:self];
-            }
-            break;
-                
-            case FileFolderCollectionViewControllerTypeDocumentPath:
-            {
-                self.dataSource = [[DocumentCollectionViewDataSource alloc] initWithDocumentPath:self.documentPath session:self.session delegate:self];
-            }
-            break;
-                
-            case FileFolderCollectionViewControllerTypeSearchString:
-            {
-                self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchString:self.previousSearchString searchOptions:self.previousSearchOptions emptyMessage:self.emptyMessage session:self.session delegate:self];
-            }
-            break;
-
             case FileFolderCollectionViewControllerTypeCustomFolderType:
             {
                 [self showHUD];
@@ -904,9 +777,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                     }
                     else
                     {
-                        self.title = self.folderDisplayName;
-
-                        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:self.folderDisplayName folderPermissions:nil session:self.session delegate:self];
+                        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:nil folderPermissions:nil session:self.session delegate:self];
                         [self setNodeDataSource:self.dataSource];
                     }
                 };
@@ -929,22 +800,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
                 break;
             }
-            case FileFolderCollectionViewControllerTypeFavorites:
-            {
-                [self showHUD];
-                self.dataSource = [[FavoritesCollectionViewDataSource alloc] initWithParentNode:nil session:self.session delegate:self];
-                break;
-            }
-            case FileFolderCollectionViewControllerTypeCMISSearch:
-            {
-                [self showHUD];
-                self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchStatement:self.CMISSearchStatement session:self.session delegate:self];
-            }
-        }
-        
-        if(self.dataSource)
-        {
-            [self setNodeDataSource:self.dataSource];
         }
     }
 }
@@ -968,6 +823,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self reloadCollectionView];
     [self selectIndexPathForAlfrescoNodeInDetailView];
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
+    self.isLoadingAnotherPage = NO;
 }
 
 - (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
@@ -996,6 +852,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)failedToDeleteItems:(NSError *)error
 {
     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.unable.to.delete", @"Unable to delete file/folder"), [ErrorDescriptions descriptionForError:error]]);
+}
+
+- (void)didAddNodes:(NSArray *)items atIndexPath:(NSArray *)indexPathsOfAddedItems
+{
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView insertItemsAtIndexPaths:indexPathsOfAddedItems];
+    } completion:nil];
 }
 
 - (void)didRetrievePermissionsForParentNode
@@ -1041,7 +904,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {
     [super createAlfrescoServicesWithSession:session];
-    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
     self.customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
 }
 
@@ -1055,97 +917,10 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
 {
-    __weak FileFolderCollectionViewController *weakSelf = self;
-    [self.documentService deleteNode:nodeToDelete completionBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
+    [self.dataSource deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+        if(completionBlock != NULL)
         {
-            NSString *analyticsLabel = nil;
-            
-            if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
-            {
-                [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete withCompletionBlock:^(BOOL savedLocally) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSString *successMessage = @"";
-                        if (savedLocally)
-                        {
-                            successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), nodeToDelete.name];
-                        }
-                        else
-                        {
-                            successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), nodeToDelete.name];
-                        }
-                        displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
-                    });
-                }];
-            }
-            
-            if ([nodeToDelete isKindOfClass:[AlfrescoDocument class]])
-            {
-                analyticsLabel = ((AlfrescoDocument *)nodeToDelete).contentMimeType;
-            }
-            else if ([nodeToDelete isKindOfClass:[AlfrescoFolder class]])
-            {
-                analyticsLabel = kAnalyticsEventLabelFolder;
-            }
-            
-            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                              action:kAnalyticsEventActionDelete
-                                                               label:analyticsLabel
-                                                               value:@1];
-            
-            if ([[UniversalDevice detailViewItemIdentifier] isEqualToString:nodeToDelete.identifier])
-            {
-                [UniversalDevice clearDetailViewController];
-            }
-            
-            NSArray *collectionViewNodeIdentifiers = nil;
-            NSIndexPath *indexPathForNode = nil;
-            
-            // remove nodeToDelete from search tableview if search view is present
-            if (self.isOnSearchResults)
-            {
-                collectionViewNodeIdentifiers = [weakSelf.searchResults valueForKeyPath:@"identifier"];
-                [weakSelf.searchResults removeObject:nodeToDelete];
-                indexPathForNode = [weakSelf indexPathForNodeWithIdentifier:nodeToDelete.identifier inNodeIdentifiers:collectionViewNodeIdentifiers];
-                if (indexPathForNode != nil)
-                {
-                    [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode]];
-                }
-            }
-            
-            // remove nodeToDelete from collection view
-            collectionViewNodeIdentifiers = [weakSelf.collectionViewData valueForKeyPath:@"identifier"];
-            if (self.isOnSearchResults)
-            {
-                [collectionViewNodeIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger index, BOOL *stop) {
-                    if ([identifier isEqualToString:nodeToDelete.identifier])
-                    {
-                        [weakSelf.collectionViewData removeObjectAtIndex:index];
-                        *stop = YES;
-                    }
-                }];
-            }
-            else
-            {
-                [weakSelf.collectionViewData removeObject:nodeToDelete];
-            }
-            indexPathForNode = [self indexPathForNodeWithIdentifier:nodeToDelete.identifier inNodeIdentifiers:collectionViewNodeIdentifiers];
-            if (indexPathForNode != nil)
-            {
-                [weakSelf.collectionView performBatchUpdates:^{
-                    [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPathForNode]];
-                } completion:nil];
-                [weakSelf updateUIUsingFolderPermissionsWithAnimation:NO];
-            }
-        }
-        else
-        {
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.unable.to.delete", @"Unable to delete file/folder"), [ErrorDescriptions descriptionForError:error]]);
-        }
-        
-        if (completionBlock != NULL)
-        {
-            completionBlock(succeeded);
+            completionBlock(success);
         }
     }];
 }
@@ -1368,54 +1143,26 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
             if ([selectedNode isKindOfClass:[AlfrescoFolder class]])
             {
-                [self showHUD];
-                [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                    [self hideHUD];
-                    if (permissions)
-                    {
-                        // push again
-                        FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderPermissions:permissions session:self.session];
-                        browserViewController.style = self.style;
-                        [self.navigationController pushViewController:browserViewController animated:YES];
-                    }
-                    else
-                    {
-                        // display permission retrieval error
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission failed to be retrieved"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-                }];
+                FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderPermissions:nil session:self.session];
+                browserViewController.style = self.style;
+                [self.navigationController pushViewController:browserViewController animated:YES];
                 
             }
             else
             {
-                [self showHUD];
-                [self.documentService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                    [self hideHUD];
-                    
-                    if (error)
-                    {
-                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                        [Notifier notifyWithAlfrescoError:error];
-                    }
-                    else
-                    {
-                        NSString *contentPath = [[RealmSyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
-                        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
-                        {
-                            contentPath = nil;
-                        }
-                        
-                        [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                       permissions:permissions
-                                                                                       contentFile:contentPath
-                                                                                  documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                           session:self.session
-                                                                              navigationController:self.navigationController
-                                                                                          animated:YES];
-                    }
-                }];
+                NSString *contentPath = [[RealmSyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
+                if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+                {
+                    contentPath = nil;
+                }
+                
+                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                               permissions:nil
+                                                                               contentFile:contentPath
+                                                                          documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                                   session:self.session
+                                                                      navigationController:self.navigationController
+                                                                                  animated:YES];
             }
             
             if(self.shouldAutoSelectFirstItem)
@@ -1445,15 +1192,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.item == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.collectionViewData.count) intValue]];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.dataSource.numberOfNodesInCollection) intValue]];
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
             self.isLoadingAnotherPage = YES;
-            [self retrieveContentOfFolder:self.displayFolder usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                    [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
-                    self.isLoadingAnotherPage = NO;
-            }];
+            [self.dataSource retreiveNextItems:moreListingContext];
         }
     }
     
@@ -1645,7 +1389,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL
 {
-    [self retrievePermissionsForNode:node];
+//    [self retrievePermissionsForNode:node];
     [self addAlfrescoNodes:@[node] completion:nil];
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"upload.success-as.message", @"Document uplaoded as"), node.name]);
@@ -1687,7 +1431,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     for (AlfrescoNode *node in selectedItems)
     {
-        AlfrescoPermissions *nodePermission = self.nodePermissions[node.identifier];
+        AlfrescoPermissions *nodePermission = self.dataSource.nodesPermissions[node.identifier];
         if (!nodePermission.canDelete)
         {
             [self.multiSelectToolbar enableAction:kMultiSelectDelete enable:NO];
@@ -1746,7 +1490,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
 {
     AlfrescoNode *nodeToDelete = (self.isOnSearchResults) ? self.searchResults[indexPath.item] : self.collectionViewData[indexPath.item];
-    AlfrescoPermissions *permissionsForNodeToDelete = self.nodePermissions[nodeToDelete.identifier];
+    AlfrescoPermissions *permissionsForNodeToDelete = self.dataSource.nodesPermissions[nodeToDelete.identifier];
     
     if (permissionsForNodeToDelete.canDelete)
     {
@@ -1766,39 +1510,18 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
 - (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {
-    NSIndexPath *selectedIndexPath = nil;
-    
-    if (self.isOnSearchResults)
-    {
-        NSUInteger item = [self.searchResults indexOfObject:node];
-        selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
-    }
-    else
-    {
-        NSUInteger item = [self.collectionViewData indexOfObject:node];
-        selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
-    }
+    NSUInteger item = [self.dataSource indexOfNode:node];
+    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
     
     if (node.isFolder)
     {
         [self.collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
-        [self.documentService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-            if (permissions)
-            {
-                [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
-                                                                             permissions:permissions
-                                                                                 session:self.session
-                                                                    navigationController:self.navigationController
-                                                                                animated:YES];
-            }
-            else
-            {
-                NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), node.name];
-                displayErrorMessage(permissionRetrievalErrorMessage);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-        }];
+        [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
+                                                                     permissions:nil
+                                                                         session:self.session
+                                                            navigationController:self.navigationController
+                                                                        animated:YES];
     }
     else
     {
@@ -2061,7 +1784,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    if (self.folderPermissions.canEdit)
+    if (self.dataSource.parentFolderPermissions.canEdit)
     {
         UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self setEditing:!self.editing animated:YES];
