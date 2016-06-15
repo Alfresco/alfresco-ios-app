@@ -19,9 +19,6 @@
 #import "BaseInboundURLHandler.h"
 #import "DownloadManager.h"
 
-#warning Should replace old sync implementation with new one (part of the update file stories)
-#import "SyncHelper.h"
-#import "SyncManager.h"
 #import "RealmSyncManager.h"
 
 @interface BaseInboundURLHandler () <NSFileManagerDelegate>
@@ -67,16 +64,18 @@
         NSString *temporaryFilePath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:fileNameWithCorrectExtension];
         [self overwriteItemAtPath:temporaryFilePath withItemAtPath:url.path];
         
-        AlfrescoDocument *syncedDocument = [[SyncHelper sharedHelper] syncDocumentFromDocumentIdentifier:metadata.nodeRef];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        AlfrescoDocument *syncedDocument = (AlfrescoDocument *)[[RealmSyncManager sharedManager] alfrescoNodeForIdentifier:metadata.nodeRef inRealm:realm];
         
         if (syncedDocument)
         {
+            NSString *syncDocumentIdentifier = syncedDocument.identifier;
             [self overwriteItemAtPath:originalFilePath withItemAtPath:temporaryFilePath];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
             
-            [[SyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
-                
-                AlfrescoDocument *editedDocument = (AlfrescoDocument *)[[SyncManager sharedManager] alfrescoNodeForIdentifier:syncedDocument.identifier];
+            [[RealmSyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                AlfrescoDocument *editedDocument = (AlfrescoDocument *)[[RealmSyncManager sharedManager] alfrescoNodeForIdentifier:syncDocumentIdentifier inRealm:realm];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:editedDocument];
             }];
         }

@@ -43,128 +43,7 @@
     [self doesNotRecognizeSelector:_cmd];
 }
 
-- (void)showSearchProgressHUD
-{
-    [self.progressHUD show:YES];
-}
-
-- (void)hideSearchProgressHUD
-{
-    [self.progressHUD hide:YES];
-}
-
 #pragma mark - Custom getters and setters
-
-- (void)setDisplayFolder:(AlfrescoFolder *)displayFolder
-{
-    _displayFolder = displayFolder;
-    
-    if (_displayFolder)
-    {
-        [self showHUD];
-        [self retrieveContentOfFolder:_displayFolder usingListingContext:nil completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-            [self hideHUD];
-            if (pagingResult)
-            {
-                [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCollectionView" object:nil];
-            }
-            else
-            {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed"), [ErrorDescriptions descriptionForError:error]]);
-                [Notifier notifyWithAlfrescoError:error];
-            }
-        }];
-    }
-}
-
-#pragma mark CollectionView Delegate and Datasource Methods
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    FileFolderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
-    
-    // config the cell here...
-    AlfrescoNode *currentNode = nil;
-    if (self.isOnSearchResults)
-    {
-        currentNode = [self.searchResults objectAtIndex:indexPath.item];
-    }
-    else
-    {
-        currentNode = [self.collectionViewData objectAtIndex:indexPath.item];
-    }
-
-    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    
-    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
-    BOOL isTopLevelSyncNode = [syncManager isTopLevelSyncNode:currentNode];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-    
-    [cell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncNode isTopLevelSyncNode:isTopLevelSyncNode animate:NO];
-    
-    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        [cell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncNode isTopLevelSyncNode:isTopLevelSyncNode animate:NO];
-    }];
-    
-    BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];
-    if ([currentNode isKindOfClass:[AlfrescoFolder class]])
-    {
-        if(currentLayout.shouldShowSmallThumbnail)
-        {
-            [cell.image setImage:smallImageForType(@"folder") withFade:NO];
-        }
-        else
-        {
-            [cell.image setImage:largeImageForType(@"folder") withFade:NO];
-        }
-    }
-    else
-    {
-        AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-        
-        UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-        if (thumbnail)
-        {
-            [cell.image setImage:thumbnail withFade:NO];
-        }
-        else
-        {
-            if(currentLayout.shouldShowSmallThumbnail)
-            {
-                [cell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
-            }
-            else
-            {
-                [cell.image setImage:largeImageForType([documentNode.name pathExtension]) withFade:NO];
-            }
-            
-            [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                @try
-                {
-                    if (image)
-                    {
-                        // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
-                        // by the time completion block is called the table view could have been unloaded.
-                        if (collectionView && indexPath)
-                        {
-                            FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-                            [updateCell.image setImage:image withFade:YES];
-                        }
-                    }
-                }
-                @catch (NSException *exception)
-                {
-                    AlfrescoLogError(@"Exception thrown is %@", exception);
-                }
-            }];
-        }
-    }
-    
-    return cell;
-}
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -227,9 +106,9 @@
 #pragma mark - Public methods
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options
 {
-    [self showSearchProgressHUD];
+    [self showHUD];
     [self.searchService searchWithKeywords:stringToSearch options:options completionBlock:^(NSArray *array, NSError *error) {
-        [self hideSearchProgressHUD];
+        [self hideHUD];
         if (array)
         {
             self.isOnSearchResults = isFromSearchBar;
