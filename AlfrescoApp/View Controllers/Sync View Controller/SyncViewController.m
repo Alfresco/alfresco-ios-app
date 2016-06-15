@@ -361,7 +361,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
     
-    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
+//    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
 //    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
     [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {

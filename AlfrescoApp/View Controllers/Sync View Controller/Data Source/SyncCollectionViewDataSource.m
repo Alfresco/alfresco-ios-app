@@ -32,15 +32,19 @@
 
 @implementation SyncCollectionViewDataSource
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node
+- (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
 {
-    self = [super init];
+    self = [super initWithParentNode:node session:session delegate:delegate];
     if(!self)
     {
         return nil;
     }
     
-    self.parentNode = node;
+    if(!node)
+    {
+        self.screenTitle = NSLocalizedString(@"sync.title", @"Sync Title");
+    }
+    self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
     
     __weak typeof(self) weakSelf = self;
     self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error) {
@@ -56,7 +60,12 @@
             {
                 [weakSelf setupDataSourceCollection:weakSelf.syncDataSourceCollection];
             }
-            
+        }
+        else if(error)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.delegate requestFailedWithError:error stringFormat:@"%@"];
+            });
         }
     }];
     return self;
@@ -77,7 +86,7 @@
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.delegate dataSourceHasChanged];
+        [weakSelf.delegate dataSourceUpdated];
     });
 }
 

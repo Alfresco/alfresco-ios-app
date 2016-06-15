@@ -53,6 +53,7 @@
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
 - (NSString *)contentPathForNode:(AlfrescoDocument *)document;
+- (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm;
 
 /**
  * Sync operations

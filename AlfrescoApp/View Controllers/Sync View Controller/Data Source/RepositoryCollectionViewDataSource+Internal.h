@@ -22,7 +22,17 @@
 
 @property (nonatomic, strong) AlfrescoNode *parentNode;
 @property (nonatomic, strong) NSMutableArray *dataSourceCollection;
-@property (nonatomic, strong) NSMutableDictionary *nodePermissions;
+@property (nonatomic, strong) NSMutableDictionary *nodesPermissions;
+@property (nonatomic, strong) AlfrescoPermissions *parentFolderPermissions;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
+
+- (void)setupWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
+
+- (void)retrieveContentsOfParentNode;
+- (void)retrievePermissionsForNode:(AlfrescoNode *)node;
+- (void)retrieveAndSetPermissionsOfCurrentFolder;
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 
 @end
