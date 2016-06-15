@@ -62,6 +62,7 @@
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
 - (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 - (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path;
+- (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 /**
  * Sync Feature

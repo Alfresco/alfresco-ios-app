@@ -669,14 +669,30 @@
 
 - (void)pressedSyncActionItem:(ActionCollectionItem *)actionItem
 {
-    //TODO:
-    NSLog(@"==== Sync action button pressed");
+
+    [[RealmSyncManager sharedManager] addNodeToSync:self.node withCompletionBlock:^(BOOL completed)
+    {
+        if (completed)
+        {
+            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnsync,
+                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unsync", @"Unsync Action"),
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unsync.png"};
+            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierSync userInfo:userInfo];
+        }
+    }];
 }
 
 - (void)pressedUnsyncActionItem:(ActionCollectionItem *)actionItem
 {
     //TODO:
     NSLog(@"==== Unsync action button pressed");
+    
+    return;
+    
+    NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierSync,
+                               kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.sync", @"Sync Action"),
+                               kActionCollectionItemUpdateItemImageKey : @"actionsheet-sync.png"};
+    [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnsync userInfo:userInfo];
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks

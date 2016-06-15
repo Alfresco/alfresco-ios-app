@@ -191,6 +191,8 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         
         if (self.isSyncNode)
         {
+            self.isSyncNodeImageView.hidden = NO;
+            
             if(self.isTopLevelSyncNode)
             {
                 self.isSyncRightSpaceConstraint.constant = kFavoriteIconRightSpace;
@@ -213,6 +215,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         else
         {
             self.syncIconWidthConstraint.constant = 0;
+            self.isSyncNodeImageView.hidden = YES;
             self.favoriteIconRightSpaceConstraint.constant = 0;
             self.isSyncRightSpaceConstraint.constant = 0;
         }

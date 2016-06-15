@@ -69,14 +69,16 @@
     self.dataSourceCollection = [NSMutableArray new];
     for(RealmSyncNodeInfo *nodeInfo in collection)
     {
-        [self.dataSourceCollection addObject:nodeInfo.alfrescoNode];
+        if (nodeInfo.alfrescoNode)
+        {
+            [self.dataSourceCollection addObject:nodeInfo.alfrescoNode];
+        }
     }
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf.delegate dataSourceHasChanged];
     });
-    
 }
 
 @end
