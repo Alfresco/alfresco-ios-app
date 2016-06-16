@@ -375,11 +375,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     __weak typeof(self) weakSelf = self;
     
     void (^removeAccount)() = ^(){
-	    [[RealmSyncManager sharedManager] disableSyncForAccount:account fromViewController:self cancelBlock:^{
-	        [self performSelector:@selector(hideDeleteButton) withObject:nil afterDelay:0.05];
+	    [[RealmSyncManager sharedManager] disableSyncForAccount:account fromViewController:weakSelf cancelBlock:^{
+	        [weakSelf performSelector:@selector(hideDeleteButton) withObject:nil afterDelay:0.05];
 	    } completionBlock:^{
 	        [accountManager removeAccount:account];
-	        [self updateAccountList];
+	        [weakSelf updateAccountList];
 	    }];
     };
     

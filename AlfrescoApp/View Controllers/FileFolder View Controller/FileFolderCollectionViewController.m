@@ -237,13 +237,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         self.controllerType = FileFolderCollectionViewControllerTypeCustomFolderType;
         self.customFolderType = folderType;
-- (instancetype)initForFavoritesWithSession:(id<AlfrescoSession>)session
         [self setupWithFolder:nil folderPermissions:nil folderDisplayName:displayName session:session];
     }
     
     return self;
 }
 
+- (instancetype)initForFavoritesWithSession:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
