@@ -130,7 +130,7 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         NSMutableDictionary *keychainItem = [self keychainItem:keychainItemId withValue:value];
         
         OSStatus statusCode = SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
-        if (statusCode != errSecSuccess)
+        if (error && statusCode != errSecSuccess)
         {
             *error = [NSError errorWithDomain:@"SecItemAdd failed" code:statusCode userInfo:nil];
         }
@@ -151,7 +151,7 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         [updateDictionary setObject:encodedValue forKey:(__bridge id)kSecValueData];
         
         OSStatus statusCode = SecItemUpdate((__bridge CFDictionaryRef)keychainItemQuery, (__bridge CFDictionaryRef)updateDictionary);
-        if (statusCode != errSecSuccess)
+        if (error && statusCode != errSecSuccess)
         {
             *error = [NSError errorWithDomain:@"SecItemUpdate failed" code:statusCode userInfo:nil];
         }
@@ -173,16 +173,15 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         id obj = [NSKeyedUnarchiver unarchiveObjectWithData:decryptedData];
         return obj;
     }
-    else if (statusCode == errSecItemNotFound)
+    else if (error && statusCode == errSecItemNotFound)
     {
         *error = [NSError errorWithDomain:@"SecItemCopyMatching failed. Item not found" code:statusCode userInfo:nil];
-        return nil;
     }
-    else
+    else if (error)
     {
         *error = [NSError errorWithDomain:@"SecItemCopyMatching failed " code:statusCode userInfo:nil];
-        return nil;
     }
+    return nil;
 }
 
 + (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
