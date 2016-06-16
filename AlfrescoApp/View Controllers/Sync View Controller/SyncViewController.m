@@ -160,8 +160,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     if (self.parentNode == nil)
     {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-        [[AnalyticsManager sharedManager] trackScreenWithName:isSyncOn ? kAnalyticsViewMenuSyncedContent : kAnalyticsViewMenuFavorites];
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
     }
 }
 
@@ -203,7 +202,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (NSString *)listTitle
 {
     NSString *title = @"";
-    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
     
     if (self.parentNode)
     {
@@ -211,10 +209,10 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     else
     {
-        title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
+        title = NSLocalizedString(@"sync.title", @"Sync Title");
     }
     
-    self.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
+    self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
     return title;
 }
 
@@ -363,12 +361,12 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
     
-    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
+//    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
     
-    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
+//    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
     [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
         
-        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
+//        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
     }];
     
     BaseCollectionViewFlowLayout *currentLayout = [self layoutForStyle:self.style];

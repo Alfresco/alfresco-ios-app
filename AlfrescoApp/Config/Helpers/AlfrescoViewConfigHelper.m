@@ -64,6 +64,19 @@
     return viewGroupConfig;
 }
 
+- (NSString *)viewIdentifierForViewType:(NSString *)viewType
+{
+    for(NSString *viewIdentifier in self.views.allKeys)
+    {
+        AlfrescoViewConfig *viewConfig = self.views[viewIdentifier];
+        if([viewConfig.type isEqualToString:viewType])
+        {
+            return viewIdentifier;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Parsing methods
 
 - (void)parseViews:(NSDictionary *)viewsJSON

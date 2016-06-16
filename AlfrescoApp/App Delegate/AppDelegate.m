@@ -37,6 +37,8 @@
 #import "UniversalDevice.h"
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "SecurityManager.h"
+#import "UnderlayViewController.h"
+#import "RealmSyncManager+CoreDataMigration.h"
 #import <HockeySDK/HockeySDK.h>
 
 @import MediaPlayer;
@@ -130,6 +132,12 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     }
     
     [MigrationAssistant runDownloadsMigration];
+    
+#warning Code commented for testing purposes
+//    if([[RealmSyncManager sharedManager] isCoreDataMigrationNeeded])
+//    {
+        [[RealmSyncManager sharedManager] initiateMigrationProcess];
+//    }
     
     // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];
@@ -365,6 +373,23 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                                                 customMetric:AnalyticsMetricNone
                                                  metricValue:nil
                                                      session:self.session];
+    
+    if([[RealmSyncManager sharedManager] shouldShowSyncInfoPanel])
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SyncRefactorInfoPanel" bundle:[NSBundle mainBundle]];
+        UnderlayViewController *underlayViewController = (UnderlayViewController *)[storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([UnderlayViewController class])];
+        underlayViewController.view.alpha = 0.0;
+        
+        RootRevealViewController *rootRevealViewController = (RootRevealViewController *)[UniversalDevice revealViewController];
+        if([rootRevealViewController hasOverlayController])
+        {
+            [rootRevealViewController removeOverlayedViewControllerWithAnimation:YES];
+        }
+        [rootRevealViewController addOverlayedViewController:underlayViewController];
+        [UIView animateWithDuration:0.3f animations:^{
+            underlayViewController.view.alpha = 1.0;
+        } completion:nil];
+    }
 }
 
 - (void)configureManagedObjectWithDictionary:(NSDictionary *)managedDictionary completionBlock:(void (^)(BOOL successful, BOOL addedAccount, UserAccount *configuredAccount, NSError *configurationError))completionBlock
@@ -464,7 +489,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     RootRevealViewController *rootRevealController = (RootRevealViewController *)[UniversalDevice revealViewController];
     
-    if (rootRevealController.hasOverlayController)
+    if ((rootRevealController.hasOverlayController) && ([rootRevealController.overlayedViewController isKindOfClass:[OnboardingViewController class]]))
     {
         [rootRevealController removeOverlayedViewControllerWithAnimation:NO];
     }

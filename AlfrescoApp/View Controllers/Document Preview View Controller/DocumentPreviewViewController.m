@@ -35,6 +35,7 @@
 #import "ThumbnailManager.h"
 #import "UniversalDevice.h"
 #import "VersionHistoryViewController.h"
+#import "AccountManager.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 #define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
@@ -200,6 +201,10 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     
     NSMutableArray *items = [NSMutableArray array];
     
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        [items addObject:[ActionCollectionItem unsyncItem]];
+    }
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
     
@@ -381,6 +386,14 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUploadNewVersion])
     {
         [self.actionHandler pressedUploadNewVersion:actionItem node:self.document];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierSync])
+    {
+        [self.actionHandler pressedSyncActionItem:actionItem];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUnsync])
+    {
+        [self.actionHandler pressedUnsyncActionItem:actionItem];
     }
     
     [self shouldFocusComments:shouldFocusComments];

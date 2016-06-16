@@ -37,7 +37,7 @@ static const CGFloat kAnimationSpeed = 0.2f;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, assign) BOOL shouldExpandOrCollapse;
 
-@property (nonatomic, strong) UIViewController *overlayedViewController;
+@property (nonatomic, strong, readwrite) UIViewController *overlayedViewController;
 
 @end
 

@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
     CollectionViewStyleGrid
 };
 
-@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate >
+@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate, CollectionViewMultiSelectDelegate >
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
@@ -54,6 +54,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *listLayout;
 @property (nonatomic, strong) BaseCollectionViewFlowLayout *gridLayout;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewTopConstraint;
+@property (nonatomic) BOOL shouldIncludeSearchBar;
 
 @property (nonatomic, strong) UIAlertController *actionsAlertController;
 
@@ -78,6 +79,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers;
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl;
 - (void)showLoadingTextInRefreshControl:(UIRefreshControl *)refreshControl;
+- (void)connectivityChanged:(NSNotification *)notification;
 
 - (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated;
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style;

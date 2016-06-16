@@ -68,7 +68,10 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 - (void)removeControllerFromParentController
 {
     RootRevealViewController *parentViewController = (RootRevealViewController *)self.parentViewController;
-    [parentViewController removeOverlayedViewControllerWithAnimation:YES];
+    if((parentViewController.hasOverlayController) && ([parentViewController.overlayedViewController isKindOfClass:[OnboardingViewController class]]))
+    {
+        [parentViewController removeOverlayedViewControllerWithAnimation:YES];
+    }
 }
 
 - (void)localiseUI

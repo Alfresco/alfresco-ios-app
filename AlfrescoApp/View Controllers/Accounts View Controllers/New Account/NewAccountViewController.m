@@ -32,6 +32,7 @@
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "ProfileSelectionViewController.h"
 #import "AppConfigurationManager.h"
+#import "RealmSyncManager.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
@@ -172,7 +173,6 @@ static NSInteger const kTagProfileCell = 3;
     self.formBackupAccount.serverPort = [self.portTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.formBackupAccount.protocol = self.protocolSwitch.isOn ? kProtocolHTTPS : kProtocolHTTP;
     self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    self.formBackupAccount.isSyncOn = self.syncPreferenceSwitch.isOn;
 }
 
 /**
@@ -231,12 +231,6 @@ static NSInteger const kTagProfileCell = 3;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     
@@ -281,13 +275,16 @@ static NSInteger const kTagProfileCell = 3;
                                                                    value:@1];
                 
                 AccountManager *accountManager = [AccountManager sharedManager];
+                [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
+                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:self.account];
                     [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
                 }
                 else if (accountManager.selectedAccount == self.account)
                 {
+                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:self.account];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 }
                 
@@ -312,13 +309,6 @@ static NSInteger const kTagProfileCell = 3;
         [self updateFormBackupAccount];
         
         self.account.accountDescription = self.formBackupAccount.accountDescription;
-        self.account.isSyncOn = self.formBackupAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
-        
         [[AccountManager sharedManager] saveAccountsToKeychain];
         
         [self dismissViewControllerAnimated:YES completion:^{
@@ -663,12 +653,6 @@ static NSInteger const kTagProfileCell = 3;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
     };
     

@@ -201,4 +201,10 @@
     return nil;
 }
 
+- (AlfrescoRequest *)isViewWithType:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile completionBlock:(void (^)(BOOL isViewPresent, NSError *error))completionBlock
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 @end

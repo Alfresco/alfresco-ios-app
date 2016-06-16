@@ -485,13 +485,6 @@ static NSInteger const kTagCertificateCell = 1;
     {
         [self updateFormBackupAccount];
         self.account.accountDescription = self.formBackupAccount.accountDescription;
-        self.account.isSyncOn = self.formBackupAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
-        
         [[AccountManager sharedManager] saveAccountsToKeychain];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
@@ -532,12 +525,6 @@ static NSInteger const kTagCertificateCell = 1;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
         
         [self.delegate accountInfoChanged:self.account];
@@ -600,12 +587,6 @@ static NSInteger const kTagCertificateCell = 1;
         self.account.protocol = temporaryAccount.protocol;
         self.account.serviceDocument = temporaryAccount.serviceDocument;
         self.account.accountCertificate = temporaryAccount.accountCertificate;
-        self.account.isSyncOn = temporaryAccount.isSyncOn;
-        // If Sync is now enabled, suppress the prompt in the Favorites view
-        if (self.account.isSyncOn)
-        {
-            self.account.didAskToSync = YES;
-        }
         self.account.paidAccount = temporaryAccount.isPaidAccount;
         
         [self.delegate accountInfoChanged:self.account];

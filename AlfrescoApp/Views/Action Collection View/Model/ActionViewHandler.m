@@ -28,7 +28,7 @@
 #import "DownloadsViewController.h"
 #import "NavigationViewController.h"
 #import "UploadFormViewController.h"
-#import "SyncManager.h"
+#import "RealmSyncManager.h"
 #import "CreateTaskViewController.h"
 #import "DocumentPreviewManager.h"
 #import "FilePreviewViewController.h"
@@ -426,7 +426,7 @@
     AlfrescoRequest *request = nil;
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
 
-    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync || [[SyncManager sharedManager] isNodeInSyncList:self.node])
+    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync || [[RealmSyncManager sharedManager] isNodeInSyncList:self.node])
     {
         displayOpenInBlock(documentPath);
     }
@@ -511,21 +511,23 @@
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.node];
                     [UniversalDevice clearDetailViewController];
-                    SyncManager *syncManager = [SyncManager sharedManager];
+                    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
                     if ([syncManager isNodeInSyncList:weakSelf.node])
                     {
                         [syncManager deleteNodeFromSync:weakSelf.node withCompletionBlock:^(BOOL savedLocally) {
                             
-                            NSString *successMessage = @"";
-                            if (savedLocally)
-                            {
-                                successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.node.name];
-                            }
-                            else
-                            {
-                                successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
-                            }
-                            displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                NSString *successMessage = @"";
+                                if (savedLocally)
+                                {
+                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.node.name];
+                                }
+                                else
+                                {
+                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
+                                }
+                                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                            });
                         }];
                     }
                     else
@@ -663,6 +665,18 @@
     NavigationViewController *newVersionNavigationController = [[NavigationViewController alloc] initWithRootViewController:newViewController];
     newVersionNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.controller presentViewController:newVersionNavigationController animated:YES completion:nil];
+}
+
+- (void)pressedSyncActionItem:(ActionCollectionItem *)actionItem
+{
+    //TODO:
+    NSLog(@"==== Sync action button pressed");
+}
+
+- (void)pressedUnsyncActionItem:(ActionCollectionItem *)actionItem
+{
+    //TODO:
+    NSLog(@"==== Unsync action button pressed");
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks

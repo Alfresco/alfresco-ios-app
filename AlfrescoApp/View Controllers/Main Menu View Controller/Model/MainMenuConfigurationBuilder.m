@@ -38,6 +38,8 @@
 #import "SyncNavigationViewController.h"
 #import "SearchResultsTableViewController.h"
 
+#import "RealmSyncViewController.h"
+
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
 
@@ -351,8 +353,16 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
     {
+        // Favorites
+        FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initForFavoritesWithSession:self.session];
+        associatedObject = favoritesViewController;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
+    {
         // Sync
-        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
+//        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
+        
+        RealmSyncViewController *syncViewController = [[RealmSyncViewController alloc] initWithParentNode:nil andSession:self.session];
         SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
         associatedObject = syncNavigationController;
     }
@@ -411,6 +421,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeDocumentDetails])
     {
+        // Document
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
         
@@ -429,6 +440,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearchRepository])
     {
+        // Search repository
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
         if([parameterKeys containsObject:kAlfrescoConfigViewParameterKeywordsKey])
@@ -445,6 +457,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearch])
     {
+        // Search
         SearchViewController *controller = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeLandingPage session:self.session];
         associatedObject = controller;
     }
@@ -455,6 +468,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSite])
     {
+        // Sites
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         SitesViewController *sitesListViewController = nil;
         

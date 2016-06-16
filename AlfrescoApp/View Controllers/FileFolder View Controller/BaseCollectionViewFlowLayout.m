@@ -235,7 +235,7 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
     }
     attributes.animated = NO;
     attributes.editing = self.isEditing;
-    attributes.isSelectedInEditMode = [self.dataSourceInfoDelegate isItemSelected:indexPath];
+    attributes.isSelectedInEditMode = [self.collectionViewMultiSelectDelegate isItemSelected:indexPath];
     attributes.thumbnailContentTrailingSpace = (self.numberOfColumns == 1) ? self.itemSize.width - kThumbnailWidthInListLayout - kThumbnailSideSpace : kThumbnailSideSpace;
     attributes.shouldShowSeparatorView = (self.numberOfColumns == 1);
     attributes.shouldShowAccessoryView = (self.numberOfColumns == 1);

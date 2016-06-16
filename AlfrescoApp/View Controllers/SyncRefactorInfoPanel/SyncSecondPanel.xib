@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SyncSecondPanel">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="339"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What about the files I already favorited?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfn-1u-FIU">
+                    <rect key="frame" x="30" y="132" width="540" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No problem, they're all still synced!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgK-Qx-f7V">
+                    <rect key="frame" x="30" y="161" width="540" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When you favorite files from now on. they'll be in your Favorites tab, but you need to sync them if you want offline access." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYo-BA-8zV">
+                    <rect key="frame" x="30" y="186" width="540" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="DYo-BA-8zV" firstAttribute="top" secondItem="tgK-Qx-f7V" secondAttribute="bottom" constant="8" id="FSl-GP-0I4"/>
+                <constraint firstItem="qfn-1u-FIU" firstAttribute="width" secondItem="DYo-BA-8zV" secondAttribute="width" id="OTZ-7i-wJa"/>
+                <constraint firstItem="DYo-BA-8zV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Qbk-xK-jzG"/>
+                <constraint firstAttribute="trailing" secondItem="DYo-BA-8zV" secondAttribute="trailing" constant="30" id="Yeu-nK-OyY"/>
+                <constraint firstItem="tgK-Qx-f7V" firstAttribute="top" secondItem="qfn-1u-FIU" secondAttribute="bottom" constant="8" id="f2V-Aj-pmk"/>
+                <constraint firstItem="tgK-Qx-f7V" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="gCi-cN-mic"/>
+                <constraint firstItem="qfn-1u-FIU" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gku-Do-Zfa"/>
+                <constraint firstItem="tgK-Qx-f7V" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="pQD-Bk-PYV"/>
+                <constraint firstItem="tgK-Qx-f7V" firstAttribute="width" secondItem="DYo-BA-8zV" secondAttribute="width" id="sEn-Ks-lrz"/>
+                <constraint firstItem="DYo-BA-8zV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="yXx-lK-9dk"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="syncFirstLabel" destination="tgK-Qx-f7V" id="EqR-mK-zlK"/>
+                <outlet property="syncSecondLabel" destination="DYo-BA-8zV" id="Hg4-n5-Cet"/>
+                <outlet property="syncTitleLabel" destination="qfn-1u-FIU" id="wLd-au-JfI"/>
+            </connections>
+            <point key="canvasLocation" x="515" y="366.5"/>
+        </view>
+    </objects>
+</document>

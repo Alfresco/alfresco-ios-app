@@ -23,6 +23,7 @@
 #import "TagPickerViewController.h"
 #import "UniversalDevice.h"
 #import "LocationManager.h"
+#import "RealmSyncManager.h"
 
 NS_ENUM(NSUInteger, UploadFormCellTypes)
 {
@@ -645,6 +646,8 @@ static NSString * const kAudioFileName = @"audio.m4a";
                                                          metricValue:@(document.contentLength)
              ];
             
+            [[RealmSyncManager sharedManager] didUploadNode:document fromPath:weakSelf.contentFile.fileUrl.absoluteURL.path toFolder:weakSelf.uploadToFolder];
+            
             NSError *deleteAfterUploadError = nil;
             [[AlfrescoFileManager sharedManager] removeItemAtPath:weakSelf.contentFile.fileUrl.absoluteURL.path error:&deleteAfterUploadError];
             
@@ -753,6 +756,8 @@ static NSString * const kAudioFileName = @"audio.m4a";
                                                                    value:@1
                                                             customMetric:AnalyticsMetricFileSize
                                                              metricValue:@(document.contentLength)];
+                
+                [[RealmSyncManager sharedManager] didUploadNode:document fromPath:pathToTempFile toFolder:weakSelf.uploadToFolder];
                 
                 NSError *deleteAfterUploadError = nil;
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:pathToTempFile error:&deleteAfterUploadError];
