@@ -18,7 +18,7 @@
 
 #import "ParentCollectionViewController.h"
 #import "FileFolderCollectionViewCell.h"
-#import "SyncManager.h"
+#import "RealmSyncManager.h"
 #import "FavouriteManager.h"
 #import "ThumbnailManager.h"
 #import "LoadingCollectionViewCell.h"
@@ -37,8 +37,6 @@
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
             usingListingContext:(AlfrescoListingContext *)listingContext
                 completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
-- (void)showSearchProgressHUD;
-- (void)hideSearchProgressHUD;
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options;
 
 @end

@@ -126,6 +126,7 @@
 "error.filefolder.content.failedtoretrieve" = "The file / folder couldn’t be retrieved.\n\n%@.";
 "error.filefolder.unable.to.delete" = "The file / folder couldn’t be deleted.\n\n%@";
 "error.sites.documentlibrary.failed" = "Couldn’t access Document Library.\n\n%@.";
+"error.filefolder.favorites.failed" = "Couldn't access Favorites.\n\n%@";
 "error.sites.retrieval.failed" = "Couldn’t retrieve sites.\n\n%@.";
 "error.sites.folder.failed" = "Couldn’t retrieve sites folder.\n\n%@.";
 "error.sites.search.failed" = "Couldn’t search across sites.\n\n%@.";
@@ -711,6 +712,8 @@
 "action.review" = "Review";
 "action.edit" = "Edit";
 "action.new.version" = "Update";
+"action.sync" = "Sync";
+"action.unsync" = "Unsync";
 // Alerts
 "action.rename.alert.title" = "Rename";
 "action.rename.alert.message" = "Rename file to:";
@@ -729,6 +732,14 @@
 "action.delete.failed.message" = "%@ couldn’t be deleted.";
 "action.confirmation.back.message" = "Do you want to save changes to this account?";
 "action.confirmation.back.title" = "Unsaved Changes";
+"action.disablesync.title" = "Turn Off Sync";
+"action.disablesync.message" = "This will turn off sync functionality and remove any synced content.";
+"action.disablesync.confirm" = "Turn Off Sync";
+"action.pendingoperations.title" = "Incomplete Syncs";
+"action.pendingoperations.message" = "Some files are still syncing to Alfresco. If you turn off sync now these won't complete.";
+"action.pendingoperations.cancel" = "Continue Syncing";
+"action.pendingoperations.confirm" = "Turn Off Sync";
+
 
 /**
  * SaveBack
@@ -804,6 +815,7 @@
 "view-favorite-default" = "Favorites";
 "view-search-default" = "Search";
 "view-local-default" = "Local Files";
+"view-sync-default" = "Synced Content";
 
 "configuration.manager.configuration.file.updated.title" = "Configuration Updated";
 "configuration.manager.configuration.file.updated.message" = "The configuration file has been updated";
@@ -871,3 +883,9 @@
 "search.searchfor" = "Search For";
 "search.search" = "Search";
 "search.previoussearches" = "Previous Searches";
+
+/**
+ * Sync Info Panel
+ */
+"sync.info.skip" = "Skip";
+"sync.info.next.laststep" = "Ok, I've got it.";

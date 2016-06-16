@@ -20,6 +20,7 @@
 #import "SyncManager.h"
 #import "ThumbnailManager.h"
 #import "AlfrescoNodeCell.h"
+#import "SyncConstants.h"
 
 static NSInteger const kSectionDataIndex = 0;
 static NSInteger const kSectionHeaderIndex = 1;

@@ -18,9 +18,14 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol DataSourceInformationProtocol <NSObject>
+@protocol CollectionViewMultiSelectDelegate <NSObject>
 
 - (BOOL) isItemSelected:(NSIndexPath *) indexPath;
+
+@end
+
+@protocol DataSourceInformationProtocol <NSObject>
+
 - (NSInteger) indexOfNode:(AlfrescoNode *)node;
 - (BOOL) isNodeAFolderAtIndex:(NSIndexPath *)indexPath;
 
@@ -28,6 +33,7 @@
 
 @interface BaseCollectionViewFlowLayout : UICollectionViewFlowLayout
 
+@property (nonatomic, weak) id<CollectionViewMultiSelectDelegate> collectionViewMultiSelectDelegate;
 @property (nonatomic, weak) id<DataSourceInformationProtocol> dataSourceInfoDelegate;
 
 @property (nonatomic) NSUInteger numberOfColumns;

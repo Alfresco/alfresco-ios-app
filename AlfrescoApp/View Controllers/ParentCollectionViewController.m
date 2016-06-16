@@ -133,7 +133,7 @@
 - (void)reloadCollectionView
 {
     [self.collectionView reloadData];
-    if (!IS_IPAD)
+    if ((!IS_IPAD) && (self.shouldIncludeSearchBar))
     {
         // hide search bar initially
         self.collectionView.contentOffset = CGPointMake(0., 40.);
@@ -153,7 +153,7 @@
         self.collectionViewData = data ?: [pagingResult.objects mutableCopy];
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.collectionView reloadData];
-        if (!IS_IPAD)
+        if ((!IS_IPAD) && (self.shouldIncludeSearchBar))
         {
             // hide search bar initially
             self.collectionView.contentOffset = CGPointMake(0., 40.);

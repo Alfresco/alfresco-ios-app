@@ -17,10 +17,10 @@
  ******************************************************************************/
  
 #import "AccountTypeSelectionViewController.h"
-//#import "AccountInfoViewController.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "NewAccountViewController.h"
+#import "RealmSyncManager.h"
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
@@ -127,9 +127,11 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
                                                                    value:@1];
                 
                 AccountManager *accountManager = [AccountManager sharedManager];
+                [[RealmSyncManager sharedManager] realmForAccount:account.accountIdentifier];
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
+                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:account];
                     [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
                 }
                 

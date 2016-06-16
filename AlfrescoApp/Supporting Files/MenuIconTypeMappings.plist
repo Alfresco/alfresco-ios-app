@@ -24,5 +24,9 @@
 	<string>mainmenu-user.png</string>
 	<key>org.alfresco.client.view.people</key>
 	<string>mainmenu-groups.png</string>
+	<key>org.alfresco.client.view.favorites</key>
+	<string>mainmenu-favourites.png</string>
+	<key>org.alfresco.client.view.sync</key>
+	<string>mainmenu-sync.png</string>
 </dict>
 </plist>

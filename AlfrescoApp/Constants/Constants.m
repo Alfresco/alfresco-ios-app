@@ -58,6 +58,8 @@ NSString * const kSearchTypeFiles = @"ALFSearchTypeFiles";
 NSString * const kSearchTypeFolders = @"ALFSearchTypeFolders";
 NSString * const kSearchTypeSites = @"ALFSearchTypeSites";
 NSString * const kSearchTypeUsers = @"ALFSearchTypeUsers";
+NSString * const kHasCoreDataMigrationOccurred = @"hasMigrationOccurred";
+NSString * const kWasSyncInfoPanelShown = @"wasSyncInfoPanelShown";
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";
@@ -127,6 +129,10 @@ NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 NSString * const kFavoritesListUpdatedNotification = @"kFavoritesListUpdatedNotification";
 NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressViewVisiblityChangeNotification";
+
+// Realm sync exceptions
+NSString * const kFailedToCreateRealmDatabase = @"FailedToCreateRealmDatabase";
+NSString * const kRealmSyncErrorKey = @"RealmSyncErrorKey";
 
 // Download Notifications
 NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"DocumentPreviewManagerWillStartDownloadNotification";

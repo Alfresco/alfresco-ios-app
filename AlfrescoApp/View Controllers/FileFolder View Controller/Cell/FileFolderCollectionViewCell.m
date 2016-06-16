@@ -26,7 +26,7 @@ static CGFloat const kFavoriteIconWidth = 14.0f;
 static CGFloat const kFavoriteIconRightSpace = 4.0f;
 static CGFloat const kSyncIconWidth = 14.0f;
 static CGFloat const kUpdateStatusLeadingSpace = 8.0f;
-static CGFloat const kUpdateStatusContainerWidth = 40.0f;
+static CGFloat const kUpdateStatusContainerWidth = 54.0f;
 static CGFloat const kAccessoryViewInfoWidth = 50.0f;
 
 static CGFloat const kStatusIconsAnimationDuration = 0.2f;
@@ -38,6 +38,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 @property (nonatomic, strong) SyncNodeStatus *nodeStatus;
 @property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, assign) BOOL isSyncNode;
+@property (nonatomic, assign) BOOL isTopLevelSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
 
 @property (nonatomic, assign) BOOL isSelectedInEditMode;
@@ -48,6 +49,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
 @property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *isSyncNodeImageView;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconWidthConstraint;
@@ -55,6 +57,8 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconRightSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconRightSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *updateStatusViewContainerWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *isSyncRightSpaceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *isSyncWidthConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingContentViewContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trainlingContentViewContraint;
@@ -150,10 +154,11 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     [self updateNodeDetails:nodeStatus];
 }
 
-- (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate
+- (void)updateStatusIconsIsFavoriteNode:(BOOL)isFavorite isSyncNode:(BOOL)isSyncNode isTopLevelSyncNode:(BOOL)isTopLevelSyncNode animate:(BOOL)animate
 {
     self.isSyncNode = isSyncNode;
     self.isFavorite = isFavorite;
+    self.isTopLevelSyncNode = isTopLevelSyncNode;
     
     self.syncStatusImageView.image = nil;
     self.syncStatusImageView.highlightedImage = nil;
@@ -167,7 +172,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
     void (^updateStatusIcons)(void) = ^{
         
-        CGFloat updateContainerWidth = kUpdateStatusContainerWidth;
+        CGFloat updateContainerWidth = 0.0f;
         if (self.isFavorite)
         {
             self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
@@ -175,28 +180,41 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
             
             self.favoriteIconWidthConstraint.constant = kFavoriteIconWidth;
             self.favoriteIconRightSpaceConstraint.constant = kFavoriteIconRightSpace;
+            updateContainerWidth += kFavoriteIconWidth;
+            updateContainerWidth += kFavoriteIconRightSpace;
         }
         else
         {
             self.favoriteIconWidthConstraint.constant = 0;
             self.favoriteIconRightSpaceConstraint.constant = 0;
-            updateContainerWidth = updateContainerWidth - kFavoriteIconWidth - kFavoriteIconRightSpace;
         }
         
         if (self.isSyncNode)
         {
+            if(self.isTopLevelSyncNode)
+            {
+                self.isSyncRightSpaceConstraint.constant = kFavoriteIconRightSpace;
+                self.isSyncWidthConstraint.constant = kSyncIconWidth;
+                
+                updateContainerWidth += kFavoriteIconRightSpace;
+                updateContainerWidth += kSyncIconWidth;
+            }
+            else
+            {
+                self.isSyncRightSpaceConstraint.constant = 0;
+                self.isSyncWidthConstraint.constant = 0;
+            }
+            
             self.syncIconWidthConstraint.constant = kSyncIconWidth;
+            
+            updateContainerWidth += kSyncIconWidth;
+            updateContainerWidth += kFavoriteIconRightSpace;
         }
         else
         {
             self.syncIconWidthConstraint.constant = 0;
             self.favoriteIconRightSpaceConstraint.constant = 0;
-            updateContainerWidth = updateContainerWidth - kSyncIconWidth - kFavoriteIconRightSpace;
-        }
-        
-        if (updateContainerWidth < 0.0f)
-        {
-            updateContainerWidth = 0.0f;
+            self.isSyncRightSpaceConstraint.constant = 0;
         }
         
         self.updateStatusViewContainerWidthConstraint.constant = updateContainerWidth;
@@ -377,12 +395,12 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
             {
-                [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite animate:YES];
+                [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:YES isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
             }
             if (nodeStatus.status == SyncStatusRemoved)
             {
                 self.nodeStatus = nil;
-                [self updateStatusIconsIsSyncNode:NO isFavoriteNode:self.isFavorite animate:YES];
+                [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:NO animate:YES];
             }
             [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
         });
@@ -394,7 +412,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     AlfrescoNode *nodeFavorited = (AlfrescoNode *)notification.object;
     if ([nodeFavorited.identifier isEqualToString:self.node.identifier])
     {
-        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:YES animate:YES];
+        [self updateStatusIconsIsFavoriteNode:YES isSyncNode:self.isSyncNode isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
     }
 }
 
@@ -403,8 +421,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     AlfrescoNode *nodeUnFavorited = (AlfrescoNode *)notification.object;
     if ([nodeUnFavorited.identifier isEqualToString:self.node.identifier])
     {
-        self.isFavorite = NO;
-        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:NO animate:YES];
+        [self updateStatusIconsIsFavoriteNode:NO isSyncNode:self.isSyncNode isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
     }
 }
 
@@ -640,7 +657,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         [self.contentView bringSubviewToFront:self.editView];
     }
     
-    [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:self.isFavorite animate:NO];
+    [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:self.isSyncNode isTopLevelSyncNode:self.isTopLevelSyncNode animate:NO];
     
     [self layoutIfNeeded];
     

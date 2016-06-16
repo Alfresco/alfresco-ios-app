@@ -22,13 +22,6 @@
 #import "CoreDataSyncHelper.h"
 #import "SyncNodeStatus.h"
 
-NSString * const kLastDownloadedDateKey = @"lastDownloadedDate";
-NSString * const kSyncNodeKey = @"node";
-NSString * const kSyncContentPathKey = @"contentPath";
-NSString * const kSyncReloadContentKey = @"reloadContent";
-
-static NSString * const kAlfrescoNodeVersionSeriesIdKey = @"cmis:versionSeriesId";
-
 @interface SyncHelper ()
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
 @property (nonatomic, strong) CoreDataSyncHelper *syncCoreDataHelper;

@@ -27,6 +27,7 @@
 #import "PinViewController.h"
 #import "PreferenceManager.h"
 #import "TouchIDManager.h"
+#import "RealmSyncManager.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -374,8 +375,12 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     __weak typeof(self) weakSelf = self;
     
     void (^removeAccount)() = ^(){
-        [accountManager removeAccount:account];
-        [weakSelf updateAccountList];
+	    [[RealmSyncManager sharedManager] disableSyncForAccount:account fromViewController:self cancelBlock:^{
+	        [self performSelector:@selector(hideDeleteButton) withObject:nil afterDelay:0.05];
+	    } completionBlock:^{
+	        [accountManager removeAccount:account];
+	        [self updateAccountList];
+	    }];
     };
     
     // If this is the last paid account and passcode is enabled, authenticate via passcode before deleting the account.
@@ -512,6 +517,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             }
         }];
     }
+}
+
+- (void)hideDeleteButton
+{
+    [self.tableView setEditing:NO animated:YES];
 }
 
 @end

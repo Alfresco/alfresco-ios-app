@@ -18,8 +18,8 @@
  
 #import "BaseInboundURLHandler.h"
 #import "DownloadManager.h"
-#import "SyncHelper.h"
-#import "SyncManager.h"
+
+#import "RealmSyncManager.h"
 
 @interface BaseInboundURLHandler () <NSFileManagerDelegate>
 @end
@@ -64,16 +64,18 @@
         NSString *temporaryFilePath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:fileNameWithCorrectExtension];
         [self overwriteItemAtPath:temporaryFilePath withItemAtPath:url.path];
         
-        AlfrescoDocument *syncedDocument = [[SyncHelper sharedHelper] syncDocumentFromDocumentIdentifier:metadata.nodeRef];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        AlfrescoDocument *syncedDocument = (AlfrescoDocument *)[[RealmSyncManager sharedManager] alfrescoNodeForIdentifier:metadata.nodeRef inRealm:realm];
         
         if (syncedDocument)
         {
+            NSString *syncDocumentIdentifier = syncedDocument.identifier;
             [self overwriteItemAtPath:originalFilePath withItemAtPath:temporaryFilePath];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
             
-            [[SyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
-                
-                AlfrescoDocument *editedDocument = (AlfrescoDocument *)[[SyncManager sharedManager] alfrescoNodeForIdentifier:syncedDocument.identifier];
+            [[RealmSyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                AlfrescoDocument *editedDocument = (AlfrescoDocument *)[[RealmSyncManager sharedManager] alfrescoNodeForIdentifier:syncDocumentIdentifier inRealm:realm];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:editedDocument];
             }];
         }
@@ -190,6 +192,8 @@
             void (^successBlock)(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) = ^(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) {
                 [progressHUD hide:YES];
                 [creationInputStream close];
+                
+                [[RealmSyncManager sharedManager] didUploadNode:createdDocument fromPath:filePath toFolder:folder];
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
 
                 [selectionController dismissViewControllerAnimated:YES completion:^{

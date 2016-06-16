@@ -118,6 +118,13 @@ static CGFloat sDownloadProgressHeight;
     [self refreshViewController];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.translucent = NO;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;

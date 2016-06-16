@@ -24,6 +24,7 @@
 #import "FavouriteManager.h"
 #import "ActionViewHandler.h"
 #import "ConnectivityManager.h"
+#import "AccountManager.h"
 
 static CGFloat sActionViewHeight = 0;
 static CGFloat segmentControlHeight = 0;
@@ -88,6 +89,13 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionViewVisibility) name:kAlfrescoConnectivityChangedNotification object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)dealloc
@@ -198,6 +206,10 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     NSMutableArray *items = [NSMutableArray array];
     
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        [items addObject:[ActionCollectionItem syncItem]];
+    }
     [items addObject:[ActionCollectionItem favouriteItem]];
     [items addObject:[ActionCollectionItem likeItem]];
     
@@ -334,6 +346,14 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUploadDocument])
     {
         [self.actionHandler pressedUploadActionItem:actionItem presentFromView:cell inView:view];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierSync])
+    {
+        [self.actionHandler pressedSyncActionItem:actionItem];
+    }
+    else if ([actionItem.itemIdentifier isEqualToString:kActionCollectionIdentifierUnsync])
+    {
+        [self.actionHandler pressedUnsyncActionItem:actionItem];
     }
     
     [self shouldFocusComments:shouldFocusComments];

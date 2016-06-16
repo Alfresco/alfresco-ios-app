@@ -104,6 +104,8 @@ extern NSString * const kSearchTypeFiles;
 extern NSString * const kSearchTypeFolders;
 extern NSString * const kSearchTypeSites;
 extern NSString * const kSearchTypeUsers;
+extern NSString * const kHasCoreDataMigrationOccurred;
+extern NSString * const kWasSyncInfoPanelShown;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
@@ -167,6 +169,10 @@ extern NSString * const kSyncStatusChangeNotification;
 extern NSString * const kSyncObstaclesNotification;
 extern NSString * const kFavoritesListUpdatedNotification;
 extern NSString * const kSyncProgressViewVisiblityChangeNotification;
+
+// Realm sync exceptions
+extern NSString * const kFailedToCreateRealmDatabase;
+extern NSString * const kRealmSyncErrorKey;
 
 // Download Status Notifications
 extern NSString * const kDocumentPreviewManagerWillStartDownloadNotification;
