@@ -31,11 +31,11 @@
 #import "MapViewController.h"
 #import "MetaDataViewController.h"
 #import "PagedScrollView.h"
-#import "SyncManager.h"
 #import "ThumbnailManager.h"
 #import "UniversalDevice.h"
 #import "VersionHistoryViewController.h"
 #import "AccountManager.h"
+#import "RealmSyncManager.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 #define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
@@ -71,9 +71,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     
     [self updateActionButtons];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+    [self addObservers];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -102,6 +100,13 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 }
 
 #pragma mark - Private Functions
+
+- (void)addObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+}
 
 - (void)showHUD
 {
@@ -179,7 +184,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     if([AccountManager sharedManager].selectedAccount.isSyncOn == NO)
         return;
     
-    BOOL isSynced = NO;
+    BOOL isSynced = [[RealmSyncManager sharedManager] isNodeInSyncList:self.document];
+    
     NSString *actionIdentifier = isSynced ? kActionCollectionIdentifierUnsync : kActionCollectionIdentifierSync;
     NSString *titleKey = isSynced ? NSLocalizedString(@"action.unsync", @"Unsync Action") : NSLocalizedString(@"action.sync", @"Sync Action");
     NSString *imageKey = isSynced ? @"actionsheet-unsync.png" : @"actionsheet-sync.png";

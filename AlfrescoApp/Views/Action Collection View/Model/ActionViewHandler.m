@@ -678,6 +678,7 @@
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unsync", @"Unsync Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-unsync.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierSync userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidAddNodeNotification object:self.node];
         }
     }];
 }
