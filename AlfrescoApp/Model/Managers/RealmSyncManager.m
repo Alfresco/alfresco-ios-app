@@ -1094,18 +1094,12 @@
     return NO;
 }
 
-- (BOOL)isFirstUse
-{
-    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
-    return !selectedAccount.didAskToSync;
-}
-
 - (void)showSyncAlertWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AccountManager *accountManager = [AccountManager sharedManager];
     UserAccount *selectedAccount = accountManager.selectedAccount;
     
-    if ([self isFirstUse] && !selectedAccount.isSyncOn)
+    if (!selectedAccount.isSyncOn)
     {
         NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
         [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
