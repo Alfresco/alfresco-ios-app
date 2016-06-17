@@ -27,6 +27,7 @@
 #import "ConnectivityManager.h"
 #import "AppConfigurationManager.h"
 #import "DownloadManager.h"
+#import "PreferenceManager.h"
 
 @interface RealmSyncManager()
 
@@ -363,10 +364,12 @@
                                                                                 nodeStatus.status = SyncStatusSuccessful;
                                                                                 nodeStatus.activityType = SyncActivityTypeIdle;
                                                                                 
+                                                                                [backgroundRealm beginWriteTransaction];
                                                                                 syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
                                                                                 syncNodeInfo.lastDownloadedDate = [NSDate date];
                                                                                 syncNodeInfo.syncContentPath = destinationPath;
                                                                                 syncNodeInfo.reloadContent = NO;
+                                                                                [backgroundRealm commitWriteTransaction];
                                                                                 
                                                                                 RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
                                                                                 [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
@@ -569,22 +572,26 @@
         
         NSMutableDictionary *syncOperationForAccount = self.syncOperations[accountId];
         SyncOperation *syncOperation = [syncOperationForAccount objectForKey:syncDocumentIdentifier];
-        [syncOperation cancelOperation];
-        [syncOperationForAccount removeObjectForKey:syncDocumentIdentifier];
-        nodeStatus.status = SyncStatusFailed;
         
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-        RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-        [backgroundRealm beginWriteTransaction];
-        syncError.errorCode = kSyncOperationCancelledErrorCode;
-        nodeInfo.syncError = syncError;
-        [backgroundRealm commitWriteTransaction];
-        
-        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
-        syncProgress.totalSyncSize -= nodeStatus.totalSize;
-        syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
-        nodeStatus.bytesTransfered = 0;
+        if (syncOperation)
+        {
+            [syncOperation cancelOperation];
+            [syncOperationForAccount removeObjectForKey:syncDocumentIdentifier];
+            nodeStatus.status = SyncStatusFailed;
+            
+            RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+            RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+            [backgroundRealm beginWriteTransaction];
+            syncError.errorCode = kSyncOperationCancelledErrorCode;
+            nodeInfo.syncError = syncError;
+            [backgroundRealm commitWriteTransaction];
+            
+            [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+            AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
+            syncProgress.totalSyncSize -= nodeStatus.totalSize;
+            syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
+            nodeStatus.bytesTransfered = 0;
+        }
     });
 }
 
@@ -757,6 +764,70 @@
                 [self.fileManager moveItemAtPath:path toPath:[self contentPathForNode:document] error:nil];
             }
         });
+    }
+}
+
+- (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    NSString *selectedAccountIdentifier = selectedAccount.accountIdentifier;
+    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo[selectedAccountIdentifier];
+    NSMutableArray *topLevelSyncNodes = nodesInfoForSelectedAccount[selectedAccountIdentifier];
+    BOOL isSyncNodesInfoInMemory = (topLevelSyncNodes != nil);
+
+    void (^syncNode)(AlfrescoNode *) = ^void (AlfrescoNode *nodeToBeSynced){
+        // start sync for this node only
+        if ([self isSyncEnabled])
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                SyncNodeStatus *syncNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:node] inSyncNodesStatus:self.syncNodesStatus];
+                
+                if (syncNodeStatus.activityType == SyncActivityTypeIdle)
+                {
+                    syncNodeStatus.activityType = SyncActivityTypeDownload;
+                }
+                
+                [self downloadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed) {
+                    if (completionBlock)
+                    {
+                        completionBlock(YES);
+                    }
+                }];
+            });
+        }
+    };
+    
+    if (selectedAccount.isSyncOn)
+    {
+        [self showSyncAlertWithCompletionBlock:^(BOOL completed) {
+            [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
+                if (isSyncNodesInfoInMemory)
+                {
+                    [topLevelSyncNodes addObject:node];
+                }
+                else
+                {
+                    NSMutableDictionary *nodesInfoForSelectedAccount = [NSMutableDictionary dictionary];
+                    self.syncNodesInfo[selectedAccountIdentifier] = nodesInfoForSelectedAccount;
+                    nodesInfoForSelectedAccount[selectedAccountIdentifier] = [@[node] mutableCopy];
+                }
+                
+                if (node.isFolder == NO)
+                {
+                    syncNode(node);
+                }
+                
+                //TODO: sync folders as well
+            }];
+        }];
+    }
+    else
+    {
+        [topLevelSyncNodes addObject:node];
+        if (completionBlock != NULL)
+        {
+            completionBlock(YES);
+        }
     }
 }
 
@@ -998,6 +1069,105 @@
         accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, userAccount.selectedNetworkId];
     }
     return accountIdentifier;
+}
+
+/*
+ * shows if sync is enabled based on cellular / wifi preference
+ */
+- (BOOL)isSyncEnabled
+{
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    BOOL syncPreferenceEnabled = selectedAccount.isSyncOn;
+    BOOL syncOnCellularEnabled = [[PreferenceManager sharedManager] shouldSyncOnCellular];
+    
+    if (syncPreferenceEnabled)
+    {
+        BOOL isCurrentlyOnCellular = [[ConnectivityManager sharedManager] isOnCellular];
+        BOOL isCurrentlyOnWifi = [[ConnectivityManager sharedManager] isOnWifi];
+        
+        // if the device is on cellular and "sync on cellular" is set OR the device is on wifi, return YES
+        if ((isCurrentlyOnCellular && syncOnCellularEnabled) || isCurrentlyOnWifi)
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)isFirstUse
+{
+    UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
+    return !selectedAccount.didAskToSync;
+}
+
+- (void)showSyncAlertWithCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    AccountManager *accountManager = [AccountManager sharedManager];
+    UserAccount *selectedAccount = accountManager.selectedAccount;
+    
+    if ([self isFirstUse] && !selectedAccount.isSyncOn)
+    {
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
+        [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
+                                        message:message
+                                completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+                                    
+                                    selectedAccount.didAskToSync = YES;
+                                    selectedAccount.isSyncOn = !isCancelButton;
+                                    [accountManager saveAccountsToKeychain];
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:selectedAccount];
+                                    completionBlock(YES);
+                                }];
+    }
+    else
+    {
+        completionBlock(YES);
+    }
+}
+
+- (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
+                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
+    [alert showWithCompletionBlock:completionBlock];
+}
+
+- (void)retrievePermissionsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(void))completionBlock
+{
+    if (!self.permissions)
+    {
+        self.permissions = [NSMutableDictionary dictionary];
+    }
+    
+    __block NSInteger totalPermissionRequests = nodes.count;
+    
+    if (nodes.count == 0)
+    {
+        completionBlock();
+    }
+    else
+    {
+        for (AlfrescoNode *node in nodes)
+        {
+            [self.documentFolderService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                
+                totalPermissionRequests--;
+                
+                if (permissions)
+                {
+                    self.permissions[[self.syncHelper syncIdentifierForNode:node]] = permissions;
+                }
+                
+                if (totalPermissionRequests == 0 && completionBlock != NULL)
+                {
+                    completionBlock();
+                }
+            }];
+        }
+    }
 }
 
 @end
