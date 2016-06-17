@@ -79,6 +79,33 @@
     }
 }
 
+- (void) addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
+{
+    if (pagingResult)
+    {
+        if (data)
+        {
+            self.dataSourceCollection = data;
+        }
+        else
+        {
+            NSMutableArray *arrayOfIndexPaths = [NSMutableArray new];
+            for(NSInteger initialIndex = self.dataSourceCollection.count; initialIndex < self.dataSourceCollection.count + pagingResult.objects.count; initialIndex ++)
+            {
+                [arrayOfIndexPaths addObject:[NSIndexPath indexPathForItem:initialIndex inSection:0]];
+            }
+            [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
+        }
+        
+        self.moreItemsAvailable = pagingResult.hasMoreItems;
+        [self.delegate dataSourceUpdated];
+    }
+    else
+    {
+        // display error
+    }
+}
+
 #pragma mark - Permissions methods
 - (void)retrievePermissionsForNode:(AlfrescoNode *)node
 {
@@ -247,34 +274,14 @@
     return self.dataSourceCollection.count;
 }
 
-#pragma mark - SwipeToDeleteDelegate methods
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
-    AlfrescoPermissions *permissionsForNodeToDelete = [[RealmSyncManager sharedManager] permissionsForSyncNode:nodeToDelete];
-    
-    if (permissionsForNodeToDelete.canDelete)
-    {
-        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-            if(success)
-            {
-                if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-                {
-                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
-                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
-                }
-            }
-        }];
-    }
-}
-
-#pragma mark - Private methods
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
 {
     __weak typeof(self) weakSelf = self;
     [self.documentService deleteNode:nodeToDelete completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            NSString *analyticsLabel = nil;
+            
             if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
             {
                 [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete withCompletionBlock:^(BOOL savedLocally) {
@@ -293,7 +300,6 @@
                 }];
             }
             
-            NSString *analyticsLabel = nil;
             if ([nodeToDelete isKindOfClass:[AlfrescoDocument class]])
             {
                 analyticsLabel = ((AlfrescoDocument *)nodeToDelete).contentMimeType;
@@ -331,6 +337,60 @@
         }
     }];
 }
+
+- (void)createFolderWithName:(NSString *)folderName
+{
+    if(self.parentNode)
+    {
+        [self.documentService createFolderWithName:folderName inParentFolder:(AlfrescoFolder *)self.parentNode properties:nil completionBlock:^(AlfrescoFolder *folder, NSError *error) {
+            if (folder)
+            {
+                [self retrievePermissionsForNode:folder];
+                [self addAlfrescoNodes:@[folder]];
+                [[RealmSyncManager sharedManager] didUploadNode:folder fromPath:nil toFolder:(AlfrescoFolder *)self.parentNode];
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionCreate
+                                                                   label:kAnalyticsEventLabelFolder
+                                                                   value:@1];
+            }
+            else
+            {
+                [self.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.createfolder.createfolder", @"Creation failed")];
+            }
+        }];
+    }
+}
+
+- (void)retreiveNextItems:(AlfrescoListingContext *)moreListingContext
+{
+    [self retrieveContentOfFolder:(AlfrescoFolder *)self.parentNode usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        [self addMoreToCollectionViewWithPagingResult:pagingResult data:nil error:error];
+    }];
+}
+
+#pragma mark - SwipeToDeleteDelegate methods
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
+    AlfrescoPermissions *permissionsForNodeToDelete = [[RealmSyncManager sharedManager] permissionsForSyncNode:nodeToDelete];
+    
+    if (permissionsForNodeToDelete.canDelete)
+    {
+        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+            if(success)
+            {
+                if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
+                {
+                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
+                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
+                }
+            }
+        }];
+    }
+}
+
+#pragma mark - Private methods
 
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers
 {
@@ -407,6 +467,48 @@
         }
         
         [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+    }];
+}
+
+- (void) addAlfrescoNodes:(NSArray *)alfrescoNodes
+{
+    NSComparator comparator = ^(AlfrescoNode *obj1, AlfrescoNode *obj2) {
+        return (NSComparisonResult)[obj1.name caseInsensitiveCompare:obj2.name];
+    };
+    
+    NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
+    for (AlfrescoNode *node in alfrescoNodes)
+    {
+        // add to the collectionView data source at the correct index
+        NSUInteger newIndex = [self.dataSourceCollection indexOfObject:node inSortedRange:NSMakeRange(0, self.dataSourceCollection.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+        [self.dataSourceCollection insertObject:node atIndex:newIndex];
+        // create index paths to animate into the table view
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
+        [newNodeIndexPaths addObject:indexPath];
+    }
+    
+    [self.delegate didAddNodes:alfrescoNodes atIndexPath:newNodeIndexPaths];
+}
+
+- (void)retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
+{
+    if (!listingContext)
+    {
+        listingContext = self.defaultListingContext;
+    }
+    
+    [self.documentService retrieveChildrenInFolder:folder listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        if (!error)
+        {
+            for (AlfrescoNode *node in pagingResult.objects)
+            {
+                [self retrievePermissionsForNode:node];
+            }
+        }
+        if (completionBlock != NULL)
+        {
+            completionBlock(pagingResult, error);
+        }
     }];
 }
 

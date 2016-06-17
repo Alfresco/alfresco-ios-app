@@ -22,6 +22,7 @@
 #import "BaseLayoutAttributes.h"
 #import "BaseCollectionViewFlowLayout.h"
 #import "CollectionViewProtocols.h"
+#import "RepositoryCollectionViewDataSource.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;
@@ -56,6 +57,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewTopConstraint;
 @property (nonatomic) BOOL shouldIncludeSearchBar;
 
+@property (nonatomic, strong) RepositoryCollectionViewDataSource *dataSource;
 @property (nonatomic, strong) UIAlertController *actionsAlertController;
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;

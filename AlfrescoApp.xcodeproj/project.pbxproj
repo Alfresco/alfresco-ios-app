@@ -1228,6 +1228,7 @@
 		2B9C608D1C9714F400898161 /* ic_sync_screenshot_cropped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_sync_screenshot_cropped@2x.png"; sourceTree = "<group>"; };
 		2BA24A671B8C5D470075CA99 /* SearchViewControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewControllerDataSource.h; sourceTree = "<group>"; };
 		2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewControllerDataSource.m; sourceTree = "<group>"; };
+		2BA39FD71D12A0950036710D /* BaseFileFolderCollectionViewController+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BaseFileFolderCollectionViewController+Internal.h"; sourceTree = "<group>"; };
 		2BA7F9FF1B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFSwipeToDeleteGestureRecognizer.h; sourceTree = "<group>"; };
 		2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFSwipeToDeleteGestureRecognizer.m; sourceTree = "<group>"; };
 		2BB1BA0F1BDFDDB0005AEE12 /* NewAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewAccountViewController.h; path = "New Account/NewAccountViewController.h"; sourceTree = "<group>"; };
@@ -3053,6 +3054,7 @@
 				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
 				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
 				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
+				2BA39FD71D12A0950036710D /* BaseFileFolderCollectionViewController+Internal.h */,
 				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
 				7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */,
 				7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */,

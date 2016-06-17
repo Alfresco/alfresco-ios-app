@@ -33,6 +33,8 @@
 - (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems;
 - (void)failedToDeleteItems:(NSError *)error;
 
+- (void)didAddNodes:(NSArray *)items atIndexPath:(NSArray *)indexPathsOfAddedItems;
+
 - (void)didRetrievePermissionsForParentNode;
 
 - (void)selectItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -51,9 +53,14 @@
 @property (nonatomic, strong) NSString *screenTitle;
 @property (nonatomic, strong) NSString *errorTitle;
 @property (nonatomic, assign) BOOL moreItemsAvailable;
+@property (nonatomic, strong) AlfrescoPermissions *parentFolderPermissions;
+@property (nonatomic, strong) NSMutableDictionary *nodesPermissions;
 
 - (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 - (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index;
 - (NSInteger)numberOfNodesInCollection;
+- (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
+- (void)createFolderWithName:(NSString *)folderName;
+- (void)retreiveNextItems:(AlfrescoListingContext *)moreListingContext;
 
 @end
