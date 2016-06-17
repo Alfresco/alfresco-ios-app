@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 #import "FileFolderCollectionViewController.h"
-#import "UniversalDevice.h"
+#import "BaseFileFolderCollectionViewController+Internal.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NavigationViewController.h"
 #import "MetaDataViewController.h"
@@ -28,10 +28,9 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
-#import "FailedTransferDetailViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SearchCollectionSectionHeader.h"
-#import "ALFSwipeToDeleteGestureRecognizer.h"
+
 #import "CustomFolderService.h"
 #import "FavouriteManager.h"
 
@@ -55,34 +54,25 @@ typedef NS_ENUM(NSUInteger, FileFolderCollectionViewControllerType)
     FileFolderCollectionViewControllerTypeFavorites
 };
 
-static CGFloat const kCellHeight = 64.0f;
-
 static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, SwipeToDeleteDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate>
+@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RepositoryCollectionViewDataSourceDelegate>
 
 // Views
 @property (nonatomic, weak) UISearchBar *searchBar;
-@property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 // Data Model
 @property (nonatomic, assign) BOOL capturingMedia;
-@property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-@property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
-@property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
-@property (nonatomic, strong) NSIndexPath *initialCellForSwipeToDelete;
-@property (nonatomic) BOOL shouldShowOrHideDelete;
-@property (nonatomic) CGFloat cellActionViewWidth;
+
 @property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
 @property (nonatomic, assign) FileFolderCollectionViewControllerType controllerType;
 @property (nonatomic) CustomFolderServiceFolderType customFolderType;
 @property (nonatomic) BOOL shouldAutoSelectFirstItem;
 // Controllers
-@property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
-@property (nonatomic, strong) UIPopoverController *retrySyncPopover;
+
 // Services
 @property (nonatomic, strong) CustomFolderService *customFolderService;
 
@@ -301,27 +291,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.dataSource = [[RepositoryCollectionViewDataSource alloc] initWithParentNode:nil session:self.session delegate:self];
     }
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.delegate = self;
-    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:self.shouldIncludeSearchBar];
-    self.listLayout.dataSourceInfoDelegate = self;
-    self.listLayout.collectionViewMultiSelectDelegate = self;
-    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:self.shouldIncludeSearchBar];
-    self.gridLayout.dataSourceInfoDelegate = self;
-    self.gridLayout.collectionViewMultiSelectDelegate = self;
     
     self.multiSelectToolbar.multiSelectDelegate = self;
     [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
-    
-    //Swipe to Delete Gestures
-    
-    self.swipeToDeleteGestureRecognizer = [[ALFSwipeToDeleteGestureRecognizer alloc] initWithTarget:self action:@selector(swipeToDeletePanGestureHandler:)];
-    self.swipeToDeleteGestureRecognizer.delegate = self;
-    [self.collectionView addGestureRecognizer:self.swipeToDeleteGestureRecognizer];
-    
-    self.tapToDismissDeleteAction = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissDeleteGestureHandler:)];
-    self.tapToDismissDeleteAction.numberOfTapsRequired = 1;
-    self.tapToDismissDeleteAction.delegate = self;
-    [self.collectionView addGestureRecognizer:self.tapToDismissDeleteAction];
     
     [self changeCollectionViewStyle:self.style animated:YES trackAnalytics:NO];
     
@@ -439,20 +411,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     _imagePickerController.delegate = nil;
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    // if going to landscape, use the screen height as the popover width and screen width as the popover height
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-    {
-        self.popover.contentViewController.preferredContentSize = CGSizeMake(screenRect.size.height, screenRect.size.width);
-    }
-    else
-    {
-        self.popover.contentViewController.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
-    }
 }
 
 #pragma mark - Custom getters and setters
@@ -713,42 +671,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }];
 }
 
-- (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated
-{
-    if (IS_IPAD)
-    {
-        UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
-        popoverController.delegate = self;
-        self.popover = popoverController;
-        self.popover.contentViewController = controller;
-        [self.popover presentPopoverFromBarButtonItem:self.alertControllerSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
-    }
-    else
-    {
-        [UniversalDevice displayModalViewController:controller onController:self.navigationController withCompletionBlock:nil];
-    }
-}
-
-- (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock
-{
-    if (IS_IPAD)
-    {
-        if ([self.popover isPopoverVisible])
-        {
-            [self.popover dismissPopoverAnimated:YES];
-        }
-        self.popover = nil;
-        if (completionBlock != NULL)
-        {
-            completionBlock();
-        }
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:animated completion:completionBlock];
-    }
-}
-
 - (void)loadContent
 {
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
@@ -913,16 +835,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:[UniversalDevice detailViewItemIdentifier] inNodeIdentifiers:collectionViewNodeIdentifiers];
     
     [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-}
-
-- (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
-{
-    [self.dataSource deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-        if(completionBlock != NULL)
-        {
-            completionBlock(success);
-        }
-    }];
 }
 
 - (void)deleteNodes:(NSArray *)nodes completionBlock:(void (^)(NSInteger numberDeleted, NSInteger numberFailed))completionBlock
@@ -1385,7 +1297,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
 }
 
-#pragma mark - FileFolderListViewControllerDelegate Functions
+#pragma mark - UploadFormViewControllerDelegate Functions
 
 - (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL
 {
@@ -1440,288 +1352,15 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-#pragma mark - Retrying Failed Sync Methods
-
-- (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
-{
-    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    AlfrescoNode *node = self.collectionViewData[indexPath.row];
-    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
-    
-    if (IS_IPAD)
-    {
-        FailedTransferDetailViewController *syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
-                                                                                                                           message:errorDescription retryCompletionBlock:^() {
-                                                                                                                               [self retrySyncAndCloseRetryPopover];
-                                                                                                                           }];
-        
-        if (self.retrySyncPopover)
-        {
-            [self.retrySyncPopover dismissPopoverAnimated:YES];
-        }
-        self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
-        self.retrySyncPopover.popoverContentSize = syncFailedDetailController.view.frame.size;
-
-        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        if(cell.accessoryView.window != nil)
-        {
-            [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-    }
-    else
-    {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
-                                    message:errorDescription
-                                   delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                          otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
-    }
-}
-
-- (void)retrySyncAndCloseRetryPopover
-{
-    [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
-    [self.retrySyncPopover dismissPopoverAnimated:YES];
-    self.retrySyncNode = nil;
-    self.retrySyncPopover = nil;
-}
-
-#pragma mark - SwipeToDeleteDelegate methods
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *nodeToDelete = (self.isOnSearchResults) ? self.searchResults[indexPath.item] : self.collectionViewData[indexPath.item];
-    AlfrescoPermissions *permissionsForNodeToDelete = self.dataSource.nodesPermissions[nodeToDelete.identifier];
-    
-    if (permissionsForNodeToDelete.canDelete)
-    {
-        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-            if(success)
-            {
-                if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-                {
-                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
-                }
-            }
-        }];
-    }
-}
-
-#pragma mark - CollectionViewCellAccessoryViewDelegate methods
-- (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
-{
-    NSUInteger item = [self.dataSource indexOfNode:node];
-    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
-    
-    if (node.isFolder)
-    {
-        [self.collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-        
-        [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
-                                                                     permissions:nil
-                                                                         session:self.session
-                                                            navigationController:self.navigationController
-                                                                        animated:YES];
-    }
-    else
-    {
-        RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-        SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
-        
-        switch (nodeStatus.status)
-        {
-            case SyncStatusLoading:
-            {
-                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
-                break;
-            }
-            case SyncStatusFailed:
-            {
-                self.retrySyncNode = node;
-                [self showPopoverForFailedSyncNodeAtIndexPath:selectedIndexPath];
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
-    }
-}
-
-#pragma mark - Gesture Recognizers methods
-
-- (void) tapToDismissDeleteGestureHandler:(UIGestureRecognizer *)gestureReconizer
-{
-    if(gestureReconizer.state == UIGestureRecognizerStateEnded)
-    {
-        CGPoint touchPoint = [gestureReconizer locationInView:self.collectionView];
-        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-        {
-            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-            UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:properLayout.selectedIndexPathForSwipeToDelete];
-            if([cell isKindOfClass:[FileFolderCollectionViewCell class]])
-            {
-                FileFolderCollectionViewCell *properCell = (FileFolderCollectionViewCell *)cell;
-                CGPoint touchPointInButton = [gestureReconizer locationInView:properCell.deleteButton];
-                
-                if((CGRectContainsPoint(self.collectionView.bounds, touchPoint)) && (!CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton)))
-                {
-                    properLayout.selectedIndexPathForSwipeToDelete = nil;
-                }
-                else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
-                {
-                    [self collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete];
-                }
-            }
-        }
-    }
-}
-
-- (void) swipeToDeletePanGestureHandler:(ALFSwipeToDeleteGestureRecognizer *)gestureRecognizer
-{
-    if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-    {
-        BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-        if(properLayout.selectedIndexPathForSwipeToDelete)
-        {
-            if(gestureRecognizer.state == UIGestureRecognizerStateBegan)
-            {
-                [gestureRecognizer alf_endGestureHandling];
-            }
-            else if(gestureRecognizer.state == UIGestureRecognizerStateEnded)
-            {
-                properLayout.selectedIndexPathForSwipeToDelete = nil;
-            }
-        }
-        else
-        {
-            if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
-            {
-                CGPoint startingPoint = [gestureRecognizer locationInView:self.collectionView];
-                if (CGRectContainsPoint(self.collectionView.bounds, startingPoint))
-                {
-                    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:startingPoint];
-                    if(indexPath && indexPath.item < self.collectionViewData.count)
-                    {
-                        self.initialCellForSwipeToDelete = indexPath;
-                    }
-                }
-            }
-            else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
-            {
-                if(self.initialCellForSwipeToDelete)
-                {
-                    CGPoint translation = [gestureRecognizer translationInView:self.view];
-                    if (translation.x < 0)
-                    {
-                        self.shouldShowOrHideDelete = (translation.x * -1) > self.cellActionViewWidth / 2;
-                    }
-                    else
-                    {
-                        self.shouldShowOrHideDelete = translation.x > self.cellActionViewWidth / 2;
-                    }
-                    
-                    FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
-                    [cell revealActionViewWithAmount:translation.x];
-                }
-            }
-            else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-            {
-                if(self.initialCellForSwipeToDelete)
-                {
-                    if(self.shouldShowOrHideDelete)
-                    {
-                        if(properLayout.selectedIndexPathForSwipeToDelete)
-                        {
-                            properLayout.selectedIndexPathForSwipeToDelete = nil;
-                        }
-                        else
-                        {
-                            properLayout.selectedIndexPathForSwipeToDelete = self.initialCellForSwipeToDelete;
-                        }
-                    }
-                    else
-                    {
-                        FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:self.initialCellForSwipeToDelete];
-                        [cell resetView];
-                        properLayout.selectedIndexPathForSwipeToDelete = nil;
-                    }
-                }
-            }
-        }
-    }
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    if(gestureRecognizer == self.tapToDismissDeleteAction)
-    {
-        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-        {
-            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-            if((properLayout.selectedIndexPathForSwipeToDelete != nil) && (!self.editing))
-            {
-                return YES;
-            }
-        }
-    }
-    else if (gestureRecognizer == self.swipeToDeleteGestureRecognizer)
-    {
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    BOOL shouldBegin = NO;
-    if(gestureRecognizer == self.swipeToDeleteGestureRecognizer)
-    {
-        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-        {
-            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-            CGPoint translation = [self.swipeToDeleteGestureRecognizer translationInView:self.collectionView];
-            if((translation.x < 0 && !properLayout.selectedIndexPathForSwipeToDelete) || (properLayout.selectedIndexPathForSwipeToDelete))
-            {
-                shouldBegin = YES;
-            }
-        }
-    }
-    else if (gestureRecognizer == self.tapToDismissDeleteAction)
-    {
-        if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-        {
-            BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-            if((properLayout.selectedIndexPathForSwipeToDelete != nil) && (!self.editing))
-            {
-                shouldBegin = YES;
-            }
-        }
-    }
-    
-    return shouldBegin;
-}
-
 #pragma mark - DataSourceInformationProtocol methods
 - (BOOL) isItemSelected:(NSIndexPath *) indexPath
 {
     if(self.isEditing)
     {
         AlfrescoNode *selectedNode = nil;
-        if (self.isOnSearchResults)
+        if(indexPath.item < [self.dataSource numberOfNodesInCollection])
         {
-            if(indexPath.item < self.searchResults.count)
-            {
-                selectedNode = [self.searchResults objectAtIndex:indexPath.row];
-            }
-        }
-        else
-        {
-            if(indexPath.item < self.collectionViewData.count)
-            {
-                selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-            }
+            selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
         }
         
         if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
@@ -1730,53 +1369,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
     }
     return NO;
-}
-
-- (NSInteger)indexOfNode:(AlfrescoNode *)node
-{
-    NSInteger index = NSNotFound;
-    if(self.isOnSearchResults)
-    {
-        index = [self.searchResults indexOfObject:node];
-    }
-    else
-    {
-        index = [self.collectionViewData indexOfObject:node];
-    }
-    
-    return index;
-}
-
-- (BOOL)isNodeAFolderAtIndex:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *selectedNode = nil;
-    if (self.isOnSearchResults)
-    {
-        if(indexPath.item < self.searchResults.count)
-        {
-            selectedNode = [self.searchResults objectAtIndex:indexPath.row];
-        }
-    }
-    else
-    {
-        if(indexPath.item < self.collectionViewData.count)
-        {
-            selectedNode = [self.collectionViewData objectAtIndex:indexPath.row];
-        }
-    }
-    
-    return [selectedNode isKindOfClass:[AlfrescoFolder class]];
-}
-
-#pragma mark - UIAdaptivePresentationControllerDelegate methods
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
-{
-    return UIModalPresentationNone;
-}
-
-- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
-{
-    return self.actionsAlertController;
 }
 
 #pragma mark - Actions methods

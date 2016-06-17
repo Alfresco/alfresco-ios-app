@@ -32,9 +32,6 @@
 @property (nonatomic, assign) BOOL isLoadingAnotherPage;
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session;
-- (void)retrieveContentOfFolder:(AlfrescoFolder *)folder
-            usingListingContext:(AlfrescoListingContext *)listingContext
-                completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options;
 
 @end
