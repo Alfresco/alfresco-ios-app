@@ -572,22 +572,26 @@
         
         NSMutableDictionary *syncOperationForAccount = self.syncOperations[accountId];
         SyncOperation *syncOperation = [syncOperationForAccount objectForKey:syncDocumentIdentifier];
-        [syncOperation cancelOperation];
-        [syncOperationForAccount removeObjectForKey:syncDocumentIdentifier];
-        nodeStatus.status = SyncStatusFailed;
         
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-        RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-        [backgroundRealm beginWriteTransaction];
-        syncError.errorCode = kSyncOperationCancelledErrorCode;
-        nodeInfo.syncError = syncError;
-        [backgroundRealm commitWriteTransaction];
-        
-        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
-        syncProgress.totalSyncSize -= nodeStatus.totalSize;
-        syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
-        nodeStatus.bytesTransfered = 0;
+        if (syncOperation)
+        {
+            [syncOperation cancelOperation];
+            [syncOperationForAccount removeObjectForKey:syncDocumentIdentifier];
+            nodeStatus.status = SyncStatusFailed;
+            
+            RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+            RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+            [backgroundRealm beginWriteTransaction];
+            syncError.errorCode = kSyncOperationCancelledErrorCode;
+            nodeInfo.syncError = syncError;
+            [backgroundRealm commitWriteTransaction];
+            
+            [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+            AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
+            syncProgress.totalSyncSize -= nodeStatus.totalSize;
+            syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
+            nodeStatus.bytesTransfered = 0;
+        }
     });
 }
 

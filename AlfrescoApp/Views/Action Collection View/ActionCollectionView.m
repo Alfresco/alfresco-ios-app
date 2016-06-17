@@ -107,7 +107,9 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (void)handleUpdateNotification:(NSNotification *)notification
 {
-    [self.collectionView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.collectionView reloadData];
+    });
 }
 
 #pragma mark - UICollectionViewDataSource Functions
