@@ -18,6 +18,13 @@
 
 #import "FolderCollectionViewDataSource.h"
 #import "RepositoryCollectionViewDataSource+Internal.h"
+#import "CustomFolderService.h"
+
+@interface FolderCollectionViewDataSource()
+
+@property (nonatomic, strong) CustomFolderService *customFolderService;
+
+@end
 
 @implementation FolderCollectionViewDataSource
 
@@ -40,6 +47,7 @@
         if(!folderNode)
         {
             __weak typeof(self) weakSelf = self;
+            self.session = session;
             [self.documentService retrieveRootFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
                 if (folder)
                 {
@@ -68,9 +76,10 @@
     {
         return nil;
     }
-    AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
     
-    [documentFolderService retrieveNodeWithFolderPath:folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
+    __weak typeof(self) weakSelf = self;
+    self.session = session;
+    [self.documentService retrieveNodeWithFolderPath:folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
         if (folderPathNodeError)
         {
             [delegate requestFailedWithError:folderPathNodeError stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
@@ -79,7 +88,7 @@
         {
             if ([folderPathNode isKindOfClass:[AlfrescoFolder class]])
             {
-                [self setupWithParentNode:folderPathNode folderDisplayName:folderDisplayName folderPermissions:permissions session:session delegate:delegate];
+                [weakSelf setupWithParentNode:folderPathNode folderDisplayName:folderDisplayName folderPermissions:permissions session:session delegate:delegate];
             }
             else
             {
@@ -91,9 +100,63 @@
     return self;
 }
 
+- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+{
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    self.session = session;
+    self.customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
+    __weak typeof (self) weakSelf = self;
+    AlfrescoFolderCompletionBlock completionBlock = ^(AlfrescoFolder *folder, NSError *error) {
+        if (error)
+        {
+            [delegate requestFailedWithError:error stringFormat:nil];
+        }
+        else if (folder == nil)
+        {
+            [delegate requestFailedWithError:nil stringFormat:NSLocalizedString(@"error.alfresco.folder.notfound", @"Folder not found")];
+        }
+        else
+        {
+            [weakSelf setupWithParentNode:folder folderDisplayName:displayName folderPermissions:nil session:session delegate:delegate];
+        }
+    };
+    
+    switch (folderType)
+    {
+        case CustomFolderServiceFolderTypeMyFiles:
+        {
+            [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:completionBlock];
+            break;
+        }
+        case CustomFolderServiceFolderTypeSharedFiles:
+        {
+            [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:completionBlock];
+            break;
+        }
+            
+        default:
+            break;
+    }
+    
+    return self;
+}
+
 - (void)setupWithFolderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)folderDisplayName
 {
-    self.parentFolderPermissions = permissions;
+    if(permissions)
+    {
+        self.parentFolderPermissions = permissions;
+    }
+    else
+    {
+        [self retrieveAndSetPermissionsOfCurrentFolder];
+    }
+    
     if(folderDisplayName)
     {
         self.screenTitle = folderDisplayName;

@@ -31,7 +31,6 @@
 @property (nonatomic, strong) MBProgressHUD *searchProgressHUD;
 @property (nonatomic, assign) BOOL isLoadingAnotherPage;
 
-- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session;
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options;
 
 @end

@@ -24,7 +24,7 @@
 
 static CGFloat const kCellHeight = 64.0f;
 
-@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, SwipeToDeleteDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
@@ -35,9 +35,12 @@ static CGFloat const kCellHeight = 64.0f;
 @property (nonatomic, strong) UIPopoverController *retrySyncPopover;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
+@property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
 - (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock;
 - (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated;
+- (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated;
+- (void)selectIndexPathForAlfrescoNodeInDetailView;
 
 @end

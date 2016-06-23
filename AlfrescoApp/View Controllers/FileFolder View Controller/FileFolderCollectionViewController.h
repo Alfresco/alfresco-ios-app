@@ -128,14 +128,4 @@
  */
 - (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
 
-/**
- Convenience method used to help initialise the internal state of the controller once initialised.
- 
- @param folder - the content of this folder will be displayed. Providing nil will result in Company Home being displayed.
- @param permissions - the permissions of the folder
- @param displayName - the name that will be visible to the user when at the root of the navigation stack.
- @param session - the user' session
- */
-- (void)setupWithFolder:(AlfrescoFolder *)folder folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
-
 @end

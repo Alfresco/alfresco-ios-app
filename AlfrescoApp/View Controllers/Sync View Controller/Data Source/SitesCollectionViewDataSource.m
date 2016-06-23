@@ -19,8 +19,6 @@
 #import "SitesCollectionViewDataSource.h"
 #import "RepositoryCollectionViewDataSource+Internal.h"
 
-//@property (nonatomic, strong) CustomFolderService *customFolderService;
-
 @interface SitesCollectionViewDataSource()
 
 @property (nonatomic, strong) NSString *siteShortName;
@@ -42,6 +40,19 @@
     self.siteShortName = siteShortName;
     self.session = session;
     
+    [self reloadDataSource];
+    
+    return self;
+}
+
+- (void)setSession:(id<AlfrescoSession>)session
+{
+    [super setSession:session];
+    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+}
+
+- (void)reloadDataSource
+{
     __weak typeof(self) weakSelf = self;
     [self.siteService retrieveDocumentLibraryFolderForSite:self.siteShortName completionBlock:^(AlfrescoFolder *documentLibraryFolder, NSError *documentLibraryFolderError) {
         if (documentLibraryFolderError)
@@ -58,14 +69,6 @@
             [self retrieveContentsOfParentNode];
         }
     }];
-    
-    return self;
-}
-
-- (void)setSession:(id<AlfrescoSession>)session
-{
-    [super setSession:session];
-    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
 }
 
 @end

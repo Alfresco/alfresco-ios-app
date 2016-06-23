@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) AlfrescoKeywordSearchOptions *searchOptions;
+@property (nonatomic, strong) NSString *searchStatement;
+@property (nonatomic, strong) NSString *searchString;
 
 @end
 
@@ -38,19 +40,9 @@
     
     self.session = session;
     self.delegate = delegate;
+    self.searchStatement = searchStatement;
     
-    __weak typeof(self) weakSelf = self;
-    [self.searchService searchWithStatement:searchStatement language:AlfrescoSearchLanguageCMIS completionBlock:^(NSArray *array, NSError *error) {
-        if(array)
-        {
-            weakSelf.dataSourceCollection = [array mutableCopy];
-            [weakSelf.delegate dataSourceUpdated];
-        }
-        else
-        {
-            [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed")];
-        }
-    }];
+    [self reloadDataSource];
     
     return self;
 }
@@ -66,30 +58,10 @@
     self.emptyMessage = emptyMessage;
     self.session = session;
     self.delegate = delegate;
+    self.searchString = searchString;
+    self.searchOptions = options;
     
-    __weak typeof(self) weakSelf = self;
-    [self.searchService searchWithKeywords:searchString options:options completionBlock:^(NSArray *array, NSError *error) {
-        if (array)
-        {
-//            self.isOnSearchResults = isFromSearchBar;
-//            if(isFromSearchBar)
-//            {
-//                self.searchResults = [array mutableCopy];
-//            }
-//            else
-//            {
-//                self.collectionViewData = [array mutableCopy];
-//            }
-//            [self reloadCollectionView];
-            
-            weakSelf.dataSourceCollection = [array mutableCopy];
-            [weakSelf.delegate dataSourceUpdated];
-        }
-        else
-        {
-            [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed")];
-        }
-    }];
+    [self reloadDataSource];
     
     return self;
 }
@@ -100,6 +72,32 @@
     {
         [super setSession:session];
         self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+    }
+}
+
+- (void)reloadDataSource
+{
+    __weak typeof(self) weakSelf = self;
+    
+    void (^completionBlock)(NSArray *array, NSError *error) = ^void(NSArray *array, NSError *error){
+        if(array)
+        {
+            weakSelf.dataSourceCollection = [array mutableCopy];
+            [weakSelf.delegate dataSourceUpdated];
+        }
+        else
+        {
+            [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed")];
+        }
+    };
+    
+    if(self.searchStatement)
+    {
+        [self.searchService searchWithStatement:self.searchStatement language:AlfrescoSearchLanguageCMIS completionBlock:completionBlock];
+    }
+    else if(self.searchString)
+    {
+        [self.searchService searchWithKeywords:self.searchString options:self.searchOptions completionBlock:completionBlock];
     }
 }
 

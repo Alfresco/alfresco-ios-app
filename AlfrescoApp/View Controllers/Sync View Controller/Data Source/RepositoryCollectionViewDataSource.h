@@ -42,6 +42,7 @@
 - (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource;
 
 - (UISearchBar *)searchBarForSupplimentaryHeaderView;
+- (void)reloadItemsAtIndexPaths:(NSArray *)indexPathsToReload reselectItems:(BOOL)reselectItems;
 
 @end
 
@@ -62,5 +63,9 @@
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
 - (void)createFolderWithName:(NSString *)folderName;
 - (void)retreiveNextItems:(AlfrescoListingContext *)moreListingContext;
+- (AlfrescoPermissions *)permissionsForNode:(AlfrescoNode *)node;
+- (NSArray *)nodeIdentifiersOfCurrentCollection;
+- (void)addAlfrescoNodes:(NSArray *)alfrescoNodes;
+- (void)reloadDataSource;
 
 @end

@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import "BaseFileFolderCollectionViewController+Internal.h"
+#import "SearchCollectionViewDataSource.h"
 
 @implementation BaseFileFolderCollectionViewController
 
@@ -38,10 +39,10 @@
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier]];
     
     self.collectionView.delegate = self;
-    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:NO];
+    self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:self.shouldIncludeSearchBar];
     self.listLayout.dataSourceInfoDelegate = self.dataSource;
     self.listLayout.collectionViewMultiSelectDelegate = self;
-    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:NO];
+    self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:self.shouldIncludeSearchBar];
     self.gridLayout.dataSourceInfoDelegate = self.dataSource;
     self.gridLayout.collectionViewMultiSelectDelegate = self;
 }
@@ -51,13 +52,7 @@
     [_searchController.view removeFromSuperview];
 }
 
-- (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
-{
-//    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-//    self.searchService = [[AlfrescoSearchService alloc] initWithSession:session];
-}
-
-#pragma mark - Custom getters and setters
+#pragma mark - UICollectionViewDelegate methods
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -68,7 +63,7 @@
     if (indexPath.item == lastSiteRowIndex)
     {
         AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.dataSource.numberOfNodesInCollection) intValue]];
-        if (self.moreItemsAvailable)
+        if (self.dataSource.moreItemsAvailable)
         {
             // show more items are loading ...
             self.isLoadingAnotherPage = YES;
@@ -123,34 +118,14 @@
 #pragma mark - Public methods
 - (void)searchString:(NSString *)stringToSearch isFromSearchBar:(BOOL)isFromSearchBar searchOptions:(AlfrescoKeywordSearchOptions *)options
 {
-    [self showHUD];
-//    [self.searchService searchWithKeywords:stringToSearch options:options completionBlock:^(NSArray *array, NSError *error) {
-//        [self hideHUD];
-//        if (array)
-//        {
-//            self.isOnSearchResults = isFromSearchBar;
-//            if(isFromSearchBar)
-//            {
-//                self.searchResults = [array mutableCopy];
-//            }
-//            else
-//            {
-//                self.collectionViewData = [array mutableCopy];
-//            }
-//            [self reloadCollectionView];
-//        }
-//        else
-//        {
-//            // display error
-//            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed"), [ErrorDescriptions descriptionForError:error]]);
-//            [Notifier notifyWithAlfrescoError:error];
-//        }
-//    }];
+    [self showHUD];    
+    self.searchDataSource = [[SearchCollectionViewDataSource alloc] initWithSearchString:stringToSearch searchOptions:options emptyMessage:@"No search results" session:self.session delegate:self];
+    self.isOnSearchResults = isFromSearchBar;
 }
 
 #pragma mark - Gesture Recognizers methods
 
-- (void) tapToDismissDeleteGestureHandler:(UIGestureRecognizer *)gestureReconizer
+- (void)tapToDismissDeleteGestureHandler:(UIGestureRecognizer *)gestureReconizer
 {
     if(gestureReconizer.state == UIGestureRecognizerStateEnded)
     {
@@ -170,14 +145,14 @@
                 }
                 else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
                 {
-                    [self collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete];
+                    [self.dataSource collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete];
                 }
             }
         }
     }
 }
 
-- (void) swipeToDeletePanGestureHandler:(ALFSwipeToDeleteGestureRecognizer *)gestureRecognizer
+- (void)swipeToDeletePanGestureHandler:(ALFSwipeToDeleteGestureRecognizer *)gestureRecognizer
 {
     if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
     {
@@ -302,27 +277,6 @@
     return shouldBegin;
 }
 
-#pragma mark - SwipeToDeleteDelegate methods
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *nodeToDelete = (self.isOnSearchResults) ? self.searchResults[indexPath.item] : self.collectionViewData[indexPath.item];
-    AlfrescoPermissions *permissionsForNodeToDelete = self.dataSource.nodesPermissions[nodeToDelete.identifier];
-    
-    if (permissionsForNodeToDelete.canDelete)
-    {
-        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-            if(success)
-            {
-                if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-                {
-                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
-                }
-            }
-        }];
-    }
-}
-
 #pragma mark - Internal methods
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
 {
@@ -332,6 +286,77 @@
             completionBlock(success);
         }
     }];
+}
+
+- (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock
+{
+    if (IS_IPAD)
+    {
+        if ([self.popover isPopoverVisible])
+        {
+            [self.popover dismissPopoverAnimated:YES];
+        }
+        self.popover = nil;
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:animated completion:completionBlock];
+    }
+}
+
+- (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated
+{
+    if (IS_IPAD)
+    {
+        UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
+        popoverController.delegate = self;
+        self.popover = popoverController;
+        self.popover.contentViewController = controller;
+        [self.popover presentPopoverFromBarButtonItem:self.alertControllerSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+    }
+    else
+    {
+        [UniversalDevice displayModalViewController:controller onController:self.navigationController withCompletionBlock:nil];
+    }
+}
+
+- (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated
+{
+    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
+    
+    // update the UI based on permissions
+    if (!self.editing)
+    {
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(performEditBarButtonItemAction:)];
+    }
+    else
+    {
+        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self
+                                                                               action:@selector(performEditBarButtonItemAction:)];
+    }
+    
+    [rightBarButtonItems addObject:self.editBarButtonItem];
+    
+    if (!self.isEditing && (self.dataSource.parentFolderPermissions.canAddChildren || self.dataSource.parentFolderPermissions.canEdit))
+    {
+        [rightBarButtonItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                     target:self
+                                                                                     action:@selector(displayActionSheet:event:)]];
+    }
+    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
+}
+
+- (void)selectIndexPathForAlfrescoNodeInDetailView
+{
+    NSArray *collectionViewNodeIdentifiers = [self.dataSource nodeIdentifiersOfCurrentCollection];
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:[UniversalDevice detailViewItemIdentifier] inNodeIdentifiers:collectionViewNodeIdentifiers];
+    
+    [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
 }
 
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
@@ -344,8 +369,9 @@
     {
         [self.collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
+        AlfrescoPermissions *nodePermissions = [self.dataSource permissionsForNode:node];
         [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
-                                                                     permissions:nil
+                                                                     permissions:nodePermissions
                                                                          session:self.session
                                                             navigationController:self.navigationController
                                                                         animated:YES];
@@ -380,7 +406,7 @@
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    AlfrescoNode *node = self.collectionViewData[indexPath.row];
+    AlfrescoNode *node = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
     NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
     
     if (IS_IPAD)
@@ -421,42 +447,6 @@
     self.retrySyncPopover = nil;
 }
 
-- (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated
-{
-    if (IS_IPAD)
-    {
-        UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
-        popoverController.delegate = self;
-        self.popover = popoverController;
-        self.popover.contentViewController = controller;
-        [self.popover presentPopoverFromBarButtonItem:self.alertControllerSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
-    }
-    else
-    {
-        [UniversalDevice displayModalViewController:controller onController:self.navigationController withCompletionBlock:nil];
-    }
-}
-
-- (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock
-{
-    if (IS_IPAD)
-    {
-        if ([self.popover isPopoverVisible])
-        {
-            [self.popover dismissPopoverAnimated:YES];
-        }
-        self.popover = nil;
-        if (completionBlock != NULL)
-        {
-            completionBlock();
-        }
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:animated completion:completionBlock];
-    }
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -480,6 +470,144 @@
 - (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
 {
     return self.actionsAlertController;
+}
+
+#pragma mark - RepositoryCollectionViewDataSource methods
+- (BaseCollectionViewFlowLayout *)currentSelectedLayout
+{
+    return [self layoutForStyle:self.style];
+}
+
+- (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate
+{
+    return self;
+}
+
+- (void)dataSourceUpdated
+{
+    [self hideHUD];
+    [self hidePullToRefreshView];
+    [self reloadCollectionView];
+    [self selectIndexPathForAlfrescoNodeInDetailView];
+    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+    self.isLoadingAnotherPage = NO;
+}
+
+- (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
+{
+    if(stringFormat)
+    {
+        if(error)
+        {
+            // display error
+            displayErrorMessage([NSString stringWithFormat:stringFormat, [ErrorDescriptions descriptionForError:error]]);
+        }
+        else
+        {
+            displayErrorMessage(stringFormat);
+        }
+    }
+    
+    [Notifier notifyWithAlfrescoError:error];
+    [self hideHUD];
+}
+
+- (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems
+{
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView deleteItemsAtIndexPaths:indexPathsOfDeletedItems];
+    } completion:^(BOOL finished) {
+        for(AlfrescoNode *deletedNode in items)
+        {
+            if ([[UniversalDevice detailViewItemIdentifier] isEqualToString:deletedNode.identifier])
+            {
+                [UniversalDevice clearDetailViewController];
+            }
+        }
+    }];
+}
+
+- (void)failedToDeleteItems:(NSError *)error
+{
+    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.unable.to.delete", @"Unable to delete file/folder"), [ErrorDescriptions descriptionForError:error]]);
+}
+
+- (void)didAddNodes:(NSArray *)items atIndexPath:(NSArray *)indexPathsOfAddedItems
+{
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView insertItemsAtIndexPaths:indexPathsOfAddedItems];
+    } completion:^(BOOL finished) {
+        [self updateEmptyView];
+    }];
+}
+
+- (void)didRetrievePermissionsForParentNode
+{
+    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+}
+
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+}
+
+- (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource
+{
+    self.dataSource = dataSource;
+    self.collectionView.dataSource = self.dataSource;
+}
+
+- (UISearchBar *)searchBarForSupplimentaryHeaderView
+{
+    return self.searchController.searchBar;
+}
+
+- (void)reloadItemsAtIndexPaths:(NSArray *)indexPathsToReload reselectItems:(BOOL)reselectItems
+{
+    if(reselectItems)
+    {
+        NSArray *selectedIndexPaths = [self.collectionView indexPathsForSelectedItems];
+        [self.collectionView performBatchUpdates:^{
+            [self.collectionView reloadItemsAtIndexPaths:indexPathsToReload];
+        } completion:^(BOOL finished) {
+            // reselect the row after it has been updated
+            for(NSIndexPath *indexPath in selectedIndexPaths)
+            {
+                for(NSIndexPath *reloadedIndexPath in indexPathsToReload)
+                {
+                    if (indexPath.row == reloadedIndexPath.row)
+                    {
+                        [self.collectionView selectItemAtIndexPath:reloadedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                    }
+                }
+            }
+        }];
+    }
+    else
+    {
+        [self.collectionView performBatchUpdates:^{
+            [self.collectionView reloadItemsAtIndexPaths:indexPathsToReload];
+        } completion:nil];
+    }
+}
+
+#pragma mark - DataSourceInformationProtocol methods
+- (BOOL) isItemSelected:(NSIndexPath *) indexPath
+{
+    if(self.isEditing)
+    {
+        AlfrescoNode *selectedNode = nil;
+        if(indexPath.item < [self.dataSource numberOfNodesInCollection])
+        {
+            selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
+        }
+        
+        if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end

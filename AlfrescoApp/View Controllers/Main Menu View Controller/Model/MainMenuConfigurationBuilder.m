@@ -21,7 +21,6 @@
 #import "ActivitiesViewController.h"
 #import "FileFolderListViewController.h"
 #import "DownloadsViewController.h"
-#import "SyncViewController.h"
 #import "TaskViewController.h"
 #import "FilteredTaskViewController.h"
 #import "NavigationViewController.h"
@@ -359,9 +358,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
     {
-        // Sync
-//        SyncViewController *syncViewController = [[SyncViewController alloc] initWithParentNode:nil andSession:self.session];
-        
+        // Sync        
         RealmSyncViewController *syncViewController = [[RealmSyncViewController alloc] initWithParentNode:nil andSession:self.session];
         SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
         associatedObject = syncNavigationController;

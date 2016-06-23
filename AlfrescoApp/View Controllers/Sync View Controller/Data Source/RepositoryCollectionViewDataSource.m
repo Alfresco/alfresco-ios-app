@@ -49,9 +49,11 @@
     {
         self.parentNode = node;
         self.screenTitle = node.name;
+        self.nodesPermissions = [NSMutableDictionary new];
         
         [self retrieveContentsOfParentNode];
     }
+    [self registerNotifications];
 }
 
 - (void)setSession:(id<AlfrescoSession>)session
@@ -61,6 +63,15 @@
         _session = session;
         self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:_session];
     }
+}
+
+- (void)registerNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentDeleted:) name:kAlfrescoDocumentDeletedOnServerNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nodeAdded:) name:kAlfrescoNodeAddedOnServerNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdatedOnServer:) name:kAlfrescoSaveBackRemoteComplete object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
 #pragma mark - Reload methods
@@ -79,7 +90,7 @@
     }
 }
 
-- (void) addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
+- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
 {
     if (pagingResult)
     {
@@ -369,6 +380,49 @@
     }];
 }
 
+- (AlfrescoPermissions *)permissionsForNode:(AlfrescoNode *)node
+{
+    AlfrescoPermissions *permissions = nil;
+    if(node)
+    {
+        NSString *nodeIdentifier = node.identifier;
+        permissions = self.nodesPermissions[nodeIdentifier];
+    }
+    
+    return permissions;
+}
+
+- (NSArray *)nodeIdentifiersOfCurrentCollection
+{
+    NSArray *collectionViewNodeIdentifiers = [self.dataSourceCollection valueForKeyPath:@"identifier"];
+    return collectionViewNodeIdentifiers;
+}
+
+- (void)addAlfrescoNodes:(NSArray *)alfrescoNodes
+{
+    NSComparator comparator = ^(AlfrescoNode *obj1, AlfrescoNode *obj2) {
+        return (NSComparisonResult)[obj1.name caseInsensitiveCompare:obj2.name];
+    };
+    
+    NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
+    for (AlfrescoNode *node in alfrescoNodes)
+    {
+        // add to the collectionView data source at the correct index
+        NSUInteger newIndex = [self.dataSourceCollection indexOfObject:node inSortedRange:NSMakeRange(0, self.dataSourceCollection.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
+        [self.dataSourceCollection insertObject:node atIndex:newIndex];
+        // create index paths to animate into the table view
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
+        [newNodeIndexPaths addObject:indexPath];
+    }
+    
+    [self.delegate didAddNodes:alfrescoNodes atIndexPath:newNodeIndexPaths];
+}
+
+- (void)reloadDataSource
+{
+    [self retrieveContentsOfParentNode];
+}
+
 #pragma mark - SwipeToDeleteDelegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
 {
@@ -470,26 +524,6 @@
     }];
 }
 
-- (void) addAlfrescoNodes:(NSArray *)alfrescoNodes
-{
-    NSComparator comparator = ^(AlfrescoNode *obj1, AlfrescoNode *obj2) {
-        return (NSComparisonResult)[obj1.name caseInsensitiveCompare:obj2.name];
-    };
-    
-    NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
-    for (AlfrescoNode *node in alfrescoNodes)
-    {
-        // add to the collectionView data source at the correct index
-        NSUInteger newIndex = [self.dataSourceCollection indexOfObject:node inSortedRange:NSMakeRange(0, self.dataSourceCollection.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
-        [self.dataSourceCollection insertObject:node atIndex:newIndex];
-        // create index paths to animate into the table view
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
-        [newNodeIndexPaths addObject:indexPath];
-    }
-    
-    [self.delegate didAddNodes:alfrescoNodes atIndexPath:newNodeIndexPaths];
-}
-
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
 {
     if (!listingContext)
@@ -510,6 +544,89 @@
             completionBlock(pagingResult, error);
         }
     }];
+}
+
+#pragma mark - Notification methods
+- (void)documentUpdated:(NSNotification *)notification
+{
+    id updatedDocumentObject = notification.object;
+    id existingDocumentObject = notification.userInfo[kAlfrescoDocumentUpdatedFromDocumentParameterKey];
+    
+    // this should always be an AlfrescoDocument. If it isn't something has gone terribly wrong...
+    if ([updatedDocumentObject isKindOfClass:[AlfrescoDocument class]])
+    {
+        AlfrescoDocument *existingDocument = (AlfrescoDocument *)existingDocumentObject;
+        AlfrescoDocument *updatedDocument = (AlfrescoDocument *)updatedDocumentObject;
+        
+        NSArray *allIdentifiers = [self.dataSourceCollection valueForKey:@"identifier"];
+        if ([allIdentifiers containsObject:existingDocument.identifier])
+        {
+            NSUInteger index = [allIdentifiers indexOfObject:existingDocument.identifier];
+            [self.dataSourceCollection replaceObjectAtIndex:index withObject:updatedDocument];
+            NSIndexPath *indexPathOfDocument = [NSIndexPath indexPathForRow:index inSection:0];
+            
+            [self.delegate reloadItemsAtIndexPaths:@[indexPathOfDocument] reselectItems:YES];
+        }
+    }
+    else
+    {
+        @throw ([NSException exceptionWithName:@"AlfrescoNode update exception in FileFolderListViewController - (void)documentUpdated:"
+                                        reason:@"No document node returned from the edit file service"
+                                      userInfo:nil]);
+    }
+}
+
+- (void)documentDeleted:(NSNotification *)notification
+{
+    AlfrescoDocument *deletedDocument = notification.object;
+    
+    if ([self.dataSourceCollection containsObject:deletedDocument])
+    {
+        NSUInteger index = [self.dataSourceCollection indexOfObject:deletedDocument];
+        NSIndexPath *indexPathOfDeletedNode = [NSIndexPath indexPathForRow:index inSection:0];
+        [self.dataSourceCollection removeObject:deletedDocument];
+        [self.delegate didDeleteItems:@[deletedDocument] atIndexPaths:@[indexPathOfDeletedNode]];
+    }
+}
+
+- (void)nodeAdded:(NSNotification *)notification
+{
+    NSDictionary *foldersDictionary = notification.object;
+    
+    AlfrescoFolder *parentFolder = [foldersDictionary objectForKey:kAlfrescoNodeAddedOnServerParentFolderKey];
+    
+    if ([parentFolder isEqual:self.parentNode])
+    {
+        AlfrescoNode *subnode = [foldersDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
+        [self addAlfrescoNodes:@[subnode]];
+    }
+}
+
+- (void)documentUpdatedOnServer:(NSNotification *)notification
+{
+    NSString *nodeIdentifierUpdated = notification.object;
+    AlfrescoDocument *updatedDocument = notification.userInfo[kAlfrescoDocumentUpdatedFromDocumentParameterKey];
+    
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:nodeIdentifierUpdated inNodeIdentifiers:[self.dataSourceCollection valueForKey:@"identifier"]];
+    
+    if (indexPath)
+    {
+        [self.dataSourceCollection replaceObjectAtIndex:indexPath.row withObject:updatedDocument];
+        [self.delegate reloadItemsAtIndexPaths:@[indexPath] reselectItems:NO];
+    }
+}
+
+- (void)editingDocumentCompleted:(NSNotification *)notification
+{
+    AlfrescoDocument *editedDocument = notification.object;
+    
+    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocument.name inNodeIdentifiers:[self.dataSourceCollection valueForKey:@"name"]];
+    
+    if (indexPath)
+    {
+        [self.dataSourceCollection replaceObjectAtIndex:indexPath.row withObject:editedDocument];
+        [self.delegate reloadItemsAtIndexPaths:@[indexPath] reselectItems:NO];
+    }
 }
 
 @end

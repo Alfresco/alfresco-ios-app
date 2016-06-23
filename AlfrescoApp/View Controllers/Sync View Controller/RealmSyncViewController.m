@@ -112,16 +112,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                                                  name:kSettingsDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(nodeAdded:)
-                                                 name:kAlfrescoNodeAddedOnServerNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(adjustCollectionViewForProgressView:)
                                                  name:kSyncProgressViewVisiblityChangeNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(editingDocumentCompleted:)
-                                                 name:kAlfrescoDocumentEditedNotification object:nil];
 }
 
 - (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
@@ -247,88 +240,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [[RealmSyncManager sharedManager] cancelAllSyncOperations];
 }
 
-#pragma mark - CollectionViewMultiSelectDelegate methods
-- (BOOL)isItemSelected:(NSIndexPath *) indexPath
-{
-    if(self.isEditing)
-    {
-        AlfrescoNode *selectedNode = nil;
-        if(indexPath.item < [self.dataSource numberOfNodesInCollection])
-        {
-            selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.row];
-        }
-        
-        if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
-        {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-#pragma mark - RepositoryCollectionViewDataSourceDelegate methods
-- (BaseCollectionViewFlowLayout *)currentSelectedLayout
-{
-    return [self layoutForStyle:self.style];
-}
-
-- (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate
-{
-    return self;
-}
-
-- (void)dataSourceUpdated
-{
-    [self reloadCollectionView];
-}
-
-- (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
-{
-    displayErrorMessage([NSString stringWithFormat:stringFormat, [ErrorDescriptions descriptionForError:error]]);
-    [Notifier notifyWithAlfrescoError:error];
-}
-
-- (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems
-{
-    [self.collectionView performBatchUpdates:^{
-        [self.collectionView deleteItemsAtIndexPaths:indexPathsOfDeletedItems];
-    } completion:^(BOOL finished) {
-        for(AlfrescoNode *deletedNode in items)
-        {
-            if ([[UniversalDevice detailViewItemIdentifier] isEqualToString:deletedNode.identifier])
-            {
-                [UniversalDevice clearDetailViewController];
-            }
-        }
-    }];
-}
-
-- (void)failedToDeleteItems:(NSError *)error
-{
-    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.unable.to.delete", @"Unable to delete file/folder"), [ErrorDescriptions descriptionForError:error]]);
-}
-
-- (void)didRetrievePermissionsForParentNode
-{
-#warning TODO
-}
-
-- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-#warning TODO
-}
-
-- (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource
-{
- #warning TODO
-}
-
-- (UISearchBar *)searchBarForSupplimentaryHeaderView
-{
-    #warning TODO
-    return nil;
-}
-
 #pragma mark - UICollectionViewDelegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -432,20 +343,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     self.didSyncAfterSessionRefresh = YES;
 }
 
-- (void)editingDocumentCompleted:(NSNotification *)notification
-{
-    AlfrescoDocument *editedDocument = notification.object;
-    NSString *editedDocumentIdentifier = [Utility nodeRefWithoutVersionID:editedDocument.identifier];
-    
-    NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:editedDocumentIdentifier inNodeIdentifiers:[self.collectionViewData valueForKeyPath:kVersionSeriesValueKeyPath]];
-    
-    if (indexPath)
-    {
-        [self.collectionViewData replaceObjectAtIndex:indexPath.row withObject:editedDocument];
-        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
-    }
-}
-
 - (void)didUpdatePreference:(NSNotification *)notification
 {
     NSString *preferenceKeyChanged = notification.object;
@@ -463,21 +360,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         else if (shouldSyncOnCellular)
         {
             [self loadSyncNodesForFolder:self.parentNode];
-        }
-    }
-}
-
-- (void)nodeAdded:(NSNotification *)notification
-{
-    NSDictionary *infoDictionary = notification.object;
-    AlfrescoFolder *parentFolder = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerParentFolderKey];
-    
-    if ([parentFolder.identifier isEqualToString:self.parentNode.identifier])
-    {
-        AlfrescoNode *subnode = [infoDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
-        if(subnode)
-        {
-            [self addAlfrescoNodes:@[subnode] completion:nil];
         }
     }
 }
