@@ -229,6 +229,7 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
+    BOOL shouldReceiveTouch = NO;
     if(gestureRecognizer == self.tapToDismissDeleteAction)
     {
         if([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
@@ -236,15 +237,15 @@
             BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
             if((properLayout.selectedIndexPathForSwipeToDelete != nil) && (!self.editing))
             {
-                return YES;
+                shouldReceiveTouch = YES;
             }
         }
     }
     else if (gestureRecognizer == self.swipeToDeleteGestureRecognizer)
     {
-        return YES;
+        shouldReceiveTouch = YES;
     }
-    return NO;
+    return shouldReceiveTouch;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer

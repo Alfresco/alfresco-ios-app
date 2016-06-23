@@ -88,6 +88,10 @@
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.delegate dataSourceUpdated];
     }
+    else
+    {
+        [self.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed")];
+    }
 }
 
 - (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
@@ -113,7 +117,7 @@
     }
     else
     {
-        // display error
+        [self.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed")];
     }
 }
 
