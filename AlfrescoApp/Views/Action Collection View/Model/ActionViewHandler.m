@@ -671,15 +671,16 @@
 
 - (void)pressedSyncActionItem:(ActionCollectionItem *)actionItem
 {
-    [[RealmSyncManager sharedManager] addNodeToSync:self.node withCompletionBlock:^(BOOL completed)
-    {
+    __weak typeof(self) weakSelf = self;
+    
+    [[RealmSyncManager sharedManager] addNodeToSync:self.node withCompletionBlock:^(BOOL completed){
         if (completed)
         {
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnsync,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unsync", @"Unsync Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-unsync.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierSync userInfo:userInfo];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidAddNodeNotification object:self.node];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidAddNodeNotification object:weakSelf.node];
         }
     }];
 }
@@ -691,34 +692,36 @@
         return;
     }
     
+    __weak typeof(self) weakSelf = self;
+    
     void (^deleteNode)() = ^void(){
-        [[RealmSyncManager sharedManager] deleteNodeFromSync:self.node withCompletionBlock:^(BOOL savedLocally)
+        [[RealmSyncManager sharedManager] deleteNodeFromSync:weakSelf.node withCompletionBlock:^(BOOL savedLocally)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
                  NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierSync,
                                             kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.sync", @"Sync Action"),
                                             kActionCollectionItemUpdateItemImageKey : @"actionsheet-sync.png"};
                  [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnsync userInfo:userInfo];
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:self.node];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:weakSelf.node];
              });
          }];
     };
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{        
         RLMRealm *realm = [RLMRealm defaultRealm];
-        BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:self.node inRealm:realm];
+        BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:weakSelf.node inRealm:realm];
         
         if(isModifiedLocally)
         {
-            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:self.node.identifier ifNotExistsCreateNew:NO inRealm:realm];
+            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:weakSelf.node.identifier ifNotExistsCreateNew:NO inRealm:realm];
             
             [realm beginWriteTransaction];
             syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
             [realm commitWriteTransaction];
             
-            if (self.node.isDocument)
+            if (weakSelf.node.isDocument)
             {
-                [[RealmSyncManager sharedManager] uploadDocument:(AlfrescoDocument *)self.node withCompletionBlock:^(BOOL completed)
+                [[RealmSyncManager sharedManager] uploadDocument:(AlfrescoDocument *)weakSelf.node withCompletionBlock:^(BOOL completed)
                 {
                     if (completed)
                     {
@@ -729,7 +732,7 @@
         }
         else
         {
-            [[RealmSyncManager sharedManager] cancelSyncForDocumentWithIdentifier:self.node.identifier];
+            [[RealmSyncManager sharedManager] cancelSyncForDocumentWithIdentifier:weakSelf.node.identifier];
             
             deleteNode();
         }
