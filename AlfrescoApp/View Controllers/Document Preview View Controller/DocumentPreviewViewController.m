@@ -31,11 +31,11 @@
 #import "MapViewController.h"
 #import "MetaDataViewController.h"
 #import "PagedScrollView.h"
-#import "SyncManager.h"
 #import "ThumbnailManager.h"
 #import "UniversalDevice.h"
 #import "VersionHistoryViewController.h"
 #import "AccountManager.h"
+#import "RealmSyncManager.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 #define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
@@ -72,9 +72,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     
     [self updateActionButtons];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+    [self addObservers];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -103,6 +101,13 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 }
 
 #pragma mark - Private Functions
+
+- (void)addObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+}
 
 - (void)showHUD
 {
@@ -165,7 +170,39 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 
 - (void)updateActionButtons
 {
+    // check if node is synced
+    [self updateSyncActionButton];
+    
     // check node is favourited
+    [self updateFavouriteActionButton];
+    
+    // check and update the like node
+    [self updateLikeActionButton];
+}
+
+- (void)updateSyncActionButton
+{
+    if([AccountManager sharedManager].selectedAccount.isSyncOn == NO)
+        return;
+    
+    BOOL isSynced = [[RealmSyncManager sharedManager] isNodeInSyncList:self.document];
+    
+    NSString *actionIdentifier = isSynced ? kActionCollectionIdentifierUnsync : kActionCollectionIdentifierSync;
+    NSString *titleKey = isSynced ? NSLocalizedString(@"action.unsync", @"Unsync Action") : NSLocalizedString(@"action.sync", @"Sync Action");
+    NSString *imageKey = isSynced ? @"actionsheet-unsync.png" : @"actionsheet-sync.png";
+    
+    if (actionIdentifier && titleKey && imageKey)
+    {
+        NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : actionIdentifier,
+                                   kActionCollectionItemUpdateItemTitleKey : titleKey,
+                                   kActionCollectionItemUpdateItemImageKey : imageKey};
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:isSynced ? kActionCollectionIdentifierSync : kActionCollectionIdentifierUnsync userInfo:userInfo];
+    }
+}
+
+- (void)updateFavouriteActionButton
+{
     [[FavouriteManager sharedManager] isNodeFavorite:self.document session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
         if (isFavorite)
         {
@@ -182,8 +219,10 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
         }
     }];
-    
-    // check and update the like node
+}
+
+- (void)updateLikeActionButton
+{
     [self.ratingService isNodeLiked:self.document completionBlock:^(BOOL succeeded, BOOL isLiked, NSError *error) {
         if (succeeded && isLiked)
         {
