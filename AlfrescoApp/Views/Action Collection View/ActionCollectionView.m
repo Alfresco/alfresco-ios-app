@@ -107,6 +107,10 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (void)handleUpdateNotification:(NSNotification *)notification
 {
+    /*
+     ActionCollectionViewCell used by self.collectionView is set up with an ActionCollectionItem, which is observer for this notification, too.
+     We have to make sure that the ActionCollectionItem is up to date before reloading the collection view.
+     */
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
     });

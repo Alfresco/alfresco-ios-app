@@ -770,10 +770,6 @@
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
-    NSString *selectedAccountIdentifier = selectedAccount.accountIdentifier;
-    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo[selectedAccountIdentifier];
-    NSMutableArray *topLevelSyncNodes = nodesInfoForSelectedAccount[selectedAccountIdentifier];
-    BOOL isSyncNodesInfoInMemory = (topLevelSyncNodes != nil);
 
     void (^syncNode)(AlfrescoNode *) = ^void (AlfrescoNode *nodeToBeSynced){
         // start sync for this node only
@@ -787,7 +783,7 @@
                     syncNodeStatus.activityType = SyncActivityTypeDownload;
                 }
                 
-                [self downloadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed) {
+                [self downloadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed){
                     if (completionBlock)
                     {
                         completionBlock(YES);
@@ -799,35 +795,14 @@
     
     if (selectedAccount.isSyncOn)
     {
-        [self showSyncAlertWithCompletionBlock:^(BOOL completed) {
-            [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
-                if (isSyncNodesInfoInMemory)
-                {
-                    [topLevelSyncNodes addObject:node];
-                }
-                else
-                {
-                    NSMutableDictionary *nodesInfoForSelectedAccount = [NSMutableDictionary dictionary];
-                    self.syncNodesInfo[selectedAccountIdentifier] = nodesInfoForSelectedAccount;
-                    nodesInfoForSelectedAccount[selectedAccountIdentifier] = [@[node] mutableCopy];
-                }
-                
-                if (node.isFolder == NO)
-                {
-                    syncNode(node);
-                }
-                
-                //TODO: sync folders as well
-            }];
+        [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
+            if (node.isFolder == NO)
+            {
+                syncNode(node);
+            }
+            
+            //TODO: sync folders as well
         }];
-    }
-    else
-    {
-        [topLevelSyncNodes addObject:node];
-        if (completionBlock != NULL)
-        {
-            completionBlock(YES);
-        }
     }
 }
 
@@ -1092,41 +1067,6 @@
         }
     }
     return NO;
-}
-
-- (void)showSyncAlertWithCompletionBlock:(void (^)(BOOL completed))completionBlock
-{
-    AccountManager *accountManager = [AccountManager sharedManager];
-    UserAccount *selectedAccount = accountManager.selectedAccount;
-    
-    if (!selectedAccount.isSyncOn)
-    {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
-        [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
-                                        message:message
-                                completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                                    
-                                    selectedAccount.didAskToSync = YES;
-                                    selectedAccount.isSyncOn = !isCancelButton;
-                                    [accountManager saveAccountsToKeychain];
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:selectedAccount];
-                                    completionBlock(YES);
-                                }];
-    }
-    else
-    {
-        completionBlock(YES);
-    }
-}
-
-- (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    [alert showWithCompletionBlock:completionBlock];
 }
 
 - (void)retrievePermissionsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(void))completionBlock
