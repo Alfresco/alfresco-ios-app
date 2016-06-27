@@ -99,7 +99,9 @@
         if (createNew && !syncError)
         {
             syncError = [self createSyncErrorInRealm:realm];
+            [realm beginWriteTransaction];
             syncError.errorId = nodeId;
+            [realm commitWriteTransaction];
         }
     }
     return syncError;

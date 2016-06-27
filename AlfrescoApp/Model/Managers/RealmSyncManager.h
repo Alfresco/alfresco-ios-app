@@ -49,6 +49,7 @@
 /**
  * Sync node information
  */
+- (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
@@ -61,8 +62,10 @@
 - (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 - (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path;
+- (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 /**
  * Sync Feature

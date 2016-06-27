@@ -129,6 +129,8 @@ NSString * const kSyncStatusChangeNotification = @"kSyncStatusChangeNotification
 NSString * const kSyncObstaclesNotification = @"kSyncObstaclesNotification";
 NSString * const kFavoritesListUpdatedNotification = @"kFavoritesListUpdatedNotification";
 NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressViewVisiblityChangeNotification";
+NSString * const kTopLevelSyncDidAddNodeNotification = @"TopLevelSyncDidAddNodeNotification";
+NSString * const kTopLevelSyncDidRemoveNodeNotification = @"TopLevelSyncDidRemoveNodeNotification";
 
 // Realm sync exceptions
 NSString * const kFailedToCreateRealmDatabase = @"FailedToCreateRealmDatabase";
