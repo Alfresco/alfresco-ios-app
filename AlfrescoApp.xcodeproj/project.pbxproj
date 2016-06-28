@@ -30,7 +30,6 @@
 		082ED88918EC21A100518216 /* WorkflowHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 082ED88818EC21A100518216 /* WorkflowHelper.m */; };
 		0833244417F19D6800EE6AA8 /* SyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244317F19D6800EE6AA8 /* SyncHelper.m */; };
 		0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */; };
-		0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833244F17F9823800EE6AA8 /* SyncViewController.m */; };
 		0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */; };
 		0833248417FEB9C400EE6AA8 /* SyncObstaclesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */; };
 		0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833248017FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m */; };
@@ -80,15 +79,15 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */; };
+		1DE950731CAC054D009299C8 /* RealmSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950721CAC054D009299C8 /* RealmSyncHelper.m */; };
+		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
+		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
 		2311ADB11CE1E44E00F2E1AC /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
 		2311ADB61CE1E45400F2E1AC /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
 		2311ADB71CE1E7C300F2E1AC /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
 		2311ADB81CE1F0B000F2E1AC /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
 		2311ADB91CE1F0B400F2E1AC /* PinBulletsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B462DF1CA590AA009C13EB /* PinBulletsView.m */; };
-		1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */; };
-		1DE950731CAC054D009299C8 /* RealmSyncHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950721CAC054D009299C8 /* RealmSyncHelper.m */; };
-		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
-		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
 		2311ADBA1CE1F0B900F2E1AC /* PinBulletsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B462E51CA59917009C13EB /* PinBulletsView.xib */; };
 		2311ADC01CE1F80000F2E1AC /* PreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0417F42CA800C6A54F /* PreferenceManager.m */; };
 		2311ADC11CE1FB3300F2E1AC /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2744021F18AA83C400DF23DD /* Settings.bundle */; };
@@ -910,8 +909,6 @@
 		0833244317F19D6800EE6AA8 /* SyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncHelper.m; sourceTree = "<group>"; };
 		0833244A17F32AA200EE6AA8 /* SyncNodeStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncNodeStatus.h; sourceTree = "<group>"; };
 		0833244B17F32AA200EE6AA8 /* SyncNodeStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncNodeStatus.m; sourceTree = "<group>"; };
-		0833244E17F9823800EE6AA8 /* SyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncViewController.h; path = "Sync View Controller/SyncViewController.h"; sourceTree = "<group>"; };
-		0833244F17F9823800EE6AA8 /* SyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SyncViewController.m; path = "Sync View Controller/SyncViewController.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0833247B17FEB9C400EE6AA8 /* SyncObstaclesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncObstaclesViewController.h; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.h"; sourceTree = "<group>"; };
 		0833247C17FEB9C400EE6AA8 /* SyncObstaclesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncObstaclesViewController.m; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.m"; sourceTree = "<group>"; };
 		0833247D17FEB9C400EE6AA8 /* SyncObstaclesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SyncObstaclesViewController.xib; path = "Sync View Controller/Sync Obstacles/SyncObstaclesViewController.xib"; sourceTree = "<group>"; };
@@ -995,12 +992,19 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
-		231A0B4D1CABCCCD0029A10E /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityManager.h; sourceTree = "<group>"; };
 		1D2A52AA1CC7687000991186 /* RepositoryCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RepositoryCollectionViewDataSource.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RepositoryCollectionViewDataSource.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		1D2A52B11CC76DA000991186 /* RepositoryCollectionViewDataSource+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RepositoryCollectionViewDataSource+Internal.h"; sourceTree = "<group>"; };
+		1DE950711CAC054D009299C8 /* RealmSyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncHelper.h; sourceTree = "<group>"; };
+		1DE950721CAC054D009299C8 /* RealmSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncHelper.m; sourceTree = "<group>"; };
+		1DE950781CAC0887009299C8 /* RealmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmManager.h; sourceTree = "<group>"; };
+		1DE950791CAC0887009299C8 /* RealmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmManager.m; sourceTree = "<group>"; };
+		1DE9507B1CAE6D09009299C8 /* SyncConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncConstants.h; sourceTree = "<group>"; };
+		1DE9507C1CAE6D09009299C8 /* SyncConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConstants.m; sourceTree = "<group>"; };
+		231A0B4D1CABCCCD0029A10E /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityManager.h; sourceTree = "<group>"; };
 		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
 		23A681E01CA2A1E200E90D89 /* BulletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletView.h; sourceTree = "<group>"; };
 		23A681E11CA2A1E200E90D89 /* BulletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletView.m; sourceTree = "<group>"; };
-		1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RepositoryCollectionViewDataSource.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		23B2B29F1CA1A4FD00A8196C /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		23B2B2A01CA1A4FD00A8196C /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinViewController.xib; sourceTree = "<group>"; };
@@ -1009,13 +1013,6 @@
 		23B462E51CA59917009C13EB /* PinBulletsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinBulletsView.xib; sourceTree = "<group>"; };
 		23BE84D41CE9C3B200FA5BCB /* TouchIDManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchIDManager.h; sourceTree = "<group>"; };
 		23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchIDManager.m; sourceTree = "<group>"; };
-		1D2A52B11CC76DA000991186 /* RepositoryCollectionViewDataSource+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RepositoryCollectionViewDataSource+Internal.h"; sourceTree = "<group>"; };
-		1DE950711CAC054D009299C8 /* RealmSyncHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncHelper.h; sourceTree = "<group>"; };
-		1DE950721CAC054D009299C8 /* RealmSyncHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncHelper.m; sourceTree = "<group>"; };
-		1DE950781CAC0887009299C8 /* RealmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmManager.h; sourceTree = "<group>"; };
-		1DE950791CAC0887009299C8 /* RealmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmManager.m; sourceTree = "<group>"; };
-		1DE9507B1CAE6D09009299C8 /* SyncConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncConstants.h; sourceTree = "<group>"; };
-		1DE9507C1CAE6D09009299C8 /* SyncConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConstants.m; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
@@ -1228,6 +1225,7 @@
 		2B9C608D1C9714F400898161 /* ic_sync_screenshot_cropped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_sync_screenshot_cropped@2x.png"; sourceTree = "<group>"; };
 		2BA24A671B8C5D470075CA99 /* SearchViewControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewControllerDataSource.h; sourceTree = "<group>"; };
 		2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewControllerDataSource.m; sourceTree = "<group>"; };
+		2BA39FD71D12A0950036710D /* BaseFileFolderCollectionViewController+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BaseFileFolderCollectionViewController+Internal.h"; sourceTree = "<group>"; };
 		2BA7F9FF1B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFSwipeToDeleteGestureRecognizer.h; sourceTree = "<group>"; };
 		2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALFSwipeToDeleteGestureRecognizer.m; sourceTree = "<group>"; };
 		2BB1BA0F1BDFDDB0005AEE12 /* NewAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewAccountViewController.h; path = "New Account/NewAccountViewController.h"; sourceTree = "<group>"; };
@@ -1997,8 +1995,6 @@
 				2B482B351CC4C732003CDEE6 /* Data Source */,
 				738665011906B2A60021D1BD /* Cell */,
 				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
-				0833244E17F9823800EE6AA8 /* SyncViewController.h */,
-				0833244F17F9823800EE6AA8 /* SyncViewController.m */,
 				2B482B3D1CC523D7003CDEE6 /* RealmSyncViewController.h */,
 				2B482B3E1CC523D7003CDEE6 /* RealmSyncViewController.m */,
 			);
@@ -3053,6 +3049,7 @@
 				2BFB080A1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.h */,
 				2BFB080B1B14B45F00ED8DFF /* BaseCollectionViewFlowLayout.m */,
 				2BFB08021B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.h */,
+				2BA39FD71D12A0950036710D /* BaseFileFolderCollectionViewController+Internal.h */,
 				2BFB08031B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m */,
 				7386649B1906AD840021D1BD /* BaseFileFolderListViewController.h */,
 				7386649C1906AD840021D1BD /* BaseFileFolderListViewController.m */,
@@ -5094,7 +5091,6 @@
 				08344EF818E2E64E00B061C0 /* DatePickerViewController.m in Sources */,
 				738665171906B3ED0021D1BD /* ActivityTableViewCell.m in Sources */,
 				738665051906B2A60021D1BD /* AlfrescoNodeCell.m in Sources */,
-				0833245017F9823800EE6AA8 /* SyncViewController.m in Sources */,
 				73632AE31802E5C6007172EE /* DocumentPreviewViewController.m in Sources */,
 				7379733818AA8E9B007613B2 /* SyncError.m in Sources */,
 				2BFB08041B14A1D100ED8DFF /* BaseFileFolderCollectionViewController.m in Sources */,

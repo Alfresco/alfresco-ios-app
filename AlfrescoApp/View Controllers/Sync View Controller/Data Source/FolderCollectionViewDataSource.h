@@ -23,4 +23,6 @@
 - (instancetype)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 - (instancetype)initWithFolderPath:(NSString *)folderPath folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 
+- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
+
 @end

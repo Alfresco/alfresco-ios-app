@@ -22,6 +22,7 @@
 #import "BaseLayoutAttributes.h"
 #import "BaseCollectionViewFlowLayout.h"
 #import "CollectionViewProtocols.h"
+#import "RepositoryCollectionViewDataSource.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;
@@ -40,9 +41,6 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property (nonatomic, strong) NSMutableArray *collectionViewData;
-@property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
-@property (nonatomic, assign) BOOL moreItemsAvailable;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong, readonly) MBProgressHUD *progressHUD;
@@ -56,6 +54,8 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewTopConstraint;
 @property (nonatomic) BOOL shouldIncludeSearchBar;
 
+@property (nonatomic, strong) RepositoryCollectionViewDataSource *dataSource;
+@property (nonatomic, strong) RepositoryCollectionViewDataSource *searchDataSource;
 @property (nonatomic, strong) UIAlertController *actionsAlertController;
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
@@ -64,11 +64,6 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 - (void)setupWithSession:(id<AlfrescoSession>)session;
 
 - (void)reloadCollectionView;
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
-- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
-- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
-- (void)addAlfrescoNodes:(NSArray *)alfrescoNodes completion:(void (^)(BOOL finished))completion;
 - (void)showHUD;
 - (void)showHUDWithMode:(MBProgressHUDMode)mode;
 - (void)hideHUD;
@@ -83,5 +78,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 
 - (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated;
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style;
+
+- (void)updateEmptyView;
 
 @end

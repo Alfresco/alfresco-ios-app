@@ -36,6 +36,13 @@
     }
     self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
     
+    [self reloadDataSource];
+    
+    return self;
+}
+
+- (void)reloadDataSource
+{
     __weak typeof(self) weakSelf = self;
     [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session completionBlock:^(NSArray *array, NSError *error) {
         if(array)
@@ -48,8 +55,6 @@
             [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.favorites.failed", @"Favorites failed")];
         }
     }];
-    
-    return self;
 }
 
 @end

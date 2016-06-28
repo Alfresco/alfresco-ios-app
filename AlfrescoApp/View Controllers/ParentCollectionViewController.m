@@ -50,9 +50,6 @@
 - (void)setupWithSession:(id<AlfrescoSession>)session
 {
     self.session = session;
-    self.collectionViewData = [NSMutableArray array];
-    self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
-    self.moreItemsAvailable = NO;
     self.allowsPullToRefresh = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(sessionReceived:)
@@ -139,92 +136,6 @@
         self.collectionView.contentOffset = CGPointMake(0., 40.);
     }
     [self updateEmptyView];
-}
-
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
-{
-    [self reloadCollectionViewWithPagingResult:pagingResult data:nil error:error];
-}
-
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
-{
-    if (pagingResult)
-    {
-        self.collectionViewData = data ?: [pagingResult.objects mutableCopy];
-        self.moreItemsAvailable = pagingResult.hasMoreItems;
-        [self.collectionView reloadData];
-        if ((!IS_IPAD) && (self.shouldIncludeSearchBar))
-        {
-            // hide search bar initially
-            self.collectionView.contentOffset = CGPointMake(0., 40.);
-        }
-        [self updateEmptyView];
-    }
-    else
-    {
-        // display error
-    }
-}
-
-- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
-{
-    [self addMoreToCollectionViewWithPagingResult:pagingResult data:nil error:error];
-}
-
-- (void) addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
-{
-    if (pagingResult)
-    {
-        if (data)
-        {
-            self.collectionViewData = data;
-        }
-        else
-        {
-            NSMutableArray *arrayOfIndexPaths = [NSMutableArray new];
-            for(NSInteger initialIndex = self.collectionViewData.count; initialIndex < self.collectionViewData.count + pagingResult.objects.count; initialIndex ++)
-            {
-                [arrayOfIndexPaths addObject:[NSIndexPath indexPathForItem:initialIndex inSection:0]];
-            }
-            [self.collectionViewData addObjectsFromArray:pagingResult.objects];
-        }
-        
-        self.moreItemsAvailable = pagingResult.hasMoreItems;
-        [self.collectionView reloadData];
-        [self updateEmptyView];
-    }
-    else
-    {
-        // display error
-    }
-}
-
-- (void) addAlfrescoNodes:(NSArray *)alfrescoNodes completion:(void (^)(BOOL finished))completion
-{
-    NSComparator comparator = ^(AlfrescoNode *obj1, AlfrescoNode *obj2) {
-        return (NSComparisonResult)[obj1.name caseInsensitiveCompare:obj2.name];
-    };
-    
-    NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
-    for (AlfrescoNode *node in alfrescoNodes)
-    {
-        // add to the collectionView data source at the correct index
-        NSUInteger newIndex = [self.collectionViewData indexOfObject:node inSortedRange:NSMakeRange(0, self.collectionViewData.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
-        [self.collectionViewData insertObject:node atIndex:newIndex];
-        // create index paths to animate into the table view
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newIndex inSection:0];
-        [newNodeIndexPaths addObject:indexPath];
-    }
-    
-    [self.collectionView performBatchUpdates:^{
-        [self.collectionView insertItemsAtIndexPaths:newNodeIndexPaths];
-    } completion:^(BOOL finished) {
-        [self updateEmptyView];
-        if(completion)
-        {
-            completion(finished);
-        }
-    }];
 }
 
 - (NSIndexPath *)indexPathForNodeWithIdentifier:(NSString *)identifier inNodeIdentifiers:(NSArray *)collectionViewNodeIdentifiers
@@ -486,6 +397,24 @@
 - (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {
     AlfrescoLogDebug(@"didTapCollectionViewCellAccessoryView: is not implemented in the subclass of %@", [self class]);
+}
+
+- (void)setIsOnSearchResults:(BOOL)newValue
+{
+    _isOnSearchResults = newValue;
+    RepositoryCollectionViewDataSource *currentDataSource = nil;
+    if(_isOnSearchResults)
+    {
+        currentDataSource = self.searchDataSource;
+    }
+    else
+    {
+        currentDataSource = self.dataSource;
+    }
+    
+    self.collectionView.dataSource = currentDataSource;
+    self.listLayout.dataSourceInfoDelegate = currentDataSource;
+    self.gridLayout.dataSourceInfoDelegate = currentDataSource;
 }
 
 @end

@@ -16,9 +16,9 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "ParentCollectionViewController.h"
+#import "BaseFileFolderCollectionViewController.h"
 
-@interface RealmSyncViewController : ParentCollectionViewController
+@interface RealmSyncViewController : BaseFileFolderCollectionViewController
 
 - (id)initWithParentNode:(AlfrescoNode *)node andSession:(id<AlfrescoSession>)session;
 

@@ -21,10 +21,8 @@
 #import "NodePickerFileFolderListViewController.h"
 #import "NodePickerSitesViewController.h"
 #import "NodePickerFavoritesViewController.h"
-#import "SyncViewController.h"
 #import "SyncManager.h"
 #import "NodePickerScopeCell.h"
-
 
 static CGFloat const kCellHeight = 64.0f;
 

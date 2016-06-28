@@ -133,12 +133,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     [MigrationAssistant runDownloadsMigration];
     
-#warning Code commented for testing purposes
-//    if([[RealmSyncManager sharedManager] isCoreDataMigrationNeeded])
-//    {
+    if([[RealmSyncManager sharedManager] isCoreDataMigrationNeeded])
+    {
         [[RealmSyncManager sharedManager] initiateMigrationProcess];
-//    }
-    
+    }
+
     // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];
     self.window.tintColor = [UIColor appTintColor];

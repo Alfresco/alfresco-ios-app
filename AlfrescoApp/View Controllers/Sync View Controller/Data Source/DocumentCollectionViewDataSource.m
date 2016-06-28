@@ -22,6 +22,7 @@
 @interface DocumentCollectionViewDataSource ()
 
 @property (nonatomic, strong) NSString *documentPath;
+@property (nonatomic, strong) AlfrescoDocument *document;
 
 @end
 
@@ -43,7 +44,8 @@
     [self.documentService retrieveNodeWithFolderPath:documentPath completionBlock:^(AlfrescoNode *node, NSError *error) {
         if(node)
         {
-            [weakSelf setupWithDocument:(AlfrescoDocument *)node];
+            self.document = (AlfrescoDocument *)node;
+            [weakSelf setupWithDocument:self.document];
         }
         else
         {
@@ -64,7 +66,8 @@
     
     self.session = session;
     self.delegate = delegate;
-    [self setupWithDocument:document];
+    self.document = document;
+    [self setupWithDocument:self.document];
     
     return self;
 }
@@ -74,6 +77,11 @@
     self.dataSourceCollection = [NSMutableArray arrayWithObject:document];
     [self.delegate dataSourceUpdated];
     [self.delegate selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+}
+
+- (void)reloadDataSource
+{
+    [self setupWithDocument:self.document];
 }
 
 @end
