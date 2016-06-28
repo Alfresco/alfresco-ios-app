@@ -45,11 +45,25 @@
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:self.shouldIncludeSearchBar];
     self.gridLayout.dataSourceInfoDelegate = self.dataSource;
     self.gridLayout.collectionViewMultiSelectDelegate = self;
+    
+    if(!self.hasRequestFinished)
+    {
+        [self showHUD];
+    }
 }
 
 - (void)dealloc
 {
     [_searchController.view removeFromSuperview];
+}
+
+- (void)setHasRequestFinished:(BOOL)hasRequestFinished
+{
+    _hasRequestFinished = hasRequestFinished;
+    if(hasRequestFinished)
+    {
+        [self hideHUD];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate methods
@@ -486,12 +500,12 @@
 
 - (void)dataSourceUpdated
 {
-    [self hideHUD];
     [self hidePullToRefreshView];
     [self reloadCollectionView];
     [self selectIndexPathForAlfrescoNodeInDetailView];
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     self.isLoadingAnotherPage = NO;
+    self.hasRequestFinished = YES;
 }
 
 - (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat

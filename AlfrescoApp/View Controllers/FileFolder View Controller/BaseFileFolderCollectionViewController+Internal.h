@@ -36,6 +36,7 @@ static CGFloat const kCellHeight = 64.0f;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
+@property (nonatomic) BOOL hasRequestFinished;
 
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
 - (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock;
