@@ -524,7 +524,7 @@
     }
     
     [Notifier notifyWithAlfrescoError:error];
-    [self hideHUD];
+    self.hasRequestFinished = YES;
 }
 
 - (void)didDeleteItems:(NSArray *)items atIndexPaths:(NSArray *)indexPathsOfDeletedItems
