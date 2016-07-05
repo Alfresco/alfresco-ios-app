@@ -17,8 +17,6 @@
  ******************************************************************************/
 
 #import "BaseFileFolderCollectionViewController.h"
-#import "UploadFormViewController.h"
-#import "DownloadsViewController.h"
 #import "CollectionViewProtocols.h"
 
 @class AlfrescoFolder;

@@ -40,6 +40,7 @@
     self.session = session;
     self.delegate = delegate;
     
+    self.shouldAllowMultiselect = YES;
     __weak typeof(self) weakSelf = self;
     [self.documentService retrieveNodeWithFolderPath:documentPath completionBlock:^(AlfrescoNode *node, NSError *error) {
         if(node)

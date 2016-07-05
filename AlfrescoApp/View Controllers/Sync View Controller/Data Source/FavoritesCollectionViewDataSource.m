@@ -29,6 +29,7 @@
     {
         return nil;
     }
+    self.shouldAllowMultiselect = NO;
     
     if(!node)
     {

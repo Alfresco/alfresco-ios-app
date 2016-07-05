@@ -72,6 +72,7 @@
     {
         [super setSession:session];
         self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+        self.shouldAllowMultiselect = YES;
     }
 }
 

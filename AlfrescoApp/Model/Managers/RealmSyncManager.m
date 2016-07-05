@@ -44,6 +44,8 @@
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
+@property (atomic, assign) NSInteger nodeChildrenRequestsCount;
+
 @end
 
 @implementation RealmSyncManager
@@ -779,7 +781,53 @@
             }
             else
             {
-                [self addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
+                self.syncNodesInfo = [NSMutableDictionary new];
+                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                    if(self.nodeChildrenRequestsCount == 0)
+                    {
+                        [self addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                    }
+                }];
+            }
+        }];
+    }
+}
+
+- (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo;
+    
+    if ([nodesInfoForSelectedAccount objectForKey:[self.syncHelper syncIdentifierForNode:node]] == nil)
+    {
+        self.nodeChildrenRequestsCount++;
+        [self.documentFolderService retrieveChildrenInFolder:(AlfrescoFolder *)node completionBlock:^(NSArray *array, NSError *error) {
+            
+            self.nodeChildrenRequestsCount--;
+            if (array)
+            {
+                // nodes for each folder are held in with keys folder identifiers
+                nodesInfoForSelectedAccount[[self.syncHelper syncIdentifierForNode:node]] = array;
+                [self retrievePermissionsForNodes:array withCompletionBlock:^{
+                    
+                    for (AlfrescoNode *node in array)
+                    {
+                        if(node.isFolder)
+                        {
+                            // recursive call to retrieve nodes hierarchies
+                            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                                
+                                if (completionBlock != NULL)
+                                {
+                                    completionBlock(YES);
+                                }
+                            }];
+                        }
+                    }
+                }];
+            }
+            if (completionBlock != NULL)
+            {
+                completionBlock(YES);
             }
         }];
     }
@@ -815,9 +863,8 @@
     }
 }
 
-- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
+- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel
 {
-    
     RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:YES inRealm:realm];
     [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self.syncHelper syncIdentifierForNode:folder] withNode:folder lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
@@ -826,51 +873,33 @@
     folderNodeInfo.isTopLevelSyncNode = isTopLevel;
     [realm commitWriteTransaction];
     
-    __weak typeof(self) weakSelf = self;
-    [self.documentFolderService retrieveChildrenInFolder:folder completionBlock:^(NSArray *array, NSError *error) {
-        RLMRealm *completionRealm = [RLMRealm defaultRealm];
-        if(error)
+    NSArray *folderChildren = self.syncNodesInfo[[self.syncHelper syncIdentifierForNode:folder]];
+    for(AlfrescoNode *subNode in folderChildren)
+    {
+        if(subNode.isFolder)
         {
-            //handle error
-            RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:YES inRealm:completionRealm];
-            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:completionRealm];
-            [completionRealm beginWriteTransaction];
-            syncError.errorCode = kSyncOperationCancelledErrorCode;
-            syncError.errorDescription = [error localizedDescription];
-            folderNodeInfo.syncError = syncError;
-            [completionRealm commitWriteTransaction];
+            [self addFolderToSync:(AlfrescoFolder *)subNode isTopLevelNode:NO];
+            [realm refresh];
+            RealmSyncNodeInfo *subFolderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:subNode] ifNotExistsCreateNew:NO inRealm:realm];
+            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:realm];
+            [realm beginWriteTransaction];
+            subFolderNodeInfo.parentNode = folderNodeInfo;
+            [realm commitWriteTransaction];
         }
         else
         {
-            for(AlfrescoNode *subNode in array)
-            {
-                if(subNode.isFolder)
-                {
-                    [self addFolderToSync:(AlfrescoFolder *)subNode isTopLevelNode:NO withCompletionBlock:^(BOOL completed) {
-                        
-                    }];
-                    [completionRealm refresh];
-                    RealmSyncNodeInfo *subFolderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:subNode] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                    RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                    [completionRealm beginWriteTransaction];
-                    subFolderNodeInfo.parentNode = folderNodeInfo;
-                    [completionRealm commitWriteTransaction];
-                }
-                else
-                {
-                    [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:^(BOOL completed) {
-                        RLMRealm *completionRealm = [RLMRealm defaultRealm];
-                        [completionRealm refresh];
-                        RealmSyncNodeInfo *documentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:subNode] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                        RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                        [completionRealm beginWriteTransaction];
-                        documentNodeInfo.parentNode = folderNodeInfo;
-                        [completionRealm commitWriteTransaction];
-                    }];
-                }
-            }
+            __weak typeof(self) weakSelf = self;
+            [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:^(BOOL completed) {
+                RLMRealm *completionRealm = [RLMRealm defaultRealm];
+                [completionRealm refresh];
+                RealmSyncNodeInfo *documentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:subNode] ifNotExistsCreateNew:NO inRealm:completionRealm];
+                RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:completionRealm];
+                [completionRealm beginWriteTransaction];
+                documentNodeInfo.parentNode = folderNodeInfo;
+                [completionRealm commitWriteTransaction];
+            }];
         }
-    }];
+    }
 }
 
 #pragma mark - Sync node information

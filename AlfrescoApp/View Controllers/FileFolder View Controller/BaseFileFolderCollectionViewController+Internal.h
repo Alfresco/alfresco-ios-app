@@ -18,13 +18,21 @@
 
 #import "BaseFileFolderCollectionViewController.h"
 #import "PreferenceManager.h"
+#import "LocationManager.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
 #import "UniversalDevice.h"
 #import "FailedTransferDetailViewController.h"
+#import "UploadFormViewController.h"
+#import "DownloadsViewController.h"
+#import "TextFileViewController.h"
+#import "NavigationViewController.h"
+#import <ImageIO/ImageIO.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 static CGFloat const kCellHeight = 64.0f;
 
-@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate>
+@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate, UIImagePickerControllerDelegate, DownloadsPickerDelegate, UINavigationControllerDelegate, UploadFormViewControllerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
@@ -37,11 +45,16 @@ static CGFloat const kCellHeight = 64.0f;
 @property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic) BOOL hasRequestFinished;
+@property (nonatomic, strong) UIImagePickerController *imagePickerController;
+@property (nonatomic, assign) BOOL capturingMedia;
 
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
 - (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock;
 - (void)presentViewInPopoverOrModal:(UIViewController *)controller animated:(BOOL)animated;
 - (void)updateUIUsingFolderPermissionsWithAnimation:(BOOL)animated;
 - (void)selectIndexPathForAlfrescoNodeInDetailView;
+- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated trackAnalytics: (BOOL) trackAnalytics;
+- (void)setupActionsAlertController;
+- (void)displayActionSheet:(id)sender event:(UIEvent *)event;
 
 @end

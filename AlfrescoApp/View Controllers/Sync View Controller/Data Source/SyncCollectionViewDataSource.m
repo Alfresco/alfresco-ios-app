@@ -45,6 +45,7 @@
         self.screenTitle = NSLocalizedString(@"sync.title", @"Sync Title");
     }
     self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
+    self.shouldAllowMultiselect = NO;
     
     __weak typeof(self) weakSelf = self;
     self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error) {
