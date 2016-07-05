@@ -82,19 +82,14 @@
         [self createServicesWithSession:session];
     }
     
-    __weak typeof(self) weakSelf = self;
     return [self.documentFolderService addFavorite:node completionBlock:^(BOOL succeeded, BOOL isFavorited, NSError *error) {
         if (succeeded)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:kFavouritesDidAddNodeNotification object:node];
-            SyncManager *syncManager = [SyncManager sharedManager];
-            [syncManager updateSessionIfNeeded:weakSelf.session];
-            [syncManager addNodeToSync:node withCompletionBlock:^(BOOL completed) {
-                if (completionBlock != NULL)
-                {
-                    completionBlock(isFavorited, error);
-                }
-            }];
+            if (completionBlock != NULL)
+            {
+                completionBlock(isFavorited, error);
+            }
         }
         else
         {
@@ -118,13 +113,10 @@
         if (succeeded)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:kFavouritesDidRemoveNodeNotification object:node];
-            SyncManager *syncManager = [SyncManager sharedManager];
-            [syncManager removeNodeFromSync:node withCompletionBlock:^(BOOL succeeded) {
-                if (completionBlock != NULL)
-                {
-                    completionBlock(succeeded, error);
-                }
-            }];
+            if (completionBlock != NULL)
+            {
+                completionBlock(succeeded, error);
+            }
         }
         else
         {
