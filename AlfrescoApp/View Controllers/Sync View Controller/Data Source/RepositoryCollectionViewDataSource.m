@@ -427,6 +427,18 @@
     [self retrieveContentsOfParentNode];
 }
 
+- (AlfrescoFolder *)parentFolder
+{
+    AlfrescoFolder *parent = nil;
+    
+    if (_parentNode.isFolder)
+    {
+        parent = (AlfrescoFolder *)_parentNode;
+    }
+
+    return parent;
+}
+
 #pragma mark - SwipeToDeleteDelegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
 {

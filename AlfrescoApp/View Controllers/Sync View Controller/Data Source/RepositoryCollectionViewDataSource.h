@@ -68,5 +68,6 @@
 - (NSArray *)nodeIdentifiersOfCurrentCollection;
 - (void)addAlfrescoNodes:(NSArray *)alfrescoNodes;
 - (void)reloadDataSource;
+- (AlfrescoFolder *)parentFolder;
 
 @end
