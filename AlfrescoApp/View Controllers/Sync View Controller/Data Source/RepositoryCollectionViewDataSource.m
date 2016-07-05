@@ -429,12 +429,14 @@
 
 - (AlfrescoFolder *)parentFolder
 {
+    AlfrescoFolder *parent = nil;
+    
     if (_parentNode.isFolder)
     {
-        return (AlfrescoFolder *)_parentNode;
+        parent = (AlfrescoFolder *)_parentNode;
     }
 
-    return nil;
+    return parent;
 }
 
 #pragma mark - SwipeToDeleteDelegate methods
