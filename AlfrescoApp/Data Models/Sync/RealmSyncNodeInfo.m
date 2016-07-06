@@ -23,7 +23,7 @@
 + (NSDictionary *)defaultPropertyValues
 {
     return @{@"isFolder" : @false,
-             @"isTopLevelSyncNode" : @true,
+             @"isTopLevelSyncNode" : @false,
              @"isRemovedFromSyncHasLocalChanges" : @false,
              @"node" : [NSData data],
              @"permissions" : [NSData data],

@@ -18,17 +18,15 @@
 
 #import "FileFolderCollectionViewController.h"
 #import "BaseFileFolderCollectionViewController+Internal.h"
-#import <MobileCoreServices/MobileCoreServices.h>
-#import "NavigationViewController.h"
+
+
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
-#import "LocationManager.h"
-#import <ImageIO/ImageIO.h>
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
-#import "TextFileViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+
+
 #import "SearchCollectionSectionHeader.h"
 
 #import "FavouriteManager.h"
@@ -57,18 +55,16 @@ static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderCollectionViewController () <DownloadsPickerDelegate, MultiSelectActionsDelegate, UploadFormViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface FileFolderCollectionViewController () < MultiSelectActionsDelegate>
 
 // Views
 @property (nonatomic, weak) UISearchBar *searchBar;
 // Data Model
-@property (nonatomic, assign) BOOL capturingMedia;
+
 @property (nonatomic, strong) NSIndexPath *indexPathOfLoadingCell;
 @property (nonatomic, assign) FileFolderCollectionViewControllerType controllerType;
 @property (nonatomic) CustomFolderServiceFolderType customFolderType;
 @property (nonatomic) BOOL shouldAutoSelectFirstItem;
-// Controllers
-@property (nonatomic, strong) UIImagePickerController *imagePickerController;
 
 @end
 
@@ -390,25 +386,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    _imagePickerController.delegate = nil;
-}
-
-#pragma mark - Custom getters and setters
-
-- (UIImagePickerController *)imagePickerController
-{
-    if (!_imagePickerController)
-    {
-        _imagePickerController = [[UIImagePickerController alloc] init];
-        _imagePickerController.delegate = self;
-    }
-    
-    return _imagePickerController;
-}
-
 #pragma mark - Private Functions
 
 - (void)deselectAllItems
@@ -437,194 +414,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         [self presentViewController:self.actionsAlertController animated:YES completion:nil];
     }
-}
-
-- (void)displayActionSheet:(id)sender event:(UIEvent *)event
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    if (self.dataSource.parentFolderPermissions.canAddChildren)
-    {
-        [alertController addAction:[self alertActionCreateFile]];
-        [alertController addAction:[self alertActionAddFolder]];
-        [alertController addAction:[self alertActionUpload]];
-
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        {
-            [alertController addAction:[self alertActionTakePhotoOrVideo]];
-        }
-        
-        [alertController addAction:[self alertActionRecordAudio]];
-    }
-    
-    [alertController addAction:[self alertActionCancel]];
-    
-    alertController.modalPresentationStyle = UIModalPresentationPopover;
-    
-    UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-    popoverPresenter.barButtonItem = sender;
-    [self presentViewController:alertController animated:YES completion:nil];
-    
-    self.alertControllerSender = sender;
-}
-
-#pragma mark - UIAlertController UIAlertAction definitions
-
-- (UIAlertAction *)alertActionCancel
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        if ([[LocationManager sharedManager] isTrackingLocation])
-        {
-            [[LocationManager sharedManager] stopLocationUpdates];
-        }
-    }];
-}
-
-- (UIAlertAction *)alertActionCreateFile
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:[self.dataSource parentFolder] session:self.session delegate:self];
-        NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
-        [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
-        
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                          action:kAnalyticsEventActionQuickAction
-                                                           label:@"text/plain"
-                                                           value:@1];
-    }];
-}
-
-- (UIAlertAction *)alertActionAddFolder
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.addfolder", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
-    {
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                          action:kAnalyticsEventActionQuickAction
-                                                           label:kAnalyticsEventLabelFolder
-                                                           value:@1];
-        
-        // Display the create folder UIAlertController
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
-                                                                                 message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) { }];
-        
-        [alertController addAction:[self alertActionCancel]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSString *desiredFolderName = [[alertController.textFields[0] text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            
-            if ([Utility isValidFolderName:desiredFolderName])
-            {
-                [self.dataSource createFolderWithName:desiredFolderName];
-            }
-            else
-            {
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.createfolder.invalidname", @"Creation failed")]);
-            }
-        }]];
-
-        alertController.modalPresentationStyle = UIModalPresentationPopover;
-        
-        UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-        popoverPresenter.barButtonItem = self.alertControllerSender;
-        [self presentViewController:alertController animated:YES completion:nil];
-    }];
-}
-
-- (UIAlertAction *)alertActionUpload
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload", @"Upload") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        // Upload type UIAlertController
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[self alertActionUploadExistingPhotos]];
-        [alertController addAction:[self alertActionUploadDocument]];
-        [alertController addAction:[self alertActionCancel]];
-        
-        alertController.modalPresentationStyle = UIModalPresentationPopover;
-        
-        UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-        popoverPresenter.barButtonItem = self.alertControllerSender;
-        [self presentViewController:alertController animated:YES completion:nil];
-    }];
-}
-
-- (UIAlertAction *)alertActionUploadExistingPhotos
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
-    }];
-}
-
-- (UIAlertAction *)alertActionUploadExistingPhotosOrVideos
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
-    }];
-}
-
-- (UIAlertAction *)alertActionUploadDocument
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.documents", @"Upload Document") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
-        downloadPicker.isDownloadPickerEnabled = YES;
-        downloadPicker.downloadPickerDelegate = self;
-        downloadPicker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
-        
-        [self presentViewInPopoverOrModal:downloadPickerNavigationController animated:YES];
-    }];
-}
-
-- (UIAlertAction *)alertActionTakePhoto
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        // Start location services
-        [[LocationManager sharedManager] startLocationUpdates];
-        
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
-    }];
-}
-
-- (UIAlertAction *)alertActionTakePhotoOrVideo
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        // Start location services
-        [[LocationManager sharedManager] startLocationUpdates];
-        
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
-        
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                          action:kAnalyticsEventActionQuickAction
-                                                           label:kAnalyticsEventLabelTakePhotoOrVideo
-                                                           value:@1];
-    }];
-}
-
-- (UIAlertAction *)alertActionRecordAudio
-{
-    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:[self.dataSource parentFolder] delegate:self];
-        NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
-        [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
-        
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                          action:kAnalyticsEventActionQuickAction
-                                                           label:kAnalyticsEventLabelRecordAudio
-                                                           value:@1];
-    }];
 }
 
 - (void)sessionReceived:(NSNotification *)notification
@@ -710,22 +499,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }];
 }
 
-- (NSDictionary *)metadataByAddingGPSToMetadata:(NSDictionary *)metadata
-{
-    NSMutableDictionary *returnedMetadata = [metadata mutableCopy];
-    
-    CLLocationCoordinate2D coordinates = [[LocationManager sharedManager] currentLocationCoordinates];
-    
-    NSDictionary *gpsDictionary = @{(NSString *)kCGImagePropertyGPSLatitude : [NSNumber numberWithFloat:fabs(coordinates.latitude)],
-                                    (NSString *)kCGImagePropertyGPSLatitudeRef : ((coordinates.latitude >= 0) ? @"N" : @"S"),
-                                    (NSString *)kCGImagePropertyGPSLongitude : [NSNumber numberWithFloat:fabs(coordinates.longitude)],
-                                    (NSString *)kCGImagePropertyGPSLongitudeRef : ((coordinates.longitude >= 0) ? @"E" : @"W")};
-    
-    [returnedMetadata setValue:gpsDictionary forKey:(NSString *)kCGImagePropertyGPSDictionary];
-    
-    return returnedMetadata;
-}
-
 - (void)connectivityStatusChanged:(NSNotification *)notification
 {
     NSNumber *object = [notification object];
@@ -803,191 +576,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
 }
 
-#pragma mark - UIImagePickerControllerDelegate Functions
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    self.capturingMedia = NO;
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
-    __block UploadFormViewController *uploadFormController = nil;
-    __block NavigationViewController *uploadFormNavigationController = nil;
-    
-    if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
-    {
-        UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        __block NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
-        
-        // define an upload block
-        void (^displayUploadForm)(NSDictionary *metadata, BOOL addGPSMetadata) = ^(NSDictionary *metadata, BOOL addGPSMetadata){
-            // determine if the content was created or picked
-            UploadFormType contentFormType = UploadFormTypeImagePhotoLibrary;
-            
-            // iOS camera uses JPEG images
-            if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
-            {
-                selectedImageExtension = @"jpg";
-                contentFormType = UploadFormTypeImageCreated;
-                self.capturingMedia = YES;
-            }
-            
-            // add GPS metadata if Location Services are allowed for this app
-            if (addGPSMetadata && [[LocationManager sharedManager] usersLocationAuthorisation])
-            {
-                metadata = [self metadataByAddingGPSToMetadata:metadata];
-            }
-            
-            // location services no longer required
-            if ([[LocationManager sharedManager] isTrackingLocation])
-            {
-                [[LocationManager sharedManager] stopLocationUpdates];
-            }
-            
-            uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadImage:selectedImage fileExtension:selectedImageExtension metadata:metadata inFolder:[self.dataSource parentFolder] uploadFormType:contentFormType delegate:self];
-            uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
-            
-            // display the preview form to upload
-            if (self.capturingMedia)
-            {
-                [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
-                    [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-                }];
-            }
-            else
-            {
-                [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
-                    [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-                }];
-            }
-        };
-        
-        NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-        if (metadata)
-        {
-            displayUploadForm(metadata, YES);
-        }
-        else
-        {
-            ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
-            [assetLibrary assetForURL:info[UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
-                NSDictionary *assetMetadata = [[asset defaultRepresentation] metadata];
-                displayUploadForm(assetMetadata, NO);
-            } failureBlock:^(NSError *error) {
-                AlfrescoLogError(@"Unable to extract metadata from item for URL: %@. Error: %@", info[UIImagePickerControllerReferenceURL], error.localizedDescription);
-            }];
-        }
-    }
-    else if ([mediaType isEqualToString:(NSString *)kUTTypeVideo] || [mediaType isEqualToString:(NSString *)kUTTypeMovie])
-    {
-        // move the video file into the container
-        // read from default file system
-        NSString *filePathInDefaultFileSystem = [(NSURL *)[info objectForKey:UIImagePickerControllerMediaURL] path];
-        
-        // construct the file name
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"yyyy-MM-dd HH.mm.ss";
-        NSString *timestamp = [dateFormatter stringFromDate:[NSDate date]];
-        NSString *fileExtension = [filePathInDefaultFileSystem pathExtension];
-        
-        NSString *videoFileNameWithoutExtension = [NSString stringWithFormat:NSLocalizedString(@"upload.default.video.name", @"Video default Name"), timestamp];
-        NSString *videoFileName = [videoFileNameWithoutExtension stringByAppendingPathExtension:fileExtension];
-        
-        // rename the file
-        NSString *renamedFilePath = [[filePathInDefaultFileSystem stringByDeletingLastPathComponent] stringByAppendingPathComponent:videoFileName];
-        NSError *renameError = nil;
-        [[AlfrescoFileManager sharedManager] moveItemAtPath:filePathInDefaultFileSystem toPath:renamedFilePath error:&renameError];
-        
-        if (renameError)
-        {
-            AlfrescoLogError(@"Error trying to rename file at path: %@ to path %@. Error: %@", filePathInDefaultFileSystem, renamedFilePath, renameError.localizedDescription);
-        }
-        
-        // determine if the content was created or picked
-        UploadFormType contentFormType = UploadFormTypeVideoPhotoLibrary;
-        
-        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
-        {
-            contentFormType = UploadFormTypeVideoCreated;
-            self.capturingMedia = YES;
-        }
-        
-        // create the view controller
-        uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadDocumentPath:renamedFilePath inFolder:[self.dataSource parentFolder] uploadFormType:contentFormType delegate:self];
-        uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
-        
-        // display the preview form to upload
-        if (self.capturingMedia)
-        {
-            [self.imagePickerController dismissViewControllerAnimated:YES completion:^{
-                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-            }];
-        }
-        else
-        {
-            [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
-                [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-            }];
-        }
-    }
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    self.capturingMedia = NO;
-    
-    if ([[LocationManager sharedManager] isTrackingLocation])
-    {
-        [[LocationManager sharedManager] stopLocationUpdates];
-    }
-    
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - DownloadPickerDelegate Functions
-
-- (void)downloadPicker:(DownloadsViewController *)picker didPickDocument:(NSString *)documentPath
-{
-    UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session
-                                                                                    uploadDocumentPath:documentPath
-                                                                                              inFolder:[self.dataSource parentFolder]
-                                                                                        uploadFormType:UploadFormTypeDocument
-                                                                                              delegate:self];
-    
-    NavigationViewController *uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
-    
-    [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:^{
-        [UniversalDevice displayModalViewController:uploadFormNavigationController onController:self.navigationController withCompletionBlock:nil];
-    }];
-}
-
-- (void)downloadPickerDidCancel
-{
-    [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
-}
-
-#pragma mark - UIPopoverControllerDelegate Functions
-
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{
-    return !self.capturingMedia;
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
-}
-
-#pragma mark - UploadFormViewControllerDelegate Functions
-
-- (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL
-{
-    [self.dataSource addAlfrescoNodes:@[node]];
-    [self updateUIUsingFolderPermissionsWithAnimation:NO];
-    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"upload.success-as.message", @"Document uplaoded as"), node.name]);
-}
-
 #pragma mark - UIRefreshControl Functions
-
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
     [self showLoadingTextInRefreshControl:refreshControl];
@@ -1028,61 +617,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             [self.multiSelectToolbar enableAction:kMultiSelectDelete enable:NO];
             break;
         }
-    }
-}
-
-#pragma mark - Actions methods
-- (void)setupActionsAlertController
-{
-    self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    if (self.dataSource.parentFolderPermissions.canEdit)
-    {
-        UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self setEditing:!self.editing animated:YES];
-        }];
-        editAction.enabled = ([self.dataSource numberOfNodesInCollection] > 0);
-        
-        [self.actionsAlertController addAction:editAction];
-    }
-    
-    NSString *changeLayoutTitle;
-    if(self.style == CollectionViewStyleList)
-    {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Grid View");
-    }
-    else
-    {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
-    }
-    UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        if(self.style == CollectionViewStyleList)
-        {
-            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES trackAnalytics:YES];
-        }
-        else
-        {
-            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES trackAnalytics:YES];
-        }
-    }];
-    [self.actionsAlertController addAction:changeLayoutAction];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
-    }];
-    
-    [self.actionsAlertController addAction:cancelAction];
-}
-
-- (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated trackAnalytics: (BOOL) trackAnalytics
-{
-    [super changeCollectionViewStyle:style animated:animated];
-    BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
-    self.swipeToDeleteGestureRecognizer.enabled = associatedLayoutForStyle.shouldSwipeToDelete;
-    
-    if (trackAnalytics)
-    {
-        [[AnalyticsManager sharedManager] trackScreenWithName:style == CollectionViewStyleList ? kAnalyticsViewDocumentListing : kAnalyticsViewDocumentGallery];
     }
 }
 

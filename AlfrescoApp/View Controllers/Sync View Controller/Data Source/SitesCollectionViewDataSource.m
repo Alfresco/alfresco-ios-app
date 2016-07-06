@@ -36,6 +36,7 @@
         return nil;
     }
     
+    self.shouldAllowMultiselect = YES;
     self.delegate = delegate;
     self.siteShortName = siteShortName;
     self.session = session;

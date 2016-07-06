@@ -56,6 +56,7 @@
 @property (nonatomic, assign) BOOL moreItemsAvailable;
 @property (nonatomic, strong) AlfrescoPermissions *parentFolderPermissions;
 @property (nonatomic, strong) NSMutableDictionary *nodesPermissions;
+@property (nonatomic) BOOL shouldAllowMultiselect;
 
 - (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 - (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index;

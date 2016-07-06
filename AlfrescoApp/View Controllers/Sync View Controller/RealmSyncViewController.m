@@ -74,8 +74,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     [self addNotificationListeners];
     
-    [self setupBarButtonItems];
-    
     if (!self.didSyncAfterSessionRefresh || self.parentNode != nil)
     {
         self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
@@ -131,19 +129,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [self hidePullToRefreshView];
 }
 
-- (void)setupBarButtonItems
-{
-    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
-    
-    // update the UI based on permissions
-    self.switchLayoutBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(showLayoutSwitchPopup:)];
-    
-    [rightBarButtonItems addObject:self.switchLayoutBarButtonItem];
-    
-    [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:NO];
-}
-
-- (void)showLayoutSwitchPopup:(UIBarButtonItem *)sender
+- (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
 {
     [self setupActionsAlertController];
     self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
@@ -153,40 +139,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     popPC.delegate = self;
     
     [self presentViewController:self.actionsAlertController animated:YES completion:nil];
-}
-
-- (void)setupActionsAlertController
-{
-    self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    NSString *changeLayoutTitle;
-    if(self.style == CollectionViewStyleList)
-    {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Grid View");
-    }
-    else
-    {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        if(weakSelf.style == CollectionViewStyleList)
-        {
-            [weakSelf changeCollectionViewStyle:CollectionViewStyleGrid animated:YES];
-        }
-        else
-        {
-            [weakSelf changeCollectionViewStyle:CollectionViewStyleList animated:YES];
-        }
-    }];
-    [self.actionsAlertController addAction:changeLayoutAction];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        [weakSelf.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
-    }];
-    
-    [self.actionsAlertController addAction:cancelAction];
 }
 
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
