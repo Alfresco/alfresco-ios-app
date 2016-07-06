@@ -22,6 +22,7 @@
 #import "CommentViewController.h"
 #import "ActionCollectionView.h"
 #import "FavouriteManager.h"
+#import "RealmSyncManager.h"
 #import "ActionViewHandler.h"
 #import "ConnectivityManager.h"
 #import "AccountManager.h"
@@ -234,6 +235,21 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
 - (void)updateActionButtons
 {
+    //check node is synced
+    BOOL isSynced = [[RealmSyncManager sharedManager] isNodeInSyncList:self.folder];
+    NSString *actionIdentifier = isSynced ? kActionCollectionIdentifierUnsync : kActionCollectionIdentifierSync;
+    NSString *titleKey = isSynced ? NSLocalizedString(@"action.unsync", @"Unsync Action") : NSLocalizedString(@"action.sync", @"Sync Action");
+    NSString *imageKey = isSynced ? @"actionsheet-unsync.png" : @"actionsheet-sync.png";
+    
+    if (actionIdentifier && titleKey && imageKey)
+    {
+        NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : actionIdentifier,
+                                   kActionCollectionItemUpdateItemTitleKey : titleKey,
+                                   kActionCollectionItemUpdateItemImageKey : imageKey};
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:isSynced ? kActionCollectionIdentifierSync : kActionCollectionIdentifierUnsync userInfo:userInfo];
+    }
+    
     // check node is favourited
     [[FavouriteManager sharedManager] isNodeFavorite:self.folder session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
         if (isFavorite)
