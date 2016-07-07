@@ -780,19 +780,17 @@
             }
             else
             {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    self.syncNodesInfo = [NSMutableDictionary new];
-                    [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                        if(self.nodeChildrenRequestsCount == 0)
+                self.syncNodesInfo = [NSMutableDictionary new];
+                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                    if(self.nodeChildrenRequestsCount == 0)
+                    {
+                        [self addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                        if(completionBlock)
                         {
-                            [self addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
-                            if(completionBlock)
-                            {
-                                completionBlock(completed);
-                            }
+                            completionBlock(completed);
                         }
-                    }];
-                });
+                    }
+                }];
             }
         }];
     }
@@ -1131,7 +1129,6 @@
 
 - (void)statusChanged:(NSNotification *)notification
 {
-    NSLog(@"==== RealmSyncManager status changed enter %@", notification);
     NSDictionary *info = notification.userInfo;
     RLMRealm *realm = [RLMRealm defaultRealm];
     UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
@@ -1201,7 +1198,6 @@
             parentNodeStatus.status = syncStatus;
         }
     }
-    NSLog(@"==== RealmSyncManager status changed exit");
 }
 
 #pragma mark - Realm notifications
