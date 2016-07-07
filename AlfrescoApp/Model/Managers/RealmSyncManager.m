@@ -67,8 +67,6 @@
     if(self)
     {
         _fileManager = [AlfrescoFileManager sharedManager];
-        
-        // syncNodesInfo will hold mutable dictionaries for each account
         _syncNodesInfo = [NSMutableDictionary dictionary];
         
         _syncQueues = [NSMutableDictionary dictionary];
@@ -82,6 +80,7 @@
         _syncHelper = [RealmSyncHelper sharedHelper];
         _realmManager = [RealmManager sharedManager];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusChanged:) name:kSyncStatusChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuConfigurationChanged:) name:kAlfrescoConfigFileDidUpdateNotification object:nil];
@@ -786,6 +785,10 @@
                     if(self.nodeChildrenRequestsCount == 0)
                     {
                         [self addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                        if(completionBlock)
+                        {
+                            completionBlock(completed);
+                        }
                     }
                 }];
             }
@@ -852,7 +855,10 @@
                 [completionRealm refresh];
                 RealmSyncNodeInfo *documentSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:completionRealm];
                 [completionRealm beginWriteTransaction];
-                documentSyncInfo.isTopLevelSyncNode = isTopLevel;
+                if(!documentSyncInfo.isTopLevelSyncNode)
+                {
+                    documentSyncInfo.isTopLevelSyncNode = isTopLevel;
+                }
                 [completionRealm commitWriteTransaction];
                 if (completionBlock)
                 {
@@ -870,8 +876,17 @@
     [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self.syncHelper syncIdentifierForNode:folder] withNode:folder lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
     [realm beginWriteTransaction];
     folderNodeInfo.isFolder = YES;
-    folderNodeInfo.isTopLevelSyncNode = isTopLevel;
+    if(!folderNodeInfo.isTopLevelSyncNode)
+    {
+        folderNodeInfo.isTopLevelSyncNode = isTopLevel;
+    }
+    
     [realm commitWriteTransaction];
+    
+    SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:folder] inSyncNodesStatus:self.syncNodesStatus];
+    nodeStatus.status = SyncStatusLoading;
+    nodeStatus.activityType = SyncActivityTypeDownload;
+    
     
     NSArray *folderChildren = self.syncNodesInfo[[self.syncHelper syncIdentifierForNode:folder]];
     for(AlfrescoNode *subNode in folderChildren)
@@ -888,15 +903,14 @@
         }
         else
         {
-            __weak typeof(self) weakSelf = self;
+            [realm refresh];
+            RealmSyncNodeInfo *documentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:subNode] ifNotExistsCreateNew:YES inRealm:realm];
+            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:realm];
+            [realm beginWriteTransaction];
+            documentNodeInfo.parentNode = folderNodeInfo;
+            [realm commitWriteTransaction];
             [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:^(BOOL completed) {
-                RLMRealm *completionRealm = [RLMRealm defaultRealm];
-                [completionRealm refresh];
-                RealmSyncNodeInfo *documentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:subNode] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[weakSelf.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                [completionRealm beginWriteTransaction];
-                documentNodeInfo.parentNode = folderNodeInfo;
-                [completionRealm commitWriteTransaction];
+                
             }];
         }
     }
@@ -1109,6 +1123,79 @@
                     [self determineSyncFeatureStatus:changedAccount selectedProfile:config];
                 }
             }];
+        }
+    }
+}
+
+- (void)statusChanged:(NSNotification *)notification
+{
+    NSDictionary *info = notification.userInfo;
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+    
+    SyncNodeStatus *nodeStatus = notification.object;
+    NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
+    
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:nodeStatus.nodeId ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
+    // update total size for parent folder
+    if ([propertyChanged isEqualToString:kSyncTotalSize])
+    {
+        if (parentNodeInfo)
+        {
+            AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
+            SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[self.syncHelper syncIdentifierForNode:parentNode]];
+            
+            NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
+            parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+        }
+        else
+        {
+            // if parent folder is nil - update total size for account
+            SyncNodeStatus *accountSyncStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:selectedAccount.accountIdentifier inSyncNodesStatus:self.syncNodesStatus];
+            if (nodeStatus != accountSyncStatus)
+            {
+                NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
+                accountSyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+            }
+        }
+    }
+    // update sync status for folder depending on its child nodes statuses
+    else if ([propertyChanged isEqualToString:kSyncStatus])
+    {
+        if (parentNodeInfo)
+        {
+            NSString *parentNodeId = parentNodeInfo.syncNodeInfoId;
+            SyncNodeStatus *parentNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:parentNodeId inSyncNodesStatus:self.syncNodesStatus];
+            RLMLinkingObjects *subNodes = parentNodeInfo.nodes;
+            
+            SyncStatus syncStatus = SyncStatusSuccessful;
+            for (RealmSyncNodeInfo *subNodeInfo in subNodes)
+            {
+                SyncNodeStatus *subNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:subNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+                
+                if (subNodeStatus.status == SyncStatusLoading)
+                {
+                    syncStatus = SyncStatusLoading;
+                    break;
+                }
+                else if (subNodeStatus.status == SyncStatusFailed)
+                {
+                    syncStatus = SyncStatusFailed;
+                    break;
+                }
+                else if (subNodeStatus.status == SyncStatusOffline)
+                {
+                    syncStatus = SyncStatusOffline;
+                    parentNodeStatus.activityType = SyncActivityTypeUpload;
+                    break;
+                }
+                else if (subNodeStatus.status == SyncStatusWaiting)
+                {
+                    syncStatus = SyncStatusWaiting;
+                }
+            }
+            parentNodeStatus.status = syncStatus;
         }
     }
 }

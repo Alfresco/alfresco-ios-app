@@ -68,6 +68,7 @@
 
 - (RealmSyncNodeInfo *)syncNodeInfoForObjectWithId:(NSString *)objectId ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
 {
+    [realm refresh];
     RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId == %@", objectId].firstObject;
     if(createNew && !nodeInfo)
     {
