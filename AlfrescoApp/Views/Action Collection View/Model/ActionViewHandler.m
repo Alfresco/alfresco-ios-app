@@ -516,7 +516,7 @@
                     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
                     if ([syncManager isNodeInSyncList:weakSelf.node])
                     {
-                        [syncManager deleteNodeFromSync:weakSelf.node withCompletionBlock:^(BOOL savedLocally) {
+                        [syncManager deleteNodeFromSync:weakSelf.node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally) {
                             
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 NSString *successMessage = @"";
@@ -687,56 +687,60 @@
 
 - (void)pressedUnsyncActionItem:(ActionCollectionItem *)actionItem
 {
+    __weak typeof(self) weakSelf = self;
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    
+    void (^deleteNodeCompletionBlock)() = ^void(){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierSync,
+                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.sync", @"Sync Action"),
+                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-sync.png"};
+            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnsync userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:weakSelf.node];
+        });
+    };
+    
     if (self.node.isFolder)
     {
+        [[RealmSyncManager sharedManager] deleteNodeFromSync:self.node deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:^(BOOL savedLocally){
+            deleteNodeCompletionBlock();
+        }];
         return;
     }
     
-    __weak typeof(self) weakSelf = self;
-    
     void (^deleteNode)() = ^void(){
-        [[RealmSyncManager sharedManager] deleteNodeFromSync:weakSelf.node withCompletionBlock:^(BOOL savedLocally)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierSync,
-                                            kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.sync", @"Sync Action"),
-                                            kActionCollectionItemUpdateItemImageKey : @"actionsheet-sync.png"};
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnsync userInfo:userInfo];
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:weakSelf.node];
-             });
+        [[RealmSyncManager sharedManager] deleteNodeFromSync:weakSelf.node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally){
+            deleteNodeCompletionBlock();
          }];
     };
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:weakSelf.node inRealm:realm];
+    BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:weakSelf.node inRealm:realm];
+    
+    if(isModifiedLocally)
+    {
+        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:weakSelf.node.identifier ifNotExistsCreateNew:NO inRealm:realm];
         
-        if(isModifiedLocally)
+        [realm beginWriteTransaction];
+        syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
+        [realm commitWriteTransaction];
+        
+        if (weakSelf.node.isDocument)
         {
-            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:weakSelf.node.identifier ifNotExistsCreateNew:NO inRealm:realm];
-            
-            [realm beginWriteTransaction];
-            syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
-            [realm commitWriteTransaction];
-            
-            if (weakSelf.node.isDocument)
+            [[RealmSyncManager sharedManager] uploadDocument:(AlfrescoDocument *)weakSelf.node withCompletionBlock:^(BOOL completed)
             {
-                [[RealmSyncManager sharedManager] uploadDocument:(AlfrescoDocument *)weakSelf.node withCompletionBlock:^(BOOL completed)
+                if (completed)
                 {
-                    if (completed)
-                    {
-                        deleteNode();
-                    }
-                }];
-            }
+                    deleteNode();
+                }
+            }];
         }
-        else
-        {
-            [[RealmSyncManager sharedManager] cancelSyncForDocumentWithIdentifier:weakSelf.node.identifier];
-            
-            deleteNode();
-        }
-    });
+    }
+    else
+    {
+        [[RealmSyncManager sharedManager] cancelSyncForDocumentWithIdentifier:weakSelf.node.identifier];
+        
+        deleteNode();
+    }
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks
