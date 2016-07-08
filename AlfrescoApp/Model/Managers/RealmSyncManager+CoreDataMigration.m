@@ -34,9 +34,54 @@
 
 - (BOOL)isCoreDataMigrationNeeded
 {
-    BOOL isMigrationNeededResult = ![[NSUserDefaults standardUserDefaults] objectForKey:kHasCoreDataMigrationOccurred];
+    BOOL isMigrationNeededResult = ![[NSUserDefaults standardUserDefaults] objectForKey:kHasCoreDataMigrationOccurred] && [self hasSyncContentToMigrate];
     
     return isMigrationNeededResult;
+}
+
+- (BOOL)hasSyncContentToMigrate
+{
+    BOOL hasSyncContentToMigrate = NO;
+    //creating a background context
+    CoreDataSyncHelper *coreDataSyncHelper = [CoreDataSyncHelper new];
+    NSManagedObjectContext *privateContext = [coreDataSyncHelper createChildManagedObjectContext];
+    
+    for(UserAccount *account in [[AccountManager sharedManager] allAccounts])
+    {
+        if(account.isSyncOn)
+        {
+            if([self hasSyncContentToMigrateInAccount:account usingContext:privateContext])
+            {
+                hasSyncContentToMigrate = YES;
+                break;
+            }
+        }
+    }
+    
+    return hasSyncContentToMigrate;
+}
+
+- (BOOL)hasSyncContentToMigrateInAccount:(UserAccount *)userAccount usingContext:(NSManagedObjectContext *)privateContext
+{
+    BOOL hasContent = NO;
+    NSFetchRequest *accountRequest = [[NSFetchRequest alloc] initWithEntityName:@"SyncAccount"];
+    NSPredicate *specificAccountPredicate = [NSPredicate predicateWithFormat:@"accountId == %@", userAccount.accountIdentifier];
+    [accountRequest setPredicate:specificAccountPredicate];
+    
+    __block NSArray *coreDataAccountRecord = nil;
+    __block NSError *coreDataAccountFetchError = nil;
+    
+    //getting the account information from core data
+    [privateContext performBlockAndWait:^{
+        coreDataAccountRecord = [privateContext executeFetchRequest:accountRequest error:&coreDataAccountFetchError];
+    }];
+    
+    if(coreDataAccountRecord.count > 0)
+    {
+        hasContent = YES;
+    }
+    
+    return hasContent;
 }
 
 - (BOOL)shouldShowSyncInfoPanel
@@ -50,7 +95,8 @@
         }
     }
     
-    BOOL shouldShowSyncInfoPanelResult = ((![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]) && isSyncEnabled);
+    BOOL hasCoreDataMigrationOccured = [[[NSUserDefaults standardUserDefaults] objectForKey:kHasCoreDataMigrationOccurred] boolValue];
+    BOOL shouldShowSyncInfoPanelResult = ((![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]) && isSyncEnabled && hasCoreDataMigrationOccured);
     
     return shouldShowSyncInfoPanelResult;
 }

@@ -68,6 +68,10 @@
                 [weakSelf.delegate requestFailedWithError:error stringFormat:@"%@"];
             });
         }
+        else
+        {
+            [weakSelf setupDataSourceCollection:[NSMutableArray new]];
+        }
     }];
     return self;
 }
