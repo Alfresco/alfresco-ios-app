@@ -53,6 +53,7 @@
             if([self hasSyncContentToMigrateInAccount:account usingContext:privateContext])
             {
                 hasSyncContentToMigrate = YES;
+                break;
             }
         }
     }
