@@ -68,6 +68,7 @@
     {
         _fileManager = [AlfrescoFileManager sharedManager];
         _syncNodesInfo = [NSMutableDictionary dictionary];
+        _syncNodesStatus = [NSMutableDictionary dictionary];
         
         _syncQueues = [NSMutableDictionary dictionary];
         _syncOperations = [NSMutableDictionary dictionary];
@@ -193,7 +194,7 @@
 }
 
 #pragma mark - Sync operations
-- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
+- (void)deleteNodeFromSync:(AlfrescoNode *)node deleteRule:(DeleteRule)deleteRule withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock
 {
     if(node)
     {
@@ -206,11 +207,11 @@
             
             if(node.isDocument)
             {
-                [weakSelf handleDocumentForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm];
+                [weakSelf handleDocumentForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm deleteRule:deleteRule];
             }
             else if(node.isFolder)
             {
-                [weakSelf handleFolderForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm];
+                [weakSelf handleFolderForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm deleteRule:deleteRule];
             }
             
             BOOL hasSavedLocally = NO;
@@ -220,7 +221,26 @@
                 hasSavedLocally = YES;
                 for(AlfrescoDocument *document in arrayOfNodesToSaveLocally)
                 {
-                    [weakSelf saveDeletedFileBeforeRemovingFromSync:document];
+                    if (deleteRule == DeleteRuleAllNodes)
+                    {
+                        [weakSelf saveDeletedFileBeforeRemovingFromSync:document];
+                    }
+                    else
+                    {
+                        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:document.identifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                        
+                        [backgroundRealm beginWriteTransaction];
+                        syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
+                        [backgroundRealm commitWriteTransaction];
+                        
+                        [[RealmSyncManager sharedManager] uploadDocument:document withCompletionBlock:^(BOOL completed)
+                         {
+                             if (completed)
+                             {
+                                 [self deleteNodeFromSync:document deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:nil];
+                             }
+                         }];
+                    }
                 }
             }
             
@@ -236,32 +256,69 @@
     }
 }
 
-- (void)handleDocumentForDelete:(AlfrescoNode *)document arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm
+- (void)handleDocumentForDelete:(AlfrescoNode *)document arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm deleteRule:(DeleteRule)deleteRule
 {
     SyncNodeStatus *syncNodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] inSyncNodesStatus:self.syncNodesStatus];
     syncNodeStatus.totalSize = 0;
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:NO inRealm:realm];
-    if(nodeInfo)
+    
+    if(nodeInfo && nodeInfo.isTopLevelSyncNode && deleteRule != DeleteRuleAllNodes)
     {
-        [arrayToDelete addObject:nodeInfo];
+        return;
     }
+    
     BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:document inRealm:realm];
     if(isModifiedLocally)
     {
         [arrayToSave addObject:document];
     }
-    
-    NSString *nodeSyncName = [self.syncHelper syncNameForNode:document inRealm:realm];
-    NSString *syncNodeContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier] stringByAppendingPathComponent:nodeSyncName];
-    if(syncNodeContentPath && nodeSyncName)
+    else
     {
-        [arrayOfPaths addObject:syncNodeContentPath];
+        if (nodeInfo)
+        {
+            [arrayToDelete addObject:nodeInfo];
+        }
+        
+        NSString *nodeSyncName = [self.syncHelper syncNameForNode:document inRealm:realm];
+        NSString *syncNodeContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier] stringByAppendingPathComponent:nodeSyncName];
+        if(syncNodeContentPath && nodeSyncName)
+        {
+            [arrayOfPaths addObject:syncNodeContentPath];
+        }
+        
+        return;
+    }
+    
+    if (deleteRule == DeleteRuleAllNodes)
+    {
+        if (nodeInfo)
+        {
+            [arrayToDelete addObject:nodeInfo];
+        }
+        
+        NSString *nodeSyncName = [self.syncHelper syncNameForNode:document inRealm:realm];
+        NSString *syncNodeContentPath = [[self.syncHelper syncContentDirectoryPathForAccountWithId:[AccountManager sharedManager].selectedAccount.accountIdentifier] stringByAppendingPathComponent:nodeSyncName];
+        if(syncNodeContentPath && nodeSyncName)
+        {
+            [arrayOfPaths addObject:syncNodeContentPath];
+        }
     }
 }
 
-- (void)handleFolderForDelete:(AlfrescoNode *)folder arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm
+- (void)handleFolderForDelete:(AlfrescoNode *)folder arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm deleteRule:(DeleteRule)deleteRule
 {
     RealmSyncNodeInfo *folderInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:folder] ifNotExistsCreateNew:NO inRealm:realm];
+    
+    if (folderInfo && folderInfo.isTopLevelSyncNode && deleteRule == DeleteRuleRootAndAndKeepTopLevelChildren)
+    {
+        return;
+    }
+    
+    if (deleteRule == DeleteRuleRootByForceAndKeepTopLevelChildren)
+    {
+        deleteRule = DeleteRuleRootAndAndKeepTopLevelChildren;
+    }
+    
     if(folderInfo)
     {
         [arrayToDelete addObject:folderInfo];
@@ -272,11 +329,11 @@
         AlfrescoNode *subNode = subNodeInfo.alfrescoNode;
         if(subNode.isDocument)
         {
-            [self handleDocumentForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm];
+            [self handleDocumentForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm deleteRule:deleteRule];
         }
         else if(subNode.isFolder)
         {
-            [self handleFolderForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm];
+            [self handleFolderForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm deleteRule:deleteRule];
         }
     }
 }

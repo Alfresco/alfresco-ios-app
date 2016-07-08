@@ -299,7 +299,7 @@
             
             if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
             {
-                [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete withCompletionBlock:^(BOOL savedLocally) {
+                [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         NSString *successMessage = @"";
                         if (savedLocally)

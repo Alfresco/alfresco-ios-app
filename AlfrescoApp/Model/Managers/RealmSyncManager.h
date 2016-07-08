@@ -32,6 +32,14 @@
 
 @interface RealmSyncManager : NSObject
 
+typedef NS_ENUM(NSInteger, DeleteRule)
+{
+    DeleteRuleAllNodes,                             // Delete subtree root node and all children, regardless they are top level or not
+    DeleteRuleRootByForceAndKeepTopLevelChildren,   // Delete the root node (even if it's top level) and all children that are not top level.
+                                                    //(eg. When unsyncing a folder, you want to delete the root, even if it's top level)
+    DeleteRuleRootAndAndKeepTopLevelChildren        // Delete the root node only if isn't top level and all children that are not top level.
+};
+
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
 @property (nonatomic, strong) RLMRealm *mainThreadRealm;
 
@@ -59,7 +67,7 @@
 /**
  * Sync operations
  */
-- (void)deleteNodeFromSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
+- (void)deleteNodeFromSync:(AlfrescoNode *)node deleteRule:(DeleteRule)deleteRule withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
