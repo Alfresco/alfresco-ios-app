@@ -243,6 +243,11 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [self.tableView reloadData];
 }
 
+- (void)enableSync
+{
+    [[RealmSyncManager sharedManager] enableSyncForAccount:self.account];
+}
+
 - (void)disableSync
 {
     [[RealmSyncManager sharedManager] disableSyncForAccount:self.account fromViewController:self cancelBlock:^{
@@ -291,7 +296,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
                 {
                     if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
                     {
-                        [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
+                        [self enableSync];
+                        break;
                     }
                 }
                 [self.navigationController popViewControllerAnimated:YES];

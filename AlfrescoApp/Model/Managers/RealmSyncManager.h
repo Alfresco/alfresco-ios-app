@@ -30,6 +30,12 @@
 
 @end
 
+@protocol RealmSyncManagerSyncDisabledDelegate <NSObject>
+
+- (void)syncFeatureStatusChanged:(BOOL)isSyncOn;
+
+@end
+
 @interface RealmSyncManager : NSObject
 
 typedef NS_ENUM(NSInteger, DeleteRule)
@@ -41,6 +47,7 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 };
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
+@property (nonatomic, weak) id<RealmSyncManagerSyncDisabledDelegate> syncDisabledDelegate;
 @property (nonatomic, strong) RLMRealm *mainThreadRealm;
 
 + (RealmSyncManager *)sharedManager;
@@ -82,6 +89,7 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (RLMRealm *)realmForAccount:(NSString *)accountId;
 - (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
+- (void)enableSyncForAccount:(UserAccount *)account;
 
 /**
  * Realm notifications

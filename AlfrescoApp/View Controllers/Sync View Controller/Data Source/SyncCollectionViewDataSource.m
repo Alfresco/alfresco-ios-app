@@ -18,7 +18,6 @@
 
 #import "SyncCollectionViewDataSource.h"
 #import "RepositoryCollectionViewDataSource+Internal.h"
-#import "RealmSyncManager.h"
 #import "RealmManager.h"
 #import "RealmSyncHelper.h"
 #import "RealmSyncNodeInfo.h"
@@ -47,8 +46,16 @@
     self.emptyMessage = NSLocalizedString(@"sync.empty", @"No Synced Content");
     self.shouldAllowMultiselect = NO;
     
+    [RealmSyncManager sharedManager].syncDisabledDelegate = self;
+    [self reloadDataSource];
+    
+    return self;
+}
+
+- (void)reloadDataSource
+{
     __weak typeof(self) weakSelf = self;
-    self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:node notificationBlock:^(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error) {
+    self.token = [[RealmSyncManager sharedManager] notificationTokenForAlfrescoNode:self.parentNode notificationBlock:^(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error) {
         if(results.count > 0)
         {
             weakSelf.syncDataSourceCollection = results;
@@ -73,7 +80,6 @@
             [weakSelf setupDataSourceCollection:[NSMutableArray new]];
         }
     }];
-    return self;
 }
 
 #pragma mark - Helper methods
@@ -93,6 +99,21 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf.delegate dataSourceUpdated];
     });
+}
+
+#pragma mark - RealmSyncManagerSyncDisabledDelegate methods
+- (void)syncFeatureStatusChanged:(BOOL)isSyncOn
+{
+    if(!isSyncOn)
+    {
+        [self.token stop];
+        [self setupDataSourceCollection:nil];
+    }
+    else
+    {
+        [self.token stop];
+        [self reloadDataSource];
+    }
 }
 
 @end
