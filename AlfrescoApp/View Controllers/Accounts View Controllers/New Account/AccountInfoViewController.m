@@ -215,10 +215,9 @@ static NSInteger const kTagAccountDetailsCell = 4;
             self.account.accountDescription = self.formBackupAccount.accountDescription;
             
             [[AccountManager sharedManager] saveAccountsToKeychain];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
             
-            [self dismissViewControllerAnimated:YES completion:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
-            }];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
     else
@@ -450,6 +449,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
     {
         if (![self.formBackupAccount.accountDescription isEqualToString:self.descriptionTextField.text])
         {
+            self.formBackupAccount.accountDescription = self.descriptionTextField.text;
             hasAccountPropertiesChanged = YES;
         }
         didChangeAndIsValid = hasAccountPropertiesChanged;

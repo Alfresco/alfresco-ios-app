@@ -69,6 +69,7 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
     navigationController.navigationBar.translucent = NO;
     navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    navigationController.modalPresentationCapturesStatusBarAppearance = YES;
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:pinViewController action:@selector(pressedCancelButton:)];
     pinViewController.navigationItem.rightBarButtonItem = cancelButton;
@@ -659,6 +660,18 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 - (PinFlow)pinFlow
 {
     return _pinFlow;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIStatusBarStyle statusBarStyle = UIStatusBarStyleLightContent;
+    
+    if (_pinFlow == PinFlowEnter)
+    {
+        statusBarStyle = UIStatusBarStyleDefault;
+    }
+    
+    return statusBarStyle;
 }
 
 #pragma mark - Actions
