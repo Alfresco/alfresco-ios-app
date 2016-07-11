@@ -95,6 +95,9 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     
     if ([selectedAccount.accountIdentifier isEqualToString:updatedAccount.accountIdentifier])
     {
+        NSString *accountName = updatedAccount.accountDescription;
+        [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withDescription:accountName];
+
         [self reloadGroupType:MainMenuGroupTypeContent completionBlock:nil];
     }
 }
