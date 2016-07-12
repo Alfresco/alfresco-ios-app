@@ -104,14 +104,13 @@
 #pragma mark - RealmSyncManagerSyncDisabledDelegate methods
 - (void)syncFeatureStatusChanged:(BOOL)isSyncOn
 {
+    [self.token stop];
     if(!isSyncOn)
     {
-        [self.token stop];
         [self setupDataSourceCollection:nil];
     }
     else
     {
-        [self.token stop];
         [self reloadDataSource];
     }
 }
