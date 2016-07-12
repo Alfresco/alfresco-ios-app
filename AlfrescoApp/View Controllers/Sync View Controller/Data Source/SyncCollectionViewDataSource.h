@@ -18,7 +18,8 @@
 
 #import <Foundation/Foundation.h>
 #import "RepositoryCollectionViewDataSource.h"
+#import "RealmSyncManager.h"
 
-@interface SyncCollectionViewDataSource : RepositoryCollectionViewDataSource 
+@interface SyncCollectionViewDataSource : RepositoryCollectionViewDataSource < RealmSyncManagerSyncDisabledDelegate >
 
 @end

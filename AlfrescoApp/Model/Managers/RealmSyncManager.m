@@ -115,7 +115,9 @@
         [self resetDefaultRealmConfiguration];
     }
     
+    _mainThreadRealm = nil;
     [self.realmManager deleteRealmWithName:account.accountIdentifier];
+    [self.syncDisabledDelegate syncFeatureStatusChanged:NO];
 }
 
 - (void)determineSyncFeatureStatus:(UserAccount *)changedAccount selectedProfile:(AlfrescoProfileConfig *)selectedProfile
@@ -190,6 +192,18 @@
     [self deleteRealmForAccount:account];
     account.isSyncOn = NO;
     [[AccountManager sharedManager] saveAccountsToKeychain];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+}
+
+- (void)enableSyncForAccount:(UserAccount *)account
+{
+    account.isSyncOn = YES;
+    [[AccountManager sharedManager] saveAccountsToKeychain];
+    [self realmForAccount:account.accountIdentifier];
+    if(account == [AccountManager sharedManager].selectedAccount)
+    {
+        [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
 }
 
@@ -1264,11 +1278,11 @@
     
     if(node)
     {
-        token = [[RealmSyncNodeInfo objectsInRealm:self.mainThreadRealm where:@"syncNodeInfoId == %@", [[RealmSyncHelper sharedHelper] syncIdentifierForNode:node]] addNotificationBlock:block];
+        token = [[RealmSyncNodeInfo objectsInRealm:[self mainThreadRealm] where:@"syncNodeInfoId == %@", [[RealmSyncHelper sharedHelper] syncIdentifierForNode:node]] addNotificationBlock:block];
     }
     else
     {
-        token = [[RealmSyncNodeInfo objectsInRealm:[RealmSyncManager sharedManager].mainThreadRealm where:@"isTopLevelSyncNode = %@", @YES] addNotificationBlock:block];
+        token = [[RealmSyncNodeInfo objectsInRealm:[self mainThreadRealm] where:@"isTopLevelSyncNode = %@", @YES] addNotificationBlock:block];
     }
     
     return token;
