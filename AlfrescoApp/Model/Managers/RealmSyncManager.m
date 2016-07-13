@@ -449,14 +449,14 @@
                                                                             else
                                                                             {
                                                                                 nodeStatus.status = SyncStatusFailed;
-                                                                                syncNodeInfo.reloadContent = YES;
-                                                                                
                                                                                 RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                                 
+                                                                                [backgroundRealm beginWriteTransaction];
+                                                                                syncNodeInfo.reloadContent = YES;
                                                                                 syncError.errorCode = error.code;
                                                                                 syncError.errorDescription = [error localizedDescription];
-                                                                                
                                                                                 syncNodeInfo.syncError = syncError;
+                                                                                [backgroundRealm beginWriteTransaction];
                                                                             }
                                                                             
                                                                             [syncOperationsForSelectedAccount removeObjectForKey:[self.syncHelper syncIdentifierForNode:document]];
@@ -564,7 +564,6 @@
                                                                                 [backgroundRealm beginWriteTransaction];
                                                                                 syncError.errorCode = error.code;
                                                                                 syncError.errorDescription = [error localizedDescription];
-                                                                                
                                                                                 nodeInfo.syncError = syncError;
                                                                                 [backgroundRealm commitWriteTransaction];
                                                                             }
