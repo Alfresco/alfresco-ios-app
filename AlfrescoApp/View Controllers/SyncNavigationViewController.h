@@ -17,9 +17,9 @@
  ******************************************************************************/
   
 #import "NavigationViewController.h"
-#import "SyncManager.h"
+#import "RealmSyncManager.h"
 
-@interface SyncNavigationViewController : NavigationViewController <SyncManagerProgressDelegate>
+@interface SyncNavigationViewController : NavigationViewController <RealmSyncManagerProgressDelegate>
 
 - (BOOL)isProgressViewVisible;
 - (CGFloat)progressViewHeight;
