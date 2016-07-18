@@ -1044,8 +1044,18 @@
 - (BOOL)isTopLevelSyncNode:(AlfrescoNode *)node
 {
     BOOL isTopLevelSyncNode = NO;
+    RLMRealm *realm = nil;
     
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:self.mainThreadRealm];
+    if([NSThread isMainThread])
+    {
+        realm = self.mainThreadRealm;
+    }
+    else
+    {
+        realm = [RLMRealm defaultRealm];
+    }
+    
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self.syncHelper syncIdentifierForNode:node] ifNotExistsCreateNew:NO inRealm:realm];
     if (nodeInfo)
     {
         if (nodeInfo.isTopLevelSyncNode)
