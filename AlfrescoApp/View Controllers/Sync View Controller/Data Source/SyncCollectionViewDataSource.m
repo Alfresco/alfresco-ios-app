@@ -19,7 +19,6 @@
 #import "SyncCollectionViewDataSource.h"
 #import "RepositoryCollectionViewDataSource+Internal.h"
 #import "RealmManager.h"
-#import "RealmSyncHelper.h"
 #import "RealmSyncNodeInfo.h"
 
 @interface SyncCollectionViewDataSource()

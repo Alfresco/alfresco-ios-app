@@ -86,7 +86,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 /**
  * Sync Feature
  */
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (RLMRealm *)realmForAccount:(NSString *)accountId;
 - (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;

@@ -16,22 +16,14 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
-
+#import "AlfrescoNode.h"
 @class RLMRealm;
-@class SyncNodeStatus;
 
-@interface RealmSyncHelper : NSObject
+@interface AlfrescoNode (Sync)
 
-+ (RealmSyncHelper *)sharedHelper;
-
-- (NSString *)syncNameForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
-- (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
-- (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses;
-- (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
-- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;
-- (NSString *)syncIdentifierForNode:(AlfrescoNode *)node;
-- (NSMutableArray *)syncIdentifiersForNodes:(NSArray *)nodes;
-- (void)deleteNodeFromSync:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
+- (NSString *)syncIdentifier;
++ (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes;
+- (NSString *)syncNameInRealm:(RLMRealm *)realm;
+- (NSDate *)lastDownloadedDateInRealm:(RLMRealm *)realm;
 
 @end

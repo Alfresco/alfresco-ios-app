@@ -36,4 +36,9 @@
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm;
 - (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm;
 
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
+- (void)resetDefaultRealmConfiguration;
+
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;
+
 @end
