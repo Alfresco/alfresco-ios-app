@@ -606,17 +606,21 @@
 - (void)cancelDownloadOperations:(BOOL)shouldCancelDownloadOperations uploadOperations:(BOOL)shouldCancelUploadOperations forAccountWithId:(NSString *)accountId
 {
     NSArray *syncDocumentIdentifiers = [self.syncOperations[accountId] allKeys];
+    AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountId];
     
     for (NSString *documentIdentifier in syncDocumentIdentifiers)
     {
         SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:documentIdentifier];
+        AlfrescoDocument *document = self.syncOperations[accountId][documentIdentifier];
         if((nodeStatus.activityType == SyncActivityTypeDownload) && shouldCancelDownloadOperations)
         {
             [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:accountId];
+            syncProgress.totalSyncSize -= document.contentLength;
         }
         else if ((nodeStatus.activityType == SyncActivityTypeUpload) && shouldCancelUploadOperations)
         {
             [self cancelSyncForDocumentWithIdentifier:documentIdentifier inAccountWithId:accountId];
+            syncProgress.totalSyncSize -= document.contentLength;
         }
     }
     
@@ -920,6 +924,9 @@
                 syncNodeStatus.activityType = SyncActivityTypeDownload;
             }
             
+            AccountSyncProgress *syncProgress = weakSelf.accountsSyncProgress[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            syncProgress.totalSyncSize += document.contentLength;
+            
             [weakSelf downloadDocument:document withCompletionBlock:^(BOOL completed){
                 RLMRealm *completionRealm = [RLMRealm defaultRealm];
                 [completionRealm refresh];
@@ -984,6 +991,12 @@
             }];
         }
     }
+}
+
+- (void)suspendSyncProcess:(BOOL)shouldSuspend
+{
+    NSOperationQueue *syncQueue = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    syncQueue.suspended = shouldSuspend;
 }
 
 #pragma mark - Sync node information
@@ -1130,14 +1143,30 @@
     {
         [self notifyProgressDelegateAboutCurrentProgress];
     }
+    else if([keyPath isEqualToString:@"operations"])
+    {
+        NSString *accountIdentifier = [AccountManager sharedManager].selectedAccount.accountIdentifier;
+        NSOperationQueue *syncQueue = self.syncQueues[accountIdentifier];
+        if(syncQueue == object)
+        {
+            if(syncQueue.operationCount == 0)
+            {
+                AccountSyncProgress *syncProgress = self.accountsSyncProgress[accountIdentifier];
+                syncProgress.totalSyncSize = 0;
+                syncProgress.syncProgressSize = 0;
+            }
+        }
+    }
 }
 
 - (void)notifyProgressDelegateAboutNumberOfNodesInProgress
 {
     if ([self.progressDelegate respondsToSelector:@selector(numberOfSyncOperationsInProgress:)])
     {
-        NSMutableDictionary *syncOperations = self.syncOperations[[[AccountManager sharedManager] selectedAccount].accountIdentifier];
-        [self.progressDelegate numberOfSyncOperationsInProgress:syncOperations.count];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSMutableDictionary *syncOperations = self.syncOperations[[[AccountManager sharedManager] selectedAccount].accountIdentifier];
+            [self.progressDelegate numberOfSyncOperationsInProgress:syncOperations.count];
+        });
     }
 }
 
@@ -1145,8 +1174,10 @@
 {
     if ([self.progressDelegate respondsToSelector:@selector(totalSizeToSync:syncedSize:)])
     {
-        AccountSyncProgress *syncProgress = self.accountsSyncProgress[[[AccountManager sharedManager] selectedAccount].accountIdentifier];
-        [self.progressDelegate totalSizeToSync:syncProgress.totalSyncSize syncedSize:syncProgress.syncProgressSize];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            AccountSyncProgress *syncProgress = self.accountsSyncProgress[[[AccountManager sharedManager] selectedAccount].accountIdentifier];
+            [self.progressDelegate totalSizeToSync:syncProgress.totalSyncSize syncedSize:syncProgress.syncProgressSize];
+        });
     }
 }
 
@@ -1176,6 +1207,8 @@
         syncQueue = [[NSOperationQueue alloc] init];
         syncQueue.name = self.selectedAccountSyncIdentifier;
         syncQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
+        
+        [syncQueue addObserver:self forKeyPath:@"operations" options:0 context:NULL];
         
         self.syncQueues[self.selectedAccountSyncIdentifier] = syncQueue;
         self.syncOperations[self.selectedAccountSyncIdentifier] = [NSMutableDictionary dictionary];
