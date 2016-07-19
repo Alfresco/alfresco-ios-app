@@ -41,4 +41,9 @@
 - (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm;
 - (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
 
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
+- (void)resetDefaultRealmConfiguration;
+
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;
+
 @end

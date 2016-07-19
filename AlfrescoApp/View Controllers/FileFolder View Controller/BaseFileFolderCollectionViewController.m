@@ -389,6 +389,19 @@
     [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
 }
 
+- (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
+{
+    [self setupActionsAlertController];
+    self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
+    UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
+    popPC.barButtonItem = sender;
+    popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popPC.delegate = self;
+    [self.actionsAlertController.view layoutIfNeeded];
+    
+    [self presentViewController:self.actionsAlertController animated:YES completion:nil];
+}
+
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
 - (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {

@@ -18,6 +18,9 @@
 
 #import "RealmManager.h"
 
+#import "UserAccount.h"
+#import "AlfrescoNode+Sync.h"
+
 @implementation RealmManager
 
 + (RealmManager *)sharedManager
@@ -196,6 +199,28 @@
 {
     RLMResults *results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isFolder = NO"];
     return results;
+}
+
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account
+{
+    [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];
+}
+
+- (void)resetDefaultRealmConfiguration
+{
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"default"] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+}
+
+- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm
+{
+    // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
+    RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    [realm beginWriteTransaction];
+    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
+    [realm commitWriteTransaction];
 }
 
 @end

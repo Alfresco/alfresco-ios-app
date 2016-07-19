@@ -17,8 +17,8 @@
  ******************************************************************************/
 
 #import "RealmSyncManager+Refresh.h"
-#import "RealmSyncHelper.h"
 #import "RealmSyncManager+Internal.h"
+#import "AlfrescoNode+Sync.h"
 
 @implementation RealmSyncManager (Refresh)
 
@@ -146,7 +146,7 @@
 
 - (void)updateDataBaseForChildNode:(AlfrescoNode *)childNode withParent:(AlfrescoNode *)parentNode
 {
-    NSString *childNodeIdentifier = [self.syncHelper syncIdentifierForNode:childNode];
+    NSString *childNodeIdentifier = [childNode syncIdentifier];
     
     RLMRealm *realm = self.mainThreadRealm;
     RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:childNodeIdentifier ifNotExistsCreateNew:YES inRealm:realm];
@@ -156,7 +156,7 @@
     // setup the node with data from the server
     if (parentNode)
     {
-        NSString *parentNodeIdentifier = [self.syncHelper syncIdentifierForNode:parentNode];
+        NSString *parentNodeIdentifier = [parentNode syncIdentifier];
         RealmSyncNodeInfo *parentSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:parentNodeIdentifier ifNotExistsCreateNew:NO inRealm:realm];
         childSyncNodeInfo.parentNode = parentSyncNodeInfo;
     }
@@ -184,7 +184,7 @@
             [self.fileManager removeItemAtPath:filePath error:&deleteError];
             
             // Remove sync status
-            [[RealmSyncHelper sharedHelper] removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+            [self removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
             
             // Remove RealmSyncError object if exists
             RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:node.syncNodeInfoId ifNotExistsCreateNew:NO inRealm:realm];

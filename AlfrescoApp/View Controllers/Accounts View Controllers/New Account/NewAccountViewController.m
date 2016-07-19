@@ -279,12 +279,12 @@ static NSInteger const kTagProfileCell = 3;
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
-                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:self.account];
+                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:self.account];
                     [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
                 }
                 else if (accountManager.selectedAccount == self.account)
                 {
-                    [[RealmSyncManager sharedManager] changeDefaultConfigurationForAccount:self.account];
+                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:self.account];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 }
                 

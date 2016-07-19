@@ -43,8 +43,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
 
-@property (nonatomic, strong) UIBarButtonItem *switchLayoutBarButtonItem;
-
 @end
 
 @implementation RealmSyncViewController
@@ -128,18 +126,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     
     [self reloadCollectionView];
     [self hidePullToRefreshView];
-}
-
-- (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
-{
-    [self setupActionsAlertController];
-    self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
-    UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
-    popPC.barButtonItem = self.switchLayoutBarButtonItem;
-    popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popPC.delegate = self;
-    
-    [self presentViewController:self.actionsAlertController animated:YES completion:nil];
 }
 
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
@@ -317,18 +303,17 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
 }
 
-#warning Change progressDelegate from SyncManagerProgressDelegate to RealmSyncManagerProgressDelegate and the new Realm backed system - part of IOS-564
 - (void)adjustCollectionViewForProgressView:(NSNotification *)notification
 {
     id navigationController = self.navigationController;
     
-    if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(SyncManagerProgressDelegate)]))
+    if((notification) && (notification.object) && (navigationController != notification.object) && ([navigationController conformsToProtocol: @protocol(RealmSyncManagerProgressDelegate)]))
     {
         /* The sender is not the navigation controller of this view controller, but the navigation controller of another instance of SyncViewController (namely the favorites view controller
          which was created when the account was first added). Will update the progress delegate on SyncManager to be able to show the progress view. The cause of this problem is a timing issue
          between begining the syncing process, menu reloading and delegate calls and notifications going around from component to component.
          */
-        [SyncManager sharedManager].progressDelegate = navigationController;
+        [RealmSyncManager sharedManager].progressDelegate = navigationController;
     }
     
     if ([navigationController isKindOfClass:[SyncNavigationViewController class]])

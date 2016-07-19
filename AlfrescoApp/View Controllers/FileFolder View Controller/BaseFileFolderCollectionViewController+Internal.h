@@ -56,5 +56,6 @@ static CGFloat const kCellHeight = 64.0f;
 - (void)changeCollectionViewStyle:(CollectionViewStyle)style animated:(BOOL)animated trackAnalytics: (BOOL) trackAnalytics;
 - (void)setupActionsAlertController;
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event;
+- (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender;
 
 @end

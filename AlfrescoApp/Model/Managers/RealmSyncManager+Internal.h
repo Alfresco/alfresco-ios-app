@@ -17,16 +17,15 @@
  ******************************************************************************/
 
 #import "RealmSyncManager.h"
-#import "RealmSyncHelper.h"
 
 @interface RealmSyncManager()
 
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
-@property (nonatomic, strong) RealmSyncHelper *syncHelper;
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses;
 
 @end

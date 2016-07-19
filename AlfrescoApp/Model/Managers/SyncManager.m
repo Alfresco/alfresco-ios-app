@@ -87,27 +87,6 @@
                            kDocumentsToBeDeletedLocallyAfterUpload: [NSMutableArray array]};
         _syncCoreDataHelper = [[CoreDataSyncHelper alloc] init];
         _syncHelper = [SyncHelper sharedHelper];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(statusChanged:)
-                                                     name:kSyncStatusChangeNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reachabilityChanged:)
-                                                     name:kAlfrescoConnectivityChangedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(accountInfoUpdated:)
-                                                     name:kAlfrescoAccountUpdatedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(accountRemoved:)
-                                                     name:kAlfrescoAccountRemovedNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(nodeAdded:)
-                                                     name:kAlfrescoNodeAddedOnServerNotification
-                                                   object:nil];
     }
     return self;
 }

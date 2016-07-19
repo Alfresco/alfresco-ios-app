@@ -90,5 +90,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSArray *)localisationsThatRequireTwoRowsInActionView;
 + (NSString *)helpURLLocaleIdentifierForAppLocale;
 + (NSString *)helpURLLocaleIdentifierForLocale:(NSString *)locale;
+- (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount;
 
 @end
