@@ -363,7 +363,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
     [[RealmSyncManager sharedManager] refreshWithCompletionBlock:^(BOOL completed){
         [self hidePullToRefreshView];
-        NSLog(@"refresh done");
     }];
 }
 
