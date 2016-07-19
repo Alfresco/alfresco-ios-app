@@ -31,6 +31,7 @@
 #import "FileFolderCollectionViewCell.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
 
+#import "RealmSyncManager+Refresh.h"
 
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
@@ -361,6 +362,24 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     [super connectivityChanged:notification];
     [self loadSyncNodesForFolder:self.parentNode];
+}
+
+#pragma mark - UIRefreshControl Functions
+
+- (void)refreshCollectionView:(UIRefreshControl *)refreshControl
+{
+    [self showLoadingTextInRefreshControl:refreshControl];
+    
+    // Verify Internet connection.
+    if (![[ConnectivityManager sharedManager] hasInternetConnection])
+    {
+        return;
+    }
+
+    [[RealmSyncManager sharedManager] refreshWithCompletionBlock:^(BOOL completed){
+        [self hidePullToRefreshView];
+        NSLog(@"refresh done");
+    }];
 }
 
 @end

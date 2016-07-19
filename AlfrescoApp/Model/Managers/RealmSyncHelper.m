@@ -78,7 +78,7 @@
     return nodeInfo.lastDownloadedDate;
 }
 
-- (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses
+- (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses
 {
     SyncNodeStatus *nodeStatus = [syncStatuses objectForKey:nodeId];
     
@@ -89,6 +89,11 @@
     }
     
     return nodeStatus;
+}
+
+- (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses
+{
+    [syncStatuses removeObjectForKey:nodeId];
 }
 
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId

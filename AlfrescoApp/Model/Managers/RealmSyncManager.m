@@ -28,23 +28,18 @@
 #import "AppConfigurationManager.h"
 #import "DownloadManager.h"
 #import "PreferenceManager.h"
+#import "RealmSyncManager+Internal.h"
 
 @interface RealmSyncManager()
 
-@property (nonatomic, strong) AlfrescoFileManager *fileManager;
-@property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) NSMutableDictionary *syncQueues;
 @property (nonatomic, strong) NSMutableDictionary *syncOperations;
 @property (nonatomic, strong) NSMutableDictionary *accountsSyncProgress;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
-@property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
-@property (nonatomic, strong) RealmSyncHelper *syncHelper;
 @property (nonatomic, strong) RealmManager *realmManager;
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
-
-@property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 
 @end
 
@@ -449,14 +444,36 @@
                                                                             else
                                                                             {
                                                                                 nodeStatus.status = SyncStatusFailed;
-                                                                                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                                 
-                                                                                [backgroundRealm beginWriteTransaction];
-                                                                                syncNodeInfo.reloadContent = YES;
-                                                                                syncError.errorCode = error.code;
-                                                                                syncError.errorDescription = [error localizedDescription];
-                                                                                syncNodeInfo.syncError = syncError;
-                                                                                [backgroundRealm beginWriteTransaction];
+                                                                                if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                                                                                {
+                                                                                    // Remove file
+                                                                                    NSString *filePath = syncNodeInfo.syncContentPath;
+                                                                                    NSError *deleteError;
+                                                                                    [self.fileManager removeItemAtPath:filePath error:&deleteError];
+                                                                                    
+                                                                                    // Remove sync status
+                                                                                    [[RealmSyncHelper sharedHelper] removeSyncNodeStatusForNodeWithId:syncNodeInfo.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+                                                                                    
+                                                                                    // Remove RealmSyncError object if exists
+                                                                                    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncNodeInfo.syncNodeInfoId ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                                                                                    [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
+                                                                                    
+                                                                                    // Remove RealmSyncNodeInfo object
+                                                                                    [[RealmManager sharedManager] deleteRealmObject:syncNodeInfo inRealm:backgroundRealm];
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self.syncHelper syncIdentifierForNode:document] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+                                                                                    
+                                                                                    [backgroundRealm beginWriteTransaction];
+                                                                                    syncNodeInfo.reloadContent = YES;
+                                                                                    syncError.errorCode = error.code;
+                                                                                    syncError.errorDescription = [error localizedDescription];
+                                                                                    syncNodeInfo.syncError = syncError;
+                                                                                    [backgroundRealm commitWriteTransaction];
+                                                                                }
+                                                                                
                                                                             }
                                                                             
                                                                             [syncOperationsForSelectedAccount removeObjectForKey:[self.syncHelper syncIdentifierForNode:document]];

@@ -27,7 +27,8 @@
 
 - (NSString *)syncNameForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
 - (NSDate *)lastDownloadedDateForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
-- (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSDictionary *)syncStatuses;
+- (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses;
+- (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses;
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;
 - (NSString *)syncIdentifierForNode:(AlfrescoNode *)node;

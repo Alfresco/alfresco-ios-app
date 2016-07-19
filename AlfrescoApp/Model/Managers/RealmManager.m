@@ -173,4 +173,29 @@
     [realm commitWriteTransaction];
 }
 
+- (RLMResults *)allNodesInRealm:(RLMRealm *)realm
+{
+    RLMResults *results = [RealmSyncNodeInfo allObjectsInRealm:realm];
+    return results;
+}
+
+- (RLMResults *)topLevelNodesInRealm:(RLMRealm *)realm
+{
+    RLMResults *results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isTopLevelSyncNode = YES"];
+    return results;
+}
+
+- (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm
+{
+    RLMResults *topLevelNodes = [self topLevelNodesInRealm:realm];
+    RLMResults *results = [topLevelNodes objectsWhere:@"isFolder = YES"];
+    return results;
+}
+
+- (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm
+{
+    RLMResults *results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isFolder = NO"];
+    return results;
+}
+
 @end
