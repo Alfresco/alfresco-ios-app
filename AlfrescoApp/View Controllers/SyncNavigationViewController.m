@@ -42,7 +42,7 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     navigationFrame.size.width = kRevealControllerMasterViewWidth;
     self.view.frame = navigationFrame;
     
-    SyncManager *syncManager = [SyncManager sharedManager];
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
     syncManager.progressDelegate = self;
     
     self.progressView = [[ProgressView alloc] init];
@@ -86,8 +86,8 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 
 - (void)cancelSyncOperations:(id)sender
 {
-    SyncManager *syncManager = [SyncManager sharedManager];
-    
+    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+    [syncManager suspendSyncProcess:YES];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.cancelAll.alert.title", @"Sync")
                                                     message:NSLocalizedString(@"sync.cancelAll.alert.message", @"Would you like to...")
                                                    delegate:nil
@@ -102,6 +102,10 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
             self.syncedSize = 0;
             self.totalSyncSize = 0;
             self.progressView.progressBar.progress = 0.0f;
+        }
+        else
+        {
+            [syncManager suspendSyncProcess:NO];
         }
     }];
 }

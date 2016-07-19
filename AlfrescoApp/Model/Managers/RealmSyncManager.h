@@ -81,11 +81,11 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 - (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path;
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (void)suspendSyncProcess:(BOOL)shouldSuspend;
 
 /**
  * Sync Feature
  */
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (RLMRealm *)realmForAccount:(NSString *)accountId;
 - (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;

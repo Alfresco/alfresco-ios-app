@@ -814,4 +814,15 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return urlLanguageKey;
 }
 
+- (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount
+{
+    NSString *accountIdentifier = userAccount.accountIdentifier;
+    
+    if (userAccount.accountType == UserAccountTypeCloud)
+    {
+        accountIdentifier = [NSString stringWithFormat:@"%@-%@", accountIdentifier, userAccount.selectedNetworkId];
+    }
+    return accountIdentifier;
+}
+
 @end
