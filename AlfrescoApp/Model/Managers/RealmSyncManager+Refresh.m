@@ -26,19 +26,19 @@
 
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    // STEP 1 - Mark all top level nodes as pending sync status
+    // STEP 1 - Mark all top level nodes as pending sync status.
     [self markTopLevelNodesAsPending];
     
     // STEP 2 - Invalidate the parent/child hierarchy in the database.
     [self invalidateParentChildHierarchy];
     
-    // STEP 3 - Recursively request child folders from the server and update the database structure to match
+    // STEP 3 - Recursively request child folders from the server and update the database structure to match.
     [self rebuildDataBaseWithCompletionBlock:^(BOOL completed)
     {
-        // STEP 4 - Remove any synced content that is no longer within a sync set
+        // STEP 4 - Remove any synced content that is no longer within a sync set.
         [self cleanDataBaseOfUnwantedNodes];
         
-        // STEP 5 - Start downloading any new content that appears inside the sync set
+        // STEP 5 - Start downloading any new content that appears inside the sync set.
         [self startDownloadingNewContent];
         
         if (completionBlock)
@@ -54,7 +54,7 @@
 {
     RLMRealm *realm = self.mainThreadRealm;
     // Get all top level nodes.
-    RLMResults *allTopLevelNodes = [[RealmManager sharedManager] topLevelNodesInRealm:realm];
+    RLMResults *allTopLevelNodes = [[RealmManager sharedManager] topLevelSyncNodesInRealm:realm];
     
     // Mark all top level nodes as "pending sync" status.
     for (RealmSyncNodeInfo *node in allTopLevelNodes)
@@ -66,18 +66,18 @@
 
 - (void)invalidateParentChildHierarchy
 {
-    RLMRealm *realm = self.mainThreadRealm;
-    RLMResults *allNodes = [[RealmManager sharedManager] allNodesInRealm:realm];
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMResults *allNodes = [[RealmManager sharedManager] allSyncNodesInRealm:realm];
     
+    [realm beginWriteTransaction];
     for (RealmSyncNodeInfo *node in allNodes)
     {
         if (node.parentNode)
         {
-            [realm beginWriteTransaction];
             node.parentNode = nil;
-            [realm commitWriteTransaction];
         }
     }
+    [realm commitWriteTransaction];
 }
 
 - (void)rebuildDataBaseWithCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -129,7 +129,7 @@
         }
         else
         {
-            RLMRealm *realm = self.mainThreadRealm;
+            RLMRealm *realm = [RLMRealm defaultRealm];
             RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:folder.identifier ifNotExistsCreateNew:NO inRealm:realm];
             
             [realm beginWriteTransaction];
@@ -148,12 +148,12 @@
 {
     NSString *childNodeIdentifier = [childNode syncIdentifier];
     
-    RLMRealm *realm = self.mainThreadRealm;
+    RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:childNodeIdentifier ifNotExistsCreateNew:YES inRealm:realm];
     
     [realm beginWriteTransaction];
     
-    // setup the node with data from the server
+    // Setup the node with data from the server.
     if (parentNode)
     {
         NSString *parentNodeIdentifier = [parentNode syncIdentifier];
@@ -171,26 +171,26 @@
 
 - (void)cleanDataBaseOfUnwantedNodes
 {
-    RLMRealm *realm = self.mainThreadRealm;
-    RLMResults *allNodes = [[RealmManager sharedManager] allNodesInRealm:realm];
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMResults *allNodes = [[RealmManager sharedManager] allSyncNodesInRealm:realm];
     
     for (RealmSyncNodeInfo *node in allNodes)
     {
         if (node.parentNode == nil && node.isTopLevelSyncNode == NO)
         {
-            // Remove file
+            // Remove file.
             NSString *filePath = node.syncContentPath;
             NSError *deleteError;
             [self.fileManager removeItemAtPath:filePath error:&deleteError];
             
-            // Remove sync status
+            // Remove sync status.
             [self removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
             
-            // Remove RealmSyncError object if exists
+            // Remove RealmSyncError object if exists.
             RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:node.syncNodeInfoId ifNotExistsCreateNew:NO inRealm:realm];
             [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:realm];
             
-            // Remove RealmSyncNodeInfo object
+            // Remove RealmSyncNodeInfo object.
             [[RealmManager sharedManager] deleteRealmObject:node inRealm:realm];   
         }
     }

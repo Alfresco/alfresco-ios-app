@@ -176,28 +176,30 @@
     [realm commitWriteTransaction];
 }
 
-- (RLMResults *)allNodesInRealm:(RLMRealm *)realm
+- (RLMResults *)allSyncNodesInRealm:(RLMRealm *)realm
 {
     RLMResults *results = [RealmSyncNodeInfo allObjectsInRealm:realm];
     return results;
 }
 
-- (RLMResults *)topLevelNodesInRealm:(RLMRealm *)realm
+- (RLMResults *)topLevelSyncNodesInRealm:(RLMRealm *)realm
 {
-    RLMResults *results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isTopLevelSyncNode = YES"];
+    RLMResults *allSyncNodes = [self allSyncNodesInRealm:realm];
+    RLMResults *results = [allSyncNodes objectsWhere:@"isTopLevelSyncNode = YES"];
     return results;
 }
 
 - (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm
 {
-    RLMResults *topLevelNodes = [self topLevelNodesInRealm:realm];
-    RLMResults *results = [topLevelNodes objectsWhere:@"isFolder = YES"];
+    RLMResults *topLevelSyncNodes = [self topLevelSyncNodesInRealm:realm];
+    RLMResults *results = [topLevelSyncNodes objectsWhere:@"isFolder = YES"];
     return results;
 }
 
 - (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm
 {
-    RLMResults *results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isFolder = NO"];
+    RLMResults *allSyncNodes = [self allSyncNodesInRealm:realm];
+    RLMResults *results = [allSyncNodes objectsWhere:@"isFolder = NO"];
     return results;
 }
 
