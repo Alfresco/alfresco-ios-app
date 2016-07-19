@@ -42,8 +42,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, assign) BOOL didSyncAfterSessionRefresh;
 
-@property (nonatomic, strong) UIBarButtonItem *switchLayoutBarButtonItem;
-
 @end
 
 @implementation RealmSyncViewController
