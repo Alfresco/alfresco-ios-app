@@ -1996,7 +1996,6 @@
 		0833244D17F981EC00EE6AA8 /* Sync View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				73F628B4185779050050F437 /* Text File View Controller */,
 				2B482B351CC4C732003CDEE6 /* Data Source */,
 				738665011906B2A60021D1BD /* Cell */,
 				0833247A17FEB98900EE6AA8 /* Sync Obstacles */,
@@ -3850,6 +3849,7 @@
 				2B1A05031BB2D24F00EE4AAE /* Site Members View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
 				2BFD96A71C885E0F00FDABA5 /* SyncRefactorInfoPanel */,
+				73F628B4185779050050F437 /* Text File View Controller */,
 				0833244D17F981EC00EE6AA8 /* Sync View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
 				7304DA7B1884348B00229809 /* Version View Controller */,
