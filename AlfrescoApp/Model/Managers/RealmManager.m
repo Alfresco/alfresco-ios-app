@@ -176,6 +176,33 @@
     [realm commitWriteTransaction];
 }
 
+- (RLMResults *)allSyncNodesInRealm:(RLMRealm *)realm
+{
+    RLMResults *results = [RealmSyncNodeInfo allObjectsInRealm:realm];
+    return results;
+}
+
+- (RLMResults *)topLevelSyncNodesInRealm:(RLMRealm *)realm
+{
+    RLMResults *allSyncNodes = [self allSyncNodesInRealm:realm];
+    RLMResults *results = [allSyncNodes objectsWhere:@"isTopLevelSyncNode = YES"];
+    return results;
+}
+
+- (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm
+{
+    RLMResults *topLevelSyncNodes = [self topLevelSyncNodesInRealm:realm];
+    RLMResults *results = [topLevelSyncNodes objectsWhere:@"isFolder = YES"];
+    return results;
+}
+
+- (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm
+{
+    RLMResults *allSyncNodes = [self allSyncNodesInRealm:realm];
+    RLMResults *results = [allSyncNodes objectsWhere:@"isFolder = NO"];
+    return results;
+}
+
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account
 {
     [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];

@@ -36,6 +36,11 @@
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm;
 - (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm;
 
+- (RLMResults *)allSyncNodesInRealm:(RLMRealm *)realm;
+- (RLMResults *)topLevelSyncNodesInRealm:(RLMRealm *)realm;
+- (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm;
+- (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
+
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (void)resetDefaultRealmConfiguration;
 
