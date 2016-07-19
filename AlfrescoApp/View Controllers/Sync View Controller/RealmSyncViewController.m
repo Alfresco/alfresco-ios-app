@@ -20,18 +20,15 @@
 #import "BaseFileFolderCollectionViewController+Internal.h"
 #import "ConnectivityManager.h"
 #import "SyncCollectionViewDataSource.h"
-#import "RealmSyncManager.h"
 #import "UniversalDevice.h"
 #import "PreferenceManager.h"
 #import "AccountManager.h"
-
+#import "RealmSyncManager+Refresh.h"
 #import "SyncObstaclesViewController.h"
 #import "SyncNavigationViewController.h"
 #import "FailedTransferDetailViewController.h"
 #import "FileFolderCollectionViewCell.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
-
-#import "RealmSyncManager+Refresh.h"
 
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 

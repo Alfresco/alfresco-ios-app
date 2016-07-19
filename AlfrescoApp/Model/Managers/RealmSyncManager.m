@@ -16,8 +16,6 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncManager.h"
-
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "AccountSyncProgress.h"
