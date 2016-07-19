@@ -16,7 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AlfrescoNode.h"
+#import <AlfrescoSDK-iOS/AlfrescoSDK.h>
+
 @class RLMRealm;
 
 @interface AlfrescoNode (Sync)

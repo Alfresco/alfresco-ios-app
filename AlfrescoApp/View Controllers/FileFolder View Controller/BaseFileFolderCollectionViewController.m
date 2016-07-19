@@ -397,6 +397,7 @@
     popPC.barButtonItem = sender;
     popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popPC.delegate = self;
+    [self.actionsAlertController.view layoutIfNeeded];
     
     [self presentViewController:self.actionsAlertController animated:YES completion:nil];
 }
