@@ -405,14 +405,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else
     {
-        [self setupActionsAlertController];
-        self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
-        UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
-        popPC.barButtonItem = self.editBarButtonItem;
-        popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        popPC.delegate = self;
-        
-        [self presentViewController:self.actionsAlertController animated:YES completion:nil];
+        [super performEditBarButtonItemAction:sender];
     }
 }
 

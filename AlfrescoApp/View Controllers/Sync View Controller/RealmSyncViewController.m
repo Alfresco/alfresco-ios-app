@@ -129,18 +129,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [self hidePullToRefreshView];
 }
 
-- (void)performEditBarButtonItemAction:(UIBarButtonItem *)sender
-{
-    [self setupActionsAlertController];
-    self.actionsAlertController.modalPresentationStyle = UIModalPresentationPopover;
-    UIPopoverPresentationController *popPC = [self.actionsAlertController popoverPresentationController];
-    popPC.barButtonItem = self.switchLayoutBarButtonItem;
-    popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popPC.delegate = self;
-    
-    [self presentViewController:self.actionsAlertController animated:YES completion:nil];
-}
-
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
