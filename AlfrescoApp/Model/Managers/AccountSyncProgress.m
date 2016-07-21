@@ -31,4 +31,5 @@ NSString * const kSyncProgressSizeKey = @"syncProgressSize";
     }
     return self;
 }
+
 @end

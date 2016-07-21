@@ -231,8 +231,12 @@
                                                                             }
 
                                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                [self.syncOperations removeObjectForKey:[document syncIdentifier]];
                                                                                 [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-                                                                                completionBlock(YES);
+                                                                                if (completionBlock != NULL)
+                                                                                {
+                                                                                    completionBlock(YES);
+                                                                                }
                                                                             });
                                                                         });
                                                                         
@@ -242,8 +246,8 @@
                                                                         nodeStatus.totalBytesToTransfer = bytesTotal;
                                                                     }];
     self.syncOperationQueue.suspended = YES;
-    [self.syncOperationQueue addOperation:downloadOperation];
     self.syncOperations[[document syncIdentifier]] = downloadOperation;
+    [self.syncOperationQueue addOperation:downloadOperation];
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     self.syncOperationQueue.suspended = NO;
 }
@@ -334,6 +338,7 @@
                                                                             }
                                                                             
                                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                [self.syncOperations removeObjectForKey:[document syncIdentifier]];
                                                                                 [self notifyProgressDelegateAboutNumberOfNodesInProgress];
                                                                                 if (completionBlock != NULL)
                                                                                 {
@@ -390,6 +395,14 @@
             [self cancelSyncForDocumentWithIdentifier:documentIdentifier];
         }
     }
+    
+    if(shouldCancelUploadOperations && shouldCancelDownloadOperations)
+    {
+        self.syncProgress.totalSyncSize = 0;
+        self.syncProgress.syncProgressSize = 0;
+        [self notifyProgressDelegateAboutCurrentProgress];
+    }
+    
     [self.syncOperationQueue setSuspended:NO];
 }
 
@@ -439,6 +452,7 @@
             {
                 self.syncProgress.totalSyncSize = 0;
                 self.syncProgress.syncProgressSize = 0;
+                [self notifyProgressDelegateAboutCurrentProgress];
             }
         }
     }

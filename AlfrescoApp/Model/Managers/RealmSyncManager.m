@@ -49,8 +49,6 @@
         _syncNodesStatus = [NSMutableDictionary dictionary];
         
         _syncQueues = [NSMutableDictionary dictionary];
-        _syncOperations = [NSMutableDictionary dictionary];
-        _accountsSyncProgress = [NSMutableDictionary dictionary];
         
         _syncObstacles = @{kDocumentsRemovedFromSyncOnServerWithLocalChanges: [NSMutableArray array],
                            kDocumentsDeletedOnServerWithLocalChanges: [NSMutableArray array],
@@ -238,7 +236,7 @@
 
 - (void)handleDocumentForDelete:(AlfrescoNode *)document arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm deleteRule:(DeleteRule)deleteRule
 {
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
     SyncNodeStatus *syncNodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     syncNodeStatus.totalSize = 0;
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
@@ -361,13 +359,13 @@
 
 - (void)cancelAllDownloadOperationsForAccountWithId:(NSString *)accountId
 {
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
     [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
 }
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
 {
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
     [syncOpQM cancelSyncForDocumentWithIdentifier:documentIdentifier];
 }
 
@@ -423,7 +421,7 @@
     
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+        SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
         
         if (nodeStatus.activityType == SyncActivityTypeDownload)
         {
@@ -461,7 +459,7 @@
 
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
     [syncOpQM uploadDocument:document withCompletionBlock:^(BOOL completed) {
         if (completionBlock)
         {
@@ -486,7 +484,7 @@
             syncNodeInfo.isTopLevelSyncNode = NO;
             [realm commitWriteTransaction];
             
-            SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
             SyncNodeStatus *nodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
             
             if(node.isDocument)
@@ -558,7 +556,7 @@
     {
         [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
             
-            SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
             if (node.isFolder == NO)
             {
                 [syncOpQM addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
@@ -644,7 +642,7 @@
     
     if (isModifiedLocally)
     {
-        SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+        SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
         SyncNodeStatus *nodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
         
         AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
@@ -668,7 +666,7 @@
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
 {
     NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
-    SyncOperationQueueManager *syncOpQManager = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQManager = [self currentOperationQueueManager];
     SyncNodeStatus *nodeStatus = [syncOpQManager syncNodeStatusObjectForNodeWithId:syncNodeId];
     return nodeStatus;
 }
@@ -924,8 +922,15 @@
 - (void)setProgressDelegate:(id<RealmSyncManagerProgressDelegate>)progressDelegate
 {
     _progressDelegate = progressDelegate;
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
     syncOpQM.progressDelegate = self.progressDelegate;
+}
+
+#pragma mark - Internal methods
+- (SyncOperationQueueManager *)currentOperationQueueManager
+{
+    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    return syncOpQM;
 }
 
 @end

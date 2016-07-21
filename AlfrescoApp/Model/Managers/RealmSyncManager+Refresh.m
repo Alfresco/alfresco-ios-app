@@ -183,7 +183,7 @@
             [self.fileManager removeItemAtPath:filePath error:&deleteError];
             
             // Remove sync status.
-            SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
             [syncOpQM removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
             
             // Remove RealmSyncError object if exists.
@@ -211,7 +211,7 @@
         }
     }
     
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
     [syncOpQM downloadContentsForNodes:array withCompletionBlock:nil];
 }
 

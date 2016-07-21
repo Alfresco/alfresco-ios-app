@@ -26,12 +26,12 @@
 @property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 @property (nonatomic, strong) NSMutableDictionary *syncQueues;
-@property (nonatomic, strong) NSMutableDictionary *syncOperations;
-@property (nonatomic, strong) NSMutableDictionary *accountsSyncProgress;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
 @property (nonatomic, strong) RealmManager *realmManager;
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
+
+- (SyncOperationQueueManager *)currentOperationQueueManager;
 
 @end
