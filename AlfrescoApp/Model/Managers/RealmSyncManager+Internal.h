@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import "RealmSyncManager.h"
+#import "AccountManager.h"
 
 @interface RealmSyncManager()
 
@@ -24,8 +25,13 @@
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
-
-- (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
-- (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses;
+@property (nonatomic, strong) NSMutableDictionary *syncQueues;
+@property (nonatomic, strong) NSMutableDictionary *syncOperations;
+@property (nonatomic, strong) NSMutableDictionary *accountsSyncProgress;
+@property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
+@property (nonatomic, strong) NSDictionary *syncObstacles;
+@property (nonatomic, strong) RealmManager *realmManager;
+@property (nonatomic, strong) NSMutableDictionary *permissions;
+@property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
 @end

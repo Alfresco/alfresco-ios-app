@@ -254,10 +254,10 @@ static NSString * const kTextFileMimeType = @"text/plain";
         [text writeToFile:self.temporaryFilePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
         
         RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-        BOOL isSyncDocument = [syncManager isNodeInSyncList:self.editingDocument];
+        BOOL isSyncDocument = [self.editingDocument isNodeInSyncList];
         if (isSyncDocument)
         {
-            NSString *syncContentPath = [syncManager contentPathForNode:self.editingDocument];
+            NSString *syncContentPath = [self.editingDocument contentPath];
             [text writeToFile:syncContentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
             
             [syncManager retrySyncForDocument:self.editingDocument completionBlock:^{
