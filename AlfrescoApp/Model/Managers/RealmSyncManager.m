@@ -418,7 +418,7 @@
                                                                                 [backgroundRealm beginWriteTransaction];
                                                                                 syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
                                                                                 syncNodeInfo.lastDownloadedDate = [NSDate date];
-                                                                                syncNodeInfo.syncContentPath = destinationPath;
+                                                                                syncNodeInfo.syncContentPath = syncNameForNode;
                                                                                 syncNodeInfo.reloadContent = NO;
                                                                                 [backgroundRealm commitWriteTransaction];
                                                                                 
@@ -802,7 +802,7 @@
                 }
                 else
                 {
-                    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[node syncIdentifier] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncContentPath inRealm:realm];
+                    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[node syncIdentifier] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncNameForNode inRealm:realm];
                     nodeStatus.status = SyncStatusSuccessful;
                     nodeStatus.activityType = SyncActivityTypeIdle;
                     [realm beginWriteTransaction];
@@ -1116,8 +1116,8 @@
     NSString *newNodePath = nil;
     if(nodeInfo)
     {
-        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
-        newNodePath = [syncDirectory stringByAppendingPathComponent:nodeInfo.syncContentPath];
+        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+        newNodePath = [[self syncContentDirectoryPathForAccountWithId:selectedAccountIdentifier] stringByAppendingPathComponent:nodeInfo.syncContentPath];
     }
     
     return newNodePath;
