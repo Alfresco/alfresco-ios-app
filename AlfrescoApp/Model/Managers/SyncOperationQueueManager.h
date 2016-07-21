@@ -30,12 +30,16 @@
 @interface SyncOperationQueueManager : NSObject
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
+@property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
 
 - (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session syncProgressDelegate:(id<RealmSyncManagerProgressDelegate>)syncProgressDelegate;
 - (void)updateSession:(id<AlfrescoSession>)session;
 
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId;
 - (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId;
+
+- (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel;
 
 - (void)downloadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;

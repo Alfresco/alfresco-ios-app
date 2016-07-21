@@ -57,11 +57,87 @@
     self.syncOperationQueue.name = self.account.accountIdentifier;
     self.syncOperationQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
     [self.syncOperationQueue addObserver:self forKeyPath:@"operations" options:0 context:NULL];
+    self.syncOperations = [NSMutableDictionary new];
+    self.syncStatuses = [NSMutableDictionary new];
     
     return self;
 }
 
 #pragma mark - Download methods
+- (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
+{
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SyncNodeStatus *syncNodeStatus = [weakSelf syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
+        
+        if (syncNodeStatus.activityType == SyncActivityTypeIdle)
+        {
+            syncNodeStatus.activityType = SyncActivityTypeDownload;
+        }
+        
+        [weakSelf downloadDocument:document withCompletionBlock:^(BOOL completed){
+            RLMRealm *completionRealm = [RLMRealm defaultRealm];
+            [completionRealm refresh];
+            RealmSyncNodeInfo *documentSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:completionRealm];
+            [completionRealm beginWriteTransaction];
+            if(!documentSyncInfo.isTopLevelSyncNode)
+            {
+                documentSyncInfo.isTopLevelSyncNode = isTopLevel;
+            }
+            [completionRealm commitWriteTransaction];
+            if (completionBlock)
+            {
+                completionBlock(YES);
+            }
+        }];
+    });
+}
+
+- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
+    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[folder syncIdentifier] withNode:folder lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
+    [realm beginWriteTransaction];
+    folderNodeInfo.isFolder = YES;
+    if(!folderNodeInfo.isTopLevelSyncNode)
+    {
+        folderNodeInfo.isTopLevelSyncNode = isTopLevel;
+    }
+    
+    [realm commitWriteTransaction];
+    
+    SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[folder syncIdentifier]];
+    nodeStatus.status = SyncStatusLoading;
+    nodeStatus.activityType = SyncActivityTypeDownload;
+    
+    
+    NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
+    for(AlfrescoNode *subNode in folderChildren)
+    {
+        if(subNode.isFolder)
+        {
+            [self addFolderToSync:(AlfrescoFolder *)subNode isTopLevelNode:NO];
+            [realm refresh];
+            RealmSyncNodeInfo *subFolderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[subNode syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+            [realm beginWriteTransaction];
+            subFolderNodeInfo.parentNode = folderNodeInfo;
+            [realm commitWriteTransaction];
+        }
+        else
+        {
+            [realm refresh];
+            RealmSyncNodeInfo *documentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[subNode syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
+            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+            [realm beginWriteTransaction];
+            documentNodeInfo.parentNode = folderNodeInfo;
+            [realm commitWriteTransaction];
+            [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:nil];
+        }
+    }
+}
+
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AlfrescoLogDebug(@"Files to download: %@", [nodes valueForKey:@"name"]);
@@ -167,6 +243,7 @@
                                                                     }];
     self.syncOperationQueue.suspended = YES;
     [self.syncOperationQueue addOperation:downloadOperation];
+    self.syncOperations[[document syncIdentifier]] = downloadOperation;
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     self.syncOperationQueue.suspended = NO;
 }
@@ -271,6 +348,7 @@
                                                                     }];
     [self.syncOperationQueue setSuspended:YES];
     [self.syncOperationQueue addOperation:uploadOperation];
+    self.syncOperations[[document syncIdentifier]] = uploadOperation;
     [self notifyProgressDelegateAboutNumberOfNodesInProgress];
     [self.syncOperationQueue setSuspended:NO];
 }
@@ -297,26 +375,27 @@
 #pragma mark - Cancel operations
 - (void)cancelDownloadOperations:(BOOL)shouldCancelDownloadOperations uploadOperations:(BOOL)shouldCancelUploadOperations
 {
-    for (SyncOperation *syncOperation in self.syncOperationQueue.operations)
+    [self.syncOperationQueue setSuspended:YES];
+    NSArray *syncDocumentIdentifiers = [self.syncOperations allKeys];
+    
+    for (NSString *documentIdentifier in syncDocumentIdentifiers)
     {
-        NSString *documentIdentifier = [syncOperation.document syncIdentifier];
         SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:documentIdentifier];
         if((nodeStatus.activityType == SyncActivityTypeDownload) && shouldCancelDownloadOperations)
         {
             [self cancelSyncForDocumentWithIdentifier:documentIdentifier];
-            
         }
         else if ((nodeStatus.activityType == SyncActivityTypeUpload) && shouldCancelUploadOperations)
         {
             [self cancelSyncForDocumentWithIdentifier:documentIdentifier];
         }
     }
+    [self.syncOperationQueue setSuspended:NO];
 }
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.syncOperationQueue setSuspended:YES];
         NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
         SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:syncDocumentIdentifier];
         
@@ -370,7 +449,7 @@
     if ([self.progressDelegate respondsToSelector:@selector(numberOfSyncOperationsInProgress:)])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.progressDelegate numberOfSyncOperationsInProgress:self.syncOperationQueue.operationCount];
+            [self.progressDelegate numberOfSyncOperationsInProgress:self.syncOperations.count];
         });
     }
 }

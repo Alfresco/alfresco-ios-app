@@ -353,7 +353,7 @@
 
 - (void)cancelAllSyncOperations
 {
-    for (SyncOperationQueueManager *syncOpQM in self.syncQueues)
+    for (SyncOperationQueueManager *syncOpQM in self.syncQueues.allValues)
     {
         [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
     }
@@ -363,6 +363,12 @@
 {
     SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
     [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
+}
+
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
+{
+    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    [syncOpQM cancelSyncForDocumentWithIdentifier:documentIdentifier];
 }
 
 - (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
@@ -551,9 +557,11 @@
     if (selectedAccount.isSyncOn)
     {
         [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
+            
+            SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
             if (node.isFolder == NO)
             {
-                [self addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
+                [syncOpQM addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
             }
             else
             {
@@ -561,7 +569,8 @@
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
-                        [self addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                        syncOpQM.syncNodesInfo = self.syncNodesInfo;
+                        [syncOpQM addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
                         if(completionBlock)
                         {
                             completionBlock(completed);
@@ -611,94 +620,6 @@
             }
         }];
     }
-}
-
-- (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
-{
-    // start sync for this node only
-    if ([self isSyncEnabled])
-    {
-        __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            SyncOperationQueueManager *syncOpQM = weakSelf.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
-            SyncNodeStatus *syncNodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
-            
-            if (syncNodeStatus.activityType == SyncActivityTypeIdle)
-            {
-                syncNodeStatus.activityType = SyncActivityTypeDownload;
-            }
-            
-            [syncOpQM downloadDocument:document withCompletionBlock:^(BOOL completed){
-                RLMRealm *completionRealm = [RLMRealm defaultRealm];
-                [completionRealm refresh];
-                RealmSyncNodeInfo *documentSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:completionRealm];
-                [completionRealm beginWriteTransaction];
-                if(!documentSyncInfo.isTopLevelSyncNode)
-                {
-                    documentSyncInfo.isTopLevelSyncNode = isTopLevel;
-                }
-                [completionRealm commitWriteTransaction];
-                if (completionBlock)
-                {
-                    completionBlock(YES);
-                }
-            }];
-        });
-    }
-}
-
-- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel
-{
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
-    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[folder syncIdentifier] withNode:folder lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
-    [realm beginWriteTransaction];
-    folderNodeInfo.isFolder = YES;
-    if(!folderNodeInfo.isTopLevelSyncNode)
-    {
-        folderNodeInfo.isTopLevelSyncNode = isTopLevel;
-    }
-    
-    [realm commitWriteTransaction];
-    
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
-    SyncNodeStatus *nodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[folder syncIdentifier]];
-    nodeStatus.status = SyncStatusLoading;
-    nodeStatus.activityType = SyncActivityTypeDownload;
-    
-    
-    NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
-    for(AlfrescoNode *subNode in folderChildren)
-    {
-        if(subNode.isFolder)
-        {
-            [self addFolderToSync:(AlfrescoFolder *)subNode isTopLevelNode:NO];
-            [realm refresh];
-            RealmSyncNodeInfo *subFolderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[subNode syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
-            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
-            [realm beginWriteTransaction];
-            subFolderNodeInfo.parentNode = folderNodeInfo;
-            [realm commitWriteTransaction];
-        }
-        else
-        {
-            [realm refresh];
-            RealmSyncNodeInfo *documentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[subNode syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
-            RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
-            [realm beginWriteTransaction];
-            documentNodeInfo.parentNode = folderNodeInfo;
-            [realm commitWriteTransaction];
-            [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:^(BOOL completed) {
-                
-            }];
-        }
-    }
-}
-
-- (void)suspendSyncProcess:(BOOL)shouldSuspend
-{
-    NSOperationQueue *syncQueue = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
-    syncQueue.suspended = shouldSuspend;
 }
 
 #pragma mark - Sync node information
