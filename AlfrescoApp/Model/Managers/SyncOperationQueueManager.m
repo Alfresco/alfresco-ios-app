@@ -113,7 +113,7 @@
                                                                                 [backgroundRealm beginWriteTransaction];
                                                                                 syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
                                                                                 syncNodeInfo.lastDownloadedDate = [NSDate date];
-                                                                                syncNodeInfo.syncContentPath = destinationPath;
+                                                                                syncNodeInfo.syncContentPath = syncNameForNode;
                                                                                 syncNodeInfo.reloadContent = NO;
                                                                                 [backgroundRealm commitWriteTransaction];
                                                                                 

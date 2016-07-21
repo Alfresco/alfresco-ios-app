@@ -506,7 +506,7 @@
                 }
                 else
                 {
-                    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[node syncIdentifier] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncContentPath inRealm:realm];
+                    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[node syncIdentifier] withNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncNameForNode inRealm:realm];
                     nodeStatus.status = SyncStatusSuccessful;
                     nodeStatus.activityType = SyncActivityTypeIdle;
                     [realm beginWriteTransaction];
