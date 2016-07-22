@@ -25,6 +25,9 @@
 
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+    [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
+    
     // STEP 1 - Mark all top level nodes as pending sync status.
     [self markTopLevelNodesAsPending];
     
@@ -128,12 +131,7 @@
         }
         else
         {
-            RLMRealm *realm = [RLMRealm defaultRealm];
-            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:folder.identifier ifNotExistsCreateNew:NO inRealm:realm];
-            
-            [realm beginWriteTransaction];
-            syncNodeInfo.isTopLevelSyncNode = NO;
-            [realm commitWriteTransaction];
+            [self removeTopLevelNodeFlagFomNodeWithIdentifier:folder.identifier];
         }
         
         if (completionBlock != NULL)
@@ -167,6 +165,15 @@
     [realm commitWriteTransaction];
 }
 
+- (void)removeTopLevelNodeFlagFomNodeWithIdentifier:(NSString *)nodeIdentifier
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:nodeIdentifier ifNotExistsCreateNew:NO inRealm:realm];
+    
+    [realm beginWriteTransaction];
+    syncNodeInfo.isTopLevelSyncNode = NO;
+    [realm commitWriteTransaction];
+}
 
 - (void)cleanDataBaseOfUnwantedNodes
 {
@@ -177,10 +184,21 @@
     {
         if (node.parentNode == nil && node.isTopLevelSyncNode == NO)
         {
-            // Remove file.
-            NSString *filePath = node.syncContentPath;
-            NSError *deleteError;
-            [self.fileManager removeItemAtPath:filePath error:&deleteError];
+            if (node.isFolder == NO)
+            {
+                if (node.isRemovedFromSyncHasLocalChanges)
+                {
+                    // Orphan document with new local version => Copy the file into Local Files prior to deletion.
+                    [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
+                }
+                else
+                {
+                    // Remove file.
+                    NSString *filePath = [node.alfrescoNode contentPath];
+                    NSError *deleteError;
+                    [self.fileManager removeItemAtPath:filePath error:&deleteError];
+                }
+            }
             
             // Remove sync status.
             SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
@@ -201,18 +219,27 @@
     RLMRealm *realm = [RealmSyncManager sharedManager].mainThreadRealm;
     RLMResults *allDocumentNodes = [[RealmManager sharedManager] allDocumentsInRealm:realm];
     
-    NSMutableArray *array = [NSMutableArray array];
-    
+    NSMutableArray *nodesToDownloadArray = [NSMutableArray array];
+    NSMutableArray *nodesToUploadArray = [NSMutableArray array];
+
     for (RealmSyncNodeInfo *document in allDocumentNodes)
     {
         if (document.alfrescoNode)
         {
-            [array addObject:document.alfrescoNode];
+            if (document.isRemovedFromSyncHasLocalChanges)
+            {
+                [nodesToUploadArray addObject:document.alfrescoNode];
+            }
+            else
+            {
+                [nodesToDownloadArray addObject:document.alfrescoNode];
+            }
         }
     }
     
     SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
-    [syncOpQM downloadContentsForNodes:array withCompletionBlock:nil];
+    [syncOpQM downloadContentsForNodes:nodesToDownloadArray withCompletionBlock:nil];
+    [syncOpQM uploadContentsForNodes:nodesToUploadArray withCompletionBlock:nil];
 }
 
 @end
