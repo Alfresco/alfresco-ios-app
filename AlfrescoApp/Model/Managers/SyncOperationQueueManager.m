@@ -165,6 +165,8 @@
     NSString *syncNameForNode = [document syncNameInRealm:[RLMRealm defaultRealm]];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     nodeStatus.status = SyncStatusLoading;
+    nodeStatus.bytesTransfered = 0;
+    nodeStatus.totalBytesToTransfer = 0;
     
     self.syncProgress.totalSyncSize += document.contentLength;
     [self notifyProgressDelegateAboutCurrentProgress];
@@ -230,8 +232,8 @@
                                                                                 }
                                                                             }
 
+                                                                            [self.syncOperations removeObjectForKey:[document syncIdentifier]];
                                                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                [self.syncOperations removeObjectForKey:[document syncIdentifier]];
                                                                                 [self notifyProgressDelegateAboutNumberOfNodesInProgress];
                                                                                 if (completionBlock != NULL)
                                                                                 {
@@ -280,6 +282,8 @@
     NSString *nodeExtension = [document.name pathExtension];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     nodeStatus.status = SyncStatusLoading;
+    nodeStatus.bytesTransfered = 0;
+    nodeStatus.totalBytesToTransfer = 0;
     
     self.syncProgress.totalSyncSize += document.contentLength;
     [self notifyProgressDelegateAboutCurrentProgress];
@@ -337,8 +341,8 @@
                                                                                 [backgroundRealm commitWriteTransaction];
                                                                             }
                                                                             
+                                                                            [self.syncOperations removeObjectForKey:[document syncIdentifier]];
                                                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                [self.syncOperations removeObjectForKey:[document syncIdentifier]];
                                                                                 [self notifyProgressDelegateAboutNumberOfNodesInProgress];
                                                                                 if (completionBlock != NULL)
                                                                                 {
