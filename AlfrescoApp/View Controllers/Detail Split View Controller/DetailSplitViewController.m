@@ -110,28 +110,20 @@ static const CGFloat kAnimationSpeed = 0.2f;
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
-//    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-//        
-//        // after transition
-//        
-        if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
-            // perform logic
-            // The device has already rotated, that's why this method is being called.
-            UIInterfaceOrientation toOrientation   = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
-            
-            // Fixes orientation mismatch (between UIDeviceOrientation and UIInterfaceOrientation)
-            if (toOrientation == UIInterfaceOrientationLandscapeRight)
-            {
-                toOrientation = UIInterfaceOrientationLandscapeLeft;
-            }
-            else if (toOrientation == UIInterfaceOrientationLandscapeLeft)
-            {
-                toOrientation = UIInterfaceOrientationLandscapeRight;
-            }
-            
-            [self legacy_willRotateToInterfaceOrientation:toOrientation duration:0.0];
-        }
-//    }];
+    // The device has already rotated, that's why this method is being called.
+    UIInterfaceOrientation toOrientation   = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
+    
+    // Fixes orientation mismatch (between UIDeviceOrientation and UIInterfaceOrientation)
+    if (toOrientation == UIInterfaceOrientationLandscapeRight)
+    {
+        toOrientation = UIInterfaceOrientationLandscapeLeft;
+    }
+    else if (toOrientation == UIInterfaceOrientationLandscapeLeft)
+    {
+        toOrientation = UIInterfaceOrientationLandscapeRight;
+    }
+    
+    [self legacy_willRotateToInterfaceOrientation:toOrientation duration:0.0];
 }
 
 - (void)legacy_willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
