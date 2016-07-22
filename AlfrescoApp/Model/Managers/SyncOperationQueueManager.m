@@ -56,7 +56,7 @@
     self.syncOperationQueue = [[NSOperationQueue alloc] init];
     self.syncOperationQueue.name = self.account.accountIdentifier;
     self.syncOperationQueue.maxConcurrentOperationCount = kSyncMaxConcurrentOperations;
-    [self.syncOperationQueue addObserver:self forKeyPath:@"operations" options:0 context:NULL];
+    [self.syncOperationQueue addObserver:self forKeyPath:kSyncOperationCount options:0 context:NULL];
     self.syncOperations = [NSMutableDictionary new];
     self.syncStatuses = [NSMutableDictionary new];
     
@@ -444,7 +444,7 @@
     {
         [self notifyProgressDelegateAboutCurrentProgress];
     }
-    else if([keyPath isEqualToString:@"operations"])
+    else if([keyPath isEqualToString:kSyncOperationCount])
     {
         if(self.syncOperationQueue == object)
         {

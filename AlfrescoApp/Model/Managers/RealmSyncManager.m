@@ -359,7 +359,7 @@
 
 - (void)cancelAllDownloadOperationsForAccountWithId:(NSString *)accountId
 {
-    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+    SyncOperationQueueManager *syncOpQM = self.syncQueues[accountId];
     [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
 }
 
