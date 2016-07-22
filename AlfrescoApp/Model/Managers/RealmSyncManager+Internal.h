@@ -26,6 +26,8 @@
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (void)uploadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId inSyncNodesStatus:(NSMutableDictionary *)syncStatuses;
+- (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 
 @end
