@@ -236,7 +236,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 - (void)updateActionButtons
 {
     //check node is synced
-    BOOL isSynced = [self.folder isNodeInSyncList];
+    BOOL isSynced = [self.folder isTopLevelSyncNode];
     NSString *actionIdentifier = isSynced ? kActionCollectionIdentifierUnsync : kActionCollectionIdentifierSync;
     NSString *titleKey = isSynced ? NSLocalizedString(@"action.unsync", @"Unsync Action") : NSLocalizedString(@"action.sync", @"Sync Action");
     NSString *imageKey = isSynced ? @"actionsheet-unsync.png" : @"actionsheet-sync.png";
